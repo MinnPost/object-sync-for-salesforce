@@ -49,6 +49,15 @@ class Wordpress_Salesforce_Rest {
 	protected $plugin_name;
 
 	/**
+	 * The file path of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $plugin_path    The path for this plugin.
+	 */
+	protected $plugin_path;
+
+	/**
 	 * The current version of the plugin.
 	 *
 	 * @since    1.0.0
@@ -69,6 +78,7 @@ class Wordpress_Salesforce_Rest {
 	public function __construct() {
 
 		$this->plugin_name = 'wordpress-salesforce-rest';
+		$this->plugin_path = ABSPATH . 'wp-content/plugins/' . $this->plugin_name . '/';
 		$this->version = '1.0.0';
 
 		$this->load_dependencies();
@@ -149,10 +159,15 @@ class Wordpress_Salesforce_Rest {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Wordpress_Salesforce_Rest_Admin( $this->get_plugin_name(), $this->get_version() );
-
+		$plugin_admin = new Wordpress_Salesforce_Rest_Admin( $this->get_plugin_name(), $this->get_plugin_path(), $this->get_version() );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'load_settings' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_salesforce_settings' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_salesforce_authorize' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_salesforce_fieldmaps' );
+		
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menus' );
 
 	}
 
@@ -169,6 +184,8 @@ class Wordpress_Salesforce_Rest {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+		//$this->loader->add_action( 'init', $plugin_public, 'load_settings' );
 
 	}
 
@@ -190,6 +207,16 @@ class Wordpress_Salesforce_Rest {
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
+	}
+
+	/**
+	 * The path of the plugin to identify it within WordPress
+	 *
+	 * @since     1.0.0
+	 * @return    string    The path of the plugin.
+	 */
+	public function get_plugin_path() {
+		return $this->plugin_path;
 	}
 
 	/**
