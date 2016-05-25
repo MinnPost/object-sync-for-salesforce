@@ -67,6 +67,7 @@ class Wordpress_Salesforce_Rest_Admin {
 	 */
 	private $settings_tabs = array();
 	private $settings_key = 'salesforce_settings';
+	private $tokens_key = 'salesforce_tokens';
     private $fieldmaps_key = 'fieldmaps_settings';
 
 	/**
@@ -92,6 +93,7 @@ class Wordpress_Salesforce_Rest_Admin {
 	 */
 	public function load_settings() {
 	    $this->settings = (array) get_option( $this->settings_key );
+	    $this->tokens = (array) get_option( $this->tokens_key );
 	    $this->fieldmaps = (array) get_option( $this->fieldmaps_key );
 	}
 
@@ -185,39 +187,53 @@ class Wordpress_Salesforce_Rest_Admin {
 	function plugin_options_page() {
 	    $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->settings_key;
 	    if ( $tab !== 'authorize' ) {
-	    	include_once 'partials/wordpress-salesforce-rest-admin-page.php';
+	    	include_once 'partials/wordpress-salesforce-rest-admin-default.php';
 	    } else {
 	    	// tab is authorize
+	    	$this->authorize_salesforce();
 	    }
 	}
 
 	function authorize_salesforce() {
-
-		define( 'CONSUMER_KEY', $this->get_setting_value( $this->settings, 'salesforce_consumer_key' ) );
-		define( 'CONSUMER_SECRET', $this->get_setting_value( $this->settings, 'salesforce_consumer_secret' ) );
-		define( 'REDIRECT_URI', $this->get_setting_value( $this->settings, 'salesforce_callback_url' ) );
-		define( 'LOGIN_BASE_URL', $this->get_setting_value( $this->settings, 'salesforce_base_url' ) );
-
-		$is_authorized = isset( $_SESSION['access_token'] );
-		$salesforce_token = $this->get_setting_value( $this->settings, 'salesforce_token' );
-		
-		if ( $salesforce_token !== '' ) {
-			//$is_authorized = true;
+		if ( !defined( 'SALESFORCE_CONSUMER_KEY' ) ) {
+			define( 'SALESFORCE_CONSUMER_KEY', $this->get_setting_value( $this->settings, 'salesforce_consumer_key' ) );
+		}
+		if ( !defined( 'SALESFORCE_CONSUMER_SECRET' ) ) {
+			define( 'SALESFORCE_CONSUMER_SECRET', $this->get_setting_value( $this->settings, 'salesforce_consumer_secret' ) );
+		}
+		if ( !defined( 'SALESFORCE_CALLBACK_URL' ) ) {
+			define( 'SALESFORCE_CALLBACK_URL', $this->get_setting_value( $this->settings, 'salesforce_callback_url' ) );
+		}
+		if ( !defined( 'SALESFORCE_LOGIN_BASE_URL' ) ) {
+			define( 'SALESFORCE_LOGIN_BASE_URL', $this->get_setting_value( $this->settings, 'salesforce_base_url' ) );
 		}
 
+		$is_authorized = isset( $_SESSION['access_token'] );
+		$salesforce_token = $this->get_setting_value( $this->tokens, 'salesforce_token' );
+		
+		if ( $salesforce_token !== '' ) {
+			$is_authorized = true;
+		}
+		
+		/*if ( $is_authorized === true ) {
+			$access_token = $this->get_setting_value( $this->settings, 'salesforce_token' );
+			$instance_url = $this->get_setting_value( $this->settings, 'salesforce_base_url' );
+		}*/
+
 		if ( !$is_authorized ) {
-    		$has_code = isset($_REQUEST['code']);
+    		$has_code = isset( $_REQUEST['code'] );
 
 			if ( !$has_code ) {
-				$auth_url = LOGIN_BASE_URL
+				$auth_url = SALESFORCE_LOGIN_BASE_URL
 				.'/services/oauth2/authorize?response_type=code'
-				.'&client_id='.CONSUMER_KEY 
-				.'&redirect_uri='.urlencode(REDIRECT_URI);
+				.'&client_id=' . SALESFORCE_CONSUMER_KEY 
+				.'&redirect_uri=' . urlencode( SALESFORCE_CALLBACK_URL );
 
 				// Redirect to the authorization page
 				//header('Location: '.$auth_url);
 				//exit();
-				echo '<a href="' . $auth_url . '">Log in with Salesforce</a>';
+				//echo '<a href="' . $auth_url . '">Log in with Salesforce</a>';
+				include_once 'partials/wordpress-salesforce-rest-admin-salesforce.php';
 				exit();
 			}
 
@@ -227,27 +243,27 @@ class Wordpress_Salesforce_Rest_Admin {
 
 			// Make our first call to the API to convert that code into an access token that
 			// we can use on subsequent API calls
-			$token_url = LOGIN_BASE_URL.'/services/oauth2/token';
+			$token_url = SALESFORCE_LOGIN_BASE_URL . '/services/oauth2/token';
 
 			$post_fields = array(
 				'code' => $code,
 				'grant_type' => 'authorization_code',
-				'client_id' => CONSUMER_KEY,
-				'client_secret' => CONSUMER_SECRET,
-				'redirect_uri' => REDIRECT_URI,
+				'client_id' => SALESFORCE_CONSUMER_KEY,
+				'client_secret' => SALESFORCE_CONSUMER_SECRET,
+				'redirect_uri' => SALESFORCE_CALLBACK_URL,
 			);
 
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $token_url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-			curl_setopt($ch, CURLOPT_POST, TRUE);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
+			curl_setopt( $ch, CURLOPT_URL, $token_url );
+			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
+			curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, TRUE );
+			curl_setopt( $ch, CURLOPT_POST, TRUE );
+			curl_setopt( $ch, CURLOPT_POSTFIELDS, $post_fields );
         
 			// Make the API call, and then extract the information from the response
-			$token_request_body = curl_exec($ch) 
-			or die("Call to get token from code failed: '$token_url' - ".print_r($post_fields, true));
-			$token_response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			$token_request_body = curl_exec( $ch ) or die( "Call to get token from code failed: '$token_url' - " . print_r( $post_fields, true ) );
+			$token_response_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+
 			if (($token_response_code<200)||($token_response_code>=300)||empty($token_request_body))
 			die("Call to get token from code failed with $token_response_code: '$token_url' - ".print_r($post_fields, true)." - '$token_request_body'");
 			$token_request_data = json_decode($token_request_body, true);
@@ -256,82 +272,63 @@ class Wordpress_Salesforce_Rest_Admin {
 			if (!isset($token_request_data['access_token'])||
 			!isset($token_request_data['instance_url']))
 			die("Missing expected data from ".print_r($token_request_data, true));
+
 			// Save off the values we need for future use
 			$_SESSION['access_token'] = $token_request_data['access_token'];
 			$_SESSION['instance_url'] = $token_request_data['instance_url'];
 
-			$salesforce_settings = $this->settings;
+			$salesforce_tokens = $this->tokens;
 			
-			$salesforce_settings['salesforce_token'] = $token_request_data['access_token'];
-			$salesforce_settings['salesforce_instance_url'] = $token_request_data['instance_url'];
-			update_option('salesforce_settings', $salesforce_settings);
-			//echo 'Salesforce is already authorized.';
+			$salesforce_tokens['salesforce_token'] = $token_request_data['access_token'];
+			$salesforce_tokens['salesforce_instance_url'] = $token_request_data['instance_url'];
+			
+			update_option( 'salesforce_tokens', $salesforce_tokens ); // update the database
+			echo 'Salesforce is already authorized.';
 
 			// Redirect to the main page without the code in the URL
-		    header('Location: '.REDIRECT_URI);
+		    //header( 'Location: ' . SALESFORCE_CALLBACK_URL );
 		    exit();
     	}
 
 		// If we're here, we must have a valid session containing the access token for the
 		// API, so grab it ready for subsequent use
-		$access_token = $_SESSION['access_token'];
-		$instance_url = $_SESSION['instance_url'];
+		//$access_token = $_SESSION['access_token'];
+		//$instance_url = $_SESSION['instance_url'];
+		$access_token = $this->get_setting_value( $this->tokens, 'salesforce_token' );
+		$instance_url = $this->get_setting_value( $this->tokens, 'salesforce_instance_url' );
 
 		// Now we're going to test the API by querying some data from our accounts table
 		// Start by specifying the URL of the call
-		$query_url = $instance_url.'/services/data/v20.0/query';
+		$query_url = $instance_url . '/services/data/v35.0/query';
+
 		// Now append the actual query we want to run
-		$query_url .= '?q='.urlencode('SELECT Name, Id from Account LIMIT 100');
+		$query_url .= '?q=' . urlencode( 'SELECT Name, Id from Contact LIMIT 100' );
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $query_url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt( $ch, CURLOPT_URL, $query_url );
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
 		// We need to pass the access token in the header, *not* as a URL parameter
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: OAuth '.$access_token));
+		curl_setopt( $ch, CURLOPT_HTTPHEADER, array( 'Authorization: OAuth ' . $access_token ) );
 
 		// Make the API call, and then extract the information from the response
-		$query_request_body = curl_exec($ch) 
-		    or die("Query API call failed: '$query_url'");
-		$query_response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if (($query_response_code<200)||($query_response_code>=300)||empty($query_request_body))
-		{
+		$query_request_body = curl_exec( $ch ) or die( "Query API call failed: '$query_url'" );
+		$query_response_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+		if ( ( $query_response_code < 200 ) || ( $query_response_code >= 300 ) || empty( $query_request_body ) ) {
 		    unset($_SESSION['access_token']);
 		    unset($_SESSION['instance_url']);
-		    die("Query API call failed with $query_response_code: '$query_url' - '$query_request_body'");
+		    die( "Query API call failed with $query_response_code: '$query_url' - '$query_request_body'" );
 		}
-		$query_request_data = json_decode($query_request_body, true);
-		if (empty($query_request_data))
-		    die("Couldn't decode '$query_request_data' as a JSON object");
-		if (!isset($query_request_data['totalSize'])||
-		    !isset($query_request_data['records']))
-		    die("Missing expected data from ".print_r($query_request_data, true));
+		$query_request_data = json_decode( $query_request_body, true );
+		if ( empty( $query_request_data ) )
+		    die( "Couldn't decode '$query_request_data' as a JSON object" );
+		if ( !isset( $query_request_data['totalSize'] ) || !isset( $query_request_data['records'] ) )
+		    die( "Missing expected data from " . print_r( $query_request_data, true ) );
+
 		// Grab the information we're interested in
 		$total_size = $query_request_data['totalSize'];
 		$records = $query_request_data['records'];
 
 		// Now build a simple HTML page to display the results
-		?>
-		<html>
-		<head>
-		<title>PHP Sample Code for the Salesforce REST API</title>
-		</head>
-		<body>
-		<h2>Found <?=$total_size?> records</h2>
-		<div>
-		<?php
-		foreach ($records as $record)
-		{
-		    print 'Name :';
-		    print htmlspecialchars($record['Name']);
-		    print ' - ';
-		    print htmlspecialchars($record['Id']);
-		    print '<br/>';
-		    print "\n";
-		}
-		?>
-		</div>
-		</body>
-		</html>
-		<?php
+		include_once 'partials/wordpress-salesforce-rest-admin-salesforce.php';
 	}
 
 	/**
@@ -404,27 +401,39 @@ class Wordpress_Salesforce_Rest_Admin {
 	}
 
 	function field_salesforce_consumer_key() {
+		if ( !defined( 'SALESFORCE_CONSUMER_KEY' ) ) {
 	    ?>
-	    <input type="text" name="<?php echo $this->settings_key; ?>[salesforce_consumer_key]" value="<?php echo $this->get_setting_value( $this->settings, 'salesforce_consumer_key' ); ?>" />
-	    <?php
+	    	<input type="text" name="<?php echo $this->settings_key; ?>[salesforce_consumer_key]" value="<?php echo $this->get_setting_value( $this->settings, 'salesforce_consumer_key' ); ?>" />
+	    <?php } else { ?>
+	    	<p><code>Defined in wp-config.php</code></p>
+		<?php }
 	}
 
 	function field_salesforce_consumer_secret() {
+		if ( !defined( 'SALESFORCE_CONSUMER_SECRET' ) ) {
 	    ?>
 	    <input type="text" name="<?php echo $this->settings_key; ?>[salesforce_consumer_secret]" value="<?php echo $this->get_setting_value( $this->settings, 'salesforce_consumer_secret' ); ?>" />
-	    <?php
+	    <?php } else { ?>
+	    	<p><code>Defined in wp-config.php</code></p>
+		<?php }
 	}
 
 	function field_salesforce_callback_url() {
+		if ( !defined( 'SALESFORCE_CALLBACK_URL' ) ) {
 	    ?>
 	    <input type="text" name="<?php echo $this->settings_key; ?>[salesforce_callback_url]" value="<?php echo $this->get_setting_value( $this->settings, 'salesforce_callback_url' ); ?>" />
-	    <?php
+	    <?php } else { ?>
+	    	<p><code>Defined in wp-config.php</code></p>
+		<?php }
 	}
 
 	function field_salesforce_base_url() {
+		if ( !defined( 'SALESFORCE_LOGIN_BASE_URL' ) ) {
 	    ?>
 	    <input type="text" name="<?php echo $this->settings_key; ?>[salesforce_base_url]" value="<?php echo $this->get_setting_value( $this->settings, 'salesforce_base_url' ); ?>" />
-	    <?php
+	    <?php } else { ?>
+	    	<p><code>Defined in wp-config.php</code></p>
+		<?php }
 	}
 
 	function register_salesforce_fieldmaps() {

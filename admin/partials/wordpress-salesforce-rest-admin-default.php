@@ -4,7 +4,6 @@
         <?php wp_nonce_field( 'update-options' ); ?>
         <?php settings_fields( $tab ); ?>
         <?php do_settings_sections( $tab ); ?>
-        <?php $this->authorize_salesforce(); ?>
         <?php submit_button(); ?>
     </form>
 </div>
