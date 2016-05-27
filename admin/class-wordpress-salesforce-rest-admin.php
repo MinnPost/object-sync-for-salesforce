@@ -406,60 +406,53 @@ class Wordpress_Salesforce_Rest_Admin {
 	 * @since  1.0.0
 	 */
 	function salesforce_api_demo() {
+		
+		$curl = $this->get_salesforce_demo_data();
+
+		if ( $curl['code'] === 401 && $curl['data'][0]['errorCode'] === 'INVALID_SESSION_ID' ) {
+			// token is expired. call salesforce to ask for another one with the refresh token
+			$refresh_token = $this->refresh_salesforce();
+			$curl = $this->get_salesforce_demo_data();
+		} else if ( ( $curl['code'] < 200 ) || ( $curl['code'] >= 300 ) || empty( $curl['body'] ) ) {
+		    unset($_SESSION['access_token']);
+		    unset($_SESSION['instance_url']);
+		    die( 'Query API call failed with ' . $curl['code'] . ': ' . $curl['url'] . ' - ' . $curl['body'] );
+		}
+		
+		if ( empty( $curl['data'] ) ) {
+		    die( 'Couldn\'t decode ' . $curl['data'] . ' as a JSON object' );
+		}
+		if ( !isset( $curl['data']['totalSize'] ) || !isset( $curl['data']['records'] ) ) {
+		    die( 'Missing expected data from ' . print_r( $curl['data'], true ) );
+		}
+
+		// Grab the data for the demo display
+		$total_size = $curl['data']['totalSize'];
+		$records = $curl['data']['records'];
+		return $records;
+	}
+
+	function get_salesforce_demo_data() {
 		$query_url = $this->salesforce['query_url'];
-		// Now append the actual query we want to run
+		
+		// append query to base url
 		$query_url .= '?q=' . urlencode( 'SELECT Name, Id from Contact LIMIT 100' );
+		
+		// run query with curl
 		$ch = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, $query_url );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
 		// We need to pass the access token in the header, *not* as a URL parameter
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, array( 'Authorization: OAuth ' . $this->salesforce['access_token'] ) );
 
-		// Make the API call, and then extract the information from the response
+		// make json out of the curl response
 		$query_request_body = curl_exec( $ch ) or die( 'Query API call failed: ' . $query_url );
 		$query_response_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
 		$query_request_data = json_decode( $query_request_body, true );
 
-		if ( $query_response_code === 401 && $query_request_data[0]['errorCode'] === 'INVALID_SESSION_ID' ) {
-			// token is expired. call salesforce to ask for another one with the refresh token
-			$refresh_token = $this->refresh_salesforce();
-
-			//echo 'this is new salesforce object';
-			//print_r($this->salesforce);
-
-
-			$query_url = $this->salesforce['query_url'];
-			// Now append the actual query we want to run
-			$query_url .= '?q=' . urlencode( 'SELECT Name, Id from Contact LIMIT 100' );
-			$ch = curl_init();
-			curl_setopt( $ch, CURLOPT_URL, $query_url );
-			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
-			// We need to pass the access token in the header, *not* as a URL parameter
-			curl_setopt( $ch, CURLOPT_HTTPHEADER, array( 'Authorization: OAuth ' . $this->salesforce['access_token'] ) );
-
-			// Make the API call, and then extract the information from the response
-			$query_request_body = curl_exec( $ch ) or die( 'Query API call failed: ' . $query_url );
-			$query_response_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-			$query_request_data = json_decode( $query_request_body, true );
-
-			//die( 'session expired ' . $query_request_data[0]['errorCode'] . print_r($query_request_data, true));
-		} else if ( ( $query_response_code < 200 ) || ( $query_response_code >= 300 ) || empty( $query_request_body ) ) {
-		    unset($_SESSION['access_token']);
-		    unset($_SESSION['instance_url']);
-		    die( 'Query API call failed with ' . $query_response_code . ': ' . $query_url . ' - ' . $query_request_body );
-		}
-		
-		if ( empty( $query_request_data ) ) {
-		    die( 'Couldn\'t decode ' . $query_request_data . ' as a JSON object' );
-		}
-		if ( !isset( $query_request_data['totalSize'] ) || !isset( $query_request_data['records'] ) ) {
-		    die( 'Missing expected data from ' . print_r( $query_request_data, true ) );
-		}
-
-		// Grab the information we're interested in
-		$total_size = $query_request_data['totalSize'];
-		$records = $query_request_data['records'];
-		return $records;
+		// pass all the info for reuse
+		$curl = array( 'url' => $query_url, 'body' => $query_request_body, 'code' => $query_response_code, 'data' => $query_request_data );
+		return $curl;
 	}
 
 	/**
