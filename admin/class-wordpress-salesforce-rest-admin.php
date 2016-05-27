@@ -70,6 +70,8 @@ class Wordpress_Salesforce_Rest_Admin {
 	private $tokens_key = 'salesforce_tokens';
     private $fieldmaps_key = 'fieldmaps_settings';
 
+    private $salesforce = array();
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -166,9 +168,12 @@ class Wordpress_Salesforce_Rest_Admin {
 	 * @since  1.0.0
 	 */
 	function add_admin_menus() {
-	    //add_options_page( 'Salesforce', 'Salesforce', 'manage_options', $this->plugin_options_key, array( &$this, 'salesforce' ) );
-	    if( !session_id() ) {
-	        session_start();
+
+	    if ( !session_id() ) {
+			session_start();
+	    }
+	    if ( isset( $_GET['code'] ) ) {
+	    	header( 'Location: ' . SALESFORCE_CALLBACK_URL );
 	    }
 	    $this->plugin_screen_hook_suffix = add_options_page(
 			__( 'Salesforce', $this->plugin_name ),
@@ -190,11 +195,24 @@ class Wordpress_Salesforce_Rest_Admin {
 	    	include_once 'partials/wordpress-salesforce-rest-admin-default.php';
 	    } else {
 	    	// tab is authorize
-	    	$this->authorize_salesforce();
+	    	$salesforce = $this->authorize_salesforce();
+	    	if ( $this->salesforce['is_authorized'] === true ) {
+	    		$records = $this->salesforce_api_demo();
+	    	}
+	    	include_once 'partials/wordpress-salesforce-rest-admin-salesforce.php';
+
 	    }
 	}
 
+	/**
+	 * Connect to Salesforce by login button, and save tokens to WP options
+	 * If already logged in, get the tokens from WP options
+	 *
+	 * @since  1.0.0
+	 */
 	function authorize_salesforce() {
+		//$this->salesforce = array();
+
 		if ( !defined( 'SALESFORCE_CONSUMER_KEY' ) ) {
 			define( 'SALESFORCE_CONSUMER_KEY', $this->get_setting_value( $this->settings, 'salesforce_consumer_key' ) );
 		}
@@ -208,33 +226,35 @@ class Wordpress_Salesforce_Rest_Admin {
 			define( 'SALESFORCE_LOGIN_BASE_URL', $this->get_setting_value( $this->settings, 'salesforce_base_url' ) );
 		}
 
-		$is_authorized = isset( $_SESSION['access_token'] );
+		if ( !defined( 'SALESFORCE_DATA_ENDPOINT' ) ) {
+			define( 'SALESFORCE_DATA_ENDPOINT', $this->get_setting_value( $this->settings, 'salesforce_data_endpoint' ) );
+		}
+
+		$this->salesforce['is_authorized'] = isset( $_SESSION['access_token'] );
 		$salesforce_token = $this->get_setting_value( $this->tokens, 'salesforce_token' );
 		
 		if ( $salesforce_token !== '' ) {
-			$is_authorized = true;
+			$this->salesforce['is_authorized'] = true;
 		}
-		
-		/*if ( $is_authorized === true ) {
-			$access_token = $this->get_setting_value( $this->settings, 'salesforce_token' );
-			$instance_url = $this->get_setting_value( $this->settings, 'salesforce_base_url' );
-		}*/
 
-		if ( !$is_authorized ) {
+		if ( !$this->salesforce['is_authorized'] ) { // there is no salesforce token right now
     		$has_code = isset( $_REQUEST['code'] );
 
-			if ( !$has_code ) {
-				$auth_url = SALESFORCE_LOGIN_BASE_URL
+			if ( !$has_code ) { // we do not have a code parameter - have not been to salesforce yet
+				$this->salesforce['auth_url'] = SALESFORCE_LOGIN_BASE_URL
 				.'/services/oauth2/authorize?response_type=code'
 				.'&client_id=' . SALESFORCE_CONSUMER_KEY 
 				.'&redirect_uri=' . urlencode( SALESFORCE_CALLBACK_URL );
+
+				// store the url so users can click it to authenticate with salesforce and return it
 
 				// Redirect to the authorization page
 				//header('Location: '.$auth_url);
 				//exit();
 				//echo '<a href="' . $auth_url . '">Log in with Salesforce</a>';
-				include_once 'partials/wordpress-salesforce-rest-admin-salesforce.php';
-				exit();
+				return $this->salesforce;
+				//include_once 'partials/wordpress-salesforce-rest-admin-salesforce.php';
+				//exit();
 			}
 
 			// If we're here, Salesforce must be returning us a code that we can exchange for
@@ -261,45 +281,56 @@ class Wordpress_Salesforce_Rest_Admin {
 			curl_setopt( $ch, CURLOPT_POSTFIELDS, $post_fields );
         
 			// Make the API call, and then extract the information from the response
-			$token_request_body = curl_exec( $ch ) or die( "Call to get token from code failed: '$token_url' - " . print_r( $post_fields, true ) );
+			$token_request_body = curl_exec( $ch ) or die( 'Call to get token from code failed: ' . $token_url . ' - ' . print_r( $post_fields, true ) );
 			$token_response_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
 
-			if (($token_response_code<200)||($token_response_code>=300)||empty($token_request_body))
-			die("Call to get token from code failed with $token_response_code: '$token_url' - ".print_r($post_fields, true)." - '$token_request_body'");
-			$token_request_data = json_decode($token_request_body, true);
-			if (empty($token_request_data))
-			die("Couldn't decode '$token_request_data' as a JSON object");
-			if (!isset($token_request_data['access_token'])||
-			!isset($token_request_data['instance_url']))
-			die("Missing expected data from ".print_r($token_request_data, true));
+			if ( ( $token_response_code < 200 ) || ( $token_response_code >= 300 ) || empty( $token_request_body ) ) {
+				die( 'Call to get token from code failed with ' . $token_response_code . ': ' . $token_url . ' - ' . print_r( $post_fields, true ) . ' - ' . $token_request_body);
+			}
 
-			// Save off the values we need for future use
+			$token_request_data = json_decode($token_request_body, true);
+			
+			if ( empty( $token_request_data ) ) {
+				die( 'Couldn\'t decode ' . $token_request_data . ' as a JSON object' );
+			}
+			if ( !isset( $token_request_data['access_token'] ) || !isset( $token_request_data['instance_url'] ) ) {
+				die( 'Missing expected data from ' . print_r( $token_request_data, true ) );
+			}
+
+			// add token data to session
 			$_SESSION['access_token'] = $token_request_data['access_token'];
 			$_SESSION['instance_url'] = $token_request_data['instance_url'];
+			$_SESSION['refresh_token'] = $token_request_data['refresh_token'];
 
+			// load the tokens from database, and then add these tokens to it
 			$salesforce_tokens = $this->tokens;
-			
+
 			$salesforce_tokens['salesforce_token'] = $token_request_data['access_token'];
 			$salesforce_tokens['salesforce_instance_url'] = $token_request_data['instance_url'];
-			
+			$salesforce_tokens['salesforce_refresh_token'] = $token_request_data['refresh_token'];
+
 			update_option( 'salesforce_tokens', $salesforce_tokens ); // update the database
-			echo 'Salesforce is already authorized.';
 
 			// Redirect to the main page without the code in the URL
 		    //header( 'Location: ' . SALESFORCE_CALLBACK_URL );
-		    exit();
-    	}
+		    //exit();
+    	} // we have a salesforce token in the database or in the session
 
 		// If we're here, we must have a valid session containing the access token for the
 		// API, so grab it ready for subsequent use
 		//$access_token = $_SESSION['access_token'];
 		//$instance_url = $_SESSION['instance_url'];
-		$access_token = $this->get_setting_value( $this->tokens, 'salesforce_token' );
-		$instance_url = $this->get_setting_value( $this->tokens, 'salesforce_instance_url' );
+		$this->salesforce['access_token'] = $this->get_setting_value( $this->tokens, 'salesforce_token' );
+		$this->salesforce['instance_url'] = $this->get_setting_value( $this->tokens, 'salesforce_instance_url' );
+		$this->salesforce['refresh_token'] = $this->get_setting_value( $this->tokens, 'salesforce_refresh_token' );
 
-		// Now we're going to test the API by querying some data from our accounts table
-		// Start by specifying the URL of the call
-		$query_url = $instance_url . '/services/data/v35.0/query';
+		// URL of Salesforce API call
+		$this->salesforce['query_url'] = $this->salesforce['instance_url'] . SALESFORCE_DATA_ENDPOINT;
+
+		//header( 'Location: ' . SALESFORCE_CALLBACK_URL );
+		return $this->salesforce;
+
+	}
 
 		// Now append the actual query we want to run
 		$query_url .= '?q=' . urlencode( 'SELECT Name, Id from Contact LIMIT 100' );
@@ -386,6 +417,12 @@ class Wordpress_Salesforce_Rest_Admin {
     		$this->settings_key,
     		'section_settings'
     	);
+    	add_settings_field(
+    		'salesforce_data_endpoint', 'Data Query URL Endpoint',
+    		array( &$this, 'field_salesforce_data_endpoint' ),
+    		$this->settings_key,
+    		'section_settings'
+    	);
 		/*add_settings_field(
 			$this->option_name . '_day',
 			__( 'Post is outdated after', 'outdated-notice' ),
@@ -431,6 +468,15 @@ class Wordpress_Salesforce_Rest_Admin {
 		if ( !defined( 'SALESFORCE_LOGIN_BASE_URL' ) ) {
 	    ?>
 	    <input type="text" name="<?php echo $this->settings_key; ?>[salesforce_base_url]" value="<?php echo $this->get_setting_value( $this->settings, 'salesforce_base_url' ); ?>" />
+	    <?php } else { ?>
+	    	<p><code>Defined in wp-config.php</code></p>
+		<?php }
+	}
+
+	function field_salesforce_data_endpoint() {
+		if ( !defined( 'SALESFORCE_DATA_ENDPOINT' ) ) {
+	    ?>
+	    <input type="text" name="<?php echo $this->settings_key; ?>[salesforce_data_endpoint]" value="<?php echo $this->get_setting_value( $this->settings, 'salesforce_data_endpoint' ); ?>" />
 	    <?php } else { ?>
 	    	<p><code>Defined in wp-config.php</code></p>
 		<?php }
