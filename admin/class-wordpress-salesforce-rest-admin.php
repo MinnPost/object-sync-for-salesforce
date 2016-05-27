@@ -332,34 +332,134 @@ class Wordpress_Salesforce_Rest_Admin {
 
 	}
 
+	/**
+	 * If the access token has expired, use the refresh token to get a new one and save it
+	 *
+	 * @since  1.0.0
+	 */
+	function refresh_salesforce() {
+
+		if ( !defined( 'SALESFORCE_CONSUMER_KEY' ) ) {
+			define( 'SALESFORCE_CONSUMER_KEY', $this->get_setting_value( $this->settings, 'salesforce_consumer_key' ) );
+		}
+		if ( !defined( 'SALESFORCE_CONSUMER_SECRET' ) ) {
+			define( 'SALESFORCE_CONSUMER_SECRET', $this->get_setting_value( $this->settings, 'salesforce_consumer_secret' ) );
+		}
+		if ( !defined( 'SALESFORCE_CALLBACK_URL' ) ) {
+			define( 'SALESFORCE_CALLBACK_URL', $this->get_setting_value( $this->settings, 'salesforce_callback_url' ) );
+		}
+		if ( !defined( 'SALESFORCE_LOGIN_BASE_URL' ) ) {
+			define( 'SALESFORCE_LOGIN_BASE_URL', $this->get_setting_value( $this->settings, 'salesforce_base_url' ) );
+		}
+
+		$refresh_token = $this->get_setting_value( $this->tokens, 'salesforce_refresh_token' );
+
+		$params = 'grant_type=refresh_token' .
+        '&client_id=' . SALESFORCE_CONSUMER_KEY .
+        '&client_secret=' . SALESFORCE_CONSUMER_SECRET .
+        '&refresh_token=' . urlencode( $refresh_token );
+    
+	    $token_url = SALESFORCE_LOGIN_BASE_URL . '/services/oauth2/token';
+	    
+	    $curl = curl_init( $token_url );
+
+	    curl_setopt( $curl, CURLOPT_HEADER, false );
+	    curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+
+	    curl_setopt( $curl, CURLOPT_POST, true );
+	    curl_setopt( $curl, CURLOPT_POSTFIELDS, $params );
+
+	    $json_response = curl_exec( $curl );
+	    $status = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+
+	    if ( $status != 200 ) {
+	    	echo 'token_url = ' . $token_url . '<br />';
+	    	echo 'params = ' . $params . '<br />';
+	        echo 'response = ' . $json_response . '<br /><br />';
+	        die( 'Error: call to token URL ' . $token_url . ' failed with status ' . $status . ', curl_errno() ' . curl_errno( $curl ) . ', curl_error() ' . curl_error( $curl ) . ', response ' . $json_response );
+	    }
+	    curl_close($curl);
+
+	    $token_array = json_decode($json_response, true);
+
+	    // add token data to session
+		$_SESSION['access_token'] = $token_array['access_token'];
+
+		// load the tokens from database, and then add these tokens to it
+		$salesforce_tokens = $this->tokens;
+		$salesforce_tokens['salesforce_token'] = $token_array['access_token'];
+		update_option( 'salesforce_tokens', $salesforce_tokens ); // update the database
+
+		//print_r($this->salesforce);
+		$this->salesforce['is_authorized'] = true;
+		$this->load_settings();
+		$this->salesforce['access_token'] = $this->get_setting_value( $this->tokens, 'salesforce_token' );
+
+	    return $this->salesforce;
+
+	}
+
+	/**
+	 * Display a demo query from Salesforce
+	 * If already logged in, get the tokens from WP options
+	 *
+	 * @since  1.0.0
+	 */
+	function salesforce_api_demo() {
+		$query_url = $this->salesforce['query_url'];
 		// Now append the actual query we want to run
 		$query_url .= '?q=' . urlencode( 'SELECT Name, Id from Contact LIMIT 100' );
 		$ch = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, $query_url );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
 		// We need to pass the access token in the header, *not* as a URL parameter
-		curl_setopt( $ch, CURLOPT_HTTPHEADER, array( 'Authorization: OAuth ' . $access_token ) );
+		curl_setopt( $ch, CURLOPT_HTTPHEADER, array( 'Authorization: OAuth ' . $this->salesforce['access_token'] ) );
 
 		// Make the API call, and then extract the information from the response
-		$query_request_body = curl_exec( $ch ) or die( "Query API call failed: '$query_url'" );
+		$query_request_body = curl_exec( $ch ) or die( 'Query API call failed: ' . $query_url );
 		$query_response_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-		if ( ( $query_response_code < 200 ) || ( $query_response_code >= 300 ) || empty( $query_request_body ) ) {
+		$query_request_data = json_decode( $query_request_body, true );
+
+		if ( $query_response_code === 401 && $query_request_data[0]['errorCode'] === 'INVALID_SESSION_ID' ) {
+			// token is expired. call salesforce to ask for another one with the refresh token
+			$refresh_token = $this->refresh_salesforce();
+
+			//echo 'this is new salesforce object';
+			//print_r($this->salesforce);
+
+
+			$query_url = $this->salesforce['query_url'];
+			// Now append the actual query we want to run
+			$query_url .= '?q=' . urlencode( 'SELECT Name, Id from Contact LIMIT 100' );
+			$ch = curl_init();
+			curl_setopt( $ch, CURLOPT_URL, $query_url );
+			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
+			// We need to pass the access token in the header, *not* as a URL parameter
+			curl_setopt( $ch, CURLOPT_HTTPHEADER, array( 'Authorization: OAuth ' . $this->salesforce['access_token'] ) );
+
+			// Make the API call, and then extract the information from the response
+			$query_request_body = curl_exec( $ch ) or die( 'Query API call failed: ' . $query_url );
+			$query_response_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+			$query_request_data = json_decode( $query_request_body, true );
+
+			//die( 'session expired ' . $query_request_data[0]['errorCode'] . print_r($query_request_data, true));
+		} else if ( ( $query_response_code < 200 ) || ( $query_response_code >= 300 ) || empty( $query_request_body ) ) {
 		    unset($_SESSION['access_token']);
 		    unset($_SESSION['instance_url']);
-		    die( "Query API call failed with $query_response_code: '$query_url' - '$query_request_body'" );
+		    die( 'Query API call failed with ' . $query_response_code . ': ' . $query_url . ' - ' . $query_request_body );
 		}
-		$query_request_data = json_decode( $query_request_body, true );
-		if ( empty( $query_request_data ) )
-		    die( "Couldn't decode '$query_request_data' as a JSON object" );
-		if ( !isset( $query_request_data['totalSize'] ) || !isset( $query_request_data['records'] ) )
-		    die( "Missing expected data from " . print_r( $query_request_data, true ) );
+		
+		if ( empty( $query_request_data ) ) {
+		    die( 'Couldn\'t decode ' . $query_request_data . ' as a JSON object' );
+		}
+		if ( !isset( $query_request_data['totalSize'] ) || !isset( $query_request_data['records'] ) ) {
+		    die( 'Missing expected data from ' . print_r( $query_request_data, true ) );
+		}
 
 		// Grab the information we're interested in
 		$total_size = $query_request_data['totalSize'];
 		$records = $query_request_data['records'];
-
-		// Now build a simple HTML page to display the results
-		include_once 'partials/wordpress-salesforce-rest-admin-salesforce.php';
+		return $records;
 	}
 
 	/**
