@@ -75,6 +75,7 @@ function salesforce_api_admin_render_form(){
  */
 function salesforce_api_admin_render_login( $consumer_key, $consumer_secret, $callback_url, $login_base_url ){
     try {
+        $callback = salesforce_api_admin_base_uri();
         $Token = salesforce_api_oauth_request_token( $consumer_key, $consumer_secret, $callback_url );
     }
     catch( Exception $Ex ){
@@ -115,7 +116,7 @@ function salesforce_api_admin_render_page() {
         // check whether we have any OAuth params
         extract( $conf );
         if( ! $consumer_key || ! $consumer_secret || ! $callback_url || ! $login_base_url){
-            throw new Exception( __('All config items still missing','salesforce-api') );
+            throw new Exception( __('Salesforce application not fully configured','salesforce-api') );
         }
 
         // else exchange access token if callback // request secret saved as option
@@ -159,6 +160,22 @@ function salesforce_api_admin_render_page() {
     // end admin page with options form and close wrapper
     salesforce_api_admin_render_form();
     salesforce_api_admin_render_footer();
+}
+
+
+
+/**
+ * Calculate base URL for admin OAuth callbacks
+ * @return string
+ */
+function salesforce_api_admin_base_uri(){
+    static $base_uri;
+    if( ! isset($base_uri) ){
+        $port = isset($_SERVER['HTTP_X_FORWARDED_PORT']) ? $_SERVER['HTTP_X_FORWARDED_PORT'] : $_SERVER['SERVER_PORT'];
+        $prot = '443' === $port ? 'https:' : 'http:';
+        $base_uri = $prot.'//'.$_SERVER['HTTP_HOST'].''.current( explode( '&', $_SERVER['REQUEST_URI'], 2 ) );
+    }
+    return $base_uri;
 }
 
 
