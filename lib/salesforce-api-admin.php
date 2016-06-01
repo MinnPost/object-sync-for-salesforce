@@ -160,7 +160,7 @@ function salesforce_api_admin_render_page() {
 
         // else we have auth - verify that tokens are all still valid
         else if ( salesforce_api_configured() === true) {
-            echo '<p>yes</p>';
+            salesforce_api_admin_render_header( __('Salesforce is authorized','salesforce-api'), 'success' );
         }
 
     }
