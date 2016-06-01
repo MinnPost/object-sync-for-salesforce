@@ -40,22 +40,38 @@ function salesforce_api_admin_render_form(){
     extract( _salesforce_api_config() );
     ?>
     <form action="<?php echo salesforce_api_admin_base_uri()?>" method="post">
-        <p>
-            <label for="salesforce-api--consumer-key"><?php echo __('Consumer Key','salesforce-api');?>:</label><br />
-            <input type="text" size="64" name="saf_salesforce[consumer_key]" id="salesforce-api--consumer-key" value="<?php echo esc_html($consumer_key)?>" />
-        </p>
-        <p>
-            <label for="salesforce-api--consumer-secret"><?php echo __('Consumer Secret','salesforce-api');?>:</label><br />
-            <input type="text" size="64" name="saf_salesforce[consumer_secret]" id="salesforce-api--consumer-secret" value="<?php echo esc_html($consumer_secret)?>" />
-        </p>
-        <p>
-            <label for="salesforce-api--callback-url"><?php echo __('Callback URL','salesforce-api');?>:</label><br />
-            <input type="text" size="64" name="saf_salesforce[callback_url]" id="salesforce-api--callback-url" value="<?php echo esc_html($callback_url)?>" />
-        </p>
-        <p>
-            <label for="salesforce-api--login-base-url"><?php echo __('Login Base URL','salesforce-api');?>:</label><br />
-            <input type="text" size="64" name="saf_salesforce[login_base_url]" id="salesforce-api--login-base-url" value="<?php echo esc_html($login_base_url)?>" />
-        </p>
+        <div>
+            <label for="salesforce-api--consumer-key"><?php echo __('Consumer Key','salesforce-api');?>:</label>
+            <?php if ( !defined( 'SALESFORCE_CONSUMER_KEY' ) ) { ?>
+                <input type="text" size="64" name="saf_salesforce[consumer_key]" id="salesforce-api--consumer-key" value="<?php echo esc_html($consumer_key)?>" />
+            <?php } else { ?>
+                <p><code>Defined in wp-config.php</code></p>
+            <?php } ?>
+        </div>
+        <div>
+            <label for="salesforce-api--consumer-secret"><?php echo __('Consumer Secret','salesforce-api');?>:</label>
+            <?php if ( !defined( 'SALESFORCE_CONSUMER_SECRET' ) ) { ?>
+                <input type="text" size="64" name="saf_salesforce[consumer_secret]" id="salesforce-api--consumer-secret" value="<?php echo esc_html($consumer_secret)?>" />
+            <?php } else { ?>
+                <p><code>Defined in wp-config.php</code></p>
+            <?php } ?>
+        </div>
+        <div>
+            <label for="salesforce-api--callback-url"><?php echo __('Callback URL','salesforce-api');?>:</label>
+            <?php if ( !defined( 'SALESFORCE_CALLBACK_URL' ) ) { ?>
+                <input type="text" size="64" name="saf_salesforce[callback_url]" id="salesforce-api--callback-url" value="<?php echo esc_html($callback_url)?>" />
+            <?php } else { ?>
+                <p><code>Defined in wp-config.php</code></p>
+            <?php } ?>
+        </div>
+        <div>
+            <label for="salesforce-api--login-base-url"><?php echo __('Login Base URL','salesforce-api');?>:</label>
+            <?php if ( !defined( 'SALESFORCE_LOGIN_BASE_URL' ) ) { ?>
+                <input type="text" size="64" name="saf_salesforce[login_base_url]" id="salesforce-api--login-base-url" value="<?php echo esc_html($login_base_url)?>" />
+            <?php } else { ?>
+                <p><code>Defined in wp-config.php</code></p>
+            <?php } ?>
+        </div>
         <p class="submit">
             <input type="submit" class="button-primary" value="<?php echo esc_html__('Save settings','salesforce-api')?>" />
         </p>
@@ -76,19 +92,21 @@ function salesforce_api_admin_render_form(){
 function salesforce_api_admin_render_login( $consumer_key, $consumer_secret, $callback_url, $login_base_url ){
     try {
         $callback = salesforce_api_admin_base_uri();
-        $Token = salesforce_api_oauth_request_token( $consumer_key, $consumer_secret, $callback_url );
+        //$token = salesforce_api_oauth_request_token( $consumer_key, $consumer_secret, $callback_url );
     }
     catch( Exception $Ex ){
         echo '<div class="error"><p><strong>Error:</strong> ',esc_html( $Ex->getMessage() ),'</p></div>';
         return;
     }
-    // Remember request token and render link to authorize
-    // we're storing permanently - not using session here, because WP provides no session API.
-    _salesforce_api_config( array( 'access_token' => $Token['access_token'], 'instance_url' => $Token['instance_url'], 'refresh_token' => $Token['refresh_token'] ) );
+
+    // todo: store this url in a better way somehow?
+    $href = $login_base_url .'/services/oauth2/authorize?response_type=code' . '&client_id=' . $consumer_key . '&redirect_uri=' . urlencode( $callback_url );
+
+
     echo '<p><a class="button-primary" href="',esc_html($href),'">'.esc_html__('Connect to Salesforce','salesforce-api').'</a></p>';
     echo '<p>&nbsp;</p>';
 }
- 
+
  
  
  
@@ -122,12 +140,12 @@ function salesforce_api_admin_render_page() {
         // else exchange access token if callback // request secret saved as option
 
         if( isset( $_GET['code'] ) )  {
-            $Token = salesforce_api_oauth_access_token( $consumer_key, $consumer_secret, $callback_url, $login_base_url, $_GET['code'] );
+            $token = salesforce_api_oauth_access_token( $consumer_key, $consumer_secret, $callback_url, $login_base_url, $_GET['code'] );
             // have access token, update config
             $conf = _salesforce_api_config( array(
-                'access_token'     => $Token['access_token'],
-                'instance_url'  => $Token['instance_url'],
-                'refresh_token'  => $Token['refresh_token'],
+                'access_token'   => $token->access_token,
+                'instance_url'   => $token->instance_url,
+                'refresh_token'  => $token->refresh_token,
 
             ) );
             extract( $conf );
@@ -141,9 +159,8 @@ function salesforce_api_admin_render_page() {
         }
 
         // else we have auth - verify that tokens are all still valid
-        else {
-            $me = salesforce_api_get('account/verify_credentials');
-            salesforce_api_admin_render_header( sprintf( __('Authenticated as @%s','salesforce-api'), $me['screen_name'] ), 'updated' );
+        else if ( salesforce_api_configured() === true) {
+            echo '<p>yes</p>';
         }
 
     }

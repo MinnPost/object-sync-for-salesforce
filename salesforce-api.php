@@ -94,7 +94,7 @@ function salesforce_api_basedir(){
 function salesforce_api_configured(){
     function_exists('_salesforce_api_config') or salesforce_api_include('core');
     extract( _salesforce_api_config() );
-    return $consumer_key && $consumer_secret && $callback_url && $login_base_url;
+    return $consumer_key && $consumer_secret && $callback_url && $login_base_url && $access_token && $instance_url;
 } 
 
 
@@ -119,12 +119,16 @@ function salesforce_api_client( $id = null ){
  * Contact Salesforce for an authorization code, which will be exchanged for an access token later.
  * @return SalesforceOAuthToken authorization code
  */
+// probably do not need this function at all
+
+/*
 function salesforce_api_oauth_authorization_code( $consumer_key, $consumer_secret, $oauth_callback = 'oob' ){
     $Client = salesforce_api_client('oauth');
     $Client->set_oauth( $consumer_key, $consumer_secret );     
     $params = $Client->oauth_exchange( SALESFORCE_OAUTH_AUTHORIZATION_CODE_URL, compact('oauth_callback') );
     return new SalesforceOAuthToken( $params['code'] );
 }
+*/
 
 
 
@@ -134,10 +138,20 @@ function salesforce_api_oauth_authorization_code( $consumer_key, $consumer_secre
  * Exchange authorization code for an access token after authentication/authorization by user
  * @return SalesforceOAuthToken Access token, instance url, and refresh token
  */
-function salesforce_api_oauth_access_token( $consumer_key, $consumer_secret, $request_key, $request_secret, $oauth_verifier ){
+function salesforce_api_oauth_access_token( $consumer_key, $consumer_secret, $callback_url, $login_base_url, $authorization_code ){
     $Client = salesforce_api_client('oauth');
-    $Client->set_oauth( $consumer_key, $consumer_secret, $request_key, $request_secret );     
-    $params = $Client->oauth_exchange( SALESFORCE_OAUTH_ACCESS_TOKEN_URL, compact('oauth_verifier') );
+    $Client->set_oauth( $consumer_key, $consumer_secret, $login_base_url, $authorization_code );
+
+    $url = $login_base_url . '/services/oauth2/token';
+    $args = array(
+        'code' => $authorization_code,
+        'grant_type' => 'authorization_code',
+        'client_id' => SALESFORCE_CONSUMER_KEY,
+        'client_secret' => SALESFORCE_CONSUMER_SECRET,
+        'redirect_uri' => SALESFORCE_CALLBACK_URL,
+    );
+
+    $params = $Client->oauth_exchange( $url, $args );
     return new SalesforceOAuthToken( $params['access_token'], $params['instance_url'], $params['refresh_token'] );
 }
 

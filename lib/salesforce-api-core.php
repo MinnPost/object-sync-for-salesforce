@@ -7,13 +7,14 @@
  
 
 //define('SALESFORCE_API_BASE', '' );
-
-define('SALESFORCE_OAUTH_AUTHORIZATION_CODE_URL', ''); // returns authorization code
+// probably do not need this at all
+//define('SALESFORCE_OAUTH_AUTHORIZATION_CODE_URL', ''); // returns authorization code
 //SALESFORCE_LOGIN_BASE_URL . '/services/oauth2/authorize?response_type=code' . '&client_id=' . SALESFORCE_CONSUMER_KEY . '&redirect_uri=' . urlencode( SALESFORCE_CALLBACK_URL );
 //$code = $_REQUEST['code'];
 
 
-define('SALESFORCE_OAUTH_ACCESS_TOKEN_URL', ''); // returns access tokens
+//define('SALESFORCE_OAUTH_ACCESS_TOKEN_URL', ''); // returns access tokens
+// probably do not need this
 
 /*
 SALESFORCE_LOGIN_BASE_URL . '/services/oauth2/token';
@@ -54,10 +55,10 @@ function _salesforce_api_config( array $update = array() ){
     static $conf;
     if( ! isset($conf) ){
         $conf = array (
-            'consumer_key'    => '',
-            'consumer_secret' => '',
-            'callback_url'    => '',
-            'login_base_url'  => '',
+            'consumer_key'    => defined('SALESFORCE_CONSUMER_KEY') ? SALESFORCE_CONSUMER_KEY : '',
+            'consumer_secret' => defined('SALESFORCE_CONSUMER_SECRET') ? SALESFORCE_CONSUMER_SECRET : '',
+            'callback_url'    => defined('SALESFORCE_CALLBACK_URL') ? SALESFORCE_CALLBACK_URL : '',
+            'login_base_url'  => defined('SALESFORCE_LOGIN_BASE_URL') ? SALESFORCE_LOGIN_BASE_URL : '',
             'data_endpoint'   => '',
             'access_token'    => '',
             'instance_url'    => '',
@@ -176,10 +177,10 @@ class SalesforceApiClient {
         $Client = new SalesforceApiClient;
         extract( _salesforce_api_config() );
         if( $default ){
-            if( ! $consumer_key || ! $consumer_secret || ! $access_key || ! $access_secret ){
+            if( ! $consumer_key || ! $consumer_secret || ! $callback_url || ! $login_base_url ){
                 trigger_error( __('Salesforce application not fully configured','salesforce-api') );
             }
-            $Client->set_oauth( $consumer_key, $consumer_secret, $access_key, $access_secret ); 
+            $Client->set_oauth( $consumer_key, $consumer_secret, $callback_url, $login_base_url );
         }       
         else if( $consumer_key && $consumer_secret ){
             $Client->set_oauth( $consumer_key, $consumer_secret );
@@ -237,16 +238,16 @@ class SalesforceApiClient {
      * Set currently logged in user's OAuth access token
      * @param string consumer api key
      * @param string consumer secret
-     * @param string access token
-     * @param string access token secret
+     * @param string login url
      * @return SalesforceApiClient
      */
-    public function set_oauth( $consumer_key, $consumer_secret, $access_key = '', $access_secret = '' ){
+    //public function set_oauth( $consumer_key, $consumer_secret, $access_token = '', $instance_url = '', $refresh_token = '' ){
+    public function set_oauth( $consumer_key, $consumer_secret, $login_base_url = '', $authorization_code = '' ){
         $this->deauthorize();
         $this->Consumer = new SalesforceOAuthToken( $consumer_key, $consumer_secret );
-        if( $access_key && $access_secret ){
-            $this->AccessToken = new SalesforceOAuthToken( $access_key, $access_secret );
-        }
+        /*if( $instance_url && $refresh_token ){
+            $this->AccessToken = new SalesforceOAuthToken( $access_token, $instance_url, $refresh_token );
+        }*/
         return $this;
     }
     
@@ -367,30 +368,48 @@ class SalesforceApiClient {
      * Perform an OAuth request - these differ somewhat from regular API calls
      * @internal
      */
-    public function oauth_exchange( $endpoint, array $args ){
+    public function oauth_exchange( $url, array $args ){
         // build a post request and authenticate via OAuth header
         $params = new SalesforceOAuthParams( $args );
-        $params->set_consumer( $this->Consumer );
-        if( $this->AccessToken ){
-            $params->set_token( $this->AccessToken );
-        }
-        $params->sign_hmac( 'POST', $endpoint );
-        $conf = array (
+        //$params->set_consumer( $this->Consumer );
+        //if( $this->AccessToken ){
+        //    $params->set_token( $this->AccessToken );
+        //}
+        //$params->sign_hmac( 'POST', $url );
+/*        $conf = array (
             'method' => 'POST',
             'redirection' => 0,
             'headers' => array( 'Authorization' => $params->oauth_header() ),
+        );*/
+        //echo 'header is ' . $params->oauth_header();
+
+
+        $params = array(
+            'method' => 'POST',
+            'timeout' => 45,
+            'redirection' => 5,
+            'httpversion' => '1.0',
+            'blocking' => true,
+            'headers' => array(),
+            'body' => $args,
+            'cookies' => array()
         );
-        $http = self::http_request( $endpoint, $conf );
+
+
+        $http = self::http_request( $url, $params );
         $body = trim( $http['body'] );
         $stat = $http['response']['code'];
         if( 200 !== $stat ){
             throw new SalesforceApiException( $body, -1, $stat );
         }
-        parse_str( $body, $params );
-        if( ! is_array($params) || ! isset($params['oauth_token']) || ! isset($params['oauth_token_secret']) ){
+
+        $result = json_decode( $body, true );
+
+        if( ! is_array($result) || ! isset($result['access_token']) || ! isset($result['instance_url']) || ! isset($result['refresh_token']) ){
             throw new SalesforceApiException( __('Malformed response from Salesforce','salesforce-api'), -1, $stat );
         }
-        return $params;   
+
+        return $result;   
     }
 
 
@@ -399,8 +418,8 @@ class SalesforceApiClient {
      * Abstract Wordpress HTTP call with error handling
      * @return array response from wordpress functions
      */
-    public static function http_request( $endpoint, array $conf ){
-        $http = wp_remote_request( $endpoint, $conf );
+    public static function http_request( $url, array $conf ){
+        $http = wp_remote_request( $url, $conf );
         if( $http instanceof WP_Error ){
             foreach( $http->get_error_messages() as $message ){
                 throw new SalesforceApiException( $message, -1 );
@@ -432,24 +451,22 @@ class SalesforceApiClient {
 
 
 /**
- * Simple token class that holds key and secret
+ * Simple token class that holds access token, instance url, refresh token
  * @internal
  */
 class SalesforceOAuthToken {
 
-    public $key;
-    public $secret;
+    public $access_token;
+    public $instance_url;
+    public $refresh_token;
 
-    public function __construct( $key, $secret = '' ){
-        if( ! $key ){
-           throw new Exception( __('Invalid OAuth token','salesforce-api').' - '.__('Key required even if secret is empty','salesforce-api') );
+    public function __construct( $access_token, $instance_url, $refresh_token = '' ){
+        if( ! $access_token || ! $instance_url ){
+           throw new Exception( __('Invalid OAuth token','salesforce-api').' - '.__('access token and instance url required even if refresh token is empty','salesforce-api') );
         }
-        $this->key = $key;
-        $this->secret = $secret;
-    }
-    
-    public function get_authorization_url(){
-        return SALESFORCE_OAUTH_AUTHORIZE_URL.'?oauth_token='.rawurlencode($this->key);
+        $this->access_token = $access_token;
+        $this->instance_url = $instance_url;
+        $this->refresh_token = $refresh_token;
     }
 
 }
