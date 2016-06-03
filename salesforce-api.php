@@ -6,6 +6,10 @@
 
 
 
+// If this file is called directly, nope.
+if ( ! defined( 'WPINC' ) ) {
+    die;
+}
 
 /**
  * Call a Salesforce API GET method.

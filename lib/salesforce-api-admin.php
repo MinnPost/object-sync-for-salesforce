@@ -4,33 +4,7 @@
  * Configures and authenticates with the Salesforce API.
  * @author Jonathan Stegall <@jonathanstegall>
  */
- 
- 
 
-/**
- * Open admin page with header and message
- */
-
-/*function salesforce_api_admin_render_header( $subheader, $css = '' ){
-    ?>
-     <div class="wrap">
-        <h2><?php echo esc_html__('Salesforce API Authentication Settings','salesforce-api')?></h2>
-        <div class="<?php echo $css?>">
-            <h3><?php echo esc_html($subheader)?></h3>
-        </div>
-    <?php
-}*/
-
-
-
-/**
- * Close admin page
- */
-/*function salesforce_api_admin_render_footer(){
-    ?>
-    </div>
-    <?php
-}*/
 
 function register_salesforce_settings() {
     $salesforce_api_settings = _salesforce_api_config();
@@ -120,21 +94,10 @@ function salesforce_api_admin_render_login( $consumer_key, $consumer_secret, $ca
     echo '<p>&nbsp;</p>';
 }
 
- 
- 
- 
-/**
- * Render full admin page
- */ 
-/*
-function salesforce_api_admin_render_page() {
-    if ( ! current_user_can('manage_options') ){
-        salesforce_api_admin_render_header( __("You don't have permission to manage Salesforce API settings",'salesforce-api'),'error');
-        salesforce_api_admin_render_footer();
-        return;
-    }
-    try {
 
+
+function salesforce_authenticate() {
+    try {
         // update applicaion settings if posted
         if( isset($_POST['saf_salesforce']) && is_array( $update = $_POST['saf_salesforce'] ) ){
             $conf = _salesforce_api_config( $update );
@@ -168,31 +131,41 @@ function salesforce_api_admin_render_page() {
 
         // else administrator needs to connect / authenticate with Salesforce.
         if( ! $access_token || ! $instance_url ){
-            salesforce_api_admin_render_header( __('Plugin not yet authenticated with Salesforce','salesforce-api'), 'error' );
+            // message: plugin not yet authenticated with salesforce
+            $result['message'] = 'Plugin not yet authenticated with Salesforce.';
+            $result['style'] = 'error';
             salesforce_api_admin_render_login( $consumer_key, $consumer_secret, $callback_url, $login_base_url );
         }
 
         // else we have auth - verify that tokens are all still valid
         else if ( salesforce_api_configured() === true) {
-            salesforce_api_admin_render_header( __('Salesforce is authorized','salesforce-api'), 'success' );
+            // message: salesforce is authorized
+            $result['message'] = 'Salesforce is authorized.';
+            $result['style'] = 'success';
         }
 
     }
     catch( SalesforceApiException $Ex ){
-        salesforce_api_admin_render_header( $Ex->getStatus().': Error '.$Ex->getCode().', '.$Ex->getMessage(), 'error' );
+        // message: $Ex->getStatus() . ': Error ' . $Ex->getCode() . ', ' . $Ex->getMessage(), 'error'
+        $result['message'] = $Ex->getStatus() . ': Error ' . $Ex->getCode() . ', ' . $Ex->getMessage();
+        $result['style'] = 'error';
         if( 401 === $Ex->getStatus() ){
             salesforce_api_admin_render_login( $consumer_key, $consumer_secret, $callback_url, $login_base_url );
         }
     }
     catch( Exception $Ex ){
-        salesforce_api_admin_render_header( $Ex->getMessage(), 'error' );
+        // message: $Ex->getMessage
+        $result['message'] = $Ex->getMessage;
+        $result['style'] = 'error';
     }
-    
-    // end admin page with options form and close wrapper
-    salesforce_api_admin_api_settings_form();
-    salesforce_api_admin_render_footer();
+    return $result;
 }
-*/
+
+
+function salesforce_demo() {
+
+}
+
 
 
 /**
@@ -208,23 +181,6 @@ function salesforce_api_admin_base_uri(){
     }
     return $base_uri;
 }
-
-
-
-
-/**
- * Admin menu registration callback
- */
-/*function salesforce_api_admin_menu() {
-    $title = __('Salesforce API','salesforce-api');
-    add_options_page( $title, $title, 'manage_options', 'salesforce-api-admin', 'salesforce_api_admin_render_page');
-}*/
-
-
-
-// register our admin page with the menu, and we're done.
-//add_action('admin_menu', 'salesforce_api_admin_menu');
-
 
 
 add_action('admin_init', 'register_salesforce_settings');

@@ -13,6 +13,8 @@
 
 ## Example plugin
 
+Pending
+
 ## Installation
 
 Depending on the WordPress architecture, this library can be used in one of two ways:
@@ -50,4 +52,41 @@ Store this repository's contents in each plugin that needs to access the Salesfo
 
 ## Authentication
 
+Once the plugin is installed and loaded, you can link it with a Salesforce account as follows:
+
+- Create an App in Salesforce (find instructions for this)
+- Get the Consumer key and consumer secret
+- Log into WordPress admin and go to Settings > Salesforce API
+- Enter the consumer key and secret and click 'Save settings'
+- Click the 'Connect to Salesforce' button and follow the prompts.
+
 ## Salesforce Client
+
+To check whether the user has authenticated the plugin and configured the oAuth tokens you can use the following function.
+
+#### salesforce_api_configured
+
+`bool salesforce_api_configured()` Returns True if the user has authenticated the plugin and configured the necessary settings.
+
+The following functions are available from anywhere as soon as the plugin is authenticated. They all operate as the Salesforce account you connected in your admin area.
+
+#### salesforce_api_get
+`array salesforce_api_get ( string $path [, array $args ]  )`  
+GETs data from the Salesforce API, returning the raw unserialized data.
+
+`$path` is any Salesforce API method, e.g. `'users/show'` or `'statuses/user_timeline'`  
+`$args` is an associative array of parameters, e.g. `array('screen_name'=>'timwhitlock')`
+
+Note that neither the path nor the arguments are validated.
+
+#### salesforce_api_post
+`array salesforce_api_post ( string $path [, array $args ]  )`  
+As above, but POSTs data to the Salesforce API.
+
+#### salesforce_api_enable_cache
+`SalesforceApiClient salesforce_api_enable_cache( int $ttl )`  
+Enable caching of Salesforce response data for `$ttl` seconds.
+
+#### salesforce_api_disable_cache
+`SalesforceApiClient salesforce_api_disable_cache( )`  
+Disables caching of responses. Caching is disabled by default.

@@ -52,13 +52,13 @@ define('SALESFORCE_CACHE_APC', (bool) ini_get('apc.enabled') );
  * @param array any new options to update that are not controlled by register_setting
  */
 function _salesforce_api_config( array $update = array() ){
+    static $conf;
     static $salesforce_settings;
     if( ! isset($salesforce_settings) ){
         $page = 'settings';
         $input_callback = 'display_input_field';
         $section = 'settings';
         add_settings_section( $page, 'Settings', null, $page );
-        
         /*$conf = array (
             'consumer_key'    => defined('SALESFORCE_CONSUMER_KEY') ? SALESFORCE_CONSUMER_KEY : '',
             'consumer_secret' => defined('SALESFORCE_CONSUMER_SECRET') ? SALESFORCE_CONSUMER_SECRET : '',
@@ -156,8 +156,6 @@ function _salesforce_api_config( array $update = array() ){
             add_settings_field( $id, $title, $callback, $page, $section, $args );
             register_setting( $section, $id );
         }
-
-        $conf = array();
 
         foreach( $salesforce_responses as $key => $val ){
             $conf[$key] = get_option('salesforce_api_' . $key) or
