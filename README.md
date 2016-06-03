@@ -3,6 +3,8 @@
 
  This library is derived from [Tim Whitlock](https://github.com/timwhitlock)'s [Twitter API WordPress Library](https://github.com/timwhitlock/wp-twitter-api).
 
+ ** This library is not yet ready for use. Still needs to bring in actual Salesforce methods, other than just authenticating. **
+
 ## Features
 
 - Uses the Salesforce REST API
