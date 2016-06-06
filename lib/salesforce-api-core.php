@@ -49,17 +49,12 @@ define('SALESFORCE_CACHE_APC', (bool) ini_get('apc.enabled') );
  
 /**
  * Get config options from DB
- * @param array any new options to update that are not controlled by register_setting
+ * @param array any new options to update
  */
 function _salesforce_api_config( array $update = array() ){
     static $conf;
-    static $salesforce_settings;
-    if( ! isset($salesforce_settings) ){
-        $page = 'settings';
-        $input_callback = 'display_input_field';
-        $section = 'settings';
-        add_settings_section( $page, 'Settings', null, $page );
-        /*$conf = array (
+    if( ! isset($conf) ){
+        $conf = array (
             'consumer_key'    => defined('SALESFORCE_CONSUMER_KEY') ? SALESFORCE_CONSUMER_KEY : '',
             'consumer_secret' => defined('SALESFORCE_CONSUMER_SECRET') ? SALESFORCE_CONSUMER_SECRET : '',
             'callback_url'    => defined('SALESFORCE_CALLBACK_URL') ? SALESFORCE_CALLBACK_URL : '',
@@ -68,131 +63,21 @@ function _salesforce_api_config( array $update = array() ){
             'access_token'    => '',
             'instance_url'    => '',
             'refresh_token'   => '',
-            'api_version'     => defined('SALESFORCE_API_VERSION') ? SALESFORCE_API_VERSION : '',
-        );*/
-
-        $salesforce_responses = array (
-            'data_endpoint'   => '',
-            'access_token'    => '',
-            'instance_url'    => '',
-            'refresh_token'   => ''
         );
-
-        $salesforce_settings = array(
-            'consumer_key' => array(
-                'title' => 'Consumer Key',
-                'callback' => $input_callback,
-                'page' => $page,
-                'section' => $section,
-                'args' => array(
-                    'type' => 'text',
-                    'desc' => '',
-                    'constant' => 'SALESFORCE_CONSUMER_KEY'
-                ),
-                
-            ),
-            'consumer_secret' => array(
-                'title' => 'Consumer Secret',
-                'callback' => $input_callback,
-                'page' => $page,
-                'section' => $section,
-                'args' => array(
-                    'type' => 'text',
-                    'desc' => '',
-                    'constant' => 'SALESFORCE_CONSUMER_SECRET'
-                ),
-            ),
-            'callback_url' => array(
-                'title' => 'Callback URL',
-                'callback' => $input_callback,
-                'page' => $page,
-                'section' => $section,
-                'args' => array(
-                    'type' => 'url',
-                    'desc' => '',
-                    'constant' => 'SALESFORCE_CALLBACK_URL'
-                ),
-            ),
-            'login_base_url' => array(
-                'title' => 'Login Base URL',
-                'callback' => $input_callback,
-                'page' => $page,
-                'section' => $section,
-                'args' => array(
-                    'type' => 'url',
-                    'desc' => '',
-                    'constant' => 'SALESFORCE_LOGIN_BASE_URL'
-                ),
-            ),
-            'api_version' => array(
-                'title' => 'Salesforce API Version',
-                'callback' => $input_callback,
-                'page' => $page,
-                'section' => $section,
-                'args' => array(
-                    'type' => 'text',
-                    'desc' => '',
-                    'constant' => 'SALESFORCE_API_VERSION'
-                ),
-            ),
-        );
-
-        foreach( $salesforce_settings as $key => $attributes ) {
-            $id = 'salesforce_api_' . $key;
-            $name = 'salesforce_api_' . $key;
-            $title = $attributes['title'];
-            $callback = $attributes['callback'];
-            $page = $attributes['page'];
-            $section = $attributes['section'];
-            $args = array_merge(
-                $attributes['args'],
-                array(
-                    'title' => $title,
-                    'id' => $id,
-                    'label_for' => $id,
-                    'name' => $name
-                )
-            );
-            add_settings_field( $id, $title, $callback, $page, $section, $args );
-            register_setting( $section, $id );
-        }
-
-        foreach( $salesforce_responses as $key => $val ){
-            $conf[$key] = get_option('salesforce_api_' . $key) or
+        foreach( $conf as $key => $val ){
+            $conf[$key] = get_option('salesforce_api_'.$key) or
             $conf[$key] = $val;
         }
-        foreach( $salesforce_settings as $key => $val ){
-            $conf[$key] = get_option('salesforce_api_' . $key, '');
-        }
-
     }
     foreach( $update as $key => $val ){
-        if( isset( $salesforce_responses[$key] ) ){
-            update_option( 'salesforce_api_' . $key, $val );
-            $salesforce_responses[$key] = $val;
+        if( isset($conf[$key]) ){
+            update_option( 'salesforce_api_'.$key, $val );
             $conf[$key] = $val;
         }
     }
     return $conf;
 }
 
-
-function display_input_field( $args ) {
-    $type   = $args['type'];
-    $id     = $args['label_for'];
-    $name   = $args['name'];
-    $desc   = $args['desc'];
-    if ( !defined( $args['constant'] ) ) {
-        $value  = esc_attr( get_option( $id, '' ) );
-        echo '<input type="' . $type. '" value="' . $value . '" name="' . $name . '" id="' . $id . '"
-        class="regular-text code" />';
-        if ( $desc != '' ) {
-            echo '<p class="description">' . $desc . '</p>';
-        }
-    } else {
-        echo '<p><code>Defined in wp-config.php</code></p>';
-    }
-}
 
 
 
