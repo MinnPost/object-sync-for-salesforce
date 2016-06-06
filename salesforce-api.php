@@ -49,7 +49,7 @@ function salesforce_api_post( $path, array $args = array() ){
  * @return SalesforceApiClient
  */
 function salesforce_api_enable_cache( $ttl ){
-    $Client = twitter_api_client();
+    $Client = salesforce_api_client();
     return $Client->enable_cache( $ttl );
 }
 
