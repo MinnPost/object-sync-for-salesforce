@@ -120,12 +120,6 @@ class Wordpress_Salesforce_Admin {
 	}
 
 	public function create_admin_menu() {
-		//echo $this->loggedin['callback_url'];
-		//print_r($this->loggedin);
-		if ( $this->loggedin['loggedin'] === 1 && isset( $_GET['code'] ) ) {
-			echo 'test';
-	    	//wp_redirect( $this->loggedin['credentials']['callback_url'], 302 );
-	    }
 	    $title = __('Salesforce API','salesforce-api');
 	    add_options_page( $title, $title, 'manage_options', 'salesforce-api-admin', array( &$this, 'show_admin_page', ) );
 	}
@@ -242,7 +236,8 @@ class Wordpress_Salesforce_Admin {
         update_option( 'salesforce_api_instance_url', $result['instance_url'] );
         update_option( 'salesforce_api_refresh_token', $result['refresh_token'] );
 
-        //header( 'Location: ' . SALESFORCE_CALLBACK_URL );
+        echo "<script>window.location = '$callback_url';</script>";
+        // we have to use javascript here because the template_redirect WP hook does not run in wp-admin
 
         return $result;
 
