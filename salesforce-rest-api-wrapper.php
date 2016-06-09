@@ -235,44 +235,27 @@ class Salesforce_REST_API {
 		$status = $result['status'];
 		$response = $result['response'];
 
-		if ( $status !== 200 ) {
+		// handle error if the auth token has expired
+		if ( ( $status === 401 && $response[0]['errorCode'] === 'INVALID_SESSION_ID' ) || ( isset( $response['error'] ) && $status === 400 && $response['error'] === 'invalid_grant' ) ) {
 
-			if ( ( $status === 401 && $response[0]['errorCode'] === 'INVALID_SESSION_ID' ) || ( isset( $response['error'] ) && $status === 400 && $response['error'] === 'invalid_grant' ) ) {
+			$credentials = array(
+				'consumer_key' => $this->loggedin['credentials']['consumer_key'],
+				'consumer_secret' => $this->loggedin['credentials']['consumer_key'],
+				'callback_url' => $this->loggedin['credentials']['callback_url'],
+				'login_base_url' => $this->loggedin['credentials']['login_base_url'],
+				'token_url_path' => $this->loggedin['credentials']['token_url_path'],
+			);
+			$credentials = $this->loggedin['credentials'];
+			$refresh_token = $this->authenticate( $credentials['consumer_key'], $credentials['consumer_secret'], $credentials['callback_url'], $credentials['login_base_url'], $credentials['token_url_path'], '', $this->refresh_token );
+			
+			// rerun the same function we ran before the token expired
+			$redo = $this->httprequest( $url, $headers, $method, $args );
 
-				$credentials = array(
-					'consumer_key' => $this->loggedin['credentials']['consumer_key'],
-					'consumer_secret' => $this->loggedin['credentials']['consumer_key'],
-					'callback_url' => $this->loggedin['credentials']['callback_url'],
-					'login_base_url' => $this->loggedin['credentials']['login_base_url'],
-					'token_url_path' => $this->loggedin['credentials']['token_url_path'],
-				);
-				$credentials = $this->loggedin['credentials'];
-				$refresh_token = $this->authenticate( $credentials['consumer_key'], $credentials['consumer_secret'], $credentials['callback_url'], $credentials['login_base_url'], $credentials['token_url_path'], '', $this->refresh_token );
-				
-				// rerun the same function we ran before the token expired
-				$redo = $this->httprequest( $url, $headers, $method, $args );
+			$json_response = $redo['json_response'];
+			$status = $redo['status'];
+			$response = $redo['response'];
 
-				$json_response = $redo['json_response'];
-				$status = $redo['status'];
-				$response = $redo['response'];
-
-			} else {
-				// call error handler
-				echo 'query had an error and it was not refresh token.';
-			}
-
-			// rerun the error handler if we had to refresh the token
-			if ( isset( $redo ) && $status !== 200 ) {
-				// call error handler
-				echo 'query refreshed the token and then it had an error.';
-			}
-
-
-	    	//echo 'token_url = ' . $token_url . '<br />';
-	    	//echo 'params = ' . $params . '<br />';
-	        //echo 'response = ' . $json_response . '<br /><br />';
-	        //die( 'Error: call to token URL ' . $url . ' failed with status ' . $status . ', curl_errno() ' . curl_errno( $curl ) . ', curl_error() ' . curl_error( $curl ) . ', response ' . $json_response );
-	    }
+		}
 
 		// pass all the info for reuse
 		$result = array( 'url' => $url, 'body' => $json_response, 'code' => $status, 'data' => $response );
@@ -328,11 +311,20 @@ class Salesforce_REST_API {
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $args );
 		}
 
-		$json_response = curl_exec( $curl ) or die( 'Query API call failed: ' . $url );
+		$json_response = curl_exec( $curl );
 		$status = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
 		$response = json_decode( $json_response, true );
 
-		curl_close($curl);
+		if ( $status !== 200 ) {
+			$curl_error = curl_error( $curl );
+			if ( $curl_error !== '' ) {
+				throw new SalesforceAPIException( $curl_error );
+			} else if ( $response[0]['errorCode'] !== '' ) {
+				throw new SalesforceAPIException( $response[0]['message'], -1, $status );
+			}
+		}
+
+		curl_close( $curl );
 
 		return array( 'json_response' => $json_response, 'status' => $status, 'response' => $response );
 
@@ -364,12 +356,11 @@ class Wordpress_Salesforce_Admin {
 
 	function demo( $salesforce_rest_api ) {
 		echo '<h3>Salesforce Demo</h3>';
-
-		//echo 'url is ' . $salesforce_rest_api->instance_url;
 		$result = $salesforce_rest_api->searchSOQL('SELECT Name, Id from Contact LIMIT 100');
-		print_r($result);
-
-		//$result = $salesforce_rest_api->request( $url, $require_authenticated = true, $args = [], $method = self::METH_GET, $headers = [] );
+		
+		// format this array into html so users can see the contacts
+		//print_r($result);
+		echo 'this is a successful result';
 	}
 
 	/**
@@ -418,14 +409,13 @@ class Wordpress_Salesforce_Admin {
 	    	}
 
 	    }
-	    catch( SalesforceApiException $Ex ){
-	        salesforce_api_admin_render_header( $Ex->getStatus().': Error '.$Ex->getCode().', '.$Ex->getMessage(), 'error' );
-	        if( 401 === $Ex->getStatus() ){
-	            echo '<p><a class="button-primary" href="' . $loggedin['link'] . '">' . esc_html__('Connect to Salesforce','salesforce-api') . '</a></p>';
-	        }
+	    catch( SalesforceApiException $Ex ) {
+	        //salesforce_api_admin_render_header( $Ex->getStatus().': Error '.$Ex->getCode().', '.$Ex->getMessage(), 'error' );
+	        //print_r($Ex);
+	        echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
 	    }
-	    catch( Exception $Ex ){
-	        salesforce_api_admin_render_header( $Ex->getMessage(), 'error' );
+	    catch( Exception $Ex ) {
+	    	echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
 	    }
 
 	    echo '</div>';
@@ -462,4 +452,23 @@ class Wordpress_Salesforce_Admin {
     	}
     }
 
+}
+
+class SalesforceAPIException extends Exception {
+    /**
+     * @var null
+     */
+    public $curlInfo = null;
+    /**
+     * Constructor
+     *
+     * @param string $message
+     * @param null   $curlInfo
+     * @param int    $code
+     * @param Exception $previous
+     */
+    public function __construct( $message = '', $curlInfo = null, $code = 0, Exception $previous = null ) {
+        $this->curlInfo = $curlInfo;
+        parent::__construct( $message, $code, $previous );
+    }
 }
