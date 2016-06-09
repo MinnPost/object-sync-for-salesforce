@@ -39,9 +39,9 @@ In your plugin file, use this code:
 
 ```php
 if ( defined( 'SALESFORCE_API_PATH' ) ) {
-    require_once SALESFORCE_API_PATH . 'salesforce-api.php';
+    require_once SALESFORCE_API_PATH . 'salesforce-rest-api-wrapper.php';
 } else if( ! function_exists('salesforce_api_get') ){
-    require_once dirname(__FILE__) . '/api/salesforce-api.php';
+    require_once dirname(__FILE__) . '/api/salesforce-rest-api-wrapper.php';
 }
 ```
 
