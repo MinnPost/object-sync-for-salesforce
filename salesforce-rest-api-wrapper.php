@@ -373,24 +373,41 @@ class Wordpress_Salesforce_Admin {
 
 	protected $loggedin;
 
+	/**
+     * Create default WordPress admin functionality for Salesforce
+     *
+     * @param array $loggedin
+     * @param array $parent_settings
+     * @throws \Exception
+     */
 	public function __construct( $loggedin, $parent_settings = array() ) {
-
 		$this->loggedin = $loggedin;
 		$this->parent_settings = $parent_settings;
-
 		add_action('admin_init', array( &$this, 'salesforce_settings_form' ) );
-
 	}
 
+	/**
+     * Create WordPress admin options page
+     *
+     */
 	public function create_admin_menu() {
 	    $title = __('Salesforce API','salesforce-api');
 	    add_options_page( $title, $title, 'manage_options', 'salesforce-api-admin', array( &$this, 'show_admin_page', ) );
 	}
 
+	/**
+     * Create default WordPress admin settings form
+     *
+     */
 	function salesforce_settings_form() {
 	    //$salesforce_api_settings = '';
 	}
 
+	/**
+     * Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it
+     * todo: figure out if we should create some template files for this
+     *
+     */
 	function demo( $salesforce_rest_api ) {
 		echo '<h3>Salesforce Demo</h3>';
 		$result = $salesforce_rest_api->searchSOQL('SELECT Name, Id from Contact LIMIT 100');
@@ -406,7 +423,7 @@ class Wordpress_Salesforce_Admin {
 	}
 
 	/**
-	 * Render full admin page
+	 * Render full admin pages in WordPress
 	 */ 
 	function show_admin_page() {
 		$salesforce_rest_api = new Salesforce_REST_API();
@@ -468,7 +485,11 @@ class Wordpress_Salesforce_Admin {
 	}
 
 	
-
+	/**
+	 * Deauthorize WordPress from Salesforce.
+	 * This deletes the tokens from the database; it does not currently do anything in Salesforce
+	 * todo: maybe delete the authorized stuff inside Salesforce?
+	 */ 
 	private function logout() {
     	$this->access_token = delete_option( 'salesforce_api_access_token' );
     	$this->instance_url = delete_option( 'salesforce_api_instance_url' );
@@ -476,6 +497,9 @@ class Wordpress_Salesforce_Admin {
     	return 'You have been logged out. You can use use the connect button to log in again.';
     }
 
+    /**
+	 * Render tabs for settings pages in admin
+	 */ 
     private function tabs( $tabs, $tab = '' ) {
 
     	$current_tab = $tab;
