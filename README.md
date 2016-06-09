@@ -12,6 +12,7 @@
 - Provides a common Salesforce API client that any plugin can use
 - Uses WordPress utilities where possible
 - todo: put back some caching
+- todo: put back the WP settings form/settings API stuff
 
 ## Example plugin
 
@@ -62,11 +63,12 @@ Store this repository's contents in each plugin that needs to access the Salesfo
 
 Once the plugin is installed and loaded, you can link it with a Salesforce account as follows:
 
-- Create an App in Salesforce (todo: find instructions for this)
-- Get the Consumer key and consumer secret
-- Log into WordPress admin and go to Settings > Salesforce API
-- Enter the consumer key and secret and click 'Save settings'
-- On the Authorize tab, click the 'Connect to Salesforce' button and follow the prompts.
+1. Create an App in Salesforce. Salesforce provides [some instructions](https://developer.salesforce.com/page/Getting_Started_with_the_Force.com_REST_API?language=en#Setup) for this (ignore the Java).
+2. Salesforce also has [a tutorial](http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php) about basic API interactions with PHP that may be helpful alongside the first.
+3. Get the Consumer key and consumer secret (the article in step 1 shows where these can be found).
+4. Log into the WordPress admin and go to Settings > Salesforce API.
+5. On the Settings tab, fill out the fields and click 'Save settings'.
+6. On the Authorize tab, click the 'Connect to Salesforce' button and follow the prompts.
 
 ## Salesforce Client
 
