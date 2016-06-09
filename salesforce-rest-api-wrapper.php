@@ -68,7 +68,6 @@ class Salesforce_REST_API {
      * Create a sf client. Optionally can use an array of parent plugin settings
      *
      * @param array $parent_settings
-     * @param \GuzzleHttp\Client    $guzzleClient
      * @throws \Exception
      */
     public function __construct( $parent_settings = array() ) {
@@ -77,6 +76,14 @@ class Salesforce_REST_API {
         //$this->login_credentials = $this->get_login_credentials();
     }
 
+    /**
+     * load the admin class
+     * also creates admin menu, unless the plugin that calls this library has indicated that it has its own menu
+     *
+     * @param array $login_credentials
+     * @param array $parent_settings
+     * @throws \Exception
+     */
     private function load_admin( $login_credentials, $parent_settings ) {
     	$admin = new Wordpress_Salesforce_Admin( $login_credentials );
     	if ( !isset( $parent_settings['has_menu'] ) || $parent_settings['has_menu'] !== true ) {
@@ -84,6 +91,13 @@ class Salesforce_REST_API {
     	}
     }
 
+    /**
+     * Get the logged in user
+     * todo: need to investigate how safe this is, and also if the naming makes sense
+     *
+     * @return array $result
+     * @throws \Exception
+     */
     public function loggedin() {
     	$authorized = $this->get_authorized();
     	$login_credentials = $this->get_login_credentials();
@@ -105,11 +119,10 @@ class Salesforce_REST_API {
     	return $result;
     }
 
-    public function refresh_token() {
-    	$authorized = $this->get_authorized();
-    	$login_credentials = $this->get_login_credentials();
-    }
-
+    /**
+     * Get the tokens and url info for the base user
+     * todo: need to investigate how safe this is, and also if the naming makes sense
+     */
     private function get_authorized() {
     	$this->access_token = get_option( 'salesforce_api_access_token', '' );
     	$this->instance_url = get_option( 'salesforce_api_instance_url', '' );
@@ -117,6 +130,14 @@ class Salesforce_REST_API {
     	$this->base_url = $this->instance_url . '/services/data/v' . SALESFORCE_API_VERSION . '/';
     }
 
+    /**
+     * Get the pre-login Salesforce credentials
+     * These depend on WordPress settings or constants
+     * todo: need to investigate if the naming makes sense
+     *
+     * @return array $login_credentials
+     * @throws \Exception
+     */
     private function get_login_credentials() {
 
     	$consumer_key = defined('SALESFORCE_CONSUMER_KEY') ? SALESFORCE_CONSUMER_KEY : get_option( 'salesforce_api_consumer_key', '' );
@@ -134,6 +155,20 @@ class Salesforce_REST_API {
     }
 
 
+    /**
+     * Authenticate Salesforce inside WordPress
+     * This allows WordPress to make calls to the Salesforce REST API, depending on the WordPress settings
+     * todo: need to investigate how safe this is, and also if the naming makes sense
+     *
+     * @param string $consumer_key
+     * @param string $consumer_secret
+     * @param string $callback_url
+     * @param string $login_base_url
+     * @param string $token_url_path
+     * @param string $authorization_code (used if this is not a refresh request)
+     * @param string $refresh_token (used if the access token has expired)
+     * @throws \Exception
+     */
     public function authenticate( $consumer_key, $consumer_secret, $callback_url, $login_base_url, $token_url_path, $authorization_code = '', $refresh_token = '' ) {
 
 		$url = $login_base_url . $token_url_path;
@@ -160,22 +195,23 @@ class Salesforce_REST_API {
 		}
 
 		$result = $this->request( $url, false, $args, self::METH_POST, $headers );
+		$response = $result['response'];
 
-        if( ! is_array($result) || ! isset( $result['access_token'] ) || ! isset( $result['instance_url'] ) || ! isset( $result['refresh_token'] ) ){
+        if( ! is_array($response) || ! isset( $response['access_token'] ) || ! isset( $response['instance_url'] ) || ! isset( $response['refresh_token'] ) ){
         	// handle errors
-            //throw new SalesforceApiException( __('Malformed response from Salesforce','salesforce-api'), -1, $stat );
+            throw new SalesforceApiException( __('Malformed response from Salesforce','salesforce-api'), -1, $result['status'] );
         }
 
-        if ( isset( $result['access_token'] ) ) {
-        	update_option( 'salesforce_api_access_token', $result['access_token'] );
+        if ( isset( $response['access_token'] ) ) {
+        	update_option( 'salesforce_api_access_token', $response['access_token'] );
         }
-        if ( isset( $result['instance_url'] ) ) {
-        	update_option( 'salesforce_api_instance_url', $result['instance_url'] );
+        if ( isset( $response['instance_url'] ) ) {
+        	update_option( 'salesforce_api_instance_url', $response['instance_url'] );
     	}
 
-        if ( $refresh_token === '' && isset( $result['refresh_token'] ) ) {
-        	update_option( 'salesforce_api_refresh_token', $result['refresh_token'] );
-        	//echo "<script>window.location = '$callback_url';</script>";
+        if ( $refresh_token === '' && isset( $response['refresh_token'] ) ) {
+        	update_option( 'salesforce_api_refresh_token', $response['refresh_token'] );
+        	echo "<script>window.location = '$callback_url';</script>";
         	// we have to use javascript here because the template_redirect WP hook does not run in wp-admin
         }
 
@@ -183,6 +219,16 @@ class Salesforce_REST_API {
 
 	}
 
+
+	/**
+     * Run a SOQL search query on the Salesforce REST API
+     *
+     * @param string $query
+     * @param string $all
+     * @param string $explain
+     * @return $this->request
+     * @throws \Exception
+     */
     public function searchSOQL($query, $all = false, $explain = false) {
         $search_data = [
             'q' => $query,
@@ -201,13 +247,25 @@ class Salesforce_REST_API {
         return $this->request( $this->base_url . $path . '?q=' . urlencode($query), true, [], self::METH_GET );
     }
 
-	function request( $url, $require_authenticated = true, $args = [], $method = self::METH_GET, $headers = [] ) {
+    /**
+     * Prepare HTTP requests to be sent to the Salesforce REST API
+     * todo: make sure protected is an ok status
+     *
+     * @param string $url
+     * @param bool $require_authenticated
+     * @param array $args
+     * @param string $method
+     * @param array $headers
+     * @return array $result
+     * @throws \Exception
+     */
+	protected function request( $url, $require_authenticated = true, $args = [], $method = self::METH_GET, $headers = [] ) {
 
 		if ( $require_authenticated === true ) { 
 			$authorized = $this->get_authorized();
 	    	
 	    	if ( $this->access_token == '' && $this->refresh_token == '' ) {
-	    		//throw new SalesforceAPIException('You have not logged in yet.');
+	    		throw new SalesforceAPIException('You have not logged in yet.');
 	    	}
 
 	    	$authenticated_headers = [
@@ -231,7 +289,7 @@ class Salesforce_REST_API {
 
 		$result = $this->httprequest( $url, $headers, $method, $args );
 
-		$json_response = $result['json_response'];
+		$json = $result['json'];
 		$status = $result['status'];
 		$response = $result['response'];
 
@@ -258,43 +316,22 @@ class Salesforce_REST_API {
 		}
 
 		// pass all the info for reuse
-		$result = array( 'url' => $url, 'body' => $json_response, 'code' => $status, 'data' => $response );
-		//print_r($result);
-		$body = $result['body'];
-
-
-
-	    /*$http = wp_remote_request( $url, $params );
-	    print_r($http);
-
-        if( $http instanceof WP_Error ){
-        	//$body = array();
-            foreach( $http->get_error_messages() as $message ){
-            	//echo 'error';
-            	echo $message;
-                //throw new SalesforceApiException( $message, -1 );
-                $body = $message;
-            }
-        } else {
-	        if( empty( $http['response'] ) ){
-	        	// handle errors
-	            //throw new SalesforceApiException( __('Wordpress HTTP request failure','salesforce-api'), -1 );
-	        }
-
-	        $body = trim( $http['body'] );
-	        $stat = $http['response']['code'];
-	        if( 200 !== $stat ){
-	        	// handle errors
-	            //throw new SalesforceApiException( $body, -1, $stat );
-	        }
-
-        }*/
-
-        $result = json_decode( $body, true );
+		$result = array( 'url' => $url, 'json' => $json, 'status' => $status, 'response' => $response );
         return $result;
 	}
 
-	function httprequest( $url, $headers, $method, $args ) {
+	/**
+     * Run curl request to Salesforce REST API.
+     * We use curl instead of wp_remote_request because the wp method doesn't work
+     *
+     * @param string $url
+     * @param array $headers
+     * @param string $method
+     * @param array $args
+     * @return array $result
+     * @throws \Exception
+     */
+	protected function httprequest( $url, $headers, $method, $args ) {
 		// run query with curl
 		$curl = curl_init();
 		curl_setopt( $curl, CURLOPT_URL, $url );
@@ -311,11 +348,12 @@ class Salesforce_REST_API {
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $args );
 		}
 
-		$json_response = curl_exec( $curl );
+		$json_response = curl_exec( $curl ); // this is json data
 		$status = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-		$response = json_decode( $json_response, true );
+		$response = json_decode( $json_response, true ); // decode it into an array
 
-		if ( $status !== 200 ) {
+		// don't use the exception if the status is 200 or if it just needs a refresh token
+		if ( $status !== 200 && $status !== 401 ) {
 			$curl_error = curl_error( $curl );
 			if ( $curl_error !== '' ) {
 				throw new SalesforceAPIException( $curl_error );
@@ -325,8 +363,7 @@ class Salesforce_REST_API {
 		}
 
 		curl_close( $curl );
-
-		return array( 'json_response' => $json_response, 'status' => $status, 'response' => $response );
+		return array( 'json' => $json_response, 'status' => $status, 'response' => $response );
 
 	}
 
@@ -357,10 +394,15 @@ class Wordpress_Salesforce_Admin {
 	function demo( $salesforce_rest_api ) {
 		echo '<h3>Salesforce Demo</h3>';
 		$result = $salesforce_rest_api->searchSOQL('SELECT Name, Id from Contact LIMIT 100');
-		
+		$response = $result['response'];
 		// format this array into html so users can see the contacts
-		//print_r($result);
-		echo 'this is a successful result';
+		//print_r($response);
+		echo '<table class="widefat striped"><thead><summary><h4>Salesforce successfully returned ' . $response['totalSize'] . ' ' . $response['records'][0]['attributes']['type'] . ' records. They are not cached.</h4></summary><tr><th>Contact ID</th><th>Name</th></thead>';
+
+		foreach ( $response['records'] as $record ) {
+			echo '<tr><td>' . $record['Id'] . '</td><td>' . $record['Name'] . '</td></tr>';
+		}
+		echo '</table>';
 	}
 
 	/**
