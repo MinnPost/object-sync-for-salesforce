@@ -2,31 +2,9 @@
 class Salesforce_REST_API {
 
 	/**
-	* @var string
-	*/
-	protected $login_base_url;
-
-	/**
-	* @var string
-	*/
-	protected $consumer_key;
-
-	/**
-	* @var string
-	*/
-	protected $consumer_secret;
-
-
-	/**
-	* @var array
-	*/
-	public $login_credentials;
-
-	/**
 	* @var array
 	*/
 	protected $loggedin;
-
 
 	/**
 	* @var string
@@ -42,11 +20,6 @@ class Salesforce_REST_API {
 	* @var string
 	*/
 	private $instance_url;
-
-	/**
-	* @var string
-	*/
-	private $api_version;
 
 	/**
 	* @var array
@@ -197,9 +170,9 @@ class Salesforce_REST_API {
 		$result = $this->request( $url, false, $args, self::METH_POST, $headers );
 		$response = $result['response'];
 
-        if( ! is_array($response) || ! isset( $response['access_token'] ) || ! isset( $response['instance_url'] ) || ! isset( $response['refresh_token'] ) ){
+        if( ! is_array($response) || ( ! isset( $response['access_token'] ) && ! isset( $response['refresh_token'] ) )|| ! isset( $response['instance_url'] ) ){
         	// handle errors
-            throw new SalesforceApiException( __('Malformed response from Salesforce','salesforce-api'), -1, $result['status'] );
+            throw new SalesforceApiException( __('Missing required authorization data from Salesforce','salesforce-api'), -1, $result['status'] );
         }
 
         if ( isset( $response['access_token'] ) ) {
@@ -396,11 +369,110 @@ class Wordpress_Salesforce_Admin {
 	}
 
 	/**
-     * Create default WordPress admin settings form
+     * Create default WordPress admin settings form for salesforce
+     * This is for the Settings page/tab
      *
      */
 	function salesforce_settings_form() {
-	    //$salesforce_api_settings = '';
+		$page = 'settings';
+        $input_callback = array(&$this, 'display_input_field');
+        $section = 'settings';
+        add_settings_section( $page, 'Settings', null, $page );
+
+        $salesforce_settings = array(
+            'consumer_key' => array(
+                'title' => 'Consumer Key',
+                'callback' => $input_callback,
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'text',
+                    'desc' => '',
+                    'constant' => 'SALESFORCE_CONSUMER_KEY'
+                ),
+                
+            ),
+            'consumer_secret' => array(
+                'title' => 'Consumer Secret',
+                'callback' => $input_callback,
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'text',
+                    'desc' => '',
+                    'constant' => 'SALESFORCE_CONSUMER_SECRET'
+                ),
+            ),
+            'callback_url' => array(
+                'title' => 'Callback URL',
+                'callback' => $input_callback,
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'url',
+                    'desc' => '',
+                    'constant' => 'SALESFORCE_CALLBACK_URL'
+                ),
+            ),
+            'login_base_url' => array(
+                'title' => 'Login Base URL',
+                'callback' => $input_callback,
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'url',
+                    'desc' => '',
+                    'constant' => 'SALESFORCE_LOGIN_BASE_URL'
+                ),
+            ),
+            'api_version' => array(
+                'title' => 'Salesforce API Version',
+                'callback' => $input_callback,
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'text',
+                    'desc' => '',
+                    'constant' => 'SALESFORCE_API_VERSION'
+                ),
+            ),
+        );
+        foreach( $salesforce_settings as $key => $attributes ) {
+            $id = 'salesforce_api_' . $key;
+            $name = 'salesforce_api_' . $key;
+            $title = $attributes['title'];
+            $callback = $attributes['callback'];
+            $page = $attributes['page'];
+            $section = $attributes['section'];
+            $args = array_merge(
+                $attributes['args'],
+                array(
+                    'title' => $title,
+                    'id' => $id,
+                    'label_for' => $id,
+                    'name' => $name
+                )
+            );
+            add_settings_field( $id, $title, $callback, $page, $section, $args );
+            register_setting( $section, $id );
+        }
+	}
+
+	function display_input_field( $args ) {
+	    $type   = $args['type'];
+	    $id     = $args['label_for'];
+	    $name   = $args['name'];
+	    $desc   = $args['desc'];
+	    if ( !defined( $args['constant'] ) ) {
+	        $value  = esc_attr( get_option( $id, '' ) );
+	        echo '<input type="' . $type. '" value="' . $value . '" name="' . $name . '" id="' . $id . '"
+	        class="regular-text code" />';
+	        if ( $desc != '' ) {
+	            echo '<p class="description">' . $desc . '</p>';
+	        }
+	    } else {
+	        echo '<p><code>Defined in wp-config.php</code></p>';
+	    }
 	}
 
 	/**
@@ -461,9 +533,10 @@ class Wordpress_Salesforce_Admin {
 	    			echo '<p>' . $message . '</p>';
 	    			break;
 	    		default:
-	    			echo '<form method="post" action="options.php">' . 
-		                settings_fields( $tab ) . do_settings_sections( $tab ) . submit_button() .
-		            '</form>';
+	    			echo '<form method="post" action="options.php">';
+		                echo settings_fields( $tab ) . do_settings_sections( $tab );
+		                submit_button();
+		            echo '</form>';
 	    			break;
 	    	}
 
