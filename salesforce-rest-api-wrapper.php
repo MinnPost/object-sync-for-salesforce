@@ -519,7 +519,6 @@ class Wordpress_Salesforce_Admin {
 	    		case 'authorize':
 	    			$credentials = $this->loggedin['credentials'];
 			        if ( isset( $_GET['code'] ) )  { // we have an authorization code. try to get an access token.
-			        	
 			        	$authenticate = $salesforce_rest_api->authenticate( $credentials['consumer_key'], $credentials['consumer_secret'], $credentials['callback_url'], $credentials['login_base_url'], $credentials['token_url_path'], $_GET['code'] );
 			        } else if ( $this->loggedin['loggedin'] !== true ) {            
 			            echo '<p><a class="button-primary" href="' . $this->loggedin['link'] . '">' . esc_html__('Connect to Salesforce','salesforce-api') . '</a></p>';
@@ -536,7 +535,7 @@ class Wordpress_Salesforce_Admin {
 	    		default:
 	    			echo '<form method="post" action="options.php">';
 		                echo settings_fields( $tab ) . do_settings_sections( $tab );
-		                submit_button( 'Save Settings' );
+		                submit_button( 'Save settings' );
 		            echo '</form>';
 	    			break;
 	    	}
@@ -552,10 +551,7 @@ class Wordpress_Salesforce_Admin {
 	    }
 
 	    echo '</div>';
-	    
-	    // end admin page with options form and close wrapper
-	    //salesforce_api_admin_render_form();
-	    //salesforce_api_admin_render_footer();
+
 	}
 
 	
