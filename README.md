@@ -12,7 +12,6 @@
 - Provides a common Salesforce API client that any plugin can use
 - Uses WordPress utilities where possible
 - todo: put back some caching
-- todo: put back the WP settings form/settings API stuff
 
 ## Example plugin
 

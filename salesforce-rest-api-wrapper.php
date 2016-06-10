@@ -281,7 +281,7 @@ class Salesforce_REST_API {
 			
 			// rerun the same function we ran before the token expired
 			$redo = $this->httprequest( $url, $headers, $method, $args );
-
+			// todo: need to figure out why this sometimes fails but then works on reload
 			$json_response = $redo['json_response'];
 			$status = $redo['status'];
 			$response = $redo['response'];
@@ -295,7 +295,8 @@ class Salesforce_REST_API {
 
 	/**
      * Run curl request to Salesforce REST API.
-     * We use curl instead of wp_remote_request because the wp method doesn't work
+     * We use curl instead of wp_remote_request because the wp method doesn't work; Salesforce declines it.
+     * It's possible there are parameters that would fix that issue, but curl works fine as coded in this method
      *
      * @param string $url
      * @param array $headers
@@ -325,12 +326,12 @@ class Salesforce_REST_API {
 		$status = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
 		$response = json_decode( $json_response, true ); // decode it into an array
 
-		// don't use the exception if the status is 200 or if it just needs a refresh token
+		// don't use the exception if the status is 200 or if it just needs a refresh token (salesforce uses 401 for this)
 		if ( $status !== 200 && $status !== 401 ) {
 			$curl_error = curl_error( $curl );
 			if ( $curl_error !== '' ) {
 				throw new SalesforceAPIException( $curl_error );
-			} else if ( $response[0]['errorCode'] !== '' ) {
+			} else if ( $response[0]['errorCode'] !== '' ) { // salesforce uses this structure to return errors
 				throw new SalesforceAPIException( $response[0]['message'], -1, $status );
 			}
 		}
@@ -535,7 +536,7 @@ class Wordpress_Salesforce_Admin {
 	    		default:
 	    			echo '<form method="post" action="options.php">';
 		                echo settings_fields( $tab ) . do_settings_sections( $tab );
-		                submit_button();
+		                submit_button( 'Save Settings' );
 		            echo '</form>';
 	    			break;
 	    	}
