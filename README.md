@@ -11,7 +11,7 @@
 - Connects to Salesforce in the WordPress admin
 - Provides a common Salesforce API client that any plugin can use
 - Uses WordPress utilities where possible
-- todo: put back some caching
+- Performs object caching on results from Salesforce API calls
 
 ## Example plugin
 
