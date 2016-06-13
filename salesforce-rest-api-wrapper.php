@@ -271,21 +271,28 @@ class Salesforce_REST_API {
 
 		// handle error if the auth token has expired
 		if ( ( $status === 401 && $response[0]['errorCode'] === 'INVALID_SESSION_ID' ) || ( isset( $response['error'] ) && $status === 400 && $response['error'] === 'invalid_grant' ) ) {
-
-			$credentials = array(
-				'consumer_key' => $this->loggedin['credentials']['consumer_key'],
-				'consumer_secret' => $this->loggedin['credentials']['consumer_key'],
-				'callback_url' => $this->loggedin['credentials']['callback_url'],
-				'login_base_url' => $this->loggedin['credentials']['login_base_url'],
-				'token_url_path' => $this->loggedin['credentials']['token_url_path'],
-			);
+			// remove the authorization header so we can reset it after refresh happens
+			unset( $headers['Authorization'] );
 			$credentials = $this->loggedin['credentials'];
 			$refresh_token = $this->authenticate( $credentials['consumer_key'], $credentials['consumer_secret'], $credentials['callback_url'], $credentials['login_base_url'], $credentials['token_url_path'], '', $this->refresh_token );
-			
+
+			if ( $require_authenticated === true ) { 
+		    	
+		    	if ( $this->access_token == '' && $this->refresh_token == '' ) {
+		    		throw new SalesforceAPIException('You have not refreshed your login.');
+		    	}
+
+		    	$authenticated_headers = [
+		            'Authorization' => 'Authorization: OAuth ' . $this->access_token,
+		        ];
+
+		        // Merge all the headers
+	        	$headers = array_merge( $authenticated_headers, $headers );
+	    	}
 			// rerun the same function we ran before the token expired
 			$redo = $this->httprequest( $url, $headers, $method, $args );
-			// todo: need to figure out why this sometimes fails but then works on reload
-			$json_response = $redo['json_response'];
+
+			$json = $redo['json'];
 			$status = $redo['status'];
 			$response = $redo['response'];
 
