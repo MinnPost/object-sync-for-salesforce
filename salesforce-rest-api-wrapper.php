@@ -177,13 +177,16 @@ class Salesforce_REST_API {
 
         if ( isset( $response['access_token'] ) ) {
         	update_option( 'salesforce_api_access_token', $response['access_token'] );
+        	$this->access_token = $response['access_token'];
         }
         if ( isset( $response['instance_url'] ) ) {
         	update_option( 'salesforce_api_instance_url', $response['instance_url'] );
+        	$this->instance_url = $response['instance_url'];
     	}
 
         if ( $refresh_token === '' && isset( $response['refresh_token'] ) ) {
         	update_option( 'salesforce_api_refresh_token', $response['refresh_token'] );
+        	$this->refresh_token = $response['refresh_token'];
         	echo "<script>window.location = '$callback_url';</script>";
         	// we have to use javascript here because the template_redirect WP hook does not run in wp-admin
         }
