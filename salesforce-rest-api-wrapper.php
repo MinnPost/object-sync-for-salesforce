@@ -22,6 +22,11 @@ class Salesforce_REST_API {
 	private $instance_url;
 
 	/**
+	* @var string
+	*/
+	private $cache_expiration;
+
+	/**
 	* @var array
 	*/
 	private $parent_settings;
@@ -46,6 +51,7 @@ class Salesforce_REST_API {
     public function __construct( $parent_settings = array() ) {
     	$this->loggedin = $this->loggedin();
     	$this->load_admin( $this->loggedin(), $parent_settings );
+    	$this->cache_expiration = $this->cache_expiration();
         //$this->login_credentials = $this->get_login_credentials();
     }
 
@@ -263,11 +269,19 @@ class Salesforce_REST_API {
             'cookies' => array()
         );
 
-		$result = $this->httprequest( $url, $headers, $method, $args );
+        $cached = $this->salesforce_api_cache_get( $params );
+		if( is_array( $cached ) ) {
+			$result = $cached;
+			$result['cached'] = true;
+		} else {
+			$result = $this->httprequest( $url, $headers, $method, $args );
+			$result['cached'] = $this->salesforce_api_cache_set( $params, $result );
+		}
 
 		$json = $result['json'];
 		$status = $result['status'];
 		$response = $result['response'];
+		$cached = $result['cached'];
 
 		// handle error if the auth token has expired
 		if ( ( $status === 401 && $response[0]['errorCode'] === 'INVALID_SESSION_ID' ) || ( isset( $response['error'] ) && $status === 400 && $response['error'] === 'invalid_grant' ) ) {
@@ -289,18 +303,63 @@ class Salesforce_REST_API {
 		        // Merge all the headers
 	        	$headers = array_merge( $authenticated_headers, $headers );
 	    	}
+
 			// rerun the same function we ran before the token expired
-			$redo = $this->httprequest( $url, $headers, $method, $args );
+			$params['headers'] = $headers;
+
+			$cached = $this->salesforce_api_cache_get( $params );
+			if( is_array( $cached ) ) {
+				$redo['cached'] = true;
+				$redo = $cached;
+			} else {
+				$redo = $this->httprequest( $url, $headers, $method, $args );
+				$redo['cached'] = $this->salesforce_api_cache_set( $params, $result );
+			}
 
 			$json = $redo['json'];
 			$status = $redo['status'];
 			$response = $redo['response'];
+			$cached = $result['cached'];
 
 		}
 
 		// pass all the info for reuse
-		$result = array( 'url' => $url, 'json' => $json, 'status' => $status, 'response' => $response );
+		$result = array( 'url' => $url, 'json' => $json, 'status' => $status, 'response' => $response, 'cached' => $cached );
         return $result;
+	}
+
+	/**
+     * Check to see if this API call exists in the cache
+     * if it does, return the transient for that key
+     *
+     * @param array $params
+     * @return get_transient $cachekey
+     */
+	protected function salesforce_api_cache_get( $params ) {
+		array_multisort( $params );
+    	$cachekey = md5( json_encode( $params ) );
+    	return get_transient( $cachekey );
+	}
+
+	/**
+     * Create a cache entry for the current result, with the params as the key
+     *
+     * @param array $params
+     * @param array $data
+     */
+	protected function salesforce_api_cache_set( $params, $data, $cache_expiration = '' ) {
+		array_multisort( $params );
+    	$cachekey = md5( json_encode( $params ) );
+    	// cache_expiration is how long it should be stored in the cache
+    	if ( $cache_expiration === '' ) {
+    		$cache_expiration = $this->cache_expiration;
+    	}
+    	return set_transient( $cachekey, $data, $cache_expiration );
+	}
+
+	private function cache_expiration() {
+		$this->cache_expiration = get_option( 'salesforce_api_cache_expiration', 86400 );
+		return $this->cache_expiration;
 	}
 
 	/**
@@ -497,7 +556,10 @@ class Wordpress_Salesforce_Admin {
 		$response = $result['response'];
 		// format this array into html so users can see the contacts
 		//print_r($response);
-		echo '<table class="widefat striped"><thead><summary><h4>Salesforce successfully returned ' . $response['totalSize'] . ' ' . $response['records'][0]['attributes']['type'] . ' records. They are not cached.</h4></summary><tr><th>Contact ID</th><th>Name</th></thead>';
+
+		$is_cached = $result['cached'] == true ? '' : 'not';
+
+		echo '<table class="widefat striped"><thead><summary><h4>Salesforce successfully returned ' . $response['totalSize'] . ' ' . $response['records'][0]['attributes']['type'] . ' records. They are ' . $is_cached . ' cached.</h4></summary><tr><th>Contact ID</th><th>Name</th></thead>';
 
 		foreach ( $response['records'] as $record ) {
 			echo '<tr><td>' . $record['Id'] . '</td><td>' . $record['Name'] . '</td></tr>';
