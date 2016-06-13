@@ -272,16 +272,16 @@ class Salesforce_REST_API {
         $cached = $this->salesforce_api_cache_get( $params );
 		if( is_array( $cached ) ) {
 			$result = $cached;
+			$result['from_cache'] = true;
 			$result['cached'] = true;
 		} else {
 			$result = $this->httprequest( $url, $headers, $method, $args );
+			$result['from_cache'] = false;
 			$result['cached'] = $this->salesforce_api_cache_set( $params, $result );
 		}
 
-		$json = $result['json'];
 		$status = $result['status'];
-		$response = $result['response'];
-		$cached = $result['cached'];
+		$is_redo = false;
 
 		// handle error if the auth token has expired
 		if ( ( $status === 401 && $response[0]['errorCode'] === 'INVALID_SESSION_ID' ) || ( isset( $response['error'] ) && $status === 400 && $response['error'] === 'invalid_grant' ) ) {
@@ -309,22 +309,26 @@ class Salesforce_REST_API {
 
 			$cached = $this->salesforce_api_cache_get( $params );
 			if( is_array( $cached ) ) {
-				$redo['cached'] = true;
-				$redo = $cached;
+				$result = $cached;
+				$result['from_cache'] = true;
+				$result['cached'] = true;
 			} else {
-				$redo = $this->httprequest( $url, $headers, $method, $args );
-				$redo['cached'] = $this->salesforce_api_cache_set( $params, $result );
+				$result = $this->httprequest( $url, $headers, $method, $args );
+				$result['from_cache'] = false;
+				$result['cached'] = $this->salesforce_api_cache_set( $params, $result );
 			}
-
-			$json = $redo['json'];
-			$status = $redo['status'];
-			$response = $redo['response'];
-			$cached = $result['cached'];
+			$status = $result['status'];
+			$is_redo = true;
 
 		}
 
+		$json = $result['json'];
+		$response = $result['response'];
+		$cached = $result['cached'];
+		$from_cache = $result['from_cache'];
+
 		// pass all the info for reuse
-		$result = array( 'url' => $url, 'json' => $json, 'status' => $status, 'response' => $response, 'cached' => $cached );
+		$result = array( 'url' => $url, 'json' => $json, 'status' => $status, 'response' => $response, 'cached' => $cached, 'from_cache' => $from_cache, 'is_redo' => $is_redo );
         return $result;
 	}
 
@@ -357,6 +361,11 @@ class Salesforce_REST_API {
     	return set_transient( $cachekey, $data, $cache_expiration );
 	}
 
+	/**
+     * If there is a WordPress setting for how long to keep the cache, return it and set the object property
+     * Otherwise, return seconds in 24 hours
+     *
+     */
 	private function cache_expiration() {
 		$this->cache_expiration = get_option( 'salesforce_api_cache_expiration', 86400 );
 		return $this->cache_expiration;
@@ -557,9 +566,11 @@ class Wordpress_Salesforce_Admin {
 		// format this array into html so users can see the contacts
 		//print_r($response);
 
-		$is_cached = $result['cached'] == true ? '' : 'not';
+		$is_cached = $result['cached'] == true ? '' : 'not ';
+		$from_cache = $result['from_cache'] == true ? 'were' : 'were not';
+		$is_redo = $result['is_redo'] == true ? '' : 'not ';
 
-		echo '<table class="widefat striped"><thead><summary><h4>Salesforce successfully returned ' . $response['totalSize'] . ' ' . $response['records'][0]['attributes']['type'] . ' records. They are ' . $is_cached . ' cached.</h4></summary><tr><th>Contact ID</th><th>Name</th></thead>';
+		echo '<table class="widefat striped"><thead><summary><h4>Salesforce successfully returned ' . $response['totalSize'] . ' ' . $response['records'][0]['attributes']['type'] . ' records. They are ' . $is_cached . 'cached, and they ' . $from_cache . ' loaded from the cache. This request did ' . $is_redo . 'require refreshing the Salesforce token.</h4></summary><tr><th>Contact ID</th><th>Name</th></thead>';
 
 		foreach ( $response['records'] as $record ) {
 			echo '<tr><td>' . $record['Id'] . '</td><td>' . $record['Name'] . '</td></tr>';
