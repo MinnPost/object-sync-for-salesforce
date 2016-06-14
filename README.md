@@ -3,7 +3,7 @@
 
  This library is somewhat based on [Tim Whitlock](https://github.com/timwhitlock)'s [Twitter API WordPress Library](https://github.com/timwhitlock/wp-twitter-api). Some Salesforce wrapping is derived from [Michael Corrigan](https://github.com/mcorrigan/)'s [Salesforce REST API PHP Wrapper](https://github.com/mcorrigan/salesforce-rest-api-php-wrapper/). The structure here strives to use classes whenever possible, so the methods are quite different.
 
- ** This library is not yet ready for use. Still needs to bring in actual Salesforce methods, other than just authenticating. **
+ ** This library is not yet ready for use. It is functional and loads authenticated data from Salesforce, but there are no methods to bring that data to the front end, or act upon it. **
 
 ## Features
 
@@ -12,6 +12,8 @@
 - Provides a common Salesforce API client that any plugin can use
 - Uses WordPress utilities where possible
 - Performs object caching on results from Salesforce API calls
+- Todo: figure out what is worth making into plugin-specific functionality vs what is generic enough for this library. maybe have already gone far enough.
+- Todo: write some tests for library
 
 ## Example plugin
 
