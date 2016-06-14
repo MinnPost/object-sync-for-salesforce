@@ -269,7 +269,7 @@ class Salesforce_REST_API {
             'cookies' => array()
         );
 
-        $cached = $this->salesforce_api_cache_get( $params );
+        $cached = $this->salesforce_api_cache_get( $args );
 		if( is_array( $cached ) ) {
 			$result = $cached;
 			$result['from_cache'] = true;
@@ -277,10 +277,11 @@ class Salesforce_REST_API {
 		} else {
 			$result = $this->httprequest( $url, $headers, $method, $args );
 			$result['from_cache'] = false;
-			$result['cached'] = $this->salesforce_api_cache_set( $params, $result );
+			$result['cached'] = $this->salesforce_api_cache_set( $args, $result );
 		}
 
 		$status = $result['status'];
+        $response = $result['response'];
 		$is_redo = false;
 
 		// handle error if the auth token has expired
@@ -307,7 +308,7 @@ class Salesforce_REST_API {
 			// rerun the same function we ran before the token expired
 			$params['headers'] = $headers;
 
-			$cached = $this->salesforce_api_cache_get( $params );
+			$cached = $this->salesforce_api_cache_get( $args );
 			if( is_array( $cached ) ) {
 				$result = $cached;
 				$result['from_cache'] = true;
@@ -315,15 +316,15 @@ class Salesforce_REST_API {
 			} else {
 				$result = $this->httprequest( $url, $headers, $method, $args );
 				$result['from_cache'] = false;
-				$result['cached'] = $this->salesforce_api_cache_set( $params, $result );
+				$result['cached'] = $this->salesforce_api_cache_set( $args, $result );
 			}
 			$status = $result['status'];
+            $response = $result['response'];
 			$is_redo = true;
 
 		}
 
 		$json = $result['json'];
-		$response = $result['response'];
 		$cached = $result['cached'];
 		$from_cache = $result['from_cache'];
 
@@ -336,24 +337,24 @@ class Salesforce_REST_API {
      * Check to see if this API call exists in the cache
      * if it does, return the transient for that key
      *
-     * @param array $params
+     * @param array $args
      * @return get_transient $cachekey
      */
-	protected function salesforce_api_cache_get( $params ) {
-		array_multisort( $params );
-    	$cachekey = md5( json_encode( $params ) );
+	protected function salesforce_api_cache_get( $args ) {
+		array_multisort( $args );
+    	$cachekey = md5( json_encode( $args ) );
     	return get_transient( $cachekey );
 	}
 
 	/**
      * Create a cache entry for the current result, with the params as the key
      *
-     * @param array $params
+     * @param array $args
      * @param array $data
      */
-	protected function salesforce_api_cache_set( $params, $data, $cache_expiration = '' ) {
-		array_multisort( $params );
-    	$cachekey = md5( json_encode( $params ) );
+	protected function salesforce_api_cache_set( $args, $data, $cache_expiration = '' ) {
+		array_multisort( $args );
+    	$cachekey = md5( json_encode( $args ) );
     	// cache_expiration is how long it should be stored in the cache
     	if ( $cache_expiration === '' ) {
     		$cache_expiration = $this->cache_expiration;
