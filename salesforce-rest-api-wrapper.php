@@ -249,7 +249,7 @@ class Salesforce_REST_API {
      * @return array $result
      * @throws \Exception
      */
-	protected function request( $url, $require_authenticated = true, $args = [], $method = self::METH_GET, $headers = [] ) {
+	protected function request( $url, $require_authenticated = true, $args = [], $method = self::METH_GET, $headers = [], $cache = true, $cache_expiration = '' ) {
 
 		if ( $require_authenticated === true ) { 
 			$authorized = $this->get_authorized();
@@ -277,16 +277,22 @@ class Salesforce_REST_API {
             'cookies' => array()
         );
 
-        $cached = $this->salesforce_api_cache_get( $args );
-		if( is_array( $cached ) ) {
-			$result = $cached;
-			$result['from_cache'] = true;
-			$result['cached'] = true;
-		} else {
-			$result = $this->httprequest( $url, $headers, $method, $args );
-			$result['from_cache'] = false;
-			$result['cached'] = $this->salesforce_api_cache_set( $args, $result );
-		}
+        if ( $cache === true) {
+            $cached = $this->salesforce_api_cache_get( $url, $args );
+    		if( is_array( $cached ) ) {
+    			$result = $cached;
+    			$result['from_cache'] = true;
+    			$result['cached'] = true;
+    		} else {
+    			$result = $this->httprequest( $url, $headers, $method, $args );
+    			$result['from_cache'] = false;
+    			$result['cached'] = $this->salesforce_api_cache_set( $url, $args, $result, $cache_expiration );
+    		}
+        } else {
+            $result = $this->httprequest( $url, $headers, $method, $args );
+            $result['from_cache'] = false;
+            $result['cached'] = false;
+        }
 
 		$status = $result['status'];
         $response = $result['response'];
@@ -316,16 +322,22 @@ class Salesforce_REST_API {
 			// rerun the same function we ran before the token expired
 			$params['headers'] = $headers;
 
-			$cached = $this->salesforce_api_cache_get( $args );
-			if( is_array( $cached ) ) {
-				$result = $cached;
-				$result['from_cache'] = true;
-				$result['cached'] = true;
-			} else {
-				$result = $this->httprequest( $url, $headers, $method, $args );
-				$result['from_cache'] = false;
-				$result['cached'] = $this->salesforce_api_cache_set( $args, $result );
-			}
+            if ( $cache === true) {
+    			$cached = $this->salesforce_api_cache_get( $url, $args );
+    			if( is_array( $cached ) ) {
+    				$result = $cached;
+    				$result['from_cache'] = true;
+    				$result['cached'] = true;
+    			} else {
+    				$result = $this->httprequest( $url, $headers, $method, $args );
+    				$result['from_cache'] = false;
+    				$result['cached'] = $this->salesforce_api_cache_set( $url, $args, $result, $cache_expiration );
+    			}
+            } else {
+                $result = $this->httprequest( $url, $headers, $method, $args );
+                $result['from_cache'] = false;
+                $result['cached'] = false;
+            }
 			$status = $result['status'];
             $response = $result['response'];
 			$is_redo = true;
@@ -345,25 +357,38 @@ class Salesforce_REST_API {
      * Check to see if this API call exists in the cache
      * if it does, return the transient for that key
      *
+     * @param string $url
      * @param array $args
      * @return get_transient $cachekey
      */
-	protected function salesforce_api_cache_get( $args ) {
-		array_multisort( $args );
+	protected function salesforce_api_cache_get( $url, $args ) {
+        if ( is_array( $args ) ) {
+            $args[] = $url;
+            array_multisort( $args );
+        } else {
+            $args .= $url;
+        }
     	$cachekey = md5( json_encode( $args ) );
     	return get_transient( $cachekey );
 	}
 
 	/**
-     * Create a cache entry for the current result, with the params as the key
+     * Create a cache entry for the current result, with the url and args as the key
      *
+     * @param string $url
      * @param array $args
      * @param array $data
      */
-	protected function salesforce_api_cache_set( $args, $data, $cache_expiration = '' ) {
-		array_multisort( $args );
+	protected function salesforce_api_cache_set( $url, $args, $data, $cache_expiration = '' ) {
+		if ( is_array( $args ) ) {
+            $args[] = $url;
+            array_multisort( $args );
+        } else {
+            $args .= $url;
+        }
     	$cachekey = md5( json_encode( $args ) );
     	// cache_expiration is how long it should be stored in the cache
+        // if we didn't give a custom one, use the default
     	if ( $cache_expiration === '' ) {
     		$cache_expiration = $this->cache_expiration;
     	}
