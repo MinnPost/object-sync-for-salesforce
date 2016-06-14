@@ -495,7 +495,7 @@ class Wordpress_Salesforce_Admin {
 	public function __construct( $loggedin, $parent_settings = array() ) {
 		$this->loggedin = $loggedin;
 		$this->parent_settings = $parent_settings;
-		add_action('admin_init', array( &$this, 'salesforce_settings_form' ) );
+		add_action('admin_init', array( &$this, 'salesforce_settings_forms' ) );
 	}
 
 	/**
@@ -512,12 +512,21 @@ class Wordpress_Salesforce_Admin {
      * This is for the Settings page/tab
      *
      */
-	function salesforce_settings_form() {
-		$page = 'settings';
-        $input_callback = array(&$this, 'display_input_field');
-        $section = 'settings';
-        add_settings_section( $page, 'Settings', null, $page );
+	public function salesforce_settings_forms() {
+        $page = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
+        $section = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
+        $input_callback_default = array( &$this, 'display_input_field' );
+        $input_checkboxes_default = array( &$this, 'display_checkboxes' );
+        $this->fields_settings( 'settings', $input_callback_default, 'settings' );
+        $this->fields_objects( 'objects', $input_checkboxes_default, 'objects' );
+	}
 
+    /**
+     * Fields for the Settings tab
+     *
+     */
+    private function fields_settings( $page, $input_callback, $section ) {
+        add_settings_section( $page, ucwords( $page ), null, $page );
         $salesforce_settings = array(
             'consumer_key' => array(
                 'title' => 'Consumer Key',
@@ -595,9 +604,66 @@ class Wordpress_Salesforce_Admin {
             add_settings_field( $id, $title, $callback, $page, $section, $args );
             register_setting( $section, $id );
         }
-	}
+    }
 
-	function display_input_field( $args ) {
+    /**
+     * Fields for the Object setup tab
+     *
+     */
+    private function fields_objects( $page, $input_callback, $section ) {
+        $salesforce_rest_api = new Salesforce_REST_API();
+        add_settings_section( $page, ucwords( $page ), null, $page );
+        $items = array();
+        $objects = $salesforce_rest_api->get_objects();
+        $objects = $objects['response']['sobjects'];
+        
+        foreach ( $objects as $object ) {
+            $items[] = array(
+                'text' => $object['name'] . ' (' . $object['label'] . ')',
+                'id' => strtolower( $object['name'] ),
+                'name' => strtolower( $object['name'] ),
+                'desc' => ''
+            );
+        }
+
+        $salesforce_settings = array(
+            'enabled_objects' => array(
+                'title' => 'Salesforce Objects',
+                'callback' => $input_callback,
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'items' => $items,
+                ),
+                
+            ),
+        );
+        foreach( $salesforce_settings as $key => $attributes ) {
+            $id = 'salesforce_api_' . $key;
+            $name = 'salesforce_api_' . $key;
+            $title = $attributes['title'];
+            $callback = $attributes['callback'];
+            $page = $attributes['page'];
+            $section = $attributes['section'];
+            $args = array_merge(
+                $attributes['args'],
+                array(
+                    'title' => $title,
+                    'id' => $id,
+                    'label_for' => $id,
+                    'name' => $name
+                )
+            );
+            add_settings_field( $id, $title, $callback, $page, $section, $args );
+            register_setting( $section, $id );
+        }
+    }
+
+    /**
+     * Default display for <input> fields
+     *
+     */
+	public function display_input_field( $args ) {
 	    $type   = $args['type'];
 	    $id     = $args['label_for'];
 	    $name   = $args['name'];
@@ -614,18 +680,57 @@ class Wordpress_Salesforce_Admin {
 	    }
 	}
 
+    /**
+     * Display for multiple checkboxes
+     * Maybe should expand this to also accept just one checkbox, but maybe above method will already do that
+     *
+     */
+    public function display_checkboxes( $args ) {
+        $type = 'checkbox';
+        $name = $args['name'];
+        $options = get_option( $name );
+        foreach ( $args['items'] as $key => $value ) {
+            $text = $value['text'];
+            $id = $value['id'];
+            $desc = $value['desc'];
+            $checked = '';
+            if (is_array( $options ) && in_array( $key, $options ) ) {
+                $checked = 'checked';
+            }
+            echo '<div><label><input type="' . $type. '" value="' . $key . '" name="' . $name . '[]" id="' . $id . '" ' . $checked . ' />' . $text . '</label></div>';
+            if ( $desc != '' ) {
+                echo '<p class="description">' . $desc . '</p>';
+            }
+        }
+    }
+
 	/**
      * Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it
      * todo: figure out if we should create some template files for this
      *
      */
-	function demo( $salesforce_rest_api ) {
+	private function demo( $salesforce_rest_api ) {
 		echo '<h3>Salesforce Demo</h3>';
+
+        echo '<p>Currently, we are using version ' . $this->loggedin['credentials']['api_version'] . ' of the Salesforce REST API. Available versions are displayed below.';
+        $versions = $salesforce_rest_api->get_api_versions();
+        $response = $versions['response'];
+
+        // format this array into html so users can see the versions
+
+        $is_cached = $versions['cached'] == true ? '' : 'not ';
+        $from_cache = $versions['from_cache'] == true ? 'were' : 'were not';
+        $is_redo = $versions['is_redo'] == true ? '' : 'not ';
+        echo '<table class="widefat striped"><thead><summary><h4>Available Salesforce API versions. These are ' . $is_cached . 'cached, and they ' . $from_cache . ' loaded from the cache. This request did ' . $is_redo . 'require refreshing the Salesforce token.</h4></summary><tr><th>Label</th><th>URL</th><th>Version</th></thead>';
+        foreach ( $response as $version ) {
+            echo '<tr><td>' . $version['label'] . '</td><td>' . $version['url'] . '</td><td>' . $version['version'] . '</td></tr>';
+        }
+        echo '</table>';
+
 		$result = $salesforce_rest_api->searchSOQL('SELECT Name, Id from Contact LIMIT 100');
 		$response = $result['response'];
-		// format this array into html so users can see the contacts
-		//print_r($response);
 
+		// format this array into html so users can see the contacts
 		$is_cached = $result['cached'] == true ? '' : 'not ';
 		$from_cache = $result['from_cache'] == true ? 'were' : 'were not';
 		$is_redo = $result['is_redo'] == true ? '' : 'not ';
@@ -641,9 +746,13 @@ class Wordpress_Salesforce_Admin {
 	/**
 	 * Render full admin pages in WordPress
 	 */ 
-	function show_admin_page() {
+	public function show_admin_page() {
 		$salesforce_rest_api = new Salesforce_REST_API();
-		$tabs = array('settings' => 'Settings', 'authorize' => 'Authorize');
+		$tabs = array(
+            'settings' => 'Settings',
+            'authorize' => 'Authorize',
+            'objects' => 'Object setup'
+        ); // this creates the tabs for the admin
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
 		echo '<div class="wrap">';
 		$this->tabs( $tabs, $tab );
