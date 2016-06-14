@@ -127,7 +127,15 @@ class Salesforce_REST_API {
     	$token_url_path = defined('SALESFORCE_TOKEN_URL_PATH') ? SALESFORCE_TOKEN_URL_PATH : get_option( 'salesforce_api_token_url_path', '' );
     	$api_version = defined('SALESFORCE_API_VERSION') ? SALESFORCE_API_VERSION : get_option( 'salesforce_api_version', '' );
 
-    	$login_credentials = array( 'consumer_key' => $consumer_key, 'consumer_secret' => $consumer_secret, 'callback_url' => $callback_url, 'login_base_url' => $login_base_url, 'authorize_url_path' => $authorize_url_path, 'token_url_path' => $token_url_path, 'api_version', $api_version );
+    	$login_credentials = array(
+            'consumer_key' => $consumer_key,
+            'consumer_secret' => $consumer_secret,
+            'callback_url' => $callback_url,
+            'login_base_url' => $login_base_url,
+            'authorize_url_path' => $authorize_url_path,
+            'token_url_path' => $token_url_path,
+            'api_version' => $api_version
+        );
 
     	return $login_credentials;
 
