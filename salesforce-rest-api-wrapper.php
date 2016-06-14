@@ -419,6 +419,7 @@ class Salesforce_REST_API {
      */
 	protected function httprequest( $url, $headers, $method, $args ) {
 		// run query with curl
+        $headers[] = 'Accept-Encoding: gzip, deflate';
 		$curl = curl_init();
 		curl_setopt( $curl, CURLOPT_URL, $url );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
@@ -434,7 +435,11 @@ class Salesforce_REST_API {
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $args );
 		}
 
-		$json_response = curl_exec( $curl ); // this is json data
+		$json_response = curl_exec( $curl ); // this is possibly gzipped json data
+        if ( ( ord( $json_response[0] ) == 0x1f ) && ( ord( $json_response[1] ) == 0x8b ) ) {
+            // skip header and ungzip the data
+            $json_response = gzinflate( substr( $json_response, 10 ) );
+        }
 		$status = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
 		$response = json_decode( $json_response, true ); // decode it into an array
 
