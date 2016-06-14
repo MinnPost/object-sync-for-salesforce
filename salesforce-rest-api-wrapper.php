@@ -106,7 +106,7 @@ class Salesforce_REST_API {
     	$this->access_token = get_option( 'salesforce_api_access_token', '' );
     	$this->instance_url = get_option( 'salesforce_api_instance_url', '' );
     	$this->refresh_token = get_option( 'salesforce_api_refresh_token', '' );
-    	$this->base_url = $this->instance_url . '/services/data/v' . SALESFORCE_API_VERSION . '/';
+    	$this->base_url = $this->instance_url . '/services/data/v' . get_option( 'salesforce_api_api_version', '' ) . '/';
     }
 
     /**
