@@ -209,6 +209,27 @@ class Salesforce_REST_API {
 
 	}
 
+    /**
+     * Run a basic query to get list of supported API versions
+     *
+     * @return $this->request
+     * @throws \Exception
+     */
+    public function get_api_versions() {
+        $url = $this->instance_url . '/services/data';
+        return $this->request( $url, false, '', self::METH_GET, [] );
+    }
+
+    /**
+     * Get list of objects in organization
+     *
+     * @return $this->request
+     * @throws \Exception
+     */
+    public function get_objects() {
+        return $this->request( $this->base_url . 'sobjects', true, '', self::METH_GET );
+    }
+
 
 	/**
      * Run a SOQL search query on the Salesforce REST API
