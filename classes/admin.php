@@ -248,10 +248,10 @@ class Wordpress_Salesforce_Admin {
 
         // format this array into html so users can see the versions
 
-        $is_cached = $versions['cached'] == true ? '' : 'not ';
-        $from_cache = $versions['from_cache'] == true ? 'were' : 'were not';
-        $is_redo = $versions['is_redo'] == true ? '' : 'not ';
-        echo '<table class="widefat striped"><thead><summary><h4>Available Salesforce API versions. This list is ' . $is_cached . 'cached, and items ' . $from_cache . ' loaded from the cache. This request did ' . $is_redo . 'require refreshing the Salesforce token.</h4></summary><tr><th>Label</th><th>URL</th><th>Version</th></thead>';
+        $is_cached = $versions['cached'] === true ? '' : 'not ';
+        $from_cache = $versions['from_cache'] === true ? 'were' : 'were not';
+        $is_redo = $versions['is_redo'] === true ? '' : 'not ';
+        echo '<table class="widefat striped"><thead><summary><h4>Available Salesforce API versions. This list is ' . $is_cached . 'cached, and items ' . $from_cache . ' loaded from the cache. This is not an authenticated request, so it does not touch the Salesforce token.</h4></summary><tr><th>Label</th><th>URL</th><th>Version</th></thead>';
         foreach ( $response as $version ) {
             $class = '';
             if ( $version['version'] === $this->login_credentials['rest_api_version'] ) {
@@ -265,9 +265,9 @@ class Wordpress_Salesforce_Admin {
         $response = $result['data'];
 
         // format this array into html so users can see the contacts
-        $is_cached = $result['cached'] == true ? '' : 'not ';
-        $from_cache = $result['from_cache'] == true ? 'were' : 'were not';
-        $is_redo = $result['is_redo'] == true ? '' : 'not ';
+        $is_cached = $result['cached'] === true ? '' : 'not ';
+        $from_cache = $result['from_cache'] === true ? 'were' : 'were not';
+        $is_redo = $result['is_redo'] === true ? '' : 'not ';
 
         echo '<table class="widefat striped"><thead><summary><h4>Salesforce successfully returned ' . $response['totalSize'] . ' ' . $response['records'][0]['attributes']['type'] . ' records. They are ' . $is_cached . 'cached, and they ' . $from_cache . ' loaded from the cache. This request did ' . $is_redo . 'require refreshing the Salesforce token.</h4></summary><tr><th>Contact ID</th><th>Name</th></thead>';
 

@@ -229,7 +229,11 @@ class Salesforce {
     			$data = json_encode( $params );
 				$result = $this->http_request( $url, $data, $headers, $method, $options );
 				$result['from_cache'] = false;
-				$result['cached'] = $this->cache_set( $url, $params, $result, $options['cache_expiration'] );
+				if ( in_array( $result['code'], array( 200, 201, 204 ) ) ) {
+					$result['cached'] = $this->cache_set( $url, $params, $result, $options['cache_expiration'] );
+				} else {
+					$result['cached'] = false;
+				}
     		}
 		} else {
 			$data = json_encode( $params );
@@ -398,6 +402,7 @@ class Salesforce {
 		  'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
 		  'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
 		);
+		$headers = false;
 		$response = $this->http_request( $url, $data, $headers, 'POST' );
 
 		if ( $response['code'] != 200 ) {
