@@ -1,11 +1,12 @@
 <?php
 /*
 Plugin Name: Salesforce REST API
-Plugin URI: 
 Description: Defines an API that enables WordPress to interact with the Salesforce REST API.
-Author: Jonathan Stegall
 Version: 0.0.1
+Author: Jonathan Stegall
 Author URI: http://code.minnpost.com
+License: GPL2+
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: salesforce-rest-api
 */
 
