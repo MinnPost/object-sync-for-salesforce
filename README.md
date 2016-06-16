@@ -29,18 +29,23 @@ Additional information: [https://help.salesforce.com/help/doc/en/remoteaccess_ab
 Salesforce (salesforce):
     OAUTH2 authorization and wrapper around the Salesforce REST API.
 
+### Classes Todo:
+
 Salesforce Mapping (salesforce_mapping)
-    Map WordPress content (including users) to Salesforce fields, including field level mapping.
+  Map WordPress content (including users) to Salesforce fields, including field level mapping.
 
 Salesforce Push (salesforce_push):
-    Push WordPress data updates into Salesforce.
+  Push WordPress data updates into Salesforce.
 
-  Salesforce Pull (salesforce_pull):
-    Pull Salesforce object updates into WordPress.
+Salesforce Pull (salesforce_pull):
+  Pull Salesforce object updates into WordPress.
 
-TODO:
-    Salesforce Soap (salesforce_soap):
-        Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill in functional gaps missing in the REST API. Requires the Salesforce PHP Toolkit.
+Salesforce Soap (salesforce_soap):
+  Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill in functional gaps missing in the REST API. Will require the Salesforce PHP Toolkit, if we choose to do it.
+
+## API:
+
+This plugin will reproduce at least the hooks provided by the Drupal suite, so that other WordPress plugins can build on top of them.
 
 ## Notes:
 
