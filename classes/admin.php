@@ -322,7 +322,7 @@ class Wordpress_Salesforce_Admin {
                             echo '<div class="success"><h2>Salesforce is successfully authenticated.</h2></div>';
                             echo '<p><a class="button-primary" href="' . $callback_url . '&amp;tab=logout">Disconnect from Salesforce</a></p>';
                             $demo = $this->demo( $sfapi );
-                        } else if ( isset( $consumer_key ) && ( $consumer_secret ) ) {
+                        } else if ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
                             echo '<p><a class="button-primary" href="' . $sfapi->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
                         } // need to throw an error here if all the stuff is missing
                     }
