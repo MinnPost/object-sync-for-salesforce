@@ -39,7 +39,7 @@ class Wordpress_Salesforce_Admin {
         $section = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $input_callback_default = array( &$this, 'display_input_field' );
         $input_checkboxes_default = array( &$this, 'display_checkboxes' );
-        //$this->fields_settings( 'settings', 'settings', $input_callback_default );
+        $this->fields_settings( 'settings', 'settings', $input_callback_default );
         $this->fields_objects( 'objects', 'objects', $input_checkboxes_default );
         //$this->fields_fieldmaps( 'fieldmaps', 'objects' );
     }
