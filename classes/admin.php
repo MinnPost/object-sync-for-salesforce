@@ -261,7 +261,7 @@ class Wordpress_Salesforce_Admin {
         }
         echo '</table>';
 
-        /*$result = $salesforce_rest_api->searchSOQL('SELECT Name, Id from Contact LIMIT 100');
+        $result = $sfapi->query('SELECT Name, Id from Contact LIMIT 100');
         $response = $result['data'];
 
         // format this array into html so users can see the contacts
@@ -274,7 +274,7 @@ class Wordpress_Salesforce_Admin {
         foreach ( $response['records'] as $record ) {
             echo '<tr><td>' . $record['Id'] . '</td><td>' . $record['Name'] . '</td></tr>';
         }
-        echo '</table>';*/
+        echo '</table>';
     }
 
     /**

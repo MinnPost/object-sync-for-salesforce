@@ -112,7 +112,7 @@ class Salesforce {
 	*/
 	public function get_api_versions() {
 		$options = array( 'authenticated' => false, 'full_url' => true );
-		return $this->api_call( $this->get_instance_url() . '/services/data', [], 'GET', 'rest', $options );
+		return $this->api_call( $this->get_instance_url() . '/services/data', [], 'GET', $options );
 	}
 
 	/**
@@ -137,9 +137,9 @@ class Salesforce {
 	*/
 	public function api_call( $path, $params = array(), $method = 'GET', $options = array(), $type = 'rest' ) {
 		if ( !$this->get_access_token() ) {
-		  $this->refresh_token();
+			$this->refresh_token();
 		}
-		$this->response = $this->api_http_request( $path, $params, $method, $type, $options );
+		$this->response = $this->api_http_request( $path, $params, $method, $options, $type );
 		switch ( $this->response['code'] ) {
 		  // The session ID or OAuth token used has expired or is invalid.
 		  case 401:
@@ -147,10 +147,10 @@ class Salesforce {
 		    $this->refresh_token();
 		    // Rebuild our request and repeat request.
 		    $options['is_redo'] = true;
-		    $this->response = $this->api_http_request( $path, $params, $method, $type, $options );
+		    $this->response = $this->api_http_request( $path, $params, $method, $options, $type );
 		    // Throw an error if we still have bad response.
 		    if (!in_array( $this->response['code'], array( 200, 201, 204 ) ) ) {
-		      throw new SalesforceException( $this->response['error'], $this->response['code'] );
+		      throw new SalesforceException( $this->response['data'][0]['message'], $this->response['code'] );
 		    }
 
 		    break;
@@ -564,33 +564,33 @@ class Salesforce {
 	/**
 	* Use SOQL to get objects based on query string.
 	*
-	* @param SalesforceSelectQuery $query
-	*   The constructed SOQL query.
+	* @param string $query
+	*   The SOQL query.
+	* @param boolean $all
+	*   Whether this should get all results for the query
+	* @param boolean $explain
+	*   If set, Salesforce will return feedback on the query performance
 	*
 	* @return array
 	*   Array of Salesforce objects that match the query.
 	*
 	* @addtogroup salesforce_apicalls
 	*/
-	public function query( SalesforceSelectQuery $query, $all = false, $explain = false ) {
-		//drupal_alter('salesforce_query', $query);
+	public function query( $query, $all = false, $explain = false ) {
 		$search_data = [
             'q' => $query,
         ];
-        // If the explain flag is set, it will return feedback on the query performance
         if ($explain) {
             $search_data['explain'] = $search_data['q'];
             unset($search_data['q']);
         }
-        // If is set, search through deleted and merged data as well
+        // all is a search through deleted and merged data as well
         if ($all) {
             $path = 'queryAll';
         } else {
             $path = 'query';
         }
-
-		// Casting $query as a string calls SalesforceSelectQuery::__toString().
-		$result = $this->api_call( $path . '?q=' . (string) $search_data);
+		$result = $this->api_call( $path . '?' . http_build_query( $search_data ) );
 		return $result;
 	}
 
