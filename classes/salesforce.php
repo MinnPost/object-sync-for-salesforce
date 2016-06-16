@@ -533,9 +533,7 @@ class Salesforce {
 		return get_option( 'salesforce_api_callback_url', FALSE );
 	}
 
-	/**
-	* @defgroup salesforce_api_calls Wrapper calls around core api_call()
-	*/
+	/* Core API calls */
 
 	/**
 	* Available objects and their metadata for your organization's data.
@@ -549,7 +547,7 @@ class Salesforce {
 	* @return array
 	*   Available objects and metadata.
 	*
-	* @addtogroup salesforce_apicalls
+	* part of core API calls
 	*/
 	public function objects( $conditions = array( 'updateable' => TRUE ), $reset = FALSE ) {
 
@@ -581,7 +579,7 @@ class Salesforce {
 	* @return array
 	*   Array of Salesforce objects that match the query.
 	*
-	* @addtogroup salesforce_apicalls
+	* part of core API calls
 	*/
 	public function query( $query, $all = false, $explain = false ) {
 		$search_data = [
@@ -613,7 +611,7 @@ class Salesforce {
 	*   All the metadata for an object, including information about each field,
 	*   URLs, and child relationships.
 	*
-	* @addtogroup salesforce_apicalls
+	* part of core API calls
 	*/
 	public function object_describe( $name, $reset = FALSE ) {
 		if (empty($name)) {
@@ -647,7 +645,7 @@ class Salesforce {
 	*   "errors" : [ ],
 	*   "success" : true
 	*
-	* @addtogroup salesforce_apicalls
+	* part of core API calls
 	*/
 	public function object_create( $name, $params ) {
 		$options = array( 'type' => 'write' );
@@ -679,7 +677,7 @@ class Salesforce {
 	*     "message" : "The requested resource does not exist"
 	*     "errorCode" : "NOT_FOUND"
 	*
-	* @addtogroup salesforce_apicalls
+	* part of core API calls
 	*/
 	public function object_upsert( $name, $key, $value, $params ) {
 		$options = array( 'type' => 'write' );
@@ -705,7 +703,7 @@ class Salesforce {
 	* @param array $params
 	*   Values of the fields to set for the object.
 	*
-	* @addtogroup salesforce_apicalls
+	* part of core API calls
 	*/
 	public function object_update( $name, $id, $params ) {
 		$options = array( 'type' => 'write' );
@@ -723,7 +721,7 @@ class Salesforce {
 	* @return object
 	*   Object of the requested Salesforce object.
 	*
-	* @addtogroup salesforce_apicalls
+	* part of core API calls
 	*/
 	public function object_read( $name, $id ) {
 		return $this->api_call( "sobjects/{$name}/{$id}", array(), 'GET' );
@@ -742,7 +740,7 @@ class Salesforce {
 	* @return object
 	*   Object of the requested Salesforce object.
 	*
-	* @addtogroup salesforce_apicalls
+	* part of core API calls
 	*/
 	public function object_readby_external_id( $name, $field, $value ) {
 		return $this->api_call( "sobjects/{$name}/{$field}/{$value}" );
@@ -756,7 +754,7 @@ class Salesforce {
 	* @param string $id
 	*   Salesforce id of the object.
 	*
-	* @addtogroup salesforce_apicalls
+	* part of core API calls
 	*/
 	public function object_delete( $name, $id ) {
 		$options = array( 'type' => 'write' );
@@ -769,7 +767,7 @@ class Salesforce {
 	* @return array
 	*   Associative array keyed by name with a URI value.
 	*
-	* @addtogroup salesforce_apicalls
+	* part of core API calls
 	*/
 	public function list_resources() {
 		$resources = $this->api_call('');
@@ -800,7 +798,7 @@ class Salesforce {
 	*
 	* @see https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_getupdated.htm
 	*
-	* @addtogroup salesforce_apicalls
+	* part of core API calls
 	*/
 	public function get_updated( $name, $start = null, $end = null ) {
 		if ( empty( $start ) ) {
