@@ -18,6 +18,18 @@ class Salesforce {
 	*   Salesforce key to connect to your Salesforce instance.
 	* @param string $consumer_secret
 	*   Salesforce secret to connect to your Salesforce instance.
+	* @param string $login_url
+	*   Login URL for Salesforce auth requests - differs for production and sandbox
+	* @param string $callback_url
+	*   WordPress URL where Salesforce should send you after authentication
+	* @param string $authorize_path
+	*   Oauth path that Salesforce wants
+	* @param string $token_path
+	*   Path Salesforce uses to give you a token
+	* @param string $rest_api_version
+	*   What version of the Salesforce REST API to use
+	* @param string $text_domain
+	*   Text domain for this plugin. Would be used in any future translations.
 	*/
 	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $text_domain ) {
 		$this->consumer_key = $consumer_key;
@@ -28,23 +40,27 @@ class Salesforce {
 		$this->token_path = $token_path;
 		$this->rest_api_version = $rest_api_version;
 		$this->text_domain = $text_domain;
-		$this->cache_expiration = $this->cache_expiration();
+		$this->options = array(
+			'cache' => true,
+			'cache_expiration' => $this->cache_expiration(),
+			'type' => 'read'
+		);
 	}
 
 	/**
 	* Converts a 15-character case-sensitive Salesforce ID to 18-character
 	* case-insensitive ID. If input is not 15-characters, return input unaltered.
 	*
-	* @param string $sfid15
+	* @param string $sf_id_15
 	*   15-character case-sensitive Salesforce ID
 	* @return string
 	*   18-character case-insensitive Salesforce ID
 	*/
-	public static function convert_id( $sfid15 ) {
-		if ( strlen( $sfid15) != 15 ) {
-		  return $sfid15;
+	public static function convert_id( $sf_id_15 ) {
+		if ( strlen( $sf_id_15) != 15 ) {
+		  return $sf_id_15;
 		}
-		$chunks = str_split( $sfid15, 5 );
+		$chunks = str_split( $sf_id_15, 5 );
 		$extra = '';
 		foreach ( $chunks as $chunk ) {
 		  $chars = str_split( $chunk, 1 );
@@ -55,7 +71,7 @@ class Salesforce {
 		  $map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345';
 		  $extra .= substr( $map, base_convert( strrev( $bits ), 2, 10 ), 1 );
 		}
-		return $sfid15 . $extra;
+		return $sf_id_15 . $extra;
 	}
 
 	/**
@@ -63,16 +79,16 @@ class Salesforce {
 	*  keyPrefix from object definition, @see
 	*  https://developer.salesforce.com/forums/?id=906F0000000901ZIAQ )
 	*
-	* @param string $sfid
+	* @param string $sf_id
 	*   15- or 18-character Salesforce ID
 	* @return string
 	*   sObject name, e.g. "Account", "Contact", "my__Custom_Object__c" or FALSE
 	*   if no match could be found.
 	* @throws SalesforceException
 	*/
-	public function get_sobject_type( $sfid ) {
-		$objects = $this->objects( array( 'keyPrefix' => substr( $sfid, 0, 3 ) ) );
-		if ( count($objects ) == 1 ) {
+	public function get_sobject_type( $sf_id ) {
+		$objects = $this->objects( array( 'keyPrefix' => substr( $sf_id, 0, 3 ) ) );
+		if ( count( $objects ) == 1 ) {
 		  // keyPrefix is unique across objects. If there is exactly one return value from objects(), then we have a match.
 		  $object = reset( $objects );
 		  return $object['name'];
@@ -90,6 +106,10 @@ class Salesforce {
 		return !empty( $this->consumer_key ) && !empty( $this->consumer_secret ) && $this->get_refresh_token();
 	}
 
+	/**
+	* Get REST API versions available on this Salesforce organization
+	* This is not an authenticated call, so it would not be a helpful test
+	*/
 	public function get_api_versions() {
 		$options = array( 'authenticated' => false, 'full_url' => true );
 		return $this->api_call( $this->get_instance_url() . '/services/data', [], 'GET', 'rest', $options );
@@ -103,14 +123,19 @@ class Salesforce {
 	* @param array $params
 	*   Parameters to provide.
 	* @param string $method
-	*   Method to initiate the call, such as GET or POST.  Defaults to GET.
+	*   Method to initiate the call, such as GET or POST. Defaults to GET.
+	* @param array $options
+	*   Any method can supply options for the API call, and they'll be preserved as far as the curl request
+	*	They get merged with the class options
+	* @param string $type
+	*   Type of call. Defaults to 'rest' - currently we don't support other types
 	*
 	* @return mixed
 	*   The requested response.
 	*
 	* @throws SalesforceException
 	*/
-	public function api_call( $path, $params = array(), $method = 'GET', $type = 'rest', $options = array() ) {
+	public function api_call( $path, $params = array(), $method = 'GET', $options = array(), $type = 'rest' ) {
 		if ( !$this->get_access_token() ) {
 		  $this->refresh_token();
 		}
@@ -138,11 +163,11 @@ class Salesforce {
 
 		  default:
 		    // We have problem and no specific Salesforce error provided.
-		    if ( empty($this->response['data'] ) ) {
+		    if ( empty( $this->response['data'] ) ) {
 		      throw new SalesforceException( $this->response['error'], $this->response['code'] );
 		    }
 		}
-		//$data = $this->response['data'];
+
 		if ( !empty( $this->response['data'][0] ) && count( $this->response['data'] ) == 1 ) {
 		  $this->response['data'] = $this->response['data'][0];
 		}
@@ -160,6 +185,7 @@ class Salesforce {
 
 	/**
 	* Private helper to issue an SF API request.
+	* This method is the only place where we read to or write from the cache
 	*
 	* @param string $path
 	*   Path to resource.
@@ -167,11 +193,17 @@ class Salesforce {
 	*   Parameters to provide.
 	* @param string $method
 	*   Method to initiate the call, such as GET or POST.  Defaults to GET.
+	* @param array $options
+	*   This is the options array from the api_call method
+	*	This is where it gets merged with $this->options
+	* @param string $type
+	*   Type of call. Defaults to 'rest' - currently we don't support other types
 	*
-	* @return object
+	* @return array
 	*   The requested data.
 	*/
-	protected function api_http_request( $path, $params, $method, $type = 'rest', $options = array() ) {
+	protected function api_http_request( $path, $params, $method, $options = array(), $type = 'rest' ) {
+		$options = array_merge( $this->options, $options ); // this will override a value in $this->options with the one in $options if there is a matching key
 		$url = $this->get_api_endpoint( $type ) . $path;
 		if ( isset( $options['full_url'] ) && $options['full_url'] === true ) {
 			$url = $path;
@@ -184,9 +216,28 @@ class Salesforce {
 		if ( isset( $options['authenticated'] ) && $options['authenticated'] === true ) {
 			$headers = false;
 		}
-		$data = json_encode( $params );
-		//$data = $params;
-		return $this->http_request( $url, $data, $headers, $method, $options );
+		// if this request should be cached, see if it already exists
+		// if it is already cached, load it. if not, load it and then cache it if it should be cached
+		// add parameters to the array so we can tell if it was cached or not
+		if ( $options['cache'] === true && $options['cache'] !== 'write' ) { 
+			$cached = $this->cache_get( $url, $params );
+			if ( is_array( $cached ) ) {
+				$result = $cached;
+				$result['from_cache'] = true;
+				$result['cached'] = true;
+    		} else {
+    			$data = json_encode( $params );
+				$result = $this->http_request( $url, $data, $headers, $method, $options );
+				$result['from_cache'] = false;
+				$result['cached'] = $this->cache_set( $url, $params, $result, $options['cache_expiration'] );
+    		}
+		} else {
+			$data = json_encode( $params );
+			$result = $this->http_request( $url, $data, $headers, $method, $options );
+			$result['from_cache'] = false;
+			$result['cached'] = false;
+		}
+		return $result;
 	}
 
 	/**
@@ -199,9 +250,11 @@ class Salesforce {
 	* @param array $headers
 	*   Request headers to send as name => value.
 	* @param string $method
-	*   Method to initiate the call, such as GET or POST.  Defaults to GET.
+	*   Method to initiate the call, such as GET or POST. Defaults to GET.
+	* @param array $options
+	*   This is the options array from the api_http_request method
 	*
-	* @return object
+	* @return array
 	*   Salesforce response object.
 	*/
 	protected function http_request( $url, $data, $headers = array(), $method = 'GET', $options = array() ) {
@@ -229,9 +282,6 @@ class Salesforce {
 		$data = json_decode( $json_response, true ); // decode it into an array
 
 		// don't use the exception if the status is 200 or if it just needs a refresh token (salesforce uses 401 for this)
-
-		//print_r($data);
-
 		if ( $code !== 200 && $code !== 401 ) {
 			$curl_error = curl_error( $curl );
 			if ( $curl_error !== '' ) {
@@ -257,20 +307,16 @@ class Salesforce {
 	*   Complete URL endpoint for API access.
 	*/
 	public function get_api_endpoint( $api_type = 'rest' ) {
-		//$url = &drupal_static(__FUNCTION__ . $api_type);
-		//if (!isset($url)) {
 		// Special handling for apexrest, since it's not in the identity object.
-	      if ( $api_type == 'apexrest' ) {
-	        $url = $this->get_instance_url() . '/services/apexrest/';
-	      } else {
-		  	$identity = $this->get_identity();
-		  	$url = str_replace( '{version}', $this->rest_api_version, $identity['urls'][$api_type] );
-		  	if ( $identity == '' ) {
-		  		$url = $this->get_instance_url() . '/services/data/v' . $this->rest_api_version . '/';
-		  	}
-		  	
-		  }
-		//}
+		if ( $api_type == 'apexrest' ) {
+			$url = $this->get_instance_url() . '/services/apexrest/';
+		} else {
+			$identity = $this->get_identity();
+			$url = str_replace( '{version}', $this->rest_api_version, $identity['urls'][$api_type] );
+			if ( $identity == '' ) {
+				$url = $this->get_instance_url() . '/services/data/v' . $this->rest_api_version . '/';
+			}
+		}
 		return $url;
 	}
 
@@ -499,15 +545,8 @@ class Salesforce {
 	* @addtogroup salesforce_apicalls
 	*/
 	public function objects( $conditions = array( 'updateable' => TRUE ), $reset = FALSE ) {
-		$cache = $this->salesforce_api_cache_get( 'salesforce_objects' );
-		// Force the recreation of the cache when it is older than 5 minutes.
-		if ( $cache && REQUEST_TIME < ( $cache->created + 300 ) && !$reset ) {
-		  $result = $cache->data;
-		} else {
-	  		$result = $this->api_call( 'sobjects' );
-	  		// Allow the cache to clear at any time by not setting an expire time.
-	  		$this->salesforce_api_cache_get( 'salesforce_objects', $result, 'cache', CACHE_TEMPORARY );
-		}
+
+	  	$result = $this->api_call( 'sobjects' );
 
 		if (!empty( $conditions ) ) {
 		  foreach ( $result['sobjects'] as $key => $object ) {
@@ -556,7 +595,7 @@ class Salesforce {
 	}
 
 	/**
-	* Retreieve all the metadata for an object.
+	* Retrieve all the metadata for an object.
 	*
 	* @param string $name
 	*   Object type name, E.g., Contact, Account, etc.
@@ -573,28 +612,19 @@ class Salesforce {
 		if (empty($name)) {
 		  return array();
 		}
-		$cache = $this->salesforce_api_cache_get( $name, 'cache_salesforce_object' );
-		// Force the recreation of the cache when it is older than 5 minutes.
-		if ( $cache && REQUEST_TIME < ( $cache->created + 300 ) && !$reset ) {
-		  return $cache->data;
-		} else {
-	  		$object = $this->api_call( "sobjects/{$name}/describe" );
-		  // Sort field properties, because salesforce API always provides them in a
-		  // random order. We sort them so that stored and exported data are
-		  // standardized and predictable.
-		  foreach( $object['fields'] as &$field ) {
-		    ksort( $field );
-		    if (!empty( $field['picklistValues'] ) ) {
-		      foreach( $field['picklistValues'] as &$picklist_value ) {
-		        ksort( $picklist_value );
-		      }
-		    }
-		  }
-
-	  	// Allow the cache to clear at any time by not setting an expire time.
-	  	$this->salesforce_api_cache_set( $name, $object, 'cache_salesforce_object', CACHE_TEMPORARY );
-	  	return $object;
+  		$object = $this->api_call( "sobjects/{$name}/describe" );
+		// Sort field properties, because salesforce API always provides them in a
+		// random order. We sort them so that stored and exported data are
+		// standardized and predictable.
+		foreach( $object['fields'] as &$field ) {
+			ksort( $field );
+			if (!empty( $field['picklistValues'] ) ) {
+				foreach( $field['picklistValues'] as &$picklist_value ) {
+					ksort( $picklist_value );
+				}
+			}
 		}
+
 	}
 
 	/**
@@ -613,7 +643,8 @@ class Salesforce {
 	* @addtogroup salesforce_apicalls
 	*/
 	public function object_create( $name, $params ) {
-		return $this->api_call( "sobjects/{$name}", $params, 'POST' );
+		$options = array( 'type' => 'write' );
+		return $this->api_call( "sobjects/{$name}", $params, 'POST', $options );
 	}
 
 	/**
@@ -644,12 +675,13 @@ class Salesforce {
 	* @addtogroup salesforce_apicalls
 	*/
 	public function object_upsert( $name, $key, $value, $params ) {
+		$options = array( 'type' => 'write' );
 		// If key is set, remove from $params to avoid UPSERT errors.
 		if (isset( $params[$key] ) ) {
 		  unset( $params[$key] );
 		}
 
-		$data = $this->api_call( "sobjects/{$name}/{$key}/{$value}", $params, 'PATCH' );
+		$data = $this->api_call( "sobjects/{$name}/{$key}/{$value}", $params, 'PATCH', $options );
 		if ( $this->response['code'] == 300 ) {
 		  $data['message'] = esc_html__( 'The value provided is not unique.', $this->text_domain );
 		}
@@ -669,7 +701,8 @@ class Salesforce {
 	* @addtogroup salesforce_apicalls
 	*/
 	public function object_update( $name, $id, $params ) {
-		$this->api_call( "sobjects/{$name}/{$id}", $params, 'PATCH' );
+		$options = array( 'type' => 'write' );
+		$this->api_call( "sobjects/{$name}/{$id}", $params, 'PATCH', $options );
 	}
 
 	/**
@@ -719,7 +752,8 @@ class Salesforce {
 	* @addtogroup salesforce_apicalls
 	*/
 	public function object_delete( $name, $id ) {
-		$this->api_call( "sobjects/{$name}/{$id}", array(), 'DELETE' );
+		$options = array( 'type' => 'write' );
+		$this->api_call( "sobjects/{$name}/{$id}", array(), 'DELETE', $options );
 	}
 
 	/**
@@ -784,7 +818,7 @@ class Salesforce {
      * @param array $args
      * @return get_transient $cachekey
      */
-	protected function salesforce_api_cache_get( $url, $args ) {
+	protected function cache_get( $url, $args ) {
         if ( is_array( $args ) ) {
             $args[] = $url;
             array_multisort( $args );
@@ -802,7 +836,7 @@ class Salesforce {
      * @param array $args
      * @param array $data
      */
-	protected function salesforce_api_cache_set( $url, $args, $data, $cache_expiration = '' ) {
+	protected function cache_set( $url, $args, $data, $cache_expiration = '' ) {
 		if ( is_array( $args ) ) {
             $args[] = $url;
             array_multisort( $args );
@@ -813,7 +847,7 @@ class Salesforce {
     	// cache_expiration is how long it should be stored in the cache
         // if we didn't give a custom one, use the default
     	if ( $cache_expiration === '' ) {
-    		$cache_expiration = $this->cache_expiration;
+    		$cache_expiration = $this->options['cache_expiration'];
     	}
     	return set_transient( $cachekey, $data, $cache_expiration );
 	}
@@ -824,8 +858,8 @@ class Salesforce {
      *
      */
 	private function cache_expiration() {
-		$this->cache_expiration = get_option( 'salesforce_api_cache_expiration', 86400 );
-		return $this->cache_expiration;
+		$cache_expiration = get_option( 'salesforce_api_cache_expiration', 86400 );
+		return $cache_expiration;
 	}
 
 }
