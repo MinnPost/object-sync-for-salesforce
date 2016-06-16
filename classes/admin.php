@@ -171,8 +171,8 @@ class Wordpress_Salesforce_Admin {
     private function fields_objects( $page, $section, $input_callback ) {
         add_settings_section( $page, ucwords( $page ), null, $page );
         $items = array();
-        /*$objects = $sfapi->objects();
-        $objects = $objects['data']['sobjects'];
+        $sfapi = $this->salesforce['sfapi'];
+        $objects = $sfapi->objects();
         
         foreach ( $objects as $object ) {
             $items[] = array(
@@ -213,7 +213,7 @@ class Wordpress_Salesforce_Admin {
             );
             add_settings_field( $id, $title, $callback, $page, $section, $args );
             register_setting( $section, $id );
-        }*/
+        }
     }
 
     /**

@@ -556,16 +556,16 @@ class Salesforce {
 	  	$result = $this->api_call( 'sobjects' );
 
 		if (!empty( $conditions ) ) {
-		  foreach ( $result['sobjects'] as $key => $object ) {
+		  foreach ( $result['data']['sobjects'] as $key => $object ) {
 		    foreach ( $conditions as $condition => $value ) {
 		      if ( $object[$condition] != $value ) {
-		        unset( $result['sobjects'][$key] );
+		        unset( $result['data']['sobjects'][$key] );
 		      }
 		    }
 		  }
 		}
 
-		return $result['sobjects'];
+		return $result['data']['sobjects'];
 	}
 
 	/**
