@@ -350,7 +350,7 @@ class Wordpress_Salesforce_Admin {
             switch( $tab ) {
                 case 'authorize':
                     if ( isset( $_GET['code'] ) )  {
-                        $is_authorized = $sfapi->request_token( esc_attr( $_GET['code'] ) );
+                        $is_authorized = $this->salesforce['sfapi']->request_token( esc_attr( $_GET['code'] ) );
                         echo "<script>window.location = '$callback_url';</script>";
                     } else if ( $this->salesforce['is_authorized'] === true ) {
                         echo '<div class="success"><h2>Salesforce is successfully authenticated.</h2></div>';
@@ -367,18 +367,10 @@ class Wordpress_Salesforce_Admin {
                 default:
                     $consumer_key = $this->login_credentials['consumer_key'];
                     $consumer_secret = $this->login_credentials['consumer_secret'];
-                    $login_url = $this->login_credentials['login_url'];
-                    $callback_url = $this->login_credentials['callback_url'];
-                    $authorize_path = $this->login_credentials['authorize_path'];
-                    $token_path = $this->login_credentials['token_path'];
-                    $rest_api_version = $this->login_credentials['rest_api_version'];
-                    $text_domain = $this->text_domain;
 
                     if ($consumer_key && $consumer_secret) {
 
-                        $sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $text_domain );
-
-                        if ( $sfapi->is_authorized() ) {
+                        if ( $this->salesforce['is_authorized'] === true ) {
                             echo '<form method="post" action="options.php">';
                                 echo settings_fields( $tab ) . do_settings_sections( $tab );
                                 submit_button( 'Save settings' );
