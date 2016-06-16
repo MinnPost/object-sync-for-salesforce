@@ -29,9 +29,11 @@ class Salesforce_Rest_API {
 
 	/**
 	 * Static property to hold our singleton instance
+	 * todo: figure out what to do with this
 	 *
 	 */
 	//static $instance = false;
+
 	/**
 	 * This is our constructor
 	 *
@@ -47,16 +49,36 @@ class Salesforce_Rest_API {
 		//add_action		( 'plugins_loaded', 					array( $this, 'textdomain'				) 			);
 		add_action		( 'admin_enqueue_scripts',				array( $this, 'admin_scripts'			)			);
 		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
+		register_activation_hook( __FILE__, array( &$this, 'activate' ) );
+		register_deactivation_hook( __FILE__, array(&$this, 'deactivate' ) );
 	}
 
 	/**
-     * load the admin class
-     * also creates admin menu, unless the plugin that calls this library has indicated that it has its own menu
-     *
-     * @param array $login_credentials
-     * @param array $parent_settings
-     * @throws \Exception
+     * What to do upon activation of the plugin
      */
+	function activate() {
+		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
+		$activate = new Wordpress_Salesforce_Activate();
+	}
+
+	/**
+     * What to do upon deactivation of the plugin
+     */
+	function deactivate() {
+		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
+		$deactivate = new Wordpress_Salesforce_Deactivate();
+	}
+
+	
+
+	/**
+	* load the admin class
+	* also creates admin menu, unless the plugin that calls this library has indicated that it has its own menu
+	*
+	* @param array $login_credentials
+	* @param array $parent_settings
+	* @throws \Exception
+	*/
     private function load_admin( $login_credentials, $text_domain ) {
     	require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
     	$admin = new Wordpress_Salesforce_Admin( $login_credentials, $text_domain );
