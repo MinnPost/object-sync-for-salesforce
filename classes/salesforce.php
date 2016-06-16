@@ -241,6 +241,13 @@ class Salesforce {
 			$result['from_cache'] = false;
 			$result['cached'] = false;
 		}
+
+		if ( isset( $options['is_redo'] ) && $options['is_redo'] === true ) {
+			$result['is_redo'] = true;
+		} else {
+			$result['is_redo'] = false;
+		}
+
 		return $result;
 	}
 
@@ -298,7 +305,7 @@ class Salesforce {
 
 		curl_close( $curl );
 
-		return array( 'json' => $json_response, 'code' => $code, 'data' => $data, 'is_redo' => isset( $options['is_redo'] ) ? $options['is_redo'] : 'false' );
+		return array( 'json' => $json_response, 'code' => $code, 'data' => $data );
 	}
 
 	/**
@@ -458,7 +465,6 @@ class Salesforce {
 	* todo: probably need to make this just print the url
 	*/
 	public function get_authorization_code() {
-
 		$url = add_query_arg( 
 		    array( 
 		        'response_type' => 'code',
@@ -467,11 +473,7 @@ class Salesforce {
 		    ), 
 		    $this->login_url . $this->authorize_path
 		);
-
-		wp_redirect( $url );
-		exit();
-
-		//drupal_goto($url, array('query' => $query));
+		return $url;
 	}
 
 	/**

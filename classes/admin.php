@@ -314,15 +314,17 @@ class Wordpress_Salesforce_Admin {
                     if ($consumer_key && $consumer_secret) {
 
                         $sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $text_domain );
-
-                        if ( $sfapi->is_authorized() ) {
+                        if ( isset( $_GET['code'] ) )  {
+                            $is_authorized = $sfapi->request_token( esc_attr( $_GET['code'] ) );
+                            echo "<script>window.location = '$callback_url';</script>";
+                            //$is_authorized = $this->is_authorized();
+                        } else if ( $sfapi->is_authorized() ) {
                             echo '<div class="success"><h2>Salesforce is successfully authenticated.</h2></div>';
                             echo '<p><a class="button-primary" href="' . $callback_url . '&amp;tab=logout">Disconnect from Salesforce</a></p>';
                             $demo = $this->demo( $sfapi );
-
-                        } else {
-                            salesforce_set_message( esc_html__( 'Salesforce needs to be authorized to connect to this website.', $this->text_domain ), 'error' );
-                        }
+                        } else if ( isset( $consumer_key ) && ( $consumer_secret ) ) {
+                            echo '<p><a class="button-primary" href="' . $sfapi->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
+                        } // need to throw an error here if all the stuff is missing
                     }
                     break;
                 case 'logout':
