@@ -40,7 +40,7 @@ class Salesforce_Rest_API {
 	public function __construct() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
 		$this->login_credentials = $this->get_login_credentials();
-		$this->text_domain = 'sfrest';
+		$this->text_domain = 'salesforce-rest-api';
 		$this->load_admin( $this->login_credentials, $this->text_domain );
 
 
