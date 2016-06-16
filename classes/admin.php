@@ -4,48 +4,81 @@ class Wordpress_Salesforce_Admin {
 
     protected $login_credentials;
     protected $text_domain;
+    protected $salesforce;
 
     /**
-     * Create default WordPress admin functionality for Salesforce
-     *
-     * @param array $loggedin
-     * @param array $parent_settings
-     * @throws \Exception
-     */
+    * Create default WordPress admin functionality for Salesforce
+    *
+    * @param array $loggedin
+    * @param array $text_domain
+    * @throws \Exception
+    */
     public function __construct( $login_credentials, $text_domain ) {
         $this->login_credentials = $login_credentials;
         $this->text_domain = $text_domain;
+        $this->salesforce = $this->salesforce();
         add_action('admin_init', array( &$this, 'salesforce_settings_forms' ) );
     }
 
     /**
-     * Create WordPress admin options page
-     *
-     */
+    * Create WordPress admin options page
+    *
+    */
     public function create_admin_menu() {
         $title = __('Salesforce','salesforce-api');
         add_options_page( $title, $title, 'manage_options', 'salesforce-api-admin', array( &$this, 'show_admin_page', ) );
     }
 
     /**
-     * Create default WordPress admin settings form for salesforce
-     * This is for the Settings page/tab
-     *
-     */
+    * Create default WordPress admin settings form for salesforce
+    * This is for the Settings page/tab
+    *
+    */
     public function salesforce_settings_forms() {
         $page = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $section = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $input_callback_default = array( &$this, 'display_input_field' );
         $input_checkboxes_default = array( &$this, 'display_checkboxes' );
         //$this->fields_settings( 'settings', 'settings', $input_callback_default );
-        //$this->fields_objects( 'objects', 'objects', $input_checkboxes_default );
+        $this->fields_objects( 'objects', 'objects', $input_checkboxes_default );
         //$this->fields_fieldmaps( 'fieldmaps', 'objects' );
     }
 
     /**
-     * Fields for the Settings tab
-     *
-     */
+    * Private helper to load the Salesforce API and see if it is authenticated
+    *
+    * @return array
+    *   Whether Salesforce is authenticated (boolean)
+    *   The sfapi object if it is authenticated (empty, otherwise)
+    */
+    private function salesforce() {
+        $consumer_key = $this->login_credentials['consumer_key'];
+        $consumer_secret = $this->login_credentials['consumer_secret'];
+        $login_url = $this->login_credentials['login_url'];
+        $callback_url = $this->login_credentials['callback_url'];
+        $authorize_path = $this->login_credentials['authorize_path'];
+        $token_path = $this->login_credentials['token_path'];
+        $rest_api_version = $this->login_credentials['rest_api_version'];
+        $text_domain = $this->text_domain;
+        $is_authorized = false;
+        $sfapi = '';
+        if ($consumer_key && $consumer_secret) {
+            $sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $text_domain );
+            if ( $sfapi->is_authorized() === true ) {
+                $is_authorized = true;
+            }
+        }
+        return array( 'is_authorized' => $is_authorized, 'sfapi' => $sfapi );
+    }
+
+    /**
+    * Fields for the Settings tab
+    * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+    *
+    * @param string $page
+    * @param string $section
+    * @param string $input_callback
+    */
     private function fields_settings( $page, $section, $input_callback ) {
         add_settings_section( $page, ucwords( $page ), null, $page );
         $salesforce_settings = array(
@@ -128,14 +161,17 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
-     * Fields for the Object setup tab
-     *
-     */
+    * Fields for the Object setup tab
+    * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+    *
+    * @param string $page
+    * @param string $section
+    * @param string $input_callback
+    */
     private function fields_objects( $page, $section, $input_callback ) {
-        $salesforce_rest_api = new Salesforce_REST_API();
         add_settings_section( $page, ucwords( $page ), null, $page );
         $items = array();
-        $objects = $salesforce_rest_api->get_objects();
+        /*$objects = $sfapi->objects();
         $objects = $objects['data']['sobjects'];
         
         foreach ( $objects as $object ) {
@@ -177,22 +213,27 @@ class Wordpress_Salesforce_Admin {
             );
             add_settings_field( $id, $title, $callback, $page, $section, $args );
             register_setting( $section, $id );
-        }
+        }*/
     }
 
     /**
-     * Fields for the Fieldmaps tab
-     *
-     */
+    * Fields for the Fieldmaps tab
+    * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+    *
+    * @param string $page
+    * @param string $section
+    * @param string $input_callback
+    */
     private function fields_fieldmaps( $page, $section, $input_callback = '' ) {
         $salesforce_rest_api = new Salesforce_REST_API();
         add_settings_section( $page, ucwords( $page ), null, $page );
     }
 
     /**
-     * Default display for <input> fields
-     *
-     */
+    * Default display for <input> fields
+    *
+    * @param array $args
+    */
     public function display_input_field( $args ) {
         $type   = $args['type'];
         $id     = $args['label_for'];
@@ -211,10 +252,11 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
-     * Display for multiple checkboxes
-     * Maybe should expand this to also accept just one checkbox, but maybe above method will already do that
-     *
-     */
+    * Display for multiple checkboxes
+    * Maybe should expand this to also accept just one checkbox, but maybe above method will already do that
+    *
+    * @param array $args
+    */
     public function display_checkboxes( $args ) {
         $type = 'checkbox';
         $name = $args['name'];
@@ -235,10 +277,11 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
-     * Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it
-     * todo: figure out if we should create some template files for this
-     *
-     */
+    * Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it
+    * todo: figure out if we should create some template files for this
+    *
+    * @param object $sfapi
+    */
     private function demo( $sfapi ) {
         echo '<h3>Salesforce Demo</h3>';
 
@@ -278,10 +321,9 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
-     * Render full admin pages in WordPress
-     */ 
+    * Render full admin pages in WordPress
+    */ 
     public function show_admin_page() {
-        //$salesforce_rest_api = new Salesforce_REST_API();
         $tabs = array(
             'settings' => 'Settings',
             'authorize' => 'Authorize',
@@ -298,10 +340,31 @@ class Wordpress_Salesforce_Admin {
             //salesforce_api_admin_render_footer();
             return;
         }
+
+        $consumer_key = $this->login_credentials['consumer_key'];
+        $consumer_secret = $this->login_credentials['consumer_secret'];
+        $callback_url = $this->login_credentials['callback_url'];
+        $text_domain = $this->text_domain;
+
         try {
             switch( $tab ) {
                 case 'authorize':
-
+                    if ( isset( $_GET['code'] ) )  {
+                        $is_authorized = $sfapi->request_token( esc_attr( $_GET['code'] ) );
+                        echo "<script>window.location = '$callback_url';</script>";
+                    } else if ( $this->salesforce['is_authorized'] === true ) {
+                        echo '<div class="success"><h2>Salesforce is successfully authenticated.</h2></div>';
+                        echo '<p><a class="button-primary" href="' . $callback_url . '&amp;tab=logout">Disconnect from Salesforce</a></p>';
+                        $demo = $this->demo( $this->salesforce['sfapi'] );
+                    } else if ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
+                        echo '<p><a class="button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
+                    } // need to throw an error here if all the stuff is missing
+                    break;
+                case 'logout':
+                    $message = $this->logout();
+                    echo '<p>' . $message . '</p>';
+                    break;
+                default:
                     $consumer_key = $this->login_credentials['consumer_key'];
                     $consumer_secret = $this->login_credentials['consumer_secret'];
                     $login_url = $this->login_credentials['login_url'];
@@ -314,28 +377,22 @@ class Wordpress_Salesforce_Admin {
                     if ($consumer_key && $consumer_secret) {
 
                         $sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $text_domain );
-                        if ( isset( $_GET['code'] ) )  {
-                            $is_authorized = $sfapi->request_token( esc_attr( $_GET['code'] ) );
-                            echo "<script>window.location = '$callback_url';</script>";
-                            //$is_authorized = $this->is_authorized();
-                        } else if ( $sfapi->is_authorized() ) {
-                            echo '<div class="success"><h2>Salesforce is successfully authenticated.</h2></div>';
-                            echo '<p><a class="button-primary" href="' . $callback_url . '&amp;tab=logout">Disconnect from Salesforce</a></p>';
-                            $demo = $this->demo( $sfapi );
-                        } else if ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
-                            echo '<p><a class="button-primary" href="' . $sfapi->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
-                        } // need to throw an error here if all the stuff is missing
+
+                        if ( $sfapi->is_authorized() ) {
+                            echo '<form method="post" action="options.php">';
+                                echo settings_fields( $tab ) . do_settings_sections( $tab );
+                                submit_button( 'Save settings' );
+                            echo '</form>';
+
+                        } else {
+                            salesforce_set_message( esc_html__( 'Salesforce needs to be authorized to connect to this website.', $this->text_domain ), 'error' );
+                        }
+                    } else {
+                        echo '<form method="post" action="options.php">';
+                            echo settings_fields( $tab ) . do_settings_sections( $tab );
+                            submit_button( 'Save settings' );
+                        echo '</form>';
                     }
-                    break;
-                case 'logout':
-                    $message = $this->logout();
-                    echo '<p>' . $message . '</p>';
-                    break;
-                default:
-                    echo '<form method="post" action="options.php">';
-                        echo settings_fields( $tab ) . do_settings_sections( $tab );
-                        submit_button( 'Save settings' );
-                    echo '</form>';
                     break;
             }
 
@@ -355,10 +412,10 @@ class Wordpress_Salesforce_Admin {
 
     
     /**
-     * Deauthorize WordPress from Salesforce.
-     * This deletes the tokens from the database; it does not currently do anything in Salesforce
-     * todo: maybe delete the authorized stuff inside Salesforce?
-     */ 
+    * Deauthorize WordPress from Salesforce.
+    * This deletes the tokens from the database; it does not currently do anything in Salesforce
+    * todo: maybe delete the authorized stuff inside Salesforce? or maybe on an uninstall method?
+    */ 
     private function logout() {
         $this->access_token = delete_option( 'salesforce_api_access_token' );
         $this->instance_url = delete_option( 'salesforce_api_instance_url' );
@@ -367,10 +424,11 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
-     * Render tabs for settings pages in admin
-     */ 
+    * Render tabs for settings pages in admin
+    * @param array $tabs
+    * @param string $tab
+    */ 
     private function tabs( $tabs, $tab = '' ) {
-
         $current_tab = $tab;
         screen_icon();
         echo '<h2 class="nav-tab-wrapper">';
