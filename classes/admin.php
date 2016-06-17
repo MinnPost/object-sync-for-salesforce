@@ -34,6 +34,98 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
+    * Render full admin pages in WordPress
+    */ 
+    public function show_admin_page() {
+        echo '<h1>' . get_admin_page_title() . '</h1>';
+        $tabs = array(
+            'settings' => 'Settings',
+            'authorize' => 'Authorize',
+            'objects' => 'Object setup',
+            'fieldmaps' => 'Fieldmaps'
+        ); // this creates the tabs for the admin
+        $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
+        echo '<div class="wrap">';
+        $this->tabs( $tabs, $tab );
+
+        if ( ! current_user_can('manage_options') ){
+            //salesforce_api_admin_render_header( __("You don't have permission to manage Salesforce API settings",'salesforce-api'),'error');
+            //salesforce_api_admin_render_footer();
+            return;
+        }
+
+        $consumer_key = $this->login_credentials['consumer_key'];
+        $consumer_secret = $this->login_credentials['consumer_secret'];
+        $callback_url = $this->login_credentials['callback_url'];
+        $text_domain = $this->text_domain;
+
+        try {
+            switch( $tab ) {
+                case 'authorize':
+                    if ( isset( $_GET['code'] ) )  {
+                        $is_authorized = $this->salesforce['sfapi']->request_token( esc_attr( $_GET['code'] ) );
+                        echo "<script>window.location = '$callback_url';</script>";
+                    } else if ( $this->salesforce['is_authorized'] === true ) {
+                        echo '<div class="success"><h2>Salesforce is successfully authenticated.</h2></div>';
+                        echo '<p><a class="button-primary" href="' . $callback_url . '&amp;tab=logout">Disconnect from Salesforce</a></p>';
+                        $demo = $this->demo( $this->salesforce['sfapi'] );
+                    } else if ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
+                        echo '<p><a class="button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
+                    } // need to throw an error here if all the stuff is missing
+                    break;
+                case 'fieldmaps':
+                    if ( isset( $_GET['add'] ) ) {
+                        echo '<form method="post" action="options.php">';
+                            echo settings_fields( $tab ) . do_settings_sections( $tab );
+                            submit_button( 'Save settings' );
+                        echo '</form>';
+                    } else {
+                        
+                    }
+                    break;
+                case 'logout':
+                    $message = $this->logout();
+                    echo '<p>' . $message . '</p>';
+                    break;
+                default:
+                    $consumer_key = $this->login_credentials['consumer_key'];
+                    $consumer_secret = $this->login_credentials['consumer_secret'];
+
+                    if ($consumer_key && $consumer_secret) {
+
+                        if ( $this->salesforce['is_authorized'] === true ) {
+                            echo '<form method="post" action="options.php">';
+                                echo settings_fields( $tab ) . do_settings_sections( $tab );
+                                submit_button( 'Save settings' );
+                            echo '</form>';
+
+                        } else {
+                            salesforce_set_message( esc_html__( 'Salesforce needs to be authorized to connect to this website.', $this->text_domain ), 'error' );
+                        }
+                    } else {
+                        echo '<form method="post" action="options.php">';
+                            echo settings_fields( $tab ) . do_settings_sections( $tab );
+                            submit_button( 'Save settings' );
+                        echo '</form>';
+                    }
+                    break;
+            }
+
+        }
+        catch( SalesforceApiException $Ex ) {
+            //salesforce_api_admin_render_header( $Ex->getStatus().': Error '.$Ex->getCode().', '.$Ex->getMessage(), 'error' );
+            //print_r($Ex);
+            echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
+        }
+        catch( Exception $Ex ) {
+            echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
+        }
+
+        echo '</div>';
+
+    }
+
+    /**
     * Create default WordPress admin settings form for salesforce
     * This is for the Settings page/tab
     *
@@ -45,7 +137,7 @@ class Wordpress_Salesforce_Admin {
         $input_checkboxes_default = array( &$this, 'display_checkboxes' );
         $this->fields_settings( 'settings', 'settings', $input_callback_default );
         $this->fields_objects( 'objects', 'objects', $input_checkboxes_default );
-        //$this->fields_fieldmaps( 'fieldmaps', 'objects' );
+        $this->fields_fieldmaps( 'fieldmaps', 'objects' );
     }
 
     /**
@@ -229,8 +321,10 @@ class Wordpress_Salesforce_Admin {
     * @param string $input_callback
     */
     private function fields_fieldmaps( $page, $section, $input_callback = '' ) {
-        $salesforce_rest_api = new Salesforce_REST_API();
         add_settings_section( $page, ucwords( $page ), null, $page );
+        $table = $this->wpdb->prefix . 'salesforce_field_map';
+        $results = $this->wpdb->get_results( "SELECT `wordpress_object`, `salesforce_object`, `description` FROM $table" , ARRAY_A );
+        print_r($results);
     }
 
     /**
@@ -325,87 +419,13 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
-    * Render full admin pages in WordPress
-    */ 
-    public function show_admin_page() {
-        echo '<h1>' . get_admin_page_title() . '</h1>';
-        $tabs = array(
-            'settings' => 'Settings',
-            'authorize' => 'Authorize',
-            'objects' => 'Object setup',
-            'fieldmaps' => 'Fieldmaps'
-        ); // this creates the tabs for the admin
-        $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
-        echo '<div class="wrap">';
-        $this->tabs( $tabs, $tab );
-
-        if ( ! current_user_can('manage_options') ){
-            //salesforce_api_admin_render_header( __("You don't have permission to manage Salesforce API settings",'salesforce-api'),'error');
-            //salesforce_api_admin_render_footer();
-            return;
-        }
-
-        $consumer_key = $this->login_credentials['consumer_key'];
-        $consumer_secret = $this->login_credentials['consumer_secret'];
-        $callback_url = $this->login_credentials['callback_url'];
-        $text_domain = $this->text_domain;
-
-        try {
-            switch( $tab ) {
-                case 'authorize':
-                    if ( isset( $_GET['code'] ) )  {
-                        $is_authorized = $this->salesforce['sfapi']->request_token( esc_attr( $_GET['code'] ) );
-                        echo "<script>window.location = '$callback_url';</script>";
-                    } else if ( $this->salesforce['is_authorized'] === true ) {
-                        echo '<div class="success"><h2>Salesforce is successfully authenticated.</h2></div>';
-                        echo '<p><a class="button-primary" href="' . $callback_url . '&amp;tab=logout">Disconnect from Salesforce</a></p>';
-                        $demo = $this->demo( $this->salesforce['sfapi'] );
-                    } else if ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
-                        echo '<p><a class="button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
-                    } // need to throw an error here if all the stuff is missing
-                    break;
-                case 'logout':
-                    $message = $this->logout();
-                    echo '<p>' . $message . '</p>';
-                    break;
-                default:
-                    $consumer_key = $this->login_credentials['consumer_key'];
-                    $consumer_secret = $this->login_credentials['consumer_secret'];
-
-                    if ($consumer_key && $consumer_secret) {
-
-                        if ( $this->salesforce['is_authorized'] === true ) {
-                            echo '<form method="post" action="options.php">';
-                                echo settings_fields( $tab ) . do_settings_sections( $tab );
-                                submit_button( 'Save settings' );
-                            echo '</form>';
-
-                        } else {
-                            salesforce_set_message( esc_html__( 'Salesforce needs to be authorized to connect to this website.', $this->text_domain ), 'error' );
-                        }
-                    } else {
-                        echo '<form method="post" action="options.php">';
-                            echo settings_fields( $tab ) . do_settings_sections( $tab );
-                            submit_button( 'Save settings' );
-                        echo '</form>';
-                    }
-                    break;
-            }
-
-        }
-        catch( SalesforceApiException $Ex ) {
-            //salesforce_api_admin_render_header( $Ex->getStatus().': Error '.$Ex->getCode().', '.$Ex->getMessage(), 'error' );
-            //print_r($Ex);
-            echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
-        }
-        catch( Exception $Ex ) {
-            echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
-        }
-
-        echo '</div>';
-
+    * Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it
+    * todo: figure out if we should create some template files for this
+    *
+    * @param object $sfapi
+    */
+    private function list_fieldmaps( $sfapi ) {
     }
-
     
     /**
     * Deauthorize WordPress from Salesforce.
