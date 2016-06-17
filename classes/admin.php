@@ -69,18 +69,20 @@ class Wordpress_Salesforce_Admin {
                         echo '<div class="success"><h2>Salesforce is successfully authenticated.</h2></div>';
                         echo '<p><a class="button-primary" href="' . $callback_url . '&amp;tab=logout">Disconnect from Salesforce</a></p>';
                         $demo = $this->demo( $this->salesforce['sfapi'] );
+                        echo $demo;
                     } else if ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
                         echo '<p><a class="button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
                     } // need to throw an error here if all the stuff is missing
                     break;
                 case 'fieldmaps':
-                    if ( isset( $_GET['add'] ) ) {
+                    if ( isset( $_GET['method'] ) ) {
                         echo '<form method="post" action="options.php">';
                             echo settings_fields( $tab ) . do_settings_sections( $tab );
                             submit_button( 'Save settings' );
                         echo '</form>';
                     } else {
-                        
+                        $fieldmaps = $this->list_fieldmaps( $this->salesforce['sfapi'] );
+                        echo $fieldmaps;
                     }
                     break;
                 case 'logout':
@@ -322,9 +324,6 @@ class Wordpress_Salesforce_Admin {
     */
     private function fields_fieldmaps( $page, $section, $input_callback = '' ) {
         add_settings_section( $page, ucwords( $page ), null, $page );
-        $table = $this->wpdb->prefix . 'salesforce_field_map';
-        $results = $this->wpdb->get_results( "SELECT `wordpress_object`, `salesforce_object`, `description` FROM $table" , ARRAY_A );
-        print_r($results);
     }
 
     /**
@@ -381,9 +380,10 @@ class Wordpress_Salesforce_Admin {
     * @param object $sfapi
     */
     private function demo( $sfapi ) {
-        echo '<h3>Salesforce Demo</h3>';
+        $demo = '';
+        $demo .= '<h3>Salesforce Demo</h3>';
 
-        echo '<p>Currently, we are using version ' . $this->login_credentials['rest_api_version'] . ' of the Salesforce REST API. Available versions are displayed below.';
+        $demo .= '<p>Currently, we are using version ' . $this->login_credentials['rest_api_version'] . ' of the Salesforce REST API. Available versions are displayed below.';
         $versions = $sfapi->get_api_versions();
         $response = $versions['data'];
 
@@ -392,15 +392,15 @@ class Wordpress_Salesforce_Admin {
         $is_cached = $versions['cached'] === true ? '' : 'not ';
         $from_cache = $versions['from_cache'] === true ? 'were' : 'were not';
         $is_redo = $versions['is_redo'] === true ? '' : 'not ';
-        echo '<table class="widefat striped"><thead><summary><h4>Available Salesforce API versions. This list is ' . $is_cached . 'cached, and items ' . $from_cache . ' loaded from the cache. This is not an authenticated request, so it does not touch the Salesforce token.</h4></summary><tr><th>Label</th><th>URL</th><th>Version</th></thead>';
+        $demo .= '<table class="widefat striped"><thead><summary><h4>Available Salesforce API versions. This list is ' . $is_cached . 'cached, and items ' . $from_cache . ' loaded from the cache. This is not an authenticated request, so it does not touch the Salesforce token.</h4></summary><tr><th>Label</th><th>URL</th><th>Version</th></thead>';
         foreach ( $response as $version ) {
             $class = '';
             if ( $version['version'] === $this->login_credentials['rest_api_version'] ) {
                 $class = ' class="current"';
             }
-            echo '<tr' . $class . '><td>' . $version['label'] . '</td><td>' . $version['url'] . '</td><td>' . $version['version'] . '</td></tr>';
+            $demo .= '<tr' . $class . '><td>' . $version['label'] . '</td><td>' . $version['url'] . '</td><td>' . $version['version'] . '</td></tr>';
         }
-        echo '</table>';
+        $demo .= '</table>';
 
         $result = $sfapi->query('SELECT Name, Id from Contact LIMIT 100');
         $response = $result['data'];
@@ -410,12 +410,13 @@ class Wordpress_Salesforce_Admin {
         $from_cache = $result['from_cache'] === true ? 'were' : 'were not';
         $is_redo = $result['is_redo'] === true ? '' : 'not ';
 
-        echo '<table class="widefat striped"><thead><summary><h4>Salesforce successfully returned ' . $response['totalSize'] . ' ' . $response['records'][0]['attributes']['type'] . ' records. They are ' . $is_cached . 'cached, and they ' . $from_cache . ' loaded from the cache. This request did ' . $is_redo . 'require refreshing the Salesforce token.</h4></summary><tr><th>Contact ID</th><th>Name</th></thead>';
+        $demo .= '<table class="widefat striped"><thead><summary><h4>Salesforce successfully returned ' . $response['totalSize'] . ' ' . $response['records'][0]['attributes']['type'] . ' records. They are ' . $is_cached . 'cached, and they ' . $from_cache . ' loaded from the cache. This request did ' . $is_redo . 'require refreshing the Salesforce token.</h4></summary><tr><th>Contact ID</th><th>Name</th></thead>';
 
         foreach ( $response['records'] as $record ) {
-            echo '<tr><td>' . $record['Id'] . '</td><td>' . $record['Name'] . '</td></tr>';
+            $demo .= '<tr><td>' . $record['Id'] . '</td><td>' . $record['Name'] . '</td></tr>';
         }
-        echo '</table>';
+        $demo .= '</table>';
+        return $demo;
     }
 
     /**
@@ -425,6 +426,21 @@ class Wordpress_Salesforce_Admin {
     * @param object $sfapi
     */
     private function list_fieldmaps( $sfapi ) {
+        $fieldmaps = '';
+        $fieldmaps .= '<h3>Fieldmaps <a class="page-title-action" href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=add' ) . '">Add New</a></h3>';
+
+        $table = $this->wpdb->prefix . 'salesforce_field_map';
+        $results = $this->wpdb->get_results( "SELECT `wordpress_object`, `salesforce_object`, `description` FROM $table" , ARRAY_A );
+
+        $fieldmaps .= '<table class="widefat striped"><thead><summary></summary><tr><th>WordPress Object</th><th>Salesforce Object</th><th>Description</th><th colspan="4">Actions</th></thead><tbody>';
+
+        foreach ( $results as $record ) {
+            $fieldmaps .= '<tr><td>' . $record['wordpress_object'] . '</td><td>' . $record['salesforce_object'] . '</td><td>' . $record['description'] . '</td><td>Edit</td><td>Clone</td><td>Delete</td><td>Export</td></tr>';
+        }
+
+        $fieldmaps .= '</tbody></table>';
+
+        return $fieldmaps;
     }
     
     /**
