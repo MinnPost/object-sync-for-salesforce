@@ -2,6 +2,7 @@
 
 class Wordpress_Salesforce_Admin {
 
+    protected $wpdb;
     protected $version;
     protected $login_credentials;
     protected $text_domain;
@@ -14,7 +15,8 @@ class Wordpress_Salesforce_Admin {
     * @param array $text_domain
     * @throws \Exception
     */
-    public function __construct( $version, $login_credentials, $text_domain ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain ) {
+        $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
         $this->text_domain = $text_domain;

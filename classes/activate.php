@@ -2,6 +2,7 @@
 
 class Wordpress_Salesforce_Activate {
 
+    protected $wpdb;
     protected $version;
     protected $installed_version;
 
@@ -10,7 +11,8 @@ class Wordpress_Salesforce_Activate {
     * @param string $version
     *
     */
-    public function __construct( $version, $text_domain ) {
+    public function __construct( $wpdb, $version, $text_domain ) {
+        $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->installed_version = get_option( 'salesforce_rest_api_db_version', '' );
         register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'wordpress_salesforce_tables' ) );
@@ -19,10 +21,9 @@ class Wordpress_Salesforce_Activate {
 
     public function wordpress_salesforce_tables() {
 
-        global $wpdb;
-        $charset_collate = $wpdb->get_charset_collate();
-
-        $field_map_table = $wpdb->prefix . 'salesforce_field_map';
+        $charset_collate = $this->wpdb->get_charset_collate();
+        
+        $field_map_table = $this->wpdb->prefix . 'salesforce_field_map';
         $field_map_sql = "CREATE TABLE $field_map_table (
           id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
           name varchar(64) DEFAULT '',
@@ -33,7 +34,7 @@ class Wordpress_Salesforce_Activate {
           PRIMARY KEY (id)
         ) $charset_collate";
 
-        $object_map_table = $wpdb->prefix . 'salesforce_object_map';
+        $object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
         $object_map_sql = "CREATE TABLE $object_map_table (
           id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
           field_map_id bigint(20) NOT NULL,
@@ -45,7 +46,7 @@ class Wordpress_Salesforce_Activate {
           PRIMARY KEY (id)
         ) $charset_collate";
 
-        $object_match_table = $wpdb->prefix . 'salesforce_object_match';
+        $object_match_table = $this->wpdb->prefix . 'salesforce_object_match';
         $object_match_sql = "CREATE TABLE $object_match_table (
           id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
           field_map_id bigint(20) NOT NULL,

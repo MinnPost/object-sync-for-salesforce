@@ -14,6 +14,11 @@ Text Domain: salesforce-rest-api
 class Salesforce_Rest_API {
 
 	/**
+	* @var object
+	*/
+	private $wpdb;
+
+	/**
 	* @var array
 	*/
 	private $login_credentials;
@@ -42,32 +47,36 @@ class Salesforce_Rest_API {
 	 */
 	public function __construct() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
+		global $wpdb;
+
+		$this->wpdb = &$wpdb;
 		$this->version = '0.0.1';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
-		$this->activate( $this->version, $this->text_domain );
-		$this->deactivate( $this->version, $this->text_domain );
-		$this->load_admin( $this->version, $this->login_credentials, $this->text_domain );
+
+		$this->activate( $this->wpdb, $this->version, $this->text_domain );
+		$this->deactivate( $this->wpdb, $this->version, $this->text_domain );
+		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain );
 
 		//add_action		( 'plugins_loaded', 					array( $this, 'textdomain'				) 			);
-		add_action		( 'admin_enqueue_scripts',				array( $this, 'admin_scripts'			)			);
+		//add_action		( 'admin_enqueue_scripts',				array( $this, 'admin_scripts'			)			);
 		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
 	}
 
 	/**
      * What to do upon activation of the plugin
      */
-	function activate( $version, $text_domain ) {
+	function activate( &$wpdb, $version, $text_domain ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
-		$activate = new Wordpress_Salesforce_Activate( $version, $text_domain );
+		$activate = new Wordpress_Salesforce_Activate( $wpdb, $version, $text_domain );
 	}
 
 	/**
      * What to do upon deactivation of the plugin
      */
-	function deactivate( $version, $text_domain ) {
+	function deactivate( &$wpdb, $version, $text_domain ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
-		$deactivate = new Wordpress_Salesforce_Deactivate( $version, $text_domain );
+		$deactivate = new Wordpress_Salesforce_Deactivate( $wpdb, $version, $text_domain );
 	}
 
 	/**
@@ -78,9 +87,9 @@ class Salesforce_Rest_API {
 	* @param array $parent_settings
 	* @throws \Exception
 	*/
-    private function load_admin( $version, $login_credentials, $text_domain ) {
+    private function load_admin( &$wpdb, $version, $login_credentials, $text_domain ) {
     	require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
-    	$admin = new Wordpress_Salesforce_Admin(  $version, $login_credentials, $text_domain );
+    	$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain );
     	add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
     }
 
