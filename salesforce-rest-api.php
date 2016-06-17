@@ -10,10 +10,6 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: salesforce-rest-api
 */
 
-if( !defined( 'SFREST_VER' ) ) {
-	define( 'SFREST_VER', '0.0.1' );
-}
-
 // Start up the plugin
 class Salesforce_Rest_API {
 
@@ -26,6 +22,11 @@ class Salesforce_Rest_API {
 	* @var string
 	*/
 	private $text_domain;
+
+	/**
+	* @var string
+	*/
+	private $version;
 
 	/**
 	 * Static property to hold our singleton instance
@@ -41,35 +42,33 @@ class Salesforce_Rest_API {
 	 */
 	public function __construct() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
+		$this->version = '0.0.1';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
-		$this->load_admin( $this->login_credentials, $this->text_domain );
-
+		$this->activate( $this->version, $this->text_domain );
+		$this->deactivate( $this->version, $this->text_domain );
+		$this->load_admin( $this->version, $this->login_credentials, $this->text_domain );
 
 		//add_action		( 'plugins_loaded', 					array( $this, 'textdomain'				) 			);
 		add_action		( 'admin_enqueue_scripts',				array( $this, 'admin_scripts'			)			);
 		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
-		register_activation_hook( __FILE__, array( &$this, 'activate' ) );
-		register_deactivation_hook( __FILE__, array(&$this, 'deactivate' ) );
 	}
 
 	/**
      * What to do upon activation of the plugin
      */
-	function activate() {
+	function activate( $version, $text_domain ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
-		$activate = new Wordpress_Salesforce_Activate();
+		$activate = new Wordpress_Salesforce_Activate( $version, $text_domain );
 	}
 
 	/**
      * What to do upon deactivation of the plugin
      */
-	function deactivate() {
+	function deactivate( $version, $text_domain ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
-		$deactivate = new Wordpress_Salesforce_Deactivate();
+		$deactivate = new Wordpress_Salesforce_Deactivate( $version, $text_domain );
 	}
-
-	
 
 	/**
 	* load the admin class
@@ -79,11 +78,20 @@ class Salesforce_Rest_API {
 	* @param array $parent_settings
 	* @throws \Exception
 	*/
-    private function load_admin( $login_credentials, $text_domain ) {
+    private function load_admin( $version, $login_credentials, $text_domain ) {
     	require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
-    	$admin = new Wordpress_Salesforce_Admin( $login_credentials, $text_domain );
+    	$admin = new Wordpress_Salesforce_Admin(  $version, $login_credentials, $text_domain );
     	add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
     }
+
+	/**
+	* Admin styles
+	*
+	* @return void
+	*/
+	public function admin_scripts() {
+		//wp_enqueue_style( 'sfrest-admin', plugins_url('lib/css/admin.css', __FILE__), array(), WPCMN_VER, 'all' );
+	}
 
 	/**
 	 * load textdomain
@@ -91,15 +99,7 @@ class Salesforce_Rest_API {
 	 * @return void
 	 */
 	public function textdomain() {
-		load_plugin_textdomain( 'sfrest', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-	}
-	/**
-	 * Admin styles
-	 *
-	 * @return void
-	 */
-	public function admin_scripts() {
-		//wp_enqueue_style( 'sfrest-admin', plugins_url('lib/css/admin.css', __FILE__), array(), WPCMN_VER, 'all' );
+		load_plugin_textdomain( $this->text_domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**

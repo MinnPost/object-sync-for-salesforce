@@ -2,6 +2,7 @@
 
 class Wordpress_Salesforce_Admin {
 
+    protected $version;
     protected $login_credentials;
     protected $text_domain;
     protected $salesforce;
@@ -13,7 +14,8 @@ class Wordpress_Salesforce_Admin {
     * @param array $text_domain
     * @throws \Exception
     */
-    public function __construct( $login_credentials, $text_domain ) {
+    public function __construct( $version, $login_credentials, $text_domain ) {
+        $this->version = $version;
         $this->login_credentials = $login_credentials;
         $this->text_domain = $text_domain;
         $this->salesforce = $this->salesforce();
@@ -324,6 +326,7 @@ class Wordpress_Salesforce_Admin {
     * Render full admin pages in WordPress
     */ 
     public function show_admin_page() {
+        echo '<h1>' . get_admin_page_title() . '</h1>';
         $tabs = array(
             'settings' => 'Settings',
             'authorize' => 'Authorize',
@@ -333,7 +336,6 @@ class Wordpress_Salesforce_Admin {
         $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         echo '<div class="wrap">';
         $this->tabs( $tabs, $tab );
-        echo '<h1>Salesforce</h1>';
 
         if ( ! current_user_can('manage_options') ){
             //salesforce_api_admin_render_header( __("You don't have permission to manage Salesforce API settings",'salesforce-api'),'error');
