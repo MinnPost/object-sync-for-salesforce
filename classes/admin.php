@@ -6,6 +6,7 @@ class Wordpress_Salesforce_Admin {
     protected $version;
     protected $login_credentials;
     protected $text_domain;
+    protected $mappings;
     protected $salesforce;
 
     /**
@@ -15,13 +16,18 @@ class Wordpress_Salesforce_Admin {
     * @param array $text_domain
     * @throws \Exception
     */
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
         $this->text_domain = $text_domain;
-        $this->salesforce = $this->salesforce();
+        $this->salesforce = $salesforce;
+        $this->mappings = $mappings;
         add_action('admin_init', array( &$this, 'salesforce_settings_forms' ) );
+        add_action( 'admin_post_post_fieldmap', array( &$this, 'prepare_fieldmap_data' ) );
+        add_action( 'admin_notices', array( &$this, 'fieldmap_error_notice' ) );
+        add_action( 'admin_post_delete_fieldmap', array( &$this, 'delete_fieldmap' ) );
+    }
     }
 
     /**
@@ -140,33 +146,6 @@ class Wordpress_Salesforce_Admin {
         $this->fields_settings( 'settings', 'settings', $input_callback_default );
         $this->fields_objects( 'objects', 'objects', $input_checkboxes_default );
         $this->fields_fieldmaps( 'fieldmaps', 'objects' );
-    }
-
-    /**
-    * Private helper to load the Salesforce API and see if it is authenticated
-    *
-    * @return array
-    *   Whether Salesforce is authenticated (boolean)
-    *   The sfapi object if it is authenticated (empty, otherwise)
-    */
-    private function salesforce() {
-        $consumer_key = $this->login_credentials['consumer_key'];
-        $consumer_secret = $this->login_credentials['consumer_secret'];
-        $login_url = $this->login_credentials['login_url'];
-        $callback_url = $this->login_credentials['callback_url'];
-        $authorize_path = $this->login_credentials['authorize_path'];
-        $token_path = $this->login_credentials['token_path'];
-        $rest_api_version = $this->login_credentials['rest_api_version'];
-        $text_domain = $this->text_domain;
-        $is_authorized = false;
-        $sfapi = '';
-        if ($consumer_key && $consumer_secret) {
-            $sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $text_domain );
-            if ( $sfapi->is_authorized() === true ) {
-                $is_authorized = true;
-            }
-        }
-        return array( 'is_authorized' => $is_authorized, 'sfapi' => $sfapi );
     }
 
     /**
@@ -417,30 +396,6 @@ class Wordpress_Salesforce_Admin {
         }
         $demo .= '</table>';
         return $demo;
-    }
-
-    /**
-    * Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it
-    * todo: figure out if we should create some template files for this
-    *
-    * @param object $sfapi
-    */
-    private function list_fieldmaps( $sfapi ) {
-        $fieldmaps = '';
-        $fieldmaps .= '<h3>Fieldmaps <a class="page-title-action" href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=add' ) . '">Add New</a></h3>';
-
-        $table = $this->wpdb->prefix . 'salesforce_field_map';
-        $results = $this->wpdb->get_results( "SELECT `wordpress_object`, `salesforce_object`, `description` FROM $table" , ARRAY_A );
-
-        $fieldmaps .= '<table class="widefat striped"><thead><summary></summary><tr><th>WordPress Object</th><th>Salesforce Object</th><th>Description</th><th colspan="4">Actions</th></thead><tbody>';
-
-        foreach ( $results as $record ) {
-            $fieldmaps .= '<tr><td>' . $record['wordpress_object'] . '</td><td>' . $record['salesforce_object'] . '</td><td>' . $record['description'] . '</td><td>Edit</td><td>Clone</td><td>Delete</td><td>Export</td></tr>';
-        }
-
-        $fieldmaps .= '</tbody></table>';
-
-        return $fieldmaps;
     }
     
     /**

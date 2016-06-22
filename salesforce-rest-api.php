@@ -53,10 +53,14 @@ class Salesforce_Rest_API {
 		$this->version = '0.0.1';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
+		$this->salesforce = $this->salesforce_get_api();
 
 		$this->activate( $this->wpdb, $this->version, $this->text_domain );
 		$this->deactivate( $this->wpdb, $this->version, $this->text_domain );
-		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain );
+
+		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->login_credentials, $this->salesforce, $this->text_domain );
+
+		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->mappings );
 
 		//add_action		( 'plugins_loaded', 					array( $this, 'textdomain'				) 			);
 		//add_action		( 'admin_enqueue_scripts',				array( $this, 'admin_scripts'			)			);
@@ -64,9 +68,36 @@ class Salesforce_Rest_API {
 	}
 
 	/**
+    * Public helper to load the Salesforce API and see if it is authenticated
+    *
+    * @return array
+    *   Whether Salesforce is authenticated (boolean)
+    *   The sfapi object if it is authenticated (empty, otherwise)
+    */
+    private function salesforce_get_api() {
+        $consumer_key = $this->login_credentials['consumer_key'];
+        $consumer_secret = $this->login_credentials['consumer_secret'];
+        $login_url = $this->login_credentials['login_url'];
+        $callback_url = $this->login_credentials['callback_url'];
+        $authorize_path = $this->login_credentials['authorize_path'];
+        $token_path = $this->login_credentials['token_path'];
+        $rest_api_version = $this->login_credentials['rest_api_version'];
+        $text_domain = $this->text_domain;
+        $is_authorized = false;
+        $sfapi = '';
+        if ($consumer_key && $consumer_secret) {
+            $sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $text_domain );
+            if ( $sfapi->is_authorized() === true ) {
+                $is_authorized = true;
+            }
+        }
+        return array( 'is_authorized' => $is_authorized, 'sfapi' => $sfapi );
+    }
+
+	/**
      * What to do upon activation of the plugin
      */
-	function activate( &$wpdb, $version, $text_domain ) {
+	private function activate( &$wpdb, $version, $text_domain ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
 		$activate = new Wordpress_Salesforce_Activate( $wpdb, $version, $text_domain );
 	}
@@ -79,6 +110,12 @@ class Salesforce_Rest_API {
 		$deactivate = new Wordpress_Salesforce_Deactivate( $wpdb, $version, $text_domain );
 	}
 
+	private function mappings( &$wpdb, $version, $login_credentials, $text_domain, $salesforce ) {
+    	require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
+    	$mappings = new Salesforce_Mapping( $wpdb, $version, $login_credentials, $text_domain, $salesforce );
+    	return $mappings;
+    }
+
 	/**
 	* load the admin class
 	* also creates admin menu, unless the plugin that calls this library has indicated that it has its own menu
@@ -87,11 +124,12 @@ class Salesforce_Rest_API {
 	* @param array $parent_settings
 	* @throws \Exception
 	*/
-    private function load_admin( &$wpdb, $version, $login_credentials, $text_domain ) {
+    private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings ) {
     	require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
-    	$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain );
+    	$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings );
     	add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
     }
+
 
 	/**
 	* Admin styles
