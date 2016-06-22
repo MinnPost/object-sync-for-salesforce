@@ -41,8 +41,15 @@ class Wordpress_Salesforce_Admin {
             $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
         } else { // there are no errors
             // send the row to the fieldmap class
-            $id = $this->mappings->create( $_POST );
-            if ( $id === false ) {
+            // if it is add or clone, use the create method
+            $method = esc_attr( $_POST['method'] );
+            if ( $method === 'add' || $method === 'clone' ) {
+                $result = $this->mappings->create( $_POST );
+            } elseif ( $method === 'edit' ) {
+                $id = esc_attr( $_POST['id'] );
+                $result = $this->mappings->update( $_POST, $id );
+            }
+            if ( $result === false ) {
                 $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
             } else {
                 //$success = esc_url_raw( $_POST['redirect_url_success'] );
@@ -132,7 +139,7 @@ class Wordpress_Salesforce_Admin {
                     break;
                 case 'fieldmaps':
                     if ( isset( $_GET['method'] ) ) {
-
+                        $method = esc_attr( $_GET['method'] );
                         $error_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=' . esc_html( $_GET['method'] ) );
                         $success_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps' );
 
@@ -143,7 +150,7 @@ class Wordpress_Salesforce_Admin {
 
                         if ( isset( $posted ) && is_array( $posted ) ) {
                             $map = $posted;
-                        } else if ( $_GET['method'] === 'edit' || $_GET['method'] === 'delete' ) {
+                        } else if ( $method === 'edit' || $method === 'clone' || $method === 'delete' ) {
                             $map = $this->mappings->read( $_GET['id'] );
                         }
 
@@ -153,12 +160,19 @@ class Wordpress_Salesforce_Admin {
                             $wordpress_object = $map['wordpress_object'];
                         }
                         
-                        if ( $_GET['method'] === 'add' || $_GET['method'] === 'edit' ) { ?>
+                        if ( $method === 'add' || $method === 'edit' || $method === 'clone' ) { ?>
                         <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
                             <input type="hidden" name="redirect_url_error" value="<?php echo $error_url; ?>" />
                             <input type="hidden" name="redirect_url_success" value="<?php echo $success_url; ?>" />
                             <input type="hidden" name="transient" value="<?php echo $transient; ?>" />
-                            <input type="hidden" name="action" value="post_fieldmap">
+                            <input type="hidden" name="action" value="post_fieldmap" >
+                            <input type="hidden" name="method" value="<?php echo $method; ?>" />
+                            <?php if ( $method === 'edit' ) {
+                            ?>
+                            <input type="hidden" name="id" value="<?php echo $map['id']; ?>" />
+                            <?php
+                            }
+                            ?>
                             <div>
                                 <label>Label: 
                                     <input type="text" id="label" name="label" value="<?php echo isset( $label ) ? $label : ''; ?>" />
@@ -174,10 +188,10 @@ class Wordpress_Salesforce_Admin {
                                     <input type="text" id="wordpress_object" name="wordpress_object" value="<?php echo isset( $wordpress_object ) ? $wordpress_object : ''; ?>" />
                                 </label>
                             </div>
-                            <?php echo submit_button( ucfirst( $_GET['method'] ) . ' fieldmap' ); ?>
+                            <?php echo submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
                         </form>
                         <?php 
-                        } elseif ( $_GET['method'] === 'delete' ) {
+                        } elseif ( $method === 'delete' ) {
                             ?>
                             <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
                                 <input type="hidden" name="redirect_url_error" value="<?php echo $error_url; ?>" />
