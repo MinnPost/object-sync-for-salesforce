@@ -28,6 +28,56 @@ class Wordpress_Salesforce_Admin {
         add_action( 'admin_notices', array( &$this, 'fieldmap_error_notice' ) );
         add_action( 'admin_post_delete_fieldmap', array( &$this, 'delete_fieldmap' ) );
     }
+
+    public function prepare_fieldmap_data() {
+        $error = false;
+        
+        if ( !isset( $_POST['label'] ) ||!isset( $_POST['salesforce_object'] ) || !isset( $_POST['wordpress_object'] ) ) {
+            $error = true;
+        }
+        if ( $error === true ) {
+            $cachekey = md5( json_encode( $_POST ) );
+            set_transient( $cachekey, $_POST, 0 );
+            $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
+        } else { // there are no errors
+            // send the row to the fieldmap class
+            $id = $this->mappings->create( $_POST );
+            if ( $id === false ) {
+                $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
+            } else {
+                //$success = esc_url_raw( $_POST['redirect_url_success'] );
+                if ( isset( $_POST['transient'] ) ) { // there was previously an error saved. can delete it now.
+                    delete_transient( esc_attr( $_POST['transient'] ) );
+                }
+                // then send the user to the page where they can edit the fields
+                $url = esc_url_raw( $_POST['redirect_url_success'] );
+            }
+        }
+        wp_redirect( $url );
+        exit();
+    }
+
+    public function delete_fieldmap() {
+        if ( $_POST['id'] ) {
+            $result = $this->mappings->delete( $_POST['id'] );
+            if ( $result === true ) {
+                $url = esc_url_raw( $_POST['redirect_url_success'] );
+            } else {
+                $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&id=' . $_POST['id'];
+            }
+            wp_redirect( $url );
+            exit();
+        }
+    }
+
+    public function fieldmap_error_notice() {
+        if ( isset( $_GET['transient'] ) ) {
+        ?>
+        <div class="error notice">
+            <p><?php _e( 'Errors kept this fieldmap from being saved.', $this->text_domain ); ?></p>
+        </div>
+        <?php
+        }
     }
 
     /**
@@ -82,12 +132,66 @@ class Wordpress_Salesforce_Admin {
                     break;
                 case 'fieldmaps':
                     if ( isset( $_GET['method'] ) ) {
-                        echo '<form method="post" action="options.php">';
-                            echo settings_fields( $tab ) . do_settings_sections( $tab );
-                            submit_button( 'Save settings' );
-                        echo '</form>';
+
+                        $error_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=' . esc_html( $_GET['method'] ) );
+                        $success_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps' );
+
+                        if ( isset( $_GET['transient'] ) ) {
+                            $transient = esc_html( $_GET['transient'] );
+                            $posted = get_transient( $transient );
+                        }
+
+                        if ( isset( $posted ) && is_array( $posted ) ) {
+                            $map = $posted;
+                        } else if ( $_GET['method'] === 'edit' || $_GET['method'] === 'delete' ) {
+                            $map = $this->mappings->read( $_GET['id'] );
+                        }
+
+                        if ( isset( $map ) && is_array( $map ) ) {
+                            $label = $map['label'];
+                            $salesforce_object = $map['salesforce_object'];
+                            $wordpress_object = $map['wordpress_object'];
+                        }
+                        
+                        if ( $_GET['method'] === 'add' || $_GET['method'] === 'edit' ) { ?>
+                        <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
+                            <input type="hidden" name="redirect_url_error" value="<?php echo $error_url; ?>" />
+                            <input type="hidden" name="redirect_url_success" value="<?php echo $success_url; ?>" />
+                            <input type="hidden" name="transient" value="<?php echo $transient; ?>" />
+                            <input type="hidden" name="action" value="post_fieldmap">
+                            <div>
+                                <label>Label: 
+                                    <input type="text" id="label" name="label" value="<?php echo isset( $label ) ? $label : ''; ?>" />
+                                </label>
+                            </div>
+                            <div>
+                                <label>Salesforce Object: 
+                                    <input type="text" id="salesforce_object" name="salesforce_object" value="<?php echo isset( $salesforce_object ) ? $salesforce_object : ''; ?>" />
+                                </label>
+                            </div>
+                            <div>
+                                <label>WordPress Object:
+                                    <input type="text" id="wordpress_object" name="wordpress_object" value="<?php echo isset( $wordpress_object ) ? $wordpress_object : ''; ?>" />
+                                </label>
+                            </div>
+                            <?php echo submit_button( ucfirst( $_GET['method'] ) . ' fieldmap' ); ?>
+                        </form>
+                        <?php 
+                        } elseif ( $_GET['method'] === 'delete' ) {
+                            ?>
+                            <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
+                                <input type="hidden" name="redirect_url_error" value="<?php echo $error_url; ?>" />
+                                <input type="hidden" name="redirect_url_success" value="<?php echo $success_url; ?>" />
+                                <input type="hidden" name="id" value="<?php echo $map['id']; ?>" />
+                                <input type="hidden" name="action" value="delete_fieldmap">
+                                <h2>Are you sure you want to delete this fieldmap?</h2>
+                                <p>This fieldmap is called <strong><?php echo $map['label']; ?></strong> and it maps the Salesforce <?php echo $map['salesforce_object']; ?> object to the WordPress <?php echo $map['wordpress_object']; ?> object.</p>
+                                <?php echo submit_button( 'Confirm deletion' ); ?>
+                            </form>
+                            <?php
+                        }
                     } else {
-                        $fieldmaps = $this->list_fieldmaps( $this->salesforce['sfapi'] );
+                        $fieldmaps = $this->mappings->generate_table();
                         echo $fieldmaps;
                     }
                     break;
