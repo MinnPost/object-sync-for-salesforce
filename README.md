@@ -44,6 +44,12 @@ These classes create or delete the plugin's custom database tables. Tables are:
 2. `wp_salesforce_object_map`: Map individual object items between WordPress and Salesforce, and save the dates when they are last imported and exported.
 3. `wp_salesforce_object_match`: Set the field(s) that should be used to determine an already existing match between a WordPress and Salesforce item. Ex: use the `user_email` field to find a Salesforce Contact. This will work if the `user_email` is matched to a Salesforce field in `wp_salesforce_field_map`.
 
+### Admin (admin)
+
+This class controls the admin functionality of the plugin. Its methods should, when possible, read and write data from and to other classes rather than directly.
+
+
+
 ### Classes Todo:
 
 #### Salesforce Mapping (salesforce_mapping)

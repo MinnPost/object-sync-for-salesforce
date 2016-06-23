@@ -30,90 +30,9 @@ class Wordpress_Salesforce_Admin {
         add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_fields' ) );
     }
 
-    public function get_salesforce_object_fields( $data = array() ) {
-        if ( empty( $data ) ) {
-            $data = $_POST;
-        }
-        if ( !empty( $data['salesforce_object'] ) ) {
-            $object = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
-            $fields = array();
-            $type = isset( $data['type'] ) ? esc_attr( $data['type'] ) : '';
-            foreach ( $object['data']['fields'] as $key => $value) {
-                if ( $type === '' || $type === $value['type'] ) {
-                    $fields[$key] = $value;
-                }
-            }
-        }
+    
 
-        if ( !empty( $_POST ) ) {
-            wp_send_json_success( $fields );
-        } else {
-            return $fields;
-        }
-    }
-
-    public function prepare_fieldmap_data() {
-        $error = false;
-        $cachekey = md5( json_encode( $_POST ) );
-        
-        if ( !isset( $_POST['label'] ) ||!isset( $_POST['salesforce_object'] ) || !isset( $_POST['wordpress_object'] ) ) {
-            $error = true;
-        }
-        if ( $error === true ) {
-            set_transient( $cachekey, $_POST, 0 );
-            if ( $cachekey !== '' ) {
-                $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
-            }
-        } else { // there are no errors
-            // send the row to the fieldmap class
-            // if it is add or clone, use the create method
-            $method = esc_attr( $_POST['method'] );
-            if ( $method === 'add' || $method === 'clone' ) {
-                $result = $this->mappings->create( $_POST );
-            } elseif ( $method === 'edit' ) { // if it is edit, use the update method
-                $id = esc_attr( $_POST['id'] );
-                $result = $this->mappings->update( $_POST, $id );
-            }
-            if ( $result === false ) { // if the database didn't save, it's still ane rror
-                set_transient( $cachekey, $_POST, 0 );
-                if ( $cachekey !== '' ) {
-                    $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
-                }
-            } else {
-                //$success = esc_url_raw( $_POST['redirect_url_success'] );
-                if ( isset( $_POST['transient'] ) ) { // there was previously an error saved. can delete it now.
-                    delete_transient( esc_attr( $_POST['transient'] ) );
-                }
-                // then send the user to the page where they can edit the fields
-                $url = esc_url_raw( $_POST['redirect_url_success'] );
-            }
-        }
-        wp_redirect( $url );
-        exit();
-    }
-
-    public function delete_fieldmap() {
-        if ( $_POST['id'] ) {
-            $result = $this->mappings->delete( $_POST['id'] );
-            if ( $result === true ) {
-                $url = esc_url_raw( $_POST['redirect_url_success'] );
-            } else {
-                $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&id=' . $_POST['id'];
-            }
-            wp_redirect( $url );
-            exit();
-        }
-    }
-
-    public function fieldmap_error_notice() {
-        if ( isset( $_GET['transient'] ) ) {
-        ?>
-        <div class="error notice">
-            <p><?php _e( 'Errors kept this fieldmap from being saved.', $this->text_domain ); ?></p>
-        </div>
-        <?php
-        }
-    }
+    
 
     /**
     * Create WordPress admin options page
@@ -271,6 +190,9 @@ class Wordpress_Salesforce_Admin {
                                     }
                                     ?>
                                 </div>
+                            </fieldset>
+                            <fieldset class="fieldmap">
+
                             </fieldset>
                             <?php echo submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
                         </form>
@@ -505,6 +427,124 @@ class Wordpress_Salesforce_Admin {
     */
     private function fields_fieldmaps( $page, $section, $input_callback = '' ) {
         add_settings_section( $page, ucwords( $page ), null, $page );
+    }
+
+    /**
+    * Get Salesforce object fields for fieldmapping
+    * This takes either the $_POST array via ajax, or can be directly called with a $data array
+    * 
+    * @param array $data
+    * data must contain a salesforce_object
+    * can optionally contain a type
+    * @return array $fields
+    */
+    public function get_salesforce_object_fields( $data = array() ) {
+        if ( empty( $data ) ) {
+            $data = $_POST;
+        }
+        if ( !empty( $data['salesforce_object'] ) ) {
+            $object = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
+            $fields = array();
+            $type = isset( $data['type'] ) ? esc_attr( $data['type'] ) : '';
+            foreach ( $object['data']['fields'] as $key => $value) {
+                if ( $type === '' || $type === $value['type'] ) {
+                    $fields[$key] = $value;
+                }
+            }
+        }
+
+        if ( !empty( $_POST ) ) {
+            wp_send_json_success( $fields );
+        } else {
+            return $fields;
+        }
+    }
+
+    /**
+    * Prepare fieldmap data and redirect after processing
+    * This runs when the create or update forms are submitted
+    * It is public because it depends on an admin hook
+    * It then calls the salesforce_mapping class and sends prepared data over to it, then redirects to the correct page
+    * This method does include error handling, by loading the submission in a transient if there is an error, and then deleting it upon success
+    * todo: figure out if this structure makes sense
+    *
+    */
+    public function prepare_fieldmap_data() {
+        $error = false;
+        $cachekey = md5( json_encode( $_POST ) );
+        
+        if ( !isset( $_POST['label'] ) ||!isset( $_POST['salesforce_object'] ) || !isset( $_POST['wordpress_object'] ) ) {
+            $error = true;
+        }
+        if ( $error === true ) {
+            set_transient( $cachekey, $_POST, 0 );
+            if ( $cachekey !== '' ) {
+                $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
+            }
+        } else { // there are no errors
+            // send the row to the fieldmap class
+            // if it is add or clone, use the create method
+            $method = esc_attr( $_POST['method'] );
+            if ( $method === 'add' || $method === 'clone' ) {
+                $result = $this->mappings->create( $_POST );
+            } elseif ( $method === 'edit' ) { // if it is edit, use the update method
+                $id = esc_attr( $_POST['id'] );
+                $result = $this->mappings->update( $_POST, $id );
+            }
+            if ( $result === false ) { // if the database didn't save, it's still ane rror
+                set_transient( $cachekey, $_POST, 0 );
+                if ( $cachekey !== '' ) {
+                    $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
+                }
+            } else {
+                //$success = esc_url_raw( $_POST['redirect_url_success'] );
+                if ( isset( $_POST['transient'] ) ) { // there was previously an error saved. can delete it now.
+                    delete_transient( esc_attr( $_POST['transient'] ) );
+                }
+                // then send the user to the page where they can edit the fields
+                $url = esc_url_raw( $_POST['redirect_url_success'] );
+            }
+        }
+        wp_redirect( $url );
+        exit();
+    }
+
+    /**
+    * Delete fieldmap data and redirect after processing
+    * This runs when the delete link is clicked, after the user confirms
+    * It is public because it depends on an admin hook
+    * It then calls the salesforce_mapping class and the delete method
+    * todo: figure out if this structure makes sense
+    *
+    */
+    public function delete_fieldmap() {
+        if ( $_POST['id'] ) {
+            $result = $this->mappings->delete( $_POST['id'] );
+            if ( $result === true ) {
+                $url = esc_url_raw( $_POST['redirect_url_success'] );
+            } else {
+                $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&id=' . $_POST['id'];
+            }
+            wp_redirect( $url );
+            exit();
+        }
+    }
+
+    /**
+    * Fieldmap error notice
+    * This runs if a mapping method has had an error. We could probably give it more helpful messaging.
+    * It is public because it depends on the admin_notices hook
+    * todo: better error messages
+    *
+    */
+    public function fieldmap_error_notice() {
+        if ( isset( $_GET['transient'] ) ) {
+        ?>
+        <div class="error notice">
+            <p><?php _e( 'Errors kept this fieldmap from being saved.', $this->text_domain ); ?></p>
+        </div>
+        <?php
+        }
     }
 
     /**
