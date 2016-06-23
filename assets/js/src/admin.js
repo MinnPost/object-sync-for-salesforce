@@ -1,7 +1,9 @@
 var $ = window.jQuery;
 
 function salesforce_date_fields() {
-	$('.pull_trigger_field').hide();
+	if ($('.pull_trigger_field > *').length === 0) {
+		$('.pull_trigger_field').hide();
+	}
 	$('#salesforce_object').on('change', function() {
 		var data = {
 			'action' : 'get_salesforce_object_description',
