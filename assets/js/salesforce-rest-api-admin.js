@@ -1,7 +1,7 @@
 var $ = window.jQuery;
 
 function salesforce_date_fields() {
-	$('.salesforce_datefield').hide();
+	$('.pull_trigger_field').hide();
 	$('#salesforce_object').on('change', function() {
 		var data = {
 			'action' : 'get_salesforce_object_description',
@@ -10,15 +10,15 @@ function salesforce_date_fields() {
 		}
 		$.post(ajaxurl, data, function(response) {
 			var markup = '';
-			markup += '<label for="salesforce_datefield">Date field to trigger pull:</label>';
-			markup += '<select name="salesforce_datefield" id="salesforce_datefield">'
+			markup += '<label for="pull_trigger_field">Date field to trigger pull:</label>';
+			markup += '<select name="pull_trigger_field" id="pull_trigger_field">'
 			$.each(response.data, function(index, value) {
 				markup += '<option value="' + value.label + '">' + value.label + '</option>';
 			});
 			markup += '</select>';
 			markup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>'
-			$('.salesforce_datefield').html(markup);
-			$('.salesforce_datefield').show();
+			$('.pull_trigger_field').html(markup);
+			$('.pull_trigger_field').show();
 		});
 	});
 }

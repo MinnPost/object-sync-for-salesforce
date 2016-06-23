@@ -27,20 +27,28 @@ class Wordpress_Salesforce_Admin {
         add_action( 'admin_post_post_fieldmap', array( &$this, 'prepare_fieldmap_data' ) );
         add_action( 'admin_notices', array( &$this, 'fieldmap_error_notice' ) );
         add_action( 'admin_post_delete_fieldmap', array( &$this, 'delete_fieldmap' ) );
-        add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'ajax_salesforce_object_fields' ) );
+        add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_fields' ) );
     }
 
-    public function ajax_salesforce_object_fields() {
-        if ( !empty( $_POST['salesforce_object'] ) ) {
-            $object = $this->salesforce['sfapi']->object_describe( esc_attr( $_POST['salesforce_object'] ) );
+    public function get_salesforce_object_fields( $data = array() ) {
+        if ( empty( $data ) ) {
+            $data = $_POST;
+        }
+        if ( !empty( $data['salesforce_object'] ) ) {
+            $object = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
             $fields = array();
-            $type = isset( $_POST['type'] ) ? esc_attr( $_POST['type'] ) : '';
+            $type = isset( $data['type'] ) ? esc_attr( $data['type'] ) : '';
             foreach ( $object['data']['fields'] as $key => $value) {
                 if ( $type === '' || $type === $value['type'] ) {
                     $fields[$key] = $value;
                 }
             }
+        }
+
+        if ( !empty( $_POST ) ) {
             wp_send_json_success( $fields );
+        } else {
+            return $fields;
         }
     }
 
@@ -178,6 +186,7 @@ class Wordpress_Salesforce_Admin {
                             $label = $map['label'];
                             $salesforce_object = $map['salesforce_object'];
                             $wordpress_object = $map['wordpress_object'];
+                            $pull_trigger_field = $map['pull_trigger_field'];
                         }
                         
                         if ( $method === 'add' || $method === 'edit' || $method === 'clone' ) { ?>
@@ -244,7 +253,24 @@ class Wordpress_Salesforce_Admin {
                                         ?>
                                     </select>
                                 </div>
-                                <div class="salesforce_datefield"></div>
+                                <div class="pull_trigger_field">
+                                    <?php
+                                    if ( isset( $pull_trigger_field ) ) {
+                                        echo '<label for="pull_trigger_field">Date field to trigger pull:</label>';
+                                        $fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object, 'type' => 'datetime' ) );
+                                        echo '<select name="pull_trigger_field" id="pull_trigger_field">';
+                                        foreach( $fields as $key => $value ) {
+                                            if ( $pull_trigger_field === $value['label'] ) {
+                                                $selected = ' selected';
+                                            } else {
+                                                $selected = '';
+                                            }
+                                            echo '<option value="' . $value['label'] . '" ' . $selected . '>' . $value['label'] . '</option>';
+                                        }
+                                        echo '</select>';
+                                    }
+                                    ?>
+                                </div>
                             </fieldset>
                             <?php echo submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
                         </form>

@@ -28,6 +28,9 @@ class Salesforce_Mapping {
 
     public function create( $posted = array() ) {
     	$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
+    	if ( isset( $posted['pull_trigger_field'] ) ) {
+    		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
+    	}
     	$insert = $this->wpdb->insert( $this->table, $data );
     	if ( $insert === 1 ) {
     		return $this->wpdb->insert_id;
@@ -53,6 +56,9 @@ class Salesforce_Mapping {
 
     public function update( $posted = array(), $id = '' ) {
     	$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
+    	if ( isset( $posted['pull_trigger_field'] ) ) {
+    		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
+    	}
     	$update = $this->wpdb->update( $this->table, $data, array( 'id' => $id ) );
     	if ( $update === FALSE ) {
     		return false;
@@ -75,7 +81,7 @@ class Salesforce_Mapping {
 
     private function get_all( $offset = '', $limit = '' ) {
         $table = $this->table;
-        $results = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object` FROM $table" , ARRAY_A );
+        $results = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field` FROM $table" , ARRAY_A );
         return $results;
     }
 
