@@ -23,10 +23,28 @@ class Wordpress_Salesforce_Admin {
         $this->text_domain = $text_domain;
         $this->salesforce = $salesforce;
         $this->mappings = $mappings;
-        add_action('admin_init', array( &$this, 'salesforce_settings_forms' ) );
+        add_action( 'admin_init', array( &$this, 'salesforce_settings_forms' ) );
         add_action( 'admin_post_post_fieldmap', array( &$this, 'prepare_fieldmap_data' ) );
         add_action( 'admin_notices', array( &$this, 'fieldmap_error_notice' ) );
         add_action( 'admin_post_delete_fieldmap', array( &$this, 'delete_fieldmap' ) );
+        add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'ajax_salesforce_object_fields' ) );
+    }
+
+    public function ajax_salesforce_object_fields() {
+        //echo 'foo';
+        //$data['function'] = __METHOD__;
+        //wp_send_json_success( $data );
+        /*if ( !empty( $_POST['salesforce_object'] ) ) {
+            $object = $this->salesforce['sfapi']->object_describe( esc_attr( $_POST['salesforce_object'] ) );
+            wp_send_json_success( $object );
+        }
+        die();*/
+        //$result = array('objectname' => esc_attr( $_POST['salesforce_object'] ));
+        //wp_send_json_success( $result );
+        if ( !empty( $_POST['salesforce_object'] ) ) {
+            $object = $this->salesforce['sfapi']->object_describe( esc_attr( $_POST['salesforce_object'] ) );
+            wp_send_json_success( $object['data']['fields'] );
+        }
     }
 
     public function prepare_fieldmap_data() {
