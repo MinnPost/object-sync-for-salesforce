@@ -31,26 +31,31 @@ class Wordpress_Salesforce_Admin {
 
     public function prepare_fieldmap_data() {
         $error = false;
+        $cachekey = md5( json_encode( $_POST ) );
         
         if ( !isset( $_POST['label'] ) ||!isset( $_POST['salesforce_object'] ) || !isset( $_POST['wordpress_object'] ) ) {
             $error = true;
         }
         if ( $error === true ) {
-            $cachekey = md5( json_encode( $_POST ) );
             set_transient( $cachekey, $_POST, 0 );
-            $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
+            if ( $cachekey !== '' ) {
+                $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
+            }
         } else { // there are no errors
             // send the row to the fieldmap class
             // if it is add or clone, use the create method
             $method = esc_attr( $_POST['method'] );
             if ( $method === 'add' || $method === 'clone' ) {
                 $result = $this->mappings->create( $_POST );
-            } elseif ( $method === 'edit' ) {
+            } elseif ( $method === 'edit' ) { // if it is edit, use the update method
                 $id = esc_attr( $_POST['id'] );
                 $result = $this->mappings->update( $_POST, $id );
             }
-            if ( $result === false ) {
-                $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
+            if ( $result === false ) { // if the database didn't save, it's still ane rror
+                set_transient( $cachekey, $_POST, 0 );
+                if ( $cachekey !== '' ) {
+                    $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
+                }
             } else {
                 //$success = esc_url_raw( $_POST['redirect_url_success'] );
                 if ( isset( $_POST['transient'] ) ) { // there was previously an error saved. can delete it now.
@@ -140,7 +145,7 @@ class Wordpress_Salesforce_Admin {
                 case 'fieldmaps':
                     if ( isset( $_GET['method'] ) ) {
                         $method = esc_attr( $_GET['method'] );
-                        $error_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=' . esc_html( $_GET['method'] ) );
+                        $error_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=' . $method );
                         $success_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps' );
 
                         if ( isset( $_GET['transient'] ) ) {
@@ -164,7 +169,13 @@ class Wordpress_Salesforce_Admin {
                         <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
                             <input type="hidden" name="redirect_url_error" value="<?php echo $error_url; ?>" />
                             <input type="hidden" name="redirect_url_success" value="<?php echo $success_url; ?>" />
+                            <?php
+                            if ( isset( $transient ) ) {
+                            ?>
                             <input type="hidden" name="transient" value="<?php echo $transient; ?>" />
+                            <?php    
+                            }
+                            ?>
                             <input type="hidden" name="action" value="post_fieldmap" >
                             <input type="hidden" name="method" value="<?php echo $method; ?>" />
                             <?php if ( $method === 'edit' ) {
@@ -180,12 +191,41 @@ class Wordpress_Salesforce_Admin {
                             </div>
                             <div>
                                 <label>Salesforce Object: 
-                                    <input type="text" id="salesforce_object" name="salesforce_object" value="<?php echo isset( $salesforce_object ) ? $salesforce_object : ''; ?>" />
+                                    <select id="salesforce_object" name="salesforce_object">
+                                        <option value="">- Select object type -</option>
+                                        <?php
+                                        $sfapi = $this->salesforce['sfapi'];
+                                        $objects = $sfapi->objects();
+                                        foreach ( $objects as $object ) {
+                                            if ( isset( $salesforce_object ) && $salesforce_object === $object['name'] ) {
+                                                $selected = ' selected';
+                                            } else {
+                                                $selected = '';
+                                            }
+                                            echo '<option value="' . $object['name'] . '"' . $selected . '>' . $object['label'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
                                 </label>
                             </div>
                             <div>
                                 <label>WordPress Object:
-                                    <input type="text" id="wordpress_object" name="wordpress_object" value="<?php echo isset( $wordpress_object ) ? $wordpress_object : ''; ?>" />
+                                    <select id="wordpress_object" name="wordpress_object">
+                                        <option value="">- Select object type -</option>
+                                        <?php
+                                        $objects = get_post_types();
+                                        $objects[] = 'user';
+                                        sort( $objects );
+                                        foreach ( $objects as $object ) {
+                                            if ( isset( $wordpress_object ) && $wordpress_object === $object ) {
+                                                $selected = ' selected';
+                                            } else {
+                                                $selected = '';
+                                            }
+                                            echo '<option value="' . $object . '"' . $selected . '>' . $object . '</option>';
+                                        }
+                                        ?>
+                                    </select>
                                 </label>
                             </div>
                             <?php echo submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
