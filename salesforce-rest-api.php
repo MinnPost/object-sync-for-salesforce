@@ -63,7 +63,6 @@ class Salesforce_Rest_API {
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->mappings );
 
 		//add_action		( 'plugins_loaded', 					array( $this, 'textdomain'				) 			);
-		//add_action		( 'admin_enqueue_scripts',				array( $this, 'admin_scripts'			)			);
 		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
 	}
 
@@ -128,6 +127,7 @@ class Salesforce_Rest_API {
     	require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
     	$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings );
     	add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
+    	add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
     }
 
 
@@ -136,8 +136,9 @@ class Salesforce_Rest_API {
 	*
 	* @return void
 	*/
-	public function admin_scripts() {
-		//wp_enqueue_style( 'sfrest-admin', plugins_url('lib/css/admin.css', __FILE__), array(), WPCMN_VER, 'all' );
+	public function admin_scripts_and_styles() {
+		wp_enqueue_script( $this->text_domain . '-admin', plugins_url( 'assets/js/salesforce-rest-api-admin.min.js', __FILE__ ), array( 'jquery' ), $this->version, true );
+		wp_enqueue_style( $this->text_domain . '-admin', plugins_url( 'assets/css/salesforce-rest-api-admin.min.css', __FILE__ ), array(), $this->version, 'all' );
 	}
 
 	/**
