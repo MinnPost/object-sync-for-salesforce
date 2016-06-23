@@ -54,11 +54,10 @@ class Salesforce_Mapping {
     public function update( $posted = array(), $id = '' ) {
     	$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
     	$update = $this->wpdb->update( $this->table, $data, array( 'id' => $id ) );
-    	if ( $update === 1 ) {
-    		echo 'this is an update';
-    		return true;
-    	} else {
+    	if ( $update === FALSE ) {
     		return false;
+    	} else {
+    		return true;
     	}
     }
 
