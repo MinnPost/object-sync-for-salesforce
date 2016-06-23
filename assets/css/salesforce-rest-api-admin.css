@@ -1,3 +1,8 @@
+form.fieldmap .spinner {
+  display: inline-block;
+  float: none;
+}
+
 form.fieldmap fieldset {
   border: 1px solid #e1e1e1;
   margin-bottom: 15px;
@@ -14,7 +19,11 @@ form.fieldmap div {
 }
 
 form.fieldmap div label {
-  display: block;
+  display: inline-block;
   margin-bottom: 7.5px;
   font-weight: bold;
+}
+
+form.fieldmap div input, form.fieldmap div select {
+  display: block;
 }

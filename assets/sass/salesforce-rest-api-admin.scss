@@ -3,6 +3,10 @@ $border-color: #e1e1e1;
 $vertical-space: 15px;
 $horizontal-space: 10px;
 
+form.fieldmap .spinner {
+	display: inline-block;
+	float: none
+}
 form.fieldmap fieldset {
 	border: 1px solid $border-color;
 	margin-bottom: $vertical-space;
@@ -18,7 +22,10 @@ form.fieldmap div {
 }
 
 form.fieldmap div label {
-	display: block;
+	display: inline-block;
 	margin-bottom: $vertical-space / 2;
 	font-weight: bold;
+}
+form.fieldmap div input, form.fieldmap div select {
+	display: block;
 }

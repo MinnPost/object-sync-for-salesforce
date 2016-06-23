@@ -31,19 +31,16 @@ class Wordpress_Salesforce_Admin {
     }
 
     public function ajax_salesforce_object_fields() {
-        //echo 'foo';
-        //$data['function'] = __METHOD__;
-        //wp_send_json_success( $data );
-        /*if ( !empty( $_POST['salesforce_object'] ) ) {
-            $object = $this->salesforce['sfapi']->object_describe( esc_attr( $_POST['salesforce_object'] ) );
-            wp_send_json_success( $object );
-        }
-        die();*/
-        //$result = array('objectname' => esc_attr( $_POST['salesforce_object'] ));
-        //wp_send_json_success( $result );
         if ( !empty( $_POST['salesforce_object'] ) ) {
             $object = $this->salesforce['sfapi']->object_describe( esc_attr( $_POST['salesforce_object'] ) );
-            wp_send_json_success( $object['data']['fields'] );
+            $fields = array();
+            $type = isset( $_POST['type'] ) ? esc_attr( $_POST['type'] ) : '';
+            foreach ( $object['data']['fields'] as $key => $value) {
+                if ( $type === '' || $type === $value['type'] ) {
+                    $fields[$key] = $value;
+                }
+            }
+            wp_send_json_success( $fields );
         }
     }
 
@@ -230,6 +227,7 @@ class Wordpress_Salesforce_Admin {
                             <fieldset class="salesforce_side">
                                 <div class="salesforce_object">
                                     <label for="salesforce_object">Salesforce Object: </label>
+                                    <div class="spinner"></div>
                                     <select id="salesforce_object" name="salesforce_object">
                                         <option value="">- Select object type -</option>
                                         <?php
@@ -246,9 +244,7 @@ class Wordpress_Salesforce_Admin {
                                         ?>
                                     </select>
                                 </div>
-                                <div>
-                                    put the ajax in here
-                                </div>
+                                <div class="salesforce_datefield"></div>
                             </fieldset>
                             <?php echo submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
                         </form>
