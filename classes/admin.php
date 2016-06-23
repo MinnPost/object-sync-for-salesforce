@@ -166,7 +166,7 @@ class Wordpress_Salesforce_Admin {
                         }
                         
                         if ( $method === 'add' || $method === 'edit' || $method === 'clone' ) { ?>
-                        <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
+                        <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>" class="fieldmap">
                             <input type="hidden" name="redirect_url_error" value="<?php echo $error_url; ?>" />
                             <input type="hidden" name="redirect_url_success" value="<?php echo $success_url; ?>" />
                             <?php
@@ -184,32 +184,13 @@ class Wordpress_Salesforce_Admin {
                             <?php
                             }
                             ?>
-                            <div>
-                                <label>Label: 
-                                    <input type="text" id="label" name="label" value="<?php echo isset( $label ) ? $label : ''; ?>" />
-                                </label>
+                            <div class="fieldmap_label">
+                                <label for="label">Label: </label>
+                                <input type="text" id="label" name="label" value="<?php echo isset( $label ) ? $label : ''; ?>" />
                             </div>
-                            <div>
-                                <label>Salesforce Object: 
-                                    <select id="salesforce_object" name="salesforce_object">
-                                        <option value="">- Select object type -</option>
-                                        <?php
-                                        $sfapi = $this->salesforce['sfapi'];
-                                        $objects = $sfapi->objects();
-                                        foreach ( $objects as $object ) {
-                                            if ( isset( $salesforce_object ) && $salesforce_object === $object['name'] ) {
-                                                $selected = ' selected';
-                                            } else {
-                                                $selected = '';
-                                            }
-                                            echo '<option value="' . $object['name'] . '"' . $selected . '>' . $object['label'] . '</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                </label>
-                            </div>
-                            <div>
-                                <label>WordPress Object:
+                            <fieldset class="wordpress_side">
+                                <div class="wordpress_object">
+                                    <label for="wordpress_object">WordPress Object: </label>
                                     <select id="wordpress_object" name="wordpress_object">
                                         <option value="">- Select object type -</option>
                                         <?php
@@ -226,8 +207,31 @@ class Wordpress_Salesforce_Admin {
                                         }
                                         ?>
                                     </select>
-                                </label>
-                            </div>
+                                </div>
+                            </fieldset>
+                            <fieldset class="salesforce_side">
+                                <div class="salesforce_object">
+                                    <label for="salesforce_object">Salesforce Object: </label>
+                                    <select id="salesforce_object" name="salesforce_object">
+                                        <option value="">- Select object type -</option>
+                                        <?php
+                                        $sfapi = $this->salesforce['sfapi'];
+                                        $objects = $sfapi->objects();
+                                        foreach ( $objects as $object ) {
+                                            if ( isset( $salesforce_object ) && $salesforce_object === $object['name'] ) {
+                                                $selected = ' selected';
+                                            } else {
+                                                $selected = '';
+                                            }
+                                            echo '<option value="' . $object['name'] . '"' . $selected . '>' . $object['label'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div>
+                                    put the ajax in here
+                                </div>
+                            </fieldset>
                             <?php echo submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
                         </form>
                         <?php 

@@ -1,0 +1,24 @@
+// variables
+$border-color: #e1e1e1;
+$vertical-space: 15px;
+$horizontal-space: 10px;
+
+form.fieldmap fieldset {
+	border: 1px solid $border-color;
+	margin-bottom: $vertical-space;
+	position: relative;
+}
+form.fieldmap legend {
+    padding-left: $horizontal-space;
+    position: absolute;
+}
+
+form.fieldmap div {
+	padding: $vertical-space $horizontal-space;
+}
+
+form.fieldmap div label {
+	display: block;
+	margin-bottom: $vertical-space / 2;
+	font-weight: bold;
+}
