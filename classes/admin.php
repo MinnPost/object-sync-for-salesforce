@@ -135,6 +135,7 @@ class Wordpress_Salesforce_Admin {
                                         <?php
                                         $objects = get_post_types();
                                         $objects[] = 'user';
+                                        $objects[] = 'comment';
                                         sort( $objects );
                                         foreach ( $objects as $object ) {
                                             if ( isset( $wordpress_object ) && $wordpress_object === $object ) {
