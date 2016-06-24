@@ -125,12 +125,12 @@ class Wordpress_Salesforce_Admin {
                             ?>
                             <div class="fieldmap_label">
                                 <label for="label">Label: </label>
-                                <input type="text" id="label" name="label" value="<?php echo isset( $label ) ? $label : ''; ?>" />
+                                <input type="text" id="label" name="label" required value="<?php echo isset( $label ) ? $label : ''; ?>" />
                             </div>
                             <fieldset class="wordpress_side">
                                 <div class="wordpress_object">
                                     <label for="wordpress_object">WordPress Object: </label>
-                                    <select id="wordpress_object" name="wordpress_object">
+                                    <select id="wordpress_object" name="wordpress_object" required>
                                         <option value="">- Select object type -</option>
                                         <?php
                                         $objects = get_post_types();
@@ -152,7 +152,7 @@ class Wordpress_Salesforce_Admin {
                                 <div class="salesforce_object">
                                     <label for="salesforce_object">Salesforce Object: </label>
                                     <div class="spinner"></div>
-                                    <select id="salesforce_object" name="salesforce_object">
+                                    <select id="salesforce_object" name="salesforce_object" required>
                                         <option value="">- Select object type -</option>
                                         <?php
                                         $sfapi = $this->salesforce['sfapi'];
