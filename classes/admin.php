@@ -104,6 +104,7 @@ class Wordpress_Salesforce_Admin {
                             $salesforce_object = $map['salesforce_object'];
                             $wordpress_object = $map['wordpress_object'];
                             $pull_trigger_field = $map['pull_trigger_field'];
+                            $fieldmap_fields = $map['fields'];
                         }
                         
                         if ( $method === 'add' || $method === 'edit' || $method === 'clone' ) { ?>
@@ -190,8 +191,75 @@ class Wordpress_Salesforce_Admin {
                                     ?>
                                 </div>
                             </fieldset>
-                            <fieldset class="fieldmap">
-
+                            <fieldset class="fields">
+                                <table class="wp-list-table widefat striped fields">
+                                    <thead>
+                                        <tr>
+                                            <th class="column-wordpress_field">WordPress Field</th>
+                                            <th class="column-salesforce_field">Salesforce Field</th>
+                                            <th class="column-is_key">Key</th>
+                                            <th class="column-direction">Direction</th>
+                                            <th class="column-is_delete">Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        if ( isset( $fieldmap_fields ) && $fieldmap_fields !== NULL ) {
+                                        ?>
+                                        <tr>
+                                            <td class="column-wordpress_field">WordPress Field</td>
+                                            <td class="column-salesforce_field">Salesforce Field</td>
+                                            <td class="column-is_key">Key</td>
+                                            <td class="column-direction">Direction</td>
+                                            <td class="column-is_delete">Delete</td>
+                                        </tr>
+                                        <?php
+                                        }
+                                        if ( isset( $wordpress_object ) && isset( $salesforce_object ) ) {
+                                        ?>
+                                        <tr>
+                                            <td class="column-wordpress_field">
+                                                <select name="wordpress_field" id="wordpress_field">
+                                                    <?php
+                                                    $wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
+                                                    foreach ( $wordpress_fields as $wordpress_field ) {
+                                                        echo '<option value="' . $wordpress_field->meta_key . '"> ' . $wordpress_field->meta_key . '</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </td>
+                                            <td class="column-salesforce_field">
+                                                <select name="salesforce_field" id="salesforce_field">
+                                                    <?php
+                                                    $salesforce_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object ) );
+                                                    foreach ( $salesforce_fields as $salesforce_field ) {
+                                                        echo '<option value="' . $salesforce_field['label'] . '"> ' . $salesforce_field['label'] . '</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </td>
+                                            <td class="column-is_key">
+                                                <input type="checkbox" name="is_key[0]" id="is_key-0" />
+                                            </td>
+                                            <td class="column-direction">
+                                                <div class="radios">
+                                                    <label><input type="radio" value="sf_wp" name="direction[0]" id="direction-0-sf-wp">  Salesforce to WordPress</label>
+                                                    <label><input type="radio" value="wp_sf" name="direction[0]" id="direction-0-wp-sf">  WordPress to Salesforce</label>
+                                                    <label><input type="radio" value="sf_wp" name="direction[0]" id="direction-0-sync">  Sync</label>
+                                                </div>
+                                            </td>
+                                            <td class="column-is_delete">
+                                                <input type="checkbox" name="is_delete[0]" id="is_delete-0" />
+                                            </td>
+                                        </tr>
+                                        <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                                <div class="spinner"></div>
+                                <p><button type="button" id="add-field-mapping" class="button button-secondary">Add  field mapping</button></p>
+                                <p class="description">Key refers to a WordPress field mapped to a Salesforce external ID. If checked, the plugin will do an UPSERT to avoid duplicate data when possible.</p>
                             </fieldset>
                             <?php echo submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
                         </form>
