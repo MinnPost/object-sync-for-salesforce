@@ -28,6 +28,8 @@ class Wordpress_Salesforce_Admin {
         add_action( 'admin_notices', array( &$this, 'fieldmap_error_notice' ) );
         add_action( 'admin_post_delete_fieldmap', array( &$this, 'delete_fieldmap' ) );
         add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_fields' ) );
+        add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ) );
+        add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ) );
     }
 
     /**
@@ -441,27 +443,103 @@ class Wordpress_Salesforce_Admin {
     * @param array $data
     * data must contain a salesforce_object
     * can optionally contain a type
-    * @return array $fields
+    * @return array $object_fields
     */
     public function get_salesforce_object_fields( $data = array() ) {
+        $ajax = false;
         if ( empty( $data ) ) {
             $data = $_POST;
+            $ajax = true;
         }
         if ( !empty( $data['salesforce_object'] ) ) {
             $object = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
-            $fields = array();
+            $object_fields = array();
             $type = isset( $data['type'] ) ? esc_attr( $data['type'] ) : '';
             foreach ( $object['data']['fields'] as $key => $value) {
                 if ( $type === '' || $type === $value['type'] ) {
-                    $fields[$key] = $value;
+                    $object_fields[$key] = $value;
                 }
             }
         }
 
-        if ( !empty( $_POST ) ) {
-            wp_send_json_success( $fields );
+        if ( $ajax === true ) {
+            wp_send_json_success( $object_fields );
         } else {
-            return $fields;
+            return $object_fields;
+        }
+    }
+
+    /**
+    * Get WordPress object fields for fieldmapping
+    * This takes either the $_POST array via ajax, or can be directly called with a $wordpress_object field
+    * 
+    * @param string $wordpress_object
+    * @return array $object_fields
+    */
+    public function get_wordpress_object_fields( $wordpress_object = '' ) {
+        $ajax = false;
+        if ( empty( $wordpress_object ) ) {
+            $wordpress_object = $_POST['wordpress_object'];
+            $ajax = true;
+        }
+        $id_field = 'ID';
+        if ( $wordpress_object === 'user' ) {
+            $meta_table = $this->wpdb->prefix . 'usermeta';
+            $content_table = $this->wpdb->prefix . 'users';
+            $object_name = 'user';
+            $where = '';
+        } else if ( $wordpress_object === 'comment' ) {
+            $meta_table = $this->wpdb->prefix . 'commentmeta';
+            $content_table = $this->wpdb->prefix . 'comments';
+            $object_name = 'comment';
+            $id_field = 'comment_ID';
+            $where = '';
+        } else {
+            $meta_table = $this->wpdb->prefix . 'postmeta';
+            $content_table = $this->wpdb->prefix . 'posts';
+            $object_name = 'post';
+            $where = 'AND ' . $content_table . '.post_type = "' . $wordpress_object . '"';
+        }
+        $select = '
+        SELECT DISTINCT ' . $meta_table . '.meta_key
+        FROM ' . $content_table . '
+        LEFT JOIN ' . $meta_table . '
+        ON ' . $content_table . '.' . $id_field . ' = ' . $meta_table . '.' . $object_name . '_id
+        WHERE ' . $meta_table . '.meta_key != "" 
+        ' . $where . '
+        ';
+        $object_fields = $this->wpdb->get_results($select);
+        
+        if ( $ajax === true ) {
+            wp_send_json_success( $object_fields );
+        } else {
+            return $object_fields;
+        }
+    }
+
+    /**
+    * Get WordPress and Salesforce object fields together for fieldmapping
+    * This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $salesforce_object fields
+    * 
+    * @param string $wordpress_object
+    * @param string $salesforce_object
+    * @return array $object_fields
+    */
+    public function get_wp_sf_object_fields( $wordpress_object = '', $salesforce = '' ) {
+        if ( empty( $wordpress_object ) ) {
+            $wordpress_object = $_POST['wordpress_object'];
+        }
+        if ( empty( $salesforce_object ) ) {
+            $salesforce_object = $_POST['salesforce_object'];
+        }
+        
+        $object_fields['wordpress'] = $this->get_wordpress_object_fields( $wordpress_object );
+        $object_fields['salesforce'] = $this->get_salesforce_object_fields( array( 'salesforce_object' => $salesforce_object ) );
+        
+        if ( !empty( $_POST ) ) {
+            wp_send_json_success( $object_fields );
+        } else {
+            return $object_fields;
         }
     }
 
