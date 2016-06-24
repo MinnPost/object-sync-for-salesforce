@@ -172,9 +172,9 @@ class Wordpress_Salesforce_Admin {
                                     <?php
                                     if ( isset( $pull_trigger_field ) ) {
                                         echo '<label for="pull_trigger_field">Date field to trigger pull:</label>';
-                                        $fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object, 'type' => 'datetime' ) );
+                                        $object_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object, 'type' => 'datetime' ) );
                                         echo '<select name="pull_trigger_field" id="pull_trigger_field">';
-                                        foreach( $fields as $key => $value ) {
+                                        foreach( $object_fields as $key => $value ) {
                                             if ( $pull_trigger_field === $value['label'] ) {
                                                 $selected = ' selected';
                                             } else {
