@@ -22,11 +22,11 @@ For a more detailed description of each component class, see below.
     + [https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/](https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/)
 
 3. Your site needs to be SSL enabled to authorize the remote application using OAUTH.
-4. If using the SOAP API, PHP to have been compiled with SOAP web services and
+4. If using the SOAP API, PHP needs to be compiled with SOAP web services and
   OpenSSL support, as per:
-  
-  http://php.net/soap
-  http://php.net/openssl
+
+  - http://php.net/soap
+  - http://php.net/openssl
 
 ## Classes:
 
@@ -52,13 +52,11 @@ These classes create or delete the plugin's custom database tables. Tables are:
 
 This class controls the admin functionality of the plugin. Its methods should, when possible, read and write data from and to other classes rather than directly.
 
-
-
-### Classes Todo:
-
 #### Salesforce Mapping (salesforce_mapping)
 
 Map WordPress content (including users) to Salesforce fields, including field level mapping.
+
+### Classes Todo:
 
 #### Salesforce Push (salesforce_push)
 
