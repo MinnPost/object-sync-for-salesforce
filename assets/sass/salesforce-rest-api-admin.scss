@@ -12,6 +12,9 @@ form.fieldmap fieldset {
 	margin-bottom: $vertical-space;
 	position: relative;
 }
+form.fieldmap fieldset.fields {
+	border: 0;
+}
 form.fieldmap legend {
     padding-left: $horizontal-space;
     position: absolute;
@@ -26,6 +29,25 @@ form.fieldmap div label {
 	margin-bottom: $vertical-space / 2;
 	font-weight: bold;
 }
+form.fieldmap div.radios label {
+	display: block;
+	font-weight: normal;
+}
+form.fieldmap div.radios input {
+	display: inline-block;
+}
 form.fieldmap div input, form.fieldmap div select {
 	display: block;
+}
+
+.fieldmap table .column-direction {
+	min-width: 200px;
+}
+.fieldmap table td div {
+	padding-top: 0;
+	padding-left: 0;
+}
+.fieldmap .missing-object {
+	display: inline-block;
+	margin-left: $horizontal-space;
 }
