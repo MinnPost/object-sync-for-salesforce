@@ -353,26 +353,28 @@ class Wordpress_Salesforce_Admin {
                                     $salesforce_create_checked = '';
                                     $salesforce_update_checked = '';
                                     $salesforce_delete_checked = '';
-                                    foreach ( $sync_triggers as $trigger ) {
-                                        switch ($trigger) {
-                                            case 'WordPress create':
-                                                $wordpress_create_checked = ' checked';
-                                                break;
-                                            case 'WordPress update':
-                                                $wordpress_update_checked = ' checked';
-                                                break;
-                                            case 'WordPress delete':
-                                                $wordpress_delete_checked = ' checked';
-                                                break;
-                                            case 'Salesforce create':
-                                                $salesforce_create_checked = ' checked';
-                                                break;
-                                            case 'Salesforce update':
-                                                $salesforce_update_checked = ' checked';
-                                                break;
-                                            case 'Salesforce delete':
-                                                $salesforce_delete_checked = ' checked';
-                                                break;
+                                    if ( isset( $sync_triggers ) && is_array( $sync_triggers ) ) {
+                                        foreach ( $sync_triggers as $trigger ) {
+                                            switch ($trigger) {
+                                                case 'WordPress create':
+                                                    $wordpress_create_checked = ' checked';
+                                                    break;
+                                                case 'WordPress update':
+                                                    $wordpress_update_checked = ' checked';
+                                                    break;
+                                                case 'WordPress delete':
+                                                    $wordpress_delete_checked = ' checked';
+                                                    break;
+                                                case 'Salesforce create':
+                                                    $salesforce_create_checked = ' checked';
+                                                    break;
+                                                case 'Salesforce update':
+                                                    $salesforce_update_checked = ' checked';
+                                                    break;
+                                                case 'Salesforce delete':
+                                                    $salesforce_delete_checked = ' checked';
+                                                    break;
+                                            }
                                         }
                                     }
                                     ?>
@@ -385,7 +387,7 @@ class Wordpress_Salesforce_Admin {
                                     <p class="description">Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. These settings are used by the <code>salesforce_push</code> and <code>salesforce_pull</code> modules respectively.</p>
                                 </div>
                                 <div class="checkboxes">
-                                    <label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo $push_async === '1' ? ' checked' : ''; ?>> Process asynchronously</label>
+                                    <label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo isset( $push_async ) && $push_async === '1' ? ' checked' : ''; ?>> Process asynchronously</label>
                                     <p class="description">If selected, push data will be queued for processing and synchronized when <code>wp_cron</code> is run. This may increase site performance, but changes will not be reflected in real time.</p>
                                 </div>
                             </fieldset>

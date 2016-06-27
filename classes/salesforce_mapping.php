@@ -32,40 +32,7 @@ class Salesforce_Mapping {
     * @throws \Exception
     */
     public function create( $posted = array() ) {
-    	$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
-    	if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
-			$setup['fields'] = array();
-			foreach ( $posted['wordpress_field'] as $key => $value ) {
-
-				if ( !isset( $posted['direction'][$key] ) ) {
-					$posted['direction'][$key] = 'sync';
-				}
-
-				if ( !isset( $posted['is_key'][$key] ) ) {
-					$posted['is_key'][$key] = false;
-				}
-
-				if ( !isset( $posted['is_delete'][$key] ) ) {
-					$posted['is_delete'][$key] = false;
-				}
-
-				if ( $posted['is_delete'][$key] === false ) {
-					$setup['fields'][$key] = array(
-						'wordpress_field' => sanitize_text_field( $posted['wordpress_field'][$key] ),
-						'salesforce_field' => sanitize_text_field( $posted['salesforce_field'][$key] ),
-						'is_key' => sanitize_text_field( $posted['is_key'][$key] ),
-						'direction' => sanitize_text_field( $posted['direction'][$key] ),
-						'is_delete' => sanitize_text_field( $posted['is_delete'][$key] )
-					);
-				}
-			}
-
-			$data['fields'] = maybe_serialize( $setup['fields'] );
-
-		}
-    	if ( isset( $posted['pull_trigger_field'] ) ) {
-    		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
-    	}
+    	$data = $this->setup_data( $posted );
     	$insert = $this->wpdb->insert( $this->table, $data );
     	if ( $insert === 1 ) {
     		return $this->wpdb->insert_id;
@@ -97,6 +64,22 @@ class Salesforce_Mapping {
     * @throws \Exception
     */
     public function update( $posted = array(), $id = '' ) {
+    	$data = $this->setup_data( $posted );
+    	$update = $this->wpdb->update( $this->table, $data, array( 'id' => $id ) );
+    	if ( $update === FALSE ) {
+    		return false;
+    	} else {
+    		return true;
+    	}
+    }
+
+    /**
+    * 
+    *
+    * @param array $posted
+    * @return $data
+    */
+    private function setup_data( $posted = array() ) {
     	$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
 		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
@@ -138,12 +121,7 @@ class Salesforce_Mapping {
     		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
     	}
 		$data['push_async'] = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
-    	$update = $this->wpdb->update( $this->table, $data, array( 'id' => $id ) );
-    	if ( $update === FALSE ) {
-    		return false;
-    	} else {
-    		return true;
-    	}
+    	return $data;
     }
 
     /**
