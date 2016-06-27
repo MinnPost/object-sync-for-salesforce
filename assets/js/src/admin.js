@@ -27,6 +27,7 @@ function salesforce_date_fields() {
 
 function add_field_mapping_row() {
 	$('#add-field-mapping').click(function() {
+		$(this).text('Add another field mapping');
 		var salesforce_object = $('#salesforce_object').val();
 		var wordpress_object = $('#wordpress_object').val();
 		if (wordpress_object !== '' && salesforce_object !== '') {
