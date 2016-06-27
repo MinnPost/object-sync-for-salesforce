@@ -136,11 +136,11 @@ class Wordpress_Salesforce_Admin {
                                     <select id="wordpress_object" name="wordpress_object" required>
                                         <option value="">- Select object type -</option>
                                         <?php
-                                        $objects = get_post_types();
-                                        $objects[] = 'user';
-                                        $objects[] = 'comment';
-                                        sort( $objects );
-                                        foreach ( $objects as $object ) {
+                                        $wordpress_objects = get_post_types();
+                                        $wordpress_objects[] = 'user';
+                                        $wordpress_objects[] = 'comment';
+                                        sort( $wordpress_objects );
+                                        foreach ( $wordpress_objects as $object ) {
                                             if ( isset( $wordpress_object ) && $wordpress_object === $object ) {
                                                 $selected = ' selected';
                                             } else {
@@ -160,8 +160,8 @@ class Wordpress_Salesforce_Admin {
                                         <option value="">- Select object type -</option>
                                         <?php
                                         $sfapi = $this->salesforce['sfapi'];
-                                        $objects = $sfapi->objects();
-                                        foreach ( $objects as $object ) {
+                                        $salesforce_objects = $sfapi->objects();
+                                        foreach ( $salesforce_objects as $object ) {
                                             if ( isset( $salesforce_object ) && $salesforce_object === $object['name'] ) {
                                                 $selected = ' selected';
                                             } else {
