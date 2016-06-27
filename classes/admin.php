@@ -104,6 +104,8 @@ class Wordpress_Salesforce_Admin {
                             $wordpress_object = $map['wordpress_object'];
                             $pull_trigger_field = $map['pull_trigger_field'];
                             $fieldmap_fields = $map['fields'];
+                            $sync_triggers = $map['sync_triggers'];
+                            $push_async = $map['push_async'];
                         }
                         
                         if ( $method === 'add' || $method === 'edit' || $method === 'clone' ) { ?>
@@ -243,7 +245,7 @@ class Wordpress_Salesforce_Admin {
                                             </td>
                                             <td class="column-is_key">
                                                 <?php
-                                                if ( $value['is_key'] === '1' ) {
+                                                if ( isset( $value['is_key'] ) && $value['is_key'] === '1' ) {
                                                     $checked = ' checked';
                                                 } else {
                                                     $checked = '';
@@ -253,19 +255,26 @@ class Wordpress_Salesforce_Admin {
                                             </td>
                                             <td class="column-direction">
                                                 <?php
-                                                if ( $value['direction'] === 'sf_wp' ) {
-                                                    $checked_sf_wp = ' checked';
-                                                    $checked_wp_sf = '';
-                                                    $checked_sync = '';
-                                                } else if ( $value['direction'] === 'wp_sf' ) {
-                                                    $checked_sf_wp = '';
-                                                    $checked_wp_sf = ' checked';
-                                                    $checked_sync = '';
+                                                if ( isset( $value['direction'] ) ) {
+                                                    if ( $value['direction'] === 'sf_wp' ) {
+                                                        $checked_sf_wp = ' checked';
+                                                        $checked_wp_sf = '';
+                                                        $checked_sync = '';
+                                                    } else if ( $value['direction'] === 'wp_sf' ) {
+                                                        $checked_sf_wp = '';
+                                                        $checked_wp_sf = ' checked';
+                                                        $checked_sync = '';
+                                                    } else {
+                                                        $checked_sf_wp = '';
+                                                        $checked_wp_sf = '';
+                                                        $checked_sync = ' checked';
+                                                    }
                                                 } else {
                                                     $checked_sf_wp = '';
                                                     $checked_wp_sf = '';
-                                                    $checked_sync = ' checked';
+                                                    $checked_sync = '';
                                                 }
+                                                
                                                 ?>
                                                 <div class="radios">
                                                     <label><input type="radio" value="sf_wp" name="direction[<?php echo $key; ?>]" id="direction-<?php echo $key; ?>-sf-wp" <?php echo $checked_sf_wp; ?> required>  Salesforce to WordPress</label>
@@ -333,6 +342,52 @@ class Wordpress_Salesforce_Admin {
                                 ?>
                                 <p><button type="button" id="add-field-mapping" class="button button-secondary"><?php echo $add_button_label; ?></button></p>
                                 <p class="description">Key refers to a WordPress field mapped to a Salesforce external ID. If checked, the plugin will do an UPSERT to avoid duplicate data when possible.</p>
+                            </fieldset>
+                            <fieldset class="sync_triggers">
+                                <legend>Action triggers</legend>
+                                <div class="checkboxes">
+                                    <?php
+                                    $wordpress_create_checked = '';
+                                    $wordpress_update_checked = '';
+                                    $wordpress_delete_checked = '';
+                                    $salesforce_create_checked = '';
+                                    $salesforce_update_checked = '';
+                                    $salesforce_delete_checked = '';
+                                    foreach ( $sync_triggers as $trigger ) {
+                                        switch ($trigger) {
+                                            case 'WordPress create':
+                                                $wordpress_create_checked = ' checked';
+                                                break;
+                                            case 'WordPress update':
+                                                $wordpress_update_checked = ' checked';
+                                                break;
+                                            case 'WordPress delete':
+                                                $wordpress_delete_checked = ' checked';
+                                                break;
+                                            case 'Salesforce create':
+                                                $salesforce_create_checked = ' checked';
+                                                break;
+                                            case 'Salesforce update':
+                                                $salesforce_update_checked = ' checked';
+                                                break;
+                                            case 'Salesforce delete':
+                                                $salesforce_delete_checked = ' checked';
+                                                break;
+                                        }
+                                    }
+                                    ?>
+                                    <label><input type="checkbox" value="WordPress create" name="sync_triggers[]" id="sync_triggers-wordpress-create" <?php echo $wordpress_create_checked; ?>> WordPress create</label>
+                                    <label><input type="checkbox" value="WordPress update" name="sync_triggers[]" id="sync_triggers-wordpress-update" <?php echo $wordpress_update_checked; ?>>WordPress update</label>
+                                    <label><input type="checkbox" value="WordPress delete" name="sync_triggers[]" id="sync_triggers-wordpress-delete" <?php echo $wordpress_delete_checked; ?>>WordPress delete</label>
+                                    <label><input type="checkbox" value="Salesforce create" name="sync_triggers[]" id="sync_triggers-salesforce-create" <?php echo $salesforce_create_checked; ?>> Salesforce create</label>
+                                    <label><input type="checkbox" value="Salesforce update" name="sync_triggers[]" id="sync_triggers-salesforce-update" <?php echo $salesforce_update_checked; ?>> Salesforce update</label>
+                                    <label><input type="checkbox" value="Salesforce delete" name="sync_triggers[]" id="sync_triggers-salesforce-delete" <?php echo $salesforce_delete_checked; ?>> Salesforce delete</label>
+                                    <p class="description">Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. These settings are used by the <code>salesforce_push</code> and <code>salesforce_pull</code> modules respectively.</p>
+                                </div>
+                                <div class="checkboxes">
+                                    <label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo $push_async === '1' ? ' checked' : ''; ?>> Process asynchronously</label>
+                                    <p class="description">If selected, push data will be queued for processing and synchronized when <code>wp_cron</code> is run. This may increase site performance, but changes will not be reflected in real time.</p>
+                                </div>
                             </fieldset>
                             <?php echo submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
                         </form>

@@ -84,6 +84,7 @@ class Salesforce_Mapping {
     public function read( $id = '' ) {
     	$map = $this->wpdb->get_row( 'SELECT * FROM ' . $this->table . ' WHERE id = ' . $id, ARRAY_A );
         $map['fields'] = maybe_unserialize( $map['fields'] );
+        $map['sync_triggers'] = maybe_unserialize( $map['sync_triggers'] );
     	return $map;
     }
 
@@ -100,19 +101,15 @@ class Salesforce_Mapping {
 		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
-
 				if ( !isset( $posted['direction'][$key] ) ) {
 					$posted['direction'][$key] = 'sync';
 				}
-
 				if ( !isset( $posted['is_key'][$key] ) ) {
 					$posted['is_key'][$key] = false;
 				}
-
 				if ( !isset( $posted['is_delete'][$key] ) ) {
 					$posted['is_delete'][$key] = false;
 				}
-
 				if ( $posted['is_delete'][$key] === false ) {
 					$setup['fields'][$key] = array(
 						'wordpress_field' => sanitize_text_field( $posted['wordpress_field'][$key] ),
@@ -123,13 +120,24 @@ class Salesforce_Mapping {
 					);
 				}
 			}
-
 			$data['fields'] = maybe_serialize( $setup['fields'] );
-
 		}
     	if ( isset( $posted['pull_trigger_field'] ) ) {
     		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
     	}
+    	if ( isset( $posted['sync_triggers'] ) && is_array( $posted['sync_triggers'] ) ) {
+    		$setup['sync_triggers'] = array();
+    		foreach ( $posted['sync_triggers'] as $key => $value ) {
+    			$setup['sync_triggers'][$key] = esc_html( $posted['sync_triggers'][$key] );
+    		}
+    	} else {
+    		$setup['sync_triggers'] = array();
+    	}
+    	$data['sync_triggers'] = maybe_serialize( $setup['sync_triggers'] );
+    	if ( isset( $posted['pull_trigger_field'] ) ) {
+    		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
+    	}
+		$data['push_async'] = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
     	$update = $this->wpdb->update( $this->table, $data, array( 'id' => $id ) );
     	if ( $update === FALSE ) {
     		return false;
@@ -165,9 +173,10 @@ class Salesforce_Mapping {
     */
     public function get_all( $offset = '', $limit = '' ) {
         $table = $this->table;
-        $results = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field` FROM $table" , ARRAY_A );
+        $results = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async` FROM $table" , ARRAY_A );
         foreach ( $results as $result ) {
         	$result['fields'] = maybe_unserialize( $result['fields'] );
+        	$result['sync_triggers'] = maybe_unserialize( $result['sync_triggers'] );
         }
         return $results;
     }

@@ -28,12 +28,12 @@ form.fieldmap div label {
   font-weight: bold;
 }
 
-form.fieldmap div.radios label {
+form.fieldmap div.radios label, form.fieldmap div.checkboxes label {
   display: block;
   font-weight: normal;
 }
 
-form.fieldmap div.radios input {
+form.fieldmap div.radios input, form.fieldmap div.checkboxes input {
   display: inline-block;
 }
 
