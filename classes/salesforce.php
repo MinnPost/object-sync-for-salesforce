@@ -228,12 +228,12 @@ class Salesforce {
     		} else {
     			$data = json_encode( $params );
 				$result = $this->http_request( $url, $data, $headers, $method, $options );
-				$result['from_cache'] = false;
 				if ( in_array( $result['code'], array( 200, 201, 204 ) ) ) {
 					$result['cached'] = $this->cache_set( $url, $params, $result, $options['cache_expiration'] );
 				} else {
 					$result['cached'] = false;
 				}
+				$result['from_cache'] = false;
     		}
 		} else {
 			$data = json_encode( $params );
