@@ -33,6 +33,36 @@ class Salesforce_Mapping {
     */
     public function create( $posted = array() ) {
     	$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
+    	if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
+			$setup['fields'] = array();
+			foreach ( $posted['wordpress_field'] as $key => $value ) {
+
+				if ( !isset( $posted['direction'][$key] ) ) {
+					$posted['direction'][$key] = 'sync';
+				}
+
+				if ( !isset( $posted['is_key'][$key] ) ) {
+					$posted['is_key'][$key] = false;
+				}
+
+				if ( !isset( $posted['is_delete'][$key] ) ) {
+					$posted['is_delete'][$key] = false;
+				}
+
+				if ( $posted['is_delete'][$key] === false ) {
+					$setup['fields'][$key] = array(
+						'wordpress_field' => sanitize_text_field( $posted['wordpress_field'][$key] ),
+						'salesforce_field' => sanitize_text_field( $posted['salesforce_field'][$key] ),
+						'is_key' => sanitize_text_field( $posted['is_key'][$key] ),
+						'direction' => sanitize_text_field( $posted['direction'][$key] ),
+						'is_delete' => sanitize_text_field( $posted['is_delete'][$key] )
+					);
+				}
+			}
+
+			$data['fields'] = maybe_serialize( $setup['fields'] );
+
+		}
     	if ( isset( $posted['pull_trigger_field'] ) ) {
     		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
     	}
@@ -53,7 +83,59 @@ class Salesforce_Mapping {
     */
     public function read( $id = '' ) {
     	$map = $this->wpdb->get_row( 'SELECT * FROM ' . $this->table . ' WHERE id = ' . $id, ARRAY_A );
+        $map['fields'] = maybe_unserialize( $map['fields'] );
     	return $map;
+    }
+
+    /**
+    * Update a map row between a WordPress and Salesforce object
+    *
+    * @param array $posted
+    * @param array $id
+    * @return $map
+    * @throws \Exception
+    */
+    public function update( $posted = array(), $id = '' ) {
+    	$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
+		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
+			$setup['fields'] = array();
+			foreach ( $posted['wordpress_field'] as $key => $value ) {
+
+				if ( !isset( $posted['direction'][$key] ) ) {
+					$posted['direction'][$key] = 'sync';
+				}
+
+				if ( !isset( $posted['is_key'][$key] ) ) {
+					$posted['is_key'][$key] = false;
+				}
+
+				if ( !isset( $posted['is_delete'][$key] ) ) {
+					$posted['is_delete'][$key] = false;
+				}
+
+				if ( $posted['is_delete'][$key] === false ) {
+					$setup['fields'][$key] = array(
+						'wordpress_field' => sanitize_text_field( $posted['wordpress_field'][$key] ),
+						'salesforce_field' => sanitize_text_field( $posted['salesforce_field'][$key] ),
+						'is_key' => sanitize_text_field( $posted['is_key'][$key] ),
+						'direction' => sanitize_text_field( $posted['direction'][$key] ),
+						'is_delete' => sanitize_text_field( $posted['is_delete'][$key] )
+					);
+				}
+			}
+
+			$data['fields'] = maybe_serialize( $setup['fields'] );
+
+		}
+    	if ( isset( $posted['pull_trigger_field'] ) ) {
+    		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
+    	}
+    	$update = $this->wpdb->update( $this->table, $data, array( 'id' => $id ) );
+    	if ( $update === FALSE ) {
+    		return false;
+    	} else {
+    		return true;
+    	}
     }
 
     /**
@@ -73,27 +155,6 @@ class Salesforce_Mapping {
     }
 
     /**
-    * Update a map row between a WordPress and Salesforce object
-    *
-    * @param array $posted
-    * @param array $id
-    * @return $map
-    * @throws \Exception
-    */
-    public function update( $posted = array(), $id = '' ) {
-    	$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
-    	if ( isset( $posted['pull_trigger_field'] ) ) {
-    		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
-    	}
-    	$update = $this->wpdb->update( $this->table, $data, array( 'id' => $id ) );
-    	if ( $update === FALSE ) {
-    		return false;
-    	} else {
-    		return true;
-    	}
-    }
-
-    /**
     * Get all map rows between WordPress and Salesforce objects
     * Can optionally limit or offset, if necessary
     *
@@ -105,6 +166,9 @@ class Salesforce_Mapping {
     public function get_all( $offset = '', $limit = '' ) {
         $table = $this->table;
         $results = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field` FROM $table" , ARRAY_A );
+        foreach ( $results as $result ) {
+        	$result['fields'] = maybe_unserialize( $result['fields'] );
+        }
         return $results;
     }
 

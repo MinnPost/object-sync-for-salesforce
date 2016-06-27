@@ -32,6 +32,7 @@ function add_field_mapping_row() {
 		if (wordpress_object !== '' && salesforce_object !== '') {
 			var row_count = $('table.fields tbody tr').length;				
 			fieldmap_fields(wordpress_object, salesforce_object, row_count);
+			$(this).parent().find('.missing-object').remove();
 		} else {
 			$(this).parent().append('<span class="missing-object">You have to pick a WordPress object and a Salesforce object to add field mapping.');
 		}
@@ -49,20 +50,22 @@ function fieldmap_fields(wordpress_object, salesforce_object, row_count) {
 	$.post(ajaxurl, data, function(response) {
 
 		var wordpress = '';
-		wordpress += '<select name="wordpress_field" id="wordpress_field">'
+		wordpress += '<select name="wordpress_field[' + row_count + ']" id="wordpress_field-' + row_count + '">'
+		wordpress += '<option value="">- Select WordPress field -</option>';
 		$.each(response.data.wordpress, function(index, value) {
 			wordpress += '<option value="' + value.meta_key + '">' + value.meta_key + '</option>';
 		});
 		wordpress += '</select>';
 
 		var salesforce = '';
-		salesforce += '<select name="salesforce_field" id="salesforce_field">'
+		salesforce += '<select name="salesforce_field[' + row_count + ']" id="salesforce_field-' + row_count + '">'
+		salesforce += '<option value="">- Select Salesforce field -</option>';
 		$.each(response.data.salesforce, function(index, value) {
 			salesforce += '<option value="' + value.label + '">' + value.label + '</option>';
 		});
 		salesforce += '</select>';
 
-		var markup = '<tr><td class="column-wordpress_field">' + wordpress + '</td><td class="column-salesforce_field">' + salesforce + '</td><td class="column-is_key"><input type="checkbox" name="is_key[' + row_count + ']" id="is_key-' + row_count + '" /></td><td class="column-direction"><div class="radios"><label><input type="radio" value="sf_wp" name="direction[0]" id="direction-' + row_count + '-sf-wp">  Salesforce to WordPress</label><label><input type="radio" value="wp_sf" name="direction[0]" id="direction-' + row_count + '-wp-sf">  WordPress to Salesforce</label><label><input type="radio" value="sf_wp" name="direction[0]" id="direction-' + row_count + '-sync">  Sync</label></div></td><td class="column-is_delete"><input type="checkbox" name="is_delete[' + row_count + ']" id="is_delete-' + row_count + '" /></td></tr>';
+		var markup = '<tr><td class="column-wordpress_field">' + wordpress + '</td><td class="column-salesforce_field">' + salesforce + '</td><td class="column-is_key"><input type="checkbox" name="is_key[' + row_count + ']" id="is_key-' + row_count + '" value="1" /></td><td class="column-direction"><div class="radios"><label><input type="radio" value="sf_wp" name="direction[0]" id="direction-' + row_count + '-sf-wp">  Salesforce to WordPress</label><label><input type="radio" value="wp_sf" name="direction[0]" id="direction-' + row_count + '-wp-sf">  WordPress to Salesforce</label><label><input type="radio" value="sf_wp" name="direction' + row_count + '" id="direction-' + row_count + '-sync">  Sync</label></div></td><td class="column-is_delete"><input type="checkbox" name="is_delete[' + row_count + ']" id="is_delete-' + row_count + '" value="1" /></td></tr>';
 		$('table.fields tbody').append(markup);
 
 	});
@@ -74,6 +77,7 @@ $(document).ready(function() {
 		$('table.fields tbody tr').remove();
 	})
 
+	// todo: need to fix this so it doesn't run all the spinners at the same time when there are multiples on the same page
 	$(document).ajaxStart(function(){
 		$('.spinner').addClass('is-active');
 	}).ajaxStop(function() {
