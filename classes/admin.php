@@ -49,7 +49,6 @@ class Wordpress_Salesforce_Admin {
         $tabs = array(
             'settings' => 'Settings',
             'authorize' => 'Authorize',
-            'objects' => 'Object setup',
             'fieldmaps' => 'Fieldmaps'
         ); // this creates the tabs for the admin
         $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
@@ -343,7 +342,6 @@ class Wordpress_Salesforce_Admin {
         $input_callback_default = array( &$this, 'display_input_field' );
         $input_checkboxes_default = array( &$this, 'display_checkboxes' );
         $this->fields_settings( 'settings', 'settings', $input_callback_default );
-        $this->fields_objects( 'objects', 'objects', $input_checkboxes_default );
         $this->fields_fieldmaps( 'fieldmaps', 'objects' );
     }
 
@@ -413,62 +411,6 @@ class Wordpress_Salesforce_Admin {
                     'desc' => '',
                     'constant' => 'SALESFORCE_API_VERSION'
                 ),
-            ),
-        );
-        foreach( $salesforce_settings as $key => $attributes ) {
-            $id = 'salesforce_api_' . $key;
-            $name = 'salesforce_api_' . $key;
-            $title = $attributes['title'];
-            $callback = $attributes['callback'];
-            $page = $attributes['page'];
-            $section = $attributes['section'];
-            $args = array_merge(
-                $attributes['args'],
-                array(
-                    'title' => $title,
-                    'id' => $id,
-                    'label_for' => $id,
-                    'name' => $name
-                )
-            );
-            add_settings_field( $id, $title, $callback, $page, $section, $args );
-            register_setting( $section, $id );
-        }
-    }
-
-    /**
-    * Fields for the Object setup tab
-    * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
-    *
-    * @param string $page
-    * @param string $section
-    * @param string $input_callback
-    */
-    private function fields_objects( $page, $section, $input_callback ) {
-        add_settings_section( $page, ucwords( $page ), null, $page );
-        $items = array();
-        $sfapi = $this->salesforce['sfapi'];
-        $objects = $sfapi->objects();
-        
-        foreach ( $objects as $object ) {
-            $items[] = array(
-                'text' => $object['name'] . ' (' . $object['label'] . ')',
-                'id' => strtolower( $object['name'] ),
-                'name' => strtolower( $object['name'] ),
-                'desc' => ''
-            );
-        }
-
-        $salesforce_settings = array(
-            'enabled_objects' => array(
-                'title' => 'Salesforce Objects',
-                'callback' => $input_callback,
-                'page' => $page,
-                'section' => $section,
-                'args' => array(
-                    'items' => $items,
-                ),
-                
             ),
         );
         foreach( $salesforce_settings as $key => $attributes ) {
