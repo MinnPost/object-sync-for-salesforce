@@ -87,7 +87,17 @@ Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill i
 
 ## API:
 
-This plugin will reproduce at least the hooks provided by the Drupal suite, so that other WordPress plugins can build on top of them.
+This plugin will aim to reproduce at least the hooks provided by the Drupal suite, so that other WordPress plugins can build on top of them.
+
+TODO hooks include:
+
+- `hook_salesforce_push_params_alter`: change what parameters are being sent to Salesforce before syncing occurs
+- `hook_salesforce_mapping_entity_uris_alter`: provide URLs manually for object types. Drupal does this within the salesforce_mapping module
+- `hook_salesforce_push_entity_allowed`: prevent pushing an object to Salesforce, given a fieldmap
+- `hook_salesforce_pull_entity_value_alter`: change the value being put into the CMS after getting it from Salesforce
+- `hook_salesforce_query_alter`: change a SOQL query before it gets sent to Salesforce
+- `hook_salesforce_push_success`: Data has been successfully pushed to Salesforce
+- `hook_salesforce_push_fail`: A data push to Salesforce has failed
 
 ## Notes:
 
