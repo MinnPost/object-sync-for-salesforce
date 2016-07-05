@@ -1,7 +1,9 @@
 # Salesforce REST API
+
 Defines an API that enables WordPress to interact with the Salesforce REST API. This is based on the [Drupal Salesforce Suite](https://github.com/thinkshout/salesforce) (version 7.x-3.x-dev), but strives to use WordPress conventions rather than Drupal's whenever possible.
 
 ## About
+
 This plugin creates a mapping functionality between Salesforce objects and WordPress content types. For any supported WordPress content types (e.g. post, page, user, or any custom content type in your installation), you can assign Salesforce objects that will be created / updated when the data in WordPress is saved. For each such assignment, you choose which WordPress and Salesforce fields should be mapped to one another.
 
 This suite also includes an API architecture which allows for additional plugins to be easily plugged in (e.g. for webforms, contact form submits, etc).
@@ -28,7 +30,7 @@ For a more detailed description of each component class, see below.
   - http://php.net/soap
   - http://php.net/openssl
 
-## Classes:
+## Classes
 
 ### Salesforce (salesforce)
 
@@ -72,7 +74,7 @@ Map WordPress content (including users) to Salesforce fields, including field le
 1. There is a basic create/read/update/delete setup, including loading all results or a subset.
 2. 
 
-### Classes Todo:
+### Classes Todo
 
 #### Salesforce Push (salesforce_push)
 
@@ -85,7 +87,7 @@ Push WordPress data updates into Salesforce.
 
 Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill in functional gaps missing in the REST API. Will require the Salesforce PHP Toolkit, if/when we choose to do it.
 
-## API:
+## API
 
 This plugin will aim to reproduce at least the hooks provided by the Drupal suite, so that other WordPress plugins can build on top of them.
 
@@ -99,5 +101,6 @@ TODO hooks include:
 - `hook_salesforce_push_success`: Data has been successfully pushed to Salesforce
 - `hook_salesforce_push_fail`: A data push to Salesforce has failed
 
-## Notes:
+## Notes
 
+## Changelog
