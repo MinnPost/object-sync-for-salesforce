@@ -149,7 +149,7 @@ class Salesforce_Mapping {
     * @return $results
     * @throws \Exception
     */
-    public function get_all( $offset = '', $limit = '' ) {
+    public function get_multiple( $offset = '', $limit = '' ) {
         $table = $this->table;
         $results = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async` FROM $table" , ARRAY_A );
         foreach ( $results as $result ) {
