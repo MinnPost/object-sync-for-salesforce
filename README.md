@@ -1,4 +1,7 @@
 # Salesforce REST API WordPress Library
+
+## Switched work to a separate repository, since structure was so different. Here is that other repo: https://github.com/MinnPost/salesforce-rest-api
+
  WordPress utility providing authenticated access to the Salesforce REST API for use in other plugins.
 
  This library is somewhat based on [Tim Whitlock](https://github.com/timwhitlock)'s [Twitter API WordPress Library](https://github.com/timwhitlock/wp-twitter-api). Some Salesforce wrapping is derived from [Michael Corrigan](https://github.com/mcorrigan/)'s [Salesforce REST API PHP Wrapper](https://github.com/mcorrigan/salesforce-rest-api-php-wrapper/). The structure here strives to use classes whenever possible, so the methods are quite different.
