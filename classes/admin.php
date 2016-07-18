@@ -45,6 +45,7 @@ class Wordpress_Salesforce_Admin {
     * Render full admin pages in WordPress
     */ 
     public function show_admin_page() {
+        echo '<div class="wrap">';
         echo '<h1>' . get_admin_page_title() . '</h1>';
         $tabs = array(
             'settings' => 'Settings',
@@ -52,7 +53,6 @@ class Wordpress_Salesforce_Admin {
             'fieldmaps' => 'Fieldmaps'
         ); // this creates the tabs for the admin
         $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
-        echo '<div class="wrap">';
         $this->tabs( $tabs, $tab );
 
         if ( ! current_user_can('manage_options') ){

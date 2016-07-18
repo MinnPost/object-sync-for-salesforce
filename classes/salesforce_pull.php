@@ -12,7 +12,7 @@ class Salesforce_Pull {
     /**
 	* @var string
 	*/
-    public $salesforce_pull_queue;
+    public $salesforce_pull_queue; // name the queue in case there are multiple queues
 
     /**
     * Functionality for pulling Salesforce objects into WordPress
@@ -34,6 +34,11 @@ class Salesforce_Pull {
 
     }
 
+	/**
+	* Webhook callback for salesforce pull. Returns status of 200 for successful
+	* attempt or 403 for a failed pull attempt (SF not authorized, threshhold
+	* reached, etc.
+	*/
     public function salesforce_pull_webhook() {
     	if ( $this->salesforce_pull() ) {
     		$code = '200';	
@@ -46,7 +51,7 @@ class Salesforce_Pull {
 		$queues = $this->salesforce_cron_queue_info();
 		$info = $queues[$this->salesforce_pull_queue];
 		$callback = $info['worker callback'];
-		$end = time() + ( isset($info['time'] ) ? $info['time'] : 15 );
+		$end = time() + ( isset( $info['time'] ) ? $info['time'] : 15 );
 		$queue = DrupalQueue::get( $this->salesforce_pull_queue );
 
 		while ( time() < $end && ( $item = $queue->claimItem() ) ) {
