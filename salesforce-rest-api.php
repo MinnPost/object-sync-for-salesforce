@@ -128,6 +128,21 @@ class Salesforce_Rest_API {
     	$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings );
     	add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
     	add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
+    	add_filter( 'plugin_action_links', array( &$this, 'plugin_action_links' ), 10, 5 );
+    }
+
+    /**
+    * Display a Settings link on the main Plugins page
+    *
+    * @return array $links
+    */
+    public function plugin_action_links( $links, $file ) {
+        if ( $file == plugin_basename( __FILE__ ) ) {
+            $settings = '<a href="' . get_admin_url() . 'options-general.php?page=salesforce-api-admin">' . __('Settings', $this->text_domain ) . '</a>';
+            // make the 'Settings' link appear first
+            array_unshift( $links, $settings );
+        }
+        return $links;
     }
 
 
