@@ -49,8 +49,8 @@ class Salesforce_Pull {
 		// Queue is populated, but not processed yet so we manually do some of what
 		// drupal_cron_run() does to trigger processing of our pull queue.
 		$queues = $this->salesforce_cron_queue_info();
-		$info = $queues[$this->salesforce_pull_queue];
-		$callback = $info['worker callback'];
+		$info = $queues[$this->salesforce_pull_queue]; // queues is an array; key is the name of the queue and lets us get the callback method and timer
+		$callback = $info['worker callback']; // this is the callback method
 		$end = time() + ( isset( $info['time'] ) ? $info['time'] : 15 );
 		$queue = DrupalQueue::get( $this->salesforce_pull_queue );
 
@@ -62,7 +62,7 @@ class Salesforce_Pull {
 			catch ( Exception $e ) {
 				// In case of exception log it and leave the item in the queue
 				// to be processed again later.
-				watchdog_exception( 'salesforce_pull', $e );
+				write_log( $e );
 			}
 		}
 
@@ -71,18 +71,19 @@ class Salesforce_Pull {
     }
 
 	function salesforce_cron_queue_info() {
+		// queue key specified in class properties
 		$queues[$this->salesforce_pull_queue] = array(
-			'worker callback' => 'salesforce_pull_process_records',
+			'worker callback' => array( &$this, 'salesforce_pull_process_records' ),
 			// Set to a high max timeout in case pulling in lots of data from SF.
 			'time' => 180,
-		);
+		); // this sets an array for the specified queue, configuring the timeout and the callback method
 		return $queues;
 	}
 
 	/**
 	* Process records in the queue.
 	*/
-	function salesforce_pull_process_records($sf_object) {
+	function salesforce_pull_process_records( $sf_object ) {
 		// Get Mapping.
 		$mapping_conditions = array(
 			'salesforce_object_type' => $sf_object['attributes']['type'],
@@ -109,7 +110,7 @@ class Salesforce_Pull {
 							'%label' => $mapping_object->entity_id,
 							'%sfobjectid' => $sf_object['Id'],
 						));
-						watchdog( 'Salesforce Pull', $message, array(), WATCHDOG_NOTICE );
+						write_log( 'Salesforce Pull' . $message );
 						salesforce_set_message( $message, 'status', FALSE );
 						entity_delete( 'salesforce_mapping_object', $mapping_object->salesforce_mapping_object_id );
 			    	} else {
@@ -123,7 +124,7 @@ class Salesforce_Pull {
 	      					$wrapper = entity_metadata_wrapper( $sf_mapping->drupal_entity_type, $entity );
 
 	      					// Set fields values on the Drupal entity.
-	      					salesforce_pull_map_fields( $sf_mapping->field_mappings, $wrapper, $sf_object );
+	      					$this->salesforce_pull_map_fields( $sf_mapping->field_mappings, $wrapper, $sf_object );
 
 							// Update entity.
 							$wrapper->save();
@@ -132,11 +133,9 @@ class Salesforce_Pull {
 							$mapping_object->last_sync_message = t( 'Retrieved updates from Salesforce' );
 							$mapping_object->last_sync_status = SALESFORCE_MAPPING_STATUS_SUCCESS;
 							$mapping_object->entity_updated = $mapping_object->last_sync = time();
-							watchdog( 'Salesforce Pull', 'Updated entity %label associated with Salesforce Object ID: %sfid',
-							array(
-								'%label' => $wrapper->label(),
-								'%sfid' => $sf_object['Id'],
-							));
+
+							write_log( 'Salesforce Pull ' . 'Updated entity ' . $wrapper->label() . ' associated with Salesforce Object ID: ' . $sf_object['Id'] );
+
 	      				}
 	      			}
 	      		} catch ( Exception $e ) {
@@ -146,7 +145,7 @@ class Salesforce_Pull {
 						'%sfobjectid' => $sf_object['Id'],
 						'@msg' => $e->getMessage(),
 					));
-    				watchdog( 'Salesforce Pull', $message, array(), WATCHDOG_ERROR );
+    				write_log( 'Salesforce Pull' . $message);
     				salesforce_set_message( $message, 'error', FALSE );
 	    			$mapping_object->last_sync_status = SALESFORCE_MAPPING_STATUS_ERROR;
     				$mapping_object->last_sync_message = t( 'Processing failed' );
@@ -181,7 +180,7 @@ class Salesforce_Pull {
 					$entity->salesforce_pull = TRUE;
 					$wrapper = entity_metadata_wrapper( $sf_mapping->drupal_entity_type, $entity );
 
-					salesforce_pull_map_fields( $sf_mapping->field_mappings, $wrapper, $sf_object) ;
+					$this->salesforce_pull_map_fields( $sf_mapping->field_mappings, $wrapper, $sf_object) ;
 
 					$wrapper->save();
 					// Update mapping object.
@@ -194,7 +193,7 @@ class Salesforce_Pull {
 						'%label' => $wrapper->label(),
 						'%sfobjectid' => $sf_object['Id'],
 					));
-	    			watchdog( 'Salesforce Pull', $message, array(), WATCHDOG_ERROR );
+	    			write_log( 'Salesforce Pull' . $message );
 	    			salesforce_set_message( 'There were failures processing data from Salesforce. Please check the error logs.', 'error', FALSE );
 				    $last_sync_status = SALESFORCE_MAPPING_STATUS_ERROR;
 				    $last_sync_message = t('Processing failed for new record');
@@ -220,12 +219,8 @@ class Salesforce_Pull {
 					'last_sync_status' => $last_sync_status,
 				) );
 
-				watchdog( 'Salesforce Pull',
-					'Created entity %label associated with Salesforce Object ID: %sfid',
-					array(
-						'%label' => $wrapper->label(),
-				'%sfid' => $sf_object['Id'],
-				) );
+				write_log( 'Salesforce Pull ' . 'Created entity ' . $wrapper->label() . ' associated with Salesforce Object ID: ' . $sf_object['Id'] );
+
 			}
 
 			// Save our mapped objects.
