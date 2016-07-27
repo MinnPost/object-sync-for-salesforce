@@ -7,6 +7,28 @@ class Salesforce_Mapping {
     protected $login_credentials;
     protected $text_domain;
     protected $salesforce;
+    protected $table;
+
+    public $sync_off;
+    public $sync_drupal_create;
+    public $sync_drupal_update;
+    public $sync_drupal_delete;
+    public $sync_sf_create;
+    public $sync_sf_update;
+    public $sync_sf_delete;
+
+    public $direction_drupal_sf;
+    public $direction_sf_drupal;
+    public $direction_sync;
+
+    public $default_record_type;
+
+    public $array_delimiter;
+
+    public $name_length;
+
+    public $status_success;
+    public $status_error;
 
     /**
     * Functionality for mapping Salesforce and WordPress objects
@@ -23,6 +45,35 @@ class Salesforce_Mapping {
         $this->salesforce = $salesforce;
 
         $this->table = $this->wpdb->prefix . 'salesforce_field_map';
+
+        // in drupal module, these are bit flags to define when data syncs should occur
+        // tbh i don't understand what this means
+        $this->sync_off = 0x0000;
+        $this->sync_drupal_create = 0x0001;
+        $this->sync_drupal_update = 0x0002;
+        $this->sync_drupal_delete = 0x0004;
+        $this->sync_sf_create = 0x0008;
+        $this->sync_sf_update = 0x0010;
+        $this->sync_sf_delete = 0x0020;
+
+        // constants for the directions to map things
+        $this->direction_drupal_sf = 'drupal_sf';
+        $this->direction_sf_drupal = 'sf_drupal';
+        $this->direction_sync = 'sync';
+
+        // what kind of record are we dealing with
+        $this->default_record_type = 'default';
+
+        // salesforce has multipicklists and they have a delimiter
+        $this->array_delimiter = ';';
+
+        // max length for a mapping field
+        $this->name_length = 128;
+
+        // statuses for object sync
+        $this->status_success = 1;
+        $this->status_error = 0;
+
     }
 
     /**
