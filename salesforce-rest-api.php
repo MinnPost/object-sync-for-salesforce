@@ -104,11 +104,14 @@ class Salesforce_Rest_API {
 	/**
      * What to do upon deactivation of the plugin
      */
-	function deactivate( &$wpdb, $version, $text_domain ) {
+	private function deactivate( &$wpdb, $version, $text_domain ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
 		$deactivate = new Wordpress_Salesforce_Deactivate( $wpdb, $version, $text_domain );
 	}
 
+	/**
+     * Map the Salesforce and WordPress objects and fields to each other
+     */
 	private function mappings( &$wpdb, $version, $login_credentials, $text_domain, $salesforce ) {
     	require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
     	$mappings = new Salesforce_Mapping( $wpdb, $version, $login_credentials, $text_domain, $salesforce );

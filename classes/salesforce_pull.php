@@ -17,8 +17,12 @@ class Salesforce_Pull {
     /**
     * Functionality for pulling Salesforce objects into WordPress
     *
-    * @param array $loggedin
-    * @param array $text_domain
+    * @param object $wpdb
+    * @param string $version
+    * @param array $login_credentials
+    * @param string $text_domain
+    * @param object $salesforce
+    * @param object $mappings
     * @throws \Exception
     */
     public function __construct( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings ) {
