@@ -33,6 +33,39 @@ class Salesforce_Push {
         $this->salesforce = $salesforce;
         $this->mappings = $mappings;
         $this->salesforce_push_queue = 'salesforce_push';
+
+        $this->add_actions();
+
+    }
+
+    function add_actions() {
+        foreach ( $this->mappings->get_all() as $mapping ) {
+            $object = $mapping['wordpress_object'];
+            if ( $object === 'attachment' ) {
+                add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
+            } elseif ( $object === 'user' ) {
+                add_action( 'user_register', array( &$this, 'add_user' ) );
+            } elseif ( $object === 'post' ) {
+                add_action( 'save_post', array( &$this, 'add_post' ), 10, 2 );
+            } else {
+                add_action( 'save_post_' . $object, array( &$this, 'add_post' ), 10, 2 );
+            }
+        }
+    }
+
+    function add_attachment( $post_id ) {
+        error_log('add an attachment with id of ' . $post_id);
+    }
+
+    function add_user( $user_id ) {
+        error_log('add a user with id of ' . $user_id);
+    }
+
+    function add_post( $post_id, $post ) {
+        if ( isset($post->post_status ) && 'auto-draft' === $post->post_status ) {
+            return;
+        }
+        error_log('add a post with id of ' . $post_id);
     }
 
     /**
