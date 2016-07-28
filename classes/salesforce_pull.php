@@ -66,7 +66,7 @@ class Salesforce_Pull {
 			catch ( Exception $e ) {
 				// In case of exception log it and leave the item in the queue
 				// to be processed again later.
-				write_log( $e );
+				error_log( $e );
 			}
 		}
 
@@ -223,7 +223,7 @@ class Salesforce_Pull {
 
 	  			update_option( 'salesforce_pull_last_sync_' . $type, $_SERVER['REQUEST_TIME'] );
 			} else {
-	  			write_log( 'Salesforce Pull' . $results['errorCode'] . ':' . $results['message'] );
+	  			error_log( 'Salesforce Pull' . $results['errorCode'] . ':' . $results['message'] );
 			}
 		}
 	}
@@ -259,7 +259,7 @@ class Salesforce_Pull {
 							'%label' => $mapping_object->entity_id,
 							'%sfobjectid' => $sf_object['Id'],
 						));
-						write_log( 'Salesforce Pull' . $message );
+						error_log( 'Salesforce Pull' . $message );
 						salesforce_set_message( $message, 'status', FALSE );
 						entity_delete( 'salesforce_mapping_object', $mapping_object->salesforce_mapping_object_id );
 			    	} else {
@@ -283,7 +283,7 @@ class Salesforce_Pull {
 							$mapping_object->last_sync_status = $mappings->status_success;
 							$mapping_object->entity_updated = $mapping_object->last_sync = time();
 
-							write_log( 'Salesforce Pull ' . 'Updated entity ' . $wrapper->label() . ' associated with Salesforce Object ID: ' . $sf_object['Id'] );
+							error_log( 'Salesforce Pull ' . 'Updated entity ' . $wrapper->label() . ' associated with Salesforce Object ID: ' . $sf_object['Id'] );
 
 	      				}
 	      			}
@@ -294,7 +294,7 @@ class Salesforce_Pull {
 						'%sfobjectid' => $sf_object['Id'],
 						'@msg' => $e->getMessage(),
 					));
-    				write_log( 'Salesforce Pull' . $message);
+    				error_log( 'Salesforce Pull' . $message);
     				salesforce_set_message( $message, 'error', FALSE );
 	    			$mapping_object->last_sync_status = $mappings->status_error;
     				$mapping_object->last_sync_message = t( 'Processing failed' );
@@ -342,7 +342,7 @@ class Salesforce_Pull {
 						'%label' => $wrapper->label(),
 						'%sfobjectid' => $sf_object['Id'],
 					));
-	    			write_log( 'Salesforce Pull' . $message );
+	    			error_log( 'Salesforce Pull' . $message );
 	    			salesforce_set_message( 'There were failures processing data from Salesforce. Please check the error logs.', 'error', FALSE );
 				    $last_sync_status = $mappings->status_error;
 				    $last_sync_message = t('Processing failed for new record');
@@ -368,7 +368,7 @@ class Salesforce_Pull {
 					'last_sync_status' => $last_sync_status,
 				) );
 
-				write_log( 'Salesforce Pull ' . 'Created entity ' . $wrapper->label() . ' associated with Salesforce Object ID: ' . $sf_object['Id'] );
+				error_log( 'Salesforce Pull ' . 'Created entity ' . $wrapper->label() . ' associated with Salesforce Object ID: ' . $sf_object['Id'] );
 
 			}
 
@@ -434,10 +434,10 @@ class Salesforce_Pull {
 	              try {
 	                $entity_wrapper->delete();
 	              } catch (Exception $e) {
-	                write_log('salesforce_pull' . $e);
+	                error_log('salesforce_pull' . $e);
 	              }
 
-	              write_log('Salesforce Pull' . 'Deleted entity ' . $entity_wrapper->label() . ' with ID: ' . $mapping_object->entity_id . 'associated with Salesforce Object ID: ' . $record->id);
+	              error_log('Salesforce Pull' . 'Deleted entity ' . $entity_wrapper->label() . ' with ID: ' . $mapping_object->entity_id . 'associated with Salesforce Object ID: ' . $record->id);
 	            }
 	          }
 
