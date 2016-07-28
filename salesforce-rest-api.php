@@ -58,7 +58,9 @@ class Salesforce_Rest_API {
 		$this->activate( $this->wpdb, $this->version, $this->text_domain );
 		$this->deactivate( $this->wpdb, $this->version, $this->text_domain );
 
-		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->login_credentials, $this->salesforce, $this->text_domain );
+		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce );
+
+		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->mappings );
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->mappings );
 
@@ -116,6 +118,15 @@ class Salesforce_Rest_API {
     	require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
     	$mappings = new Salesforce_Mapping( $wpdb, $version, $login_credentials, $text_domain, $salesforce );
     	return $mappings;
+    }
+
+    /**
+     * Methods to push data from WordPress to Salesforce
+     */
+    private function push( &$wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings ) {
+    	require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
+    	$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings );
+    	return $push;
     }
 
 	/**
