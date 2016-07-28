@@ -412,7 +412,7 @@ class Wordpress_Salesforce_Admin {
                         $table = '';
                         $table .= '<h3>Fieldmaps <a class="page-title-action" href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=add' ) . '">Add New</a></h3>';
                         $table .= '<table class="widefat striped"><thead><summary></summary><tr><th>Label</th><th>WordPress Object</th><th>Salesforce Object</th><th colspan="3">Actions</th></thead><tbody>';
-                        $results = $this->mappings->get_multiple();
+                        $results = $this->mappings->get_all();
                         foreach ( $results as $record ) {
                             $table .= '<tr><td>' . $record['label'] . '</td><td>' . $record['wordpress_object'] . '</td><td>' . $record['salesforce_object'] . '</td><td><a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=edit&id=' . $record['id'] ) . '">Edit</a></td><td><a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=clone&id=' . $record['id'] ) . '">Clone</a></td><td><a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=delete&id=' . $record['id'] ) . '">Delete</a></td><td><a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=export&id=' . $record['id'] ) . '">Export</a></td></tr>';
                         }

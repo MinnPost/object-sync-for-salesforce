@@ -200,7 +200,7 @@ class Salesforce_Mapping {
     * @return $results
     * @throws \Exception
     */
-    public function get_multiple( $offset = '', $limit = '' ) {
+    public function get_all( $offset = '', $limit = '' ) {
         $table = $this->table;
         $results = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async` FROM $table" , ARRAY_A );
         foreach ( $results as $result ) {
@@ -208,6 +208,51 @@ class Salesforce_Mapping {
         	$result['sync_triggers'] = maybe_unserialize( $result['sync_triggers'] );
         }
         return $results;
+    }
+
+    /**
+    * Loads multiple salesforce_mappings based on a set of matching conditions.
+    *
+    * @param array $properties
+    *   An array of properties on the {salesforce_mapping} table in the form
+    *     'field' => $value.
+    * @param bool $reset
+    *   Whether to reset the internal contact loading cache.
+    *
+    * @return array
+    *   An array of salesforce_mapping objects.
+    */
+    function load_multiple($properties = array(), $reset = FALSE) {
+        $mappings = array();
+        $efq = new EntityFieldQuery();
+        $efq->entityCondition('entity_type', 'salesforce_mapping');
+        $record_type = NULL;
+        foreach ($properties as $key => $value) {
+            if ($key == 'salesforce_record_type') {
+                $record_type = $value;
+            } else {
+                $efq->propertyCondition($key, $value);
+            }
+        }
+        $efq->propertyOrderBy('weight');
+
+        $results = $efq->execute();
+        if (!empty($results)) {
+            $salesforce_mapping_ids = array_keys($results['salesforce_mapping']);
+
+            if (!empty($salesforce_mapping_ids)) {
+                $mappings = entity_load('salesforce_mapping', $salesforce_mapping_ids, array(), $reset);
+            }
+            if ($record_type) {
+                foreach ($mappings as $id => $mapping) {
+                    if (empty($mapping->salesforce_record_types_allowed[$record_type])) {
+                    unset($mappings[$id]);
+                    }
+                }
+            }
+        }
+
+        return $mappings;
     }
 
 }
