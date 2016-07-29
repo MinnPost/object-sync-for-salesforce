@@ -26,11 +26,15 @@ class Wordpress_Salesforce_Activate {
         $field_map_table = $this->wpdb->prefix . 'salesforce_field_map';
         $field_map_sql = "CREATE TABLE $field_map_table (
           id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-          name varchar(64) DEFAULT '',
+          label varchar(64) NOT NULL DEFAULT '',
+          name varchar(64) NOT NULL DEFAULT '',
           wordpress_object varchar(32) NOT NULL DEFAULT '',
           salesforce_object varchar(32) NOT NULL DEFAULT '',
-          description varchar(255) DEFAULT '',
           fields text NOT NULL,
+          pull_trigger_field varchar(128) NOT NULL DEFAULT 'LastModifiedDate',
+          sync_triggers text NOT NULL,
+          push_async tinyint(1) NOT NULL DEFAULT '0',
+          weight tinyint(1) NOT NULL DEFAULT '0',
           PRIMARY KEY (id)
         ) $charset_collate";
 
