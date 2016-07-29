@@ -222,37 +222,31 @@ class Salesforce_Mapping {
     * @return array
     *   An array of salesforce_mapping objects.
     */
-    function load_multiple($properties = array(), $reset = FALSE) {
-        $mappings = array();
-        $efq = new EntityFieldQuery();
-        $efq->entityCondition('entity_type', 'salesforce_mapping');
-        $record_type = NULL;
-        foreach ($properties as $key => $value) {
-            if ($key == 'salesforce_record_type') {
-                $record_type = $value;
-            } else {
-                $efq->propertyCondition($key, $value);
-            }
-        }
-        $efq->propertyOrderBy('weight');
-
-        $results = $efq->execute();
-        if (!empty($results)) {
-            $salesforce_mapping_ids = array_keys($results['salesforce_mapping']);
-
-            if (!empty($salesforce_mapping_ids)) {
-                $mappings = entity_load('salesforce_mapping', $salesforce_mapping_ids, array(), $reset);
-            }
-            if ($record_type) {
-                foreach ($mappings as $id => $mapping) {
-                    if (empty($mapping->salesforce_record_types_allowed[$record_type])) {
-                    unset($mappings[$id]);
-                    }
+    function load_multiple( $properties = array(), $reset = FALSE ) {
+        $mappings = new stdClass();
+        
+        if ( !empty( $properties ) ) {
+            $where = ' WHERE ';
+            $i = 0;
+            foreach ( $properties as $key => $value ) {
+                $i++;
+                if ( $i > 1 ) {
+                    $where .= ' AND ';
                 }
+                $where .= '`' . $key . '`' . ' = "' . $value . '"';
             }
+        } else {
+            $where = '';
+        }
+
+        $results = $this->wpdb->get_results( 'SELECT * FROM wp_salesforce_field_map' . $where . ' ORDER BY `weight`', OBJECT );
+
+        if (!empty($results)) {
+            $mappings = $results;
         }
 
         return $mappings;
+        
     }
 
 }
