@@ -47,50 +47,86 @@ class Salesforce_Push {
                 add_action( 'user_register', array( &$this, 'add_user' ) );
             } elseif ( $object === 'post' ) {
                 add_action( 'save_post', array( &$this, 'add_post' ), 10, 2 );
+            } elseif ( $object === 'category' || $object === 'tag' ) {
+                add_action( 'registered_taxonomy', array( &$this, 'add_taxonomy', 10, 3 ) );
             } else {
                 add_action( 'save_post_' . $object, array( &$this, 'add_post' ), 10, 2 );
             }
         }
     }
 
+    /**
+    * Callback method for adding an attachment if it is mapped to something in Salesforce
+    *
+    * @param string $post_id
+    */
     function add_attachment( $post_id ) {
-        error_log('add an attachment with id of ' . $post_id);
+        //error_log( 'add an attachment with id of ' . $post_id );
+        $object = wp_get_attachment_metadata( $post_id );
+        $this->object_insert( $object, 'attachment' );
     }
 
+    /**
+    * Callback method for adding a user if it is mapped to something in Salesforce
+    *
+    * @param string $user_id
+    */
     function add_user( $user_id ) {
-        error_log('add a user with id of ' . $user_id);
+        //error_log( 'add a user with id of ' . $user_id );
+        $object = get_userdata( $user_id );
+        $this->object_insert( $object, 'user' );
     }
 
+    /**
+    * Callback method for adding a taxonomy item if it is mapped to something in Salesforce
+    *
+    * @param object $taxonomy
+    * @param string $object_type
+    * @param array $args
+    */
+    function add_taxonomy( $taxonomy, $object_type, $args ) {
+        //error_log( 'add a ' . $object_type . ' of ' . $taxonomy );
+        $object = get_taxonomy( $taxonomy );
+        $this->object_insert( $object, 'taxonomy' );
+    }
+
+    /**
+    * Callback method for adding a post of any type if it is mapped to something in Salesforce
+    *
+    * @param string $post_id
+    * @param object $post
+    */
     function add_post( $post_id, $post ) {
-        if ( isset($post->post_status ) && 'auto-draft' === $post->post_status ) {
+        if ( isset( $post->post_status ) && 'auto-draft' === $post->post_status ) {
             return;
         }
-        error_log('add a post with id of ' . $post_id);
+        //error_log( 'add a post with id of ' . $post_id );
+        $this->object_insert( $post, 'post' );
     }
 
     /**
-     * Implements hook_entity_insert().
-     */
-    function salesforce_push_entity_insert($entity, $type) {
-      salesforce_push_entity_crud($type, $entity, $mappings->sync_drupal_create);
+    * 
+    */
+    function object_insert($object, $type) {
+        $this->salesforce_push_object_crud($type, $object, $this->mappings->sync_wordpress_create);
     }
 
     /**
-     * Implements hook_entity_update().
-     */
+    * Implements hook_entity_update().
+    */
     function salesforce_push_entity_update($entity, $type) {
-      salesforce_push_entity_crud($type, $entity, $mappings->sync_drupal_update);
+        $this->salesforce_push_object_crud($type, $object, $this->mappings->sync_wordpress_update);
     }
 
     /**
-     * Implements hook_entity_delete().
-     */
+    * Implements hook_entity_delete().
+    */
     function salesforce_push_entity_delete($entity, $type) {
-      salesforce_push_entity_crud($type, $entity, $mappings->sync_drupal_delete);
+        $this->salesforce_push_object_crud($type, $object, $this->mappings->sync_wordpress_delete);
     }
 
     /**
-     * Push entities to Salesforce.
+     * Push objects to Salesforce.
      *
      * @param string $object_type
      *   Type of WordPress object.
@@ -99,42 +135,42 @@ class Salesforce_Push {
      * @param int $sf_sync_trigger
      *   The trigger being responded to.
      */
-    function salesforce_push_entity_crud($entity_type, $entity, $sf_sync_trigger) {
-      // Avoid duplicate processing if this entity has just been updated by
+    function salesforce_push_object_crud($object_type, $object, $sf_sync_trigger) {
+      // Avoid duplicate processing if this object has just been updated by
       // Salesforce pull.
-      if (isset($entity->salesforce_pull) && $entity->salesforce_pull) {
+      if (isset($object->salesforce_pull) && $object->salesforce_pull) {
         return FALSE;
       }
 
-      list($entity_id, , $bundle) = entity_extract_ids($entity_type, $entity);
-
-      $mappings = salesforce_mapping_load_multiple(array(
-        'drupal_entity_type' => $entity_type,
-        'drupal_bundle' => $bundle,
+      $sf_mappings = $this->mappings->load_multiple(array(
+        'wordpress_object' => $object_type,
       ));
 
-      foreach ($mappings as $mapping) {
-        if ($mapping->sync_triggers & $sf_sync_trigger) {
+      foreach ($sf_mappings as $mapping) {
+        //error_log('this is a mapping and it is ' . print_r($mapping, true));
+        if ( isset( $mapping->sync_triggers ) && isset( $sf_sync_trigger) ) {
+            error_log('this mapping meeds the sync criteria');
+            // Allow other modules to prevent a sync per-mapping.
+            /*foreach (module_implements('salesforce_push_entity_allowed') as $module) {
+                if (module_invoke($module, 'salesforce_push_entity_allowed', $entity_type, $entity, $sf_sync_trigger, $mapping) === FALSE) {
+                    continue 2;
+                }
+            }*/
 
-          // Allow other modules to prevent a sync per-mapping.
-          foreach (module_implements('salesforce_push_entity_allowed') as $module) {
-            if (module_invoke($module, 'salesforce_push_entity_allowed', $entity_type, $entity, $sf_sync_trigger, $mapping) === FALSE) {
-              continue 2;
-            }
-          }
-
-          if (isset($mapping->push_async) && $mapping->push_async) {
-            $queue = DrupalQueue::get($this->salesforce_push_queue);
+          if ( isset( $mapping->push_async ) && ( $mapping->push_async === 1 ) ) {
+            error_log('this is an async push');
+            /*$queue = DrupalQueue::get($this->salesforce_push_queue);
             $queue->createItem(array(
               'entity_type' => $entity_type,
               'entity_id' => $entity_id,
               'mapping' => $mapping,
               'trigger' => $sf_sync_trigger,
-            ));
+            ));*/
+            error_log('load the queue and put this thing into it');
             continue;
           }
-
-          salesforce_push_sync_rest($entity_type, $entity, $mapping, $sf_sync_trigger);
+          error_log('push sync rest');
+          //salesforce_push_sync_rest($entity_type, $entity, $mapping, $sf_sync_trigger);
         }
       }
     }
@@ -171,7 +207,7 @@ class Salesforce_Push {
      * @param int $sf_sync_trigger
      *   Trigger for this sync.
      */
-    function salesforce_push_sync_rest($entity_type, $entity, $mapping, $sf_sync_trigger) {
+    function salesforce_push_sync_rest($object_type, $object, $mapping, $sf_sync_trigger) {
       $sfapi = $this->salesforce;
 
       // Not authorized, we need to bail this time around.
