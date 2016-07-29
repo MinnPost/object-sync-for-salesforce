@@ -10,15 +10,15 @@ class Salesforce_Mapping {
     protected $table;
 
     public $sync_off;
-    public $sync_drupal_create;
-    public $sync_drupal_update;
-    public $sync_drupal_delete;
+    public $sync_wordpress_create;
+    public $sync_wordpress_update;
+    public $sync_wordpress_delete;
     public $sync_sf_create;
     public $sync_sf_update;
     public $sync_sf_delete;
 
-    public $direction_drupal_sf;
-    public $direction_sf_drupal;
+    public $direction_wordpress_sf;
+    public $direction_sf_wordpress;
     public $direction_sync;
 
     public $default_record_type;
@@ -49,16 +49,16 @@ class Salesforce_Mapping {
         // in drupal module, these are bit flags to define when data syncs should occur
         // tbh i don't understand what this means
         $this->sync_off = 0x0000;
-        $this->sync_drupal_create = 0x0001;
-        $this->sync_drupal_update = 0x0002;
-        $this->sync_drupal_delete = 0x0004;
+        $this->sync_wordpress_create = 0x0001;
+        $this->sync_wordpress_update = 0x0002;
+        $this->sync_wordpress_delete = 0x0004;
         $this->sync_sf_create = 0x0008;
         $this->sync_sf_update = 0x0010;
         $this->sync_sf_delete = 0x0020;
 
         // constants for the directions to map things
-        $this->direction_drupal_sf = 'drupal_sf';
-        $this->direction_sf_drupal = 'sf_drupal';
+        $this->direction_wordpress_sf = 'drupal_sf';
+        $this->direction_sf_wordpress = 'sf_drupal';
         $this->direction_sync = 'sync';
 
         // what kind of record are we dealing with

@@ -149,7 +149,7 @@ class Salesforce_Pull {
 	    			// Exclude field mappings that are only drupal to SF.
 	    			if ( in_array( $field_map['direction'], array(
 	    				$mappings->direction_sync,
-	    				$mappings->direction_sf_drupal
+	    				$mappings->direction_sf_wordpress
 	    			) ) ) {
 						// Some field map types (Relation) store a collection of SF objects.
 	      				if ( is_array( $field_map['salesforce_field'] ) && !isset( $field_map['salesforce_field']['name'] ) ) {
@@ -463,7 +463,7 @@ class Salesforce_Pull {
 	 */
 	function salesforce_pull_map_fields($field_maps, &$entity_wrapper, $sf_object) {
 	  foreach ($field_maps as $field_map) {
-	    if ($field_map['direction'] == 'sync' || $field_map['direction'] == $mappings->direction_sf_drupal) {
+	    if ($field_map['direction'] == 'sync' || $field_map['direction'] == $mappings->direction_sf_wordpress) {
 
 	      $drupal_fields_array = explode(':', $field_map['drupal_field']['fieldmap_value']);
 	      $parent = $entity_wrapper;

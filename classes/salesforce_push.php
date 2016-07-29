@@ -92,10 +92,10 @@ class Salesforce_Push {
     /**
      * Push entities to Salesforce.
      *
-     * @param string $entity_type
-     *   Type of Drupal entity.
-     * @param object $entity
-     *   The entity object.
+     * @param string $object_type
+     *   Type of WordPress object.
+     * @param object $object
+     *   The object object.
      * @param int $sf_sync_trigger
      *   The trigger being responded to.
      */
@@ -160,12 +160,12 @@ class Salesforce_Push {
     }
 
     /**
-     * Sync Drupal entities and Salesforce objects using the REST API.
+     * Sync WordPress objects and Salesforce objects using the REST API.
      *
-     * @param string $entity_type
-     *   Type of Drupal entity.
-     * @param object $entity
-     *   The entity object.
+     * @param string $object_type
+     *   Type of WordPress object.
+     * @param object $object
+     *   The object object.
      * @param object $mapping
      *   Salesforce mapping object.
      * @param int $sf_sync_trigger
@@ -183,7 +183,7 @@ class Salesforce_Push {
       $mapping_object = salesforce_mapping_object_load_by_drupal($entity_type, $entity_id, TRUE);
 
       // Delete SF object.
-      if ($sf_sync_trigger == $mappings->sync_drupal_delete) {
+      if ($sf_sync_trigger == $mappings->sync_wordpress_delete) {
         if ($mapping_object) {
           try {
             $sfapi->objectDelete($mapping->salesforce_object_type, $mapping_object->salesforce_id);
@@ -373,7 +373,7 @@ class Salesforce_Push {
           continue;
         }
 
-        if ($item->data['trigger'] == $mappings->sync_drupal_delete && $mapping_object) {
+        if ($item->data['trigger'] == $mappings->sync_wordpress_delete && $mapping_object) {
           $delete_list[$delta] = $mapping_object->salesforce_id;
           continue;
         }
@@ -553,7 +553,7 @@ class Salesforce_Push {
     function salesforce_push_map_params($mapping, $entity_wrapper, &$key_field, &$key_value, $use_soap = FALSE, $is_new = TRUE) {
       foreach ($mapping->field_mappings as $fieldmap) {
         // Skip fields that aren't being pushed to Salesforce.
-        if (!in_array($fieldmap['direction'], array($mappings->direction_drupal_sf, $mappings->direction_sync))) {
+        if (!in_array($fieldmap['direction'], array($mappings->direction_wordpress_sf, $mappings->direction_sync))) {
           continue;
         }
 
@@ -600,7 +600,7 @@ class Salesforce_Push {
      * Push entity to Salesforce.
      */
     function salesforce_push_action(&$entity, $context) {
-      $trigger = (!empty($entity->is_new) && $entity->is_new) ? $mappings->sync_drupal_create : $mappings->sync_drupal_update;
-      salesforce_push_entity_crud($context['entity_type'], $entity, $trigger);
+      $trigger = (!empty($entity->is_new) && $entity->is_new) ? $mappings->sync_wordpress_create : $mappings->sync_wordpress_update;
+      $this->salesforce_push_object_crud($context['entity_type'], $entity, $trigger);
     }
 }
