@@ -38,6 +38,10 @@ class Salesforce_Push {
 
     }
 
+    /**
+    * Create the action hooks based on what object maps exist from the admin settings
+    *
+    */
     function add_actions() {
         foreach ( $this->mappings->get_all() as $mapping ) {
             $object = $mapping['wordpress_object'];
@@ -136,40 +140,43 @@ class Salesforce_Push {
      *   The trigger being responded to.
      */
     function salesforce_push_object_crud($object_type, $object, $sf_sync_trigger) {
-      // Avoid duplicate processing if this object has just been updated by
-      // Salesforce pull.
-      if (isset($object->salesforce_pull) && $object->salesforce_pull) {
-        return FALSE;
-      }
+        // avoid duplicate processing if this object has just been updated by Salesforce pull
+        // todo: start saving this data once it starts working
+        if (isset($object->salesforce_pull) && $object->salesforce_pull) {
+            return FALSE;
+        }
 
-      $sf_mappings = $this->mappings->load_multiple(array(
-        'wordpress_object' => $object_type,
-      ));
+        $sf_mappings = $this->mappings->load_multiple(array(
+            'wordpress_object' => $object_type,
+        ));
 
       foreach ($sf_mappings as $mapping) {
-        //error_log('this is a mapping and it is ' . print_r($mapping, true));
         if ( isset( $mapping->sync_triggers ) && isset( $sf_sync_trigger) ) {
-            error_log('this mapping meeds the sync criteria');
-            // Allow other modules to prevent a sync per-mapping.
+            // allow other plugins to prevent a sync per-mapping.
+            // need to figure out how to implement this in wordpress
+            // this is the drupal code to try to fork
             /*foreach (module_implements('salesforce_push_entity_allowed') as $module) {
                 if (module_invoke($module, 'salesforce_push_entity_allowed', $entity_type, $entity, $sf_sync_trigger, $mapping) === FALSE) {
                     continue 2;
                 }
             }*/
-
-          if ( isset( $mapping->push_async ) && ( $mapping->push_async === 1 ) ) {
-            error_log('this is an async push');
+          if ( isset( $mapping->push_async ) && ( $mapping->push_async === '1' ) ) {
+            $queue = $this->schedule->push_to_queue($object);
+            $save = $this->schedule->save();
+            
             /*$queue = DrupalQueue::get($this->salesforce_push_queue);
             $queue->createItem(array(
-              'entity_type' => $entity_type,
-              'entity_id' => $entity_id,
-              'mapping' => $mapping,
-              'trigger' => $sf_sync_trigger,
+                'entity_type' => $entity_type,
+                'entity_id' => $entity_id,
+                'mapping' => $mapping,
+                'trigger' => $sf_sync_trigger,
             ));*/
-            error_log('load the queue and put this thing into it');
-            continue;
+            
+          } else { // this one is not async. do it immediately.
+            error_log('push sync rest');  
           }
-          error_log('push sync rest');
+          continue;
+          
           //salesforce_push_sync_rest($entity_type, $entity, $mapping, $sf_sync_trigger);
         }
       }
