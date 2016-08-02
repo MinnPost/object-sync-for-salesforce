@@ -20,13 +20,13 @@ class Wordpress_Salesforce_Admin {
     * @param object $mappings
     * @throws \Exception
     */
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $wordpress, $mappings ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
         $this->text_domain = $text_domain;
-        $this->salesforce = $salesforce;
         $this->wordpress = $wordpress;
+        $this->salesforce = $salesforce;
         $this->mappings = $mappings;
         add_action( 'admin_init', array( &$this, 'salesforce_settings_forms' ) );
         add_action( 'admin_post_post_fieldmap', array( &$this, 'prepare_fieldmap_data' ) );
@@ -221,12 +221,12 @@ class Wordpress_Salesforce_Admin {
                                                     <?php
                                                     $wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
                                                     foreach ( $wordpress_fields as $wordpress_field ) {
-                                                        if ( isset( $value['wordpress_field'] ) && $value['wordpress_field'] === $wordpress_field->meta_key ) {
+                                                        if ( isset( $value['wordpress_field'] ) && $value['wordpress_field'] === $wordpress_field['key'] ) {
                                                             $selected = ' selected';
                                                         } else {
                                                             $selected = '';
                                                         }
-                                                        echo '<option value="' . $wordpress_field->meta_key . '"' . $selected . '> ' . $wordpress_field->meta_key . '</option>';
+                                                        echo '<option value="' . $wordpress_field['key'] . '"' . $selected . '> ' . $wordpress_field['key'] . '</option>';
                                                     }
                                                     ?>
                                                 </select>
@@ -303,7 +303,7 @@ class Wordpress_Salesforce_Admin {
                                                     <?php
                                                     $wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
                                                     foreach ( $wordpress_fields as $wordpress_field ) {
-                                                        echo '<option value="' . $wordpress_field->meta_key . '"> ' . $wordpress_field->meta_key . '</option>';
+                                                        echo '<option value="' . $wordpress_field['key'] . '"> ' . $wordpress_field['key'] . '</option>';
                                                     }
                                                     ?>
                                                 </select>

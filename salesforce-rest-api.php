@@ -69,8 +69,8 @@ class Salesforce_Rest_API {
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
         $this->schedule_name = 'process_queue';
-		$this->salesforce = $this->salesforce_get_api();
         $this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain );
+		$this->salesforce = $this->salesforce_get_api();
 
 		$this->activate( $this->wpdb, $this->version, $this->text_domain );
 		$this->deactivate( $this->wpdb, $this->version, $this->text_domain, $this->schedule_name );
@@ -81,7 +81,7 @@ class Salesforce_Rest_API {
 
 		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->mappings, $this->schedule );
 
-		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->wordpress, $this->mappings );
+		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings );
 
 		//add_action		( 'plugins_loaded', 					array( $this, 'textdomain'				) 			);
 		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
@@ -184,9 +184,9 @@ class Salesforce_Rest_API {
 	* @param array $parent_settings
 	* @throws \Exception
 	*/
-    private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $salesforce, $wordpress, $mappings ) {
+    private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings ) {
     	require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
-    	$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $wordpress, $mappings );
+    	$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings );
     	add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
     	add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
     	add_filter( 'plugin_action_links', array( &$this, 'plugin_action_links' ), 10, 5 );
