@@ -28,10 +28,12 @@ class Salesforce {
 	*   Path Salesforce uses to give you a token
 	* @param string $rest_api_version
 	*   What version of the Salesforce REST API to use
+	* @param object $wordpress
+	*   Object for doing things to WordPress - retrieving data, cache, etc.
 	* @param string $text_domain
 	*   Text domain for this plugin. Would be used in any future translations.
 	*/
-	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $text_domain ) {
+	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain  ) {
 		$this->consumer_key = $consumer_key;
 		$this->consumer_secret = $consumer_secret;
 		$this->login_url = $login_url;
@@ -39,6 +41,7 @@ class Salesforce {
 		$this->authorize_path = $authorize_path;
 		$this->token_path = $token_path;
 		$this->rest_api_version = $rest_api_version;
+		$this->wordpress = $wordpress;
 		$this->text_domain = $text_domain;
 		$this->options = array(
 			'cache' => true,
@@ -220,7 +223,7 @@ class Salesforce {
 		// if it is already cached, load it. if not, load it and then cache it if it should be cached
 		// add parameters to the array so we can tell if it was cached or not
 		if ( $options['cache'] === true && $options['cache'] !== 'write' ) { 
-			$cached = $this->cache_get( $url, $params );
+			$cached = $this->wordpress->cache_get( $url, $params );
 			if ( is_array( $cached ) ) {
 				$result = $cached;
 				$result['from_cache'] = true;
@@ -229,7 +232,7 @@ class Salesforce {
     			$data = json_encode( $params );
 				$result = $this->http_request( $url, $data, $headers, $method, $options );
 				if ( in_array( $result['code'], array( 200, 201, 204 ) ) ) {
-					$result['cached'] = $this->cache_set( $url, $params, $result, $options['cache_expiration'] );
+					$result['cached'] = $this->wordpress->cache_set( $url, $params, $result, $options['cache_expiration'] );
 				} else {
 					$result['cached'] = false;
 				}
@@ -812,49 +815,6 @@ class Salesforce {
 		$end = urlencode( gmdate( DATE_ATOM, $end ) );
 
 		return $this->api_call( "sobjects/{$name}/updated/?start=$start&end=$end" );
-	}
-
-
-	/**
-     * Check to see if this API call exists in the cache
-     * if it does, return the transient for that key
-     *
-     * @param string $url
-     * @param array $args
-     * @return get_transient $cachekey
-     */
-	protected function cache_get( $url, $args ) {
-        if ( is_array( $args ) ) {
-            $args[] = $url;
-            array_multisort( $args );
-        } else {
-            $args .= $url;
-        }
-    	$cachekey = md5( json_encode( $args ) );
-    	return get_transient( $cachekey );
-	}
-
-	/**
-     * Create a cache entry for the current result, with the url and args as the key
-     *
-     * @param string $url
-     * @param array $args
-     * @param array $data
-     */
-	protected function cache_set( $url, $args, $data, $cache_expiration = '' ) {
-		if ( is_array( $args ) ) {
-            $args[] = $url;
-            array_multisort( $args );
-        } else {
-            $args .= $url;
-        }
-    	$cachekey = md5( json_encode( $args ) );
-    	// cache_expiration is how long it should be stored in the cache
-        // if we didn't give a custom one, use the default
-    	if ( $cache_expiration === '' ) {
-    		$cache_expiration = $this->options['cache_expiration'];
-    	}
-    	return set_transient( $cachekey, $data, $cache_expiration );
 	}
 
 	/**

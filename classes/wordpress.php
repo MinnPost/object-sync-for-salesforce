@@ -90,4 +90,46 @@ class Wordpress {
 
     }
 
+    /**
+     * Check to see if this API call exists in the cache
+     * if it does, return the transient for that key
+     *
+     * @param string $url
+     * @param array $args
+     * @return get_transient $cachekey
+     */
+	public function cache_get( $url, $args ) {
+        if ( is_array( $args ) ) {
+            $args[] = $url;
+            array_multisort( $args );
+        } else {
+            $args .= $url;
+        }
+    	$cachekey = md5( json_encode( $args ) );
+    	return get_transient( $cachekey );
+	}
+
+	/**
+     * Create a cache entry for the current result, with the url and args as the key
+     *
+     * @param string $url
+     * @param array $args
+     * @param array $data
+     */
+	public function cache_set( $url, $args, $data, $cache_expiration = '' ) {
+		if ( is_array( $args ) ) {
+            $args[] = $url;
+            array_multisort( $args );
+        } else {
+            $args .= $url;
+        }
+    	$cachekey = md5( json_encode( $args ) );
+    	// cache_expiration is how long it should be stored in the cache
+        // if we didn't give a custom one, use the default
+    	if ( $cache_expiration === '' ) {
+    		$cache_expiration = $this->options['cache_expiration'];
+    	}
+    	return set_transient( $cachekey, $data, $cache_expiration );
+	}
+
 }

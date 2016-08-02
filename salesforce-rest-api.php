@@ -69,6 +69,7 @@ class Salesforce_Rest_API {
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
         $this->schedule_name = 'process_queue';
+        
         $this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain );
 		$this->salesforce = $this->salesforce_get_api();
 
@@ -87,6 +88,17 @@ class Salesforce_Rest_API {
 		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
 	}
 
+    /**
+    * private helper to load methods for manipulating core WordPress data when needed
+    *
+    * @return object
+    */
+    private function wordpress( $wpdb, $version, $text_domain ) {
+        require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
+        $wordpress = new Wordpress( $wpdb, $version, $text_domain );
+        return $wordpress;
+    }
+
 	/**
     * private helper to load the Salesforce API and see if it is authenticated
     *
@@ -103,26 +115,16 @@ class Salesforce_Rest_API {
         $token_path = $this->login_credentials['token_path'];
         $rest_api_version = $this->login_credentials['rest_api_version'];
         $text_domain = $this->text_domain;
+        $wordpress = $this->wordpress;
         $is_authorized = false;
         $sfapi = '';
         if ($consumer_key && $consumer_secret) {
-            $sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $text_domain );
+            $sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain );
             if ( $sfapi->is_authorized() === true ) {
                 $is_authorized = true;
             }
         }
         return array( 'is_authorized' => $is_authorized, 'sfapi' => $sfapi );
-    }
-
-    /**
-    * private helper to load methods for manipulating core WordPress data when needed
-    *
-    * @return object
-    */
-    private function wordpress( $wpdb, $version, $text_domain ) {
-        require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
-        $wordpress = new Wordpress( $wpdb, $version, $text_domain );
-        return $wordpress;
     }
 
 	/**
