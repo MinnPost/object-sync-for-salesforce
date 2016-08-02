@@ -33,6 +33,11 @@ class Salesforce_Rest_API {
 	*/
 	private $version;
 
+    /**
+    * @var string
+    */
+    private $schedule_name;
+
 	/**
 	 * Static property to hold our singleton instance
 	 * todo: figure out what to do with this
@@ -53,12 +58,13 @@ class Salesforce_Rest_API {
 		$this->version = '0.0.1';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
+        $this->schedule_name = 'process_queue';
 		$this->salesforce = $this->salesforce_get_api();
 
 		$this->activate( $this->wpdb, $this->version, $this->text_domain );
-		$this->deactivate( $this->wpdb, $this->version, $this->text_domain );
+		$this->deactivate( $this->wpdb, $this->version, $this->text_domain, $this->schedule_name );
 
-        $this->schedule = $this->schedule( $this->version, $this->login_credentials, $this->text_domain, $this->salesforce );
+        $this->schedule = $this->schedule( $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->schedule_name );
 
 		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce );
 
@@ -108,19 +114,19 @@ class Salesforce_Rest_API {
 	/**
      * What to do upon deactivation of the plugin
      */
-	private function deactivate( &$wpdb, $version, $text_domain ) {
+	private function deactivate( &$wpdb, $version, $text_domain, $schedule_name ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
-		$deactivate = new Wordpress_Salesforce_Deactivate( $wpdb, $version, $text_domain );
+		$deactivate = new Wordpress_Salesforce_Deactivate( $wpdb, $version, $text_domain, $schedule_name );
 	}
 
     /**
      * Functionality for scheduling tasks to be run against the Salesforce REST API
      */
-    private function schedule( $version, $login_credentials, $text_domain, $salesforce ) {
+    private function schedule( $version, $login_credentials, $text_domain, $salesforce, $schedule_name ) {
         require_once plugin_dir_path( __FILE__ ) . 'vendor/async-requests/wp-async-request.php';
         require_once plugin_dir_path( __FILE__ ) . 'vendor/background-processes/wp-background-process.php';
         require_once plugin_dir_path( __FILE__ ) . 'classes/schedule.php';
-        $schedule = new Wordpress_Salesforce_Schedule( $version, $login_credentials, $text_domain, $salesforce );
+        $schedule = new Wordpress_Salesforce_Schedule( $version, $login_credentials, $text_domain, $salesforce, $schedule_name );
         return $schedule;
     }
 

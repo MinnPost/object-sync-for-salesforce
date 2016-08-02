@@ -7,6 +7,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     protected $login_credentials;
     protected $text_domain;
     protected $salesforce;
+    protected $schedule_name;
 
 //	use WP_Example_Logger;
 
@@ -23,14 +24,16 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     * @param array $login_credentials
     * @param string $text_domain
     * @param object $salesforce
+    * @param string $schedule_name
     * @throws \Exception
     */
-    public function __construct( $version, $login_credentials, $text_domain, $salesforce ) {
+    public function __construct( $version, $login_credentials, $text_domain, $salesforce, $schedule_name ) {
         //$this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
         $this->text_domain = $text_domain; 
         $this->salesforce = $salesforce;
+        $this->schedule_name = $schedule_name;
     }
 
 
@@ -43,10 +46,10 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
      * @return void
      */
     public function schedule() {
-        if (! wp_next_scheduled ( 'process_queue' ) ) {
-			wp_schedule_event( time(), 'hourly', 'process_queue' );
+        if (! wp_next_scheduled ( $this->schedule_name ) ) {
+			wp_schedule_event( time(), 'hourly', $this->schedule_name );
 	    }
-	    add_action( 'process_queue', array( $this, 'call_handler') ); // run the handle method 
+	    add_action( $this->schedule_name, array( $this, 'call_handler') ); // run the handle method 
     }
 
 	/**

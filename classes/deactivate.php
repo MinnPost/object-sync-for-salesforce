@@ -10,9 +10,10 @@ class Wordpress_Salesforce_Deactivate {
     * @param string $version
     *
     */
-    public function __construct( $wpdb, $version, $text_domain ) {
+    public function __construct( $wpdb, $version, $text_domain, $schedule_name ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
+        $this->schedule_name = $schedule_name;
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'wordpress_salesforce_drop_tables' ) );
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'clear_schedule' ) );
     }
@@ -28,7 +29,7 @@ class Wordpress_Salesforce_Deactivate {
     }
 
     public function clear_schedule() {
-        wp_clear_scheduled_hook( 'start_serialized_event' );
+        wp_clear_scheduled_hook( $this->schedule_name );
     }
 
 }
