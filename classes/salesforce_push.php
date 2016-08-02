@@ -8,6 +8,7 @@ class Salesforce_Push {
     protected $text_domain;
     protected $salesforce;
     protected $mappings;
+    protected $schedule;
 
     /**
     * @var string
@@ -23,15 +24,17 @@ class Salesforce_Push {
     * @param string $text_domain
     * @param object $salesforce
     * @param object $mappings
+    * @param object $schedule
     * @throws \Exception
     */
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings, $schedule ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
         $this->text_domain = $text_domain; 
         $this->salesforce = $salesforce;
         $this->mappings = $mappings;
+        $this->schedule = $schedule;
         $this->salesforce_push_queue = 'salesforce_push';
 
         $this->add_actions();
