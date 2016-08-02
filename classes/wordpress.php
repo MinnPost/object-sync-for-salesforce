@@ -20,7 +20,12 @@ class Wordpress {
 	public function __construct( $wpdb, $version, $text_domain ) {
 		$this->wpdb = &$wpdb;
 		$this->version = $version;
-		$this->text_domain = $text_domain; 
+		$this->text_domain = $text_domain;
+		$this->options = array(
+			'cache' => true,
+			'cache_expiration' => $this->cache_expiration( 'wordpress_data_cache', $expire ),
+			'type' => 'read'
+		);
 	}
 
 	/**
@@ -57,36 +62,80 @@ class Wordpress {
 			$ignore_keys = array();
 		}
 
-        $select_content = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $content_table . '"';
-        $content_fields = $this->wpdb->get_results( $select_content );
-
-        $select_meta = $select = '
-        SELECT DISTINCT ' . $meta_table . '.meta_key
-        FROM ' . $content_table . '
-        LEFT JOIN ' . $meta_table . '
-        ON ' . $content_table . '.' . $id_field . ' = ' . $meta_table . '.' . $object_name . '_id
-        WHERE ' . $meta_table . '.meta_key != "" 
-        ' . $where . '
-        ';
-        $meta_fields = $this->wpdb->get_results( $select_meta );
-
-        $object_fields = array();
-
-        foreach ( $content_fields as $key => $value ) {
-        	if ( !in_array( $value->COLUMN_NAME, $ignore_keys ) ) {
-        		$object_fields[] = array( 'key' => $value->COLUMN_NAME );
-        	}
-        }
-
-        foreach ( $meta_fields as $key => $value ) {
-        	if ( !in_array( $value->meta_key, $ignore_keys ) ) {
-        		$object_fields[] = array( 'key' => $value->meta_key );
-        	}
-        }
+		$object_fields = array();
 
         // should cache that array
+        if ( $this->options['cache'] === true && $this->options['cache'] !== 'write' ) { 
+	        $cached = $this->cache_get( $wordpress_object, array( 'data', 'meta') );
+	        if ( is_array( $cached ) ) {
+	            $object_fields['data'] = $cached;
+	            $object_fields['from_cache'] = true;
+	            $object_fields['cached'] = true;
+	        } else {
+	            $select_data = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $content_table . '"';
+		        $data_fields = $this->wpdb->get_results( $select_data );
+
+		        $select_meta = $select = '
+		        SELECT DISTINCT ' . $meta_table . '.meta_key
+		        FROM ' . $content_table . '
+		        LEFT JOIN ' . $meta_table . '
+		        ON ' . $content_table . '.' . $id_field . ' = ' . $meta_table . '.' . $object_name . '_id
+		        WHERE ' . $meta_table . '.meta_key != "" 
+		        ' . $where . '
+		        ';
+		        $meta_fields = $this->wpdb->get_results( $select_meta );
+
+		        $object_fields['data'] = array();
+
+		        foreach ( $data_fields as $key => $value ) {
+		        	if ( !in_array( $value->COLUMN_NAME, $ignore_keys ) ) {
+		        		$object_fields['data'][] = array( 'key' => $value->COLUMN_NAME );
+		        	}
+		        }
+
+		        foreach ( $meta_fields as $key => $value ) {
+		        	if ( !in_array( $value->meta_key, $ignore_keys ) ) {
+		        		$object_fields['data'][] = array( 'key' => $value->meta_key );
+		        	}
+		        }
+
+	            if ( !empty( $object_fields['data'] ) ) {
+	                $object_fields['cached'] = $this->cache_set( $wordpress_object, array( 'data', 'meta'), $object_fields['data'], $this->options['cache_expiration'] );
+	            } else {
+	                $object_fields['cached'] = false;
+	            }
+	            $object_fields['from_cache'] = false;
+	        }
+	    } else {
+	        $select_data = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $content_table . '"';
+	        $data_fields = $this->wpdb->get_results( $select_data );
+
+	        $select_meta = $select = '
+	        SELECT DISTINCT ' . $meta_table . '.meta_key
+	        FROM ' . $content_table . '
+	        LEFT JOIN ' . $meta_table . '
+	        ON ' . $content_table . '.' . $id_field . ' = ' . $meta_table . '.' . $object_name . '_id
+	        WHERE ' . $meta_table . '.meta_key != "" 
+	        ' . $where . '
+	        ';
+	        $meta_fields = $this->wpdb->get_results( $select_meta );
+
+	        foreach ( $data_fields as $key => $value ) {
+	        	if ( !in_array( $value->COLUMN_NAME, $ignore_keys ) ) {
+	        		$object_fields['data'][] = array( 'key' => $value->COLUMN_NAME );
+	        	}
+	        }
+
+	        foreach ( $meta_fields as $key => $value ) {
+	        	if ( !in_array( $value->meta_key, $ignore_keys ) ) {
+	        		$object_fields['data'][] = array( 'key' => $value->meta_key );
+	        	}
+	        }
+	        $object_fields['from_cache'] = false;
+	        $object_fields['cached'] = false;
+	    }
         
-		return $object_fields;
+		return $object_fields['data'];
 
     }
 
@@ -130,6 +179,18 @@ class Wordpress {
     		$cache_expiration = $this->options['cache_expiration'];
     	}
     	return set_transient( $cachekey, $data, $cache_expiration );
+	}
+
+	/**
+     * If there is a WordPress setting for how long to keep this specific cache, return it and set the object property
+     * Otherwise, return seconds in 24 hours
+     *
+     * @param string $option_key
+     * @param int $expire
+     */
+	public function cache_expiration( $option_key, $expire ) {
+		$cache_expiration = get_option( $option_key, $expire );
+		return $cache_expiration;
 	}
 
 }

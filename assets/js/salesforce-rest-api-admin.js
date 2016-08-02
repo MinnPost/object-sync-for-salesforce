@@ -54,7 +54,7 @@ function fieldmap_fields(wordpress_object, salesforce_object, row_count) {
 		wordpress += '<select name="wordpress_field[' + row_count + ']" id="wordpress_field-' + row_count + '">'
 		wordpress += '<option value="">- Select WordPress field -</option>';
 		$.each(response.data.wordpress, function(index, value) {
-			wordpress += '<option value="' + value.meta_key + '">' + value.meta_key + '</option>';
+			wordpress += '<option value="' + value.key + '">' + value.key + '</option>';
 		});
 		wordpress += '</select>';
 

@@ -823,7 +823,7 @@ class Salesforce {
      *
      */
 	private function cache_expiration() {
-		$cache_expiration = get_option( 'salesforce_api_cache_expiration', 86400 );
+		$cache_expiration = $this->wordpress->cache_expiration( 'salesforce_api_cache_expiration', 86400 );
 		return $cache_expiration;
 	}
 
