@@ -629,33 +629,8 @@ class Wordpress_Salesforce_Admin {
             $wordpress_object = $_POST['wordpress_object'];
             $ajax = true;
         }
-        $id_field = 'ID';
-        if ( $wordpress_object === 'user' ) {
-            $meta_table = $this->wpdb->prefix . 'usermeta';
-            $content_table = $this->wpdb->prefix . 'users';
-            $object_name = 'user';
-            $where = '';
-        } else if ( $wordpress_object === 'comment' ) {
-            $meta_table = $this->wpdb->prefix . 'commentmeta';
-            $content_table = $this->wpdb->prefix . 'comments';
-            $object_name = 'comment';
-            $id_field = 'comment_ID';
-            $where = '';
-        } else {
-            $meta_table = $this->wpdb->prefix . 'postmeta';
-            $content_table = $this->wpdb->prefix . 'posts';
-            $object_name = 'post';
-            $where = 'AND ' . $content_table . '.post_type = "' . $wordpress_object . '"';
-        }
-        $select = '
-        SELECT DISTINCT ' . $meta_table . '.meta_key
-        FROM ' . $content_table . '
-        LEFT JOIN ' . $meta_table . '
-        ON ' . $content_table . '.' . $id_field . ' = ' . $meta_table . '.' . $object_name . '_id
-        WHERE ' . $meta_table . '.meta_key != "" 
-        ' . $where . '
-        ';
-        $object_fields = $this->wpdb->get_results($select);
+        
+        $object_fields = $this->wordpress->get_wordpress_object_fields( $wordpress_object );
         
         if ( $ajax === true ) {
             wp_send_json_success( $object_fields );
