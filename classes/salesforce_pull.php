@@ -144,12 +144,12 @@ class Salesforce_Pull {
 			$mapped_record_types = array();
 
 			// Iterate over each field mapping to determine our query parameters.
-			foreach ( salesforce_mapping_load_multiple( array( 'salesforce_object_type' => $type ) ) as $mapping ) {
+			foreach ( $this->mappings->load_multiple( array( 'salesforce_object_type' => $type ) ) as $mapping ) {
 	  			foreach ( $mapping->field_mappings as $field_map ) {
 	    			// Exclude field mappings that are only drupal to SF.
 	    			if ( in_array( $field_map['direction'], array(
-	    				$mappings->direction_sync,
-	    				$mappings->direction_sf_wordpress
+	    				$this->mappings->direction_sync,
+	    				$this->mappings->direction_sf_wordpress
 	    			) ) ) {
 						// Some field map types (Relation) store a collection of SF objects.
 	      				if ( is_array( $field_map['salesforce_field'] ) && !isset( $field_map['salesforce_field']['name'] ) ) {
@@ -162,7 +162,7 @@ class Salesforce_Pull {
 	    			}
 	  			}
 
-	  			if ( !empty($mapped_fields ) && $mapping->salesforce_record_type_default != $mappings->default_record_type ) {
+	  			if ( !empty($mapped_fields ) && $mapping->salesforce_record_type_default != $this->mappings->default_record_type ) {
 	    			foreach ( $mapping->salesforce_record_types_allowed as $record_type ) {
 						if ( $record_type ) {
 							$mapped_record_types[$record_type] = $record_type;
@@ -237,18 +237,18 @@ class Salesforce_Pull {
 		$mapping_conditions = array(
 			'salesforce_object_type' => $sf_object['attributes']['type'],
 		);
-		if ( isset($sf_object['RecordTypeId'] ) && $sf_object['RecordTypeId'] != $mappings->default_record_type ) {
+		if ( isset($sf_object['RecordTypeId'] ) && $sf_object['RecordTypeId'] != $this->mappings->default_record_type ) {
 				$mapping_conditions['salesforce_record_type'] = $sf_object['RecordTypeId'];
 		}
 
 		// array should contain the type of object and the type of record that the object has
-		$sf_mappings = salesforce_mapping_load_multiple($mapping_conditions);
+		$sf_mappings = $this->mappings->load_multiple($mapping_conditions);
 
 		foreach ($sf_mappings as $sf_mapping) {
 			// Mapping object exists?
 			$mapping_object = salesforce_mapping_object_load_by_sfid($sf_object['Id']);
 			$exists = $mapping_object ? TRUE : FALSE;
-			if ( $exists && ( $sf_mapping->sync_triggers & $mappings->sync_sf_update ) ) {
+			if ( $exists && ( $sf_mapping->sync_triggers & $this->mappings->sync_sf_update ) ) {
 	  			try {
 	    			$entity = entity_load_single( $mapping_object->entity_type, $mapping_object->entity_id );
 	    			if ( $entity === FALSE ) {
@@ -280,7 +280,7 @@ class Salesforce_Pull {
 
 							// Update mapping object.
 							$mapping_object->last_sync_message = t( 'Retrieved updates from Salesforce' );
-							$mapping_object->last_sync_status = $mappings->status_success;
+							$mapping_object->last_sync_status = $this->mappings->status_success;
 							$mapping_object->entity_updated = $mapping_object->last_sync = time();
 
 							error_log( 'Salesforce Pull ' . 'Updated entity ' . $wrapper->label() . ' associated with Salesforce Object ID: ' . $sf_object['Id'] );
@@ -296,14 +296,14 @@ class Salesforce_Pull {
 					));
     				error_log( 'Salesforce Pull' . $message);
     				salesforce_set_message( $message, 'error', FALSE );
-	    			$mapping_object->last_sync_status = $mappings->status_error;
+	    			$mapping_object->last_sync_status = $this->mappings->status_error;
     				$mapping_object->last_sync_message = t( 'Processing failed' );
     				$mapping_object->last_sync = time();
     			}
     		} else {
     			$exists = FALSE;
     		}
-    		if ( !$exists && $sf_mapping->sync_triggers & $mappings->sync_sf_create ) {
+    		if ( !$exists && $sf_mapping->sync_triggers & $this->mappings->sync_sf_create ) {
     			try {
     				// Create entity from mapping object and field maps.
     				$entity_info = entity_get_info( $sf_mapping->drupal_entity_type );
@@ -334,7 +334,7 @@ class Salesforce_Pull {
 					$wrapper->save();
 					// Update mapping object.
 					$last_sync_message = t( 'Retrieved new record from Salesforce' );
-					$last_sync_status = $mappings->status_success;
+					$last_sync_status = $this->mappings->status_success;
 					$entity_updated = time();
 				} catch ( Exception $e ) {
 					$message = $e->getMessage() . ' ' . t( 'Processing failed for entity %label associated with Salesforce Object ID: %sfobjectid',
@@ -344,7 +344,7 @@ class Salesforce_Pull {
 					));
 	    			error_log( 'Salesforce Pull' . $message );
 	    			salesforce_set_message( 'There were failures processing data from Salesforce. Please check the error logs.', 'error', FALSE );
-				    $last_sync_status = $mappings->status_error;
+				    $last_sync_status = $this->mappings->status_error;
 				    $last_sync_message = t('Processing failed for new record');
 				    $entity_updated = NULL;
 				}
@@ -414,7 +414,7 @@ class Salesforce_Pull {
 	            $entity_wrapper = entity_metadata_wrapper($mapping_object->entity_type, $entity);
 
 	            // Load the mapping that manages these mapped objects.
-	            $sf_mapping = reset(salesforce_mapping_load_multiple(
+	            $sf_mapping = reset($this->mappings->load_multiple(
 	              array(
 	                'salesforce_object_type' => $type,
 	                'drupal_entity_type' => $entity_wrapper->type(),
@@ -424,7 +424,7 @@ class Salesforce_Pull {
 
 	            // Only delete the mapped Drupal entity if the
 	            // SALESFORCE_MAPPING_SYNC_SF_DELETE flag is set.
-	            if (!empty($sf_mapping) && ($sf_mapping->sync_triggers & $mappings->sync_sf_delete)) {
+	            if (!empty($sf_mapping) && ($sf_mapping->sync_triggers & $this->mappings->sync_sf_delete)) {
 	              // Prevent processing by salesforce_push. We hate circular logic.
 	              $entity->salesforce_pull = TRUE;
 
@@ -463,7 +463,7 @@ class Salesforce_Pull {
 	 */
 	function salesforce_pull_map_fields($field_maps, &$entity_wrapper, $sf_object) {
 	  foreach ($field_maps as $field_map) {
-	    if ($field_map['direction'] == 'sync' || $field_map['direction'] == $mappings->direction_sf_wordpress) {
+	    if ($field_map['direction'] == 'sync' || $field_map['direction'] == $this->mappings->direction_sf_wordpress) {
 
 	      $drupal_fields_array = explode(':', $field_map['drupal_field']['fieldmap_value']);
 	      $parent = $entity_wrapper;
@@ -476,8 +476,8 @@ class Salesforce_Pull {
 	        }
 	        $parent = $child_wrapper;
 	      }
-	      $fieldmap_type = salesforce_mapping_get_fieldmap_types($field_map['drupal_field']['fieldmap_type']);
-	      $value = call_user_func($fieldmap_type['pull_value_callback'], $parent, $sf_object, $field_map);
+	      //$fieldmap_type = salesforce_mapping_get_fieldmap_types($field_map['drupal_field']['fieldmap_type']);
+	      //$value = call_user_func($fieldmap_type['pull_value_callback'], $parent, $sf_object, $field_map);
 
 	      // Allow this value to be altered before assigning to the entity.
 	      drupal_alter('salesforce_pull_entity_value', $value, $field_map, $sf_object);
