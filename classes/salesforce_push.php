@@ -164,8 +164,9 @@ class Salesforce_Push {
                 }
             }*/
           if ( isset( $mapping->push_async ) && ( $mapping->push_async === '1' ) ) {
-            $queue = $this->schedule->push_to_queue($object);
-            $save = $this->schedule->save();
+            error_log($object);
+            //$queue = $this->schedule->push_to_queue($object);
+            //$save = $this->schedule->save();
             
             /*$queue = DrupalQueue::get($this->salesforce_push_queue);
             $queue->createItem(array(
@@ -199,8 +200,8 @@ class Salesforce_Push {
       $entity_type = $values['entity_type'];
       $entity_id = $values['entity_id'];
       $entity = entity_load_single($entity_type, $entity_id);
-      $trigger = $mappings->sync_drupal_update;
-      salesforce_push_entity_crud($entity_type, $entity, $trigger);
+      $trigger = $this->mappings->sync_wordpress_update;
+      $this->salesforce_push_object_crud($entity_type, $entity, $trigger);
       // @TODO we can do better than this:
       // drupal_set_message('Push request submitted. If your mappings are set to push asynchronously, you need to run cron.');
     }
@@ -225,11 +226,11 @@ class Salesforce_Push {
         return;
       }
 
-      list($entity_id) = entity_extract_ids($entity_type, $entity);
+      list($object_id) = entity_extract_ids($object_type, $object);
       $mapping_object = salesforce_mapping_object_load_by_drupal($entity_type, $entity_id, TRUE);
 
       // Delete SF object.
-      if ($sf_sync_trigger == $mappings->sync_wordpress_delete) {
+      if ($sf_sync_trigger == $this->mappings->sync_wordpress_delete) {
         if ($mapping_object) {
           try {
             $sfapi->objectDelete($mapping->salesforce_object_type, $mapping_object->salesforce_id);
@@ -255,7 +256,7 @@ class Salesforce_Push {
       // Entity is not linked to an SF object.
       if (!$mapping_object) {
         // Setup SF record type. CampaignMember objects get their Campaign's type.
-        if ($mapping->salesforce_record_type_default != $mappings->default_record_type
+        if ($mapping->salesforce_record_type_default != $this->mappings->default_record_type
           && empty($params['RecordTypeId'])
           && ($mapping->salesforce_object_type != 'CampaignMember')) {
           $params['RecordTypeId'] = $mapping->salesforce_record_type_default;
@@ -306,7 +307,7 @@ class Salesforce_Push {
             'entity_type' => $entity_type,
             'salesforce_id' => $data['id'],
             'last_sync_message' => t('Mapping object created via !function.', array('!function' => __FUNCTION__)),
-            'last_sync_status' => $mappings->status_success,
+            'last_sync_status' => $this->mappings->status_success,
           ));
         }
         else {
@@ -334,7 +335,7 @@ class Salesforce_Push {
         try {
           $sfapi->objectUpdate($mapping->salesforce_object_type, $mapping_object->salesforce_id, $params);
           $mapping_object->last_sync_message = t('Mapping object updated via !function.', array('!function' => __FUNCTION__));
-          $mapping_object->last_sync_status = $mappings->status_success;
+          $mapping_object->last_sync_status = $this->mappings->status_success;
 
           salesforce_set_message(t('%name has been synchronized with Salesforce record %sfid.', array(
             '%name' => $entity_wrapper->label(),
@@ -350,7 +351,7 @@ class Salesforce_Push {
             '@msg' => $e->getMessage(),
           )), 'error');
           $mapping_object->last_sync_message = $e->getMessage();
-          $mapping_object->last_sync_status = $mappings->status_error;
+          $mapping_object->last_sync_status = $this->mappings->status_error;
         }
       }
 
@@ -419,7 +420,7 @@ class Salesforce_Push {
           continue;
         }
 
-        if ($item->data['trigger'] == $mappings->sync_wordpress_delete && $mapping_object) {
+        if ($item->data['trigger'] == $this->mappings->sync_wordpress_delete && $mapping_object) {
           $delete_list[$delta] = $mapping_object->salesforce_id;
           continue;
         }
@@ -436,7 +437,7 @@ class Salesforce_Push {
         // Setup SF record type. CampaignMember objects get their type from
         // their Campaign.
         // @TODO: remove object-specific logic. Figure out how this works and implement generic support for recordtype inheritence, or objects that don't support recordtypes
-        if ($mapping->salesforce_record_type_default != $mappings->default_record_type
+        if ($mapping->salesforce_record_type_default != $this->mappings->default_record_type
           && empty($params['RecordTypeId'])
           && ($mapping->salesforce_object_type != 'CampaignMember')) {
           $params['RecordTypeId'] = $mapping->salesforce_record_type_default;
@@ -535,7 +536,7 @@ class Salesforce_Push {
             $mapping_object->last_sync_message = t('Mapping object updated via !function.', array('!function' => __FUNCTION__));
           }
 
-          $mapping_object->last_sync_status = $mappings->status_success;
+          $mapping_object->last_sync_status = $this->mappings->status_success;
           $mapping_object->last_sync = $_SERVER['REQUEST_TIME'];
           $mapping_object->last_sync_action = 'push';
           $mapping_object->save();
@@ -564,7 +565,7 @@ class Salesforce_Push {
           if ($mapping_object) {
             $mapping_object->last_sync = $_SERVER['REQUEST_TIME'];
             $mapping_object->last_sync_action = 'push';
-            $mapping_object->last_sync_status = $mappings->status_error;
+            $mapping_object->last_sync_status = $this->mappings->status_error;
             $mapping_object->last_sync_message = t('Push error via %function with the following messages: @message.', array(
               '%function' => __FUNCTION__,
               '@message' => implode(' | ', $error_messages),
@@ -599,7 +600,7 @@ class Salesforce_Push {
     function salesforce_push_map_params($mapping, $entity_wrapper, &$key_field, &$key_value, $use_soap = FALSE, $is_new = TRUE) {
       foreach ($mapping->field_mappings as $fieldmap) {
         // Skip fields that aren't being pushed to Salesforce.
-        if (!in_array($fieldmap['direction'], array($mappings->direction_wordpress_sf, $mappings->direction_sync))) {
+        if (!in_array($fieldmap['direction'], array($this->mappings->direction_wordpress_sf, $this->mappings->direction_sync))) {
           continue;
         }
 
@@ -608,14 +609,14 @@ class Salesforce_Push {
           continue;
         }
 
-        $fieldmap_type = salesforce_mapping_get_fieldmap_types($fieldmap['drupal_field']['fieldmap_type']);
+        //$fieldmap_type = salesforce_mapping_get_fieldmap_types($fieldmap['drupal_field']['fieldmap_type']);
 
-        $value = call_user_func($fieldmap_type['push_value_callback'], $fieldmap, $entity_wrapper);
-        $params[$fieldmap['salesforce_field']['name']] = $value;
+        //$value = call_user_func($fieldmap_type['push_value_callback'], $fieldmap, $entity_wrapper);
+        //$params[$fieldmap['salesforce_field']['name']] = $value;
 
         if ($fieldmap['key']) {
           $key_field = $fieldmap['salesforce_field']['name'];
-          $key_value = $value;
+          //$key_value = $value;
           // If key is set, remove from $params to avoid UPSERT errors.
           if (!$use_soap) {
             unset($params[$key_field]);
@@ -646,7 +647,7 @@ class Salesforce_Push {
      * Push entity to Salesforce.
      */
     function salesforce_push_action(&$entity, $context) {
-      $trigger = (!empty($entity->is_new) && $entity->is_new) ? $mappings->sync_wordpress_create : $mappings->sync_wordpress_update;
+      $trigger = (!empty($entity->is_new) && $entity->is_new) ? $this->mappings->sync_wordpress_create : $this->mappings->sync_wordpress_update;
       $this->salesforce_push_object_crud($context['entity_type'], $entity, $trigger);
     }
 }
