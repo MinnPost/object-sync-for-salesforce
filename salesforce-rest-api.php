@@ -58,9 +58,11 @@ class Salesforce_Rest_API {
 		$this->activate( $this->wpdb, $this->version, $this->text_domain );
 		$this->deactivate( $this->wpdb, $this->version, $this->text_domain );
 
+        $this->schedule = $this->schedule( $this->version, $this->login_credentials, $this->text_domain, $this->salesforce );
+
 		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce );
 
-		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->mappings );
+		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->mappings, $this->schedule );
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->mappings );
 
@@ -111,6 +113,17 @@ class Salesforce_Rest_API {
 		$deactivate = new Wordpress_Salesforce_Deactivate( $wpdb, $version, $text_domain );
 	}
 
+    /**
+     * Functionality for scheduling tasks to be run against the Salesforce REST API
+     */
+    private function schedule( $version, $login_credentials, $text_domain, $salesforce ) {
+        require_once plugin_dir_path( __FILE__ ) . 'vendor/async-requests/wp-async-request.php';
+        require_once plugin_dir_path( __FILE__ ) . 'vendor/background-processes/wp-background-process.php';
+        require_once plugin_dir_path( __FILE__ ) . 'classes/schedule.php';
+        $schedule = new Wordpress_Salesforce_Schedule( $version, $login_credentials, $text_domain, $salesforce );
+        return $schedule;
+    }
+
 	/**
      * Map the Salesforce and WordPress objects and fields to each other
      */
@@ -123,9 +136,9 @@ class Salesforce_Rest_API {
     /**
      * Methods to push data from WordPress to Salesforce
      */
-    private function push( &$wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings ) {
+    private function push( &$wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings, $schedule ) {
     	require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
-    	$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings );
+    	$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings, $schedule );
     	return $push;
     }
 
