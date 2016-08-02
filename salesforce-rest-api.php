@@ -38,6 +38,16 @@ class Salesforce_Rest_API {
     */
     private $schedule_name;
 
+    /**
+    * @var object
+    */
+    private $salesforce;
+
+    /**
+    * @var object
+    */
+    private $wordpress;
+
 	/**
 	 * Static property to hold our singleton instance
 	 * todo: figure out what to do with this
@@ -60,6 +70,7 @@ class Salesforce_Rest_API {
 		$this->text_domain = 'salesforce-rest-api';
         $this->schedule_name = 'process_queue';
 		$this->salesforce = $this->salesforce_get_api();
+        $this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain );
 
 		$this->activate( $this->wpdb, $this->version, $this->text_domain );
 		$this->deactivate( $this->wpdb, $this->version, $this->text_domain, $this->schedule_name );
@@ -70,14 +81,14 @@ class Salesforce_Rest_API {
 
 		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->mappings, $this->schedule );
 
-		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->mappings );
+		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->wordpress, $this->mappings );
 
 		//add_action		( 'plugins_loaded', 					array( $this, 'textdomain'				) 			);
 		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
 	}
 
 	/**
-    * Public helper to load the Salesforce API and see if it is authenticated
+    * private helper to load the Salesforce API and see if it is authenticated
     *
     * @return array
     *   Whether Salesforce is authenticated (boolean)
@@ -103,6 +114,17 @@ class Salesforce_Rest_API {
         return array( 'is_authorized' => $is_authorized, 'sfapi' => $sfapi );
     }
 
+    /**
+    * private helper to load methods for manipulating core WordPress data when needed
+    *
+    * @return object
+    */
+    private function wordpress( $wpdb, $version, $text_domain ) {
+        require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
+        $wordpress = new Wordpress( $wpdb, $version, $text_domain );
+        return $wordpress;
+    }
+
 	/**
      * What to do upon activation of the plugin
      */
@@ -121,6 +143,8 @@ class Salesforce_Rest_API {
 
     /**
      * Functionality for scheduling tasks to be run against the Salesforce REST API
+     *
+     * @return object
      */
     private function schedule( $version, $login_credentials, $text_domain, $salesforce, $schedule_name ) {
         require_once plugin_dir_path( __FILE__ ) . 'vendor/async-requests/wp-async-request.php';
@@ -132,6 +156,8 @@ class Salesforce_Rest_API {
 
 	/**
      * Map the Salesforce and WordPress objects and fields to each other
+     *
+     * @return object
      */
 	private function mappings( &$wpdb, $version, $login_credentials, $text_domain, $salesforce ) {
     	require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
@@ -141,6 +167,8 @@ class Salesforce_Rest_API {
 
     /**
      * Methods to push data from WordPress to Salesforce
+     *
+     * @return object
      */
     private function push( &$wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings, $schedule ) {
     	require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
@@ -156,9 +184,9 @@ class Salesforce_Rest_API {
 	* @param array $parent_settings
 	* @throws \Exception
 	*/
-    private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings ) {
+    private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $salesforce, $wordpress, $mappings ) {
     	require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
-    	$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings );
+    	$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $wordpress, $mappings );
     	add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
     	add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
     	add_filter( 'plugin_action_links', array( &$this, 'plugin_action_links' ), 10, 5 );

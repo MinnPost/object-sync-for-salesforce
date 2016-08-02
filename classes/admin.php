@@ -6,22 +6,27 @@ class Wordpress_Salesforce_Admin {
     protected $version;
     protected $login_credentials;
     protected $text_domain;
-    protected $mappings;
     protected $salesforce;
+    protected $wordpress;
+    protected $mappings;
 
     /**
     * Create default WordPress admin functionality for Salesforce
     *
     * @param array $loggedin
     * @param array $text_domain
+    * @param object $salesforce
+    * @param object $wordpress
+    * @param object $mappings
     * @throws \Exception
     */
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $wordpress, $mappings ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
         $this->text_domain = $text_domain;
         $this->salesforce = $salesforce;
+        $this->wordpress = $wordpress;
         $this->mappings = $mappings;
         add_action( 'admin_init', array( &$this, 'salesforce_settings_forms' ) );
         add_action( 'admin_post_post_fieldmap', array( &$this, 'prepare_fieldmap_data' ) );
