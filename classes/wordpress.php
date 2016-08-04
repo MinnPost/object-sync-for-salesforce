@@ -23,7 +23,7 @@ class Wordpress {
 		$this->text_domain = $text_domain;
 		$this->options = array(
 			'cache' => true,
-			'cache_expiration' => $this->cache_expiration( 'wordpress_data_cache', $expire ),
+			'cache_expiration' => $this->cache_expiration( 'wordpress_data_cache', 86400 ),
 			'type' => 'read'
 		);
 	}
