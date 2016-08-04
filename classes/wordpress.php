@@ -72,7 +72,7 @@ class Wordpress {
 	            $object_fields['from_cache'] = true;
 	            $object_fields['cached'] = true;
 	        } else {
-	            $object_fields['data'] = $this->object_fields( $meta_table, $content_table, $object_name, $where, $ignore_keys );
+	            $object_fields['data'] = $this->object_fields( $object_name, $id_field, $content_table, $meta_table, $where, $ignore_keys );
 	            if ( !empty( $object_fields['data'] ) ) {
 	                $object_fields['cached'] = $this->cache_set( $wordpress_object, array( 'data', 'meta'), $object_fields['data'], $this->options['cache_expiration'] );
 	            } else {
@@ -81,7 +81,7 @@ class Wordpress {
 	            $object_fields['from_cache'] = false;
 	        }
 	    } else {
-	    	$object_fields['data'] = $this->object_fields( $meta_table, $content_table, $object_name, $where, $ignore_keys );
+	    	$object_fields['data'] = $this->object_fields( $object_name, $id_field, $content_table, $meta_table, $where, $ignore_keys );
 	        $object_fields['from_cache'] = false;
 	        $object_fields['cached'] = false;
 	    }
@@ -147,18 +147,19 @@ class Wordpress {
 	/**
      * Get all the fields for an object
      * The important thing here is returning the fields as an array:
-     * $all_fields = array( 'key' => 'key name' );
+     * $all_fields = array( 'key' => 'key name', 'table' => 'table name' );
      * if there's a better way to do this than the mess of queries below, we should switch to that when we can
      * we just need to make sure we get all applicable fields for the object itself, as well as its meta fields
      *
-     * @param string $meta_table
-     * @param string $content_table
      * @param string $object_name
+     * @param string $id_field
+     * @param string $content_table
+     * @param string $meta_table
      * @param string $where
      * @param array $ignore_keys
      * @return array $all_fields
      */
-	private function object_fields( $meta_table, $content_table, $object_name, $where, $ignore_keys ) {
+	private function object_fields( $object_name, $id_field, $content_table, $meta_table, $where, $ignore_keys ) {
 		// these two queries load all the fields from the specified object unless they have been specified as ignore fields
     	// they also load the fields that are meta_keys from the specified object's meta table
     	// todo: figure out how to handle other tables, especially things like advanced custom fields
@@ -177,15 +178,17 @@ class Wordpress {
         ';
         $meta_fields = $this->wpdb->get_results( $select_meta );
 
+        $all_fields = array();
+
         foreach ( $data_fields as $key => $value ) {
         	if ( !in_array( $value->COLUMN_NAME, $ignore_keys ) ) {
-        		$all_fields[] = array( 'key' => $value->COLUMN_NAME );
+        		$all_fields[] = array( 'key' => $value->COLUMN_NAME, 'table' => $content_table );
         	}
         }
 
         foreach ( $meta_fields as $key => $value ) {
         	if ( !in_array( $value->meta_key, $ignore_keys ) ) {
-        		$all_fields[] = array( 'key' => $value->meta_key );
+        		$all_fields[] = array( 'key' => $value->meta_key, 'table' => $meta_table );
         	}
         }
 

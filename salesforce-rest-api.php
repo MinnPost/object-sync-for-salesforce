@@ -69,7 +69,7 @@ class Salesforce_Rest_API {
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
         $this->schedule_name = 'process_queue';
-        
+
         $this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain );
 		$this->salesforce = $this->salesforce_get_api();
 
