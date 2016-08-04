@@ -146,6 +146,10 @@ class Wordpress {
 
 	/**
      * Get all the fields for an object
+     * The important thing here is returning the fields as an array:
+     * $all_fields = array( 'key' => 'key name' );
+     * if there's a better way to do this than the mess of queries below, we should switch to that when we can
+     * we just need to make sure we get all applicable fields for the object itself, as well as its meta fields
      *
      * @param string $meta_table
      * @param string $content_table
