@@ -72,33 +72,7 @@ class Wordpress {
 	            $object_fields['from_cache'] = true;
 	            $object_fields['cached'] = true;
 	        } else {
-	            $select_data = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $content_table . '"';
-		        $data_fields = $this->wpdb->get_results( $select_data );
-
-		        $select_meta = $select = '
-		        SELECT DISTINCT ' . $meta_table . '.meta_key
-		        FROM ' . $content_table . '
-		        LEFT JOIN ' . $meta_table . '
-		        ON ' . $content_table . '.' . $id_field . ' = ' . $meta_table . '.' . $object_name . '_id
-		        WHERE ' . $meta_table . '.meta_key != "" 
-		        ' . $where . '
-		        ';
-		        $meta_fields = $this->wpdb->get_results( $select_meta );
-
-		        $object_fields['data'] = array();
-
-		        foreach ( $data_fields as $key => $value ) {
-		        	if ( !in_array( $value->COLUMN_NAME, $ignore_keys ) ) {
-		        		$object_fields['data'][] = array( 'key' => $value->COLUMN_NAME );
-		        	}
-		        }
-
-		        foreach ( $meta_fields as $key => $value ) {
-		        	if ( !in_array( $value->meta_key, $ignore_keys ) ) {
-		        		$object_fields['data'][] = array( 'key' => $value->meta_key );
-		        	}
-		        }
-
+	            $object_fields['data'] = $this->object_fields( $meta_table, $content_table, $object_name, $where, $ignore_keys );
 	            if ( !empty( $object_fields['data'] ) ) {
 	                $object_fields['cached'] = $this->cache_set( $wordpress_object, array( 'data', 'meta'), $object_fields['data'], $this->options['cache_expiration'] );
 	            } else {
@@ -107,30 +81,7 @@ class Wordpress {
 	            $object_fields['from_cache'] = false;
 	        }
 	    } else {
-	        $select_data = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $content_table . '"';
-	        $data_fields = $this->wpdb->get_results( $select_data );
-
-	        $select_meta = $select = '
-	        SELECT DISTINCT ' . $meta_table . '.meta_key
-	        FROM ' . $content_table . '
-	        LEFT JOIN ' . $meta_table . '
-	        ON ' . $content_table . '.' . $id_field . ' = ' . $meta_table . '.' . $object_name . '_id
-	        WHERE ' . $meta_table . '.meta_key != "" 
-	        ' . $where . '
-	        ';
-	        $meta_fields = $this->wpdb->get_results( $select_meta );
-
-	        foreach ( $data_fields as $key => $value ) {
-	        	if ( !in_array( $value->COLUMN_NAME, $ignore_keys ) ) {
-	        		$object_fields['data'][] = array( 'key' => $value->COLUMN_NAME );
-	        	}
-	        }
-
-	        foreach ( $meta_fields as $key => $value ) {
-	        	if ( !in_array( $value->meta_key, $ignore_keys ) ) {
-	        		$object_fields['data'][] = array( 'key' => $value->meta_key );
-	        	}
-	        }
+	    	$object_fields['data'] = $this->object_fields( $meta_table, $content_table, $object_name, $where, $ignore_keys );
 	        $object_fields['from_cache'] = false;
 	        $object_fields['cached'] = false;
 	    }
@@ -191,6 +142,51 @@ class Wordpress {
 	public function cache_expiration( $option_key, $expire ) {
 		$cache_expiration = get_option( $option_key, $expire );
 		return $cache_expiration;
+	}
+
+	/**
+     * Get all the fields for an object
+     *
+     * @param string $meta_table
+     * @param string $content_table
+     * @param string $object_name
+     * @param string $where
+     * @param array $ignore_keys
+     * @return array $all_fields
+     */
+	private function object_fields( $meta_table, $content_table, $object_name, $where, $ignore_keys ) {
+		// these two queries load all the fields from the specified object unless they have been specified as ignore fields
+    	// they also load the fields that are meta_keys from the specified object's meta table
+    	// todo: figure out how to handle other tables, especially things like advanced custom fields
+    	// maybe a box for a custom query, since custom fields get done in so many ways
+    	// eventually this would be the kind of thing we could use fields api for, if it ever gets done
+        $select_data = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $content_table . '"';
+        $data_fields = $this->wpdb->get_results( $select_data );
+
+        $select_meta = $select = '
+        SELECT DISTINCT ' . $meta_table . '.meta_key
+        FROM ' . $content_table . '
+        LEFT JOIN ' . $meta_table . '
+        ON ' . $content_table . '.' . $id_field . ' = ' . $meta_table . '.' . $object_name . '_id
+        WHERE ' . $meta_table . '.meta_key != "" 
+        ' . $where . '
+        ';
+        $meta_fields = $this->wpdb->get_results( $select_meta );
+
+        foreach ( $data_fields as $key => $value ) {
+        	if ( !in_array( $value->COLUMN_NAME, $ignore_keys ) ) {
+        		$all_fields[] = array( 'key' => $value->COLUMN_NAME );
+        	}
+        }
+
+        foreach ( $meta_fields as $key => $value ) {
+        	if ( !in_array( $value->meta_key, $ignore_keys ) ) {
+        		$all_fields[] = array( 'key' => $value->meta_key );
+        	}
+        }
+
+        return $all_fields;
+
 	}
 
 }
