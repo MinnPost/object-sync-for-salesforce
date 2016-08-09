@@ -33,20 +33,20 @@ class Salesforce_Rest_API {
 	*/
 	private $version;
 
-    /**
-    * @var string
-    */
-    private $schedule_name;
+	/**
+	* @var string
+	*/
+	private $schedule_name;
 
-    /**
-    * @var object
-    */
-    private $salesforce;
+	/**
+	* @var object
+	*/
+	private $salesforce;
 
-    /**
-    * @var object
-    */
-    private $wordpress;
+	/**
+	* @var object
+	*/
+	private $wordpress;
 
 	/**
 	 * Static property to hold our singleton instance
@@ -68,7 +68,7 @@ class Salesforce_Rest_API {
 		$this->version = '0.0.1';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
-        $this->schedule_name = 'process_queue';
+		$this->schedule_name = 'process_queue';
 
 		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->text_domain );
 
@@ -111,83 +111,72 @@ class Salesforce_Rest_API {
 	}
 
 	/**
-    * private helper to load the Salesforce API and see if it is authenticated
-    *
-    * @return array
-    *   Whether Salesforce is authenticated (boolean)
-    *   The sfapi object if it is authenticated (empty, otherwise)
-    */
-    private function salesforce_get_api() {
-        $consumer_key = $this->login_credentials['consumer_key'];
-        $consumer_secret = $this->login_credentials['consumer_secret'];
-        $login_url = $this->login_credentials['login_url'];
-        $callback_url = $this->login_credentials['callback_url'];
-        $authorize_path = $this->login_credentials['authorize_path'];
-        $token_path = $this->login_credentials['token_path'];
-        $rest_api_version = $this->login_credentials['rest_api_version'];
-        $text_domain = $this->text_domain;
-        $wordpress = $this->wordpress;
-        $is_authorized = false;
-        $sfapi = '';
-        if ($consumer_key && $consumer_secret) {
-            $sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain );
-            if ( $sfapi->is_authorized() === true ) {
-                $is_authorized = true;
-            }
-        }
-        return array( 'is_authorized' => $is_authorized, 'sfapi' => $sfapi );
-    }
+	* private helper to load the Salesforce API and see if it is authenticated
+	*
+	* @return array
+	*   Whether Salesforce is authenticated (boolean)
+	*   The sfapi object if it is authenticated (empty, otherwise)
+	*/
+	private function salesforce_get_api() {
+		$consumer_key = $this->login_credentials['consumer_key'];
+		$consumer_secret = $this->login_credentials['consumer_secret'];
+		$login_url = $this->login_credentials['login_url'];
+		$callback_url = $this->login_credentials['callback_url'];
+		$authorize_path = $this->login_credentials['authorize_path'];
+		$token_path = $this->login_credentials['token_path'];
+		$rest_api_version = $this->login_credentials['rest_api_version'];
+		$text_domain = $this->text_domain;
+		$wordpress = $this->wordpress;
+		$is_authorized = false;
+		$sfapi = '';
+		if ($consumer_key && $consumer_secret) {
+			$sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain );
+			if ( $sfapi->is_authorized() === true ) {
+				$is_authorized = true;
+			}
+		}
+		return array( 'is_authorized' => $is_authorized, 'sfapi' => $sfapi );
+	}
 
 	/**
-     * What to do upon activation of the plugin
-     */
+	 * What to do upon activation of the plugin
+	 */
 	private function activate( &$wpdb, $version, $text_domain ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
 		$activate = new Wordpress_Salesforce_Activate( $wpdb, $version, $text_domain );
 	}
 
 	/**
-     * What to do upon deactivation of the plugin
-     */
+	 * What to do upon deactivation of the plugin
+	 */
 	private function deactivate( &$wpdb, $version, $text_domain, $schedule_name ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
 		$deactivate = new Wordpress_Salesforce_Deactivate( $wpdb, $version, $text_domain, $schedule_name );
 	}
 
-    /**
-     * Functionality for scheduling tasks to be run against the Salesforce REST API
-     *
-     * @return object
-     */
-    private function schedule( $version, $login_credentials, $text_domain, $salesforce, $schedule_name ) {
-        require_once plugin_dir_path( __FILE__ ) . 'vendor/async-requests/wp-async-request.php';
-        require_once plugin_dir_path( __FILE__ ) . 'vendor/background-processes/wp-background-process.php';
-        require_once plugin_dir_path( __FILE__ ) . 'classes/schedule.php';
-        $schedule = new Wordpress_Salesforce_Schedule( $version, $login_credentials, $text_domain, $salesforce, $schedule_name );
-        return $schedule;
-    }
+	/**
+	 * Functionality for scheduling tasks to be run against the Salesforce REST API
+	 *
+	 * @return object
+	 */
+	private function schedule( $version, $login_credentials, $text_domain, $salesforce, $schedule_name ) {
+		require_once plugin_dir_path( __FILE__ ) . 'vendor/async-requests/wp-async-request.php';
+		require_once plugin_dir_path( __FILE__ ) . 'vendor/background-processes/wp-background-process.php';
+		require_once plugin_dir_path( __FILE__ ) . 'classes/schedule.php';
+		$schedule = new Wordpress_Salesforce_Schedule( $version, $login_credentials, $text_domain, $salesforce, $schedule_name );
+		return $schedule;
+	}
 
 	/**
-     * Map the Salesforce and WordPress objects and fields to each other
-     *
-     * @return object
-     */
-	private function mappings( &$wpdb, $version, $login_credentials, $text_domain, $salesforce ) {
-    	require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
-    	$mappings = new Salesforce_Mapping( $wpdb, $version, $login_credentials, $text_domain, $salesforce );
-    	return $mappings;
-    }
-
-    /**
-     * Methods to push data from WordPress to Salesforce
-     *
-     * @return object
-     */
-    private function push( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule ) {
-    	require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
-    	$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule );
-    	return $push;
-    }
+	 * Methods to push data from WordPress to Salesforce
+	 *
+	 * @return object
+	 */
+	private function push( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule ) {
+		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
+		$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule );
+		return $push;
+	}
 
 	/**
 	* load the admin class
@@ -197,27 +186,27 @@ class Salesforce_Rest_API {
 	* @param array $parent_settings
 	* @throws \Exception
 	*/
-    private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings ) {
-    	require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
-    	$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings );
-    	add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
-    	add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
-    	add_filter( 'plugin_action_links', array( &$this, 'plugin_action_links' ), 10, 5 );
-    }
+	private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
+		$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings );
+		add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
+		add_filter( 'plugin_action_links', array( &$this, 'plugin_action_links' ), 10, 5 );
+	}
 
-    /**
-    * Display a Settings link on the main Plugins page
-    *
-    * @return array $links
-    */
-    public function plugin_action_links( $links, $file ) {
-        if ( $file == plugin_basename( __FILE__ ) ) {
-            $settings = '<a href="' . get_admin_url() . 'options-general.php?page=salesforce-api-admin">' . __('Settings', $this->text_domain ) . '</a>';
-            // make the 'Settings' link appear first
-            array_unshift( $links, $settings );
-        }
-        return $links;
-    }
+	/**
+	* Display a Settings link on the main Plugins page
+	*
+	* @return array $links
+	*/
+	public function plugin_action_links( $links, $file ) {
+		if ( $file == plugin_basename( __FILE__ ) ) {
+			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=salesforce-api-admin">' . __('Settings', $this->text_domain ) . '</a>';
+			// make the 'Settings' link appear first
+			array_unshift( $links, $settings );
+		}
+		return $links;
+	}
 
 
 	/**
@@ -240,36 +229,36 @@ class Salesforce_Rest_API {
 	}
 
 	/**
-     * Get the pre-login Salesforce credentials
-     * These depend on WordPress settings or constants
-     * todo: need to investigate if the naming makes sense
-     *
-     * @return array $login_credentials
-     * @throws \Exception
-     */
-    private function get_login_credentials() {
+	 * Get the pre-login Salesforce credentials
+	 * These depend on WordPress settings or constants
+	 * todo: need to investigate if the naming makes sense
+	 *
+	 * @return array $login_credentials
+	 * @throws \Exception
+	 */
+	private function get_login_credentials() {
 
-    	$consumer_key = defined('SALESFORCE_CONSUMER_KEY') ? SALESFORCE_CONSUMER_KEY : get_option( 'salesforce_api_consumer_key', '' );
-    	$consumer_secret = defined('SALESFORCE_CONSUMER_SECRET') ? SALESFORCE_CONSUMER_SECRET : get_option( 'salesforce_api_consumer_secret', '' );
-    	$callback_url = defined('SALESFORCE_CALLBACK_URL') ? SALESFORCE_CALLBACK_URL : get_option( 'salesforce_api_callback_url', '' );
-    	$login_base_url = defined('SALESFORCE_LOGIN_BASE_URL') ? SALESFORCE_LOGIN_BASE_URL : get_option( 'salesforce_api_login_base_url', '' );
-    	$authorize_url_path = defined('SALESFORCE_AUTHORIZE_URL_PATH') ? SALESFORCE_AUTHORIZE_URL_PATH : get_option( 'salesforce_api_authorize_url_path', '' );
-    	$token_url_path = defined('SALESFORCE_TOKEN_URL_PATH') ? SALESFORCE_TOKEN_URL_PATH : get_option( 'salesforce_api_token_url_path', '' );
-    	$api_version = defined('SALESFORCE_API_VERSION') ? SALESFORCE_API_VERSION : get_option( 'salesforce_api_version', '' );
+		$consumer_key = defined('SALESFORCE_CONSUMER_KEY') ? SALESFORCE_CONSUMER_KEY : get_option( 'salesforce_api_consumer_key', '' );
+		$consumer_secret = defined('SALESFORCE_CONSUMER_SECRET') ? SALESFORCE_CONSUMER_SECRET : get_option( 'salesforce_api_consumer_secret', '' );
+		$callback_url = defined('SALESFORCE_CALLBACK_URL') ? SALESFORCE_CALLBACK_URL : get_option( 'salesforce_api_callback_url', '' );
+		$login_base_url = defined('SALESFORCE_LOGIN_BASE_URL') ? SALESFORCE_LOGIN_BASE_URL : get_option( 'salesforce_api_login_base_url', '' );
+		$authorize_url_path = defined('SALESFORCE_AUTHORIZE_URL_PATH') ? SALESFORCE_AUTHORIZE_URL_PATH : get_option( 'salesforce_api_authorize_url_path', '' );
+		$token_url_path = defined('SALESFORCE_TOKEN_URL_PATH') ? SALESFORCE_TOKEN_URL_PATH : get_option( 'salesforce_api_token_url_path', '' );
+		$api_version = defined('SALESFORCE_API_VERSION') ? SALESFORCE_API_VERSION : get_option( 'salesforce_api_version', '' );
 
-    	$login_credentials = array(
-            'consumer_key' => $consumer_key,
-            'consumer_secret' => $consumer_secret,
-            'callback_url' => $callback_url,
-            'login_url' => $login_base_url,
-            'authorize_path' => $authorize_url_path,
-            'token_path' => $token_url_path,
-            'rest_api_version' => $api_version
-        );
+		$login_credentials = array(
+			'consumer_key' => $consumer_key,
+			'consumer_secret' => $consumer_secret,
+			'callback_url' => $callback_url,
+			'login_url' => $login_base_url,
+			'authorize_path' => $authorize_url_path,
+			'token_path' => $token_url_path,
+			'rest_api_version' => $api_version
+		);
 
-    	return $login_credentials;
+		return $login_credentials;
 
-    }
+	}
 
 /// end class
 }
