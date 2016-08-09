@@ -70,15 +70,15 @@ class Salesforce_Rest_API {
 		$this->text_domain = 'salesforce-rest-api';
         $this->schedule_name = 'process_queue';
 
-        $this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain );
+		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->text_domain );
+
+		$this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain, $this->mappings );
 		$this->salesforce = $this->salesforce_get_api();
 
 		$this->activate( $this->wpdb, $this->version, $this->text_domain );
 		$this->deactivate( $this->wpdb, $this->version, $this->text_domain, $this->schedule_name );
 
-        $this->schedule = $this->schedule( $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->schedule_name );
-
-		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce );
+		$this->schedule = $this->schedule( $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->schedule_name );
 
 		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule );
 
@@ -88,16 +88,27 @@ class Salesforce_Rest_API {
 		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
 	}
 
-    /**
-    * private helper to load methods for manipulating core WordPress data when needed
-    *
-    * @return object
-    */
-    private function wordpress( $wpdb, $version, $text_domain ) {
-        require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
-        $wordpress = new Wordpress( $wpdb, $version, $text_domain );
-        return $wordpress;
-    }
+	/**
+	 * Map the Salesforce and WordPress objects and fields to each other
+	 *
+	 * @return object
+	 */
+	private function mappings( &$wpdb, $version, $text_domain ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
+		$mappings = new Salesforce_Mapping( $wpdb, $version, $text_domain );
+		return $mappings;
+	}
+
+	/**
+	* private helper to load methods for manipulating core WordPress data when needed
+	*
+	* @return object
+	*/
+	private function wordpress( $wpdb, $version, $text_domain, $mappings ) {
+		require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
+		$wordpress = new Wordpress( $wpdb, $version, $text_domain, $mappings );
+		return $wordpress;
+	}
 
 	/**
     * private helper to load the Salesforce API and see if it is authenticated

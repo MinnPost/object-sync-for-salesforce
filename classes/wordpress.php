@@ -8,6 +8,7 @@ class Wordpress {
 	protected $wpdb;
     protected $version;
     protected $text_domain;
+    protected $mappings;
 
     /**
     * Objects, properties, and methods to get core WordPress data for the plugin
@@ -15,12 +16,14 @@ class Wordpress {
     * @param object $wpdb
     * @param string $version
     * @param string $text_domain
+    * @param object $mappings
     * @throws \Exception
     */
-	public function __construct( $wpdb, $version, $text_domain ) {
+	public function __construct( $wpdb, $version, $text_domain, $mappings ) {
 		$this->wpdb = &$wpdb;
 		$this->version = $version;
 		$this->text_domain = $text_domain;
+		$this->mappings = $mappings;
 		$this->options = array(
 			'cache' => true,
 			'cache_expiration' => $this->cache_expiration( 'wordpress_data_cache', 86400 ),

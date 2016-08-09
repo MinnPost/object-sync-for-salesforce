@@ -4,9 +4,7 @@ class Salesforce_Mapping {
 
 	protected $wpdb;
     protected $version;
-    protected $login_credentials;
     protected $text_domain;
-    protected $salesforce;
     protected $table;
 
     public $sync_off;
@@ -33,16 +31,15 @@ class Salesforce_Mapping {
     /**
     * Functionality for mapping Salesforce and WordPress objects
     *
-    * @param array $loggedin
-    * @param array $text_domain
+    * @param object $wpdb
+    * @param string $version
+    * @param string $text_domain
     * @throws \Exception
     */
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $salesforce ) {
+    public function __construct( $wpdb, $version, $text_domain ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
-        $this->login_credentials = $login_credentials;
         $this->text_domain = $text_domain; 
-        $this->salesforce = $salesforce;
 
         $this->table = $this->wpdb->prefix . 'salesforce_field_map';
 
