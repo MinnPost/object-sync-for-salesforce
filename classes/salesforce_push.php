@@ -22,16 +22,18 @@ class Salesforce_Push {
     * @param string $version
     * @param array $login_credentials
     * @param string $text_domain
+    * @param object $wordpress
     * @param object $salesforce
     * @param object $mappings
     * @param object $schedule
     * @throws \Exception
     */
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings, $schedule ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
-        $this->text_domain = $text_domain; 
+        $this->text_domain = $text_domain;
+        $this->wordpress = $wordpress;
         $this->salesforce = $salesforce;
         $this->mappings = $mappings;
         $this->schedule = $schedule;

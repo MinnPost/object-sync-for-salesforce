@@ -80,7 +80,7 @@ class Salesforce_Rest_API {
 
 		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce );
 
-		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->mappings, $this->schedule );
+		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule );
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings );
 
@@ -172,9 +172,9 @@ class Salesforce_Rest_API {
      *
      * @return object
      */
-    private function push( &$wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings, $schedule ) {
+    private function push( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule ) {
     	require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
-    	$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings, $schedule );
+    	$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule );
     	return $push;
     }
 
