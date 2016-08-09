@@ -81,9 +81,26 @@ class Salesforce_Push {
     * @param string $user_id
     */
     function add_user( $user_id ) {
-        //error_log( 'add a user with id of ' . $user_id );
-        $object = get_userdata( $user_id );
-        $this->object_insert( $object, 'user' );
+        // need to figure out how to get all the relevant user fields here. would like to avoid the password
+        //$user = get_userdata( $user_id );
+        //$meta = get_user_meta( $user_id );
+        //$user = array_push( $meta, $user->user_email, $user->ID );
+        //error_log(print_r($user, true));
+
+      /*$user_fields = $this->wordpress->get_wordpress_object_fields( 'user' );
+      foreach ( $user_fields as $field ) {
+        $table = $field['table'];
+      }*/
+      error_log('go get the user data');
+      $user = $this->wordpress->get_wordpress_object_data( 'user', $user_id );
+
+      error_log('this is the user data below');
+      error_log(print_r($user, true));
+
+      //$this->object_insert( $user, 'user' );
+
+        //
+
     }
 
     /**
