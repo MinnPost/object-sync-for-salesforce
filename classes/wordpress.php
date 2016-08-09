@@ -34,12 +34,22 @@ class Wordpress {
 	/**
     * Get WordPress table structure for an object
     * 
-    * @param string $wordpress_object
+    * @param string $object_type
     * @return array $object_table_structure
     */
-	public function get_wordpress_table_structure( $wordpress_object ) {
-		if ( $wordpress_object === 'user' ) {
-			$object_table_structure = array(
+	public function get_wordpress_table_structure( $object_type ) {
+		if ( $object_type === 'attachment' ) {
+            $object_table_structure = array(
+				'object_name' => 'post',
+				'content_table' => $this->wpdb->prefix . 'posts',
+				'id_field' => 'ID',
+				'meta_table' => $this->wpdb->prefix . 'postmeta',
+				'meta_join_field' => 'post_id',
+				'where' => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
+				'ignore_keys' => array()
+			);
+        } elseif ( $object_type === 'user' ) {
+            $object_table_structure = array(
 				'object_name' => 'user',
 				'content_table' => $this->wpdb->prefix . 'users',
 				'id_field' => 'ID',
@@ -52,8 +62,28 @@ class Wordpress {
 					'session_tokens',
 				)
 			);
-		} else if ( $wordpress_object === 'comment' ) {
-			$object_table_structure = array(
+        } elseif ( $object_type === 'post' ) {
+            $object_table_structure = array(
+				'object_name' => 'post',
+				'content_table' => $this->wpdb->prefix . 'posts',
+				'id_field' => 'ID',
+				'meta_table' => $this->wpdb->prefix . 'postmeta',
+				'meta_join_field' => 'post_id',
+				'where' => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
+				'ignore_keys' => array()
+			);
+        } elseif ( $object_type === 'category' || $object_type === 'tag' ) {
+            $object_table_structure = array(
+				'object_name' => 'term',
+				'content_table' => $this->wpdb->prefix . 'terms',
+				'id_field' => 'term_id',
+				'meta_table' => $this->wpdb->prefix . 'termmeta',
+				'meta_join_field' => 'term_id',
+				'where' => '',
+				'ignore_keys' => array()
+			);
+        } elseif ( $object_type === 'comment' ) {
+        	$object_table_structure = array(
 				'object_name' => 'comment',
 				'content_table' => $this->wpdb->prefix . 'comments',
 				'id_field' => 'comment_ID',
@@ -62,17 +92,18 @@ class Wordpress {
 				'where' => '',
 				'ignore_keys' => array()
 			);
-		} else {
-			$object_table_structure = array(
+        } else { // this is for custom post types
+            $object_table_structure = array(
 				'object_name' => 'post',
 				'content_table' => $this->wpdb->prefix . 'posts',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'postmeta',
 				'meta_join_field' => 'post_id',
-				'where' => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $wordpress_object . '"',
+				'where' => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
 				'ignore_keys' => array()
 			);
-		}
+        }
+
 		return $object_table_structure;
 	}
 
@@ -89,6 +120,7 @@ class Wordpress {
 
 		$meta_table = $object_table_structure['meta_table'];
 		$content_table = $object_table_structure['content_table'];
+		$id_field = $object_table_structure['id_field'];
 		$object_name = $object_table_structure['object_name'];
 		$where = $object_table_structure['where'];
 		$ignore_keys = $object_table_structure['ignore_keys'];
@@ -123,63 +155,43 @@ class Wordpress {
 
     /**
     * Get WordPress data based on what object it is
+    * todo: figure out how much formatting to do to the data.
+    * example: user has an array of capabilities and such
+    * we probably don't care about this, but the plugin should maybe address it
     * 
     * @param string $object_type
     * @param string $object_id
     * @return array $wordpress_object
     */
     public function get_wordpress_object_data( $object_type, $object_id ) {
+    	// need to get the object fields that were selected in the admin, not all fields
 
     	$wordpress_object = array();
 
-    	$object_table_structure = $this->get_wordpress_table_structure( $object_type );
-    	$fields = $this->get_wordpress_object_fields( $object_type );
+    	if ( $object_type === 'attachment' ) {
+            
+        } elseif ( $object_type === 'user' ) {
+            $user = get_userdata( $object_id );
+	       	$fields = $this->get_wordpress_object_fields( $object_type );
+	    	foreach( $fields as $key => $value ) {
+	    		$field = $value['key'];
+	    		$wordpress_object[$field] = $user->{$field};
+	    	}
+        } elseif ( $object_type === 'post' ) {
+            
+        } elseif ( $object_type === 'category' || $object_type === 'tag' ) {
+            
+        } elseif ( $object_type === 'comment' ) {
+        	$comment = get_comment( $object_id );
+	       	$fields = $this->get_wordpress_object_fields( $object_type );
+	    	foreach( $fields as $key => $value ) {
+	    		$field = $value['key'];
+	    		$wordpress_object[$field] = $comment->{$field};
+	    	}
+        } else { // this is for custom post types
+            
+        }
 
-		$meta_table = $object_table_structure['meta_table'];
-		$content_table = $object_table_structure['content_table'];
-		$object_name = $object_table_structure['object_name'];
-		$where = $object_table_structure['where'];
-		$ignore_keys = $object_table_structure['ignore_keys'];
-		$meta_join_field = $object_table_structure['meta_join_field'];
-		$id_field = $object_table_structure['id_field'];
-
-		$content_table_fields = array_filter( $fields, function( $item ) use( $content_table ) {
-		    return $item['table'] == $content_table;
-		});
-		$meta_table_fields = array_filter( $fields, function( $item ) use( $meta_table ) {
-		    return $item['table'] == $meta_table;
-		});
-
-		$query = '';
-
-		$query .= 'SELECT ';
-		foreach ($content_table_fields as $key => $value) {
-			if ( !empty($meta_table_fields) || ( !empty($meta_table_fields) && end( $content_table_fields ) ) !== $value ) {
-				$query .= 'o.' . $value['key'] . ', ';
-			} else {
-				$query .= 'o.' . $value['key'];
-			}
-		}
-
-		foreach ($meta_table_fields as $key => $value) {
-			if ( end( $meta_table_fields ) !== $value ) {
-				$query .= 'm' . $key . '.meta_value' . ' AS `' . $value['key'] . '`, ';
-			} else {
-				$query .= 'm' . $key . '.meta_value' . ' AS `' . $value['key'] . '`';
-			}
-		}
-
-		$query .= ' FROM ' . $content_table . ' o';
-
-		$query .= ' ';
-		foreach ($meta_table_fields as $key => $value) {
-			$query .= 'LEFT JOIN ' . $meta_table . ' m' . $key . ' ON (m' . $key . '.' .$meta_join_field . ' = o.'.$id_field . ' AND ' . 'm' . $key . '.meta_key = \'' .$value['key'] . '\')';
-			if ( end( $meta_table_fields ) !== $value ) {
-				$query .= ' ';
-			}
-		}
-
-		$wordpress_object = $this->wpdb->get_results( $query );
     	return $wordpress_object;
 
     }
