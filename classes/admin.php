@@ -35,7 +35,7 @@ class Wordpress_Salesforce_Admin {
         // we can map objects to salesforce that are not 'posts' but we need to tell the plugin what they are
         // this can be done when calling this class, or here as a default
         if ( empty( $wordpress_types_not_posts ) ) {
-            $wordpress_types_not_posts = array( 'user', 'comment' );
+            $wordpress_types_not_posts = array( 'user', 'comment', 'category', 'tag' );
         }
 
         $this->wordpress_types_not_posts = $wordpress_types_not_posts;
