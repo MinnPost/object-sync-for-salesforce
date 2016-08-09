@@ -10,6 +10,8 @@ class Wordpress_Salesforce_Admin {
     protected $wordpress;
     protected $mappings;
 
+    public $wordpress_types_not_posts;
+
     /**
     * Create default WordPress admin functionality for Salesforce
     *
@@ -18,9 +20,10 @@ class Wordpress_Salesforce_Admin {
     * @param object $salesforce
     * @param object $wordpress
     * @param object $mappings
+    * @param array $wordpress_types_not_posts
     * @throws \Exception
     */
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $wordpress_types_not_posts = array() ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
@@ -28,6 +31,15 @@ class Wordpress_Salesforce_Admin {
         $this->wordpress = $wordpress;
         $this->salesforce = $salesforce;
         $this->mappings = $mappings;
+
+        // we can map objects to salesforce that are not 'posts' but we need to tell the plugin what they are
+        // this can be done when calling this class, or here as a default
+        if ( empty( $wordpress_types_not_posts ) ) {
+            $wordpress_types_not_posts = array( 'user', 'comment' );
+        }
+
+        $this->wordpress_types_not_posts = $wordpress_types_not_posts;
+
         add_action( 'admin_init', array( &$this, 'salesforce_settings_forms' ) );
         add_action( 'admin_post_post_fieldmap', array( &$this, 'prepare_fieldmap_data' ) );
         add_action( 'admin_notices', array( &$this, 'fieldmap_error_notice' ) );
@@ -143,8 +155,7 @@ class Wordpress_Salesforce_Admin {
                                         <option value="">- Select object type -</option>
                                         <?php
                                         $wordpress_objects = get_post_types();
-                                        $wordpress_objects[] = 'user';
-                                        $wordpress_objects[] = 'comment';
+                                        $wordpress_objects = array_merge( $wordpress_objects, $this->wordpress_types_not_posts );
                                         sort( $wordpress_objects );
                                         foreach ( $wordpress_objects as $object ) {
                                             if ( isset( $wordpress_object ) && $wordpress_object === $object ) {
