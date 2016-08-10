@@ -45,9 +45,10 @@ class Salesforce_Push {
 
 	/**
 	* Create the action hooks based on what object maps exist from the admin settings
-	* todo: check all these hooks and make sure they only do what we want
+	* todo: check all the error logging by all these hooks and make sure they only do what we want
 	* todo: check into edit/update/delete hooks as well? this should probably be configurable
 	* todo: is wordpress going to actually keep that blogroll stuff?
+	* todo: then enable object insert and start mapping wp fields to sf fields
 	*
 	*/
 	function add_actions() {
