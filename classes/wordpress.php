@@ -164,7 +164,6 @@ class Wordpress {
     * @return array $wordpress_object
     */
     public function get_wordpress_object_data( $object_type, $object_id ) {
-    	// need to get the object fields that were selected in the admin, not all fields
 
     	$wordpress_object = array();
 
@@ -180,7 +179,12 @@ class Wordpress {
         } elseif ( $object_type === 'post' ) {
             
         } elseif ( $object_type === 'category' || $object_type === 'tag' ) {
-            
+            $term = get_term( $object_id );
+	       	$fields = $this->get_wordpress_object_fields( $object_type );
+	    	foreach( $fields as $key => $value ) {
+	    		$field = $value['key'];
+	    		$wordpress_object[$field] = $term->{$field};
+	    	}
         } elseif ( $object_type === 'comment' ) {
         	$comment = get_comment( $object_id );
 	       	$fields = $this->get_wordpress_object_fields( $object_type );

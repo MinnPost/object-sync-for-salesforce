@@ -60,7 +60,7 @@ class Salesforce_Push {
 			} elseif ( $object === 'post' ) {
 				add_action( 'save_post', array( &$this, 'add_post' ), 10, 2 );
 			} elseif ( $object === 'category' || $object === 'tag' ) {
-				add_action( 'registered_taxonomy', array( &$this, 'add_taxonomy', 10, 3 ) );
+				add_action( 'create_term', array( &$this, 'add_term' ), 10, 3 );
 			} elseif ( $object === 'comment' ) {
 			  add_action( 'comment_post', array( &$this, 'add_comment' ) );
 			} else { // this is for custom post types
@@ -98,16 +98,16 @@ class Salesforce_Push {
 	}
 
 	/**
-	* Callback method for adding a taxonomy item if it is mapped to something in Salesforce
+	* Callback method for adding a term if it is mapped to something in Salesforce
 	*
-	* @param object $taxonomy
-	* @param string $object_type
-	* @param array $args
+	* @param string $term_id
+	* @param string $tt_id
+	* @param string $taxonomy
 	*/
-	function add_taxonomy( $taxonomy, $object_type, $args ) {
-		error_log( 'add a ' . $object_type . ' of ' . $taxonomy );
-		$object = get_taxonomy( $taxonomy );
-		$this->object_insert( $object, 'taxonomy' );
+	function add_term( $term_id, $tt_id, $taxonomy ) {
+		$term = get_term( $term_id );
+		error_log(print_r($term, true));
+		//$this->object_insert( $object, 'taxonomy' );
 	}
 
 	/**
@@ -212,33 +212,12 @@ class Salesforce_Push {
 			));*/
 			
 		  } else { // this one is not async. do it immediately.
-			error_log('push sync rest');  
+			error_log('push sync rest');
+			$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
 		  }
 		  continue;
-		  
-		  //salesforce_push_sync_rest($entity_type, $entity, $mapping, $sf_sync_trigger);
 		}
 	  }
-	}
-
-	function salesforce_push_form_salesforce_mapping_object_form_alter(&$form, &$form_state) {
-	  $form['salesforce_id']['#required'] = FALSE;
-	  $form['actions']['push'] = array(
-		'#type' => 'submit',
-		'#value' => t('Push'),
-		'#submit' => array('salesforce_push_mapping_object_form_submit'),
-	  );
-	}
-
-	function salesforce_push_mapping_object_form_submit($form, &$form_state) {
-	  $values = $form_state['values'];
-	  $entity_type = $values['entity_type'];
-	  $entity_id = $values['entity_id'];
-	  $entity = entity_load_single($entity_type, $entity_id);
-	  $trigger = $this->mappings->sync_wordpress_update;
-	  $this->salesforce_push_object_crud($entity_type, $entity, $trigger);
-	  // @TODO we can do better than this:
-	  // drupal_set_message('Push request submitted. If your mappings are set to push asynchronously, you need to run cron.');
 	}
 
 	/**
@@ -253,7 +232,7 @@ class Salesforce_Push {
 	 * @param int $sf_sync_trigger
 	 *   Trigger for this sync.
 	 */
-	function salesforce_push_sync_rest($object_type, $object, $mapping, $sf_sync_trigger) {
+	function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
 	  $sfapi = $this->salesforce;
 
 	  // Not authorized, we need to bail this time around.

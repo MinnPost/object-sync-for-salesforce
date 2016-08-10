@@ -39,7 +39,7 @@ class Salesforce_Mapping {
     public function __construct( $wpdb, $version, $text_domain ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
-        $this->text_domain = $text_domain; 
+        $this->text_domain = $text_domain;
 
         $this->table = $this->wpdb->prefix . 'salesforce_field_map';
 
@@ -92,11 +92,11 @@ class Salesforce_Mapping {
     /**
     * Read a map row between a WordPress and Salesforce object
     *
-    * @param array $id
+    * @param int $id
     * @return $map
     * @throws \Exception
     */
-    public function read( $id = '' ) {
+    public function read( $id ) {
     	$map = $this->wpdb->get_row( 'SELECT * FROM ' . $this->table . ' WHERE id = ' . $id, ARRAY_A );
         $map['fields'] = maybe_unserialize( $map['fields'] );
         $map['sync_triggers'] = maybe_unserialize( $map['sync_triggers'] );
