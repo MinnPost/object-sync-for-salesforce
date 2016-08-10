@@ -75,9 +75,9 @@ class Salesforce_Push {
 	* @param string $post_id
 	*/
 	function add_attachment( $post_id ) {
-		error_log( 'add an attachment with id of ' . $post_id );
-		$object = wp_get_attachment_metadata( $post_id );
-		$this->object_insert( $object, 'attachment' );
+		$attachment = wp_get_attachment_metadata( $post_id );
+		error_log(print_r($attachment, true));
+		//$this->object_insert( $attachment, 'attachment' );
 	}
 
 	/**
@@ -86,15 +86,9 @@ class Salesforce_Push {
 	* @param string $user_id
 	*/
 	function add_user( $user_id ) {
-
-		error_log('go get the user data');
 		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id );
-
-		error_log('this is the user data below');
 		error_log(print_r($user, true));
-
 		//$this->object_insert( $user, 'user' );
-
 	}
 
 	/**
@@ -107,7 +101,7 @@ class Salesforce_Push {
 	function add_term( $term_id, $tt_id, $taxonomy ) {
 		$term = get_term( $term_id );
 		error_log(print_r($term, true));
-		//$this->object_insert( $object, 'taxonomy' );
+		//$this->object_insert( $term, 'taxonomy' );
 	}
 
 	/**
@@ -116,12 +110,8 @@ class Salesforce_Push {
 	* @param string $comment_id
 	*/
 	function add_comment( $comment_id ) {
-		error_log('go get the comment data');
 		$comment = $this->wordpress->get_wordpress_object_data( 'comment', $comment_id );
-
-		error_log('this is the comment data below');
 		error_log(print_r($comment, true));
-
 		//$this->object_insert( $comment, 'comment' );
 	}
 
@@ -135,8 +125,8 @@ class Salesforce_Push {
 		if ( isset( $post->post_status ) && 'auto-draft' === $post->post_status ) {
 			return;
 		}
-		error_log( 'add a post with id of ' . $post_id );
-		$this->object_insert( $post, 'post' );
+		error_log(print_r($post, true));
+		//$this->object_insert( $post, 'post' );
 	}
 
 	/**
