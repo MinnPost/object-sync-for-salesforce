@@ -9,6 +9,9 @@ class Wordpress {
     protected $version;
     protected $text_domain;
     protected $mappings;
+    protected $object_types;
+
+    public $wordpress_types_not_posts;
 
     /**
     * Objects, properties, and methods to get core WordPress data for the plugin
@@ -17,18 +20,41 @@ class Wordpress {
     * @param string $version
     * @param string $text_domain
     * @param object $mappings
+    * @param array $wordpress_types_not_posts
+    * @param array $wordpress_types_ignore
     * @throws \Exception
     */
-	public function __construct( $wpdb, $version, $text_domain, $mappings ) {
+	public function __construct( $wpdb, $version, $text_domain, $mappings, $wordpress_types_not_posts = array(), $wordpress_types_ignore = array() ) {
 		$this->wpdb = &$wpdb;
 		$this->version = $version;
 		$this->text_domain = $text_domain;
 		$this->mappings = $mappings;
+		$this->wordpress_objects = $this->get_object_types( $wordpress_types_not_posts, $wordpress_types_ignore );
 		$this->options = array(
 			'cache' => true,
 			'cache_expiration' => $this->cache_expiration( 'wordpress_data_cache', 86400 ),
 			'type' => 'read'
 		);
+	}
+
+	/**
+    * Get WordPress object types
+    * 
+    * @param array $wordpress_types_not_posts
+    * @return array $wordpress_objects
+    */
+	public function get_object_types( $wordpress_types_not_posts, $wordpress_types_ignore ) {
+		$wordpress_objects = array();
+		if ( empty( $wordpress_types_not_posts ) ) {
+            $wordpress_types_not_posts = array( 'user', 'comment', 'category', 'tag' );
+        }
+        $wordpress_objects = get_post_types();
+        if ( !empty( $wordpress_types_ignore ) ) {
+        	$wordpress_objects = array_diff( $wordpress_objects, $wordpress_types_ignore );
+        }
+        $wordpress_objects = array_merge( $wordpress_objects, $wordpress_types_not_posts );
+        sort( $wordpress_objects );
+		return $wordpress_objects;
 	}
 
 	/**
