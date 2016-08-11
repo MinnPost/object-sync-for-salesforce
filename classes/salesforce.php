@@ -566,6 +566,8 @@ class Salesforce {
 		  }
 		}
 
+		ksort( $result['data']['sobjects'] );
+
 		return $result['data']['sobjects'];
 	}
 
