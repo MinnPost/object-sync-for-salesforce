@@ -41,6 +41,7 @@ class Wordpress {
     * Get WordPress object types
     * 
     * @param array $wordpress_types_not_posts
+    * @param array $wordpress_types_ignore
     * @return array $wordpress_objects
     */
 	public function get_object_types( $wordpress_types_not_posts, $wordpress_types_ignore ) {
