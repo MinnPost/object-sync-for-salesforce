@@ -53,20 +53,22 @@ class Salesforce_Push {
 	*/
 	function add_actions() {
 		foreach ( $this->mappings->get_all() as $mapping ) {
-			$object = $mapping['wordpress_object'];
-			if ( $object === 'attachment' ) {
-				add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
-			} elseif ( $object === 'user' ) {
-				add_action( 'user_register', array( &$this, 'add_user' ) );
-			} elseif ( $object === 'post' ) {
-				add_action( 'save_post', array( &$this, 'add_post' ), 10, 2 );
-			} elseif ( $object === 'category' || $object === 'tag' ) {
+			$object_type = $mapping['wordpress_object'];
+
+			if ( $object_type === 'user' ) {
+	    		add_action( 'user_register', array( &$this, 'add_user' ) );
+	    	} elseif ( $object_type === 'post' ) {
+	    		add_action( 'save_post', array( &$this, 'add_post' ), 10, 2 );
+	    	} elseif ( $object_type === 'attachment' ) {
+	    		add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
+	    	} elseif ( $object_type === 'category' || $object_type === 'tag' ) {
 				add_action( 'create_term', array( &$this, 'add_term' ), 10, 3 );
-			} elseif ( $object === 'comment' ) {
-			  add_action( 'comment_post', array( &$this, 'add_comment' ) );
+			} elseif ( $object_type === 'comment' ) {
+				add_action( 'comment_post', array( &$this, 'add_comment' ) );
 			} else { // this is for custom post types
-				add_action( 'save_post_' . $object, array( &$this, 'add_post' ), 10, 2 );
-			}
+				add_action( 'save_post_' . $object_type, array( &$this, 'add_post' ), 10, 2 );
+			}			
+				
 		}
 	}
 
