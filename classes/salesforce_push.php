@@ -56,6 +56,8 @@ class Salesforce_Push {
 			$object_type = $mapping['wordpress_object'];
 			if ( $object_type === 'user' ) {
 	    		add_action( 'user_register', array( &$this, 'add_user' ) );
+	    		add_action( 'profile_update', array( &$this, 'edit_user' ), 10, 2 );
+	    		add_action( 'delete_user', array( &$this, 'delete_user' ) );
 	    	} elseif ( $object_type === 'post' ) {
 	    		add_action( 'save_post', array( &$this, 'post_actions' ), 10, 2 );
 	    	} elseif ( $object_type === 'attachment' ) {
@@ -77,14 +79,34 @@ class Salesforce_Push {
 	}
 
 	/**
-	* Callback method for adding a user if it is mapped to something in Salesforce
+	* Callback method for adding a user
 	*
 	* @param string $user_id
 	*/
 	function add_user( $user_id ) {
 		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id );
-		//error_log( 'add a user: ' . print_r( $user, true ) );
 		$this->object_insert( $user, 'user' );
+	}
+
+	/**
+	* Callback method for editing a user
+	*
+	* @param string $user_id
+	* @param object $old_user_data
+	*/
+	function edit_user( $user_id, $old_user_data ) {
+		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id );
+		$this->object_update( $user, 'user' );
+	}
+
+	/**
+	* Callback method for deleting a user
+	*
+	* @param string $user_id
+	*/
+	function delete_user( $user_id ) {
+		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id );
+		$this->object_delete( $user, 'user' );
 	}
 
 	/**
