@@ -54,7 +54,6 @@ class Salesforce_Push {
 	function add_actions() {
 		foreach ( $this->mappings->get_all() as $mapping ) {
 			$object_type = $mapping['wordpress_object'];
-
 			if ( $object_type === 'user' ) {
 	    		add_action( 'user_register', array( &$this, 'add_user' ) );
 	    	} elseif ( $object_type === 'post' ) {
@@ -67,20 +66,8 @@ class Salesforce_Push {
 				add_action( 'comment_post', array( &$this, 'add_comment' ) );
 			} else { // this is for custom post types
 				add_action( 'save_post_' . $object_type, array( &$this, 'add_post' ), 10, 2 );
-			}			
-				
+			}
 		}
-	}
-
-	/**
-	* Callback method for adding an attachment if it is mapped to something in Salesforce
-	*
-	* @param string $post_id
-	*/
-	function add_attachment( $post_id ) {
-		$attachment = wp_get_attachment_metadata( $post_id );
-		error_log(print_r($attachment, true));
-		//$this->object_insert( $attachment, 'attachment' );
 	}
 
 	/**
@@ -90,32 +77,8 @@ class Salesforce_Push {
 	*/
 	function add_user( $user_id ) {
 		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id );
-		error_log(print_r($user, true));
-		//$this->object_insert( $user, 'user' );
-	}
-
-	/**
-	* Callback method for adding a term if it is mapped to something in Salesforce
-	*
-	* @param string $term_id
-	* @param string $tt_id
-	* @param string $taxonomy
-	*/
-	function add_term( $term_id, $tt_id, $taxonomy ) {
-		$term = get_term( $term_id );
-		error_log(print_r($term, true));
-		//$this->object_insert( $term, 'taxonomy' );
-	}
-
-	/**
-	* Callback method for adding a comment if it is mapped to something in Salesforce
-	*
-	* @param string $comment_id
-	*/
-	function add_comment( $comment_id ) {
-		$comment = $this->wordpress->get_wordpress_object_data( 'comment', $comment_id );
-		error_log(print_r($comment, true));
-		//$this->object_insert( $comment, 'comment' );
+		//error_log( 'add a user: ' . print_r( $user, true ) );
+		$this->object_insert( $user, 'user' );
 	}
 
 	/**
@@ -128,8 +91,43 @@ class Salesforce_Push {
 		if ( isset( $post->post_status ) && 'auto-draft' === $post->post_status ) {
 			return;
 		}
-		error_log(print_r($post, true));
-		//$this->object_insert( $post, 'post' );
+		//error_log( 'add a post: ' . print_r( $post, true ) );
+		$this->object_insert( $post, 'post' );
+	}
+
+	/**
+	* Callback method for adding an attachment if it is mapped to something in Salesforce
+	*
+	* @param string $post_id
+	*/
+	function add_attachment( $post_id ) {
+		$attachment = $this->wordpress->get_wordpress_object_data( 'attachment', $post_id );
+		//error_log( 'add an attachment: ' . print_r( $attachment, true ) );
+		$this->object_insert( $attachment, 'attachment' );
+	}
+
+	/**
+	* Callback method for adding a term if it is mapped to something in Salesforce
+	*
+	* @param string $term_id
+	* @param string $tt_id
+	* @param string $taxonomy
+	*/
+	function add_term( $term_id, $tt_id, $taxonomy ) {
+		$term = get_term( $term_id );
+		//error_log( 'add a term: ' . print_r( $term, true ) );
+		$this->object_insert( $term, 'taxonomy' );
+	}
+
+	/**
+	* Callback method for adding a comment if it is mapped to something in Salesforce
+	*
+	* @param string $comment_id
+	*/
+	function add_comment( $comment_id ) {
+		$comment = $this->wordpress->get_wordpress_object_data( 'comment', $comment_id );
+		//error_log( 'add a comment: ' . print_r( $comment, true ) );
+		$this->object_insert( $comment, 'comment' );
 	}
 
 	/**
@@ -190,9 +188,12 @@ class Salesforce_Push {
 					continue 2;
 				}
 			}*/
+		  if ( isset( $mapping->ignore_drafts ) && $mapping->ignore_drafts === '1' && isset( $post->post_status ) && 'draft' === $post->post_status ) {
+		  	continue; // skip this object if it is a draft and the settings told us to ignore it
+		  }
 		  if ( isset( $mapping->push_async ) && ( $mapping->push_async === '1' ) ) {
 		  	// this item is async and we want to save it to the queue
-			error_log($object);
+			error_log( print_r( $object, true ) );
 			//$queue = $this->schedule->push_to_queue($object);
 			//$save = $this->schedule->save();
 			
