@@ -169,6 +169,8 @@ class Salesforce_Mapping {
     		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
     	}
 		$data['push_async'] = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
+        $data['ignore_drafts'] = isset( $posted['ignore_drafts'] ) ? $posted['ignore_drafts'] : '';
+        $data['weight'] = isset( $posted['weight'] ) ? $posted['weight'] : '';
     	return $data;
     }
 
@@ -199,7 +201,7 @@ class Salesforce_Mapping {
     */
     public function get_all( $offset = '', $limit = '' ) {
         $table = $this->table;
-        $results = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async` FROM $table" , ARRAY_A );
+        $results = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `weight` FROM $table" , ARRAY_A );
         foreach ( $results as $result ) {
         	$result['fields'] = maybe_unserialize( $result['fields'] );
         	$result['sync_triggers'] = maybe_unserialize( $result['sync_triggers'] );

@@ -115,6 +115,8 @@ class Wordpress_Salesforce_Admin {
                             $fieldmap_fields = $map['fields'];
                             $sync_triggers = $map['sync_triggers'];
                             $push_async = $map['push_async'];
+                            $ignore_drafts = $map['ignore_drafts'];
+                            $weight = $map['weight'];
                         }
                         
                         if ( $method === 'add' || $method === 'edit' || $method === 'clone' ) { ?>
@@ -396,6 +398,16 @@ class Wordpress_Salesforce_Admin {
                                 <div class="checkboxes">
                                     <label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo isset( $push_async ) && $push_async === '1' ? ' checked' : ''; ?>> Process asynchronously</label>
                                     <p class="description">If selected, push data will be queued for processing and synchronized when <code>wp_cron</code> is run. This may increase site performance, but changes will not be reflected in real time.</p>
+                                </div>
+                                <div class="checkboxes">
+                                    <label><input type="checkbox" name="ignore_drafts" id="ignore-drafts" value="1" <?php echo isset( $ignore_drafts ) && $ignore_drafts === '1' ? ' checked' : ''; ?>> Ignore drafts</label>
+                                    <p class="description">If selected, WordPress will not send drafts of this object type (if it creates drafts for it) to Salesforce.</p>
+                                </div>
+                                <div class="fieldmap_label">
+                                    <label for="label">Weight: </label>
+                                    <input type="number" id="weight" name="weight" value="<?php echo isset( $weight ) ? $weight : ''; ?>" />
+                                    <p class="description">Weight is intended for use when you have multiple fieldmpas for the same object, either in WordPress or Salesforce.</p>
+                                    <p class="description">For example, if you map WordPress users to Salesforce Contacts, and then map the users to Salesforce Leads as well, you could assign a numeric weight to indicate which one gets processed first. Otherwise, you can safely leave it blank.</p>
                                 </div>
                             </fieldset>
                             <?php echo submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
