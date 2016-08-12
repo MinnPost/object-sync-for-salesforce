@@ -258,46 +258,58 @@ class Salesforce_Push {
 			return FALSE;
 		}
 
+		// load mappings that match this criteria
+		// in this case, it's all mappings that correspond to the posted wordpress object
 		$sf_mappings = $this->mappings->load_multiple(
 			array(
 				'wordpress_object' => $object_type
 			)
 		);
 
-	  foreach ( $sf_mappings as $mapping ) {
-		if ( isset( $mapping->sync_triggers ) && isset( $sf_sync_trigger ) ) {
-			// allow other plugins to prevent a sync per-mapping.
-			// need to figure out how to implement this in wordpress
-			// this is the drupal code to try to fork
-			/*foreach (module_implements('salesforce_push_entity_allowed') as $module) {
-				if (module_invoke($module, 'salesforce_push_entity_allowed', $entity_type, $entity, $sf_sync_trigger, $mapping) === FALSE) {
-					continue 2;
+		foreach ( $sf_mappings as $mapping ) { // for each mapping of this object
+			$map_sync_triggers = maybe_unserialize( $mapping->sync_triggers );
+			if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array($sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
+
+				// allow other plugins to prevent a sync per-mapping.
+				// need to figure out how to implement this in wordpress
+				// this is the drupal code to try to fork
+				/*foreach (module_implements('salesforce_push_entity_allowed') as $module) {
+					if (module_invoke($module, 'salesforce_push_entity_allowed', $entity_type, $entity, $sf_sync_trigger, $mapping) === FALSE) {
+						continue 2;
+					}
+				}*/
+
+				// ignore drafts if the setting says so
+				// post status is draft, or post status is inherit and post type is not attachment
+				if ( isset( $mapping->ignore_drafts ) && $mapping->ignore_drafts === '1' && isset( $object['post_status'] ) && ( $object['post_status'] === 'draft'  || ( $object['post_status'] === 'inherit' && $object['post_type'] !== 'attachment' ) ) ) {
+					continue; // skip this object if it is a draft and the fieldmap settings told us to ignore it
 				}
-			}*/
-		  if ( isset( $mapping->ignore_drafts ) && $mapping->ignore_drafts === '1' && isset( $post->post_status ) && 'draft' === $post->post_status ) {
-		  	continue; // skip this object if it is a draft and the settings told us to ignore it
-		  }
-		  if ( isset( $mapping->push_async ) && ( $mapping->push_async === '1' ) ) {
-		  	// this item is async and we want to save it to the queue
-			error_log( print_r( $object, true ) );
-			//$queue = $this->schedule->push_to_queue($object);
-			//$save = $this->schedule->save();
-			
-			/*$queue = DrupalQueue::get($this->salesforce_push_queue);
-			$queue->createItem(array(
-				'entity_type' => $entity_type,
-				'entity_id' => $entity_id,
-				'mapping' => $mapping,
-				'trigger' => $sf_sync_trigger,
-			));*/
-			
-		  } else { // this one is not async. do it immediately.
-			error_log('push sync rest');
-			$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
-		  }
-		  continue;
+				if ( isset( $mapping->push_async ) && ( $mapping->push_async === '1' ) ) {
+		  			// this item is async and we want to save it to the queue
+		  			error_log( 'the trigger is ' . $sf_sync_trigger);
+					error_log( 'put this ' . $object_type . ' in the queue: ' . print_r( $object, true ) );
+
+					// possible triggers are create, update, delete of wp object -> salesforce
+
+					//$queue = $this->schedule->push_to_queue($object);
+					//$save = $this->schedule->save();
+					
+					// this is the drupal code we are forking
+					/*$queue = DrupalQueue::get($this->salesforce_push_queue);
+					$queue->createItem(array(
+						'entity_type' => $entity_type,
+						'entity_id' => $entity_id,
+						'mapping' => $mapping,
+						'trigger' => $sf_sync_trigger,
+					));*/
+				} else {
+					// this one is not async. do it immediately.
+					error_log( 'do this action: ' . $sf_sync_trigger . ' on this object type: ' . $object_type . ' to sf on this object: ' . print_r( $object, true ) . ' immediately' );
+					//$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
+		  		}
+			} // if the trigger does not match our requirements, skip it
 		}
-	  }
+
 	}
 
 	/**
