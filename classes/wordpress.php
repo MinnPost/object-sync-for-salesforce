@@ -185,6 +185,7 @@ class Wordpress {
     * todo: figure out how much formatting to do to the data.
     * example: user has an array of capabilities and such
     * we probably don't care about this, but the plugin should maybe address it
+    * todo: make sure we account for all the core objects
     * 
     * @param string $object_type
     * @param string $object_id
@@ -195,33 +196,24 @@ class Wordpress {
     	$wordpress_object = array();
 
     	if ( $object_type === 'attachment' ) {
-            
+            $data = get_post( $object_id );            
         } elseif ( $object_type === 'user' ) {
-            $user = get_userdata( $object_id );
-	       	$fields = $this->get_wordpress_object_fields( $object_type );
-	    	foreach( $fields as $key => $value ) {
-	    		$field = $value['key'];
-	    		$wordpress_object[$field] = $user->{$field};
-	    	}
+            $data = get_userdata( $object_id );
         } elseif ( $object_type === 'post' ) {
-            
+            $data = get_post( $object_id );
         } elseif ( $object_type === 'category' || $object_type === 'tag' ) {
-            $term = get_term( $object_id );
-	       	$fields = $this->get_wordpress_object_fields( $object_type );
-	    	foreach( $fields as $key => $value ) {
-	    		$field = $value['key'];
-	    		$wordpress_object[$field] = $term->{$field};
-	    	}
+            $data = get_term( $object_id );
         } elseif ( $object_type === 'comment' ) {
-        	$comment = get_comment( $object_id );
-	       	$fields = $this->get_wordpress_object_fields( $object_type );
-	    	foreach( $fields as $key => $value ) {
-	    		$field = $value['key'];
-	    		$wordpress_object[$field] = $comment->{$field};
-	    	}
+        	$data = get_comment( $object_id );
         } else { // this is for custom post types
-            
+            $data = get_post( $object_id );
         }
+
+        $fields = $this->get_wordpress_object_fields( $object_type );
+        foreach( $fields as $key => $value ) {
+    		$field = $value['key'];
+    		$wordpress_object[$field] = $data->{$field};
+    	}
 
     	return $wordpress_object;
 
