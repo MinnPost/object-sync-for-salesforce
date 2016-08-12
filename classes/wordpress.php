@@ -195,19 +195,17 @@ class Wordpress {
 
     	$wordpress_object = array();
 
-    	if ( $object_type === 'attachment' ) {
-            $data = get_post( $object_id );            
-        } elseif ( $object_type === 'user' ) {
-            $data = get_userdata( $object_id );
-        } elseif ( $object_type === 'post' ) {
-            $data = get_post( $object_id );
-        } elseif ( $object_type === 'category' || $object_type === 'tag' ) {
-            $data = get_term( $object_id );
-        } elseif ( $object_type === 'comment' ) {
-        	$data = get_comment( $object_id );
-        } else { // this is for custom post types
-            $data = get_post( $object_id );
-        }
+    	if ( $object_type === 'user' ) {
+    		$data = get_userdata( $object_id );
+    	} elseif ( $object_type === 'post' || $object_type === 'attachment' ) {
+    		$data = get_post( $object_id );
+    	} elseif ( $object_type === 'category' || $object_type === 'tag' ) {
+			$data = get_term( $object_id );
+		} elseif ( $object_type === 'comment' ) {
+			$data = get_comment( $object_id );
+		} else { // this is for custom post types
+			$data = get_post( $object_id );
+		}
 
         $fields = $this->get_wordpress_object_fields( $object_type );
         foreach( $fields as $key => $value ) {
