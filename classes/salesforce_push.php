@@ -45,10 +45,7 @@ class Salesforce_Push {
 
 	/**
 	* Create the action hooks based on what object maps exist from the admin settings
-	* todo: check all the error logging by all these hooks and make sure they only do what we want
-	* todo: check into edit/update/delete hooks as well? this should probably be configurable
 	* todo: is wordpress going to actually keep that blogroll stuff?
-	* todo: then enable object insert and start mapping wp fields to sf fields
 	*
 	*/
 	function add_actions() {
@@ -272,6 +269,8 @@ class Salesforce_Push {
 	 *   The object object.
 	 * @param int $sf_sync_trigger
 	 *   The trigger being responded to.
+	 * todo: figure out how drupal populates the wp_salesforce_object_map equivalent table
+	 * because the next methods appear to use it and idk where its data comes from
 	 */
 	function salesforce_push_object_crud( $object_type, $object, $sf_sync_trigger ) {
 		// avoid duplicate processing if this object has just been updated by Salesforce pull
@@ -327,7 +326,8 @@ class Salesforce_Push {
 				} else {
 					// this one is not async. do it immediately.
 					error_log( 'do this action: ' . $sf_sync_trigger . ' on this object type: ' . $object_type . ' to sf on this object: ' . print_r( $object, true ) . ' immediately' );
-					//$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
+					// we should try to get this one working first
+					$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
 		  		}
 			} // if the trigger does not match our requirements, skip it
 		}
@@ -350,7 +350,7 @@ class Salesforce_Push {
 	  $sfapi = $this->salesforce;
 
 	  // Not authorized, we need to bail this time around.
-	  if (!$sfapi->isAuthorized()) {
+	  if ( !$sfapi->isAuthorized() ) {
 		return;
 	  }
 

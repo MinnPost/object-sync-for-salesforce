@@ -185,7 +185,6 @@ class Wordpress {
     * todo: figure out how much formatting to do to the data.
     * example: user has an array of capabilities and such
     * we probably don't care about this, but the plugin should maybe address it
-    * todo: make sure we account for all the core objects
     * 
     * @param string $object_type
     * @param string $object_id
