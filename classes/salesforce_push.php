@@ -57,15 +57,21 @@ class Salesforce_Push {
 			if ( $object_type === 'user' ) {
 	    		add_action( 'user_register', array( &$this, 'add_user' ) );
 	    	} elseif ( $object_type === 'post' ) {
-	    		add_action( 'save_post', array( &$this, 'add_post' ), 10, 2 );
+	    		add_action( 'save_post', array( &$this, 'post_actions' ), 10, 2 );
 	    	} elseif ( $object_type === 'attachment' ) {
 	    		add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
+	    		add_action( 'edit_attachment', array( &$this, 'edit_attachment' ) );
+	    		add_action( 'delete_attachment', array( &$this, 'delete_attachment' ) );
 	    	} elseif ( $object_type === 'category' || $object_type === 'tag' ) {
 				add_action( 'create_term', array( &$this, 'add_term' ), 10, 3 );
+				add_action( 'edit_terms', array( &$this, 'edit_term' ), 10, 2 );
+				add_action( 'delete_term', array( &$this, 'delete_term' ), 10, 4 );
 			} elseif ( $object_type === 'comment' ) {
-				add_action( 'comment_post', array( &$this, 'add_comment' ) );
+				add_action( 'comment_post', array( &$this, 'add_comment', 3 ) );
+				add_action( 'edit_comment', array( &$this, 'edit_comment' ) );
+				add_action( 'delete_comment', array( &$this, 'delete_comment' ) ); // this only runs when the item gets deleted from the trash, either manually or automatically
 			} else { // this is for custom post types
-				add_action( 'save_post_' . $object_type, array( &$this, 'add_post' ), 10, 2 );
+				add_action( 'save_post_' . $object_type, array( &$this, 'post_actions' ), 10, 2 );
 			}
 		}
 	}
@@ -82,52 +88,132 @@ class Salesforce_Push {
 	}
 
 	/**
-	* Callback method for adding a post of any type if it is mapped to something in Salesforce
+	* Callback method for posts of any type
+	* This can handle create, update, and delete actions
 	*
 	* @param string $post_id
 	* @param object $post
 	*/
-	function add_post( $post_id, $post ) {
-		if ( isset( $post->post_status ) && 'auto-draft' === $post->post_status ) {
+	function post_actions( $post_id, $post ) {
+		if ( isset( $post->post_status ) && $post->post_status === 'auto-draft' ) {
 			return;
 		}
-		//error_log( 'add a post: ' . print_r( $post, true ) );
-		$this->object_insert( $post, 'post' );
+	    if ( $post->post_modified_gmt == $post->post_date_gmt && $post->post_status !== 'trash' ){
+	        $update = 0;
+	        $delete = 0;
+	    } else if ( $post->post_status !== 'trash' ) {
+	        $update = 1;
+	        $delete = 0;
+	    } else if ( $post->post_status === 'trash' ) {
+	    	$update = 0;
+	    	$delete = 1;
+	    }
+	    $post = $this->wordpress->get_wordpress_object_data( 'post', $post_id );
+		if ( $update === 1 ) {
+			$this->object_update( $post, 'post' );
+		} else if ( $delete === 1) {
+			$this->object_delete( $post, 'post' );
+		} else {
+			$this->object_insert( $post, 'post' );
+		}
 	}
 
 	/**
-	* Callback method for adding an attachment if it is mapped to something in Salesforce
+	* Callback method for adding an attachment
 	*
 	* @param string $post_id
 	*/
 	function add_attachment( $post_id ) {
 		$attachment = $this->wordpress->get_wordpress_object_data( 'attachment', $post_id );
-		//error_log( 'add an attachment: ' . print_r( $attachment, true ) );
 		$this->object_insert( $attachment, 'attachment' );
 	}
 
 	/**
-	* Callback method for adding a term if it is mapped to something in Salesforce
+	* Callback method for editing an attachment
+	*
+	* @param string $post_id
+	*/
+	function edit_attachment( $post_id ) {
+		$attachment = $this->wordpress->get_wordpress_object_data( 'attachment', $post_id );
+		$this->object_update( $attachment, 'attachment' );
+	}
+
+	/**
+	* Callback method for editing an attachment
+	*
+	* @param string $post_id
+	*/
+	function delete_attachment( $post_id ) {
+		$attachment = $this->wordpress->get_wordpress_object_data( 'attachment', $post_id );
+		$this->object_delete( $attachment, 'attachment' );
+	}
+
+	/**
+	* Callback method for adding a term
 	*
 	* @param string $term_id
 	* @param string $tt_id
 	* @param string $taxonomy
 	*/
 	function add_term( $term_id, $tt_id, $taxonomy ) {
-		$term = get_term( $term_id );
-		//error_log( 'add a term: ' . print_r( $term, true ) );
-		$this->object_insert( $term, 'taxonomy' );
+		$term = $this->wordpress->get_wordpress_object_data( $taxonomy, $term_id );
+		$this->object_insert( $term, $taxonomy );
 	}
 
 	/**
-	* Callback method for adding a comment if it is mapped to something in Salesforce
+	* Callback method for editing a term
+	*
+	* @param string $term_id
+	* @param string $taxonomy
+	*/
+	function edit_term( $term_id, $taxonomy ) {
+		$term = $this->wordpress->get_wordpress_object_data( $taxonomy, $term_id );
+		$this->object_update( $term, $taxonomy );
+	}
+
+	/**
+	* Callback method for deleting a term
+	*
+	* @param string $term_id
+	* @param int $term_taxonomy_id
+	* @param string $taxonomy_slug
+	* @param object $already_deleted_term
+	*/
+	function delete_term( $term_id, $term_taxonomy_id, $taxonomy_slug, $already_deleted_term ) {
+		$term = $this->wordpress->get_wordpress_object_data( $taxonomy, $term_id );
+		$this->object_delete( $term, $taxonomy );
+	}
+
+	/**
+	* Callback method for adding a comment
+	*
+	* @param string $comment_id
+	* @param int|string comment_approved
+	* @param array $commentdata
+	*/
+	function add_comment( $comment_id, $comment_approved, $commentdata ) {
+		$comment = $this->wordpress->get_wordpress_object_data( 'comment', $comment_id );
+		$this->object_insert( $comment, 'comment' );
+	}
+
+	/**
+	* Callback method for editing a comment
 	*
 	* @param string $comment_id
 	*/
-	function add_comment( $comment_id ) {
+	function edit_comment( $comment_id ) {
 		$comment = $this->wordpress->get_wordpress_object_data( 'comment', $comment_id );
-		//error_log( 'add a comment: ' . print_r( $comment, true ) );
-		$this->object_insert( $comment, 'comment' );
+		$this->object_update( $comment, 'comment' );
+	}
+
+	/**
+	* Callback method for deleting a comment
+	*
+	* @param string $comment_id
+	*/
+	function delete_comment( $comment_id ) {
+		$comment = $this->wordpress->get_wordpress_object_data( 'comment', $comment_id );
+		$this->object_delete( $comment, 'comment' );
 	}
 
 	/**
@@ -142,7 +228,7 @@ class Salesforce_Push {
 	* Update an existing object
 	* This calls the overall push crud method, which controls queuing and sending data to the Salesforce class
 	*/
-	function salesforce_push_entity_update( $entity, $type ) {
+	function object_update( $object, $type ) {
 		$this->salesforce_push_object_crud( $type, $object, $this->mappings->sync_wordpress_update );
 	}
 
@@ -150,7 +236,7 @@ class Salesforce_Push {
 	* Delete an existing object
 	* This calls the overall push crud method, which controls queuing and sending data to the Salesforce class
 	*/
-	function salesforce_push_entity_delete( $entity, $type ) {
+	function object_delete( $object, $type ) {
 		$this->salesforce_push_object_crud( $type, $object, $this->mappings->sync_wordpress_delete );
 	}
 
@@ -167,7 +253,7 @@ class Salesforce_Push {
 	 */
 	function salesforce_push_object_crud( $object_type, $object, $sf_sync_trigger ) {
 		// avoid duplicate processing if this object has just been updated by Salesforce pull
-		// todo: start saving this data once it starts working
+		// todo: start saving this data once we are doing a salesforce pull
 		if ( isset( $object->salesforce_pull ) && $object->salesforce_pull ) {
 			return FALSE;
 		}
