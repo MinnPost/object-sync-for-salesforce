@@ -43,8 +43,8 @@ class Salesforce_Mapping {
 
         $this->table = $this->wpdb->prefix . 'salesforce_field_map';
 
-        // in drupal module, these are bit flags to define when data syncs should occur
-        // tbh i don't understand what this means
+        // this is how we define when syncing should occur on each field map
+        // it gets used in the admin settings, as well as the push/pull methods to see if something should happen
         $this->sync_off = 0x0000;
         $this->sync_wordpress_create = 0x0001;
         $this->sync_wordpress_update = 0x0002;

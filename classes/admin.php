@@ -365,34 +365,34 @@ class Wordpress_Salesforce_Admin {
                                     if ( isset( $sync_triggers ) && is_array( $sync_triggers ) ) {
                                         foreach ( $sync_triggers as $trigger ) {
                                             switch ($trigger) {
-                                                case 'WordPress create':
+                                                case $this->mappings->sync_wordpress_create:
                                                     $wordpress_create_checked = ' checked';
                                                     break;
-                                                case 'WordPress update':
+                                                case $this->mappings->sync_wordpress_update:
                                                     $wordpress_update_checked = ' checked';
                                                     break;
-                                                case 'WordPress delete':
+                                                case $this->mappings->sync_wordpress_delete:
                                                     $wordpress_delete_checked = ' checked';
                                                     break;
-                                                case 'Salesforce create':
+                                                case $this->mappings->sync_sf_create:
                                                     $salesforce_create_checked = ' checked';
                                                     break;
-                                                case 'Salesforce update':
+                                                case $this->mappings->sync_sf_update:
                                                     $salesforce_update_checked = ' checked';
                                                     break;
-                                                case 'Salesforce delete':
+                                                case $this->mappings->sync_sf_delete:
                                                     $salesforce_delete_checked = ' checked';
                                                     break;
                                             }
                                         }
                                     }
                                     ?>
-                                    <label><input type="checkbox" value="WordPress create" name="sync_triggers[]" id="sync_triggers-wordpress-create" <?php echo $wordpress_create_checked; ?>> WordPress create</label>
-                                    <label><input type="checkbox" value="WordPress update" name="sync_triggers[]" id="sync_triggers-wordpress-update" <?php echo $wordpress_update_checked; ?>>WordPress update</label>
-                                    <label><input type="checkbox" value="WordPress delete" name="sync_triggers[]" id="sync_triggers-wordpress-delete" <?php echo $wordpress_delete_checked; ?>>WordPress delete</label>
-                                    <label><input type="checkbox" value="Salesforce create" name="sync_triggers[]" id="sync_triggers-salesforce-create" <?php echo $salesforce_create_checked; ?>> Salesforce create</label>
-                                    <label><input type="checkbox" value="Salesforce update" name="sync_triggers[]" id="sync_triggers-salesforce-update" <?php echo $salesforce_update_checked; ?>> Salesforce update</label>
-                                    <label><input type="checkbox" value="Salesforce delete" name="sync_triggers[]" id="sync_triggers-salesforce-delete" <?php echo $salesforce_delete_checked; ?>> Salesforce delete</label>
+                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_create; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-create" <?php echo $wordpress_create_checked; ?>> WordPress create</label>
+                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_update; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-update" <?php echo $wordpress_update_checked; ?>>WordPress update</label>
+                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_delete; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-delete" <?php echo $wordpress_delete_checked; ?>>WordPress delete</label>
+                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_create; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-create" <?php echo $salesforce_create_checked; ?>> Salesforce create</label>
+                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_update; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-update" <?php echo $salesforce_update_checked; ?>> Salesforce update</label>
+                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_delete; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-delete" <?php echo $salesforce_delete_checked; ?>> Salesforce delete</label>
                                     <p class="description">Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. These settings are used by the <code>salesforce_push</code> and <code>salesforce_pull</code> modules respectively.</p>
                                 </div>
                                 <div class="checkboxes">
