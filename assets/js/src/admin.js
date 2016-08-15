@@ -15,7 +15,7 @@ function salesforce_date_fields() {
 			markup += '<label for="pull_trigger_field">Date field to trigger pull:</label>';
 			markup += '<select name="pull_trigger_field" id="pull_trigger_field">'
 			$.each(response.data, function(index, value) {
-				markup += '<option value="' + value.label + '">' + value.label + '</option>';
+				markup += '<option value="' + value.name + '">' + value.label + '</option>';
 			});
 			markup += '</select>';
 			markup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>'
@@ -62,7 +62,7 @@ function fieldmap_fields(wordpress_object, salesforce_object, row_count) {
 		salesforce += '<select name="salesforce_field[' + row_count + ']" id="salesforce_field-' + row_count + '">'
 		salesforce += '<option value="">- Select Salesforce field -</option>';
 		$.each(response.data.salesforce, function(index, value) {
-			salesforce += '<option value="' + value.label + '">' + value.label + '</option>';
+			salesforce += '<option value="' + value.name + '">' + value.label + '</option>';
 		});
 		salesforce += '</select>';
 

@@ -188,12 +188,12 @@ class Wordpress_Salesforce_Admin {
                                         $object_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object, 'type' => 'datetime' ) );
                                         echo '<select name="pull_trigger_field" id="pull_trigger_field">';
                                         foreach( $object_fields as $key => $value ) {
-                                            if ( $pull_trigger_field === $value['label'] ) {
+                                            if ( $pull_trigger_field === $value['name'] ) {
                                                 $selected = ' selected';
                                             } else {
                                                 $selected = '';
                                             }
-                                            echo '<option value="' . $value['label'] . '" ' . $selected . '>' . $value['label'] . '</option>';
+                                            echo '<option value="' . $value['name'] . '" ' . $selected . '>' . $value['label'] . '</option>';
                                         }
                                         echo '</select>';
                                     }
@@ -241,12 +241,12 @@ class Wordpress_Salesforce_Admin {
                                                     <?php
                                                     $salesforce_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object ) );
                                                     foreach ( $salesforce_fields as $salesforce_field ) {
-                                                        if ( isset( $value['salesforce_field'] ) && $value['salesforce_field'] === $salesforce_field['label'] ) {
+                                                        if ( isset( $value['salesforce_field'] ) && $value['salesforce_field'] === $salesforce_field['name'] ) {
                                                             $selected = ' selected';
                                                         } else {
                                                             $selected = '';
                                                         }
-                                                        echo '<option value="' . $salesforce_field['label'] . '"' . $selected . '> ' . $salesforce_field['label'] . '</option>';
+                                                        echo '<option value="' . $salesforce_field['name'] . '"' . $selected . '> ' . $salesforce_field['label'] . '</option>';
                                                     }
                                                     ?>
                                                 </select>
@@ -317,7 +317,7 @@ class Wordpress_Salesforce_Admin {
                                                     <?php
                                                     $salesforce_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object ) );
                                                     foreach ( $salesforce_fields as $salesforce_field ) {
-                                                        echo '<option value="' . $salesforce_field['label'] . '"> ' . $salesforce_field['label'] . '</option>';
+                                                        echo '<option value="' . $salesforce_field['name'] . '"> ' . $salesforce_field['label'] . '</option>';
                                                     }
                                                     ?>
                                                 </select>
