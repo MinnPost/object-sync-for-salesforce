@@ -329,8 +329,7 @@ class Salesforce_Push {
 					));*/
 				} else {
 					// this one is not async. do it immediately.
-					error_log( 'do this action: ' . $sf_sync_trigger . ' on this object type: ' . $object_type . ' to sf on this object: ' . print_r( $object, true ) . ' immediately' );
-					// we should try to get this one working first
+					// todo: get this one working first
 					$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
 		  		}
 			} // if the trigger does not match our requirements, skip it
@@ -351,17 +350,20 @@ class Salesforce_Push {
 	 *   Trigger for this sync.
 	 */
 	function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
-	  
-	  $sfapi = $this->salesforce;
 
-	  // salesforce is not authorized. don't do anything.
-	  // it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
-	  if ( !$sfapi->isAuthorized() ) {
-		return;
-	  }
+		// if salesforce is not authorized, don't do anything.
+		// it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
+		if ( $this->salesforce['is_authorized'] !== true ) {
+			return;
+		}
 
-	  list($object_id) = entity_extract_ids($object_type, $object);
-	  $mapping_object = salesforce_mapping_object_load_by_drupal($entity_type, $entity_id, TRUE);
+		// we need to get the wordpress id here so we can check to see if the object already has a map
+		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
+		$object_id = $structure['id_field'];
+
+		error_log('try to load mapping object');
+		$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object["$object_id"] );
+		error_log('this is the object: ' . print_r( $mapping_object, true ) );
 
 /*
 	  // Delete SF object.
