@@ -236,61 +236,117 @@ class Salesforce_Mapping {
     }
 
     /**
-    * Get all map rows between WordPress and Salesforce objects
-    * Can optionally limit or offset, if necessary
+    * Create an object map row between a WordPress and Salesforce object
     *
-    * @param int $offset
-    * @param int $limit
-    * @return $results
+    * @param array $posted
     * @throws \Exception
     */
-    public function get_all( $offset = '', $limit = '' ) {
-        $table = $this->table;
-        $results = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `weight` FROM $table" , ARRAY_A );
-        foreach ( $results as $result ) {
-        	$result['fields'] = maybe_unserialize( $result['fields'] );
-        	$result['sync_triggers'] = maybe_unserialize( $result['sync_triggers'] );
+    public function create_object_map( $posted = array() ) {
+        $data = $this->setup_object_map_data( $posted );
+        $insert = $this->wpdb->insert( $this->object_map_table, $data );
+        if ( $insert === 1 ) {
+            return $this->wpdb->insert_id;
+        } else {
+            return false;
         }
-        return $results;
     }
 
     /**
-    * Loads multiple salesforce_mappings based on a set of matching conditions.
+    * Get one or more object map rows between WordPress and Salesforce objects
     *
-    * @param array $properties
-    *   An array of properties on the {salesforce_mapping} table in the form
-    *     'field' => $value.
+    * @param int $id
+    * @param array $conditions
     * @param bool $reset
-    *   Whether to reset the internal contact loading cache.
-    *
-    * @return array
-    *   An array of salesforce_mapping objects.
+    * @return $map or $mappings
+    * @throws \Exception
     */
-    function load_multiple( $properties = array(), $reset = FALSE ) {
-        $mappings = new stdClass();
+    public function get_object_maps( $id = NULL, $conditions = array(), $reset = false ) {
+        $table = $this->object_map_table;
+        if ( $id !== NULL ) { // get one fieldmap
+            $map = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
+            return $map;
+        } else if ( !empty( $conditions ) ) { // get multiple but with a limitation
+            $mappings = array();
         
-        if ( !empty( $properties ) ) {
-            $where = ' WHERE ';
-            $i = 0;
-            foreach ( $properties as $key => $value ) {
-                $i++;
-                if ( $i > 1 ) {
-                    $where .= ' AND ';
+            if ( !empty( $conditions ) ) {
+                $where = ' WHERE ';
+                $i = 0;
+                foreach ( $conditions as $key => $value ) {
+                    $i++;
+                    if ( $i > 1 ) {
+                        $where .= ' AND ';
+                    }
+                    $where .= '`' . $key . '`' . ' = "' . $value . '"';
                 }
-                $where .= '`' . $key . '`' . ' = "' . $value . '"';
+            } else {
+                $where = '';
             }
-        } else {
-            $where = '';
+
+            $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where, ARRAY_A );
+            return $mappings;
+
+        } else { // get all of em
+            $mappings = $this->wpdb->get_results( "SELECT * FROM $table" , ARRAY_A );
+            return $mappings;
         }
-
-        $results = $this->wpdb->get_results( 'SELECT * FROM wp_salesforce_field_map' . $where . ' ORDER BY `weight`', OBJECT );
-
-        if (!empty($results)) {
-            $mappings = $results;
-        }
-
-        return $mappings;
         
+    }
+
+    /**
+    * Update an object map row between a WordPress and Salesforce object
+    *
+    * @param array $posted
+    * @param array $id
+    * @return $map
+    * @throws \Exception
+    */
+    public function update_object_map( $posted = array(), $id = '' ) {
+        $data = $this->setup_object_map_data( $posted );
+        $update = $this->wpdb->update( $this->object_map_table, $data, array( 'id' => $id ) );
+        if ( $update === FALSE ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Returns Salesforce object mappings for a given WordPress object.
+     *
+     * @param string $object_type
+     *   Type of object to load.
+     * @param int $object_id
+     *   Unique identifier of the target object to load.
+     * @param bool $reset
+     *   Whether or not the cache should be cleared and fetch from current data.
+     *
+     * @return SalesforceMappingObject
+     *   The requested SalesforceMappingObject or FALSE if none was found.
+     */
+    function load_by_wordpress( $object_type, $object_id, $reset = FALSE ) {
+      $conditions = array(
+        'wordpress_id' => $object_id,
+        'wordpress_object' => $object_type,
+      );
+      return $this->get_object_maps( NULL, $conditions, $reset );
+    }
+
+    /**
+     * Returns Salesforce object mappings for a given Salesforce object.
+     *
+     * @param string $salesforce_id
+     *   Type of object to load.
+     * @param bool $reset
+     *   Whether or not the cache should be cleared and fetch from current data.
+     *
+     * @return SalesforceMappingObject
+     *   The requested SalesforceMappingObject or FALSE if none was found.
+     */
+    function load_by_sfid( $saleforce_id, $reset = FALSE ) {
+      $conditions = array(
+        'salesforce_id' => $salesforce_id
+      );
+      return $this->get_object_maps( NULL, $conditions, $reset );
     }
 
 }
