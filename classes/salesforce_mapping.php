@@ -5,7 +5,8 @@ class Salesforce_Mapping {
 	protected $wpdb;
     protected $version;
     protected $text_domain;
-    protected $table;
+    protected $fieldmap_table;
+    protected $object_map_table;
 
     public $sync_off;
     public $sync_wordpress_create;
@@ -41,7 +42,8 @@ class Salesforce_Mapping {
         $this->version = $version;
         $this->text_domain = $text_domain;
 
-        $this->table = $this->wpdb->prefix . 'salesforce_field_map';
+        $this->fieldmap_table = $this->wpdb->prefix . 'salesforce_field_map';
+        $this->object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
 
         // this is how we define when syncing should occur on each field map
         // it gets used in the admin settings, as well as the push/pull methods to see if something should happen
