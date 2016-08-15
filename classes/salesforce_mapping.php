@@ -128,9 +128,11 @@ class Salesforce_Mapping {
             $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . ' ORDER BY `weight`', ARRAY_A );
 
             if (!empty($mappings)) {
+                $index = 0;
                 foreach ( $mappings as $mapping ) {
-                    $mapping['fields'] = maybe_unserialize( $mapping['fields'] );
-                    $mapping['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
+                    $mappings[$index]['fields'] = maybe_unserialize( $mapping['fields'] );
+                    $mappings[$index]['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
+                    $index++;
                 }
             }
 
@@ -139,9 +141,13 @@ class Salesforce_Mapping {
         } else { // get all of em
 
             $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `weight` FROM $table" , ARRAY_A );
-            foreach ( $mappings as $mapping ) {
-                $mapping['fields'] = maybe_unserialize( $mapping['fields'] );
-                $mapping['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
+            if (!empty($mappings)) {
+                $index = 0;
+                foreach ( $mappings as $mapping ) {
+                    $mappings[$index]['fields'] = maybe_unserialize( $mapping['fields'] );
+                    $mappings[$index]['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
+                    $index++;
+                }
             }
             return $mappings;
         }
@@ -283,10 +289,16 @@ class Salesforce_Mapping {
             }
 
             $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where, ARRAY_A );
+            if ( count( $mappings === 1) ) {
+                $mappings = $mappings[0];
+            }
             return $mappings;
 
         } else { // get all of em
             $mappings = $this->wpdb->get_results( "SELECT * FROM $table" , ARRAY_A );
+            if ( count( $mappings === 1) ) {
+                $mappings = $mappings[0];
+            }
             return $mappings;
         }
         
@@ -307,6 +319,34 @@ class Salesforce_Mapping {
             return false;
         } else {
             return true;
+        }
+    }
+
+    /**
+    * 
+    *
+    * @param array $posted
+    * @return $data
+    * todo: figure out if this method is necessary and what it needs to do if it is
+    */
+    private function setup_object_map_data( $posted = array() ) {
+        $data = $posted;
+        return $data;
+    }
+
+    /**
+    * Delete an object map row between a WordPress and Salesforce object
+    *
+    * @param array $id
+    * @throws \Exception
+    */
+    public function delete_object_map( $id = '' ) {
+        $data = array( 'id' => $id );
+        $delete = $this->wpdb->delete( $this->object_map_table, $data );
+        if ( $delete === 1 ) {
+            return true;
+        } else {
+            return false;
         }
     }
 

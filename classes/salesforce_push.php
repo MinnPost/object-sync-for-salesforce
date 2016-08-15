@@ -292,8 +292,8 @@ class Salesforce_Push {
 		);
 
 		foreach ( $sf_mappings as $mapping ) { // for each mapping of this object
-			$map_sync_triggers = maybe_unserialize( $mapping['sync_triggers'] );
-			if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array($sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
+			$map_sync_triggers = $mapping['sync_triggers'];
+			if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
 
 				// allow other plugins to prevent a sync per-mapping.
 				// need to figure out how to implement this in wordpress
@@ -361,9 +361,29 @@ class Salesforce_Push {
 		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
 		$object_id = $structure['id_field'];
 
-		error_log('try to load mapping object');
 		$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object["$object_id"] );
-		error_log('this is the object: ' . print_r( $mapping_object, true ) );
+
+		// deleting mapped objects
+		if ( $sf_sync_trigger == $this->mappings->sync_wordpress_delete ) {
+			if ( $mapping_object ) {
+				try {
+					error_log('call salesforce to delete: type is ' . $mapping['salesforce_object'] . ' and id is ' . $mapping_object['salesforce_id'] );
+					$result = $this->salesforce['sfapi']->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
+					error_log('that was the sf call above. result is ' . print_r($result, true ));
+				}
+				catch( SalesforceException $e ) {
+					error_log('salesforce_delete error:' . $e);
+					//salesforce_set_message($e->getMessage(), 'error');
+				}
+			}
+			//salesforce_set_message(t('Salesforce object %sfid has been deleted.', array(
+			//	'%sfid' => $mapping_object->salesforce_id,
+		  	//)));
+		  	error_log('now try to delete the object map');
+		  	$this->mappings->delete_object_map( $mapping_object['id'] );
+		  	error_log('deleted it');
+		  	return;
+		}
 
 /*
 	  // Delete SF object.
@@ -576,7 +596,7 @@ class Salesforce_Push {
 		// Setup SF record type. CampaignMember objects get their type from
 		// their Campaign.
 		// @TODO: remove object-specific logic. Figure out how this works and implement generic support for recordtype inheritence, or objects that don't support recordtypes
-		if ($mapping['salesforce_record_type_default'] != $this->mappings['default_record_type']
+		if ($mapping['salesforce_record_type_default'] != $this->mappings->default_record_type
 		  && empty($params['RecordTypeId'])
 		  && ($mapping['salesforce_object_type'] != 'CampaignMember')) {
 		  $params['RecordTypeId'] = $mapping['salesforce_record_type_default'];

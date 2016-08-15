@@ -763,7 +763,8 @@ class Salesforce {
 	*/
 	public function object_delete( $name, $id ) {
 		$options = array( 'type' => 'write' );
-		$this->api_call( "sobjects/{$name}/{$id}", array(), 'DELETE', $options );
+		$result = $this->api_call( "sobjects/{$name}/{$id}", array(), 'DELETE', $options );
+		return $result;
 	}
 
 	/**
