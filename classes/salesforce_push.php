@@ -51,7 +51,7 @@ class Salesforce_Push {
 	function add_actions() {
 		$db_version = get_option( 'salesforce_rest_api_db_version', false );
 		if ( $db_version === $this->version ) {
-			foreach ( $this->mappings->get_all() as $mapping ) {
+			foreach ( $this->mappings->get_fieldmaps() as $mapping ) {
 				$object_type = $mapping['wordpress_object'];
 				if ( $object_type === 'user' ) {
 		    		add_action( 'user_register', array( &$this, 'add_user' ) );
@@ -284,7 +284,8 @@ class Salesforce_Push {
 
 		// load mappings that match this criteria
 		// in this case, it's all mappings that correspond to the posted wordpress object
-		$sf_mappings = $this->mappings->load_multiple(
+		$sf_mappings = $this->mappings->get_fieldmaps(
+			NULL, // id field must be null for multiples
 			array(
 				'wordpress_object' => $object_type
 			)
@@ -362,6 +363,7 @@ class Salesforce_Push {
 	  list($object_id) = entity_extract_ids($object_type, $object);
 	  $mapping_object = salesforce_mapping_object_load_by_drupal($entity_type, $entity_id, TRUE);
 
+/*
 	  // Delete SF object.
 	  if ($sf_sync_trigger == $this->mappings->sync_wordpress_delete) {
 		if ($mapping_object) {
@@ -491,6 +493,9 @@ class Salesforce_Push {
 	  $mapping_object->last_sync_action = 'push';
 	  $mapping_object->last_sync = $_SERVER['REQUEST_TIME'];
 	  $mapping_object->save();
+	  $mapping_object->save();*/
+
+
 	}
 
 	/**
