@@ -93,17 +93,59 @@ class Salesforce_Mapping {
     }
 
     /**
-    * Read a map row between a WordPress and Salesforce object
+    * Get one or more fieldmap rows between a WordPress and Salesforce object
     *
     * @param int $id
-    * @return $map
+    * @param array $conditions
+    * @param bool $reset
+    * @return $map or $mappings
     * @throws \Exception
     */
-    public function read( $id ) {
-    	$map = $this->wpdb->get_row( 'SELECT * FROM ' . $this->table . ' WHERE id = ' . $id, ARRAY_A );
-        $map['fields'] = maybe_unserialize( $map['fields'] );
-        $map['sync_triggers'] = maybe_unserialize( $map['sync_triggers'] );
-    	return $map;
+    public function get_fieldmaps( $id = NULL, $conditions = array(), $reset = false ) {
+        $table = $this->fieldmap_table;
+        if ( $id !== NULL ) { // get one fieldmap
+            $map = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
+            $map['fields'] = maybe_unserialize( $map['fields'] );
+            $map['sync_triggers'] = maybe_unserialize( $map['sync_triggers'] );
+            return $map;
+        } else if ( !empty( $conditions ) ) { // get multiple but with a limitation
+            $mappings = array();
+        
+            if ( !empty( $conditions ) ) {
+                $where = ' WHERE ';
+                $i = 0;
+                foreach ( $conditions as $key => $value ) {
+                    $i++;
+                    if ( $i > 1 ) {
+                        $where .= ' AND ';
+                    }
+                    $where .= '`' . $key . '`' . ' = "' . $value . '"';
+                }
+            } else {
+                $where = '';
+            }
+
+            $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . ' ORDER BY `weight`', ARRAY_A );
+
+            if (!empty($mappings)) {
+                foreach ( $mappings as $mapping ) {
+                    $mapping['fields'] = maybe_unserialize( $mapping['fields'] );
+                    $mapping['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
+                }
+            }
+
+            return $mappings;
+
+        } else { // get all of em
+
+            $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `weight` FROM $table" , ARRAY_A );
+            foreach ( $mappings as $mapping ) {
+                $mapping['fields'] = maybe_unserialize( $mapping['fields'] );
+                $mapping['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
+            }
+            return $mappings;
+        }
+        
     }
 
     /**
