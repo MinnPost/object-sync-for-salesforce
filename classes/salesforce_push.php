@@ -49,28 +49,31 @@ class Salesforce_Push {
 	*
 	*/
 	function add_actions() {
-		foreach ( $this->mappings->get_all() as $mapping ) {
-			$object_type = $mapping['wordpress_object'];
-			if ( $object_type === 'user' ) {
-	    		add_action( 'user_register', array( &$this, 'add_user' ) );
-	    		add_action( 'profile_update', array( &$this, 'edit_user' ), 10, 2 );
-	    		add_action( 'delete_user', array( &$this, 'delete_user' ) );
-	    	} elseif ( $object_type === 'post' ) {
-	    		add_action( 'save_post', array( &$this, 'post_actions' ), 10, 2 );
-	    	} elseif ( $object_type === 'attachment' ) {
-	    		add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
-	    		add_action( 'edit_attachment', array( &$this, 'edit_attachment' ) );
-	    		add_action( 'delete_attachment', array( &$this, 'delete_attachment' ) );
-	    	} elseif ( $object_type === 'category' || $object_type === 'tag' ) {
-				add_action( 'create_term', array( &$this, 'add_term' ), 10, 3 );
-				add_action( 'edit_terms', array( &$this, 'edit_term' ), 10, 2 );
-				add_action( 'delete_term', array( &$this, 'delete_term' ), 10, 4 );
-			} elseif ( $object_type === 'comment' ) {
-				add_action( 'comment_post', array( &$this, 'add_comment', 3 ) );
-				add_action( 'edit_comment', array( &$this, 'edit_comment' ) );
-				add_action( 'delete_comment', array( &$this, 'delete_comment' ) ); // this only runs when the item gets deleted from the trash, either manually or automatically
-			} else { // this is for custom post types
-				add_action( 'save_post_' . $object_type, array( &$this, 'post_actions' ), 10, 2 );
+		$db_version = get_option( 'salesforce_rest_api_db_version', false );
+		if ( $db_version === $this->version ) {
+			foreach ( $this->mappings->get_all() as $mapping ) {
+				$object_type = $mapping['wordpress_object'];
+				if ( $object_type === 'user' ) {
+		    		add_action( 'user_register', array( &$this, 'add_user' ) );
+		    		add_action( 'profile_update', array( &$this, 'edit_user' ), 10, 2 );
+		    		add_action( 'delete_user', array( &$this, 'delete_user' ) );
+		    	} elseif ( $object_type === 'post' ) {
+		    		add_action( 'save_post', array( &$this, 'post_actions' ), 10, 2 );
+		    	} elseif ( $object_type === 'attachment' ) {
+		    		add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
+		    		add_action( 'edit_attachment', array( &$this, 'edit_attachment' ) );
+		    		add_action( 'delete_attachment', array( &$this, 'delete_attachment' ) );
+		    	} elseif ( $object_type === 'category' || $object_type === 'tag' ) {
+					add_action( 'create_term', array( &$this, 'add_term' ), 10, 3 );
+					add_action( 'edit_terms', array( &$this, 'edit_term' ), 10, 2 );
+					add_action( 'delete_term', array( &$this, 'delete_term' ), 10, 4 );
+				} elseif ( $object_type === 'comment' ) {
+					add_action( 'comment_post', array( &$this, 'add_comment', 3 ) );
+					add_action( 'edit_comment', array( &$this, 'edit_comment' ) );
+					add_action( 'delete_comment', array( &$this, 'delete_comment' ) ); // this only runs when the item gets deleted from the trash, either manually or automatically
+				} else { // this is for custom post types
+					add_action( 'save_post_' . $object_type, array( &$this, 'post_actions' ), 10, 2 );
+				}
 			}
 		}
 	}
@@ -347,9 +350,11 @@ class Salesforce_Push {
 	 *   Trigger for this sync.
 	 */
 	function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
+	  
 	  $sfapi = $this->salesforce;
 
-	  // Not authorized, we need to bail this time around.
+	  // salesforce is not authorized. don't do anything.
+	  // it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
 	  if ( !$sfapi->isAuthorized() ) {
 		return;
 	  }

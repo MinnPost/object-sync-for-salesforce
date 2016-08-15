@@ -70,17 +70,19 @@ class Salesforce_Rest_API {
 		$this->text_domain = 'salesforce-rest-api';
 		$this->schedule_name = 'process_queue';
 
+		$this->activated = $this->activate( $this->wpdb, $this->version, $this->text_domain );
+		$this->deactivate( $this->wpdb, $this->version, $this->text_domain, $this->schedule_name );
+
 		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->text_domain );
 
 		$this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain, $this->mappings );
 		$this->salesforce = $this->salesforce_get_api();
 
-		$this->activate( $this->wpdb, $this->version, $this->text_domain );
-		$this->deactivate( $this->wpdb, $this->version, $this->text_domain, $this->schedule_name );
-
 		$this->schedule = $this->schedule( $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->schedule_name );
 
 		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule );
+
+		$this->pull = '';
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings );
 
