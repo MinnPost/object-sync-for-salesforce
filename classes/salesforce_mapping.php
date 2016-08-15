@@ -77,14 +77,14 @@ class Salesforce_Mapping {
     }
 
     /**
-    * Create a map row between a WordPress and Salesforce object
+    * Create a fieldmap row between a WordPress and Salesforce object
     *
     * @param array $posted
     * @throws \Exception
     */
-    public function create( $posted = array() ) {
-    	$data = $this->setup_data( $posted );
-    	$insert = $this->wpdb->insert( $this->table, $data );
+    public function create_fieldmap( $posted = array() ) {
+    	$data = $this->setup_fieldmap_data( $posted );
+    	$insert = $this->wpdb->insert( $this->fieldmap_table, $data );
     	if ( $insert === 1 ) {
     		return $this->wpdb->insert_id;
     	} else {
@@ -107,16 +107,16 @@ class Salesforce_Mapping {
     }
 
     /**
-    * Update a map row between a WordPress and Salesforce object
+    * Update a fieldmap row between a WordPress and Salesforce object
     *
     * @param array $posted
     * @param array $id
     * @return $map
     * @throws \Exception
     */
-    public function update( $posted = array(), $id = '' ) {
-    	$data = $this->setup_data( $posted );
-    	$update = $this->wpdb->update( $this->table, $data, array( 'id' => $id ) );
+    public function update_fieldmap( $posted = array(), $id = '' ) {
+    	$data = $this->setup_fieldmap_data( $posted );
+    	$update = $this->wpdb->update( $this->fieldmap_table, $data, array( 'id' => $id ) );
     	if ( $update === FALSE ) {
     		return false;
     	} else {
@@ -130,7 +130,7 @@ class Salesforce_Mapping {
     * @param array $posted
     * @return $data
     */
-    private function setup_data( $posted = array() ) {
+    private function setup_fieldmap_data( $posted = array() ) {
     	$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
 		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
@@ -178,14 +178,14 @@ class Salesforce_Mapping {
     }
 
     /**
-    * Delete a map row between a WordPress and Salesforce object
+    * Delete a fieldmap row between a WordPress and Salesforce object
     *
     * @param array $id
     * @throws \Exception
     */
-    public function delete( $id = '' ) {
+    public function delete_fieldmap( $id = '' ) {
     	$data = array( 'id' => $id );
-    	$delete = $this->wpdb->delete( $this->table, $data );
+    	$delete = $this->wpdb->delete( $this->fieldmap_table, $data );
     	if ( $delete === 1 ) {
     		return true;
     	} else {

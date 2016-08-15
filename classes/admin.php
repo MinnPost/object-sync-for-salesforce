@@ -708,10 +708,10 @@ class Wordpress_Salesforce_Admin {
             // if it is add or clone, use the create method
             $method = esc_attr( $_POST['method'] );
             if ( $method === 'add' || $method === 'clone' ) {
-                $result = $this->mappings->create( $_POST );
+                $result = $this->mappings->create_fieldmap( $_POST );
             } elseif ( $method === 'edit' ) { // if it is edit, use the update method
                 $id = esc_attr( $_POST['id'] );
-                $result = $this->mappings->update( $_POST, $id );
+                $result = $this->mappings->update_fieldmap( $_POST, $id );
             }
             if ( $result === false ) { // if the database didn't save, it's still ane rror
                 set_transient( $cachekey, $_POST, 0 );
@@ -740,7 +740,7 @@ class Wordpress_Salesforce_Admin {
     */
     public function delete_fieldmap() {
         if ( $_POST['id'] ) {
-            $result = $this->mappings->delete( $_POST['id'] );
+            $result = $this->mappings->delete_fieldmap( $_POST['id'] );
             if ( $result === true ) {
                 $url = esc_url_raw( $_POST['redirect_url_success'] );
             } else {
