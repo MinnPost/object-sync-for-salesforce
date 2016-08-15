@@ -292,7 +292,7 @@ class Salesforce_Push {
 		);
 
 		foreach ( $sf_mappings as $mapping ) { // for each mapping of this object
-			$map_sync_triggers = maybe_unserialize( $mapping->sync_triggers );
+			$map_sync_triggers = maybe_unserialize( $mapping['sync_triggers'] );
 			if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array($sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
 
 				// allow other plugins to prevent a sync per-mapping.
@@ -306,10 +306,10 @@ class Salesforce_Push {
 
 				// ignore drafts if the setting says so
 				// post status is draft, or post status is inherit and post type is not attachment
-				if ( isset( $mapping->ignore_drafts ) && $mapping->ignore_drafts === '1' && isset( $object['post_status'] ) && ( $object['post_status'] === 'draft'  || ( $object['post_status'] === 'inherit' && $object['post_type'] !== 'attachment' ) ) ) {
+				if ( isset( $mapping['ignore_drafts'] ) && $mapping['ignore_drafts'] === '1' && isset( $object['post_status'] ) && ( $object['post_status'] === 'draft'  || ( $object['post_status'] === 'inherit' && $object['post_type'] !== 'attachment' ) ) ) {
 					continue; // skip this object if it is a draft and the fieldmap settings told us to ignore it
 				}
-				if ( isset( $mapping->push_async ) && ( $mapping->push_async === '1' ) ) {
+				if ( isset( $mapping['push_async'] ) && ( $mapping['push_async'] === '1' ) ) {
 		  			// this item is async and we want to save it to the queue
 		  			error_log( 'the trigger is ' . $sf_sync_trigger);
 					error_log( 'put this ' . $object_type . ' in the queue: ' . print_r( $object, true ) );
@@ -492,7 +492,6 @@ class Salesforce_Push {
 
 	  $mapping_object->last_sync_action = 'push';
 	  $mapping_object->last_sync = $_SERVER['REQUEST_TIME'];
-	  $mapping_object->save();
 	  $mapping_object->save();*/
 
 
@@ -575,14 +574,14 @@ class Salesforce_Push {
 		// Setup SF record type. CampaignMember objects get their type from
 		// their Campaign.
 		// @TODO: remove object-specific logic. Figure out how this works and implement generic support for recordtype inheritence, or objects that don't support recordtypes
-		if ($mapping->salesforce_record_type_default != $this->mappings->default_record_type
+		if ($mapping['salesforce_record_type_default'] != $this->mappings['default_record_type']
 		  && empty($params['RecordTypeId'])
-		  && ($mapping->salesforce_object_type != 'CampaignMember')) {
-		  $params['RecordTypeId'] = $mapping->salesforce_record_type_default;
+		  && ($mapping['salesforce_object_type'] != 'CampaignMember')) {
+		  $params['RecordTypeId'] = $mapping['salesforce_record_type_default'];
 		}
 
 		$sobject = new stdClass();
-		$sobject->type = $mapping->salesforce_object_type;
+		$sobject->type = $mapping['salesforce_object_type'];
 		foreach ($params as $key => $value) {
 		  $sobject->fields[$key] = $value;
 		}
@@ -736,7 +735,7 @@ class Salesforce_Push {
 	 *   Associative array of key value pairs.
 	 */
 	function salesforce_push_map_params($mapping, $entity_wrapper, &$key_field, &$key_value, $use_soap = FALSE, $is_new = TRUE) {
-	  foreach ($mapping->field_mappings as $fieldmap) {
+	  foreach ($mapping['field_mappings'] as $fieldmap) {
 		// Skip fields that aren't being pushed to Salesforce.
 		if (!in_array($fieldmap['direction'], array($this->mappings->direction_wordpress_sf, $this->mappings->direction_sync))) {
 		  continue;
