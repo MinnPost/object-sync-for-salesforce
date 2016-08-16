@@ -307,7 +307,7 @@ class Salesforce {
 		$data = json_decode( $json_response, true ); // decode it into an array
 
 		// don't use the exception if the status is 200 or if it just needs a refresh token (salesforce uses 401 for this)
-		if ( $code !== 200 && $code !== 401 ) {
+		if ( $code !== 200 && $code !== 201 && $code !== 401 ) {
 			$curl_error = curl_error( $curl );
 			if ( $curl_error !== '' ) {
 				throw new SalesforceException( $curl_error );
