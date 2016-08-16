@@ -329,7 +329,7 @@ class Salesforce_Push {
 					));*/
 				} else {
 					// this one is not async. do it immediately.
-					// todo: get this one working first
+					// todo: get this one working for all methods
 					$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
 		  		}
 			} // if the trigger does not match our requirements, skip it
@@ -361,6 +361,7 @@ class Salesforce_Push {
 		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
 		$object_id = $structure['id_field'];
 
+		// this returns the row that maps the individual wordpress row to the individual salesforce row
 		$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object["$object_id"] );
 
 		// deleting mapped objects
