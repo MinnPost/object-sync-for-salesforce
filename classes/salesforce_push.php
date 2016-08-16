@@ -367,45 +367,19 @@ class Salesforce_Push {
 		if ( $sf_sync_trigger == $this->mappings->sync_wordpress_delete ) {
 			if ( $mapping_object ) {
 				try {
-					error_log('call salesforce to delete: type is ' . $mapping['salesforce_object'] . ' and id is ' . $mapping_object['salesforce_id'] );
 					$result = $this->salesforce['sfapi']->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
-					error_log('that was the sf call above. result is ' . print_r($result, true ));
 				}
 				catch( SalesforceException $e ) {
-					error_log('salesforce_delete error:' . $e);
 					//salesforce_set_message($e->getMessage(), 'error');
 				}
 			}
-			//salesforce_set_message(t('Salesforce object %sfid has been deleted.', array(
-			//	'%sfid' => $mapping_object->salesforce_id,
-		  	//)));
-		  	error_log('now try to delete the object map');
+			//salesforce_set_message( 'object has been deleted' );
 		  	$this->mappings->delete_object_map( $mapping_object['id'] );
-		  	error_log('deleted it');
+		  	error_log('both have been deleted now');
 		  	return;
 		}
 
 /*
-	  // Delete SF object.
-	  if ($sf_sync_trigger == $this->mappings->sync_wordpress_delete) {
-		if ($mapping_object) {
-		  try {
-			$sfapi->objectDelete($mapping->salesforce_object_type, $mapping_object->salesforce_id);
-		  }
-		  catch(SalesforceException $e) {
-			watchdog_exception('salesforce_push', $e);
-			salesforce_set_message($e->getMessage(), 'error');
-		  }
-
-		  salesforce_set_message(t('Salesforce object %sfid has been deleted.', array(
-			'%sfid' => $mapping_object->salesforce_id,
-		  )));
-		  $mapping_object->delete();
-		}
-		// No mapped object or object was deleted.
-		return;
-	  }
-
 	  // Generate parameter array from field mappings.
 	  $entity_wrapper = entity_metadata_wrapper($entity_type, $entity);
 	  $params = salesforce_push_map_params($mapping, $entity_wrapper, $key_field, $key_value, FALSE, !$mapping_object);
