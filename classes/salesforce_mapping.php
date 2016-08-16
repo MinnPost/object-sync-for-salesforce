@@ -289,14 +289,14 @@ class Salesforce_Mapping {
             }
 
             $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where, ARRAY_A );
-            if ( count( $mappings === 1) ) {
+            if ( !empty( $mappings ) && count( $mappings === 1) ) {
                 $mappings = $mappings[0];
             }
             return $mappings;
 
         } else { // get all of em
             $mappings = $this->wpdb->get_results( "SELECT * FROM $table" , ARRAY_A );
-            if ( count( $mappings === 1) ) {
+            if ( !empty( $mappings ) && count( $mappings === 1) ) {
                 $mappings = $mappings[0];
             }
             return $mappings;
