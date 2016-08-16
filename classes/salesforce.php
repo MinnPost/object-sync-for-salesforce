@@ -222,7 +222,7 @@ class Salesforce {
 		// if this request should be cached, see if it already exists
 		// if it is already cached, load it. if not, load it and then cache it if it should be cached
 		// add parameters to the array so we can tell if it was cached or not
-		if ( $options['cache'] === true && $options['cache'] !== 'write' ) { 
+		if ( $options['cache'] === true && $options['type'] !== 'write' ) { 
 			$cached = $this->wordpress->cache_get( $url, $params );
 			if ( is_array( $cached ) ) {
 				$result = $cached;
