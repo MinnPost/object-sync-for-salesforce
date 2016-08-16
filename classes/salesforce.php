@@ -286,13 +286,24 @@ class Salesforce {
 		if ( $method === 'POST' ) {
 			curl_setopt( $curl, CURLOPT_POST, TRUE );
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
+		} else if ( $method === 'DELETE' ) {
+			curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, 'DELETE' );
+			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
 		}
 		$json_response = curl_exec( $curl ); // this is possibly gzipped json data
+		$code = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+
+		if ( $method === 'DELETE' && $json_response === '' && $code === 204 ) {
+			$data = array( 'success' => true, 'body' => '' );
+			curl_close( $curl );
+			return array( 'json' => json_encode( $data ), 'code' => $code, 'data' => $data );
+		}
+
         if ( ( ord( $json_response[0] ) == 0x1f ) && ( ord( $json_response[1] ) == 0x8b ) ) {
             // skip header and ungzip the data
             $json_response = gzinflate( substr( $json_response, 10 ) );
         }
-		$code = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+		
 		$data = json_decode( $json_response, true ); // decode it into an array
 
 		// don't use the exception if the status is 200 or if it just needs a refresh token (salesforce uses 401 for this)
