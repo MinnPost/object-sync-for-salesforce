@@ -46,7 +46,7 @@ class Wordpress_Salesforce_Activate {
           salesforce_id varchar(32) NOT NULL DEFAULT '',
           wordpress_object varchar(128) NOT NULL DEFAULT '',
           created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-          updated datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+          object_updated datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
           last_sync datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
           last_sync_action varchar(128) DEFAULT NULL,
           last_sync_status tinyint(3) NOT NULL DEFAULT '0',
