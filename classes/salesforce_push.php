@@ -370,13 +370,16 @@ class Salesforce_Push {
 				try {
 					$result = $this->salesforce['sfapi']->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 				}
-				catch( SalesforceException $e ) {
+				catch ( SalesforceException $e ) {
 					//salesforce_set_message($e->getMessage(), 'error');
 				}
-			}
-			//salesforce_set_message( 'object has been deleted' );
-		  	$this->mappings->delete_object_map( $mapping_object['id'] );
-		  	error_log('both have been deleted now');
+
+				//salesforce_set_message( 'object has been deleted' );
+
+				// delete the map row from wordpress after the salesforce row has been deleted
+				$this->mappings->delete_object_map( $mapping_object['id'] );
+				error_log('both have been deleted now');
+		  	} // there is no map row
 		  	return;
 		}
 
