@@ -404,10 +404,44 @@ class Salesforce_Push {
 		$params = $this->map_params( $mapping, $object, FALSE, $is_new );
 
 		if ( $is_new === TRUE ) {
+			// going to need to create new object link in wp
+
+			try {
 
 					$op = 'Upsert';
 
 					$op = 'Create';
+					$result = $sfapi->object_create( $mapping['salesforce_object'], $params );
+			}
+			catch( SalesforceException $e ) {
+				error_log( 'salesforce_push error:' . $e);
+				//salesforce_set_message($e->getMessage(), 'error');
+				return;
+			}
+			$data = $result['data'];
+
+			// salesforce api call was successful
+			if ( empty($result['errorCode'] ) ) {
+				// Create mapping object, saved below.
+				$mapping_object = $this->mappings->create_object_map(
+					array(
+						'wordpress_id' => $object[$object_id],
+						'salesforce_id' => $data['id'],
+						'wordpress_object' => $mapping['wordpress_object'],
+						'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
+						'last_sync_status' => $this->mappings->status_success,
+					)
+				);
+				//module_invoke_all('salesforce_push_success', $op, $sfapi->response, $synced_entity);
+			} else {
+				// salesforce failed
+				$message = __('Failed to sync ' . $mapping['salesforce_object'] . ' with Salesforce. Code: ' . $data['errorCode'] . ' and message: ' . $data['message'], $this->text_domain );
+				//salesforce_set_message($message, 'error');
+				error_log('salesforce_push error:', print_r($message, true));
+				//module_invoke_all('salesforce_push_fail', $op, $sfapi->response, $synced_entity);
+				return;
+			}
+
 		} else {
 			// there is an existing object link
 
@@ -443,7 +477,7 @@ class Salesforce_Push {
 			}
 
 			$mapping_object['last_sync_action'] = 'push';
-			$mapping_object['last_sync'] = $_SERVER['REQUEST_TIME'];
+			$mapping_object['last_sync'] = current_time( 'mysql' );
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 		}
@@ -453,16 +487,7 @@ class Salesforce_Push {
 
 /*
 
-	  // Entity is not linked to an SF object.
-	  if (!$mapping_object) {
-		// Setup SF record type. CampaignMember objects get their Campaign's type.
-		if ($mapping->salesforce_record_type_default != $this->mappings->default_record_type
-		  && empty($params['RecordTypeId'])
-		  && ($mapping->salesforce_object_type != 'CampaignMember')) {
-		  $params['RecordTypeId'] = $mapping->salesforce_record_type_default;
-		}
 
-		try {
 		  // An external key has been specified, attempt an upsert().
 		  if (!empty($key_field)) {
 
@@ -490,42 +515,9 @@ class Salesforce_Push {
 		  }
 		  // No key or mapping, create a new object in Salesforce.
 		  else {
-			$data = $sfapi->objectCreate($mapping->salesforce_object_type, $params);
 		  }
-		}
-		catch(SalesforceException $e) {
-		  watchdog_exception('salesforce_push', $e);
-		  salesforce_set_message($e->getMessage(), 'error');
-		  return;
-		}
 		
 
-		// Success.
-		if (empty($data['errorCode'])) {
-		  // Create mapping object, saved below.
-		  $mapping_object = entity_create('salesforce_mapping_object', array(
-			'entity_id' => $entity_id,
-			'entity_type' => $entity_type,
-			'salesforce_id' => $data['id'],
-			'last_sync_message' => t('Mapping object created via !function.', array('!function' => __FUNCTION__)),
-			'last_sync_status' => $this->mappings->status_success,
-		  ));
-		module_invoke_all('salesforce_push_success', $op, $sfapi->response, $synced_object);
-		}
-		else {
-		  $message = t('Failed to sync %label with Salesforce. @code: @message',
-			array(
-			  '%label' => $entity_wrapper->label(),
-			  '@code' => $data['errorCode'],
-			  '@message' => $data['message'],
-			)
-		  );
-		  salesforce_set_message($message, 'error');
-		  watchdog('salesforce_push', $message);
-		  module_invoke_all('salesforce_push_fail', $op, $sfapi->response, $synced_object);
-		  return;
-		}
-	  }
 	*/
 
 	}
