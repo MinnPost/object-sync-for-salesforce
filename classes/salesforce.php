@@ -152,7 +152,7 @@ class Salesforce {
 		    $options['is_redo'] = true;
 		    $this->response = $this->api_http_request( $path, $params, $method, $options, $type );
 		    // Throw an error if we still have bad response.
-		    if (!in_array( $this->response['code'], array( 200, 201, 204 ) ) ) {
+		    if ( !in_array( $this->response['code'], array( 200, 201, 204 ) ) ) {
 		      throw new SalesforceException( $this->response['data'][0]['message'], $this->response['code'] );
 		    }
 
@@ -216,6 +216,9 @@ class Salesforce {
 		  //'Content-type' => 'application/json',
 		  'Accept-Encoding' => 'Accept-Encoding: gzip, deflate'
 		);
+		if ( $method === 'POST' || $method === 'PATCH' ) {
+			$headers['Content-Type'] = 'Content-Type: application/json';
+		}
 		if ( isset( $options['authenticated'] ) && $options['authenticated'] === true ) {
 			$headers = false;
 		}
@@ -286,14 +289,15 @@ class Salesforce {
 		if ( $method === 'POST' ) {
 			curl_setopt( $curl, CURLOPT_POST, TRUE );
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
-		} else if ( $method === 'DELETE' ) {
-			curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, 'DELETE' );
+		} else if ( $method === 'PATCH' || $method === 'DELETE' ) {
+			curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, $method );
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
 		}
 		$json_response = curl_exec( $curl ); // this is possibly gzipped json data
 		$code = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
 
-		if ( $method === 'DELETE' && $json_response === '' && $code === 204 ) {
+		if ( ( $method === 'PATCH' || $method === 'DELETE' ) && $json_response === '' && $code === 204 ) {
+			// delete and patch requests return a 204 with an empty body upon success for whatever reason
 			$data = array( 'success' => true, 'body' => '' );
 			curl_close( $curl );
 			return array( 'json' => json_encode( $data ), 'code' => $code, 'data' => $data );
@@ -306,8 +310,8 @@ class Salesforce {
 		
 		$data = json_decode( $json_response, true ); // decode it into an array
 
-		// don't use the exception if the status is 200 or if it just needs a refresh token (salesforce uses 401 for this)
-		if ( $code !== 200 && $code !== 201 && $code !== 401 ) {
+		// don't use the exception if the status is a success one, or if it just needs a refresh token (salesforce uses 401 for this)
+		if ( !in_array( $code, array( 200, 201, 204 ) ) ) {
 			$curl_error = curl_error( $curl );
 			if ( $curl_error !== '' ) {
 				throw new SalesforceException( $curl_error );
