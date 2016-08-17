@@ -207,7 +207,8 @@ class Wordpress_Salesforce_Admin {
                                         <tr>
                                             <th class="column-wordpress_field">WordPress Field</th>
                                             <th class="column-salesforce_field">Salesforce Field</th>
-                                            <th class="column-is_key">Key</th>
+                                            <th class="column-is_prematch">Prematch</th>
+                                            <th class="column-is_key">Salesforce Key</th>
                                             <th class="column-direction">Direction</th>
                                             <th class="column-is_delete">Delete</th>
                                         </tr>
@@ -252,6 +253,16 @@ class Wordpress_Salesforce_Admin {
                                                 </select>
                                                 
                                             </td>
+                                            <td class="column-is_prematch">
+                                                <?php
+                                                if ( isset( $value['is_prematch'] ) && $value['is_prematch'] === '1' ) {
+                                                    $checked = ' checked';
+                                                } else {
+                                                    $checked = '';
+                                                }
+                                                ?>
+                                                <input type="checkbox" name="is_prematch[<?php echo $key; ?>]" id="is_prematch-<?php echo $key; ?>" value="1" <?php echo $checked; ?> title="This pair should be checked for existing matches in Salesforce before adding" />
+                                            </td>
                                             <td class="column-is_key">
                                                 <?php
                                                 if ( isset( $value['is_key'] ) && $value['is_key'] === '1' ) {
@@ -260,7 +271,7 @@ class Wordpress_Salesforce_Admin {
                                                     $checked = '';
                                                 }
                                                 ?>
-                                                <input type="checkbox" name="is_key[<?php echo $key; ?>]" id="is_key-<?php echo $key; ?>" value="1" <?php echo $checked; ?> />
+                                                <input type="checkbox" name="is_key[<?php echo $key; ?>]" id="is_key-<?php echo $key; ?>" value="1" <?php echo $checked; ?> title="This Salesforce field is an External ID in Salesforce" />
                                             </td>
                                             <td class="column-direction">
                                                 <?php
@@ -322,6 +333,9 @@ class Wordpress_Salesforce_Admin {
                                                     ?>
                                                 </select>
                                             </td>
+                                            <td class="column-is_prematch">
+                                                <input type="checkbox" name="is_prematch[0]" id="is_prematch-0" value="1" />
+                                            </td>
                                             <td class="column-is_key">
                                                 <input type="checkbox" name="is_key[0]" id="is_key-0" value="1" />
                                             </td>
@@ -350,7 +364,7 @@ class Wordpress_Salesforce_Admin {
                                 }
                                 ?>
                                 <p><button type="button" id="add-field-mapping" class="button button-secondary"><?php echo $add_button_label; ?></button></p>
-                                <p class="description">Key refers to a WordPress field mapped to a Salesforce external ID. If checked, the plugin will do an UPSERT to avoid duplicate data when possible.</p>
+                                <p class="description">Prematch tells the plugin to match records that have the same value before sending data to Salesforce. Salesforce Key indicates the Salesforce field is an External ID. If either of these is checked, the plugin will do an UPSERT to avoid duplicate data when possible.</p>
                             </fieldset>
                             <fieldset class="sync_triggers">
                                 <legend>Action triggers</legend>

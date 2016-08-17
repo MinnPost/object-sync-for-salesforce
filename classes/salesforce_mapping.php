@@ -186,6 +186,9 @@ class Salesforce_Mapping {
 				if ( !isset( $posted['direction'][$key] ) ) {
 					$posted['direction'][$key] = 'sync';
 				}
+                if ( !isset( $posted['is_prematch'][$key] ) ) {
+                    $posted['is_prematch'][$key] = false;
+                }
 				if ( !isset( $posted['is_key'][$key] ) ) {
 					$posted['is_key'][$key] = false;
 				}
@@ -196,6 +199,7 @@ class Salesforce_Mapping {
 					$setup['fields'][$key] = array(
 						'wordpress_field' => sanitize_text_field( $posted['wordpress_field'][$key] ),
 						'salesforce_field' => sanitize_text_field( $posted['salesforce_field'][$key] ),
+                        'is_prematch' => sanitize_text_field( $posted['is_prematch'][$key] ),
 						'is_key' => sanitize_text_field( $posted['is_key'][$key] ),
 						'direction' => sanitize_text_field( $posted['direction'][$key] ),
 						'is_delete' => sanitize_text_field( $posted['is_delete'][$key] )
