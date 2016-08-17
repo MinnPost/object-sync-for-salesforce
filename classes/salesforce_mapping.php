@@ -57,8 +57,8 @@ class Salesforce_Mapping {
         $this->sync_sf_delete = 0x0020;
 
         // constants for the directions to map things
-        $this->direction_wordpress_sf = 'drupal_sf';
-        $this->direction_sf_wordpress = 'sf_drupal';
+        $this->direction_wordpress_sf = 'wp_sf';
+        $this->direction_sf_wordpress = 'sf_wp';
         $this->direction_sync = 'sync';
 
         // what kind of record are we dealing with
