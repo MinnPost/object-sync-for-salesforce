@@ -438,9 +438,6 @@ class Salesforce_Push {
 		
 
 /*
-	  // Generate parameter array from field mappings.
-	  $entity_wrapper = entity_metadata_wrapper($entity_type, $entity);
-	  $params = salesforce_push_map_params($mapping, $entity_wrapper, $key_field, $key_value, FALSE, !$mapping_object);
 
 	  // Entity is not linked to an SF object.
 	  if (!$mapping_object) {
@@ -512,42 +509,7 @@ class Salesforce_Push {
 		  return;
 		}
 	  }
-	  // Existing object link, update.
-	  else {
-		// Handle the case of mapped objects last sync being more recent than
-		// the entity's timestamp, which is set by salesforce_mapping.
-		if ($mapping_object->last_sync > $mapping_object->entity_updated) {
-		  return;
-		}
-
-		// Update SF object.
-		try {
-		  $sfapi->objectUpdate($mapping->salesforce_object_type, $mapping_object->salesforce_id, $params);
-		  $mapping_object->last_sync_message = t('Mapping object updated via !function.', array('!function' => __FUNCTION__));
-		  $mapping_object->last_sync_status = $this->mappings->status_success;
-
-		  salesforce_set_message(t('%name has been synchronized with Salesforce record %sfid.', array(
-			'%name' => $entity_wrapper->label(),
-			'%sfid' => $mapping_object->salesforce_id,
-		  )));
-		}
-		catch(SalesforceException $e) {
-		  watchdog_exception('salesforce_push', $e);
-		  salesforce_set_message(t('Error syncing @type @id to Salesforce record @sfid. Error message: "@msg".', array(
-			'@type' => $mapping_object->entity_type,
-			'@id' => $mapping_object->entity_id,
-			'@sfid' => $mapping_object->salesforce_id,
-			'@msg' => $e->getMessage(),
-		  )), 'error');
-		  $mapping_object->last_sync_message = $e->getMessage();
-		  $mapping_object->last_sync_status = $this->mappings->status_error;
-		}
-	  }
-
-	  $mapping_object->last_sync_action = 'push';
-	  $mapping_object->last_sync = $_SERVER['REQUEST_TIME'];
-	  $mapping_object->save();*/
-
+	*/
 
 	}
 
