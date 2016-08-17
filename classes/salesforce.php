@@ -724,10 +724,13 @@ class Salesforce {
 	*   Values of the fields to set for the object.
 	*
 	* part of core API calls
+	*
+	* @return array
 	*/
 	public function object_update( $name, $id, $params ) {
 		$options = array( 'type' => 'write' );
-		$this->api_call( "sobjects/{$name}/{$id}", $params, 'PATCH', $options );
+		$result = $this->api_call( "sobjects/{$name}/{$id}", $params, 'PATCH', $options );
+		return $result;
 	}
 
 	/**
@@ -773,6 +776,8 @@ class Salesforce {
 	*   Object type name, E.g., Contact, Account.
 	* @param string $id
 	*   Salesforce id of the object.
+	*
+	* @return array
 	*
 	* part of core API calls
 	*/

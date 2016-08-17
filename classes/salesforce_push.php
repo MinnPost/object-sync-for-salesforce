@@ -391,6 +391,8 @@ class Salesforce_Push {
 			$is_new = TRUE;
 		}
 
+		$params = $this->map_params( $mapping, $object, FALSE, $is_new );
+
 		if ( $is_new === TRUE ) {
 		} else {
 			// there is an existing object link
@@ -740,54 +742,56 @@ class Salesforce_Push {
 	}
 
 	/**
-	 * Map Drupal values to a Salesforce object.
-	 *
-	 * @param object $mapping
-	 *   Mapping object.
-	 * @param object $entity_wrapper
-	 *   Entity wrapper object.
-	 * @param string $key_field
-	 *   Unique identifier field.
-	 * @param string $key_value
-	 *   Value of the unique identifier field.
-	 * @param bool $use_soap
-	 *   Flag to enforce use of the SOAP API.
-	 * @param bool $is_new
-	 *   Indicates whether a mapping object for this entity already exists.
-	 *
-	 * @return array
-	 *   Associative array of key value pairs.
-	 */
-	function salesforce_push_map_params($mapping, $entity_wrapper, &$key_field, &$key_value, $use_soap = FALSE, $is_new = TRUE) {
-	  foreach ($mapping['field_mappings'] as $fieldmap) {
-		// Skip fields that aren't being pushed to Salesforce.
-		if (!in_array($fieldmap['direction'], array($this->mappings->direction_wordpress_sf, $this->mappings->direction_sync))) {
-		  continue;
-		}
+	* Map WordPress values to a Salesforce object.
+	*
+	* @param array $mapping
+	*   Mapping object.
+	* @param array $object
+	*   WordPress object.
+	* @param bool $use_soap
+	*   Flag to enforce use of the SOAP API.
+	* @param bool $is_new
+	*   Indicates whether a mapping object for this entity already exists.
+	*
+	* @return array
+	*   Associative array of key value pairs.
+	*/
+	function map_params( $mapping, $object, $use_soap = FALSE, $is_new = TRUE ) {
 
-		// Skip fields that aren't updateable when a mapped object already exists.
-		if (!$is_new && !$fieldmap['salesforce_field']['updateable']) {
-		  continue;
-		}
+		$params = array();
 
-		//$fieldmap_type = salesforce_mapping_get_fieldmap_types($fieldmap['drupal_field']['fieldmap_type']);
+		foreach ( $mapping['fields'] as $fieldmap ) {
 
-		//$value = call_user_func($fieldmap_type['push_value_callback'], $fieldmap, $entity_wrapper);
-		//$params[$fieldmap['salesforce_field']['name']] = $value;
+			// skip fields that aren't being pushed to Salesforce.
+			if ( !in_array( $fieldmap['direction'], array( $this->mappings->direction_wordpress_sf, $this->mappings->direction_sync ) ) ) {
+		  		continue;
+			}
 
-		if ($fieldmap['key']) {
-		  $key_field = $fieldmap['salesforce_field']['name'];
-		  //$key_value = $value;
-		  // If key is set, remove from $params to avoid UPSERT errors.
-		  if (!$use_soap) {
-			unset($params[$key_field]);
-		  }
-		}
+			// Skip fields that aren't updateable when a mapped object already exists
+			// maybe we should put this into the salesforce module so we don't load fields that aren't updateable anyway. otherwise i am unclear what this even is.
+			/*if ( !$is_new && !$fieldmap['salesforce_field']['updateable'] ) {
+				continue;
+			}*/
+
+			$salesforce_field = $fieldmap['salesforce_field'];
+			$wordpress_field = $fieldmap['wordpress_field'];
+			$params[$salesforce_field] = $object[$wordpress_field];
+
+			// todo: we could use this but i think maybe it only works for older php?
+			//$params[$fieldmap['salesforce_field']] = $object[$fieldmap['wordpress_field']];
+
+			if ( $fieldmap['is_key'] === '1' ) {
+				$key_field = $salesforce_field;
+				$key_value = $object[$wordpress_field];
+				// If key is set, remove from $params to avoid UPSERT errors.
+				if ( !$use_soap ) {
+					unset( $params[$key_field] );
+				}
+			}
 	  }
 
-	  drupal_alter('salesforce_push_params', $params, $mapping, $entity_wrapper);
-
 	  return $params;
+
 	}
 
 	/**
