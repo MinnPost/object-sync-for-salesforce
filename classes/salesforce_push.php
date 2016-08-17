@@ -357,6 +357,8 @@ class Salesforce_Push {
 			return;
 		}
 
+		$sfapi = $this->salesforce['sfapi'];
+
 		// we need to get the wordpress id here so we can check to see if the object already has a map
 		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
 		$object_id = $structure['id_field'];
@@ -368,7 +370,7 @@ class Salesforce_Push {
 		if ( $sf_sync_trigger == $this->mappings->sync_wordpress_delete ) {
 			if ( $mapping_object ) {
 				try {
-					$result = $this->salesforce['sfapi']->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
+					$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 				}
 				catch ( SalesforceException $e ) {
 					//salesforce_set_message($e->getMessage(), 'error');
