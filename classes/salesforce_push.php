@@ -366,9 +366,19 @@ class Salesforce_Push {
 		// this returns the row that maps the individual wordpress row to the individual salesforce row
 		$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object["$object_id"] );
 
+		$synced_object = array(
+			'wordpress_object' => $object,
+			'mapping_object' => $mapping_object,
+			'queue_item' => FALSE,
+			'mapping' => $mapping,
+		);
+
+		$op = '';
+
 		// deleting mapped objects
 		if ( $sf_sync_trigger == $this->mappings->sync_wordpress_delete ) {
 			if ( $mapping_object ) {
+				$op = 'Delete';
 				try {
 					$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 				}
@@ -394,6 +404,10 @@ class Salesforce_Push {
 		$params = $this->map_params( $mapping, $object, FALSE, $is_new );
 
 		if ( $is_new === TRUE ) {
+
+					$op = 'Upsert';
+
+					$op = 'Create';
 		} else {
 			// there is an existing object link
 
@@ -405,7 +419,7 @@ class Salesforce_Push {
 			}
 
 			try {
-
+				$op = 'Update';
 				$result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );
 
 				$mapping_object['last_sync_status'] = $this->mappings->status_success;
@@ -484,6 +498,7 @@ class Salesforce_Push {
 		  salesforce_set_message($e->getMessage(), 'error');
 		  return;
 		}
+		
 
 		// Success.
 		if (empty($data['errorCode'])) {
@@ -495,6 +510,7 @@ class Salesforce_Push {
 			'last_sync_message' => t('Mapping object created via !function.', array('!function' => __FUNCTION__)),
 			'last_sync_status' => $this->mappings->status_success,
 		  ));
+		module_invoke_all('salesforce_push_success', $op, $sfapi->response, $synced_object);
 		}
 		else {
 		  $message = t('Failed to sync %label with Salesforce. @code: @message',
@@ -506,6 +522,7 @@ class Salesforce_Push {
 		  );
 		  salesforce_set_message($message, 'error');
 		  watchdog('salesforce_push', $message);
+		  module_invoke_all('salesforce_push_fail', $op, $sfapi->response, $synced_object);
 		  return;
 		}
 	  }
@@ -565,13 +582,15 @@ class Salesforce_Push {
 		// Add entity id to array of pushed entities to check for duplicates later.
 		$entity_ids[$item->data['entity_type']][] = $entity_id;
 
-		$mapping_object = salesforce_mapping_object_load_by_drupal($entity_type, $entity_id);
-
 		if (!$use_soap) {
 		  salesforce_push_sync_rest($entity_type, $entity, $mapping, $item->data['trigger']);
 		  $queue->deleteItem($item);
 		  continue;
 		}
+
+		$mapping_object = salesforce_mapping_object_load_by_drupal($entity_type, $entity_id);
+		// Allow other modules to define or alter the mapping object.
+		drupal_alter('salesforce_push_mapping_object', $mapping_object, $entity, $mapping);
 
 		if ($item->data['trigger'] == $this->mappings->sync_wordpress_delete && $mapping_object) {
 		  $delete_list[$delta] = $mapping_object->salesforce_id;
@@ -585,6 +604,7 @@ class Salesforce_Push {
 		  'entity_wrapper' => $wrapper,
 		  'mapping_object' => $mapping_object,
 		  'queue_item' => $item,
+		  'mapping' => $mapping,
 		);
 
 		// Setup SF record type. CampaignMember objects get their type from
@@ -628,7 +648,7 @@ class Salesforce_Push {
 	  }
 
 	  // Use soap API to batch process records.
-	  $soap = new SalesforceSoapPartner($sfapi);
+	  $soap = new SalesforceSoapPartner($sfapi, variable_get('salesforce_partner_wsdl', libraries_get_path('salesforce') . '/soapclient/partner.wsdl.xml'));
 	  if (!empty($delete_list)) {
 		$results = $soap->delete($delete_list);
 		salesforce_push_process_soap_results('Delete', $results, $synced_entities);
@@ -690,6 +710,7 @@ class Salesforce_Push {
 		  }
 
 		  $mapping_object->last_sync_status = $this->mappings->status_success;
+		  // module_invoke_all('salesforce_push_success', $op, $sfapi->response, $synced_entity);
 		  $mapping_object->last_sync = $_SERVER['REQUEST_TIME'];
 		  $mapping_object->last_sync_action = 'push';
 		  $mapping_object->save();
@@ -719,6 +740,7 @@ class Salesforce_Push {
 			$mapping_object->last_sync = $_SERVER['REQUEST_TIME'];
 			$mapping_object->last_sync_action = 'push';
 			$mapping_object->last_sync_status = $this->mappings->status_error;
+			//module_invoke_all('salesforce_push_fail', $op, $sfapi->response, $synced_entity);
 			$mapping_object->last_sync_message = t('Push error via %function with the following messages: @message.', array(
 			  '%function' => __FUNCTION__,
 			  '@message' => implode(' | ', $error_messages),
