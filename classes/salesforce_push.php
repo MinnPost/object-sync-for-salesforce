@@ -406,12 +406,78 @@ class Salesforce_Push {
 		if ( $is_new === TRUE ) {
 			// going to need to create new object link in wp
 
+			// setup SF record type. in drupal, CampaignMember objects get their Campaign's type
+			// currently we don't have the data structure for this. it seems maybe unnecessary
+			// todo: investigate this further
+			/*if ( $mapping['salesforce_record_type_default'] !== $this->mappings->default_record_type && empty( $params['RecordTypeId'] ) && ( $mapping['salesforce_object'] !== 'CampaignMember') ) {
+				$params['RecordTypeId'] = $mapping['salesforce_record_type_default'];
+			}*/
+
+			if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
+				$prematch_field_wordpress = $params['prematch']['wordpress_field'];
+				$prematch_field_salesforce = $params['prematch']['salesforce_field'];
+				$prematch_value = $params['prematch']['value'];
+				unset( $params['prematch'] );
+			}
+
+			if ( isset( $params['key'] ) && is_array( $params['key'] ) ) {
+				$key_field_wordpress = $params['key']['wordpress_field'];
+				$key_field_salesforce = $params['key']['salesforce_field'];
+				$key_value = $params['key']['value'];
+				unset( $params['key'] );
+			}
+
 			try {
+				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) ) {
+					
+					if ( isset( $prematch_field_wordpress ) ) {
+						// a prematch has been specified, attempt an upsert().
+						// prematch values with punctuation need to be escaped
+						$encoded_prematch_value = urlencode( $prematch_value );
+						// for at least 'email' fields, periods also need to be escaped:
+						// https://developer.salesforce.com/forums?id=906F000000099xPIAQ
+						$encoded_prematch_value = str_replace( '.', '%2E', $encoded_prematch_value );
+					}
+
+					if ( isset( $key_field_wordpress ) ) {
+						// an external key has been specified, attempt an upsert().
+						// external key values with punctuation need to be escaped
+						$encoded_key_value = urlencode( $key_value );
+						// for at least 'email' fields, periods also need to be escaped:
+						// https://developer.salesforce.com/forums?id=906F000000099xPIAQ
+						$encoded_key_value = str_replace( '.', '%2E', $encoded_key_value );
+					}
+
+					if ( isset($prematch_field_wordpress ) ) {
+						$upsert_key = $prematch_field_salesforce;
+						$upsert_value = $encoded_prematch_value;
+					} else if ( isset( $key_field_wordpress ) ) {
+						$upsert_key = $key_field_salesforce;
+						$upsert_value = $encoded_key_value;
+					}
 
 					$op = 'Upsert';
 
+					$result = $sfapi->object_upsert( $mapping['salesforce_object'], $upsert_key, $upsert_value, $params );
+
+					// Handle upsert responses.
+					switch ( $sfapi->response['code'] ) {
+						// On Upsert:update retrieved object.
+						case '204':
+							$sf_object = $sfapi->object_readby_external_id( $mapping['salesforce_object'], $upsert_key, $upsert_value );
+							$data['id'] = $sf_object['data']['Id'];
+						break;
+						// Handle duplicate records.
+						case '300':
+							$result['errorCode'] = $sfapi->response['error'] . ' (' . $upsert_key . ':' . $upsert_value . ')';
+						break;
+					}
+
+				} else {
+					// No key or mapping, create a new object in Salesforce.
 					$op = 'Create';
 					$result = $sfapi->object_create( $mapping['salesforce_object'], $params );
+				}
 			}
 			catch( SalesforceException $e ) {
 				error_log( 'salesforce_push error:' . $e);
@@ -419,7 +485,10 @@ class Salesforce_Push {
 				return;
 			}
 
-			$data = $result['data'];
+			if ( !isset( $data ) ) {
+				// if we didn't set $data already, set it now to api call result
+				$data = $result['data'];
+			}
 
 			// salesforce api call was successful
 			if ( empty($result['errorCode'] ) ) {
@@ -482,44 +551,6 @@ class Salesforce_Push {
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 		}
-		
-
-		
-
-/*
-
-
-		  // An external key has been specified, attempt an upsert().
-		  if (!empty($key_field)) {
-
-			// External key values with punctuation need to be escaped.
-			$encoded_value = urlencode($key_value);
-			// For at least 'email' fields, periods also need to be escaped:
-			// https://developer.salesforce.com/forums?id=906F000000099xPIAQ
-			$encoded_value = str_replace('.', '%2E', $encoded_value);
-
-			$data = $sfapi->objectUpsert($mapping->salesforce_object_type, $key_field, $encoded_value, $params);
-			// Handle upsert responses.
-			switch ($sfapi->response->code) {
-			  // On Upsert:update retrieve object.
-			  case '204':
-				$sf_object = $sfapi->objectReadbyExternalId($mapping->salesforce_object_type, $key_field, $encoded_value);
-				$data['id'] = $sf_object['Id'];
-				break;
-
-			  // Handle duplicate records.
-			  case '300':
-				$data['errorCode'] = $sfapi->response->error .
-				  ' (' . $key_field . ':' . $key_value . ')';
-				break;
-			}
-		  }
-		  // No key or mapping, create a new object in Salesforce.
-		  else {
-		  }
-		
-
-	*/
 
 	}
 
@@ -781,17 +812,31 @@ class Salesforce_Push {
 			$wordpress_field = $fieldmap['wordpress_field'];
 			$params[$salesforce_field] = $object[$wordpress_field];
 
-			// todo: we could use this but i think maybe it only works for older php?
+			// todo: we could use this syntax but i think maybe it only works for older php?
 			//$params[$fieldmap['salesforce_field']] = $object[$fieldmap['wordpress_field']];
 
 			// if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
+			// but still put its name in the params array so we can check for it later
 			if ( $fieldmap['is_key'] === '1' ) {
-				$key_field = $salesforce_field;
-				$key_value = $object[$wordpress_field]; // this was a drupal thing but we probably don't need to worry about it
 				if ( !$use_soap ) {
-					unset( $params[$key_field] );
+					unset( $params[$salesforce_field] );
 				}
+				$params['key'] = array(
+					'salesforce_field' => $salesforce_field,
+					'wordpress_field' => $wordpress_field,
+					'value' => $object[$wordpress_field]
+				);
 			}
+
+			// if the field is a prematch in salesforce, put its name in the params array so we can check for it later
+			if ( $fieldmap['is_prematch'] === '1' ) {
+				$params['prematch'] = array(
+					'salesforce_field' => $salesforce_field,
+					'wordpress_field' => $wordpress_field,
+					'value' => $object[$wordpress_field]
+				);
+			}
+
 		}
 
 		return $params;
