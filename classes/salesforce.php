@@ -437,7 +437,7 @@ class Salesforce {
 
 		$data = $response['data'];
 
-		if ( isset($data['error'] ) ) {
+		if ( is_array( $data ) && isset($data['error'] ) ) {
 		  throw new SalesforceException( $data['error_description'], $data['error'] );
 		}
 
@@ -788,6 +788,23 @@ class Salesforce {
 	}
 
 	/**
+	* Retrieves the list of individual objects that have been deleted within the
+	* given timespan for a specified object type.
+	*
+	* @param string $type
+	*   Object type name, E.g., Contact, Account.
+	* @param string $startDate
+	*   Start date to check for deleted objects (in ISO 8601 format).
+	* @param string $endDate
+	*   End date to check for deleted objects (in ISO 8601 format).
+	* @return GetDeletedResult
+	*/
+	public function get_deleted( $type, $start_date, $end_date ) {
+		return $this->api_call( "sobjects/{$type}/deleted/?start={$start_date}&end={$end_date}" );
+	}
+
+
+	/**
 	* Return a list of available resources for the configured API version.
 	*
 	* @return array
@@ -807,6 +824,9 @@ class Salesforce {
 	* Return a list of SFIDs for the given object, which have been created or
 	* updated in the given timeframe. 
 	*
+	* @param int $name
+	*   Object type name, E.g., Contact, Account.
+	*   
 	* @param int $start
 	*   unix timestamp for older timeframe for updates. 
 	*   Defaults to "-29 days" if empty.
@@ -853,4 +873,7 @@ class Salesforce {
 }
 
 class SalesforceException extends Exception {
+}
+
+class SalesforcePullException extends SalesforceException {
 }
