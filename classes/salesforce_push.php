@@ -418,6 +418,7 @@ class Salesforce_Push {
 				//salesforce_set_message($e->getMessage(), 'error');
 				return;
 			}
+
 			$data = $result['data'];
 
 			// salesforce api call was successful
