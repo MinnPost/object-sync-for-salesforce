@@ -385,6 +385,28 @@ class Salesforce_Push {
 		  	return;
 		}
 
+		if ( $mapping_object ) {
+			$is_new = FALSE;
+		} else {
+			$is_new = TRUE;
+		}
+
+		if ( $is_new === TRUE ) {
+		} else {
+			// there is an existing object link
+
+			// if the last sync is greater than the last time this object was updated, skip it
+			// this keeps us from doing redundant syncs
+			if ( $mapping_object['last_sync'] > $mapping_object['object_updated'] ) {
+				error_log('last sync is greater than last update');
+				return;
+			}
+
+		}
+		
+
+		
+
 /*
 	  // Generate parameter array from field mappings.
 	  $entity_wrapper = entity_metadata_wrapper($entity_type, $entity);
