@@ -751,10 +751,9 @@ class Salesforce_Push {
 		$params = array();
 
 		foreach ( $mapping['fields'] as $fieldmap ) {
-
 			// skip fields that aren't being pushed to Salesforce.
 			if ( !in_array( $fieldmap['direction'], array( $this->mappings->direction_wordpress_sf, $this->mappings->direction_sync ) ) ) {
-		  		continue;
+				continue;
 			}
 
 			// Skip fields that aren't updateable when a mapped object already exists
@@ -770,17 +769,17 @@ class Salesforce_Push {
 			// todo: we could use this but i think maybe it only works for older php?
 			//$params[$fieldmap['salesforce_field']] = $object[$fieldmap['wordpress_field']];
 
+			// if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
 			if ( $fieldmap['is_key'] === '1' ) {
 				$key_field = $salesforce_field;
-				$key_value = $object[$wordpress_field];
-				// If key is set, remove from $params to avoid UPSERT errors.
+				$key_value = $object[$wordpress_field]; // this was a drupal thing but we probably don't need to worry about it
 				if ( !$use_soap ) {
 					unset( $params[$key_field] );
 				}
 			}
-	  }
+		}
 
-	  return $params;
+		return $params;
 
 	}
 
