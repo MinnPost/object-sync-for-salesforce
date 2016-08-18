@@ -41,7 +41,7 @@ class Salesforce_Rest_API {
 	/**
 	* @var object
 	*/
-	private $salesforce;
+	public $salesforce;
 
 	/**
 	* @var object
@@ -113,13 +113,14 @@ class Salesforce_Rest_API {
 	}
 
 	/**
-	* private helper to load the Salesforce API and see if it is authenticated
+	* Public helper to load the Salesforce API and see if it is authenticated
+	* This is public so other plugins can access the same SF API instance
 	*
 	* @return array
 	*   Whether Salesforce is authenticated (boolean)
 	*   The sfapi object if it is authenticated (empty, otherwise)
 	*/
-	private function salesforce_get_api() {
+	public function salesforce_get_api() {
 		$consumer_key = $this->login_credentials['consumer_key'];
 		$consumer_secret = $this->login_credentials['consumer_secret'];
 		$login_url = $this->login_credentials['login_url'];
