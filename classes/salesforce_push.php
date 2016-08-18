@@ -575,11 +575,9 @@ class Salesforce_Push {
 	*
 	* @return array $mapping object
 	*	This is the database row that maps the objects, including the IDs for each one, and the WP object type
-	* 
-	* todo: figure out if this needs to be public or private, since it has a hook for other plugins to call
 	*
 	*/
-	function create_object_match( $wordpress_object, $id_field_name, $salesforce_id, $field_mapping ) {
+	private function create_object_match( $wordpress_object, $id_field_name, $salesforce_id, $field_mapping ) {
 		
 		// hook to allow other plugins to modify the $salesforce_id array here
 		// this means they can change the object that is being matched to whatever matches their own criteria
