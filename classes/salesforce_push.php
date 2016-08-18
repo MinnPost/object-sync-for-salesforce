@@ -391,7 +391,6 @@ class Salesforce_Push {
 
 				// delete the map row from wordpress after the salesforce row has been deleted
 				$this->mappings->delete_object_map( $mapping_object['id'] );
-				error_log('both have been deleted now');
 		  	} // there is no map row
 		  	return;
 		}
@@ -583,8 +582,8 @@ class Salesforce_Push {
 		// this means they can change the object that is being matched to whatever matches their own criteria
 		// ex match a Salesforce Contact based on a connected email address object
 		// this returns $salesforce_id
-		apply_filters( 'salesforce_rest_api_create_object_map', $salesforce_id, $wordpress_object, $field_mapping );
-		
+		$salesforce_id = apply_filters( 'salesforce_rest_api_create_object_map', $salesforce_id, $wordpress_object, $field_mapping );
+
 		// Create object map and save it
 		$mapping_object = $this->mappings->create_object_map(
 			array(
