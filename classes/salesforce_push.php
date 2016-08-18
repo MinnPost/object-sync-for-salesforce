@@ -470,7 +470,7 @@ class Salesforce_Push {
 						// On Upsert:update retrieved object.
 						case '204':
 							$sf_object = $sfapi->object_readby_external_id( $mapping['salesforce_object'], $upsert_key, $upsert_value );
-							$data['id'] = $sf_object['data']['Id'];
+							$salesforce_data['id'] = $sf_object['data']['Id'];
 						break;
 						// Handle duplicate records.
 						case '300':
@@ -490,27 +490,19 @@ class Salesforce_Push {
 				return;
 			}
 
-			if ( !isset( $data ) ) {
-				// if we didn't set $data already, set it now to api call result
-				$data = $result['data'];
+			if ( !isset( $salesforce_data ) ) {
+				// if we didn't set $salesforce_data already, set it now to api call result
+				$salesforce_data = $result['data'];
 			}
 
 			// salesforce api call was successful
 			if ( empty($result['errorCode'] ) ) {
-				// Create mapping object, saved below.
-				$mapping_object = $this->mappings->create_object_map(
-					array(
-						'wordpress_id' => $object[$object_id],
-						'salesforce_id' => $data['id'],
-						'wordpress_object' => $mapping['wordpress_object'],
-						'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
-						'last_sync_status' => $this->mappings->status_success,
-					)
-				);
+				$salesforce_id = $salesforce_data['id'];
+				$mapping_object = $this->create_object_match( $object, $object_id, $salesforce_id, $mapping );
 				//module_invoke_all('salesforce_push_success', $op, $sfapi->response, $synced_entity);
 			} else {
 				// salesforce failed
-				$message = __('Failed to sync ' . $mapping['salesforce_object'] . ' with Salesforce. Code: ' . $data['errorCode'] . ' and message: ' . $data['message'], $this->text_domain );
+				$message = __('Failed to sync ' . $mapping['salesforce_object'] . ' with Salesforce. Code: ' . $salesforce_data['errorCode'] . ' and message: ' . $salesforce_data['message'], $this->text_domain );
 				//salesforce_set_message($message, 'error');
 				error_log('salesforce_push error:', print_r($message, true));
 				//module_invoke_all('salesforce_push_fail', $op, $sfapi->response, $synced_entity);
@@ -570,6 +562,46 @@ class Salesforce_Push {
 	  if (!$sfapi->isAuthorized()) {
 		return;
 	  }
+	* Create an object map between a WordPress object and a Salesforce object
+	*
+	* @param array $wordpress_object
+	*	Array of the wordpress object's data
+	* @param string $id_field_name
+	*	How this object names its primary field. ie Id or comment_id or whatever
+	* @param string $salesforce_id
+	*	Unique identifier for the Salesforce object
+	* @param array $field_mapping
+	*	The row that maps the object types together, including which fields match which other fields
+	*
+	* @return array $mapping object
+	*	This is the database row that maps the objects, including the IDs for each one, and the WP object type
+	* 
+	* todo: figure out if this needs to be public or private, since it has a hook for other plugins to call
+	*
+	*/
+	function create_object_match( $wordpress_object, $id_field_name, $salesforce_id, $field_mapping ) {
+		
+		// hook to allow other plugins to modify the $salesforce_id array here
+		// this means they can change the object that is being matched to whatever matches their own criteria
+		// ex match a Salesforce Contact based on a connected email address object
+		// this returns $salesforce_id
+		apply_filters( 'salesforce_rest_api_create_object_map', $salesforce_id, $wordpress_object, $field_mapping );
+		
+		// Create object map and save it
+		$mapping_object = $this->mappings->create_object_map(
+			array(
+				'wordpress_id' => $wordpress_object[$id_field_name], // wordpress unique id
+				'salesforce_id' => $salesforce_id, // salesforce unique id. we don't care what kind of object it is at this point
+				'wordpress_object' => $field_mapping['wordpress_object'], // keep track of what kind of wp object this is
+				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
+				'last_sync_status' => $this->mappings->status_success,
+			)
+		);
+
+		return $mapping_object;
+
+	}
+
 
 	  $queue = DrupalQueue::get($this->salesforce_push_queue);
 	  $limit = variable_get('salesforce_push_limit', 50);
@@ -800,7 +832,7 @@ class Salesforce_Push {
 	* @return array
 	*   Associative array of key value pairs.
 	*/
-	function map_params( $mapping, $object, $use_soap = FALSE, $is_new = TRUE ) {
+	private function map_params( $mapping, $object, $use_soap = FALSE, $is_new = TRUE ) {
 
 		$params = array();
 
@@ -850,26 +882,5 @@ class Salesforce_Push {
 		return $params;
 
 	}
-
-	/**
-	 * Implements hook_action_info().
-	 */
-	function salesforce_push_action_info() {
-	  return array(
-		'salesforce_push_action' => array(
-		  'type' => 'entity',
-		  'label' => t('Push entity to Salesforce'),
-		  'configurable' => FALSE,
-		  'triggers' => array('any'),
-		),
-	  );
-	}
-
-	/**
-	 * Push entity to Salesforce.
-	 */
-	function salesforce_push_action(&$entity, $context) {
-	  $trigger = (!empty($entity->is_new) && $entity->is_new) ? $this->mappings->sync_wordpress_create : $this->mappings->sync_wordpress_update;
-	  $this->salesforce_push_object_crud($context['entity_type'], $entity, $trigger);
-	}
+	
 }
