@@ -605,12 +605,12 @@ class Salesforce {
 		$search_data = [
             'q' => $query,
         ];
-        if ($explain) {
+        if ( $explain ) {
             $search_data['explain'] = $search_data['q'];
-            unset($search_data['q']);
+            unset( $search_data['q'] );
         }
         // all is a search through deleted and merged data as well
-        if ($all) {
+        if ( $all ) {
             $path = 'queryAll';
         } else {
             $path = 'query';
@@ -702,7 +702,7 @@ class Salesforce {
 	public function object_upsert( $name, $key, $value, $params ) {
 		$options = array( 'type' => 'write' );
 		// If key is set, remove from $params to avoid UPSERT errors.
-		if (isset( $params[$key] ) ) {
+		if ( isset( $params[$key] ) ) {
 		  unset( $params[$key] );
 		}
 
