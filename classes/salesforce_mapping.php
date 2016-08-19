@@ -378,21 +378,22 @@ class Salesforce_Mapping {
     }
 
     /**
-     * Returns Salesforce object mappings for a given Salesforce object.
-     *
-     * @param string $salesforce_id
-     *   Type of object to load.
-     * @param bool $reset
-     *   Whether or not the cache should be cleared and fetch from current data.
-     *
-     * @return SalesforceMappingObject
-     *   The requested SalesforceMappingObject or FALSE if none was found.
-     */
-    function load_by_sfid( $saleforce_id, $reset = FALSE ) {
-      $conditions = array(
-        'salesforce_id' => $salesforce_id
-      );
-      return $this->get_object_maps( NULL, $conditions, $reset );
+    * Returns Salesforce object mappings for a given Salesforce object.
+    *
+    * @param string $salesforce_id
+    *   Type of object to load.
+    * @param bool $reset
+    *   Whether or not the cache should be cleared and fetch from current data.
+    *
+    * @return SalesforceMappingObject
+    *   The requested SalesforceMappingObject or FALSE if none was found.
+    */
+    function load_by_salesforce( $salesforce_id, $reset = FALSE ) {
+        error_log('sf id is ' . $salesforce_id);
+        $conditions = array(
+            'salesforce_id' => $salesforce_id
+        );
+        return $this->get_object_maps( NULL, $conditions, $reset );
     }
 
 }
