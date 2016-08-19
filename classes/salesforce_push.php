@@ -495,6 +495,7 @@ class Salesforce_Push {
 			}
 
 			// salesforce api call was successful
+			// this means the object has already been added to/updated in salesforce
 			if ( empty($result['errorCode'] ) ) {
 				$salesforce_id = $salesforce_data['id'];
 				$mapping_object = $this->create_object_match( $object, $object_id, $salesforce_id, $mapping );
