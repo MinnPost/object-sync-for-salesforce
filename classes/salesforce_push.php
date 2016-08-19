@@ -385,6 +385,7 @@ class Salesforce_Push {
 				}
 				catch ( SalesforceException $e ) {
 					//salesforce_set_message($e->getMessage(), 'error');
+					error_log( 'salesforce error: ' . $e->getMessage() );
 				}
 
 				//salesforce_set_message( 'object has been deleted' );
@@ -395,6 +396,7 @@ class Salesforce_Push {
 		  	return;
 		}
 
+		// are these objects already connected in wordpress?
 		if ( $mapping_object ) {
 			$is_new = FALSE;
 		} else {
@@ -430,7 +432,16 @@ class Salesforce_Push {
 			}
 
 			try {
-				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) ) {
+
+				// hook to allow other plugins to modify the $salesforce_id string here
+				// use hook to change the object that is being matched to developer's own criteria
+				// ex: match a Salesforce Contact based on a connected email address object
+				// returns a $salesforce_id.
+				// it should keep NULL if there is no match
+
+				$salesforce_id = apply_filters( 'salesforce_rest_api_find_object_match', NULL, $object );
+
+				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || $salesforce_id !== NULL ) {
 					
 					// if either prematch criteria exists, make the values queryable
 
@@ -458,6 +469,11 @@ class Salesforce_Push {
 					} else if ( isset( $key_field_wordpress ) ) {
 						$upsert_key = $key_field_salesforce;
 						$upsert_value = $encoded_key_value;
+					}
+
+					if ( $salesforce_id !== NULL ) {
+						$upsert_key = 'Id';
+						$upsert_value = $salesforce_id;
 					}
 
 					$op = 'Upsert';
@@ -578,13 +594,6 @@ class Salesforce_Push {
 	*
 	*/
 	private function create_object_match( $wordpress_object, $id_field_name, $salesforce_id, $field_mapping ) {
-		
-		// hook to allow other plugins to modify the $salesforce_id array here
-		// this means they can change the object that is being matched to whatever matches their own criteria
-		// ex match a Salesforce Contact based on a connected email address object
-		// this returns $salesforce_id
-		$salesforce_id = apply_filters( 'salesforce_rest_api_create_object_map', $salesforce_id, $wordpress_object, $field_mapping );
-
 		// Create object map and save it
 		$mapping_object = $this->mappings->create_object_map(
 			array(

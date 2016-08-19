@@ -49,18 +49,24 @@ class Salesforce_Rest_API {
 	private $wordpress;
 
 	/**
-	 * Static property to hold our singleton instance
-	 * todo: figure out what to do with this
+	 * Static property to hold an instance of the class; this seems to make it reusable
 	 *
 	 */
-	//static $instance = false;
+	static $instance = NULL;
+
+	static public function getInstance() {
+		if ( self::$instance === NULL ) {
+			self::$instance = new Salesforce_Rest_API();
+		}
+		return self::$instance;
+	}
 
 	/**
 	 * This is our constructor
 	 *
 	 * @return void
 	 */
-	public function __construct() {
+	protected function __construct() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
 		global $wpdb;
 
@@ -266,4 +272,5 @@ class Salesforce_Rest_API {
 /// end class
 }
 // Instantiate our class
-$Salesforce_Rest_API = new Salesforce_Rest_API();
+//$Salesforce_Rest_API = new Salesforce_Rest_API();
+$Salesforce_Rest_API = Salesforce_Rest_API::getInstance();
