@@ -29,6 +29,9 @@ class Wordpress_Salesforce_Admin {
         $this->salesforce = $salesforce;
         $this->mappings = $mappings;
 
+        // todo: we should think about what kind of admin_notices to use, if any
+        // https://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
+
         // we can map objects to salesforce that are not 'posts' but we need to tell the plugin what they are
         // this can be done when calling this class, or here as a default
         
