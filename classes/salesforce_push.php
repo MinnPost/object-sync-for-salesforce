@@ -294,14 +294,23 @@ class Salesforce_Push {
 			$map_sync_triggers = $mapping['sync_triggers'];
 			if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
 
-				// allow other plugins to prevent a sync per-mapping.
-				// need to figure out how to implement this in wordpress
-				// this is the drupal code to try to fork
-				/*foreach (module_implements('salesforce_push_entity_allowed') as $module) {
-					if (module_invoke($module, 'salesforce_push_entity_allowed', $entity_type, $entity, $sf_sync_trigger, $mapping) === FALSE) {
-						continue 2;
+				// allow other plugins to prevent a push per-mapping.
+				$push_allowed = apply_filters( 'salesforce_rest_api_push_object_allowed', TRUE, $object_type, $object, $sf_sync_trigger, $mapping );
+
+				// example to keep from pushing the user with id of 1
+				/*
+				add_filter( 'salesforce_rest_api_push_object_allowed', 'check_user', 10, 5 );
+				// can always reduce this number if all the arguments are not necessary
+				function check_user( $push_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
+					if ( $object_type === 'user' && $object['Id'] === 1 ) {
+						return FALSE;
 					}
-				}*/
+				}
+				*/
+
+				if ( $push_allowed === FALSE ) {
+					continue;
+				}
 
 				// ignore drafts if the setting says so
 				// post status is draft, or post status is inherit and post type is not attachment
@@ -571,13 +580,6 @@ class Salesforce_Push {
 	}
 
 	/**
-	 * Implements hook_cron().
-	 */
-	function salesforce_push_cron() {
-	  $sfapi = $this->salesforce;
-	  if (!$sfapi->isAuthorized()) {
-		return;
-	  }
 	* Create an object map between a WordPress object and a Salesforce object
 	*
 	* @param array $wordpress_object
@@ -609,6 +611,16 @@ class Salesforce_Push {
 
 	}
 
+	/**
+	* When the scheduled tasks run, this is the processor
+	* We may already have all the functionality we need in the schedule.php class
+	* keeping this here for reference until i know for sure
+	*/
+	function push_schedule() {
+	  
+		if ( $this->salesforce['is_authorized'] !== true ) {
+			return;
+		}
 
 	  $queue = DrupalQueue::get($this->salesforce_push_queue);
 	  $limit = variable_get('salesforce_push_limit', 50);
