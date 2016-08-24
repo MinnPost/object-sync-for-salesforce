@@ -54,7 +54,7 @@ class Salesforce_Rest_API {
 	 */
 	static $instance = NULL;
 
-	static public function getInstance() {
+	static public function get_instance() {
 		if ( self::$instance === NULL ) {
 			self::$instance = new Salesforce_Rest_API();
 		}
@@ -272,5 +272,4 @@ class Salesforce_Rest_API {
 /// end class
 }
 // Instantiate our class
-//$Salesforce_Rest_API = new Salesforce_Rest_API();
-$Salesforce_Rest_API = Salesforce_Rest_API::getInstance();
+$Salesforce_Rest_API = Salesforce_Rest_API::get_instance();
