@@ -264,7 +264,7 @@ class Salesforce_Push {
 
 	/**
 	* Push objects to Salesforce.
-	* This method decides whether to do the processing immediately or queue it to the schedule class
+	* This method decides whether to do the processing immediately or queue it to the schedule class (or skip it based on another plugin's activity)
 	*
 	* @param string $object_type
 	*   Type of WordPress object.
