@@ -84,9 +84,9 @@ class Salesforce_Rest_API {
 		$this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain, $this->mappings );
 		$this->salesforce = $this->salesforce_get_api();
 
-		$this->schedule = $this->schedule( $this->version, $this->login_credentials, $this->text_domain, $this->salesforce, $this->schedule_name );
+		$this->schedule = $this->schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name );
 
-		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule );
+		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule, $this->schedule_name );
 
 		$this->pull = '';
 
@@ -166,13 +166,14 @@ class Salesforce_Rest_API {
 	/**
 	 * Functionality for scheduling tasks to be run against the Salesforce REST API
 	 *
+	 * todo: figure out how to handle the separate git repo for these libraries so it doesn't get lost
+	 *
 	 * @return object
 	 */
-	private function schedule( $version, $login_credentials, $text_domain, $salesforce, $schedule_name ) {
-		require_once plugin_dir_path( __FILE__ ) . 'vendor/async-requests/wp-async-request.php';
-		require_once plugin_dir_path( __FILE__ ) . 'vendor/background-processes/wp-background-process.php';
+	private function schedule( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name ) {
+		require_once plugin_dir_path( __FILE__ ) . 'vendor/wp-background-processing/wp-background-processing.php';
 		require_once plugin_dir_path( __FILE__ ) . 'classes/schedule.php';
-		$schedule = new Wordpress_Salesforce_Schedule( $version, $login_credentials, $text_domain, $salesforce, $schedule_name );
+		$schedule = new Wordpress_Salesforce_Schedule( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name );
 		return $schedule;
 	}
 
@@ -181,9 +182,9 @@ class Salesforce_Rest_API {
 	 *
 	 * @return object
 	 */
-	private function push( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule ) {
+	private function push( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule, $schedule_name ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
-		$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule );
+		$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule, $schedule_name );
 		return $push;
 	}
 

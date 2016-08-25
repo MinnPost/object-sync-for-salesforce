@@ -9,6 +9,7 @@ class Salesforce_Push {
 	protected $salesforce;
 	protected $mappings;
 	protected $schedule;
+	protected $schedule_name;
 
 	/**
 	* @var string
@@ -26,9 +27,10 @@ class Salesforce_Push {
 	* @param object $salesforce
 	* @param object $mappings
 	* @param object $schedule
+	* @param string $schedule_name
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule ) {
+	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule, $schedule_name ) {
 		$this->wpdb = &$wpdb;
 		$this->version = $version;
 		$this->login_credentials = $login_credentials;
@@ -37,7 +39,7 @@ class Salesforce_Push {
 		$this->salesforce = $salesforce;
 		$this->mappings = $mappings;
 		$this->schedule = $schedule;
-		$this->salesforce_push_queue = 'salesforce_push';
+		$this->schedule_name = $schedule_name;
 
 		$this->add_actions();
 
@@ -320,22 +322,17 @@ class Salesforce_Push {
 				}
 				if ( isset( $mapping['push_async'] ) && ( $mapping['push_async'] === '1' ) ) {
 		  			// this item is async and we want to save it to the queue
-		  			error_log( 'the trigger is ' . $sf_sync_trigger);
-					error_log( 'put this ' . $object_type . ' in the queue: ' . print_r( $object, true ) );
-
-					// possible triggers are create, update, delete of wp object -> salesforce
-
-					//$queue = $this->schedule->push_to_queue($object);
-					//$save = $this->schedule->save();
-					
-					// this is the drupal code we are forking
-					/*$queue = DrupalQueue::get($this->salesforce_push_queue);
-					$queue->createItem(array(
-						'entity_type' => $entity_type,
-						'entity_id' => $entity_id,
+					$data = array(
+						'object_type' => $object_type,
+						'object' => $object,
 						'mapping' => $mapping,
-						'trigger' => $sf_sync_trigger,
-					));*/
+						'sf_sync_trigger' => $sf_sync_trigger,
+						'class' => 'Salesforce_Push',
+						'method' => 'salesforce_push_sync_rest'
+					);
+					//$this->schedule->schedule( $this->salesforce_push_schedule_name, $this->salesforce_push_frequency );
+					$queue = $this->schedule->push_to_queue( $data );
+					$save = $this->schedule->save();
 				} else {
 					// this one is not async. do it immediately.
 					$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
@@ -359,7 +356,7 @@ class Salesforce_Push {
 	* @return true or exit the method
 	*
 	*/
-	private function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
+	public function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
 		// if salesforce is not authorized, don't do anything.
 		// it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
@@ -447,7 +444,6 @@ class Salesforce_Push {
 				// ex: match a Salesforce Contact based on a connected email address object
 				// returns a $salesforce_id.
 				// it should keep NULL if there is no match
-
 				$salesforce_id = apply_filters( 'salesforce_rest_api_find_object_match', NULL, $object );
 
 				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || $salesforce_id !== NULL ) {
@@ -622,7 +618,7 @@ class Salesforce_Push {
 			return;
 		}
 
-	  $queue = DrupalQueue::get($this->salesforce_push_queue);
+	  $queue = DrupalQueue::get($this->salesforce_push_schedule_name);
 	  $limit = variable_get('salesforce_push_limit', 50);
 	  $use_soap = module_exists('salesforce_soap');
 	  $entity_ids = array();
