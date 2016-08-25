@@ -330,6 +330,8 @@ class Salesforce_Push {
 						'class' => 'Salesforce_Push',
 						'method' => 'salesforce_push_sync_rest'
 					);
+					// todo: figure out how to set the schedule name and frequency here, so we could do it in specific methods
+					// example: want to make salesforce reauthenticate itself, but not every 5 minutes
 					//$this->schedule->schedule( $this->salesforce_push_schedule_name, $this->salesforce_push_frequency );
 					$queue = $this->schedule->push_to_queue( $data );
 					$save = $this->schedule->save();
