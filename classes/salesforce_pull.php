@@ -8,6 +8,8 @@ class Salesforce_Pull {
 	protected $text_domain;
 	protected $salesforce;
 	protected $mappings;
+	protected $schedule;
+	protected $schedule_name;
 
 	/**
 	* @var string
@@ -21,21 +23,37 @@ class Salesforce_Pull {
 	* @param string $version
 	* @param array $login_credentials
 	* @param string $text_domain
+	* @param object $wordpress
 	* @param object $salesforce
 	* @param object $mappings
+	* @param object $schedule
+	* @param string $schedule_name
 	* @throws \Exception
 	*/
 	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings ) {
 		$this->wpdb = &$wpdb;
 		$this->version = $version;
 		$this->login_credentials = $login_credentials;
-		$this->text_domain = $text_domain; 
+		$this->text_domain = $text_domain;
+		$this->wordpress = $wordpress;
 		$this->salesforce = $salesforce;
 		$this->mappings = $mappings;
+		$this->schedule = $schedule;
+		$this->schedule_name = $schedule_name;
+
+		$this->add_actions();
 		$this->salesforce_pull_queue = 'salesforce_pull';
 
-		add_action( 'wp_ajax_salesforce_pull_webhook', array( $this, 'salesforce_pull_webhook' ) );
+	}
 
+	/**
+	* Create the action hooks based on what object maps exist from the admin settings
+	* todo: is wordpress going to actually keep that blogroll stuff?
+	*
+	*/
+	private function add_actions() {
+		$db_version = get_option( 'salesforce_rest_api_db_version', false );
+		add_action( 'wp_ajax_salesforce_pull_webhook', array( $this, 'salesforce_pull_webhook' ) );
 	}
 
 	/**
