@@ -40,7 +40,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 
         $this->add_filters();
 
-        $this->schedule();
+        $this->schedule(); // currently this creates a scheduled event for $this->schedule_name
 
 //        $this->frequency = $frequency;
 
