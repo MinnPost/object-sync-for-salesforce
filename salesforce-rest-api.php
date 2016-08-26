@@ -41,12 +41,37 @@ class Salesforce_Rest_API {
 	/**
 	* @var object
 	*/
-	public $salesforce;
+	private $activated;
+
+	/**
+	* @var object
+	*/
+	private $mappings;
 
 	/**
 	* @var object
 	*/
 	private $wordpress;
+
+	/**
+	* @var object
+	*/
+	public $salesforce;
+
+	/**
+	* @var object
+	*/
+	private $schedule;
+
+	/**
+	* @var object
+	*/
+	private $push;
+
+	/**
+	* @var object
+	*/
+	private $pull;
 
 	/**
 	 * Static property to hold an instance of the class; this seems to make it reusable
@@ -153,6 +178,7 @@ class Salesforce_Rest_API {
 	private function activate( &$wpdb, $version, $text_domain ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
 		$activate = new Wordpress_Salesforce_Activate( $wpdb, $version, $text_domain );
+		return $activate;
 	}
 
 	/**
