@@ -805,6 +805,7 @@ class Wordpress_Salesforce_Admin {
         $id     = $args['label_for'];
         $name   = $args['name'];
         $desc   = $args['desc'];
+        $class = 'regular-text';
         if ( !defined( $args['constant'] ) ) {
             $value  = esc_attr( get_option( $id, '' ) );
             echo '<input type="' . $type. '" value="' . $value . '" name="' . $name . '" id="' . $id . '"
