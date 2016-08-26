@@ -389,7 +389,6 @@ class Salesforce_Mapping {
     *   The requested SalesforceMappingObject or FALSE if none was found.
     */
     function load_by_salesforce( $salesforce_id, $reset = FALSE ) {
-        error_log('sf id is ' . $salesforce_id);
         $conditions = array(
             'salesforce_id' => $salesforce_id
         );
