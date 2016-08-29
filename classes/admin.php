@@ -695,32 +695,32 @@ class Wordpress_Salesforce_Admin {
                     'type' => 'checkboxes',
                     'desc' => 'these are the triggers to log',
                     'items' => array(
-                        $this->mappings->sync_wordpress_create = array(
+                        $this->mappings->sync_wordpress_create => array(
                             'text' => 'WordPress create',
                             'id' => 'wordpress_create',
                             'desc' => ''
                         ),
-                        $this->mappings->sync_wordpress_update = array(
+                        $this->mappings->sync_wordpress_update => array(
                             'text' => 'WordPress update',
                             'id' => 'wordpress_update',
                             'desc' => ''
                         ),
-                        $this->mappings->sync_wordpress_delete = array(
+                        $this->mappings->sync_wordpress_delete => array(
                             'text' => 'WordPress delete',
                             'id' => 'wordpress_delete',
                             'desc' => ''
                         ),
-                        $this->mappings->sync_sf_create = array(
+                        $this->mappings->sync_sf_create => array(
                             'text' => 'Salesforce create',
                             'id' => 'sf_create',
                             'desc' => ''
                         ),
-                        $this->mappings->sync_sf_update = array(
+                        $this->mappings->sync_sf_update => array(
                             'text' => 'Salesforce update',
                             'id' => 'sf_update',
                             'desc' => ''
                         ),
-                        $this->mappings->sync_sf_delete = array(
+                        $this->mappings->sync_sf_delete => array(
                             'text' => 'Salesforce delete',
                             'id' => 'sf_delete',
                             'desc' => ''
