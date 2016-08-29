@@ -49,6 +49,9 @@ class Salesforce {
 			'cache_expiration' => $this->cache_expiration(),
 			'type' => 'read'
 		);
+		$this->success_codes = array( 200, 201, 204 );
+		$this->refresh_code = 401;
+		$this->success_or_refresh_codes = array_push( $this->success_codes, $this->refresh_code );
 	}
 
 	/**
@@ -145,31 +148,29 @@ class Salesforce {
 		}
 		$this->response = $this->api_http_request( $path, $params, $method, $options, $type );
 		switch ( $this->response['code'] ) {
-		  // The session ID or OAuth token used has expired or is invalid.
-		  case 401:
-		    // Refresh token.
-		    $this->refresh_token();
-		    // Rebuild our request and repeat request.
-		    $options['is_redo'] = true;
-		    $this->response = $this->api_http_request( $path, $params, $method, $options, $type );
-		    // Throw an error if we still have bad response.
-		    if ( !in_array( $this->response['code'], array( 200, 201, 204 ) ) ) {
-		      throw new SalesforceException( $this->response['data'][0]['message'], $this->response['code'] );
-		    }
+			// The session ID or OAuth token used has expired or is invalid.
+			case $this->response['code'] === $this->refresh_code:
+				// Refresh token.
+				$this->refresh_token();
+				// Rebuild our request and repeat request.
+				$options['is_redo'] = true;
+				$this->response = $this->api_http_request( $path, $params, $method, $options, $type );
+				// Throw an error if we still have bad response.
+				if ( !in_array( $this->response['code'], $this->success_codes ) ) {
+					throw new SalesforceException( $this->response['data'][0]['message'], $this->response['code'] );
+				}
 
-		    break;
+			break;
 
-		  case 200:
-		  case 201:
-		  case 204:
-		    // All clear.
-		    break;
+		case in_array( $this->response['code'], $this->success_codes ):
+			// All clear.
+			break;
 
-		  default:
-		    // We have problem and no specific Salesforce error provided.
-		    if ( empty( $this->response['data'] ) ) {
-		      throw new SalesforceException( $this->response['error'], $this->response['code'] );
-		    }
+		default:
+			// We have problem and no specific Salesforce error provided.
+			if ( empty( $this->response['data'] ) ) {
+				throw new SalesforceException( $this->response['error'], $this->response['code'] );
+			}
 		}
 
 		if ( !empty( $this->response['data'][0] ) && count( $this->response['data'] ) == 1 ) {
@@ -235,7 +236,7 @@ class Salesforce {
     		} else {
     			$data = json_encode( $params );
 				$result = $this->http_request( $url, $data, $headers, $method, $options );
-				if ( in_array( $result['code'], array( 200, 201, 204 ) ) ) {
+				if ( in_array( $result['code'], $this->success_codes ) ) {
 					$result['cached'] = $this->wordpress->cache_set( $url, $params, $result, $options['cache_expiration'] );
 				} else {
 					$result['cached'] = false;
@@ -312,7 +313,7 @@ class Salesforce {
 		$data = json_decode( $json_response, true ); // decode it into an array
 
 		// don't use the exception if the status is a success one, or if it just needs a refresh token (salesforce uses 401 for this)
-		if ( !in_array( $code, array( 200, 201, 204, 401 ) ) ) {
+		if ( !in_array( $code, $this->success_or_refresh_codes ) ) {
 			$curl_error = curl_error( $curl );
 			if ( $curl_error !== '' ) {
 				throw new SalesforceException( $curl_error );
