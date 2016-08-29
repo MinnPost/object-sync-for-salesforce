@@ -9,6 +9,8 @@ class Wordpress_Salesforce_Deactivate {
     * What to do when the plugin is deactivated
     * @param string $version
     *
+    * todo: deactivate the logging stuff as well
+    *
     */
     public function __construct( $wpdb, $version, $text_domain, $schedule_name ) {
         $this->wpdb = &$wpdb;

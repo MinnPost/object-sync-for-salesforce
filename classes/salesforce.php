@@ -33,7 +33,7 @@ class Salesforce {
 	* @param string $text_domain
 	*   Text domain for this plugin. Would be used in any future translations.
 	*/
-	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain  ) {
+	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging  ) {
 		$this->consumer_key = $consumer_key;
 		$this->consumer_secret = $consumer_secret;
 		$this->login_url = $login_url;
@@ -43,6 +43,7 @@ class Salesforce {
 		$this->rest_api_version = $rest_api_version;
 		$this->wordpress = $wordpress;
 		$this->text_domain = $text_domain;
+		$this->logging = $logging;
 		$this->options = array(
 			'cache' => true,
 			'cache_expiration' => $this->cache_expiration(),

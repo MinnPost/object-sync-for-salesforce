@@ -46,6 +46,11 @@ class Salesforce_Rest_API {
 	/**
 	* @var object
 	*/
+	private $logging;
+
+	/**
+	* @var object
+	*/
 	private $mappings;
 
 	/**
@@ -104,14 +109,16 @@ class Salesforce_Rest_API {
 		$this->activated = $this->activate( $this->wpdb, $this->version, $this->text_domain );
 		$this->deactivate( $this->wpdb, $this->version, $this->text_domain, $this->schedule_name );
 
+		$this->logging = $this->logging( $this->wpdb, $this->version, $this->text_domain );
+
 		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->text_domain );
 
-		$this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain, $this->mappings );
+		$this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain, $this->mappings, $this->logging );
 		$this->salesforce = $this->salesforce_get_api();
 
-		$this->schedule = $this->schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name );
+		$this->schedule = $this->schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging );
 
-		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule, $this->schedule_name );
+		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule, $this->schedule_name, $this->logging );
 
 		$this->pull = '';
 
@@ -119,6 +126,18 @@ class Salesforce_Rest_API {
 
 		//add_action		( 'plugins_loaded', 					array( $this, 'textdomain'				) 			);
 		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
+	}
+
+	/**
+	 * Log events
+	 *
+	 * @return object
+	 */
+	private function logging( &$wpdb, $version, $text_domain ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'vendor/wp-logging/WP_Logging.php' );
+		require_once plugin_dir_path( __FILE__ ) . 'classes/logging.php';
+		$logging = new Salesforce_Logging( $wpdb, $version, $text_domain );
+		return $logging;
 	}
 
 	/**
@@ -137,9 +156,9 @@ class Salesforce_Rest_API {
 	*
 	* @return object
 	*/
-	private function wordpress( $wpdb, $version, $text_domain, $mappings ) {
+	private function wordpress( $wpdb, $version, $text_domain, $mappings, $logging ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
-		$wordpress = new Wordpress( $wpdb, $version, $text_domain, $mappings );
+		$wordpress = new Wordpress( $wpdb, $version, $text_domain, $mappings, $logging );
 		return $wordpress;
 	}
 
@@ -161,10 +180,11 @@ class Salesforce_Rest_API {
 		$rest_api_version = $this->login_credentials['rest_api_version'];
 		$text_domain = $this->text_domain;
 		$wordpress = $this->wordpress;
+		$logging = $this->logging;
 		$is_authorized = false;
 		$sfapi = '';
 		if ($consumer_key && $consumer_secret) {
-			$sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain );
+			$sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging );
 			if ( $sfapi->is_authorized() === true ) {
 				$is_authorized = true;
 			}
@@ -196,10 +216,10 @@ class Salesforce_Rest_API {
 	 *
 	 * @return object
 	 */
-	private function schedule( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name ) {
+	private function schedule( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name, $logging ) {
 		require_once plugin_dir_path( __FILE__ ) . 'vendor/wp-background-processing/wp-background-processing.php';
 		require_once plugin_dir_path( __FILE__ ) . 'classes/schedule.php';
-		$schedule = new Wordpress_Salesforce_Schedule( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name );
+		$schedule = new Wordpress_Salesforce_Schedule( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name, $logging );
 		return $schedule;
 	}
 
@@ -208,9 +228,9 @@ class Salesforce_Rest_API {
 	 *
 	 * @return object
 	 */
-	private function push( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule, $schedule_name ) {
+	private function push( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule, $schedule_name, $logging ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
-		$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule, $schedule_name );
+		$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule, $schedule_name, $logging );
 		return $push;
 	}
 

@@ -72,8 +72,15 @@ class Wordpress_Salesforce_Admin {
         $tabs = array(
             'settings' => 'Settings',
             'authorize' => 'Authorize',
-            'fieldmaps' => 'Fieldmaps'
+            'fieldmaps' => 'Fieldmaps',
         ); // this creates the tabs for the admin
+
+        // optionally make tab(s) for logging and log settings
+        $logging_enabled = get_option( 'salesforce_api_enable_logging', FALSE );
+        if ( $logging_enabled === '1' ) {
+            $tabs['log_settings'] = 'Log Settings';
+        }
+
         $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $this->tabs( $tabs, $tab );
 
@@ -474,6 +481,12 @@ class Wordpress_Salesforce_Admin {
                     $message = $this->logout();
                     echo '<p>' . $message . '</p>';
                     break;
+                case 'log_settings':
+                    echo '<form method="post" action="options.php">';
+                        echo settings_fields( $tab ) . do_settings_sections( $tab );
+                        submit_button( 'Save settings' );
+                    echo '</form>';
+                    break;
                 default:
                     $consumer_key = $this->login_credentials['consumer_key'];
                     $consumer_secret = $this->login_credentials['consumer_secret'];
@@ -524,6 +537,7 @@ class Wordpress_Salesforce_Admin {
         $input_checkboxes_default = array( &$this, 'display_checkboxes' );
         $this->fields_settings( 'settings', 'settings', $input_callback_default );
         $this->fields_fieldmaps( 'fieldmaps', 'objects' );
+        $this->fields_log_settings( 'log_settings', 'log_settings', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default ) );
     }
 
     /**
@@ -625,6 +639,115 @@ class Wordpress_Salesforce_Admin {
     */
     private function fields_fieldmaps( $page, $section, $input_callback = '' ) {
         add_settings_section( $page, ucwords( $page ), null, $page );
+    }
+
+    /**
+    * Fields for the Log Settings tab
+    * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+    *
+    * @param string $page
+    * @param string $section
+    * @param array $callbacks
+    */
+    private function fields_log_settings( $page, $section, $callbacks ) {
+        add_settings_section( $page, ucwords( str_replace('_', ' ', $page) ), null, $page );
+        $salesforce_settings = array(
+            'enable_logging' => array(
+                'title' => 'Enable Logging?',
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'checkbox',
+                    'desc' => '',
+                    'constant' => ''
+                ),
+            ),
+            'prune_logs' => array(
+                'title' => 'Automatically delete old log entries?',
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'checkbox',
+                    'desc' => '',
+                    'constant' => ''
+                ),
+            ),
+            'logs_how_old' => array(
+                'title' => 'Age to delete log entries',
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'text',
+                    'desc' => 'If automatic deleting is enabled, it will affect logs this old.',
+                    'default' => '2 weeks',
+                    'constant' => ''
+                ),
+            ),
+            'triggers_to_log' => array(
+                'title' => 'Triggers to log',
+                'callback' => $callbacks['checkboxes'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'checkboxes',
+                    'desc' => 'these are the triggers to log',
+                    'items' => array(
+                        $this->mappings->sync_wordpress_create = array(
+                            'text' => 'WordPress create',
+                            'id' => 'wordpress_create',
+                            'desc' => ''
+                        ),
+                        $this->mappings->sync_wordpress_update = array(
+                            'text' => 'WordPress update',
+                            'id' => 'wordpress_update',
+                            'desc' => ''
+                        ),
+                        $this->mappings->sync_wordpress_delete = array(
+                            'text' => 'WordPress delete',
+                            'id' => 'wordpress_delete',
+                            'desc' => ''
+                        ),
+                        $this->mappings->sync_sf_create = array(
+                            'text' => 'Salesforce create',
+                            'id' => 'sf_create',
+                            'desc' => ''
+                        ),
+                        $this->mappings->sync_sf_update = array(
+                            'text' => 'Salesforce update',
+                            'id' => 'sf_update',
+                            'desc' => ''
+                        ),
+                        $this->mappings->sync_sf_delete = array(
+                            'text' => 'Salesforce delete',
+                            'id' => 'sf_delete',
+                            'desc' => ''
+                        )
+                    )
+                )
+            ),
+        );
+        foreach( $salesforce_settings as $key => $attributes ) {
+            $id = 'salesforce_api_' . $key;
+            $name = 'salesforce_api_' . $key;
+            $title = $attributes['title'];
+            $callback = $attributes['callback'];
+            $page = $attributes['page'];
+            $section = $attributes['section'];
+            $args = array_merge(
+                $attributes['args'],
+                array(
+                    'title' => $title,
+                    'id' => $id,
+                    'label_for' => $id,
+                    'name' => $name
+                )
+            );
+            add_settings_field( $id, $title, $callback, $page, $section, $args );
+            register_setting( $section, $id );
+        }
     }
 
     /**
@@ -805,11 +928,27 @@ class Wordpress_Salesforce_Admin {
         $id     = $args['label_for'];
         $name   = $args['name'];
         $desc   = $args['desc'];
+        $checked = '';
+
         $class = 'regular-text';
+
+        if ( $type === 'checkbox' ) {
+            $class = 'checkbox';
+        }
+
         if ( !defined( $args['constant'] ) ) {
             $value  = esc_attr( get_option( $id, '' ) );
+            if ( $type === 'checkbox' ) {
+                if ( $value === '1' ) {
+                    $checked = 'checked ';
+                }
+                $value = 1;
+            }
+            if ( $value === '' && isset( $args['default'] ) && $args['default'] !== '' ) {
+                $value = $args['default'];
+            }
             echo '<input type="' . $type. '" value="' . $value . '" name="' . $name . '" id="' . $id . '"
-            class="regular-text code" />';
+            class="' . $class . ' code" ' . $checked . ' />';
             if ( $desc != '' ) {
                 echo '<p class="description">' . $desc . '</p>';
             }
@@ -820,7 +959,7 @@ class Wordpress_Salesforce_Admin {
 
     /**
     * Display for multiple checkboxes
-    * Maybe should expand this to also accept just one checkbox, but maybe above method will already do that
+    * Above method can handle a single checkbox as it is
     *
     * @param array $args
     */

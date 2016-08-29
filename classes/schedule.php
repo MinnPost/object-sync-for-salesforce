@@ -10,6 +10,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     protected $salesforce;
     protected $mappings;
     protected $schedule_name;
+    protected $logging;
 
 
 	/**
@@ -27,7 +28,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     * @throws \Exception
     */
 
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name, $logging ) {
         
         $this->wpdb = &$wpdb;
         $this->version = $version;
@@ -37,6 +38,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
         $this->salesforce = $salesforce;
         $this->mappings = $mappings;
         $this->schedule_name = $schedule_name;
+        $this->logging = $logging;
 
         $this->add_filters();
 
@@ -138,7 +140,6 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 		if ( isset( $data['class'] ) ) {
 			$class = new $data['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this, $this->schedule_name );
 			$method = $data['method'];
-			//$instance = $class::get_instance;
 			$task = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
 		}
 		return false;

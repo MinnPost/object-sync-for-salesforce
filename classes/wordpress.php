@@ -9,8 +9,7 @@ class Wordpress {
     protected $version;
     protected $text_domain;
     protected $mappings;
-    protected $object_types;
-
+    protected $logging;
     public $wordpress_types_not_posts;
 
     /**
@@ -24,11 +23,12 @@ class Wordpress {
     * @param array $wordpress_types_ignore
     * @throws \Exception
     */
-	public function __construct( $wpdb, $version, $text_domain, $mappings, $wordpress_types_not_posts = array(), $wordpress_types_ignore = array() ) {
+	public function __construct( $wpdb, $version, $text_domain, $mappings, $logging, $wordpress_types_not_posts = array(), $wordpress_types_ignore = array() ) {
 		$this->wpdb = &$wpdb;
 		$this->version = $version;
 		$this->text_domain = $text_domain;
 		$this->mappings = $mappings;
+        $this->logging = $logging;
 		$this->wordpress_objects = $this->get_object_types( $wordpress_types_not_posts, $wordpress_types_ignore );
 		$this->options = array(
 			'cache' => true,
