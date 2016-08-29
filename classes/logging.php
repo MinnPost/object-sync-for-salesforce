@@ -94,7 +94,7 @@ class Salesforce_Logging extends WP_Logging {
     /**
      * Setup new log entry
      *
-     * Check and see if we should log anything, and if so, set up the entry for adding
+     * Check and see if we should log anything, and if so, send it to add()
      *
      * @access      public
      * @since       1.0
@@ -104,18 +104,10 @@ class Salesforce_Logging extends WP_Logging {
      * @return      none
     */
 
-    public function setup( $response, $trigger, $code, $success_codes, $refresh_code ) {
+    public function setup( $title, $message, $trigger, $parent = 0 ) {
         if ( $this->enabled === TRUE ) {
             $triggers_to_log = get_option( 'salesforce_api_triggers_to_log', array() );
             if ( in_array( $trigger, $triggers_to_log ) ) {
-                if ( in_array( $code, $success_codes ) ) {
-                    $result = 'Success';
-                } else if ( $code === $refresh_code ) {
-                    $success = 'Refresh';
-                } else {
-                    $result = 'Error';
-                }
-
                 $this->add( $title, $message, $parent );
             }
         }
