@@ -397,12 +397,19 @@ class Salesforce_Push {
 				catch ( SalesforceException $e ) {
 					//salesforce_set_message($e->getMessage(), 'error');
 					error_log( 'salesforce error: ' . $e->getMessage() );
+
+					// hook for push fail
+					do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
 				}
 
 				//salesforce_set_message( 'object has been deleted' );
 
 				// delete the map row from wordpress after the salesforce row has been deleted
 				$this->mappings->delete_object_map( $mapping_object['id'] );
+
+				// hook for push success
+				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
+
 		  	} // there is no map row
 		  	return;
 		}
@@ -512,6 +519,10 @@ class Salesforce_Push {
 			catch ( SalesforceException $e ) {
 				error_log( 'salesforce_push error:' . $e);
 				//salesforce_set_message($e->getMessage(), 'error');
+
+				// hook for push fail
+				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
+
 				return;
 			}
 
@@ -525,13 +536,18 @@ class Salesforce_Push {
 			if ( empty($result['errorCode'] ) ) {
 				$salesforce_id = $salesforce_data['id'];
 				$mapping_object = $this->create_object_match( $object, $object_id, $salesforce_id, $mapping );
-				//module_invoke_all('salesforce_push_success', $op, $sfapi->response, $synced_entity);
+
+				// hook for push success
+				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
 			} else {
 				// salesforce failed
 				$message = __('Failed to sync ' . $mapping['salesforce_object'] . ' with Salesforce. Code: ' . $salesforce_data['errorCode'] . ' and message: ' . $salesforce_data['message'], $this->text_domain );
 				//salesforce_set_message($message, 'error');
 				error_log('salesforce_push error:', print_r($message, true));
-				//module_invoke_all('salesforce_push_fail', $op, $sfapi->response, $synced_entity);
+
+				// hook for push fail
+				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
+
 				return;
 			}
 
@@ -556,6 +572,10 @@ class Salesforce_Push {
 				//	'%name' => $entity_wrapper->label(),
 				//	'%sfid' => $mapping_object->salesforce_id,
 				//)));
+
+				// hook for push success
+				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
+
 			}
 			catch ( SalesforceException $e ) {
 				error_log( 'salesforce_push error: ' . $e );
@@ -567,6 +587,10 @@ class Salesforce_Push {
 				)), 'error');*/
 				$mapping_object['last_sync_status'] = $this->mappings->status_error;
 				$mapping_object['last_sync_message'] = $e->getMessage();
+
+				// hook for push fail
+				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
+
 			}
 
 			// tell the mapping object - whether it is new or already existed - how we just used it
@@ -616,6 +640,7 @@ class Salesforce_Push {
 	* When the scheduled tasks run, this is the processor
 	* We may already have all the functionality we need in the schedule.php class
 	* keeping this here for reference until i know for sure
+	* todo: investigate this and see if it is better than current way of running through the scheduled entries
 	*/
 	function push_schedule() {
 	  
@@ -794,7 +819,6 @@ class Salesforce_Push {
 		  }
 
 		  $mapping_object->last_sync_status = $this->mappings->status_success;
-		  // module_invoke_all('salesforce_push_success', $op, $sfapi->response, $synced_entity);
 		  $mapping_object->last_sync = $_SERVER['REQUEST_TIME'];
 		  $mapping_object->last_sync_action = 'push';
 		  $mapping_object->save();
@@ -803,7 +827,7 @@ class Salesforce_Push {
 			array('%id' => $result->id, '%op' => $op)
 		  );
 
-		  module_invoke_all('salesforce_push_success', $op, $result, $synced_entity);
+		  do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
 		}
 		else {
 		  // Otherwise, the item is considered failed.
@@ -824,7 +848,6 @@ class Salesforce_Push {
 			$mapping_object->last_sync = $_SERVER['REQUEST_TIME'];
 			$mapping_object->last_sync_action = 'push';
 			$mapping_object->last_sync_status = $this->mappings->status_error;
-			//module_invoke_all('salesforce_push_fail', $op, $sfapi->response, $synced_entity);
 			$mapping_object->last_sync_message = t('Push error via %function with the following messages: @message.', array(
 			  '%function' => __FUNCTION__,
 			  '@message' => implode(' | ', $error_messages),
@@ -832,7 +855,7 @@ class Salesforce_Push {
 			$mapping_object->save();
 		  }
 
-		  module_invoke_all('salesforce_push_fail', $op, $result, $synced_entity);
+		  do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
 		}
 	  }
 	}
