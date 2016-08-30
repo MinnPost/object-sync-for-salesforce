@@ -32,7 +32,18 @@ For a more detailed description of each component class, see below.
 
 ## Classes
 
-Classes are listed in the order that they are loaded by the plugin.
+### Salesforce REST API
+
+This is the plugin's main class. It does a few things:
+
+1. Load the `wpdb` object and make it available to the other classes.
+2. Load all the other classes and pass them around to each other in the correct order.
+3. Create a Settings link on the plugin list screen.
+4. Load CSS and JavaScript for the admin screens.
+5. Get Salesforce login credentials.
+6. Provide an instance of itself that other plugins can use, especially to access the Salesforce API instance for making calls to it.
+
+Additional classes are listed in the order that they are loaded by the plugin.
 
 ### Activate & Deactivate (activate, deactivate)
 
@@ -41,7 +52,7 @@ These classes create or delete the plugin's custom database tables. Tables are:
 1. `wp_salesforce_field_map`: Given WordPress and Salesforce objects, map their corresponding fields (in an array) to each other. This sets which fields the two systems sync, whether it happens asynchronously, what order to use if there are conflicts, and whether to sync WordPress drafts of the object.
 2. `wp_salesforce_object_map`: Map individual object items between WordPress and Salesforce, and save the dates and API messages when they are last imported and exported.
 
-The Deactivate class also stops recurring tasks created by the `schedule` class, and deletes the custom post type for logging if it exists.
+The `deactivate` class also stops recurring tasks created by the `schedule` class, and deletes the custom post type for logging if it exists.
 
 
 ### Logging (logging)
@@ -66,10 +77,9 @@ Map WordPress content (including users) to Salesforce fields, including field le
 
 This class handles getting and setting WordPress core data.
 
-1. Load `wpdb` object that other plugin classes can use
-2. Get information, including content and metadata table structures, about all objects available in WordPress, including custom post types.
-3. Get data about objects based on their table structures and make it available to the plugin.
-4. Store and retrieve cache data.
+1. Get information, including content and metadata table structures, about all objects available in WordPress, including custom post types.
+2. Get data about objects based on their table structures and make it available to the plugin.
+3. Store and retrieve cache data.
 
 
 ### Salesforce (salesforce)
