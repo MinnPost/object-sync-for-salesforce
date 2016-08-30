@@ -550,10 +550,11 @@ class Salesforce_Push {
 				// hook for push success
 				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
 			} else {
-				// salesforce failed
-				$message = __('Failed to sync ' . $mapping['salesforce_object'] . ' with Salesforce. Code: ' . $salesforce_data['errorCode'] . ' and message: ' . $salesforce_data['message'], $this->text_domain );
-				//salesforce_set_message($message, 'error');
-				error_log('salesforce_push error:', print_r($message, true));
+
+				// create log entry for failed create or upsert
+				// this is part of the drupal module but i am failing to understand when it would ever fire, since the catch should catch the errors
+				// if we see this in the log entries, we can understand what it does, but probably not until then
+				$this->logging->setup( __( $salesforce_data['errorCode'] . ' error syncing: ' . $op . ' to Salesforce', $this->text_domain ), 'Object: ' . $mapping['salesforce_object'] . '<br>br>' . 'Message: ' . $salesforce_data['message'], $sf_sync_trigger, $object["$object_id"] );
 
 				// hook for push fail
 				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
