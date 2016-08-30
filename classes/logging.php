@@ -41,6 +41,17 @@ class Salesforce_Logging extends WP_Logging {
     }
 
     /**
+    * Set terms for Salesforce logs
+    *
+    * @param array $terms
+    * @return array $terms
+    */
+    public function set_log_types( $terms ) {
+        $terms[] = 'salesforce';
+        return $terms;
+    }
+
+    /**
     * Should logs be pruned at all?
     *
     * @param string $should_we_prune
@@ -52,17 +63,6 @@ class Salesforce_Logging extends WP_Logging {
             $should_we_prune = true;
         }
         return $should_we_prune;
-    }
-
-    /**
-    * Set terms for Salesforce logs
-    *
-    * @param array $terms
-    * @return array $terms
-    */
-    public function set_log_types( $terms ) {
-        $terms[] = 'salesforce';
-        return $terms;
     }
 
     /**
