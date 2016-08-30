@@ -9,8 +9,6 @@ class Wordpress_Salesforce_Deactivate {
     * What to do when the plugin is deactivated
     * @param string $version
     *
-    * todo: deactivate the logging stuff as well
-    *
     */
     public function __construct( $wpdb, $version, $text_domain, $schedule_name ) {
         $this->wpdb = &$wpdb;
@@ -18,6 +16,7 @@ class Wordpress_Salesforce_Deactivate {
         $this->schedule_name = $schedule_name;
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'wordpress_salesforce_drop_tables' ) );
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'clear_schedule' ) );
+        add_action( 'init', array( &$this, 'delete_log_post_type' ), 20 );
     }
 
     public function wordpress_salesforce_drop_tables() {
@@ -30,6 +29,10 @@ class Wordpress_Salesforce_Deactivate {
 
     public function clear_schedule() {
         wp_clear_scheduled_hook( $this->schedule_name );
+    }
+
+    public function delete_log_post_type() {
+        unregister_post_type( 'wp_log' );
     }
 
 }
