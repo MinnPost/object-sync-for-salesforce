@@ -299,7 +299,7 @@ class Salesforce_Push {
 			$map_sync_triggers = $mapping['sync_triggers'];
 			if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
 
-				// allow other plugins to prevent a push per-mapping.
+				// hook to allow other plugins to prevent a push per-mapping.
 				$push_allowed = apply_filters( 'salesforce_rest_api_push_object_allowed', TRUE, $object_type, $object, $sf_sync_trigger, $mapping );
 
 				// example to keep from pushing the user with id of 1
