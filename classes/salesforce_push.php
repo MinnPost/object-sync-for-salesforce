@@ -429,6 +429,22 @@ class Salesforce_Push {
 
 		$params = $this->map_params( $mapping, $object, FALSE, $is_new );
 
+		// if there is a prematch wordpress field - ie email - on the fieldmap object
+		if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
+			$prematch_field_wordpress = $params['prematch']['wordpress_field'];
+			$prematch_field_salesforce = $params['prematch']['salesforce_field'];
+			$prematch_value = $params['prematch']['value'];
+			unset( $params['prematch'] );
+		}
+
+		// if there is an external key field in salesforce - ie mailchimp user id - on the fieldmap object
+		if ( isset( $params['key'] ) && is_array( $params['key'] ) ) {
+			$key_field_wordpress = $params['key']['wordpress_field'];
+			$key_field_salesforce = $params['key']['salesforce_field'];
+			$key_value = $params['key']['value'];
+			unset( $params['key'] );
+		}
+
 		if ( $is_new === TRUE ) {
 			// create new object link in wp because the systems don't know about each other yet
 
@@ -438,22 +454,6 @@ class Salesforce_Push {
 			/*if ( $mapping['salesforce_record_type_default'] !== $this->mappings->default_record_type && empty( $params['RecordTypeId'] ) && ( $mapping['salesforce_object'] !== 'CampaignMember') ) {
 				$params['RecordTypeId'] = $mapping['salesforce_record_type_default'];
 			}*/
-
-			// if there is a prematch wordpress field - ie email - on the fieldmap object
-			if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
-				$prematch_field_wordpress = $params['prematch']['wordpress_field'];
-				$prematch_field_salesforce = $params['prematch']['salesforce_field'];
-				$prematch_value = $params['prematch']['value'];
-				unset( $params['prematch'] );
-			}
-
-			// if there is an external key field in salesforce - ie mailchimp user id - on the fieldmap object
-			if ( isset( $params['key'] ) && is_array( $params['key'] ) ) {
-				$key_field_wordpress = $params['key']['wordpress_field'];
-				$key_field_salesforce = $params['key']['salesforce_field'];
-				$key_value = $params['key']['value'];
-				unset( $params['key'] );
-			}
 
 			try {
 
