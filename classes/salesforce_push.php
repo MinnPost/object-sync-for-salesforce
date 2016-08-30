@@ -395,11 +395,13 @@ class Salesforce_Push {
 					$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 				}
 				catch ( SalesforceException $e ) {
-					//salesforce_set_message($e->getMessage(), 'error');
-					error_log( 'salesforce error: ' . $e->getMessage() );
+
+					// create log entry for failed delete
+					$this->logging->setup( 'Error: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'], $e->getMessage(), $sf_sync_trigger, $object["$object_id"] );
 
 					// hook for push fail
 					do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
+
 				}
 
 				// create log entry for successful delete
