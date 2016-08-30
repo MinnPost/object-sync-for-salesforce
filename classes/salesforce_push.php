@@ -397,7 +397,7 @@ class Salesforce_Push {
 				catch ( SalesforceException $e ) {
 
 					// create log entry for failed delete
-					$this->logging->setup( 'Error: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'], $e->getMessage(), $sf_sync_trigger, $object["$object_id"] );
+					$this->logging->setup( __( 'Error: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'], $this->text_domain ), $e->getMessage(), $sf_sync_trigger, $object["$object_id"] );
 
 					// hook for push fail
 					do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
@@ -405,8 +405,7 @@ class Salesforce_Push {
 				}
 
 				// create log entry for successful delete
-				$this->logging->setup( 'Success: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'], '', $sf_sync_trigger, $object["$object_id"] );
-				//salesforce_set_message( 'object has been deleted' );
+				$this->logging->setup( __( 'Success: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'], $this->text_domain ), '', $sf_sync_trigger, $object["$object_id"] );
 
 				// delete the map row from wordpress after the salesforce row has been deleted
 				$this->mappings->delete_object_map( $mapping_object['id'] );
@@ -415,6 +414,7 @@ class Salesforce_Push {
 				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
 
 		  	} // there is no map row
+
 		  	return;
 		}
 
@@ -428,7 +428,7 @@ class Salesforce_Push {
 		$params = $this->map_params( $mapping, $object, FALSE, $is_new );
 
 		if ( $is_new === TRUE ) {
-			// going to need to create new object link in wp because the systems don't know about each other yet
+			// create new object link in wp because the systems don't know about each other yet
 
 			// setup SF record type. in drupal, CampaignMember objects get their Campaign's type
 			// currently we don't have the data structure for this. it seems maybe unnecessary
