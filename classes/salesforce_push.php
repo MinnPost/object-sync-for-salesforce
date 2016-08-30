@@ -568,7 +568,7 @@ class Salesforce_Push {
 			// if the last sync is greater than the last time this object was updated, skip it
 			// this keeps us from doing redundant syncs
 			if ( $mapping_object['last_sync'] > $mapping_object['object_updated'] ) {
-				error_log('last sync is greater than last update');
+				$this->logging->setup( __( 'Notice: ' . $op . ': Did not sync with ' . $mapping_object['salesforce_id'] . ' ' . $mapping_object['salesforce_id'] . ' because the last sync timestamp was greater than the object updated timestamp', $this->text_domain ), 'Last sync time: ' . $mapping_object['last_sync'] . '<br>' . 'Object updated time: ' . $mapping_object['object_updated'], $sf_sync_trigger, $object["$object_id"] );
 				return;
 			}
 
