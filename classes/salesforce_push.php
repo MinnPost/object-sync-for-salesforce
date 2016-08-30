@@ -360,6 +360,8 @@ class Salesforce_Push {
 	*
 	* @return true or exit the method
 	*
+	* todo: add the wordpress object type/id to the log entry?
+	*
 	*/
 	public function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
@@ -579,23 +581,16 @@ class Salesforce_Push {
 				$mapping_object['last_sync_status'] = $this->mappings->status_success;
 				$mapping_object['last_sync_message'] = __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain );
 
-				//salesforce_set_message(t('%name has been synchronized with Salesforce record %sfid.', array(
-				//	'%name' => $entity_wrapper->label(),
-				//	'%sfid' => $mapping_object->salesforce_id,
-				//)));
+				$this->logging->setup( __( 'Success: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $salesforce_id, $this->text_domain ), '', $sf_sync_trigger, $object["$object_id"] );
 
 				// hook for push success
 				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
 
 			}
 			catch ( SalesforceException $e ) {
-				error_log( 'salesforce_push error: ' . $e );
-				/*salesforce_set_message(t('Error syncing @type @id to Salesforce record @sfid. Error message: "@msg".', array(
-					'@type' => $mapping_object->entity_type,
-					'@id' => $mapping_object->entity_id,
-					'@sfid' => $mapping_object->salesforce_id,
-					'@msg' => $e->getMessage(),
-				)), 'error');*/
+				// create log entry for failed update
+				$this->logging->setup( __( 'Error: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'], $this->text_domain ), $e->getMessage(), $sf_sync_trigger, $object["$object_id"] );
+
 				$mapping_object['last_sync_status'] = $this->mappings->status_error;
 				$mapping_object['last_sync_message'] = $e->getMessage();
 
