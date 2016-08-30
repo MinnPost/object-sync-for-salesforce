@@ -581,7 +581,7 @@ class Salesforce_Push {
 				$mapping_object['last_sync_status'] = $this->mappings->status_success;
 				$mapping_object['last_sync_message'] = __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain );
 
-				$this->logging->setup( __( 'Success: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $salesforce_id, $this->text_domain ), '', $sf_sync_trigger, $object["$object_id"] );
+				$this->logging->setup( __( 'Success: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'], $this->text_domain ), '', $sf_sync_trigger, $object["$object_id"] );
 
 				// hook for push success
 				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
