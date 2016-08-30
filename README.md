@@ -32,23 +32,80 @@ For a more detailed description of each component class, see below.
 
 ## Classes
 
-### Salesforce (salesforce)
-
-OAUTH2 authorization and wrapper around the Salesforce REST API. Methods support:
-
-1. The full oauth2 authorization flow
-2. Retrieving data from the Salesforce organization: versions available, objects and resources available and their metadata, identity of the logged in Salesforce user.
-3. API calls for SOQL queries, CRUD operations on objects
-4. Finding updated objects
-5. Caching all retrieve calls with the WordPress transient API.
+Classes are listed in the order that they are loaded by the plugin.
 
 ### Activate & Deactivate (activate, deactivate)
 
 These classes create or delete the plugin's custom database tables. Tables are:
 
-1. `wp_salesforce_field_map`: Given WordPress and Salesforce objects, map their corresponding fields (in an array) to each other. This sets which fields the two systems sync.
-2. `wp_salesforce_object_map`: Map individual object items between WordPress and Salesforce, and save the dates when they are last imported and exported.
-3. `wp_salesforce_object_match`: Set the field(s) that should be used to determine an already existing match between a WordPress and Salesforce item. Ex: use the `user_email` field to find a Salesforce Contact. This will work if the `user_email` is matched to a Salesforce field in `wp_salesforce_field_map`.
+1. `wp_salesforce_field_map`: Given WordPress and Salesforce objects, map their corresponding fields (in an array) to each other. This sets which fields the two systems sync, whether it happens asynchronously, what order to use if there are conflicts, and whether to sync WordPress drafts of the object.
+2. `wp_salesforce_object_map`: Map individual object items between WordPress and Salesforce, and save the dates and API messages when they are last imported and exported.
+
+The Deactivate class also stops recurring tasks created by the `schedule` class, and deletes the custom post type for logging if it exists.
+
+
+### Logging (logging)
+
+This class extends the [WP Logging Class](https://github.com/pippinsplugins/WP-Logging) to log plugin-specific events. The main class is stored in the /vendor/wp-logging folder, which we need to somehow tie into this plugin. Our extension does a few things:
+
+1. Force a type of 'salesforce' on all logs this plugin creates.
+2. Get logging-related options configured by the `admin` class.
+3. Setup new log entries based on the plugin's settings, including user-defined.
+4. Retrieve log entries related to this plugin.
+
+
+#### Salesforce Mapping (salesforce_mapping)
+
+Map WordPress content (including users) to Salesforce fields, including field level mapping.
+
+1. This class defines important values for each triggering event (create, edit, delete from both WordPress and Salesforce), how to identify which direction an object should use (WordPress, Salesforce, or sync), and data tables in WordPress. This class is available to the `wordpress`, `salesforce`, `schedule`, `salesforce_push`, `salesforce_pull`, and `admin` classes.
+2. There is a basic create/read/update/delete setup, including loading all results or a subset. Results can also be loaded by specific conditions, or by WordPress or Salesforce IDs.
+
+
+### Wordpress (wordpress)
+
+This class handles getting and setting WordPress core data.
+
+1. Load `wpdb` object that other plugin classes can use
+2. Get information, including content and metadata table structures, about all objects available in WordPress, including custom post types.
+3. Get data about objects based on their table structures and make it available to the plugin.
+4. Store and retrieve cache data.
+
+
+### Salesforce (salesforce)
+
+OAUTH2 authorization and wrapper around the Salesforce REST API. Methods support:
+
+1. Setup required parameters for all API calls
+2. Retrieving data from the Salesforce organization: versions available, objects and resources available and their metadata, identity of the logged in Salesforce user.
+3. The full OAUTH2 authorization flow, including refreshing the token when it expires.
+3. API calls for SOQL queries, CRUD operations on objects using PHP curl.
+4. Finding updated objects.
+5. Pass data from all read calls to the `wordpress` class for caching if it is enabled, or storage as a transient in `wp_options`.
+
+
+### Schedule (schedule)
+
+This class extends the [WP Background Processing](https://github.com/A5hleyRich/wp-background-processing) to schedule recurring tasks with more options than the `wp_cron` provided by WordPress Core. The main class is stored in the /vendor/wp-background-processing folder, which we need to somehow tie into this plugin. Our extension does a few things:
+
+1. Add a series of intervals at which tasks can run (5 minutes, 10 minutes, 15 minutes, 30 minutes, 45 minutes, 3 hours).
+2. Get a scheduled task and its contents.
+3. Create a scheduled task.
+4. Perform actions on the data contained in the task. We use this to send the data back to the `salesforce_push` or `salesforce_pull` classes, depending on which one called it.
+5. Allow for things to happen upon completion of a task.
+
+This class still needs some work to make it configurable, and hopefully to have multiple queues running at the same time so different parts of the plugin can use it. It's unclear how possible this is.
+
+
+### Salesforce Push (salesforce_push)
+
+Push WordPress data into Salesforce according to the mapping settings, including whether it should be asynchronous or not.
+
+1. Add hooks for create, update, delete of WordPress objects based on the WordPress -> Salesforce fieldmaps stored in the `salesforce_mapping` class.
+2. For each object type, get its data in an array to pass to Salesforce.
+3. Find out what kind of operation Salesforce needs - delete, upsert, create, or update - and format the WordPress data accordingly.
+4. Send the data - mapped according to the fieldmap - to the `salesforce` class for sending to the Salesforce REST API.
+
 
 ### Admin (admin)
 
@@ -67,18 +124,7 @@ The admin section is divided into tabs:
     - This tab lists all fieldmaps that have been created between WordPress and Salesforce objects, and allows for editing, cloning, or deleting them. Export doesn't currently do anything.
     - New fieldmaps can also be added. They require a label, a WordPress object, and a Salesforce object. Fields to map are displayed based on what fields each object has, after the object is chosen.
 
-#### Salesforce Mapping (salesforce_mapping)
-
-Map WordPress content (including users) to Salesforce fields, including field level mapping. The admin methods make calls to this class.
-
-1. There is a basic create/read/update/delete setup, including loading all results or a subset.
-2. 
-
 ### Classes Todo
-
-#### Salesforce Push (salesforce_push)
-
-Push WordPress data updates into Salesforce.
 
 #### Salesforce Pull (salesforce_pull)
   Pull Salesforce object updates into WordPress.
@@ -91,15 +137,24 @@ Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill i
 
 This plugin will aim to reproduce at least the hooks provided by the Drupal suite, so that other WordPress plugins can build on top of them.
 
+Current hooks include:
+
+### Filters
+
+- `salesforce_rest_api_push_object_allowed`: allow other plugins to prevent a push per-mapping.
+- `salesforce_rest_api_find_object_match`: allow other plugins to modify the $salesforce_id string here
+
+### Actions
+
+- `salesforce_rest_api_push_fail`: what to do if a push to Salesforce fails
+- `salesforce_rest_api_push_success`: what to do if a push to Salesforce is successful
+
 TODO hooks include:
 
 - `hook_salesforce_push_params_alter`: change what parameters are being sent to Salesforce before syncing occurs
 - `hook_salesforce_mapping_entity_uris_alter`: provide URLs manually for object types. Drupal does this within the salesforce_mapping module
-- `hook_salesforce_push_entity_allowed`: prevent pushing an object to Salesforce, given a fieldmap
 - `hook_salesforce_pull_entity_value_alter`: change the value being put into the CMS after getting it from Salesforce
 - `hook_salesforce_query_alter`: change a SOQL query before it gets sent to Salesforce
-- `hook_salesforce_push_success`: Data has been successfully pushed to Salesforce
-- `hook_salesforce_push_fail`: A data push to Salesforce has failed
 
 ## Notes
 
