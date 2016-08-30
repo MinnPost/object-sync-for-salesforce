@@ -521,8 +521,12 @@ class Salesforce_Push {
 				}
 			}
 			catch ( SalesforceException $e ) {
-				error_log( 'salesforce_push error:' . $e);
-				//salesforce_set_message($e->getMessage(), 'error');
+				// create log entry for failed create or upsert
+				$title = 'Error: ' . $op . ' ' . $mapping['salesforce_object'];
+				if ( $salesforce_id !== NULL ) {
+					$title .= ' ' . $salesforce_id;
+				}
+				$this->logging->setup( __( $title, $this->text_domain ), $e->getMessage(), $sf_sync_trigger, $object["$object_id"] );
 
 				// hook for push fail
 				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
