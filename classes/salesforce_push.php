@@ -402,6 +402,8 @@ class Salesforce_Push {
 					do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
 				}
 
+				// create log entry for successful delete
+				$this->logging->setup( 'Success: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'], '', $sf_sync_trigger, $object["$object_id"] );
 				//salesforce_set_message( 'object has been deleted' );
 
 				// delete the map row from wordpress after the salesforce row has been deleted

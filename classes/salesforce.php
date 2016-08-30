@@ -51,7 +51,8 @@ class Salesforce {
 		);
 		$this->success_codes = array( 200, 201, 204 );
 		$this->refresh_code = 401;
-		$this->success_or_refresh_codes = array_push( $this->success_codes, $this->refresh_code );
+		$this->success_or_refresh_codes = $this->success_codes;
+		$this->success_or_refresh_codes[] = $this->refresh_code;
 	}
 
 	/**

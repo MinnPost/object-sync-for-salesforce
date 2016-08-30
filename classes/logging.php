@@ -105,7 +105,7 @@ class Salesforce_Logging extends WP_Logging {
     */
 
     public function setup( $title, $message, $trigger, $parent = 0 ) {
-        if ( $this->enabled === TRUE ) {
+        if ( $this->enabled === '1' ) {
             $triggers_to_log = get_option( 'salesforce_api_triggers_to_log', array() );
             if ( in_array( $trigger, $triggers_to_log ) ) {
                 $this->add( $title, $message, $parent );
