@@ -207,7 +207,7 @@ class Wordpress {
 		}
 
         $fields = $this->get_wordpress_object_fields( $object_type );
-        foreach( $fields as $key => $value ) {
+        foreach ( $fields as $key => $value ) {
     		$field = $value['key'];
     		$wordpress_object[$field] = $data->{$field};
     	}

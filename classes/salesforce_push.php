@@ -128,17 +128,17 @@ class Salesforce_Push {
 	    if ( $post->post_modified_gmt == $post->post_date_gmt && $post->post_status !== 'trash' ){
 	        $update = 0;
 	        $delete = 0;
-	    } else if ( $post->post_status !== 'trash' ) {
+	    } elseif ( $post->post_status !== 'trash' ) {
 	        $update = 1;
 	        $delete = 0;
-	    } else if ( $post->post_status === 'trash' ) {
+	    } elseif ( $post->post_status === 'trash' ) {
 	    	$update = 0;
 	    	$delete = 1;
 	    }
 	    $post = $this->wordpress->get_wordpress_object_data( 'post', $post_id );
 		if ( $update === 1 ) {
 			$this->object_update( $post, 'post' );
-		} else if ( $delete === 1) {
+		} elseif ( $delete === 1) {
 			$this->object_delete( $post, 'post' );
 		} else {
 			$this->object_insert( $post, 'post' );
@@ -489,7 +489,7 @@ class Salesforce_Push {
 					if ( isset($prematch_field_wordpress ) ) {
 						$upsert_key = $prematch_field_salesforce;
 						$upsert_value = $encoded_prematch_value;
-					} else if ( isset( $key_field_wordpress ) ) {
+					} elseif ( isset( $key_field_wordpress ) ) {
 						$upsert_key = $key_field_salesforce;
 						$upsert_value = $encoded_key_value;
 					}

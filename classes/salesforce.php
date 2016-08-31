@@ -292,7 +292,7 @@ class Salesforce {
 		if ( $method === 'POST' ) {
 			curl_setopt( $curl, CURLOPT_POST, TRUE );
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
-		} else if ( $method === 'PATCH' || $method === 'DELETE' ) {
+		} elseif ( $method === 'PATCH' || $method === 'DELETE' ) {
 			curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, $method );
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
 		}
@@ -318,7 +318,7 @@ class Salesforce {
 			$curl_error = curl_error( $curl );
 			if ( $curl_error !== '' ) {
 				throw new SalesforceException( $curl_error );
-			} else if ( $data[0]['errorCode'] !== '' ) { // salesforce uses this structure to return errors
+			} elseif ( $data[0]['errorCode'] !== '' ) { // salesforce uses this structure to return errors
 				//throw new SalesforceException( $data[0]['message'], -1, $code );
 				throw new SalesforceException( esc_html__( 'URL: ' . $url . ' Message: ' . $data[0]['message'] . '  Code: ' . $code, $this->text_domain ) );
 			}
@@ -644,10 +644,10 @@ class Salesforce {
 		// Sort field properties, because salesforce API always provides them in a
 		// random order. We sort them so that stored and exported data are
 		// standardized and predictable.
-		foreach( $object['data']['fields'] as &$field ) {
+		foreach ( $object['data']['fields'] as &$field ) {
 			ksort( $field );
 			if (!empty( $field['picklistValues'] ) ) {
-				foreach( $field['picklistValues'] as &$picklist_value ) {
+				foreach ( $field['picklistValues'] as &$picklist_value ) {
 					ksort( $picklist_value );
 				}
 			}

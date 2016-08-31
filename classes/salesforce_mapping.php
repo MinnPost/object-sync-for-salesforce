@@ -108,7 +108,7 @@ class Salesforce_Mapping {
             $map['fields'] = maybe_unserialize( $map['fields'] );
             $map['sync_triggers'] = maybe_unserialize( $map['sync_triggers'] );
             return $map;
-        } else if ( !empty( $conditions ) ) { // get multiple but with a limitation
+        } elseif ( !empty( $conditions ) ) { // get multiple but with a limitation
             $mappings = array();
         
             if ( !empty( $conditions ) ) {
@@ -276,7 +276,7 @@ class Salesforce_Mapping {
         if ( $id !== NULL ) { // get one fieldmap
             $map = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
             return $map;
-        } else if ( !empty( $conditions ) ) { // get multiple but with a limitation
+        } elseif ( !empty( $conditions ) ) { // get multiple but with a limitation
             $mappings = array();
         
             if ( !empty( $conditions ) ) {

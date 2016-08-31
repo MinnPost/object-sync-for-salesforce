@@ -32,6 +32,8 @@ class Wordpress_Salesforce_Admin {
         // todo: we should think about what kind of admin_notices to use, if any
         // https://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
 
+        // todo: we need a way to show the salesforce data and trigger automatic actions from the admin view of the user profile
+
         $this->add_actions();
 
         // we can map objects to salesforce that are not 'posts' but we need to tell the plugin what they are
@@ -65,6 +67,10 @@ class Wordpress_Salesforce_Admin {
 
     /**
     * Render full admin pages in WordPress
+    *
+    * todo: maybe create separate html template/views for this
+    * todo: do some better css so it doesn't look awful
+    *
     */ 
     public function show_admin_page() {
         echo '<div class="wrap">';
@@ -84,9 +90,8 @@ class Wordpress_Salesforce_Admin {
         $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $this->tabs( $tabs, $tab );
 
-        if ( ! current_user_can('manage_options') ){
-            //salesforce_api_admin_render_header( __("You don't have permission to manage Salesforce API settings",'salesforce-api'),'error');
-            //salesforce_api_admin_render_footer();
+        // todo: figure out what exact permissions to require here, and maybe use an admin notice and a redirect for users who don't have those permissions
+        if ( ! current_user_can('manage_options') ) {
             return;
         }
 
@@ -96,17 +101,17 @@ class Wordpress_Salesforce_Admin {
         $text_domain = $this->text_domain;
 
         try {
-            switch( $tab ) {
+            switch ( $tab ) {
                 case 'authorize':
                     if ( isset( $_GET['code'] ) )  {
                         $is_authorized = $this->salesforce['sfapi']->request_token( esc_attr( $_GET['code'] ) );
                         echo "<script>window.location = '$callback_url';</script>";
-                    } else if ( $this->salesforce['is_authorized'] === true ) {
+                    } elseif ( $this->salesforce['is_authorized'] === true ) {
                         echo '<div class="success"><h2>Salesforce is successfully authenticated.</h2></div>';
                         echo '<p><a class="button-primary" href="' . $callback_url . '&amp;tab=logout">Disconnect from Salesforce</a></p>';
                         $demo = $this->demo( $this->salesforce['sfapi'] );
                         echo $demo;
-                    } else if ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
+                    } elseif ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
                         echo '<p><a class="button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
                     } // need to throw an error here if all the stuff is missing
                     break;
@@ -123,7 +128,7 @@ class Wordpress_Salesforce_Admin {
 
                         if ( isset( $posted ) && is_array( $posted ) ) {
                             $map = $posted;
-                        } else if ( $method === 'edit' || $method === 'clone' || $method === 'delete' ) {
+                        } elseif ( $method === 'edit' || $method === 'clone' || $method === 'delete' ) {
                             $map = $this->mappings->get_fieldmaps( $_GET['id'] );
                         }
 
@@ -300,7 +305,7 @@ class Wordpress_Salesforce_Admin {
                                                         $checked_sf_wp = ' checked';
                                                         $checked_wp_sf = '';
                                                         $checked_sync = '';
-                                                    } else if ( $value['direction'] === 'wp_sf' ) {
+                                                    } elseif ( $value['direction'] === 'wp_sf' ) {
                                                         $checked_sf_wp = '';
                                                         $checked_wp_sf = ' checked';
                                                         $checked_sync = '';
@@ -328,7 +333,7 @@ class Wordpress_Salesforce_Admin {
                                         </tr>
                                         <?php
                                             }   
-                                        } else if ( isset( $wordpress_object ) && isset( $salesforce_object ) ) {
+                                        } elseif ( isset( $wordpress_object ) && isset( $salesforce_object ) ) {
                                         ?>
                                         <tr>
                                             <td class="column-wordpress_field">
@@ -608,7 +613,7 @@ class Wordpress_Salesforce_Admin {
                 ),
             ),
         );
-        foreach( $salesforce_settings as $key => $attributes ) {
+        foreach ( $salesforce_settings as $key => $attributes ) {
             $id = 'salesforce_api_' . $key;
             $name = 'salesforce_api_' . $key;
             $title = $attributes['title'];
@@ -729,7 +734,7 @@ class Wordpress_Salesforce_Admin {
                 )
             ),
         );
-        foreach( $salesforce_settings as $key => $attributes ) {
+        foreach ( $salesforce_settings as $key => $attributes ) {
             $id = 'salesforce_api_' . $key;
             $name = 'salesforce_api_' . $key;
             $title = $attributes['title'];
