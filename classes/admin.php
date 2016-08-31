@@ -668,6 +668,33 @@ class Wordpress_Salesforce_Admin {
                     'constant' => ''
                 ),
             ),
+            'statuses_to_log' => array(
+                'title' => 'Statuses to log',
+                'callback' => $callbacks['checkboxes'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'checkboxes',
+                    'desc' => 'these are the statuses to log',
+                    'items' => array(
+                        'error' => array(
+                            'text' => 'Error',
+                            'id' => 'error',
+                            'desc' => ''
+                        ),
+                        'success' => array(
+                            'text' => 'Success',
+                            'id' => 'success',
+                            'desc' => ''
+                        ),
+                        'notice' => array(
+                            'text' => 'Notice',
+                            'id' => 'notice',
+                            'desc' => ''
+                        )
+                    )
+                )
+            ),
             'prune_logs' => array(
                 'title' => 'Automatically delete old log entries?',
                 'callback' => $callbacks['text'],

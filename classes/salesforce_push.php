@@ -395,9 +395,15 @@ class Salesforce_Push {
 					$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 				}
 				catch ( SalesforceException $e ) {
-
+					$status = 'error';
 					// create log entry for failed delete
-					$this->logging->setup( __( 'Error: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ), $e->getMessage(), $sf_sync_trigger, $object["$object_id"] );
+					$this->logging->setup(
+						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+						$e->getMessage(),
+						$sf_sync_trigger,
+						$object["$object_id"],
+						$status
+					);
 
 					// hook for push fail
 					do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
@@ -406,7 +412,14 @@ class Salesforce_Push {
 
 				if ( !isset( $e ) ) {
 					// create log entry for successful delete if the result had no errors
-					$this->logging->setup( __( 'Success: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ), '', $sf_sync_trigger, $object["$object_id"] );
+					$status = 'success';
+					$this->logging->setup(
+						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+						'',
+						$sf_sync_trigger,
+						$object["$object_id"],
+						$status
+					);
 
 					// hook for push success
 					do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
@@ -527,12 +540,19 @@ class Salesforce_Push {
 			}
 			catch ( SalesforceException $e ) {
 				// create log entry for failed create or upsert
-				$title = 'Error: ' . $op . ' ' . $mapping['salesforce_object'];
+				$status = 'error';
+				$title = ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'];
 				if ( $salesforce_id !== NULL ) {
 					$title .= ' ' . $salesforce_id;
 				}
 				$title .=  ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')';
-				$this->logging->setup( __( $title, $this->text_domain ), $e->getMessage(), $sf_sync_trigger, $object["$object_id"] );
+				$this->logging->setup(
+					__( $title, $this->text_domain ),
+					$e->getMessage(),
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
 
 				// hook for push fail
 				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
@@ -550,7 +570,14 @@ class Salesforce_Push {
 			// i think maybe this is redundant and will never get called. leaving it here for now because drupal module has it
 			if ( empty($result['errorCode'] ) ) {
 				$salesforce_id = $salesforce_data['id'];
-				$this->logging->setup( __( 'Success: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $salesforce_id . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ), '', $sf_sync_trigger, $object["$object_id"] );
+				$status = 'success';
+				$this->logging->setup(
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $salesforce_id . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+					'',
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
 
 				$mapping_object = $this->create_object_match( $object, $object_id, $salesforce_id, $mapping );
 
@@ -561,7 +588,14 @@ class Salesforce_Push {
 				// create log entry for failed create or upsert
 				// this is part of the drupal module but i am failing to understand when it would ever fire, since the catch should catch the errors
 				// if we see this in the log entries, we can understand what it does, but probably not until then
-				$this->logging->setup( __( $salesforce_data['errorCode'] . ' error syncing: ' . $op . ' to Salesforce (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ), 'Object: ' . $mapping['salesforce_object'] . '<br>br>' . 'Message: ' . $salesforce_data['message'], $sf_sync_trigger, $object["$object_id"] );
+				$status = 'error';
+				$this->logging->setup(
+					__( $salesforce_data['errorCode'] . ' ' . $status . ' syncing: ' . $op . ' to Salesforce (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+					'Object: ' . $mapping['salesforce_object'] . '<br>br>' . 'Message: ' . $salesforce_data['message'],
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
 
 				// hook for push fail
 				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
@@ -574,7 +608,14 @@ class Salesforce_Push {
 			// if the last sync is greater than the last time this object was updated, skip it
 			// this keeps us from doing redundant syncs
 			if ( $mapping_object['last_sync'] > $mapping_object['object_updated'] ) {
-				$this->logging->setup( __( 'Notice: ' . $op . ': Did not sync WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ' with ' . $mapping_object['salesforce_id'] . ' ' . $mapping_object['salesforce_id'] . ' because the last sync timestamp was greater than the object updated timestamp', $this->text_domain ), 'Last sync time: ' . $mapping_object['last_sync'] . '<br>' . 'Object updated time: ' . $mapping_object['object_updated'], $sf_sync_trigger, $object["$object_id"] );
+				$status = 'notice';
+				$this->logging->setup(
+					__( ucfirst( $status ) . ': ' . $op . ': Did not sync WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ' with ' . $mapping_object['salesforce_id'] . ' ' . $mapping_object['salesforce_id'] . ' because the last sync timestamp was greater than the object updated timestamp', $this->text_domain ),
+					'Last sync time: ' . $mapping_object['last_sync'] . '<br>' . 'Object updated time: ' . $mapping_object['object_updated'],
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
 				return;
 			}
 
@@ -585,7 +626,14 @@ class Salesforce_Push {
 				$mapping_object['last_sync_status'] = $this->mappings->status_success;
 				$mapping_object['last_sync_message'] = __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain );
 
-				$this->logging->setup( __( 'Success: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ), '', $sf_sync_trigger, $object["$object_id"] );
+				$status = 'success';
+				$this->logging->setup(
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+					'',
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
 
 				// hook for push success
 				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
@@ -593,7 +641,14 @@ class Salesforce_Push {
 			}
 			catch ( SalesforceException $e ) {
 				// create log entry for failed update
-				$this->logging->setup( __( 'Error: ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ), $e->getMessage(), $sf_sync_trigger, $object["$object_id"] );
+				$status = 'error';
+				$this->logging->setup(
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+					$e->getMessage(),
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
 
 				$mapping_object['last_sync_status'] = $this->mappings->status_error;
 				$mapping_object['last_sync_message'] = $e->getMessage();

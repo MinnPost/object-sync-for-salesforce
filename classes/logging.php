@@ -5,7 +5,10 @@ class Salesforce_Logging extends WP_Logging {
 	protected $wpdb;
     protected $version;
     protected $text_domain;
-    protected $enabled;
+
+    public $enabled;
+    public $statuses_to_log;
+
 
     /**
     * Functionality for using the WP_Logging class
@@ -21,6 +24,7 @@ class Salesforce_Logging extends WP_Logging {
         $this->text_domain = $text_domain;
 
         $this->enabled = get_option( 'salesforce_api_enable_logging', FALSE );
+        $this->statuses_to_log = get_option( 'salesforce_api_statuses_to_log', array() );
 
         $this->init();
 
@@ -104,8 +108,8 @@ class Salesforce_Logging extends WP_Logging {
      * @return      none
     */
 
-    public function setup( $title, $message, $trigger, $parent = 0 ) {
-        if ( $this->enabled === '1' ) {
+    public function setup( $title, $message, $trigger, $parent = 0, $status ) {
+        if ( $this->enabled === '1' && in_array( $status, $this->statuses_to_log ) ) {
             $triggers_to_log = get_option( 'salesforce_api_triggers_to_log', array() );
             if ( in_array( $trigger, $triggers_to_log ) ) {
                 $this->add( $title, $message, $parent );
