@@ -138,7 +138,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 	 */
 	protected function task( $data ) {
 		if ( isset( $data['class'] ) ) {
-			$class = new $data['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this, $this->schedule_name );
+			$class = new $data['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this, $this->schedule_name, $this->logging );
 			$method = $data['method'];
 			$task = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
 		}
