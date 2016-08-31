@@ -96,7 +96,7 @@ OAUTH2 authorization and wrapper around the Salesforce REST API. Methods support
 
 ### Schedule (schedule)
 
-This class extends the [WP Background Processing](https://github.com/A5hleyRich/wp-background-processing) to schedule recurring tasks with more options than the `wp_cron` provided by WordPress Core. The main class is stored in the /vendor/wp-background-processing folder, which we need to somehow tie into this plugin. Our extension does a few things:
+This class extends the [WP Background Processing](https://github.com/A5hleyRich/wp-background-processing) class to schedule recurring tasks with more options than the `wp_cron` provided by WordPress Core. The main class is stored in the /vendor/wp-background-processing folder, which we need to somehow tie into this plugin. Our extension does a few things:
 
 1. Add a series of intervals at which tasks can run (5 minutes, 10 minutes, 15 minutes, 30 minutes, 45 minutes, 3 hours).
 2. Get a scheduled task and its contents.
