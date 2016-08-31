@@ -16,7 +16,7 @@ class Wordpress_Salesforce_Deactivate {
         $this->schedule_name = $schedule_name;
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'wordpress_salesforce_drop_tables' ) );
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'clear_schedule' ) );
-        add_action( 'init', array( &$this, 'delete_log_post_type' ), 20 );
+        register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'delete_log_post_type' ) );
     }
 
     public function wordpress_salesforce_drop_tables() {
