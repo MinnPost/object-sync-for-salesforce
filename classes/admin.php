@@ -67,6 +67,7 @@ class Wordpress_Salesforce_Admin {
 
     /**
     * Render full admin pages in WordPress
+    * This allows other plugins to add tabs to the Salesforce settings screen
     *
     * todo: maybe create separate html template/views for this
     * todo: do some better css so it doesn't look awful
@@ -86,6 +87,10 @@ class Wordpress_Salesforce_Admin {
         if ( $logging_enabled === '1' ) {
             $tabs['log_settings'] = 'Log Settings';
         }
+
+        // filter for extending the tabs available on the page
+        // currently it will go into the default switch case for $tab
+        $tabs = apply_filters( 'salesforce_rest_api_settings_tabs', $tabs );
 
         $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $this->tabs( $tabs, $tab );
@@ -486,13 +491,7 @@ class Wordpress_Salesforce_Admin {
                     $message = $this->logout();
                     echo '<p>' . $message . '</p>';
                     break;
-                case 'log_settings':
-                    echo '<form method="post" action="options.php">';
-                        echo settings_fields( $tab ) . do_settings_sections( $tab );
-                        submit_button( 'Save settings' );
-                    echo '</form>';
-                    break;
-                default:
+                case 'settings':
                     $consumer_key = $this->login_credentials['consumer_key'];
                     $consumer_secret = $this->login_credentials['consumer_secret'];
 
@@ -513,6 +512,12 @@ class Wordpress_Salesforce_Admin {
                             submit_button( 'Save settings' );
                         echo '</form>';
                     }
+                    break;
+                default:
+                    echo '<form method="post" action="options.php">';
+                        echo settings_fields( $tab ) . do_settings_sections( $tab );
+                        submit_button( 'Save settings' );
+                    echo '</form>';
                     break;
             }
 
