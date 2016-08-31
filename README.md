@@ -153,6 +153,7 @@ Current hooks include:
 
 - `salesforce_rest_api_push_object_allowed`: allow other plugins to prevent a push per-mapping.
 - `salesforce_rest_api_find_object_match`: allow other plugins to modify the $salesforce_id string here
+- `salesforce_rest_api_settings_tabs`: allow other plugins to add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
 
 ### Actions
 
