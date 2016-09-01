@@ -98,13 +98,13 @@ OAUTH2 authorization and wrapper around the Salesforce REST API. Methods support
 
 This class extends the [WP Background Processing](https://github.com/A5hleyRich/wp-background-processing) class to schedule recurring tasks with more options than the `wp_cron` provided by WordPress Core. The main class is stored in the /vendor/wp-background-processing folder, which we need to somehow tie into this plugin. Our extension does a few things:
 
-1. Add a series of intervals at which tasks can run (5 minutes, 10 minutes, 15 minutes, 30 minutes, 45 minutes, 3 hours).
+1. Add the frequency defined in the admin settings to the `cron_schedules` as a recurring item. Ex: every 5 minutes.
 2. Get a scheduled task and its contents.
 3. Create a scheduled task.
 4. Perform actions on the data contained in the task. We use this to send the data back to the `salesforce_push` or `salesforce_pull` classes, depending on which one called it.
 5. Allow for things to happen upon completion of a task.
 
-This class still needs some work to make it configurable, and hopefully to have multiple queues running at the same time so different parts of the plugin can use it. It's unclear how possible this is.
+For this class, the frequency is configurable, but only one queue can run at a time. It's possible we can later extend it to have multiple queues running at the same time so different parts of the plugin can use it. This is not a quick change, and we've documented this in one of the active GitHub issues.
 
 
 ### Salesforce Push (salesforce_push)

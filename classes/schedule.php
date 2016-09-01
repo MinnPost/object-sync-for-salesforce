@@ -12,9 +12,6 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     protected $schedule_name;
     protected $logging;
 
-    public $schedule_frequency;
-
-
 	/**
     * Functionality for syncing WordPress objects with Salesforce
     * todo: figure out if we need to bring in all these parameters or if there's a better way
@@ -86,9 +83,31 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 
     }
 
+    /**
+    * Convert the schedule frequency from the admin settings into an array
+    * interval must be in seconds for the class to use it
+    *
+    */
+    public function get_schedule_frequency_key() {
+    	$schedule_number = get_option( 'salesforce_api_schedule_number', '' );
+    	$schedule_unit = get_option( 'salesforce_api_schedule_unit', '' );
+
+		switch ( $schedule_unit ) {
+			case 'minutes':
+				$seconds = 60;
+				break;
+			case 'hours':
+				$seconds = 3600;
+				break;
+		}
+
+		$key = $schedule_unit . '_' . $schedule_number;
+
+		return $key;
+
+    }
 
     // todo: we should trigger a simple salesforce api call in here, or somewhere, so the oauth token never expires.
-
 
     /**
      * Schedule function
@@ -98,8 +117,9 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
      * @return void
      */
     public function schedule() {
+    	$schedule_frequency = $this->get_schedule_frequency_key();
 	    if (! wp_next_scheduled ( $this->schedule_name ) ) {
-			wp_schedule_event( time(), $this->schedule_frequency, $this->schedule_name );
+			wp_schedule_event( time(), $schedule_frequency, $this->schedule_name );
 	    }
 	    add_action( $this->schedule_name, array( $this, 'call_handler' ) ); // run the handle method 
     }
