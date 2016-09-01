@@ -333,7 +333,7 @@ class Salesforce_Push {
 						'class' => 'Salesforce_Push',
 						'method' => 'salesforce_push_sync_rest'
 					);
-					// todo: figure out how to set the schedule name and frequency here, so we could do it in specific methods
+					// eventually would like to figure out how to set the schedule name and frequency here, so we could do it in specific methods
 					// made this into a github issue so we can put it on the shelf for now: https://github.com/MinnPost/salesforce-rest-api/issues/3
 					$queue = $this->schedule->push_to_queue( $data );
 					$save = $this->schedule->save();
