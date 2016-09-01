@@ -104,7 +104,7 @@ class Salesforce_Rest_API {
 		$this->version = '0.0.1';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
-		$this->schedule_name = 'process_queue';
+		$this->schedule_name = 'salesforce_queue';
 
 		$this->activated = $this->activate( $this->wpdb, $this->version, $this->text_domain );
 		$this->deactivate( $this->wpdb, $this->version, $this->text_domain, $this->schedule_name );

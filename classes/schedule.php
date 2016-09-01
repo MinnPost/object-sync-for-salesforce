@@ -12,6 +12,8 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     protected $schedule_name;
     protected $logging;
 
+    public $schedule_frequency;
+
 
 	/**
     * Functionality for syncing WordPress objects with Salesforce
@@ -41,10 +43,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
         $this->logging = $logging;
 
         $this->add_filters();
-
         $this->schedule(); // currently this creates a scheduled event for $this->schedule_name
-
-//        $this->frequency = $frequency;
 
     }
 
@@ -53,59 +52,42 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     *
     */
     public function add_filters() {
-		add_filter( 'cron_schedules', array( &$this, 'add_scheduled_interval' ) );
+		add_filter( 'cron_schedules', array( &$this, 'set_schedule_frequency' ) );
     }
 
     /**
-     * Add additional intervals to wp schedules
-     * This adds as many intervals as we want to the array of schedules
-     * todo: make this configurable
-     *
-     * @return array $schedules
-     */
-	public function add_scheduled_interval( $schedules ) {
-		$schedules['minutes_5'] = array(
-			'interval' => 300,
-			'display' => 'Every 5 minutes'
+    * Convert the schedule frequency from the admin settings into an array
+    * interval must be in seconds for the class to use it
+    *
+    */
+    public function set_schedule_frequency( $schedules ) {
+    	$schedule_number = get_option( 'salesforce_api_schedule_number', '' );
+    	$schedule_unit = get_option( 'salesforce_api_schedule_unit', '' );
+
+		switch ( $schedule_unit ) {
+			case 'minutes':
+				$seconds = 60;
+				break;
+			case 'hours':
+				$seconds = 3600;
+				break;
+		}
+
+		$key = $schedule_unit . '_' . $schedule_number;
+
+		$schedules[$key] = array(
+			'interval' => $seconds * $schedule_number,
+			'display' => 'Every ' . $schedule_number . ' ' . $schedule_unit
 		);
-		$schedules['minutes_10'] = array(
-			'interval' => 600,
-			'display' => 'Every 10 minutes'
-		);
-		$schedules['minutes_15'] = array(
-			'interval' => 900,
-			'display' => 'Every 15 minutes'
-		);
-		$schedules['minutes_30'] = array(
-			'interval' => 1800,
-			'display' => 'Every 30 minutes'
-		);
-		$schedules['minutes_45'] = array(
-			'interval' => 2700,
-			'display' => 'Every 45 minutes'
-		);
-		$schedules['hours_3'] = array(
-			'interval' => 10800,
-			'display' => 'Every 3 hours'
-		);
+
+		$this->schedule_frequency = $key;
+
 		return $schedules;
-	}
+
+    }
+
 
     // todo: we should trigger a simple salesforce api call in here, or somewhere, so the oauth token never expires.
-
-
-	/**
-	* Get a schedule name
-	*
-	* @param string $key
-	*
-	* todo: want to be able to run multiple queues at once, but currently this is not the case
-	*
-	* @return array
-	*/
-    public function get_schedule( $key = 'default' ) {
-    	return $this->schedules[$key];
-    }
 
 
     /**
@@ -117,7 +99,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
      */
     public function schedule() {
 	    if (! wp_next_scheduled ( $this->schedule_name ) ) {
-			wp_schedule_event( time(), 'minutes_5', $this->schedule_name );
+			wp_schedule_event( time(), $this->schedule_frequency, $this->schedule_name );
 	    }
 	    add_action( $this->schedule_name, array( $this, 'call_handler' ) ); // run the handle method 
     }

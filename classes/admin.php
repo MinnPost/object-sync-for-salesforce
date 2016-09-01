@@ -80,6 +80,7 @@ class Wordpress_Salesforce_Admin {
             'settings' => 'Settings',
             'authorize' => 'Authorize',
             'fieldmaps' => 'Fieldmaps',
+            'schedule' => 'Scheduling',
         ); // this creates the tabs for the admin
 
         // optionally make tab(s) for logging and log settings
@@ -548,6 +549,7 @@ class Wordpress_Salesforce_Admin {
         $input_select_default = array( &$this, 'display_select' );
         $this->fields_settings( 'settings', 'settings', $input_callback_default );
         $this->fields_fieldmaps( 'fieldmaps', 'objects' );
+        $this->fields_scheduling( 'schedule', 'schedule', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default, 'select' => $input_select_default ) );
         $this->fields_log_settings( 'log_settings', 'log_settings', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default ) );
     }
 
@@ -650,6 +652,70 @@ class Wordpress_Salesforce_Admin {
     */
     private function fields_fieldmaps( $page, $section, $input_callback = '' ) {
         add_settings_section( $page, ucwords( $page ), null, $page );
+    }
+
+    /**
+    * Fields for the Scheduling tab
+    * This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option
+    *
+    * @param string $page
+    * @param string $section
+    * @param string $input_callback
+    */
+    private function fields_scheduling( $page, $section, $callbacks ) {
+        add_settings_section( $page, ucwords( str_replace('_', ' ', $page) ), null, $page );
+        $schedule_settings = array(
+            'schedule_number' => array(
+                'title' => 'Run schedule every',
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'text',
+                    'desc' => '',
+                    'constant' => ''
+                ),
+            ),
+            'schedule_unit' => array(
+                'title' => 'Time unit',
+                'callback' => $callbacks['select'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'select',
+                    'desc' => '',
+                    'items' => array(
+                        'minutes' => array(
+                            'text' => 'Minutes',
+                            'value' => 'minutes',
+                        ),
+                        'hours' => array(
+                            'text' => 'Hours',
+                            'value' => 'hours',
+                        )
+                    )
+                )
+            ),
+        );
+        foreach ( $schedule_settings as $key => $attributes ) {
+            $id = 'salesforce_api_' . $key;
+            $name = 'salesforce_api_' . $key;
+            $title = $attributes['title'];
+            $callback = $attributes['callback'];
+            $page = $attributes['page'];
+            $section = $attributes['section'];
+            $args = array_merge(
+                $attributes['args'],
+                array(
+                    'title' => $title,
+                    'id' => $id,
+                    'label_for' => $id,
+                    'name' => $name
+                )
+            );
+            add_settings_field( $id, $title, $callback, $page, $section, $args );
+            register_setting( $section, $id );
+        }
     }
 
     /**
