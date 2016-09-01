@@ -545,6 +545,7 @@ class Wordpress_Salesforce_Admin {
         $section = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $input_callback_default = array( &$this, 'display_input_field' );
         $input_checkboxes_default = array( &$this, 'display_checkboxes' );
+        $input_select_default = array( &$this, 'display_select' );
         $this->fields_settings( 'settings', 'settings', $input_callback_default );
         $this->fields_fieldmaps( 'fieldmaps', 'objects' );
         $this->fields_log_settings( 'log_settings', 'log_settings', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default ) );
@@ -661,7 +662,7 @@ class Wordpress_Salesforce_Admin {
     */
     private function fields_log_settings( $page, $section, $callbacks ) {
         add_settings_section( $page, ucwords( str_replace('_', ' ', $page) ), null, $page );
-        $salesforce_settings = array(
+        $log_settings = array(
             'enable_logging' => array(
                 'title' => 'Enable Logging?',
                 'callback' => $callbacks['text'],
@@ -766,7 +767,7 @@ class Wordpress_Salesforce_Admin {
                 )
             ),
         );
-        foreach ( $salesforce_settings as $key => $attributes ) {
+        foreach ( $log_settings as $key => $attributes ) {
             $id = 'salesforce_api_' . $key;
             $name = 'salesforce_api_' . $key;
             $title = $attributes['title'];
@@ -1017,6 +1018,34 @@ class Wordpress_Salesforce_Admin {
                 echo '<p class="description">' . $desc . '</p>';
             }
         }
+    }
+
+    /**
+    * Display for a dropdown
+    *
+    * @param array $args
+    */
+    public function display_select( $args ) {
+        $type   = $args['type'];
+        $id     = $args['label_for'];
+        $name   = $args['name'];
+        $desc   = $args['desc'];
+        $current_value = get_option( $name );
+        echo '<div><select id="' . $id . '" name="' . $name . '"><option value="">- Select one -</option>';
+        foreach ( $args['items'] as $key => $value ) {
+            $text = $value['text'];
+            $value = $value['value'];
+            $selected = '';
+            if ( $key === $current_value ) {
+                $selected = ' selected';
+            }
+            echo '<option value="' . $value . '"' . $selected . '>' . $text . '</option>';
+        }
+        echo '</select>';
+        if ( $desc != '' ) {
+            echo '<p class="description">' . $desc . '</p>';
+        }
+        echo '</div>';
     }
 
     /**
