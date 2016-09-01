@@ -69,23 +69,23 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 			'display' => 'Every 5 minutes'
 		);
 		$schedules['minutes_10'] = array(
-			'interval' => 300,
+			'interval' => 600,
 			'display' => 'Every 10 minutes'
 		);
 		$schedules['minutes_15'] = array(
-			'interval' => 300,
+			'interval' => 900,
 			'display' => 'Every 15 minutes'
 		);
 		$schedules['minutes_30'] = array(
-			'interval' => 300,
+			'interval' => 1800,
 			'display' => 'Every 30 minutes'
 		);
 		$schedules['minutes_45'] = array(
-			'interval' => 300,
+			'interval' => 2700,
 			'display' => 'Every 45 minutes'
 		);
 		$schedules['hours_3'] = array(
-			'interval' => 300,
+			'interval' => 10800,
 			'display' => 'Every 3 hours'
 		);
 		return $schedules;

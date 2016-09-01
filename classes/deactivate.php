@@ -28,7 +28,7 @@ class Wordpress_Salesforce_Deactivate {
     }
 
     public function clear_schedule() {
-        wp_clear_scheduled_hook( $this->schedule_name );
+        wp_clear_scheduled_hook( $this->schedule_name ); // if we can ever get multiple queues running for this plugin, this would need to clear all of them
     }
 
     public function delete_log_post_type() {
