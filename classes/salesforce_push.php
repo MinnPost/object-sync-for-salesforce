@@ -422,8 +422,6 @@ class Salesforce_Push {
 
 					// hook for push success
 					do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
-				} else {
-					error_log('there is an error object');
 				}
 
 				// delete the map row from wordpress after the salesforce row has been deleted
