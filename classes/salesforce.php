@@ -408,6 +408,10 @@ class Salesforce {
 	/**
 	* Refresh access token based on the refresh token. Updates session variable.
 	*
+	* todo: figure out how to do this as part of the schedule class
+	* currently this won't work because schedule runs too often. but if we can get multiple queues, we could put 
+	* this kind of event into a 24 hour event, for example
+	*
 	* @throws SalesforceException
 	*/
 	protected function refresh_token() {

@@ -107,8 +107,6 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 
     }
 
-    // todo: we should trigger a simple salesforce api call in here, or somewhere, so the oauth token never expires.
-
     /**
      * Schedule function
      * This creates and manages the scheduling of the task
