@@ -575,7 +575,7 @@ class Salesforce {
 	*
 	* part of core API calls
 	*/
-	public function objects( $conditions = array( 'updateable' => TRUE ), $reset = FALSE ) {
+	public function objects( $conditions = array( 'updateable' => TRUE, 'triggerable' => TRUE ), $reset = FALSE ) {
 
 	  	$result = $this->api_call( 'sobjects' );
 

@@ -550,7 +550,7 @@ class Wordpress_Salesforce_Admin {
         $input_callback_default = array( &$this, 'display_input_field' );
         $input_checkboxes_default = array( &$this, 'display_checkboxes' );
         $input_select_default = array( &$this, 'display_select' );
-        $this->fields_settings( 'settings', 'settings', $input_callback_default );
+        $this->fields_settings( 'settings', 'settings', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default ) );
         $this->fields_fieldmaps( 'fieldmaps', 'objects' );
         $this->fields_scheduling( 'schedule', 'schedule', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default, 'select' => $input_select_default ) );
         $this->fields_log_settings( 'log_settings', 'log_settings', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default ) );
@@ -564,12 +564,12 @@ class Wordpress_Salesforce_Admin {
     * @param string $section
     * @param string $input_callback
     */
-    private function fields_settings( $page, $section, $input_callback ) {
+    private function fields_settings( $page, $section, $callbacks ) {
         add_settings_section( $page, ucwords( $page ), null, $page );
         $salesforce_settings = array(
             'consumer_key' => array(
                 'title' => 'Consumer Key',
-                'callback' => $input_callback,
+                'callback' => $callbacks['text'],
                 'page' => $page,
                 'section' => $section,
                 'args' => array(
@@ -581,7 +581,7 @@ class Wordpress_Salesforce_Admin {
             ),
             'consumer_secret' => array(
                 'title' => 'Consumer Secret',
-                'callback' => $input_callback,
+                'callback' => $callbacks['text'],
                 'page' => $page,
                 'section' => $section,
                 'args' => array(
@@ -592,7 +592,7 @@ class Wordpress_Salesforce_Admin {
             ),
             'callback_url' => array(
                 'title' => 'Callback URL',
-                'callback' => $input_callback,
+                'callback' => $callbacks['text'],
                 'page' => $page,
                 'section' => $section,
                 'args' => array(
@@ -603,7 +603,7 @@ class Wordpress_Salesforce_Admin {
             ),
             'login_base_url' => array(
                 'title' => 'Login Base URL',
-                'callback' => $input_callback,
+                'callback' => $callbacks['text'],
                 'page' => $page,
                 'section' => $section,
                 'args' => array(
@@ -614,7 +614,7 @@ class Wordpress_Salesforce_Admin {
             ),
             'api_version' => array(
                 'title' => 'Salesforce API Version',
-                'callback' => $input_callback,
+                'callback' => $callbacks['text'],
                 'page' => $page,
                 'section' => $section,
                 'args' => array(
@@ -622,6 +622,30 @@ class Wordpress_Salesforce_Admin {
                     'desc' => '',
                     'constant' => 'SALESFORCE_API_VERSION'
                 ),
+            ),
+            'object_filters' => array(
+                'title' => 'Filter Salesforce Objects',
+                'callback' => $callbacks['checkboxes'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'checkboxes',
+                    'desc' => 'Allows you to limit which Salesforce objects can be mapped',
+                    'items' => array(
+                        'triggerable' => array(
+                            'text' => 'Only Triggerable objects',
+                            'id' => 'triggerable',
+                            'desc' => '',
+                            'default' => TRUE
+                        ),
+                        'updateable' => array(
+                            'text' => 'Only Updateable objects',
+                            'id' => 'updateable',
+                            'desc' => '',
+                            'default' => TRUE
+                        )
+                    )
+                )
             ),
         );
         foreach ( $salesforce_settings as $key => $attributes ) {
@@ -1086,6 +1110,9 @@ class Wordpress_Salesforce_Admin {
             $desc = $value['desc'];
             $checked = '';
             if (is_array( $options ) && in_array( $key, $options ) ) {
+                $checked = 'checked';
+            }
+            if ( isset( $value['default'] ) && $value['default'] === TRUE ) {
                 $checked = 'checked';
             }
             echo '<div><label><input type="' . $type. '" value="' . $key . '" name="' . $name . '[]" id="' . $id . '" ' . $checked . ' />' . $text . '</label></div>';
