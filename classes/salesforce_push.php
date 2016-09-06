@@ -406,12 +406,71 @@ class Salesforce_Push {
 		if ( $sf_sync_trigger == $this->mappings->sync_wordpress_delete ) {
 			if ( $mapping_object ) {
 				$op = 'Delete';
-				try {
-					$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
-				}
-				catch ( SalesforceException $e ) {
-					$status = 'error';
-					// create log entry for failed delete
+
+				$salesforce_check = $this->mappings->load_by_salesforce( $mapping_object['salesforce_id'] );
+
+				if ( count( $salesforce_check ) == count( $salesforce_check, COUNT_RECURSIVE ) ) {
+					try {
+						$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
+					}
+					catch ( SalesforceException $e ) {
+						$status = 'error';
+						// create log entry for failed delete
+						if ( isset( $this->logging ) ) {
+							$logging = $this->logging;
+						} else if ( class_exists( 'Salesforce_Logging' ) ) {
+							$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+						}
+
+						$logging->setup(
+							__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+							$e->getMessage(),
+							$sf_sync_trigger,
+							$object["$object_id"],
+							$status
+						);
+
+						// hook for push fail
+						do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
+
+					}
+
+					if ( !isset( $e ) ) {
+						// create log entry for successful delete if the result had no errors
+						$status = 'success';
+						if ( isset( $this->logging ) ) {
+							$logging = $this->logging;
+						} else if ( class_exists( 'Salesforce_Logging' ) ) {
+							$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+						}
+
+						$logging->setup(
+							__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+							'',
+							$sf_sync_trigger,
+							$object["$object_id"],
+							$status
+						);
+
+						// hook for push success
+						do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
+					}
+				} else {
+					$more_ids = '<p>The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are: ';
+					$i = 0;
+					foreach ( $salesforce_check as $match ) {
+						$i++;
+						$more_ids .= $match['wordpress_id'];
+						if ( $i !== count( $salesforce_check ) ) {
+							$more_ids .= ', ';
+						} else {
+							$more_ids .= '.</p>';
+						}
+					}
+
+					$more_ids .= '<p>The map row between this WordPress object and the Salesforce object, as stored in the WordPress database, will be deleted, and this WordPress object has been deleted, but Salesforce will remain untouched.</p>';
+
+					$status = 'notice';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
 					} else if ( class_exists( 'Salesforce_Logging' ) ) {
@@ -419,43 +478,18 @@ class Salesforce_Push {
 					}
 
 					$logging->setup(
-						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
-						$e->getMessage(),
+						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ') did not delete the Salesforce item...', $this->text_domain ),
+						$more_ids,
 						$sf_sync_trigger,
 						$object["$object_id"],
 						$status
 					);
-
-					// hook for push fail
-					do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
-
-				}
-
-				if ( !isset( $e ) ) {
-					// create log entry for successful delete if the result had no errors
-					$status = 'success';
-					if ( isset( $this->logging ) ) {
-						$logging = $this->logging;
-					} else if ( class_exists( 'Salesforce_Logging' ) ) {
-						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
-					}
-
-					$logging->setup(
-						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
-						'',
-						$sf_sync_trigger,
-						$object["$object_id"],
-						$status
-					);
-
-					// hook for push success
-					do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
-				}
+				}				
 
 				// delete the map row from wordpress after the salesforce row has been deleted
 				// we delete the map row even if the salesforce delete failed, because the wp object is gone
 				$this->mappings->delete_object_map( $mapping_object['id'] );
-
+				
 		  	} // there is no map row
 
 		  	return;
