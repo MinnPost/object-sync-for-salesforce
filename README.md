@@ -42,6 +42,7 @@ This is the plugin's main class. It does a few things:
 4. Load CSS and JavaScript for the admin screens.
 5. Get Salesforce login credentials.
 6. Provide an instance of itself that other plugins can use, especially to access the Salesforce API instance for making calls to it.
+7. Define which classes can maintain their own schedule queues, and pass that array to the other classes.
 
 Additional classes are listed in the order that they are loaded by the plugin.
 
@@ -96,15 +97,17 @@ OAUTH2 authorization and wrapper around the Salesforce REST API. Methods support
 
 ### Schedule (schedule)
 
-This class extends the [WP Background Processing](https://github.com/A5hleyRich/wp-background-processing) class to schedule recurring tasks with more options than the `wp_cron` provided by WordPress Core. The main class is stored in the /vendor/wp-background-processing folder, which we need to somehow tie into this plugin. Our extension does a few things:
+This class extends the [WP Background Processing](https://github.com/A5hleyRich/wp-background-processing) class to schedule recurring tasks with more options than the `wp_cron` provided by WordPress Core. The main class is stored in the /vendor/wp-background-processing folder, which we need to somehow tie into this plugin. 
 
-1. Add the frequency defined in the admin settings to the `cron_schedules` as a recurring item. Ex: every 5 minutes.
-2. Get a scheduled task and its contents.
-3. Create a scheduled task.
-4. Perform actions on the data contained in the task. We use this to send the data back to the `salesforce_push` or `salesforce_pull` classes, depending on which one called it.
-5. Allow for things to happen upon completion of a task.
+This class is called by the individual classes that use it. Example: `salesforce_push` calls it when it pushes data to Salesforce.
 
-For this class, the frequency is configurable, but only one queue can run at a time. It's possible we can later extend it to have multiple queues running at the same time so different parts of the plugin can use it. This is not a quick change, and we've documented this in one of the active GitHub issues.
+Our extension does a few things:
+
+1. Add the frequencies for each class as defined in the `admin` class to the WordPress core `schedules` array using the `cron_schedules` filter.
+2. Create schedules using `wp_schedule_event` when the class is called.
+3. Call other plugin classes and pass data to them for processing when a scheduled event occurs.
+
+For this class, multiple queues can run. Each class in the `schedulable_classes` array (which can be modified by the `salesforce_rest_api_modify_schedulable_classes` filter) can have its own running queue with its own scheduled tasks.
 
 
 ### Salesforce Push (salesforce_push)
@@ -115,6 +118,7 @@ Push WordPress data into Salesforce according to the mapping settings, including
 2. For each object type, get its data in an array to pass to Salesforce.
 3. Find out what kind of operation Salesforce needs - delete, upsert, create, or update - and format the WordPress data accordingly.
 4. Send the data - mapped according to the fieldmap - to the `salesforce` class for sending to the Salesforce REST API.
+5. Call the `schedule` class, and send the data to it, if the fieldmap is asynchronous.
 
 
 ### Admin (admin)
@@ -133,6 +137,12 @@ The admin section is divided into tabs:
 4. Fieldmaps
     - This tab lists all fieldmaps that have been created between WordPress and Salesforce objects, and allows for editing, cloning, or deleting them. Export doesn't currently do anything.
     - New fieldmaps can also be added. They require a label, a WordPress object, and a Salesforce object. Fields to map are displayed based on what fields each object has, after the object is chosen.
+5. Scheduling
+    - This tab defines schedule settings for each class in the `schedulable_classes` array. Each class can be run at any interval, as defined in minutes, hours, or days.
+6. Log Settings
+    - This tab allows admin users to tell the plugin whether or not it should log any events. If it is enabled, it will use the `logging` class. If it is not, nothing will happen.
+    - Users can set what statuses to log (error, success, and/or notice), if and how often entries should be deleted, and which events between WordPress and Salesforce should be logged.
+7. Other tabs added by the `salesforce_rest_api_settings_tabs` filter will appear after the Log Settings tab.
 
 ### Classes Todo
 
@@ -154,6 +164,7 @@ Current hooks include:
 - `salesforce_rest_api_push_object_allowed`: allow other plugins to prevent a push per-mapping.
 - `salesforce_rest_api_find_object_match`: allow other plugins to modify the $salesforce_id string here
 - `salesforce_rest_api_settings_tabs`: allow other plugins to add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
+- `salesforce_rest_api_modify_schedulable_classes`: allow other plugins to modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
 
 ### Actions
 
