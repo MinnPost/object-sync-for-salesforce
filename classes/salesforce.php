@@ -574,6 +574,7 @@ class Salesforce {
 	*   Available objects and metadata.
 	*
 	* part of core API calls
+	* updateable is really how the api spells it
 	*/
 	public function objects( $conditions = array( 'updateable' => TRUE, 'triggerable' => TRUE ), $reset = FALSE ) {
 
