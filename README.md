@@ -66,7 +66,7 @@ This class extends the [WP Logging Class](https://github.com/pippinsplugins/WP-L
 4. Retrieve log entries related to this plugin.
 
 
-#### Salesforce Mapping (salesforce_mapping)
+### Salesforce Mapping (salesforce_mapping)
 
 Map WordPress content (including users) to Salesforce fields, including field level mapping.
 
