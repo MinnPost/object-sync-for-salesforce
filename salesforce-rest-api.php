@@ -29,14 +29,14 @@ class Salesforce_Rest_API {
 	private $text_domain;
 
 	/**
-	* @var string
+	* @var array
 	*/
-	private $version;
+	public $schedulable_classes;
 
 	/**
 	* @var string
 	*/
-	private $schedule_name;
+	private $version;
 
 	/**
 	* @var object
@@ -62,11 +62,6 @@ class Salesforce_Rest_API {
 	* @var object
 	*/
 	public $salesforce;
-
-	/**
-	* @var object
-	*/
-	private $schedule;
 
 	/**
 	* @var object
@@ -104,10 +99,24 @@ class Salesforce_Rest_API {
 		$this->version = '0.0.1';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
-		$this->schedule_name = 'salesforce_queue';
+
+		$this->schedulable_classes = array(
+            array(
+                'name' => 'salesforce_push',
+                'label' => 'Push to Salesforce'
+            ),
+            array(
+                'name' => 'salesforce_pull',
+                'label' => 'Pull from Salesforce'
+            ),
+            array(
+                'name' => 'salesforce',
+                'label' => 'Salesforce Authorization'
+            )
+        );
 
 		$this->activated = $this->activate( $this->wpdb, $this->version, $this->text_domain );
-		$this->deactivate( $this->wpdb, $this->version, $this->text_domain, $this->schedule_name );
+		$this->deactivate( $this->wpdb, $this->version, $this->text_domain, $this->schedulable_classes );
 
 		$this->logging = $this->logging( $this->wpdb, $this->version, $this->text_domain );
 
@@ -116,13 +125,11 @@ class Salesforce_Rest_API {
 		$this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain, $this->mappings, $this->logging );
 		$this->salesforce = $this->salesforce_get_api();
 
-		$this->schedule = $this->schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging );
-
-		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule, $this->schedule_name, $this->logging );
+		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 
 		$this->pull = '';
 
-		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings );
+		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedulable_classes );
 
 		//add_action		( 'plugins_loaded', 					array( $this, 'textdomain'				) 			);
 		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
@@ -181,10 +188,11 @@ class Salesforce_Rest_API {
 		$text_domain = $this->text_domain;
 		$wordpress = $this->wordpress;
 		$logging = $this->logging;
+		$schedulable_classes = $this->schedulable_classes;
 		$is_authorized = false;
 		$sfapi = '';
 		if ($consumer_key && $consumer_secret) {
-			$sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging );
+			$sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging, $schedulable_classes );
 			if ( $sfapi->is_authorized() === true ) {
 				$is_authorized = true;
 			}
@@ -204,33 +212,20 @@ class Salesforce_Rest_API {
 	/**
 	 * What to do upon deactivation of the plugin
 	 */
-	private function deactivate( &$wpdb, $version, $text_domain, $schedule_name ) {
+	private function deactivate( &$wpdb, $version, $text_domain, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
-		$deactivate = new Wordpress_Salesforce_Deactivate( $wpdb, $version, $text_domain, $schedule_name );
+		$deactivate = new Wordpress_Salesforce_Deactivate( $wpdb, $version, $text_domain, $schedulable_classes );
 	}
 
-	/**
-	 * Functionality for scheduling tasks to be run against the Salesforce REST API
-	 *
-	 * todo: figure out how to handle the separate git repo for these libraries so it doesn't get lost
-	 *
-	 * @return object
-	 */
-	private function schedule( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name, $logging ) {
-		require_once plugin_dir_path( __FILE__ ) . 'vendor/wp-background-processing/wp-background-processing.php';
-		require_once plugin_dir_path( __FILE__ ) . 'classes/schedule.php';
-		$schedule = new Wordpress_Salesforce_Schedule( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name, $logging );
-		return $schedule;
-	}
 
 	/**
 	 * Methods to push data from WordPress to Salesforce
 	 *
 	 * @return object
 	 */
-	private function push( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule, $schedule_name, $logging ) {
+	private function push( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
-		$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule, $schedule_name, $logging );
+		$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
 		return $push;
 	}
 
@@ -242,9 +237,9 @@ class Salesforce_Rest_API {
 	* @param array $parent_settings
 	* @throws \Exception
 	*/
-	private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings ) {
+	private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedulable_classes ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
-		$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings );
+		$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedulable_classes );
 		add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
 		add_filter( 'plugin_action_links', array( &$this, 'plugin_action_links' ), 10, 5 );

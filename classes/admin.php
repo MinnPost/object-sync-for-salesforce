@@ -9,6 +9,7 @@ class Wordpress_Salesforce_Admin {
     protected $salesforce;
     protected $wordpress;
     protected $mappings;
+    protected $schedulable_classes;
 
     /**
     * Create default WordPress admin functionality for Salesforce
@@ -18,9 +19,10 @@ class Wordpress_Salesforce_Admin {
     * @param object $salesforce
     * @param object $wordpress
     * @param object $mappings
+    * @param array $schedulable_classes
     * @throws \Exception
     */
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedulable_classes ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
@@ -28,6 +30,7 @@ class Wordpress_Salesforce_Admin {
         $this->wordpress = $wordpress;
         $this->salesforce = $salesforce;
         $this->mappings = $mappings;
+        $this->schedulable_classes = $schedulable_classes;
 
         // todo: we should think about what kind of admin_notices to use, if any
         // https://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
@@ -638,7 +641,7 @@ class Wordpress_Salesforce_Admin {
                 )
             );
             add_settings_field( $id, $title, $callback, $page, $section, $args );
-            register_setting( $section, $id );
+            register_setting( $page, $id );
         }
     }
 
@@ -663,58 +666,64 @@ class Wordpress_Salesforce_Admin {
     * @param string $input_callback
     */
     private function fields_scheduling( $page, $section, $callbacks ) {
-        add_settings_section( $page, ucwords( str_replace('_', ' ', $page) ), null, $page );
-        $schedule_settings = array(
-            'schedule_number' => array(
-                'title' => 'Run schedule every',
-                'callback' => $callbacks['text'],
-                'page' => $page,
-                'section' => $section,
-                'args' => array(
-                    'type' => 'text',
-                    'desc' => '',
-                    'constant' => ''
+        foreach ( $this->schedulable_classes as $section ) {
+            add_settings_section( $section['name'], $section['label'], null, $page );
+            $schedule_settings = array(
+                $section['name'] . '_schedule_number' => array(
+                    'title' => 'Run schedule every',
+                    'callback' => $callbacks['text'],
+                    'page' => $page,
+                    'section' => $section['name'],
+                    'args' => array(
+                        'type' => 'text',
+                        'desc' => '',
+                        'constant' => ''
+                    ),
                 ),
-            ),
-            'schedule_unit' => array(
-                'title' => 'Time unit',
-                'callback' => $callbacks['select'],
-                'page' => $page,
-                'section' => $section,
-                'args' => array(
-                    'type' => 'select',
-                    'desc' => '',
-                    'items' => array(
-                        'minutes' => array(
-                            'text' => 'Minutes',
-                            'value' => 'minutes',
-                        ),
-                        'hours' => array(
-                            'text' => 'Hours',
-                            'value' => 'hours',
+                $section['name'] . '_schedule_unit' => array(
+                    'title' => 'Time unit',
+                    'callback' => $callbacks['select'],
+                    'page' => $page,
+                    'section' => $section['name'],
+                    'args' => array(
+                        'type' => 'select',
+                        'desc' => '',
+                        'items' => array(
+                            'minutes' => array(
+                                'text' => 'Minutes',
+                                'value' => 'minutes',
+                            ),
+                            'hours' => array(
+                                'text' => 'Hours',
+                                'value' => 'hours',
+                            ),
+                            'days' => array(
+                                'text' => 'Days',
+                                'value' => 'days',
+                            ),
                         )
                     )
-                )
-            ),
-        );
-        foreach ( $schedule_settings as $key => $attributes ) {
-            $id = 'salesforce_api_' . $key;
-            $name = 'salesforce_api_' . $key;
-            $title = $attributes['title'];
-            $callback = $attributes['callback'];
-            $page = $attributes['page'];
-            $section = $attributes['section'];
-            $args = array_merge(
-                $attributes['args'],
-                array(
-                    'title' => $title,
-                    'id' => $id,
-                    'label_for' => $id,
-                    'name' => $name
-                )
+                ),
             );
-            add_settings_field( $id, $title, $callback, $page, $section, $args );
-            register_setting( $section, $id );
+            foreach ( $schedule_settings as $key => $attributes ) {
+                $id = 'salesforce_api_' . $key;
+                $name = 'salesforce_api_' . $key;
+                $title = $attributes['title'];
+                $callback = $attributes['callback'];
+                $page = $attributes['page'];
+                $section = $attributes['section'];
+                $args = array_merge(
+                    $attributes['args'],
+                    array(
+                        'title' => $title,
+                        'id' => $id,
+                        'label_for' => $id,
+                        'name' => $name
+                    )
+                );
+                add_settings_field( $id, $title, $callback, $page, $section, $args );
+                register_setting( $page, $id );
+            }
         }
     }
 
@@ -850,7 +859,7 @@ class Wordpress_Salesforce_Admin {
                 )
             );
             add_settings_field( $id, $title, $callback, $page, $section, $args );
-            register_setting( $section, $id );
+            register_setting( $page, $id );
         }
     }
 

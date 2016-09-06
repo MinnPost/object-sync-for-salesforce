@@ -27,7 +27,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     * @throws \Exception
     */
 
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name, $logging ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name, $logging, $schedulable_classes ) {
         
         $this->wpdb = &$wpdb;
         $this->version = $version;
@@ -38,9 +38,10 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
         $this->mappings = $mappings;
         $this->schedule_name = $schedule_name;
         $this->logging = $logging;
+        $this->schedulable_classes = $schedulable_classes;
 
         $this->add_filters();
-        $this->schedule(); // currently this creates a scheduled event for $this->schedule_name
+        add_action( $this->schedule_name, array( $this, 'call_handler' ) ); // run the handle method
 
     }
 
@@ -56,28 +57,35 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     * Convert the schedule frequency from the admin settings into an array
     * interval must be in seconds for the class to use it
     *
+    * todo: going to need to make settings for each relevant class so it can have its own schedule array
+    *
     */
     public function set_schedule_frequency( $schedules ) {
-    	$schedule_number = get_option( 'salesforce_api_schedule_number', '' );
-    	$schedule_unit = get_option( 'salesforce_api_schedule_unit', '' );
 
-		switch ( $schedule_unit ) {
-			case 'minutes':
-				$seconds = 60;
-				break;
-			case 'hours':
-				$seconds = 3600;
-				break;
-		}
+        // create an option in the core schedules array for each one the plugin defines
+        foreach ( $this->schedulable_classes as $class ) {
+            $schedule_number = get_option( 'salesforce_api_' . $class['name'] . '_schedule_number', '' );
+            $schedule_unit = get_option( 'salesforce_api_' . $class['name'] . '_schedule_unit', '' );
 
-		$key = $schedule_unit . '_' . $schedule_number;
+            switch ( $schedule_unit ) {
+                case 'minutes':
+                    $seconds = 60;
+                    break;
+                case 'hours':
+                    $seconds = 3600;
+                    break;
+            }
 
-		$schedules[$key] = array(
-			'interval' => $seconds * $schedule_number,
-			'display' => 'Every ' . $schedule_number . ' ' . $schedule_unit
-		);
+            $key = $schedule_unit . '_' . $schedule_number;
 
-		$this->schedule_frequency = $key;
+            $schedules[$key] = array(
+                'interval' => $seconds * $schedule_number,
+                'display' => 'Every ' . $schedule_number . ' ' . $schedule_unit
+            );
+
+            $this->schedule_frequency = $key;
+
+        }
 
 		return $schedules;
 
@@ -88,9 +96,10 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     * interval must be in seconds for the class to use it
     *
     */
-    public function get_schedule_frequency_key() {
-    	$schedule_number = get_option( 'salesforce_api_schedule_number', '' );
-    	$schedule_unit = get_option( 'salesforce_api_schedule_unit', '' );
+    public function get_schedule_frequency_key( $name = '' ) {
+
+    	$schedule_number = get_option( 'salesforce_api_' . $name . '_schedule_number', '' );
+    	$schedule_unit = get_option( 'salesforce_api_' . $name . '_schedule_unit', '' );
 
 		switch ( $schedule_unit ) {
 			case 'minutes':
@@ -110,16 +119,23 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     /**
      * Schedule function
      * This creates and manages the scheduling of the task
-     * todo: make the timing configurable in the admin.
      *
      * @return void
      */
-    public function schedule() {
-    	$schedule_frequency = $this->get_schedule_frequency_key();
-	    if (! wp_next_scheduled ( $this->schedule_name ) ) {
-			wp_schedule_event( time(), $schedule_frequency, $this->schedule_name );
+    public function use_schedule( $name = '' ) {
+        
+        if ( $name !== '' ) {
+            $schedule_name = $name;
+        } else {
+            $schedule_name = $this->schedule_name;
+        }
+
+        $schedule_frequency = $this->get_schedule_frequency_key( $name );
+    	
+	    if (! wp_next_scheduled ( $schedule_name ) ) {
+			wp_schedule_event( time(), $schedule_frequency, $schedule_name );
 	    }
-	    add_action( $this->schedule_name, array( $this, 'call_handler' ) ); // run the handle method 
+
     }
 
 	/**
@@ -130,15 +146,13 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 	 * in the next pass through. Or, return false to remove the
 	 * data from the queue.
 	 *
-	 * todo: figure out if this is really the best way to call the salesforce methods
-	 *
 	 * @param mixed $data Queue data to iterate over
 	 *
 	 * @return mixed
 	 */
 	protected function task( $data ) {
 		if ( isset( $data['class'] ) ) {
-			$class = new $data['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this, $this->schedule_name, $this->logging );
+			$class = new $data['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 			$method = $data['method'];
 			$task = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
 		}

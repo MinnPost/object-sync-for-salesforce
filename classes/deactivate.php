@@ -10,10 +10,10 @@ class Wordpress_Salesforce_Deactivate {
     * @param string $version
     *
     */
-    public function __construct( $wpdb, $version, $text_domain, $schedule_name ) {
+    public function __construct( $wpdb, $version, $text_domain, $schedulable_classes ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
-        $this->schedule_name = $schedule_name;
+        $this->schedulable_classes = $schedulable_classes;
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'wordpress_salesforce_drop_tables' ) );
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'clear_schedule' ) );
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'delete_log_post_type' ) );
@@ -28,7 +28,9 @@ class Wordpress_Salesforce_Deactivate {
     }
 
     public function clear_schedule() {
-        wp_clear_scheduled_hook( $this->schedule_name ); // if we can ever get multiple queues running for this plugin, this would need to clear all of them
+        foreach ( $this->schedulable_classes as $class ) {
+            wp_clear_scheduled_hook( $class['name'] );
+        }
     }
 
     public function delete_log_post_type() {

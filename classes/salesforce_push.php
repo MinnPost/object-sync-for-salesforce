@@ -8,9 +8,10 @@ class Salesforce_Push {
 	protected $text_domain;
 	protected $salesforce;
 	protected $mappings;
-	protected $schedule;
-	protected $schedule_name;
 	protected $logging;
+	protected $schedulable_classes;
+
+	public $schedule_name;
 
 	/**
 	* @var string
@@ -30,9 +31,10 @@ class Salesforce_Push {
 	* @param object $schedule
 	* @param string $schedule_name
 	* @param object $logging
+	* @param array $schedulable_classes
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule, $schedule_name, $logging ) {
+	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		$this->wpdb = &$wpdb;
 		$this->version = $version;
 		$this->login_credentials = $login_credentials;
@@ -40,10 +42,11 @@ class Salesforce_Push {
 		$this->wordpress = $wordpress;
 		$this->salesforce = $salesforce;
 		$this->mappings = $mappings;
-		$this->schedule = $schedule;
-		$this->schedule_name = $schedule_name;
 		$this->logging = $logging;
+		$this->schedulable_classes = $schedulable_classes;
 
+		$this->schedule_name = 'salesforce_push';
+		$this->schedule = $this->schedule();
 		$this->add_actions();
 
 	}
@@ -333,8 +336,13 @@ class Salesforce_Push {
 						'class' => 'Salesforce_Push',
 						'method' => 'salesforce_push_sync_rest'
 					);
-					// eventually would like to figure out how to set the schedule name and frequency here, so we could do it in specific methods
-					// made this into a github issue so we can put it on the shelf for now: https://github.com/MinnPost/salesforce-rest-api/issues/3
+
+					// load the schedule class
+					$schedule = $this->schedule;
+					// create new schedule based on the options for this current class
+					// this will use the existing schedule if it already exists; otherwise it'll create one
+					$schedule->use_schedule( $this->schedule_name );
+
 					$queue = $this->schedule->push_to_queue( $data );
 					$save = $this->schedule->save();
 				} else {
@@ -343,6 +351,14 @@ class Salesforce_Push {
 		  		}
 			} // if the trigger does not match our requirements, skip it
 		}
+	}
+
+	private function schedule() {
+		require_once plugin_dir_path( __FILE__ ) . '../vendor/wp-background-processing/wp-background-processing.php';
+		require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
+		$schedule = new Wordpress_Salesforce_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging, $this->schedulable_classes );
+		$this->schedule = $schedule;
+		return $schedule;
 	}
 
 	/**
@@ -396,7 +412,13 @@ class Salesforce_Push {
 				catch ( SalesforceException $e ) {
 					$status = 'error';
 					// create log entry for failed delete
-					$this->logging->setup(
+					if ( isset( $this->logging ) ) {
+						$logging = $this->logging;
+					} else if ( class_exists( 'Salesforce_Logging' ) ) {
+						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+					}
+
+					$logging->setup(
 						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
 						$e->getMessage(),
 						$sf_sync_trigger,
@@ -412,7 +434,13 @@ class Salesforce_Push {
 				if ( !isset( $e ) ) {
 					// create log entry for successful delete if the result had no errors
 					$status = 'success';
-					$this->logging->setup(
+					if ( isset( $this->logging ) ) {
+						$logging = $this->logging;
+					} else if ( class_exists( 'Salesforce_Logging' ) ) {
+						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+					}
+
+					$logging->setup(
 						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
 						'',
 						$sf_sync_trigger,
@@ -543,7 +571,13 @@ class Salesforce_Push {
 					$title .= ' ' . $salesforce_id;
 				}
 				$title .=  ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')';
-				$this->logging->setup(
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
 					__( $title, $this->text_domain ),
 					$e->getMessage(),
 					$sf_sync_trigger,
@@ -568,7 +602,14 @@ class Salesforce_Push {
 			if ( empty($result['errorCode'] ) ) {
 				$salesforce_id = $salesforce_data['id'];
 				$status = 'success';
-				$this->logging->setup(
+
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
 					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $salesforce_id . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
 					'',
 					$sf_sync_trigger,
@@ -586,7 +627,13 @@ class Salesforce_Push {
 				// this is part of the drupal module but i am failing to understand when it would ever fire, since the catch should catch the errors
 				// if we see this in the log entries, we can understand what it does, but probably not until then
 				$status = 'error';
-				$this->logging->setup(
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
 					__( $salesforce_data['errorCode'] . ' ' . $status . ' syncing: ' . $op . ' to Salesforce (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
 					'Object: ' . $mapping['salesforce_object'] . '<br>br>' . 'Message: ' . $salesforce_data['message'],
 					$sf_sync_trigger,
@@ -606,7 +653,13 @@ class Salesforce_Push {
 			// this keeps us from doing redundant syncs
 			if ( $mapping_object['last_sync'] > $mapping_object['object_updated'] ) {
 				$status = 'notice';
-				$this->logging->setup(
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
 					__( ucfirst( $status ) . ': ' . $op . ': Did not sync WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ' with ' . $mapping_object['salesforce_id'] . ' ' . $mapping_object['salesforce_id'] . ' because the last sync timestamp was greater than the object updated timestamp', $this->text_domain ),
 					'Last sync time: ' . $mapping_object['last_sync'] . '<br>' . 'Object updated time: ' . $mapping_object['object_updated'],
 					$sf_sync_trigger,
@@ -624,7 +677,13 @@ class Salesforce_Push {
 				$mapping_object['last_sync_message'] = __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain );
 
 				$status = 'success';
-				$this->logging->setup(
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
 					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
 					'',
 					$sf_sync_trigger,
@@ -639,7 +698,13 @@ class Salesforce_Push {
 			catch ( SalesforceException $e ) {
 				// create log entry for failed update
 				$status = 'error';
-				$this->logging->setup(
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
 					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
 					$e->getMessage(),
 					$sf_sync_trigger,
