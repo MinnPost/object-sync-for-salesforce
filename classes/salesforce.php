@@ -32,6 +32,10 @@ class Salesforce {
 	*   Object for doing things to WordPress - retrieving data, cache, etc.
 	* @param string $text_domain
 	*   Text domain for this plugin. Would be used in any future translations.
+	* @param object $logging
+	*	Logging object for this plugin.
+	* @param array $schedulable_classes
+	*	array of classes that can have scheduled tasks specific to them
 	*/
 	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging, $schedulable_classes ) {
 		$this->consumer_key = $consumer_key;
