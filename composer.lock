@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bf4791dcfb26960b71950d5a93c3a016",
-    "content-hash": "c25abacfef33f5f3b4d3ea6ed9c9f987",
+    "hash": "c8e598742707030a81abd2b66da5efcb",
+    "content-hash": "c3a6a9651d823c0bae0a4df8a5887bce",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
@@ -42,12 +42,44 @@
             ],
             "description": "WP Background Processing can be used to fire off non-blocking asynchronous requests or as a background processing tool, allowing you to queue tasks.",
             "time": "2016-08-07 10:26:07"
+        },
+        {
+            "name": "pippinsplugins/wp-logging",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pippinsplugins/wp-logging.git",
+                "reference": "766d745886093fae88788107e190aff41b1db61b"
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Pippin Williamson"
+                }
+            ],
+            "description": "A WordPress class that provides a general logging system.",
+            "homepage": "https://github.com/pippinsplugins/WP-Logging",
+            "keywords": [
+                "log",
+                "logger",
+                "logging",
+                "wordpress"
+            ],
+            "time": "2016-04-08 18:01:49"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "pippinsplugins/wp-logging": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

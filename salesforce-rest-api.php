@@ -166,8 +166,10 @@ class Salesforce_Rest_API {
 	 * @return object
 	 */
 	private function logging( &$wpdb, $version, $text_domain ) {
-		require_once( plugin_dir_path( __FILE__ ) . 'vendor/wp-logging/WP_Logging.php' );
-		require_once plugin_dir_path( __FILE__ ) . 'classes/logging.php';
+		if ( ! class_exists( 'WP_Logging' ) && file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
+			require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+			require_once plugin_dir_path( __FILE__ ) . 'classes/logging.php';
+		}
 		$logging = new Salesforce_Logging( $wpdb, $version, $text_domain );
 		return $logging;
 	}
