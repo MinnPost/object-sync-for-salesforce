@@ -4,22 +4,16 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c8e598742707030a81abd2b66da5efcb",
-    "content-hash": "c3a6a9651d823c0bae0a4df8a5887bce",
+    "hash": "4a0c13652cedde8ea3680dc59c918610",
+    "content-hash": "6be9ee68c8edae70765cf81877eb2c54",
     "packages": [
         {
-            "name": "a5hleyrich/wp-background-processing",
-            "version": "1.0",
+            "name": "minnpost/wp-background-processing",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/A5hleyRich/wp-background-processing.git",
-                "reference": "15a8a79130a15366d9d550d078f14232ed83d3ba"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/A5hleyRich/wp-background-processing/zipball/15a8a79130a15366d9d550d078f14232ed83d3ba",
-                "reference": "15a8a79130a15366d9d550d078f14232ed83d3ba",
-                "shasum": ""
+                "url": "https://github.com/MinnPost/wp-background-processing",
+                "reference": "d161c4c2593c93a976f58e3079e960caa02af0c5"
             },
             "require": {
                 "php": ">=5.2"
@@ -30,18 +24,17 @@
                     "classes/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPLv2+"
             ],
             "authors": [
                 {
-                    "name": "Ashley Rich",
-                    "email": "hello@ashleyrich.com"
+                    "name": "MinnPost",
+                    "email": "tech@minnpost.com"
                 }
             ],
             "description": "WP Background Processing can be used to fire off non-blocking asynchronous requests or as a background processing tool, allowing you to queue tasks.",
-            "time": "2016-08-07 10:26:07"
+            "time": "2016-09-07 21:03:55"
         },
         {
             "name": "pippinsplugins/wp-logging",
@@ -78,6 +71,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "minnpost/wp-background-processing": 20,
         "pippinsplugins/wp-logging": 20
     },
     "prefer-stable": false,
