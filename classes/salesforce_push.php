@@ -53,7 +53,7 @@ class Salesforce_Push {
 
 	/**
 	* Create the action hooks based on what object maps exist from the admin settings
-	* todo: is wordpress going to actually keep that blogroll stuff? currently we are not doing anything with it here
+	* is wordpress going to actually keep that blogroll stuff? currently we are not doing anything with it here
 	*
 	*/
 	private function add_actions() {
