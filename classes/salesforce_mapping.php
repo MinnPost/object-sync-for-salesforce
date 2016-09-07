@@ -333,7 +333,6 @@ class Salesforce_Mapping {
     *
     * @param array $posted
     * @return $data
-    * todo: figure out if this method is necessary and what it needs to do if it is
     */
     private function setup_object_map_data( $posted = array() ) {
         $data = $posted;
