@@ -11,12 +11,10 @@ class Salesforce_Push {
 	protected $logging;
 	protected $schedulable_classes;
 
-	public $schedule_name;
-
 	/**
 	* @var string
 	*/
-	public $salesforce_push_queue; // name the queue in case there are multiple queues
+	public $schedule_name;  // allow for naming the queue in case there are multiple queues
 
 	/**
 	* Functionality for pushing WordPress objects into Salesforce

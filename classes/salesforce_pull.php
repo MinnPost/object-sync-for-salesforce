@@ -8,14 +8,13 @@ class Salesforce_Pull {
 	protected $text_domain;
 	protected $salesforce;
 	protected $mappings;
-	protected $schedule;
-	protected $schedule_name;
 	protected $logging;
+	protected $schedulable_classes;
 
 	/**
 	* @var string
 	*/
-	public $salesforce_pull_queue; // name the queue in case there are multiple queues
+	public $schedule_name;  // allow for naming the queue in case there are multiple queues
 
 	/**
 	* Functionality for pulling Salesforce objects into WordPress
@@ -30,9 +29,10 @@ class Salesforce_Pull {
 	* @param object $schedule
 	* @param string $schedule_name
 	* @param object $logging
+	* @param array $schedulable_classes
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $salesforce, $mappings, $schedule_name, $logging ) {
+	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		$this->wpdb = &$wpdb;
 		$this->version = $version;
 		$this->login_credentials = $login_credentials;
@@ -40,12 +40,12 @@ class Salesforce_Pull {
 		$this->wordpress = $wordpress;
 		$this->salesforce = $salesforce;
 		$this->mappings = $mappings;
-		$this->schedule = $schedule;
-		$this->schedule_name = $schedule_name;
 		$this->logging = $logging;
+		$this->schedulable_classes = $schedulable_classes;
 
+		$this->schedule_name = 'salesforce_pull';
+		$this->schedule = $this->schedule();
 		$this->add_actions();
-		$this->salesforce_pull_queue = 'salesforce_pull';
 
 	}
 
