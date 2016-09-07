@@ -14,7 +14,6 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 
 	/**
     * Functionality for syncing WordPress objects with Salesforce
-    * todo: figure out if we need to bring in all these parameters or if there's a better way
     *
     * @param object $wpdb
     * @param string $version
@@ -56,8 +55,6 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     /**
     * Convert the schedule frequency from the admin settings into an array
     * interval must be in seconds for the class to use it
-    *
-    * todo: going to need to make settings for each relevant class so it can have its own schedule array
     *
     */
     public function set_schedule_frequency( $schedules ) {
