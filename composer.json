@@ -1,0 +1,15 @@
+{
+    "name": "minnpost/salesforce-rest-api",
+    "description": "Defines an API that enables WordPress to interact with the Salesforce REST API.",
+    "type": "wordpress-plugin",
+    "require": {
+        "a5hleyrich/wp-background-processing": "1.0"
+    },
+    "license": "GPLv2 or later",
+    "authors": [
+        {
+            "name": "MinnPost",
+            "email": "tech@minnpost.com"
+        }
+    ]
+}
