@@ -259,6 +259,17 @@ class Salesforce_Rest_API {
 	}
 
 	/**
+	 * Methods to pull data from Salesforce to WordPress
+	 *
+	 * @return object
+	 */
+	private function pull( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
+		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_pull.php';
+		$pull = new Salesforce_Pull( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
+		return $pull;
+	}
+
+	/**
 	* load the admin class
 	* also creates admin menu, unless the plugin that calls this library has indicated that it has its own menu
 	*
