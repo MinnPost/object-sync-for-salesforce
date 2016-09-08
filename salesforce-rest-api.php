@@ -92,7 +92,7 @@ class Salesforce_Rest_API {
 	 * @return void
 	 */
 	protected function __construct() {
-		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
+
 		global $wpdb;
 
 		$this->wpdb = &$wpdb;
@@ -152,7 +152,7 @@ class Salesforce_Rest_API {
 
 		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 
-		$this->pull = '';
+		$this->pull = $this->pull( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedulable_classes );
 
@@ -205,6 +205,8 @@ class Salesforce_Rest_API {
 	*   The sfapi object if it is authenticated (empty, otherwise)
 	*/
 	public function salesforce_get_api() {
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_query.php' ); // this can be used to generate soql queries, but we don't often need it so it gets initialized whenever it's needed
 		$consumer_key = $this->login_credentials['consumer_key'];
 		$consumer_secret = $this->login_credentials['consumer_secret'];
 		$login_url = $this->login_credentials['login_url'];
