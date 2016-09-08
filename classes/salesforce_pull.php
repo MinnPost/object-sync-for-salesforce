@@ -14,7 +14,7 @@ class Salesforce_Pull {
 	/**
 	* @var string
 	*/
-	public $schedule_name;  // allow for naming the queue in case there are multiple queues
+	public $schedule_name; // allow for naming the queue in case there are multiple queues
 
 	/**
 	* Functionality for pulling Salesforce objects into WordPress
@@ -51,99 +51,84 @@ class Salesforce_Pull {
 
 	/**
 	* Create the action hooks based on what object maps exist from the admin settings
-	* todo: is wordpress going to actually keep that blogroll stuff?
 	*
 	*/
 	private function add_actions() {
-		$db_version = get_option( 'salesforce_rest_api_db_version', false );
+		$db_version = get_option( 'salesforce_rest_api_db_version', FALSE );
 		add_action( 'wp_ajax_salesforce_pull_webhook', array( $this, 'salesforce_pull_webhook' ) );
 	}
 
 	/**
-	* Webhook callback for salesforce pull. Returns status of 200 for successful
+	* Ajax callback for salesforce pull. Returns status of 200 for successful
 	* attempt or 403 for a failed pull attempt (SF not authorized, threshhold
 	* reached, etc.
 	*/
 	function salesforce_pull_webhook() {
-	if (salesforce_pull()) {
-	$code = '200';
-	// Queue is populated, but not processed yet so we manually do some of what
-	// drupal_cron_run() does to trigger processing of our pull queue.
-	$queues = salesforce_cron_queue_info();
-	$info = $queues[SALESFORCE_PULL_QUEUE];
-	$callback = $info['worker callback'];
-	$end = time() + (isset($info['time']) ? $info['time'] : 15);
-	$queue = DrupalQueue::get(SALESFORCE_PULL_QUEUE);
-	while (time() < $end && ($item = $queue->claimItem())) {
-	  try {
-		call_user_func($callback, $item->data);
-		$queue->deleteItem($item);
-	  }
-	  catch (Exception $e) {
-		// In case of exception log it and leave the item in the queue
-		// to be processed again later.
-		watchdog_exception('salesforce_pull', $e);
-	  }
-	}
-	}
-	else {
-	$code = '403';
-	}
+		if ( $this->salesforce_pull() === TRUE) {
+			$code = '200';
+			// Queue is populated, but not processed yet so we manually do some of what
+			// drupal_cron_run() does to trigger processing of our pull queue.
+			$queues = salesforce_cron_queue_info();
+			$info = $queues[SALESFORCE_PULL_QUEUE];
+			$callback = $info['worker callback'];
+			$end = time() + (isset($info['time']) ? $info['time'] : 15);
+			$queue = DrupalQueue::get(SALESFORCE_PULL_QUEUE);
+			while (time() < $end && ($item = $queue->claimItem())) {
+		  		try {
+					call_user_func($callback, $item->data);
+					$queue->deleteItem($item);
+		  		}
+		  		catch (Exception $e) {
+					// In case of exception log it and leave the item in the queue
+					// to be processed again later.
+					watchdog_exception('salesforce_pull', $e);
+		  		}
+			}
+		} else {
+			$code = '403';
+		}
 
-	http_response_code($code);
-	drupal_exit();
+		if ( !empty( $_POST ) ) {
+            wp_send_json_success( $code );
+        } else {
+            return $code;
+        }
+
 	}
 
 	/**
 	* Implements hook_cron().
+	* we probably don't need this method; we did not use it in salesforce_push
 	*/
 	function salesforce_pull_cron() {
-	salesforce_pull();
+		salesforce_pull();
 	}
 
 	/**
 	* Callback for the standard pull process used by webhooks and cron.
 	*/
 	function salesforce_pull() {
-	$sfapi = salesforce_get_api();
-	if ($sfapi->isAuthorized() && salesforce_pull_check_throttle()) {
-	salesforce_pull_get_updated_records();
-	salesforce_pull_process_deleted_records();
+		$sfapi = $this->salesforce['sfapi'];
 
-	// Store this request time for the throttle check.
-	variable_set('salesforce_pull_last_sync', REQUEST_TIME);
+		if ( $this->salesforce['is_authorized'] !== TRUE && $this->check_throttle() ) {
+			$this->salesforce_pull_get_updated_records();
+			$this->salesforce_pull_process_deleted_records();
 
-	return TRUE;
-	}
+			// Store this request time for the throttle check.
+			update_option( 'salesforce_api_pull_last_sync', REQUEST_TIME );
+			
+			return TRUE;
 
-	// No pull happened.
-	return FALSE;
-	}
-
-	/**
-	* Implements hook_cron_queue_info().
-	*/
-	function salesforce_cron_queue_info() {
-	$queues[SALESFORCE_PULL_QUEUE] = array(
-	'worker callback' => 'salesforce_pull_process_records',
-	// Set to a high max timeout in case pulling in lots of data from SF.
-	'time' => 180,
-	);
-	return $queues;
+		} else {
+			// No pull happened.
+			return FALSE;
+		}
 	}
 
 	/**
 	* Implements hook_form_FORM_ID_alter().
 	*/
 	function salesforce_pull_form_salesforce_settings_form_alter(&$form, &$form_state, $form_id) {
-	$form['salesforce_pull_throttle'] = array(
-	'#type' => 'textfield',
-	'#title' => t('Pull throttle (seconds)'),
-	'#description' => t('Number of seconds to wait between repeated salesforce pulls.<br>
-	  Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage.'),
-	'#default_value' => variable_get('salesforce_pull_throttle', 5),
-	'#element_validate' => array('element_validate_number'),
-	);
 
 	$webhooks_enabled = variable_get('salesforce_pull_webhook_enable', FALSE);
 	$form['salesforce_pull_webhook_enable'] = array(
@@ -193,15 +178,15 @@ class Salesforce_Pull {
 	* @return bool
 	*    Returns false if the time elapsed between recent pulls is too short.
 	*/
-	function salesforce_pull_check_throttle() {
-	$pull_throttle = variable_get('salesforce_pull_throttle', 5);
-	$last_sync = variable_get('salesforce_pull_last_sync', 0);
+	function check_throttle() {
+		$pull_throttle = get_option( 'salesforce_api_pull_throttle', 5 );
+		$last_sync = variable_get('salesforce_api_pull_last_sync', 0);
 
-	if (REQUEST_TIME > $last_sync + $pull_throttle) {
-	return TRUE;
-	}
-
-	return FALSE;
+		if ( REQUEST_TIME > $last_sync + $pull_throttle ) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
 	}
 
 	/**

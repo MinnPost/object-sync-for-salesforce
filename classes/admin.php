@@ -624,7 +624,7 @@ class Wordpress_Salesforce_Admin {
                 ),
             ),
             'object_filters' => array(
-                'title' => 'Filter Salesforce Objects',
+                'title' => 'Limit Salesforce Objects',
                 'callback' => $callbacks['checkboxes'],
                 'page' => $page,
                 'section' => $section,
@@ -646,6 +646,17 @@ class Wordpress_Salesforce_Admin {
                         )
                     )
                 )
+            ),
+            'pull_throttle' => array(
+                'title' => 'Pull throttle (seconds)',
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'text',
+                    'desc' => 'Number of seconds to wait between repeated salesforce pulls.<br>Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage.',
+                    'constant' => ''
+                ),
             ),
         );
         foreach ( $salesforce_settings as $key => $attributes ) {
