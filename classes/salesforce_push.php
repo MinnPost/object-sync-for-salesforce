@@ -523,12 +523,11 @@ class Salesforce_Push {
 		if ( $is_new === TRUE ) {
 			// create new object link in wp because the systems don't know about each other yet
 
-			// setup SF record type. in drupal, CampaignMember objects get their Campaign's type
-			// currently we don't have the data structure for this. it seems maybe unnecessary
-			// todo: investigate this further
-			/*if ( $mapping['salesforce_record_type_default'] !== $this->mappings->default_record_type && empty( $params['RecordTypeId'] ) && ( $mapping['salesforce_object'] !== 'CampaignMember') ) {
-				$params['RecordTypeId'] = $mapping['salesforce_record_type_default'];
-			}*/
+			// setup SF record type. CampaignMember objects get their Campaign's type
+			// i am still a bit confused about this
+			if ( $mapping['record_type_default'] !== $this->mappings->default_record_type && empty( $params['RecordTypeId'] ) && ( $mapping['salesforce_object'] !== 'CampaignMember') ) {
+				$params['RecordTypeId'] = $mapping['record_type_default'];
+			}
 
 			try {
 
@@ -903,6 +902,7 @@ class Salesforce_Push {
 
 			// Skip fields that aren't updateable when a mapped object already exists
 			// maybe we should put this into the salesforce module so we don't load fields that aren't updateable anyway. otherwise i am unclear what this even is.
+			// todo: figure out what this is
 			/*if ( !$is_new && !$fieldmap['salesforce_field']['updateable'] ) {
 				continue;
 			}*/

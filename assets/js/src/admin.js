@@ -1,25 +1,52 @@
 var $ = window.jQuery;
 
-function salesforce_date_fields() {
+function salesforce_object_fields() {
+	if ($('.record_types_allowed > *').length === 0) {
+		$('.record_types_allowed').hide();
+	}
+	if ($('.record_type_default > *').length === 0) {
+		$('.record_type_default').hide();
+	}
 	if ($('.pull_trigger_field > *').length === 0) {
 		$('.pull_trigger_field').hide();
 	}
 	$('#salesforce_object').on('change', function() {
 		var data = {
 			'action' : 'get_salesforce_object_description',
-			'type' : 'datetime',
+			'include' : ['fields', 'recordTypeInfos'],
+			'field_type' : 'datetime',
 			'salesforce_object' : this.value
 		}
 		$.post(ajaxurl, data, function(response) {
-			var markup = '';
-			markup += '<label for="pull_trigger_field">Date field to trigger pull:</label>';
-			markup += '<select name="pull_trigger_field" id="pull_trigger_field">'
-			$.each(response.data, function(index, value) {
-				markup += '<option value="' + value.name + '">' + value.label + '</option>';
+			var record_types_allowed_markup = '', record_type_default_markup = '', date_markup = '';
+			record_types_allowed_markup += '<label for="record_types_allowed">Allowed Record Types:</label><div class="checkboxes">';
+			$.each(response.data.recordTypeInfos, function(index, value) {
+				record_types_allowed_markup += '<label><input type="checkbox" class="form-checkbox" value="' + index + '" name="record_types_allowed[' + index + ']" id="record_types_allowed-' + index + '"> ' + value + '</label>';
 			});
-			markup += '</select>';
-			markup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>'
-			$('.pull_trigger_field').html(markup);
+			record_types_allowed_markup += '</div>';
+
+			record_type_default_markup += '<label for="record_type_default">Default Record Type:</label>';
+			record_type_default_markup += '<select name="record_type_default" id="record_type_default"><option value="">- Select record type -</option>';
+			$.each(response.data.recordTypeInfos, function(index, value) {
+				record_type_default_markup += '<option value="' + index + '">' + value + '</option>';
+			});
+
+			date_markup += '<label for="pull_trigger_field">Date field to trigger pull:</label>';
+			date_markup += '<select name="pull_trigger_field" id="pull_trigger_field"><option value="">- Select date field -</option>'
+			$.each(response.data.fields, function(index, value) {
+				date_markup += '<option value="' + value.name + '">' + value.label + '</option>';
+			});
+			date_markup += '</select>';
+			date_markup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>'
+			$('.record_types_allowed').html(record_types_allowed_markup);
+			$('.record_type_default').html(record_type_default_markup);
+			$('.pull_trigger_field').html(date_markup);
+			if (record_types_allowed_markup !== '') {
+				$('.record_types_allowed').show();
+			}
+			if (record_type_default_markup !== '') {
+				$('.record_type_default').show();	
+			}
 			$('.pull_trigger_field').show();
 		});
 	});
@@ -84,6 +111,6 @@ $(document).ready(function() {
 	}).ajaxStop(function() {
 		$('.spinner').removeClass('is-active');
 	});
-	salesforce_date_fields();
+	salesforce_object_fields();
 	add_field_mapping_row();
 });

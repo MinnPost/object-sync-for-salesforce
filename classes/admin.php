@@ -54,7 +54,7 @@ class Wordpress_Salesforce_Admin {
         add_action( 'admin_post_post_fieldmap', array( &$this, 'prepare_fieldmap_data' ) );
         add_action( 'admin_notices', array( &$this, 'fieldmap_error_notice' ) );
         add_action( 'admin_post_delete_fieldmap', array( &$this, 'delete_fieldmap' ) );
-        add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_fields' ) );
+        add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ) );
         add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ) );
         add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ) );
     }
@@ -144,6 +144,8 @@ class Wordpress_Salesforce_Admin {
                         if ( isset( $map ) && is_array( $map ) ) {
                             $label = $map['label'];
                             $salesforce_object = $map['salesforce_object'];
+                            $record_types_allowed = maybe_unserialize( $map['record_types_allowed'] );
+                            $record_type_default = $map['record_type_default'];
                             $wordpress_object = $map['wordpress_object'];
                             $pull_trigger_field = $map['pull_trigger_field'];
                             $fieldmap_fields = $map['fields'];
@@ -215,6 +217,48 @@ class Wordpress_Salesforce_Admin {
                                         ?>
                                     </select>
                                 </div>
+                                <div class="record_types_allowed">
+                                    <?php
+                                    if ( isset( $record_types_allowed ) ) {
+                                        $record_types = $this->get_salesforce_object_description( array( 'salesforce_object' => $salesforce_object, 'include' => 'recordTypeInfos' ) );
+                                        if ( isset( $record_types['recordTypeInfos'] ) ) {
+                                            echo '<label for="record_types_allowed">Allowed Record Types:</label>';
+                                            echo '<div class="checkboxes">';
+                                            foreach ( $record_types['recordTypeInfos'] as $key => $value ) {
+                                                if ( in_array( $key, $record_types_allowed ) ) {
+                                                    $checked = ' checked';
+                                                } else {
+                                                    $checked = '';
+                                                }
+                                                echo '<label><input type="checkbox" class="form-checkbox" value="' . $key . '" name="record_types_allowed[' . $key . ']" id="record_types_allowed-' . $key . '" ' . $checked . '> ' . $value . '</label>';
+                                            }
+                                            echo '</div>';
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                                <div class="record_type_default">
+                                    <?php
+                                    if ( isset( $record_type_default ) ) {
+                                        $record_types = $this->get_salesforce_object_description( array( 'salesforce_object' => $salesforce_object, 'include' => 'recordTypeInfos' ) );
+                                        if ( isset( $record_types['recordTypeInfos'] ) ) {
+                                            echo '<label for="record_type_default">Default Record Type:</label>';
+                                            echo '<select id="record_type_default" name="record_type_default" required><option value="">- Select record type -</option>';
+                                            foreach ( $record_types['recordTypeInfos'] as $key => $value ) {
+                                                if ( isset( $record_type_default ) && $record_type_default === $key ) {
+                                                    $selected = ' selected';
+                                                } else {
+                                                    $selected = '';
+                                                }
+                                                if ( !isset( $record_types_allowed ) || in_array( $key, $record_types_allowed ) ) {
+                                                    echo '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
+                                                }
+                                            }
+                                            echo '</select>';
+                                        }
+                                    }
+                                    ?>
+                                </div>
                                 <div class="pull_trigger_field">
                                     <?php
                                     if ( isset( $pull_trigger_field ) ) {
@@ -249,7 +293,7 @@ class Wordpress_Salesforce_Admin {
                                     </thead>
                                     <tbody>
                                         <?php
-                                        if ( isset( $fieldmap_fields ) && $fieldmap_fields !== NULL ) {
+                                        if ( isset( $fieldmap_fields ) && $fieldmap_fields !== NULL && is_array( $fieldmap_fields ) ) {
                                             foreach ( $fieldmap_fields as $key => $value ) {
                                         ?>
                                         <tr>
@@ -899,36 +943,90 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
-    * Get Salesforce object fields for fieldmapping
+    * Get all the Salesforce object settings for fieldmapping
     * This takes either the $_POST array via ajax, or can be directly called with a $data array
     * 
     * @param array $data
     * data must contain a salesforce_object
     * can optionally contain a type
-    * @return array $object_fields
+    * @return array $object_settings
     */
-    public function get_salesforce_object_fields( $data = array() ) {
+    public function get_salesforce_object_description( $data = array() ) {
         $ajax = false;
         if ( empty( $data ) ) {
             $data = $_POST;
             $ajax = true;
         }
+
+        $object_description = array();
+
         if ( !empty( $data['salesforce_object'] ) ) {
             $object = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
+            
             $object_fields = array();
-            $type = isset( $data['type'] ) ? esc_attr( $data['type'] ) : '';
-            foreach ( $object['data']['fields'] as $key => $value) {
-                if ( $type === '' || $type === $value['type'] ) {
-                    $object_fields[$key] = $value;
+            $include_record_types = array();
+
+            // these can come from ajax
+            $include = isset( $data['include'] ) ? (array) $data['include'] : array();
+            $include = array_map( 'esc_attr', $include );
+            
+            if ( in_array( 'fields', $include ) || empty( $include ) ) {
+                $type = isset( $data['field_type'] ) ? esc_attr( $data['field_type'] ) : ''; // can come from ajax
+                foreach ( $object['data']['fields'] as $key => $value) {
+                    if ( $type === '' || $type === $value['type'] ) {
+                        $object_fields[$key] = $value;
+                    }
+                }
+                $object_description['fields'] = $object_fields;
+            }
+
+            if ( in_array( 'recordTypeInfos', $include ) ) {
+                if ( isset( $object['data']['recordTypeInfos'] ) && count( $object['data']['recordTypeInfos'] ) > 1 ) {
+                    foreach ( $object['data']['recordTypeInfos'] as $type ) {
+                        $object_record_types[$type['recordTypeId']] = $type['name'];
+                    }
+                    $object_description['recordTypeInfos'] = $object_record_types;
                 }
             }
         }
 
         if ( $ajax === true ) {
-            wp_send_json_success( $object_fields );
+            wp_send_json_success( $object_description );
         } else {
-            return $object_fields;
+            return $object_description;
         }
+    }
+
+    /**
+    * Get Salesforce object fields for fieldmapping
+    * 
+    * @param array $data
+    * data must contain a salesforce_object
+    * can optionally contain a limit_type
+    * @return array $object_fields
+    */
+    public function get_salesforce_object_fields( $data = array() ) {
+
+        if ( !empty( $data['salesforce_object'] ) ) {
+            $object = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
+            $object_fields = array();
+            $limit_type = isset( $data['limit_type'] ) ? esc_attr( $data['limit_type'] ) : '';
+            $include_record_types = isset( $data['include_record_types'] ) ? esc_attr( $data['include_record_types'] ) : FALSE;
+            foreach ( $object['data']['fields'] as $key => $value) {
+                if ( $limit_type === '' || $limit_type === $value['limit_type'] ) {
+                    $object_fields[$key] = $value;
+                }
+            }
+            if ( $include_record_types === TRUE ) {
+                $object_record_types = array();
+                foreach ( $object['data']['recordTypeInfos'] as $type ) {
+                    $object_record_types[$type['recordTypeId']] = $type['name'];
+                }
+            }
+        }
+
+        return $object_fields;
+
     }
 
     /**

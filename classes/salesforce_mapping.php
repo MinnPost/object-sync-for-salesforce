@@ -61,7 +61,7 @@ class Salesforce_Mapping {
         $this->direction_sf_wordpress = 'sf_wp';
         $this->direction_sync = 'sync';
 
-        // what kind of record are we dealing with
+        // this is used when we map a record with default or Master
         $this->default_record_type = 'default';
 
         // salesforce has multipicklists and they have a delimiter
@@ -140,7 +140,7 @@ class Salesforce_Mapping {
 
         } else { // get all of em
 
-            $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `weight` FROM $table" , ARRAY_A );
+            $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `record_types_allowed`, `record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `ignore_drafts`, `weight` FROM $table" , ARRAY_A );
             if (!empty($mappings)) {
                 $index = 0;
                 foreach ( $mappings as $mapping ) {
@@ -208,6 +208,17 @@ class Salesforce_Mapping {
 			}
 			$data['fields'] = maybe_serialize( $setup['fields'] );
 		}
+
+        if ( isset( $posted['record_types_allowed'] ) ) {
+            $data['record_types_allowed'] = maybe_serialize( $posted['record_types_allowed'] );
+        } else {
+            $data['record_types_allowed'] = maybe_serialize( $this->default_record_type );
+        }
+        if ( isset( $posted['record_type_default'] ) ) {
+            $data['record_type_default'] = $posted['record_type_default'];
+        } else {
+            $data['record_type_default'] = maybe_serialize( $this->default_record_type );
+        }
     	if ( isset( $posted['pull_trigger_field'] ) ) {
     		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
     	}
