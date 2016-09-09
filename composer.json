@@ -16,8 +16,8 @@
             "type": "git"
         },
         {
-            "url": "https://github.com/MinnPost/wp-background-processing",
-            "type": "vcs"
+            "url": "https://github.com/A5hleyRich/wp-background-processing",
+            "type": "git"
         }
     ],
     "require": {

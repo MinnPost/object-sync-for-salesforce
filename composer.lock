@@ -4,22 +4,16 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "75e6cf4961133da476ad871661d56343",
-    "content-hash": "5c9e7babe2c18320d3466bc6f4694ac1",
+    "hash": "82c63a6634259f1736fbf0f1fb7c1b2b",
+    "content-hash": "86c635c5826386288a27321134812af5",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/MinnPost/wp-background-processing.git",
-                "reference": "6118adb87093c7b5ebd5eeb63a1813c257c9b718"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/MinnPost/wp-background-processing/zipball/6118adb87093c7b5ebd5eeb63a1813c257c9b718",
-                "reference": "6118adb87093c7b5ebd5eeb63a1813c257c9b718",
-                "shasum": ""
+                "url": "https://github.com/A5hleyRich/wp-background-processing",
+                "reference": "281a08a5fd9bea8fca1fbe3b015eba732c03da01"
             },
             "require": {
                 "php": ">=5.2"
@@ -40,10 +34,7 @@
                 }
             ],
             "description": "WP Background Processing can be used to fire off non-blocking asynchronous requests or as a background processing tool, allowing you to queue tasks.",
-            "support": {
-                "source": "https://github.com/MinnPost/wp-background-processing/tree/master"
-            },
-            "time": "2016-09-08 19:19:34"
+            "time": "2016-08-20 20:37:17"
         },
         {
             "name": "pippinsplugins/wp-logging",

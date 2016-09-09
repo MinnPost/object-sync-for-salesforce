@@ -40,7 +40,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
         $this->schedulable_classes = $schedulable_classes;
 
         $this->add_filters();
-        add_action( $this->schedule_name, array( $this, 'call_handler' ) ); // run the handle method
+        add_action( $this->schedule_name, array( $this, 'maybe_handle' ) ); // run the handle method
 
     }
 
@@ -156,10 +156,32 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 		return false;
 	}
 
-	public function call_handler() {
-		// call the handle method in the cron so we can run the queue periodically
-		$handle = $this->handle();
-	}
+    /**
+     * Maybe process queue
+     *
+     * Checks whether data exists within the queue and that
+     * the process is not already running.
+     */
+    public function maybe_handle( $ajax = FALSE ) {
+        if ( $this->is_process_running() ) {
+            // Background process already running.
+            wp_die();
+        }
+
+        if ( $this->is_queue_empty() ) {
+            // No data to process.
+            wp_die();
+        }
+
+        if ( $ajax === TRUE ) {
+            check_ajax_referer( $this->identifier, 'nonce' );
+        }
+
+        error_log('try to handle it');
+        $this->handle();
+
+        wp_die();
+    }
 
 	/**
 	 * Complete
