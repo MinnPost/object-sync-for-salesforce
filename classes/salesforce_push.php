@@ -342,7 +342,7 @@ class Salesforce_Push {
 					$schedule->use_schedule( $this->schedule_name );
 
 					$queue = $this->schedule->push_to_queue( $data );
-					$save = $this->schedule->save();
+					$save = $this->schedule->save()->dispatch();
 				} else {
 					// this one is not async. do it immediately.
 					$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
