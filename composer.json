@@ -2,7 +2,8 @@
     "name": "minnpost/salesforce-rest-api",
     "description": "Defines an API that enables WordPress to interact with the Salesforce REST API.",
     "type": "wordpress-plugin",
-    "license": "GPLv2 or later",
+    "license": "GPL-2.0",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "MinnPost",
@@ -16,14 +17,14 @@
         },
         {
             "url": "https://github.com/MinnPost/wp-background-processing",
-            "type": "git"
-        } // use this until and unless the https://github.com/A5hleyRich/wp-background-processing fixes the issue with $batch not being an object
+            "type": "vcs"
+        }
     ],
     "require": {
-        "minnpost/wp-background-processing": "dev-master",
-        "pippinsplugins/wp-logging": "dev-master"
+        "pippinsplugins/wp-logging": "dev-master",
+        "A5hleyRich/wp-background-processing": "dev-master"
     },
     "autoload": {
-        "classmap": ["vendor/pippinsplugins/wp-logging/", "vendor/minnpost/wp-background-processing/"] // use this until and unless the https://github.com/A5hleyRich/wp-background-processing fixes the issue with $batch not being an object
+        "classmap": ["vendor/pippinsplugins/wp-logging/"]
     }
 }
