@@ -61,37 +61,34 @@ class Salesforce_Select_Query {
 	*/
 	public function __toString() {
 
-		$query = 'SELECT+';
-		$query .= implode( ',+', $this->fields );
-		$query .= '+FROM+' . $this->objectType;
+		$query = 'SELECT ';
+		$query .= implode( ', ', $this->fields );
+		$query .= ' FROM ' . $this->object_type;
 
 		if ( count( $this->conditions ) > 0) {
 			$where = array();
 			foreach ( $this->conditions as $condition ) {
-				$where[] = implode( '+', $condition );
+				$where[] = implode( ' ', $condition );
 			}
-			$query .= '+WHERE+' . implode( '+AND+', $where );
+			$query .= ' WHERE ' . implode( ' AND ', $where );
 		}
 
 		if ( $this->order ) {
-			$query .= '+ORDER+BY+';
+			$query .= ' ORDER BY ';
 			$fields = array();
 			foreach ( $this->order as $field => $direction ) {
-				$fields[] = $field . '+' . $direction;
+				$fields[] = $field . ' ' . $direction;
 			}
-			$query .= implode( ',+', $fields );
+			$query .= implode( ', ', $fields );
 		}
 
 		if ( $this->limit ) {
-			$query .= '+LIMIT+' . (int) $this->limit;
+			$query .= ' LIMIT ' . (int) $this->limit;
 		}
 
 		if ( $this->offset ) {
-			$query .= '+OFFSET+' . (int) $this->offset;
+			$query .= ' OFFSET ' . (int) $this->offset;
 		}
-
-		// Replaces spaces with + signs for custom filters.
-		$query = str_replace( ' ', '+', $query );
 
 		return $query;
 	}
