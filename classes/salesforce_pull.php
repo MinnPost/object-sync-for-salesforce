@@ -110,7 +110,7 @@ class Salesforce_Pull {
 			//$this->salesforce_pull_process_deleted_records();
 
 			// Store this request time for the throttle check.
-			update_option( 'salesforce_api_pull_last_sync', REQUEST_TIME );
+			update_option( 'salesforce_api_pull_last_sync', $_SERVER['REQUEST_TIME'] );
 			return TRUE;
 		} else {
 			// No pull happened.
@@ -185,7 +185,7 @@ class Salesforce_Pull {
 		$pull_throttle = get_option( 'salesforce_api_pull_throttle', 5 );
 		$last_sync = get_option( 'salesforce_api_pull_last_sync', 0 );
 
-		if ( REQUEST_TIME > $last_sync + $pull_throttle ) {
+		if ( $_SERVER['REQUEST_TIME'] > $last_sync + $pull_throttle ) {
 			return TRUE;
 		} else {
 			return FALSE;
@@ -209,10 +209,6 @@ class Salesforce_Pull {
 			'mapping' => $mapping,
 			'sf_sync_trigger' => $sf_sync_trigger
 		);
-
-		// process the pull queue if there is one
-		$this->schedule->maybe_handle();
-
 
 		//$queue = DrupalQueue::get(SALESFORCE_PULL_QUEUE);
 
@@ -328,7 +324,7 @@ class Salesforce_Pull {
 					$next_records_url = isset( $new_result['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_result['nextRecordsUrl'] ) : FALSE;
 				}
 
-				update_option( 'salesforce_api_pull_last_sync_' . $type, REQUEST_TIME );
+				update_option( 'salesforce_api_pull_last_sync_' . $type, $_SERVER['REQUEST_TIME'] );
 
 			} else {
 				watchdog('Salesforce Pull', $results['errorCode'] . ':' . $results['message'], array(), WATCHDOG_ERROR);
@@ -572,14 +568,14 @@ class Salesforce_Pull {
 
 		// Load all unique SF record types that we have mappings for.
 		foreach ( $this->mappings->get_fieldmaps() as $type ) {
-			$last_delete_sync = get_option( 'salesforce_api_pull_delete_last_' . $type, REQUEST_TIME);
-			update_option( 'salesforce_api_pull_delete_last_' . $type, REQUEST_TIME );
+			$last_delete_sync = get_option( 'salesforce_api_pull_delete_last_' . $type, $_SERVER['REQUEST_TIME']);
+			update_option( 'salesforce_api_pull_delete_last_' . $type, $_SERVER['REQUEST_TIME'] );
 
 			$now = time();
 
 			// getDeleted() constraint: startDate cannot be more than 30 days ago
 			// (using an incompatible data may lead to exceptions).
-			$last_delete_sync = $last_delete_sync > REQUEST_TIME - 2505600 ? $last_delete_sync : REQUEST_TIME - 2505600;
+			$last_delete_sync = $last_delete_sync > $_SERVER['REQUEST_TIME'] - 2505600 ? $last_delete_sync : $_SERVER['REQUEST_TIME'] - 2505600;
 
 			// getDeleted() constraint: startDate must be at least one minute greater
 			// than endDate.
