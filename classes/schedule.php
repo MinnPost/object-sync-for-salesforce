@@ -60,9 +60,9 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     public function set_schedule_frequency( $schedules ) {
 
         // create an option in the core schedules array for each one the plugin defines
-        foreach ( $this->schedulable_classes as $class ) {
-            $schedule_number = get_option( 'salesforce_api_' . $class['name'] . '_schedule_number', '' );
-            $schedule_unit = get_option( 'salesforce_api_' . $class['name'] . '_schedule_unit', '' );
+        foreach ( $this->schedulable_classes as $key => $value ) {
+            $schedule_number = get_option( 'salesforce_api_' . $key . '_schedule_number', '' );
+            $schedule_unit = get_option( 'salesforce_api_' . $key . '_schedule_unit', '' );
 
             switch ( $schedule_unit ) {
                 case 'minutes':
@@ -148,11 +148,14 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 	 * @return mixed
 	 */
 	protected function task( $data ) {
-		if ( isset( $data['class'] ) ) {
-			$class = new $data['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
-			$method = $data['method'];
-			$task = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
-		}
+        if ( is_array( $this->schedulable_classes[$this->schedule_name] ) ) {
+            $schedule = $this->schedulable_classes[$this->schedule_name];
+            if ( isset( $schedule['class'] ) ) {
+                $class = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
+                $method = $schedule['callback'];
+                $task = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
+            }
+        }
 		return false;
 	}
 
@@ -177,7 +180,6 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
             check_ajax_referer( $this->identifier, 'nonce' );
         }
 
-        error_log('try to handle it');
         $this->handle();
 
         wp_die();

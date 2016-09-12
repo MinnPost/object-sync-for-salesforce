@@ -745,25 +745,25 @@ class Wordpress_Salesforce_Admin {
     * @param string $input_callback
     */
     private function fields_scheduling( $page, $section, $callbacks ) {
-        foreach ( $this->schedulable_classes as $section ) {
-            add_settings_section( $section['name'], $section['label'], null, $page );
+        foreach ( $this->schedulable_classes as $key => $value ) {
+            add_settings_section( $key, $value['label'], null, $page );
             $schedule_settings = array(
-                $section['name'] . '_schedule_number' => array(
+                $key . '_schedule_number' => array(
                     'title' => 'Run schedule every',
                     'callback' => $callbacks['text'],
                     'page' => $page,
-                    'section' => $section['name'],
+                    'section' => $key,
                     'args' => array(
                         'type' => 'text',
                         'desc' => '',
                         'constant' => ''
                     ),
                 ),
-                $section['name'] . '_schedule_unit' => array(
+                $key . '_schedule_unit' => array(
                     'title' => 'Time unit',
                     'callback' => $callbacks['select'],
                     'page' => $page,
-                    'section' => $section['name'],
+                    'section' => $key,
                     'args' => array(
                         'type' => 'select',
                         'desc' => '',

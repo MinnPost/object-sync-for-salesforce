@@ -101,17 +101,19 @@ class Salesforce_Rest_API {
 		$this->text_domain = 'salesforce-rest-api';
 
 		$this->schedulable_classes = array(
-            array(
-                'name' => 'salesforce_push',
-                'label' => 'Push to Salesforce'
+            'salesforce_push' => array(
+                'label' => 'Push to Salesforce',
+                'class' => 'Salesforce_Push',
+                'callback' => 'salesforce_push_sync_rest'
             ),
-            array(
-                'name' => 'salesforce_pull',
-                'label' => 'Pull from Salesforce'
+            'salesforce_pull' => array(
+                'label' => 'Pull from Salesforce',
+                'class' => 'Salesforce_Pull',
+                'callback' => 'salesforce_pull_sync_rest'
             ),
-            array(
-                'name' => 'salesforce',
-                'label' => 'Salesforce Authorization'
+            'salesforce' => array(
+                'label' => 'Salesforce Authorization',
+                'class' => 'Salesforce'
             )
         );
 

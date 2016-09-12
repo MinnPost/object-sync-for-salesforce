@@ -28,8 +28,8 @@ class Wordpress_Salesforce_Deactivate {
     }
 
     public function clear_schedule() {
-        foreach ( $this->schedulable_classes as $class ) {
-            wp_clear_scheduled_hook( $class['name'] );
+        foreach ( $this->schedulable_classes as $key => $value ) {
+            wp_clear_scheduled_hook( $key );
         }
     }
 
