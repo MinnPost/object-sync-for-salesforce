@@ -147,13 +147,17 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 	 *
 	 * @return mixed
 	 */
-	protected function task( $data ) {
+	protected function task( $data = array() ) {
         if ( is_array( $this->schedulable_classes[$this->schedule_name] ) ) {
             $schedule = $this->schedulable_classes[$this->schedule_name];
             if ( isset( $schedule['class'] ) ) {
                 $class = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
                 $method = $schedule['callback'];
-                $task = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
+                if ( !empty( $data ) ) {
+                    $task = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
+                } else {
+                    $task = $class->$method();
+                }
             }
         }
 		return false;
@@ -171,6 +175,12 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
             wp_die();
         }
 
+        // if the task is not triggered by wordpress, go ahead and run it all the time so it can do whatever checking it needs to do
+        if ( $this->schedulable_classes[$this->schedule_name]['triggered_by'] !== 'wp' ) {
+            $this->task();
+            wp_die();
+        }
+
         if ( $this->is_queue_empty() ) {
             // No data to process.
             wp_die();
@@ -181,7 +191,6 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
         }
 
         $this->handle();
-
         wp_die();
     }
 

@@ -330,9 +330,7 @@ class Salesforce_Push {
 						'object_type' => $object_type,
 						'object' => $object,
 						'mapping' => $mapping,
-						'sf_sync_trigger' => $sf_sync_trigger,
-						'class' => 'Salesforce_Push',
-						'method' => 'salesforce_push_sync_rest'
+						'sf_sync_trigger' => $sf_sync_trigger
 					);
 
 					// load the schedule class

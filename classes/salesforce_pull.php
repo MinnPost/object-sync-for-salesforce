@@ -45,6 +45,14 @@ class Salesforce_Pull {
 
 		$this->schedule_name = 'salesforce_pull';
 		$this->schedule = $this->schedule();
+
+		// load the schedule class
+		// the schedule needs to just run all the time at its configured intervals because wordpress will never trigger it on its own, ie by creating an object
+		$schedule = $this->schedule;
+		// create new schedule based on the options for this current class
+		// this will use the existing schedule if it already exists; otherwise it'll create one
+		$schedule->use_schedule( $this->schedule_name );
+
 		$this->add_actions();
 
 	}
@@ -54,7 +62,6 @@ class Salesforce_Pull {
 	*
 	*/
 	private function add_actions() {
-		$db_version = get_option( 'salesforce_rest_api_db_version', FALSE );
 		add_action( 'wp_ajax_salesforce_pull_webhook', array( $this, 'salesforce_pull_webhook' ) );
 	}
 
@@ -62,30 +69,14 @@ class Salesforce_Pull {
 	* Ajax callback for salesforce pull. Returns status of 200 for successful
 	* attempt or 403 for a failed pull attempt (SF not authorized, threshhold
 	* reached, etc.
+	* this is the ajax callback; not a cron run
 	*/
 	public function salesforce_pull_webhook() {
 
-		if ( $this->salesforce_pull() === TRUE ) {
-			$code = '200';
-			// Queue is populated, but not processed yet so we manually do some of what
-			// drupal_cron_run() does to trigger processing of our pull queue.
-			$queues = salesforce_cron_queue_info();
-			$info = $queues[SALESFORCE_PULL_QUEUE];
-			$callback = $info['worker callback'];
-			$end = time() + ( isset( $info['time'] ) ? $info['time'] : 15 );
-			$queue = DrupalQueue::get( SALESFORCE_PULL_QUEUE );
-			
-			while ( time() < $end && ( $item = $queue->claimItem() ) ) {
-		  		try {
-					call_user_func($callback, $item->data);
-					$queue->deleteItem($item);
-		  		}
-		  		catch (Exception $e) {
-					// In case of exception log it and leave the item in the queue
-					// to be processed again later.
-					watchdog_exception('salesforce_pull', $e);
-		  		}
-			}
+		if ( $this->salesforce_pull_sync_rest() === TRUE ) {
+			$code = '200';			
+			// check to see if anything is in the queue and handle it if it is
+			$this->schedule->maybe_handle();
 
 		} else {
 			$code = '403';
@@ -104,24 +95,23 @@ class Salesforce_Pull {
 	* we probably don't need this method; we did not use it in salesforce_push
 	*/
 	function salesforce_pull_cron() {
-		salesforce_pull();
+		salesforce_pull_sync_rest();
 	}
 
 	/**
 	* Callback for the standard pull process used by webhooks and cron.
 	*/
-	private function salesforce_pull() {
+	public function salesforce_pull_sync_rest() {
+		error_log('call the rest function');
 		$sfapi = $this->salesforce['sfapi'];
 
-		if ( $this->salesforce['is_authorized'] !== TRUE && $this->check_throttle() ) {
+		if ( $this->salesforce['is_authorized'] === TRUE && $this->check_throttle() === TRUE ) {
 			$this->salesforce_pull_get_updated_records();
-			$this->salesforce_pull_process_deleted_records();
+			//$this->salesforce_pull_process_deleted_records();
 
 			// Store this request time for the throttle check.
 			update_option( 'salesforce_api_pull_last_sync', REQUEST_TIME );
-			
 			return TRUE;
-
 		} else {
 			// No pull happened.
 			return FALSE;
@@ -193,7 +183,7 @@ class Salesforce_Pull {
 	*/
 	private function check_throttle() {
 		$pull_throttle = get_option( 'salesforce_api_pull_throttle', 5 );
-		$last_sync = variable_get('salesforce_api_pull_last_sync', 0);
+		$last_sync = get_option( 'salesforce_api_pull_last_sync', 0 );
 
 		if ( REQUEST_TIME > $last_sync + $pull_throttle ) {
 			return TRUE;
@@ -209,13 +199,29 @@ class Salesforce_Pull {
 	* and places each updated SF object into the queue for later processing.
 	*/
 	function salesforce_pull_get_updated_records() {
-		$queue = DrupalQueue::get(SALESFORCE_PULL_QUEUE);
+		$object_type = 'test';
+		$object = array();
+		$mapping = array();
+		$sf_sync_trigger = '';
+		$prepare = array(
+			'object_type' => $object_type,
+			'object' => $object,
+			'mapping' => $mapping,
+			'sf_sync_trigger' => $sf_sync_trigger
+		);
+
+		// process the pull queue if there is one
+		$this->schedule->maybe_handle();
+
+
+		//$queue = DrupalQueue::get(SALESFORCE_PULL_QUEUE);
 
 		// Avoid overloading the processing queue and pass this time around if it's
 		// over a configurable limit.
-		if ($queue->numberOfItems() > variable_get('salesforce_pull_max_queue_size', 100000)) {
+
+		/*if ( $queue->numberOfItems() > get_option( 'salesforce_api_pull_max_queue_size', 100000 ) ) {
 			return;
-		}
+		}*/ // our library doesn't support this
 
 		$sfapi = $this->salesforce['sfapi'];
 		foreach ( $this->mappings->get_fieldmaps() as $type ) {
@@ -292,14 +298,8 @@ class Salesforce_Pull {
 						'method' => 'salesforce_push_sync_rest'
 					);
 
-					// load the schedule class
-					$schedule = $this->schedule;
-					// create new schedule based on the options for this current class
-					// this will use the existing schedule if it already exists; otherwise it'll create one
-					$schedule->use_schedule( $this->schedule_name );
-
 					$queue = $this->schedule->push_to_queue( $data );
-					$save = $this->schedule->save();
+					$save = $this->schedule->save()->dispatch();
 
 				}
 
@@ -319,12 +319,6 @@ class Salesforce_Pull {
 								'class' => 'Salesforce_Push',
 								'method' => 'salesforce_push_sync_rest'
 							);
-
-							// load the schedule class
-							$schedule = $this->schedule;
-							// create new schedule based on the options for this current class
-							// this will use the existing schedule if it already exists; otherwise it'll create one
-							$schedule->use_schedule( $this->schedule_name );
 
 							$queue = $this->schedule->push_to_queue( $data );
 							$save = $this->schedule->save();
@@ -573,7 +567,7 @@ class Salesforce_Pull {
 		$sfapi = $this->salesforce['sfapi'];
 		$client = $sfapi;
 		if ( class_exists( 'SalesforceSoapPartner' ) ) {
-			$client = new SalesforceSoapPartner($sfapi, variable_get('salesforce_partner_wsdl', libraries_get_path('salesforce') . '/soapclient/partner.wsdl.xml'));
+			$client = new SalesforceSoapPartner($sfapi, get_option('salesforce_partner_wsdl', libraries_get_path('salesforce') . '/soapclient/partner.wsdl.xml'));
 		}
 
 		// Load all unique SF record types that we have mappings for.
