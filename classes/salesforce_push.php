@@ -523,8 +523,8 @@ class Salesforce_Push {
 
 			// setup SF record type. CampaignMember objects get their Campaign's type
 			// i am still a bit confused about this
-			if ( $mapping['record_type_default'] !== $this->mappings->default_record_type && empty( $params['RecordTypeId'] ) && ( $mapping['salesforce_object'] !== 'CampaignMember') ) {
-				$params['RecordTypeId'] = $mapping['record_type_default'];
+			if ( $mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type && empty( $params['RecordTypeId'] ) && ( $mapping['salesforce_object'] !== 'CampaignMember') ) {
+				$params['RecordTypeId'] = $mapping['salesforce_record_type_default'];
 			}
 
 			try {

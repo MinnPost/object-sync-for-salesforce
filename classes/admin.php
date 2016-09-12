@@ -144,8 +144,8 @@ class Wordpress_Salesforce_Admin {
                         if ( isset( $map ) && is_array( $map ) ) {
                             $label = $map['label'];
                             $salesforce_object = $map['salesforce_object'];
-                            $record_types_allowed = maybe_unserialize( $map['record_types_allowed'] );
-                            $record_type_default = $map['record_type_default'];
+                            $salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
+                            $salesforce_record_type_default = $map['salesforce_record_type_default'];
                             $wordpress_object = $map['wordpress_object'];
                             $pull_trigger_field = $map['pull_trigger_field'];
                             $fieldmap_fields = $map['fields'];
@@ -217,40 +217,40 @@ class Wordpress_Salesforce_Admin {
                                         ?>
                                     </select>
                                 </div>
-                                <div class="record_types_allowed">
+                                <div class="salesforce_record_types_allowed">
                                     <?php
-                                    if ( isset( $record_types_allowed ) ) {
+                                    if ( isset( $salesforce_record_types_allowed ) ) {
                                         $record_types = $this->get_salesforce_object_description( array( 'salesforce_object' => $salesforce_object, 'include' => 'recordTypeInfos' ) );
                                         if ( isset( $record_types['recordTypeInfos'] ) ) {
-                                            echo '<label for="record_types_allowed">Allowed Record Types:</label>';
+                                            echo '<label for="salesforce_record_types_allowed">Allowed Record Types:</label>';
                                             echo '<div class="checkboxes">';
                                             foreach ( $record_types['recordTypeInfos'] as $key => $value ) {
-                                                if ( in_array( $key, $record_types_allowed ) ) {
+                                                if ( in_array( $key, $salesforce_record_types_allowed ) ) {
                                                     $checked = ' checked';
                                                 } else {
                                                     $checked = '';
                                                 }
-                                                echo '<label><input type="checkbox" class="form-checkbox" value="' . $key . '" name="record_types_allowed[' . $key . ']" id="record_types_allowed-' . $key . '" ' . $checked . '> ' . $value . '</label>';
+                                                echo '<label><input type="checkbox" class="form-checkbox" value="' . $key . '" name="salesforce_record_types_allowed[' . $key . ']" id="salesforce_record_types_allowed-' . $key . '" ' . $checked . '> ' . $value . '</label>';
                                             }
                                             echo '</div>';
                                         }
                                     }
                                     ?>
                                 </div>
-                                <div class="record_type_default">
+                                <div class="salesforce_record_type_default">
                                     <?php
-                                    if ( isset( $record_type_default ) ) {
+                                    if ( isset( $salesforce_record_type_default ) ) {
                                         $record_types = $this->get_salesforce_object_description( array( 'salesforce_object' => $salesforce_object, 'include' => 'recordTypeInfos' ) );
                                         if ( isset( $record_types['recordTypeInfos'] ) ) {
-                                            echo '<label for="record_type_default">Default Record Type:</label>';
-                                            echo '<select id="record_type_default" name="record_type_default" required><option value="">- Select record type -</option>';
+                                            echo '<label for="salesforce_record_type_default">Default Record Type:</label>';
+                                            echo '<select id="salesforce_record_type_default" name="salesforce_record_type_default" required><option value="">- Select record type -</option>';
                                             foreach ( $record_types['recordTypeInfos'] as $key => $value ) {
-                                                if ( isset( $record_type_default ) && $record_type_default === $key ) {
+                                                if ( isset( $salesforce_record_type_default ) && $salesforce_record_type_default === $key ) {
                                                     $selected = ' selected';
                                                 } else {
                                                     $selected = '';
                                                 }
-                                                if ( !isset( $record_types_allowed ) || in_array( $key, $record_types_allowed ) ) {
+                                                if ( !isset( $salesforce_record_types_allowed ) || in_array( $key, $salesforce_record_types_allowed ) ) {
                                                     echo '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
                                                 }
                                             }

@@ -20,7 +20,7 @@ class Salesforce_Mapping {
     public $direction_sf_wordpress;
     public $direction_sync;
 
-    public $default_record_type;
+    public $salesforce_default_record_type;
 
     public $array_delimiter;
 
@@ -62,7 +62,7 @@ class Salesforce_Mapping {
         $this->direction_sync = 'sync';
 
         // this is used when we map a record with default or Master
-        $this->default_record_type = 'default';
+        $this->salesforce_default_record_type = 'default';
 
         // salesforce has multipicklists and they have a delimiter
         $this->array_delimiter = ';';
@@ -140,7 +140,7 @@ class Salesforce_Mapping {
 
         } else { // get all of em
 
-            $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `record_types_allowed`, `record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `ignore_drafts`, `weight` FROM $table" , ARRAY_A );
+            $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `ignore_drafts`, `weight` FROM $table" , ARRAY_A );
             if (!empty($mappings)) {
                 $index = 0;
                 foreach ( $mappings as $mapping ) {
@@ -209,15 +209,15 @@ class Salesforce_Mapping {
 			$data['fields'] = maybe_serialize( $setup['fields'] );
 		}
 
-        if ( isset( $posted['record_types_allowed'] ) ) {
-            $data['record_types_allowed'] = maybe_serialize( $posted['record_types_allowed'] );
+        if ( isset( $posted['salesforce_record_types_allowed'] ) ) {
+            $data['salesforce_record_types_allowed'] = maybe_serialize( $posted['salesforce_record_types_allowed'] );
         } else {
-            $data['record_types_allowed'] = maybe_serialize( $this->default_record_type );
+            $data['salesforce_record_types_allowed'] = maybe_serialize( $this->salesforce_default_record_type );
         }
-        if ( isset( $posted['record_type_default'] ) ) {
-            $data['record_type_default'] = $posted['record_type_default'];
+        if ( isset( $posted['salesforce_record_type_default'] ) ) {
+            $data['salesforce_record_type_default'] = $posted['salesforce_record_type_default'];
         } else {
-            $data['record_type_default'] = maybe_serialize( $this->default_record_type );
+            $data['salesforce_record_type_default'] = maybe_serialize( $this->salesforce_default_record_type );
         }
     	if ( isset( $posted['pull_trigger_field'] ) ) {
     		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
