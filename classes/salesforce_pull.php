@@ -199,41 +199,23 @@ class Salesforce_Pull {
 	* and places each updated SF object into the queue for later processing.
 	*/
 	function salesforce_pull_get_updated_records() {
-		$object_type = 'test';
-		$object = array();
-		$mapping = array();
-		$sf_sync_trigger = '';
-		$prepare = array(
-			'object_type' => $object_type,
-			'object' => $object,
-			'mapping' => $mapping,
-			'sf_sync_trigger' => $sf_sync_trigger
-		);
-
-		//$queue = DrupalQueue::get(SALESFORCE_PULL_QUEUE);
-
-		// Avoid overloading the processing queue and pass this time around if it's
-		// over a configurable limit.
-
-		/*if ( $queue->numberOfItems() > get_option( 'salesforce_api_pull_max_queue_size', 100000 ) ) {
-			return;
-		}*/ // our library doesn't support this
 
 		$sfapi = $this->salesforce['sfapi'];
-		foreach ( $this->mappings->get_fieldmaps() as $type ) {
+		foreach ( $this->mappings->get_fieldmaps() as $fieldmap ) {
 			$mapped_fields = array();
 			$mapped_record_types = array();
 
 			// Iterate over each field mapping to determine our query parameters.
-			foreach ( $this->mappings->get_object_maps( NULL, array('salesforce_object_type' => $type ) ) as $mapping ) {
-	  			foreach ( $mapping['fields'] as $field_map) {
+			foreach ( $this->mappings->get_fieldmaps( NULL, array('salesforce_object' => $fieldmap['salesforce_object'] ) ) as $mapping ) {
+
+	  			foreach ( $mapping['fields'] as $field ) {
 	  				// skip fields that are only wordpress to salesforce
-					if ( !in_array( $fieldmap['direction'], array( $this->mappings->direction_sf_wordpress, $this->mappings->direction_sync ) ) ) {
+					if ( !in_array( $field['direction'], array( $this->mappings->direction_sf_wordpress, $this->mappings->direction_sync ) ) ) {
 						continue;
 					}
 
-					if ( is_array( $field_map['salesforce_field'] ) && !isset( $field_map['salesforce_field']['name'] ) ) {
-						foreach ( $field_map['salesforce_field'] as $sf_field ) {
+					if ( is_array( $field['salesforce_field'] ) && !isset( $field['salesforce_field']['name'] ) ) {
+						foreach ( $field['salesforce_field'] as $sf_field ) {
 							$mapped_fields[$sf_field['name']] = $sf_field['name'];
 						}
 					} else {
@@ -241,7 +223,7 @@ class Salesforce_Pull {
 					}
 				}
 
-				if ( !empty( $mapped_fields ) && $mapping['salesforce_record_type_default'] !== $this->mappings->default_record_type ) {
+				if ( !empty( $mapped_fields ) && $mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type ) {
 					foreach ( $mapping['salesforce_record_types_allowed'] as $record_type ) {
 						if ( $record_type ) {
 							$mapped_record_types[$record_type] = $record_type;
@@ -255,8 +237,13 @@ class Salesforce_Pull {
 			// There are no field mappings configured to pull data from Salesforce so
 			// move on to the next mapped object. Prevents querying unmapped data.
 			if ( empty( $mapped_fields ) ) {
+				error_log('there are no mapped fields');
 				continue;
 			}
+
+			error_log('mapped fields below');
+			error_log(print_r($mapped_fields, true));
+			error_log('mapped fields above');
 
 			$soql = new Salesforce_Select_Query( $type );
 			// Convert field mappings to SOQL.
@@ -338,10 +325,10 @@ class Salesforce_Pull {
 	function salesforce_pull_process_records( $sf_object ) {
 		// Get Mapping.
 		$mapping_conditions = array(
-			'salesforce_object_type' => $sf_object['attributes']['type'],
+			'salesforce_object' => $sf_object['attributes']['type'],
 		);
 
-		if ( isset($sf_object['RecordTypeId'] ) && $sf_object['RecordTypeId'] !== $this->mappings->default_record_type ) {
+		if ( isset($sf_object['RecordTypeId'] ) && $sf_object['RecordTypeId'] !== $this->mappings->salesforce_default_record_type ) {
 			$mapping_conditions['salesforce_record_type'] = $sf_object['RecordTypeId'];
 		}
 
@@ -608,9 +595,8 @@ class Salesforce_Pull {
 					// Load the mapping that manages these mapped objects.
 					$sf_mapping = reset(salesforce_mapping_load_multiple(
 						array(
-						'salesforce_object_type' => $type,
-						'drupal_entity_type' => $entity_wrapper->type(),
-						'drupal_bundle' => $entity_wrapper->getBundle(),
+						'salesforce_object' => $type,
+						'wordpress_object' => $entity_wrapper->type(),
 						)
 					));
 
