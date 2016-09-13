@@ -147,21 +147,40 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 	 *
 	 * @return mixed
 	 */
-	protected function task( $data = array() ) {
+	protected function task( $data ) {
         if ( is_array( $this->schedulable_classes[$this->schedule_name] ) ) {
             $schedule = $this->schedulable_classes[$this->schedule_name];
             if ( isset( $schedule['class'] ) ) {
                 $class = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
                 $method = $schedule['callback'];
-                if ( !empty( $data ) ) {
-                    $task = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
-                } else {
-                    $task = $class->$method();
-                }
+                $task = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
             }
         }
 		return false;
 	}
+
+    /**
+     * Check for data
+     *
+     * This method is new to the extension. It allows a scheduled method to do nothing but call the
+     * callback parameter of its calling class.
+     * This is useful for running the salesforce_pull event to check for updates in Salesforce
+     *
+     * @return $data
+     */
+    protected function check_for_data() {
+        if ( is_array( $this->schedulable_classes[$this->schedule_name] ) ) {
+            $schedule = $this->schedulable_classes[$this->schedule_name];
+            if ( isset( $schedule['class'] ) ) {
+                $class = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
+                $method = $schedule['callback'];
+                $task = $class->$method();
+            }
+        }
+        // we have checked for data and it's in the queue if it exists
+        // now run maybe_handle again to see if it nees to be processed
+        $this->maybe_handle( TRUE );
+    }
 
     /**
      * Maybe process queue
@@ -169,16 +188,20 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
      * Checks whether data exists within the queue and that
      * the process is not already running.
      */
-    public function maybe_handle( $ajax = FALSE ) {
+    public function maybe_handle( $already_checked = FALSE, $ajax = FALSE ) {
         if ( $this->is_process_running() ) {
             // Background process already running.
             wp_die();
         }
 
-        // if the task is not triggered by wordpress, go ahead and run it all the time so it can do whatever checking it needs to do
-        if ( $this->schedulable_classes[$this->schedule_name]['triggered_by'] !== 'wp' ) {
-            $this->task();
-            wp_die();
+        // if we need to check for data first, run that method
+        // it should call its corresponding class method that saves data to the queue
+        // it should then run maybe_handle() again
+
+        $check_for_data_first = isset( $this->schedulable_classes[$this->schedule_name]['check_for_data_first'] ) ? $this->schedulable_classes[$this->schedule_name]['check_for_data_first'] : FALSE;
+
+        if ( $already_checked === FALSE && $check_for_data_first === TRUE ) {
+            $this->check_for_data();
         }
 
         if ( $this->is_queue_empty() ) {

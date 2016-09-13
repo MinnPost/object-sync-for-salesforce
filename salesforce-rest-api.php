@@ -105,13 +105,12 @@ class Salesforce_Rest_API {
                 'label' => 'Push to Salesforce',
                 'class' => 'Salesforce_Push',
                 'callback' => 'salesforce_push_sync_rest',
-                'triggered_by' => 'wp'
             ),
             'salesforce_pull' => array(
                 'label' => 'Pull from Salesforce',
                 'class' => 'Salesforce_Pull',
                 'callback' => 'salesforce_pull_sync_rest',
-                'triggered_by' => 'sf'
+                'check_for_data_first' => TRUE
             ),
             'salesforce' => array(
                 'label' => 'Salesforce Authorization',

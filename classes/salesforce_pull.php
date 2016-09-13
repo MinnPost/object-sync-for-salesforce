@@ -102,7 +102,6 @@ class Salesforce_Pull {
 	* Callback for the standard pull process used by webhooks and cron.
 	*/
 	public function salesforce_pull_sync_rest() {
-		error_log('call the rest function');
 		$sfapi = $this->salesforce['sfapi'];
 
 		if ( $this->salesforce['is_authorized'] === TRUE && $this->check_throttle() === TRUE ) {
@@ -200,13 +199,17 @@ class Salesforce_Pull {
 	*/
 	function salesforce_pull_get_updated_records() {
 
+		// process the pull queue if there is one
+		//$this->schedule->maybe_handle();
+
 		$sfapi = $this->salesforce['sfapi'];
 		foreach ( $this->mappings->get_fieldmaps() as $fieldmap ) {
+			$type = $fieldmap['salesforce_object'];
 			$mapped_fields = array();
 			$mapped_record_types = array();
 
 			// Iterate over each field mapping to determine our query parameters.
-			foreach ( $this->mappings->get_fieldmaps( NULL, array('salesforce_object' => $fieldmap['salesforce_object'] ) ) as $mapping ) {
+			foreach ( $this->mappings->get_fieldmaps( NULL, array('salesforce_object' => $type ) ) as $mapping ) {
 
 	  			foreach ( $mapping['fields'] as $field ) {
 	  				// skip fields that are only wordpress to salesforce
@@ -214,12 +217,12 @@ class Salesforce_Pull {
 						continue;
 					}
 
-					if ( is_array( $field['salesforce_field'] ) && !isset( $field['salesforce_field']['name'] ) ) {
+					if ( is_array( $field['salesforce_field'] ) && !isset( $field['salesforce_field'] ) ) {
 						foreach ( $field['salesforce_field'] as $sf_field ) {
-							$mapped_fields[$sf_field['name']] = $sf_field['name'];
+							$mapped_fields[$sf_field] = $sf_field;
 						}
 					} else {
-						$mapped_fields[$field_map['salesforce_field']['name']] = $field_map['salesforce_field']['name'];
+						$mapped_fields[$field['salesforce_field']] = $field['salesforce_field'];
 					}
 				}
 
@@ -232,89 +235,109 @@ class Salesforce_Pull {
 					// Add the RecordTypeId field so we can use it when processing the queued SF objects.
 					$mapped_fields['RecordTypeId'] = 'RecordTypeId';
 				}
-			}
+			}	
 
 			// There are no field mappings configured to pull data from Salesforce so
 			// move on to the next mapped object. Prevents querying unmapped data.
 			if ( empty( $mapped_fields ) ) {
-				error_log('there are no mapped fields');
 				continue;
 			}
 
-			error_log('mapped fields below');
-			error_log(print_r($mapped_fields, true));
-			error_log('mapped fields above');
-
 			$soql = new Salesforce_Select_Query( $type );
+
 			// Convert field mappings to SOQL.
-			$soql->fields = array_merge($mapped_fields, array(
+			$soql->fields = array_merge( $mapped_fields, array(
 			  'Id' => 'Id',
-			  $mapping->pull_trigger_date => $mapping->pull_trigger_date
-			));
+			  $mapping['pull_trigger_field'] => $mapping['pull_trigger_field']
+			) );
 
 			// If no lastupdate, get all records, else get records since last pull.
+			// this should be what keeps it from getting all the records, whether or not they've ever been updated
 			$sf_last_sync = get_option( 'salesforce_api_pull_last_sync_' . $type, NULL );
-			if ($sf_last_sync) {
-			  $last_sync = gmdate('Y-m-d\TH:i:s\Z', $sf_last_sync);
-			  $soql->addCondition( $mapping->pull_trigger_date, $last_sync, '>' );
+			if ( $sf_last_sync ) {
+			  $last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
+			  $soql->add_condition( $mapping['pull_trigger_field'], $last_sync, '>' );
 			}
 
 			// If Record Type is specified, restrict query.
-			if (count($mapped_record_types) > 0) {
-				$soql->addCondition('RecordTypeId', $mapped_record_types, 'IN');
+			if ( count( $mapped_record_types ) > 0 ) {
+				$soql->add_condition( 'RecordTypeId', $mapped_record_types, 'IN' );
 			}
 
-			// Execute query.
-			$results = $sfapi->query( $soql );
+			// Execute query
+			// have to cast it to string to make sure it uses the magic method
+			$results = $sfapi->query( (string) $soql );
+			$response = $results['data'];
 			$version_path = parse_url( $sfapi->get_api_endpoint(), PHP_URL_PATH );
 
-			if ( !isset( $results['errorCode'] ) ) {
+			if ( !isset( $response['errorCode'] ) ) {
 				// Write items to the queue.
-				foreach ( $results['records'] as $result ) {
+				foreach ( $response['records'] as $result ) {
 
 					$data = array(
 						'object_type' => $type,
 						'object' => $result,
 						'mapping' => $mapping,
-						'sf_sync_trigger' => $sf_sync_trigger,
-						'class' => 'Salesforce_Push',
-						'method' => 'salesforce_push_sync_rest'
+						'sf_sync_trigger' => $this->mappings->sync_sf_update // sf update trigger
 					);
 
 					$queue = $this->schedule->push_to_queue( $data );
+
+					error_log('push ' . print_r($data, true) . 'to queue now');
+
 					$save = $this->schedule->save()->dispatch();
 
 				}
 
 				// Handle requests larger than the batch limit (usually 2000).
-				$next_records_url = isset( $results['nextRecordsUrl'] ) ? str_replace( $version_path, '', $results['nextRecordsUrl'] ) : FALSE;
+				$next_records_url = isset( $response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $response['nextRecordsUrl'] ) : FALSE;
 
 				while ( $next_records_url ) {
-					$new_result = $sfapi->api_call( $next_records_url );
-					if ( !isset( $new_result['errorCode'] ) ) {
+					$new_results = $sfapi->api_call( $next_records_url );
+					$new_response = $new_results['data'];
+					if ( !isset( $new_response['errorCode'] ) ) {
 						// Write items to the queue.
-						foreach ( $new_result['records'] as $result ) {
+						foreach ( $new_response['records'] as $result ) {
 							$data = array(
 								'object_type' => $type,
 								'object' => $result,
 								'mapping' => $mapping,
-								'sf_sync_trigger' => $sf_sync_trigger,
-								'class' => 'Salesforce_Push',
-								'method' => 'salesforce_push_sync_rest'
+								'sf_sync_trigger' => $this->mappings->sync_sf_update // sf update trigger
 							);
+
+							// problem now is that maybe_handle isn't going to run again
+							// todo: figure out how to run maybe_handle and this method as needed
 
 							$queue = $this->schedule->push_to_queue( $data );
 							$save = $this->schedule->save();
 						}
 					}
 
-					$next_records_url = isset( $new_result['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_result['nextRecordsUrl'] ) : FALSE;
+					$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : FALSE;
 				}
 
 				update_option( 'salesforce_api_pull_last_sync_' . $type, $_SERVER['REQUEST_TIME'] );
 
 			} else {
-				watchdog('Salesforce Pull', $results['errorCode'] . ':' . $results['message'], array(), WATCHDOG_ERROR);
+
+				// create log entry for failed pull
+				// todo: make this log the right stuff
+				$status = 'error';
+				$title = ucfirst( $status ) . ': ' . $response['errorCode'] . ' ' . $mapping['salesforce_object'];
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
+					__( $title, $this->text_domain ),
+					$response['message'],
+					$sf_mapping['sync_triggers'],
+					'',
+					$status
+				);
+
 			}
 		}
 	}
