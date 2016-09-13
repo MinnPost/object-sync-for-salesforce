@@ -534,7 +534,8 @@ class Salesforce_Push {
 				// ex: match a Salesforce Contact based on a connected email address object
 				// returns a $salesforce_id.
 				// it should keep NULL if there is no match
-				$salesforce_id = apply_filters( 'salesforce_rest_api_find_object_match', NULL, $object );
+				// the function that calls this hook needs to check the mapping to make sure the wordpress object is the right type
+				$salesforce_id = apply_filters( 'salesforce_rest_api_find_object_match', NULL, $object, $mapping );
 
 				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || $salesforce_id !== NULL ) {
 					
