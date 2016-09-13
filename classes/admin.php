@@ -1002,7 +1002,7 @@ class Wordpress_Salesforce_Admin {
     * 
     * @param array $data
     * data must contain a salesforce_object
-    * can optionally contain a limit_type
+    * can optionally contain a type for the field
     * @return array $object_fields
     */
     public function get_salesforce_object_fields( $data = array() ) {
@@ -1010,17 +1010,19 @@ class Wordpress_Salesforce_Admin {
         if ( !empty( $data['salesforce_object'] ) ) {
             $object = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
             $object_fields = array();
-            $limit_type = isset( $data['limit_type'] ) ? esc_attr( $data['limit_type'] ) : '';
+            $type = isset( $data['type'] ) ? esc_attr( $data['type'] ) : '';
             $include_record_types = isset( $data['include_record_types'] ) ? esc_attr( $data['include_record_types'] ) : FALSE;
             foreach ( $object['data']['fields'] as $key => $value) {
-                if ( $limit_type === '' || $limit_type === $value['limit_type'] ) {
+                if ( $type === '' || $type === $value['type'] ) {
                     $object_fields[$key] = $value;
                 }
             }
             if ( $include_record_types === TRUE ) {
                 $object_record_types = array();
-                foreach ( $object['data']['recordTypeInfos'] as $type ) {
-                    $object_record_types[$type['recordTypeId']] = $type['name'];
+                if ( isset( $object['data']['recordTypeInfos'] ) && count( $object['data']['recordTypeInfos'] ) > 1 ) {
+                    foreach ( $object['data']['recordTypeInfos'] as $type ) {
+                        $object_record_types[$type['recordTypeId']] = $type['name'];
+                    }
                 }
             }
         }
