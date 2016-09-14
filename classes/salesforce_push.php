@@ -498,7 +498,7 @@ class Salesforce_Push {
 			$is_new = TRUE;
 		}
 
-		$params = $this->mappings->map_params( $mapping, $object, FALSE, $is_new );
+		$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
 
 		// if there is a prematch wordpress field - ie email - on the fieldmap object
 		if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
