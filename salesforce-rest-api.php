@@ -109,8 +109,8 @@ class Salesforce_Rest_API {
             'salesforce_pull' => array(
                 'label' => 'Pull from Salesforce',
                 'class' => 'Salesforce_Pull',
-                'callback' => 'salesforce_pull_sync_rest',
-                'check_for_data_first' => TRUE
+                'initializer' => 'salesforce_pull',
+                'callback' => 'salesforce_pull_process_records'
             ),
             'salesforce' => array(
                 'label' => 'Salesforce Authorization',
