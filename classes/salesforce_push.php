@@ -333,14 +333,12 @@ class Salesforce_Push {
 						'sf_sync_trigger' => $sf_sync_trigger
 					);
 
-					// load the schedule class
-					$schedule = $this->schedule;
 					// create new schedule based on the options for this current class
 					// this will use the existing schedule if it already exists; otherwise it'll create one
-					$schedule->use_schedule( $this->schedule_name );
+					$this->schedule->use_schedule( $this->schedule_name );
+					$this->schedule->push_to_queue( $data );
+					$this->schedule->save()->dispatch();
 
-					$queue = $this->schedule->push_to_queue( $data );
-					$save = $this->schedule->save()->dispatch();
 				} else {
 					// this one is not async. do it immediately.
 					$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
