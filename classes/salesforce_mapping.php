@@ -420,7 +420,7 @@ class Salesforce_Mapping {
     * @return array
     *   Associative array of key value pairs.
     */
-    private function map_params( $mapping, $object, $use_soap = FALSE, $is_new = TRUE ) {
+    public function map_params( $mapping, $object, $use_soap = FALSE, $is_new = TRUE ) {
 
         $params = array();
 
