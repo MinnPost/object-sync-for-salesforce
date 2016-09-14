@@ -405,4 +405,71 @@ class Salesforce_Mapping {
         return $this->get_object_maps( NULL, $conditions, $reset );
     }
 
+    /**
+    * Map values between WordPress and Salesforce objects.
+    *
+    * @param array $mapping
+    *   Mapping object.
+    * @param array $object
+    *   WordPress object.
+    * @param bool $use_soap
+    *   Flag to enforce use of the SOAP API.
+    * @param bool $is_new
+    *   Indicates whether a mapping object for this entity already exists.
+    *
+    * @return array
+    *   Associative array of key value pairs.
+    */
+    private function map_params( $mapping, $object, $use_soap = FALSE, $is_new = TRUE ) {
+
+        $params = array();
+
+        foreach ( $mapping['fields'] as $fieldmap ) {
+            // skip fields that aren't being pushed to Salesforce.
+            if ( !in_array( $fieldmap['direction'], array( $this->direction_wordpress_sf, $this->direction_sync ) ) ) {
+                continue;
+            }
+
+            // Skip fields that aren't updateable when a mapped object already exists
+            // maybe we should put this into the salesforce module so we don't load fields that aren't updateable anyway. otherwise i am unclear what this even is.
+            // todo: figure out what this is
+            /*if ( !$is_new && !$fieldmap['salesforce_field']['updateable'] ) {
+                continue;
+            }*/
+
+            $salesforce_field = $fieldmap['salesforce_field'];
+            $wordpress_field = $fieldmap['wordpress_field'];
+            $params[$salesforce_field] = $object[$wordpress_field];
+
+            // todo: we could use this syntax but i think maybe it doesn't work for older php?
+            //$params[$fieldmap['salesforce_field']] = $object[$fieldmap['wordpress_field']];
+
+            // if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
+            // but still put its name in the params array so we can check for it later
+            if ( $fieldmap['is_key'] === '1' ) {
+                if ( !$use_soap ) {
+                    unset( $params[$salesforce_field] );
+                }
+                $params['key'] = array(
+                    'salesforce_field' => $salesforce_field,
+                    'wordpress_field' => $wordpress_field,
+                    'value' => $object[$wordpress_field]
+                );
+            }
+
+            // if the field is a prematch in salesforce, put its name in the params array so we can check for it later
+            if ( $fieldmap['is_prematch'] === '1' ) {
+                $params['prematch'] = array(
+                    'salesforce_field' => $salesforce_field,
+                    'wordpress_field' => $wordpress_field,
+                    'value' => $object[$wordpress_field]
+                );
+            }
+
+        }
+
+        return $params;
+
+    }
+
 }
