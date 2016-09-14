@@ -367,16 +367,16 @@ class Salesforce_Pull {
 				}
 
 				foreach ( $deleted['data']['deletedRecords'] as $result ) {
-
+					// salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?
+					if ( !isset( $result['Id'] ) && isset( $result['id']) ) {
+						$result['Id'] = $result['id'];
+					}
 					$data = array(
 						'object_type' => $type,
 						'object' => $result,
 						'mapping' => $mapping,
 						'sf_sync_trigger' => $this->mappings->sync_sf_delete // sf delete trigger
 					);
-
-					error_log('add this data array to the queue');
-					error_log(print_r($data, true));
 
 					$this->schedule->push_to_queue( $data );
 					$this->schedule->save()->dispatch();
