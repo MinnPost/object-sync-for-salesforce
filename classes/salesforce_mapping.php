@@ -379,7 +379,7 @@ class Salesforce_Mapping {
      * @return SalesforceMappingObject
      *   The requested SalesforceMappingObject or FALSE if none was found.
      */
-    function load_by_wordpress( $object_type, $object_id, $reset = FALSE ) {
+    public function load_by_wordpress( $object_type, $object_id, $reset = FALSE ) {
       $conditions = array(
         'wordpress_id' => $object_id,
         'wordpress_object' => $object_type,
@@ -398,7 +398,7 @@ class Salesforce_Mapping {
     * @return SalesforceMappingObject
     *   The requested SalesforceMappingObject or FALSE if none was found.
     */
-    function load_by_salesforce( $salesforce_id, $reset = FALSE ) {
+    public function load_by_salesforce( $salesforce_id, $reset = FALSE ) {
         $conditions = array(
             'salesforce_id' => $salesforce_id
         );
