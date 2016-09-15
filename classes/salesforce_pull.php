@@ -391,11 +391,11 @@ class Salesforce_Pull {
 	* Sync WordPress objects and Salesforce objects from the queue using the REST API.
 	*
 	* @param string $object_type
-	*   Type of WordPress object.
+	*   Type of Salesforce object.
 	* @param object $object
-	*   The object object.
+	*   The Salesforce object.
 	* @param object $mapping
-	*   Salesforce mapping object.
+	*   Salesforce/WP mapping object.
 	* @param int $sf_sync_trigger
 	*   Trigger for this sync.
 	*
