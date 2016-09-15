@@ -628,7 +628,8 @@ class Salesforce_Push {
 
 			// salesforce api call was successful
 			// this means the object has already been created/updated in salesforce
-			// i think maybe this is redundant and will never get called. leaving it here for now because drupal module has it
+			// this is not redundant because this is where it creates the object mapping rows in wordpress if the object does not already have one (we are still inside $is_new === TRUE here)
+
 			if ( empty($result['errorCode'] ) ) {
 				$salesforce_id = $salesforce_data['id'];
 				$status = 'success';
@@ -699,6 +700,7 @@ class Salesforce_Push {
 				return;
 			}
 
+			// try to make a salesforce update call
 			try {
 				$op = 'Update';
 				$result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );
@@ -750,14 +752,14 @@ class Salesforce_Push {
 
 			}
 
-			// tell the mapping object - whether it is new or already existed - how we just used it
+			// tell the mapping object that pre-existed how we just used it
 			$mapping_object['last_sync_action'] = 'push';
 			$mapping_object['last_sync'] = current_time( 'mysql' );
 
 			// update that mapping object
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
-		}
+		} // this is the end of the if is_new stuff
 
 	}
 
