@@ -648,7 +648,7 @@ class Salesforce_Push {
 					$status
 				);
 
-				$mapping_object = $this->create_object_match( $object, $object_id, $salesforce_id, $mapping );
+				$mapping_object = $this->create_object_map( $object, $object_id, $salesforce_id, $mapping );
 
 				// hook for push success
 				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
@@ -779,15 +779,17 @@ class Salesforce_Push {
 	*	This is the database row that maps the objects, including the IDs for each one, and the WP object type
 	*
 	*/
-	private function create_object_match( $wordpress_object, $id_field_name, $salesforce_id, $field_mapping ) {
+	private function create_object_map( $wordpress_object, $id_field_name, $salesforce_id, $field_mapping ) {
 		// Create object map and save it
 		$mapping_object = $this->mappings->create_object_map(
 			array(
 				'wordpress_id' => $wordpress_object[$id_field_name], // wordpress unique id
 				'salesforce_id' => $salesforce_id, // salesforce unique id. we don't care what kind of object it is at this point
 				'wordpress_object' => $field_mapping['wordpress_object'], // keep track of what kind of wp object this is
-				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
+				'last_sync'] => current_time( 'mysql' ),
+				'last_sync_action' => 'push',
 				'last_sync_status' => $this->mappings->status_success,
+				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
 			)
 		);
 
