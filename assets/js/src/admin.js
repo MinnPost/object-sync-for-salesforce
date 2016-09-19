@@ -34,7 +34,12 @@ function salesforce_object_fields() {
 				$.each(response.data.recordTypeInfos, function(index, value) {
 					record_type_default_markup += '<option value="' + index + '">' + value + '</option>';
 				});
+			}
 
+			$('.salesforce_record_types_allowed').html(record_types_allowed_markup);
+			$('.salesforce_record_type_default').html(record_type_default_markup);
+
+			if ($(response.data.fields).length > 0) {
 				date_markup += '<label for="pull_trigger_field">Date field to trigger pull:</label>';
 				date_markup += '<select name="pull_trigger_field" id="pull_trigger_field"><option value="">- Select date field -</option>'
 				$.each(response.data.fields, function(index, value) {
@@ -42,13 +47,10 @@ function salesforce_object_fields() {
 				});
 				date_markup += '</select>';
 				date_markup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>'
-
 			}
 
-			$('.salesforce_record_types_allowed').html(record_types_allowed_markup);
-			$('.salesforce_record_type_default').html(record_type_default_markup);
-
 			$('.pull_trigger_field').html(date_markup);
+
 			if (record_types_allowed_markup !== '') {
 				$('.salesforce_record_types_allowed').show();
 			} else {
@@ -59,7 +61,12 @@ function salesforce_object_fields() {
 			} else {
 				$('.salesforce_record_type_default').hide();
 			}
-			$('.pull_trigger_field').show();
+
+			if (date_markup !== '') {
+				$('.pull_trigger_field').show();
+			} else {
+				$('.pull_trigger_field').hide();
+			}
 		});
 	});
 }
