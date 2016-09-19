@@ -91,14 +91,6 @@ class Salesforce_Pull {
 	}
 
 	/**
-	* Implements hook_cron().
-	* we probably don't need this method; we did not use it in salesforce_push
-	*/
-	function salesforce_pull_cron() {
-		salesforce_pull_sync_rest();
-	}
-
-	/**
 	* Callback for the standard pull process used by webhooks and cron.
 	*/
 	public function salesforce_pull_sync_rest() {
@@ -411,7 +403,7 @@ class Salesforce_Pull {
 							// Update mapping object.
 							$mapping_object->last_sync_message = t('Retrieved updates from Salesforce');
 							$mapping_object->last_sync_status = $this->mappings->status_success;
-							$mapping_object->entity_updated = $mapping_object->last_sync = time();
+							$mapping_object->entity_updated = $mapping_object->last_sync = current_time( 'mysql' );
 							watchdog('Salesforce Pull',
 							'Updated entity %label associated with Salesforce Object ID: %sfid',
 							array(
@@ -434,7 +426,7 @@ class Salesforce_Pull {
 					salesforce_set_message($message, 'error', FALSE);
 					$mapping_object->last_sync_status = $this->mappings->status_error;
 					$mapping_object->last_sync_message = t('Processing failed');
-					$mapping_object->last_sync = time();
+					$mapping_object->last_sync = current_time( 'mysql' );
 					if (!$hold_exceptions) {
 						throw $e;
 					}
@@ -496,7 +488,7 @@ class Salesforce_Pull {
 					// Update mapping object.
 					$last_sync_message = t('Retrieved new record from Salesforce');
 					$last_sync_status = $this->mappings->status_success;
-					$entity_updated = time();
+					$entity_updated = current_time( 'mysql' );
 				} catch ( Exception $e ) {
 					$message = $e->getMessage() . ' ' . t('Processing failed for entity %label associated with Salesforce Object ID: %sfobjectid',
 					array(
@@ -535,7 +527,7 @@ class Salesforce_Pull {
 					'entity_type' => $sf_mapping->drupal_entity_type,
 					'entity_id' => $entity_id,
 					'entity_updated' => $entity_updated,
-					'last_sync' => time(),
+					'last_sync' => current_time( 'mysql' ),
 					'last_sync_message' => $last_sync_message,
 					'last_sync_status' => $last_sync_status,
 				));
@@ -559,160 +551,6 @@ class Salesforce_Pull {
 	
 		if (!empty($exception)) {
 			throw $exception;
-		}
-	}
-
-	/**
-	* Process deleted records from salesforce.
-	*/
-	function salesforce_pull_process_deleted_records() {
-		// Calculate which client to use. We default to the REST client but also
-		// support SOAP if enabled. Note that deletions can only be queried via REST
-		// with an API version >= 29.0.
-
-		$sfapi = $this->salesforce['sfapi'];
-		$client = $sfapi;
-		if ( class_exists( 'SalesforceSoapPartner' ) ) {
-			$client = new SalesforceSoapPartner($sfapi, get_option('salesforce_partner_wsdl', libraries_get_path('salesforce') . '/soapclient/partner.wsdl.xml'));
-		}
-
-		// Load all unique SF record types that we have mappings for.
-		foreach ( $this->mappings->get_fieldmaps() as $type ) {
-			$last_delete_sync = get_option( 'salesforce_api_pull_delete_last_' . $type, $_SERVER['REQUEST_TIME']);
-			update_option( 'salesforce_api_pull_delete_last_' . $type, $_SERVER['REQUEST_TIME'] );
-
-			$now = time();
-
-			// getDeleted() constraint: startDate cannot be more than 30 days ago
-			// (using an incompatible data may lead to exceptions).
-			$last_delete_sync = $last_delete_sync > $_SERVER['REQUEST_TIME'] - 2505600 ? $last_delete_sync : $_SERVER['REQUEST_TIME'] - 2505600;
-
-			// getDeleted() constraint: startDate must be at least one minute greater
-			// than endDate.
-			$now = $now > $last_delete_sync + 60 ? $now : $now + 60;
-			$last_delete_sync_sf = gmdate('Y-m-d\TH:i:s\Z', $last_delete_sync);
-			$now_sf = gmdate('Y-m-d\TH:i:s\Z', $now);
-
-			// SOAP getDeleted() returns an object while the REST getDeleted() returns
-			// an array, so cast all checked values to an object to avoid additional
-			// conditional logic.
-			$deleted = (object) $client->get_deleted( $type, $last_delete_sync_sf, $now_sf );
-			if ( empty( $deleted->deletedRecords ) ) {
-				continue;
-			}
-
-			foreach ( $deleted->deletedRecords as $record ) {
-				$record = (object) $record;
-				$this->mappings->load_by_salesforce( $record->id );
-				if ( !$mapping_object ) {
-					continue;
-				}
-
-				// Load and wrap the Drupal entity linked to the SF object.
-				$entity = entity_load_single( $mapping_object->entity_type, $mapping_object->entity_id );
-
-				// Check if entity exists before processing delete.
-				if ( $entity ) {
-					$entity_wrapper = entity_metadata_wrapper( $mapping_object->entity_type, $entity );
-
-					// Load the mapping that manages these mapped objects.
-					$sf_mapping = reset(salesforce_mapping_load_multiple(
-						array(
-						'salesforce_object' => $type,
-						'wordpress_object' => $entity_wrapper->type(),
-						)
-					));
-
-					// Only delete the mapped Drupal entity if the
-					// SALESFORCE_MAPPING_SYNC_SF_DELETE flag is set.
-					if ( !empty( $sf_mapping ) && ( $sf_mapping->sync_triggers & $this->mappings->sync_sf_delete ) ) {
-						// Prevent processing by salesforce_push. We hate circular logic.
-						$entity->salesforce_pull = TRUE;
-
-						// Delete the mapped Drupal entity. Catch any exceptions as
-						// we want to ensure the mapping object is deleted even in
-						// case of an error.
-						try {
-							$entity_wrapper->delete();
-						}
-						catch ( Exception $e ) {
-							watchdog_exception('salesforce_pull', $e);
-						}
-
-						watchdog('Salesforce Pull',
-						'Deleted entity %label with ID: %id associated with Salesforce Object ID: %sfid',
-						array(
-						'%label' => $entity_wrapper->label(),
-						'%id' => $mapping_object->entity_id,
-						'%sfid' => $record->id,
-						)
-						);
-					}
-				}
-
-				// Delete mapping object.
-				$mapping_object->delete();
-			}
-		}
-	}
-
-	/**
-	* Map field values.
-	*
-	* @param array $field_maps
-	*   Array of field maps.
-	* @param object $entity_wrapper
-	*   Entity wrapper object.
-	* @param object $sf_object
-	*   sObject of the Salesforce record.
-	*/
-	function salesforce_pull_map_fields( $field_maps, &$entity_wrapper, $sf_object ) {
-		$types = salesforce_mapping_get_fieldmap_types();
-
-		foreach ( $field_maps as $field_map ) {
-			$fieldmap_type = $field_map['drupal_field']['fieldmap_type'];
-			if ( !isset($types[$fieldmap_type]['pull_value_callback'] ) || !in_array( $field_map['direction'], array( 'sync', 'sf_drupal' ) ) || !function_exists( $types[$fieldmap_type]['pull_value_callback'] ) ) {
-				continue;
-			}
-
-			$drupal_fields_array = explode( ':', $field_map['drupal_field']['fieldmap_value'] );
-			$parent = $entity_wrapper;
-			foreach ( $drupal_fields_array as $drupal_field ) {
-				if ( $parent instanceof EntityListWrapper ) {
-					$child_wrapper = $parent->get(0)->{$drupal_field};
-				} else {
-					$child_wrapper = $parent->{$drupal_field};
-				}
-				$parent = $child_wrapper;
-			}
-			$fieldmap_type = salesforce_mapping_get_fieldmap_types( $field_map['drupal_field']['fieldmap_type'] );
-			$value = call_user_func( $fieldmap_type['pull_value_callback'], $parent, $sf_object, $field_map );
-
-			// Allow this value to be altered before assigning to the entity.
-			drupal_alter( 'salesforce_pull_entity_value', $value, $field_map, $sf_object );
-
-			if ( isset( $value ) ) {
-				// @TODO: might wrongly assumes an individual value wouldn't be an
-				// array.
-				try {
-					if ( $parent instanceof EntityListWrapper && !is_array( $value ) ) {
-						$parent->offsetSet( 0, $value );
-					} else {
-						$parent->set( $value );
-					}
-				} catch ( Exception $e ) {
-					$message = t('Exception during pull for @sfobj.@sffield @sfid to @dobj.@dprop @did with value @v: @e', array(
-						'@sfobj' => $sf_object['attributes']['type'],
-						'@sffield' =>  $field_map['salesforce_field']['name'],
-						'@sfid' => $sf_object['Id'],
-						'@dobj' => $entity_wrapper->type(),
-						'@dprop' => $field_map['drupal_field']['fieldmap_value'],
-						'@did' => $entity_wrapper->getIdentifier(),
-						'@v' => $value,
-						'@e' => $e->getMessage()));
-					throw new Exception( $message, $e->getCode(), $e );
-				}
-			}
 		}
 	}
 
