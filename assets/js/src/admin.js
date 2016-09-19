@@ -22,15 +22,15 @@ function salesforce_object_fields() {
 			var record_types_allowed_markup = '', record_type_default_markup = '', date_markup = '';
 
 			if ($(response.data.recordTypeInfos).length > 0) {
-				record_types_allowed_markup += '<label for="record_types_allowed">Allowed Record Types:</label><div class="checkboxes">';
+				record_types_allowed_markup += '<label for="salesforce_record_types_allowed">Allowed Record Types:</label><div class="checkboxes">';
 				$.each(response.data.recordTypeInfos, function(index, value) {
-					record_types_allowed_markup += '<label><input type="checkbox" class="form-checkbox" value="' + index + '" name="record_types_allowed[' + index + ']" id="record_types_allowed-' + index + '"> ' + value + '</label>';
+					record_types_allowed_markup += '<label><input type="checkbox" class="form-checkbox" value="' + index + '" name="salesforce_record_types_allowed[' + index + ']" id="salesforce_record_types_allowed-' + index + '"> ' + value + '</label>';
 				});
 				record_types_allowed_markup += '</div>';
 
 
-				record_type_default_markup += '<label for="record_type_default">Default Record Type:</label>';
-				record_type_default_markup += '<select name="record_type_default" id="record_type_default"><option value="">- Select record type -</option>';
+				record_type_default_markup += '<label for="salesforce_record_type_default">Default Record Type:</label>';
+				record_type_default_markup += '<select name="salesforce_record_type_default" id="salesforce_record_type_default"><option value="">- Select record type -</option>';
 				$.each(response.data.recordTypeInfos, function(index, value) {
 					record_type_default_markup += '<option value="' + index + '">' + value + '</option>';
 				});
