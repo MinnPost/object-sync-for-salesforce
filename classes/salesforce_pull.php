@@ -190,11 +190,10 @@ class Salesforce_Pull {
 	*
 	* Executes a SOQL query based on defined mappings, loops through the results,
 	* and places each updated SF object into the queue for later processing.
+	*
+	* todo: figure out why the drupal module has two for loops over apparently the same data
 	*/
-	function salesforce_pull_get_updated_records() {
-
-		// process the pull queue if there is one
-		//$this->schedule->maybe_handle();
+	private function salesforce_pull_get_updated_records() {
 
 		$sfapi = $this->salesforce['sfapi'];
 		foreach ( $this->mappings->get_fieldmaps() as $fieldmap ) {
@@ -275,11 +274,8 @@ class Salesforce_Pull {
 						'sf_sync_trigger' => $this->mappings->sync_sf_update // sf update trigger
 					);
 
-					$queue = $this->schedule->push_to_queue( $data );
-
-					error_log('push ' . print_r($data, true) . 'to queue now');
-
-					$save = $this->schedule->save()->dispatch();
+					$this->schedule->push_to_queue( $data );
+					$this->schedule->save()->dispatch();
 
 				}
 
@@ -299,11 +295,9 @@ class Salesforce_Pull {
 								'sf_sync_trigger' => $this->mappings->sync_sf_update // sf update trigger
 							);
 
-							// problem now is that maybe_handle isn't going to run again
-							// todo: figure out how to run maybe_handle and this method as needed
+							$this->schedule->push_to_queue( $data );
+							$this->schedule->save();
 
-							$queue = $this->schedule->push_to_queue( $data );
-							$save = $this->schedule->save();
 						}
 					}
 
@@ -393,8 +387,6 @@ class Salesforce_Pull {
 		}
 	}
 
-		if ( isset($sf_object['RecordTypeId'] ) && $sf_object['RecordTypeId'] !== $this->mappings->salesforce_default_record_type ) {
-			$mapping_conditions['salesforce_record_type'] = $sf_object['RecordTypeId'];
 		}
 
 		$sf_mappings = $this->mappings->get_fieldmaps(
