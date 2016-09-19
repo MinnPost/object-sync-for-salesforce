@@ -97,12 +97,14 @@ class Salesforce_Pull {
 		$sfapi = $this->salesforce['sfapi'];
 
 		if ( $this->salesforce['is_authorized'] === TRUE && $this->check_throttle() === TRUE ) {
+
 			$this->salesforce_pull_get_updated_records();
-			//$this->salesforce_pull_process_deleted_records();
+			$this->salesforce_pull_get_deleted_records();
 
 			// Store this request time for the throttle check.
 			update_option( 'salesforce_api_pull_last_sync', $_SERVER['REQUEST_TIME'] );
 			return TRUE;
+
 		} else {
 			// No pull happened.
 			return FALSE;
@@ -335,13 +337,61 @@ class Salesforce_Pull {
 	}
 
 	/**
-	* Process records in the queue.
+	* Get deleted records from salesforce.
 	*/
-	function salesforce_pull_process_records( $sf_object ) {
-		// Get Mapping.
-		$mapping_conditions = array(
-			'salesforce_object' => $sf_object['attributes']['type'],
-		);
+	private function salesforce_pull_get_deleted_records() {
+
+		$sfapi = $this->salesforce['sfapi'];
+
+		// Load all unique SF record types that we have mappings for.
+		foreach ( $this->mappings->get_fieldmaps() as $fieldmap ) {
+
+			$type = $fieldmap['salesforce_object'];
+
+			// Iterate over each field mapping to determine our parameters.
+			foreach ( $this->mappings->get_fieldmaps( NULL, array('salesforce_object' => $type ) ) as $mapping ) {
+
+				$last_delete_sync = get_option( 'salesforce_api_pull_delete_last_' . $type, $_SERVER['REQUEST_TIME'] );
+				update_option( 'salesforce_api_pull_delete_last_' . $type, $_SERVER['REQUEST_TIME'] );
+
+				$now = current_time( 'mysql' );
+
+				// get_deleted() constraint: startDate cannot be more than 30 days ago
+				// (using an incompatible data may lead to exceptions).
+				$last_delete_sync = $last_delete_sync > $_SERVER['REQUEST_TIME'] - 2505600 ? $last_delete_sync : $_SERVER['REQUEST_TIME'] - 2505600;
+
+				// get_deleted() constraint: startDate must be at least one minute greater
+				// than endDate.
+				$now = $now > $last_delete_sync + 60 ? $now : $now + 60;
+				$last_delete_sync_sf = gmdate( 'Y-m-d\TH:i:s\Z', $last_delete_sync );
+				$now_sf = gmdate( 'Y-m-d\TH:i:s\Z', $now );
+
+				$deleted = $sfapi->get_deleted( $type, $last_delete_sync_sf, $now_sf );
+
+				if ( empty( $deleted['data']['deletedRecords'] ) ) {
+					continue;
+				}
+
+				foreach ( $deleted['data']['deletedRecords'] as $result ) {
+					// salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?
+					if ( !isset( $result['Id'] ) && isset( $result['id']) ) {
+						$result['Id'] = $result['id'];
+					}
+					$data = array(
+						'object_type' => $type,
+						'object' => $result,
+						'mapping' => $mapping,
+						'sf_sync_trigger' => $this->mappings->sync_sf_delete // sf delete trigger
+					);
+
+					$this->schedule->push_to_queue( $data );
+					$this->schedule->save()->dispatch();
+
+				}
+
+			}
+		}
+	}
 
 		if ( isset($sf_object['RecordTypeId'] ) && $sf_object['RecordTypeId'] !== $this->mappings->salesforce_default_record_type ) {
 			$mapping_conditions['salesforce_record_type'] = $sf_object['RecordTypeId'];
