@@ -105,6 +105,7 @@ class Salesforce_Mapping {
         $table = $this->fieldmap_table;
         if ( $id !== NULL ) { // get one fieldmap
             $map = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
+            $map['salesforce_record_types_allowed'] = maybe_unserialize( $map['salesforce_record_types_allowed'] );
             $map['fields'] = maybe_unserialize( $map['fields'] );
             $map['sync_triggers'] = maybe_unserialize( $map['sync_triggers'] );
             return $map;
@@ -130,6 +131,7 @@ class Salesforce_Mapping {
             if (!empty($mappings)) {
                 $index = 0;
                 foreach ( $mappings as $mapping ) {
+                    $mappings[$index]['salesforce_record_types_allowed'] = maybe_unserialize( $mapping['salesforce_record_types_allowed'] );
                     $mappings[$index]['fields'] = maybe_unserialize( $mapping['fields'] );
                     $mappings[$index]['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
                     $index++;
@@ -144,6 +146,7 @@ class Salesforce_Mapping {
             if (!empty($mappings)) {
                 $index = 0;
                 foreach ( $mappings as $mapping ) {
+                    $mappings[$index]['salesforce_record_types_allowed'] = maybe_unserialize( $mapping['salesforce_record_types_allowed'] );
                     $mappings[$index]['fields'] = maybe_unserialize( $mapping['fields'] );
                     $mappings[$index]['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
                     $index++;
@@ -212,7 +215,7 @@ class Salesforce_Mapping {
         if ( isset( $posted['salesforce_record_types_allowed'] ) ) {
             $data['salesforce_record_types_allowed'] = maybe_serialize( $posted['salesforce_record_types_allowed'] );
         } else {
-            $data['salesforce_record_types_allowed'] = maybe_serialize( $this->salesforce_default_record_type );
+            $data['salesforce_record_types_allowed'] = maybe_serialize( array( $this->salesforce_default_record_type => $this->salesforce_default_record_type ) );
         }
         if ( isset( $posted['salesforce_record_type_default'] ) ) {
             $data['salesforce_record_type_default'] = $posted['salesforce_record_type_default'];
