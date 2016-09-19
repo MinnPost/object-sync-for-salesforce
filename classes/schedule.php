@@ -173,7 +173,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
             $schedule = $this->schedulable_classes[$this->schedule_name];
             if ( isset( $schedule['class'] ) ) {
                 $class = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
-                $method = $schedule['callback'];
+                $method = $schedule['initializer'];
                 $task = $class->$method();
             }
         }
@@ -198,7 +198,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
         // it should call its corresponding class method that saves data to the queue
         // it should then run maybe_handle() again
 
-        $check_for_data_first = isset( $this->schedulable_classes[$this->schedule_name]['check_for_data_first'] ) ? $this->schedulable_classes[$this->schedule_name]['check_for_data_first'] : FALSE;
+        $check_for_data_first = isset( $this->schedulable_classes[$this->schedule_name]['initializer'] ) ? TRUE : FALSE;
 
         if ( $already_checked === FALSE && $check_for_data_first === TRUE ) {
             $this->check_for_data();

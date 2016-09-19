@@ -333,14 +333,12 @@ class Salesforce_Push {
 						'sf_sync_trigger' => $sf_sync_trigger
 					);
 
-					// load the schedule class
-					$schedule = $this->schedule;
 					// create new schedule based on the options for this current class
 					// this will use the existing schedule if it already exists; otherwise it'll create one
-					$schedule->use_schedule( $this->schedule_name );
+					$this->schedule->use_schedule( $this->schedule_name );
+					$this->schedule->push_to_queue( $data );
+					$this->schedule->save()->dispatch();
 
-					$queue = $this->schedule->push_to_queue( $data );
-					$save = $this->schedule->save()->dispatch();
 				} else {
 					// this one is not async. do it immediately.
 					$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
@@ -500,7 +498,12 @@ class Salesforce_Push {
 			$is_new = TRUE;
 		}
 
-		$params = $this->map_params( $mapping, $object, FALSE, $is_new );
+		$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
+
+		// if we don't get any params, there are no fields that should be sent to salesforce
+		if ( empty( $params ) ) {
+			return;
+		}
 
 		// if there is a prematch wordpress field - ie email - on the fieldmap object
 		if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
@@ -535,7 +538,7 @@ class Salesforce_Push {
 				// returns a $salesforce_id.
 				// it should keep NULL if there is no match
 				// the function that calls this hook needs to check the mapping to make sure the wordpress object is the right type
-				$salesforce_id = apply_filters( 'salesforce_rest_api_find_object_match', NULL, $object, $mapping );
+				$salesforce_id = apply_filters( 'salesforce_rest_api_find_sf_object_match', NULL, $object, $mapping, 'push' );
 
 				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || $salesforce_id !== NULL ) {
 					
@@ -630,7 +633,8 @@ class Salesforce_Push {
 
 			// salesforce api call was successful
 			// this means the object has already been created/updated in salesforce
-			// i think maybe this is redundant and will never get called. leaving it here for now because drupal module has it
+			// this is not redundant because this is where it creates the object mapping rows in wordpress if the object does not already have one (we are still inside $is_new === TRUE here)
+
 			if ( empty($result['errorCode'] ) ) {
 				$salesforce_id = $salesforce_data['id'];
 				$status = 'success';
@@ -649,7 +653,7 @@ class Salesforce_Push {
 					$status
 				);
 
-				$mapping_object = $this->create_object_match( $object, $object_id, $salesforce_id, $mapping );
+				$mapping_object = $this->create_object_map( $object, $object_id, $salesforce_id, $mapping );
 
 				// hook for push success
 				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
@@ -701,6 +705,7 @@ class Salesforce_Push {
 				return;
 			}
 
+			// try to make a salesforce update call
 			try {
 				$op = 'Update';
 				$result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );
@@ -752,14 +757,14 @@ class Salesforce_Push {
 
 			}
 
-			// tell the mapping object - whether it is new or already existed - how we just used it
+			// tell the mapping object that pre-existed how we just used it
 			$mapping_object['last_sync_action'] = 'push';
 			$mapping_object['last_sync'] = current_time( 'mysql' );
 
 			// update that mapping object
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
-		}
+		} // this is the end of the if is_new stuff
 
 	}
 
@@ -779,15 +784,17 @@ class Salesforce_Push {
 	*	This is the database row that maps the objects, including the IDs for each one, and the WP object type
 	*
 	*/
-	private function create_object_match( $wordpress_object, $id_field_name, $salesforce_id, $field_mapping ) {
+	private function create_object_map( $wordpress_object, $id_field_name, $salesforce_id, $field_mapping ) {
 		// Create object map and save it
 		$mapping_object = $this->mappings->create_object_map(
 			array(
 				'wordpress_id' => $wordpress_object[$id_field_name], // wordpress unique id
 				'salesforce_id' => $salesforce_id, // salesforce unique id. we don't care what kind of object it is at this point
 				'wordpress_object' => $field_mapping['wordpress_object'], // keep track of what kind of wp object this is
-				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
+				'last_sync' => current_time( 'mysql' ),
+				'last_sync_action' => 'push',
 				'last_sync_status' => $this->mappings->status_success,
+				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
 			)
 		);
 
@@ -872,73 +879,6 @@ class Salesforce_Push {
 		  do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
 		}
 	  }
-	}
-
-	/**
-	* Map WordPress values to a Salesforce object.
-	*
-	* @param array $mapping
-	*   Mapping object.
-	* @param array $object
-	*   WordPress object.
-	* @param bool $use_soap
-	*   Flag to enforce use of the SOAP API.
-	* @param bool $is_new
-	*   Indicates whether a mapping object for this entity already exists.
-	*
-	* @return array
-	*   Associative array of key value pairs.
-	*/
-	private function map_params( $mapping, $object, $use_soap = FALSE, $is_new = TRUE ) {
-
-		$params = array();
-
-		foreach ( $mapping['fields'] as $fieldmap ) {
-			// skip fields that aren't being pushed to Salesforce.
-			if ( !in_array( $fieldmap['direction'], array( $this->mappings->direction_wordpress_sf, $this->mappings->direction_sync ) ) ) {
-				continue;
-			}
-
-			// Skip fields that aren't updateable when a mapped object already exists
-			// maybe we should put this into the salesforce module so we don't load fields that aren't updateable anyway. otherwise i am unclear what this even is.
-			// todo: figure out what this is
-			/*if ( !$is_new && !$fieldmap['salesforce_field']['updateable'] ) {
-				continue;
-			}*/
-
-			$salesforce_field = $fieldmap['salesforce_field'];
-			$wordpress_field = $fieldmap['wordpress_field'];
-			$params[$salesforce_field] = $object[$wordpress_field];
-
-			// todo: we could use this syntax but i think maybe it doesn't work for older php?
-			//$params[$fieldmap['salesforce_field']] = $object[$fieldmap['wordpress_field']];
-
-			// if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
-			// but still put its name in the params array so we can check for it later
-			if ( $fieldmap['is_key'] === '1' ) {
-				if ( !$use_soap ) {
-					unset( $params[$salesforce_field] );
-				}
-				$params['key'] = array(
-					'salesforce_field' => $salesforce_field,
-					'wordpress_field' => $wordpress_field,
-					'value' => $object[$wordpress_field]
-				);
-			}
-
-			// if the field is a prematch in salesforce, put its name in the params array so we can check for it later
-			if ( $fieldmap['is_prematch'] === '1' ) {
-				$params['prematch'] = array(
-					'salesforce_field' => $salesforce_field,
-					'wordpress_field' => $wordpress_field,
-					'value' => $object[$wordpress_field]
-				);
-			}
-
-		}
-
-		return $params;
-
 	}
 	
 }
