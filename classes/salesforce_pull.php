@@ -387,21 +387,387 @@ class Salesforce_Pull {
 		}
 	}
 
+	/**
+	* Sync WordPress objects and Salesforce objects from the queue using the REST API.
+	*
+	* @param string $object_type
+	*   Type of Salesforce object.
+	* @param object $object
+	*   The Salesforce object.
+	* @param object $mapping
+	*   Salesforce/WP mapping object.
+	* @param int $sf_sync_trigger
+	*   Trigger for this sync.
+	*
+	* @return true or exit the method
+	*
+	*/
+	function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
+
+		error_log('type is ' . $object_type . ' and object is ' . print_r($object, true) . ' and mapping is ' . print_r($mapping, true) . ' and trigger is ' . $sf_sync_trigger );
+
+		// if salesforce is not authorized, don't do anything.
+		// it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
+		if ( $this->salesforce['is_authorized'] !== true ) {
+			return;
 		}
 
-		$sf_mappings = $this->mappings->get_fieldmaps(
-			NULL, // id field must be null for multiples
-			$mapping_conditions
+		$sfapi = $this->salesforce['sfapi'];
+
+		// this returns the row that maps the individual salesforce row to the individual wordpress row
+		$mapping_object = $this->mappings->load_by_salesforce( $object['Id'] );
+
+		// hook to allow other plugins to define or alter the mapping object
+		$mapping_object = apply_filters( 'salesforce_rest_api_pull_mapping_object', $mapping_object, $object, $mapping );
+
+		$synced_object = array(
+			'salesforce_object' => $object,
+			'mapping_object' => $mapping_object,
+			'mapping' => $mapping,
 		);
 
-		$hold_exceptions = count( $sf_mappings ) > 1;
+		$op = '';
+
+		// deleting mapped objects
+		if ( $sf_sync_trigger == $this->mappings->sync_sf_delete ) {
+			if ( $mapping_object ) {
+				$op = 'Delete';
+				$wordpress_check = $this->mappings->load_by_wordpress( $mapping_object['wordpress_id'] );
+				if ( count( $wordpress_check ) == count( $wordpress_check, COUNT_RECURSIVE ) ) {
+
+					error_log('because we deleted salesforce ' . $mapping_object['salesforce_id'] . ' we should also be deleting wordpress ' . $mapping_object['wordpress_object'] . ' ' . $mapping_object['wordpress_id'] );
+
+					/*try {
+						//$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
+					}
+					catch ( SalesforceException $e ) {
+						$status = 'error';
+						// create log entry for failed delete
+						if ( isset( $this->logging ) ) {
+							$logging = $this->logging;
+						} else if ( class_exists( 'Salesforce_Logging' ) ) {
+							$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+						}
+
+						$logging->setup(
+							__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+							$e->getMessage(),
+							$sf_sync_trigger,
+							$object["$object_id"],
+							$status
+						);
+
+						// hook for pull fail
+						do_action( 'salesforce_rest_api_pull_fail', $op, $sfapi->response, $synced_object );
+
+					}
+
+					if ( !isset( $e ) ) {
+						// create log entry for successful delete if the result had no errors
+						$status = 'success';
+						if ( isset( $this->logging ) ) {
+							$logging = $this->logging;
+						} else if ( class_exists( 'Salesforce_Logging' ) ) {
+							$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+						}
+
+						$logging->setup(
+							__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+							'',
+							$sf_sync_trigger,
+							$object["$object_id"],
+							$status
+						);
+
+						// hook for pull success
+						do_action( 'salesforce_rest_api_pull_success', $op, $sfapi->response, $synced_object );
+					}*/
+				} else {
+					$more_ids = '<p>The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress ID. They are: ';
+					$i = 0;
+					foreach ( $wordpress_check as $match ) {
+						$i++;
+						$more_ids .= $match['salesforce_id'];
+						if ( $i !== count( $wordpress_check ) ) {
+							$more_ids .= ', ';
+						} else {
+							$more_ids .= '.</p>';
+						}
+					}
+
+					$more_ids .= '<p>The map row between this Salesforce object and the WordPress object, as stored in the WordPress database, will be deleted, and this Salesforce object has been deleted, but the WordPress object row will remain untouched.</p>';
+
+					$status = 'notice';
+					if ( isset( $this->logging ) ) {
+						$logging = $this->logging;
+					} else if ( class_exists( 'Salesforce_Logging' ) ) {
+						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+					}
+
+					$logging->setup(
+						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ') did not delete the Salesforce item...', $this->text_domain ),
+						$more_ids,
+						$sf_sync_trigger,
+						$object["$object_id"],
+						$status
+					);
+				}
+
+				// delete the map row from wordpress after the wordpress row has been deleted
+				// we delete the map row even if the wordpress delete failed, because the salesforce object is gone
+				$this->mappings->delete_object_map( $mapping_object['id'] );
+
+			} // there is no map row
+
+		  	return;
+		}
+
+		// are these objects already connected in wordpress?
+		if ( $mapping_object ) {
+			$is_new = FALSE;
+		} else {
+			$is_new = TRUE;
+		}
+
+		// maybe don't need these two lines from drupal?
+		$hold_exceptions = count( $mapping_object ) > 1;
 		$exception = FALSE;
 
+		$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
+
+		// does this do any good for the pull? probably?
+		// if there is a prematch wordpress field - ie email - on the fieldmap object
+		if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
+			$prematch_field_wordpress = $params['prematch']['wordpress_field'];
+			$prematch_field_salesforce = $params['prematch']['salesforce_field'];
+			$prematch_value = $params['prematch']['value'];
+			unset( $params['prematch'] );
+		}
+
+		// if there is an external key field in salesforce - ie mailchimp user id - on the fieldmap object
+		if ( isset( $params['key'] ) && is_array( $params['key'] ) ) {
+			$key_field_wordpress = $params['key']['wordpress_field'];
+			$key_field_salesforce = $params['key']['salesforce_field'];
+			$key_value = $params['key']['value'];
+			unset( $params['key'] );
+		}
+
+		// uses one ampersand because bit
+		if ( $is_new === FALSE && ( $mapping['sync_triggers'] & $this->mappings->sync_sf_update ) ) {
+			try {
+
+			} catch ( Exception $e ) {
+
+			}
+		} else {
+			$is_new = TRUE;
+		}
+
+		if ( !$is_new && $mapping['sync_triggers'] & $this->mappings->sync_sf_create ) {
+			try {
+
+			} catch( Exception $e ) {
+
+			}
+		}
+
+		// create and save mapping object
+
+		if ( $is_new === TRUE ) {
+			// create new object link in wp because the systems don't know about each other yetif ( $is_new === TRUE ) {
+			// create new object link in wp because the systems don't know about each other yet
+			error_log('create new object link for this new object');
+
+			// setup SF record type. CampaignMember objects get their Campaign's type
+			// i am still a bit confused about this
+			if ( $mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type && empty( $params['RecordTypeId'] ) && ( $mapping['salesforce_object'] !== 'CampaignMember') ) {
+				$params['RecordTypeId'] = $mapping['salesforce_record_type_default'];
+			}
+
+			try {
+
+				// hook to allow other plugins to modify the $salesforce_id string here
+				// use hook to change the object that is being matched to developer's own criteria
+				// ex: match a Salesforce Contact based on a connected email address object
+				// returns a $salesforce_id.
+				// it should keep NULL if there is no match
+				// the function that calls this hook needs to check the mapping to make sure the wordpress object is the right type
+				// does this hook need to be different for pull?
+				$salesforce_id = apply_filters( 'salesforce_rest_api_find_object_match', NULL, $object, $mapping, 'pull' );
+
+			}
+			catch ( SalesforceException $e ) {
+				// create log entry for failed create or upsert
+				$status = 'error';
+				$title = ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'];
+				if ( $salesforce_id !== NULL ) {
+					$title .= ' ' . $salesforce_id;
+				}
+				$title .=  ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')';
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
+					__( $title, $this->text_domain ),
+					$e->getMessage(),
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
+
+				// hook for pull fail
+				do_action( 'salesforce_rest_api_pull_fail', $op, $sfapi->response, $synced_object );
+
+				return;
+			}
+
+			if ( !isset( $salesforce_data ) ) {
+				// if we didn't set $salesforce_data already, set it now to api call result
+				$salesforce_data = $result['data'];
+			}
+
+			// salesforce api call was successful
+			// this means the object has already been created/updated in salesforce
+			// i think maybe this is redundant and will never get called. leaving it here for now because drupal module has it
+			if ( empty($result['errorCode'] ) ) {
+				$salesforce_id = $salesforce_data['id'];
+				$status = 'success';
+
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $salesforce_id . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+					'',
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
+
+				$mapping_object = $this->create_object_match( $object, $object_id, $salesforce_id, $mapping );
+
+				// hook for pull success
+				do_action( 'salesforce_rest_api_pull_success', $op, $sfapi->response, $synced_object );
+			} else {
+
+				// create log entry for failed create or upsert
+				// this is part of the drupal module but i am failing to understand when it would ever fire, since the catch should catch the errors
+				// if we see this in the log entries, we can understand what it does, but probably not until then
+				$status = 'error';
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
+					__( $salesforce_data['errorCode'] . ' ' . $status . ' syncing: ' . $op . ' to Salesforce (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+					'Object: ' . $mapping['salesforce_object'] . '<br>br>' . 'Message: ' . $salesforce_data['message'],
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
+
+				// hook for pull fail
+				do_action( 'salesforce_rest_api_pull_fail', $op, $sfapi->response, $synced_object );
+
+				return;
+			}
+
+		} else {
+			// there is an existing object link
+			// if the last sync is greater than the last time this object was updated, skip it
+			// this keeps us from doing redundant syncs
+			if ( $mapping_object['last_sync'] > $mapping_object['object_updated'] ) {
+				$status = 'notice';
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
+					__( ucfirst( $status ) . ': ' . $op . ': Did not sync WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ' with ' . $mapping_object['salesforce_id'] . ' ' . $mapping_object['salesforce_id'] . ' because the last sync timestamp was greater than the object updated timestamp', $this->text_domain ),
+					'Last sync time: ' . $mapping_object['last_sync'] . '<br>' . 'Object updated time: ' . $mapping_object['object_updated'],
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
+				return;
+			}
+
+			try {
+				$op = 'Update';
+				$result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );
+
+				$mapping_object['last_sync_status'] = $this->mappings->status_success;
+				$mapping_object['last_sync_message'] = __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain );
+
+				$status = 'success';
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+					'',
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
+
+				// hook for pull success
+				do_action( 'salesforce_rest_api_pull_success', $op, $sfapi->response, $synced_object );
+
+			}
+			catch ( SalesforceException $e ) {
+				// create log entry for failed update
+				$status = 'error';
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+					$e->getMessage(),
+					$sf_sync_trigger,
+					$object["$object_id"],
+					$status
+				);
+
+				$mapping_object['last_sync_status'] = $this->mappings->status_error;
+				$mapping_object['last_sync_message'] = $e->getMessage();
+
+				// hook for pull fail
+				do_action( 'salesforce_rest_api_pull_fail', $op, $sfapi->response, $synced_object );
+
+			}
+
+			// tell the mapping object - whether it is new or already existed - how we just used it
+			$mapping_object['last_sync_action'] = 'pull';
+			$mapping_object['last_sync'] = current_time( 'mysql' );
+
+			// update that mapping object
+			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+
+		}
+
+
+		// drupal stuff here
+
+		
+
 		foreach ( $sf_mappings as $sf_mapping ) {
-			// Mapping object exists?
-			$mapping_object = $this->mappings->load_by_salesforce( $sf_object['Id'] );
-			// Allow other modules to define or alter the mapping object.
-			drupal_alter('salesforce_pull_mapping_object', $mapping_object, $sf_object, $sf_mapping);
 
 			$exists = $mapping_object ? TRUE : FALSE;
 
