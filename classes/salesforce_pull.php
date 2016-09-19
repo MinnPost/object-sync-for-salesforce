@@ -73,7 +73,7 @@ class Salesforce_Pull {
 	*/
 	public function salesforce_pull_webhook() {
 
-		if ( $this->salesforce_pull_sync_rest() === TRUE ) {
+		if ( $this->salesforce_pull() === TRUE ) {
 			$code = '200';			
 			// check to see if anything is in the queue and handle it if it is
 			$this->schedule->maybe_handle();
@@ -93,7 +93,7 @@ class Salesforce_Pull {
 	/**
 	* Callback for the standard pull process used by webhooks and cron.
 	*/
-	public function salesforce_pull_sync_rest() {
+	public function salesforce_pull() {
 		$sfapi = $this->salesforce['sfapi'];
 
 		if ( $this->salesforce['is_authorized'] === TRUE && $this->check_throttle() === TRUE ) {
