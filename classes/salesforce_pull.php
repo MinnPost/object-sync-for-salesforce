@@ -178,7 +178,7 @@ class Salesforce_Pull {
 		$pull_throttle = get_option( 'salesforce_api_pull_throttle', 5 );
 		$last_sync = get_option( 'salesforce_api_pull_last_sync', 0 );
 
-		if ( current_time( 'mysql' ) > $last_sync + $pull_throttle ) {
+		if ( current_time( 'timestamp' ) > $last_sync + $pull_throttle ) {
 			return TRUE;
 		} else {
 			return FALSE;
@@ -304,7 +304,7 @@ class Salesforce_Pull {
 					$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : FALSE;
 				}
 
-				update_option( 'salesforce_api_pull_last_sync_' . $type, $_SERVER['REQUEST_TIME'] );
+				update_option( 'salesforce_api_pull_last_sync_' . $type, current_time( 'timestamp') );
 
 			} else {
 
@@ -348,7 +348,7 @@ class Salesforce_Pull {
 				$last_delete_sync = get_option( 'salesforce_api_pull_delete_last_' . $type, $_SERVER['REQUEST_TIME'] );
 				update_option( 'salesforce_api_pull_delete_last_' . $type, $_SERVER['REQUEST_TIME'] );
 
-				$now = current_time( 'mysql' );
+				$now = current_time( 'timestamp' );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
 				// (using an incompatible data may lead to exceptions).
