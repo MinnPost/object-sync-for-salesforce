@@ -840,7 +840,7 @@ class Salesforce_Push {
 		  }
 
 		  $mapping_object->last_sync_status = $this->mappings->status_success;
-		  $mapping_object->last_sync = $_SERVER['REQUEST_TIME'];
+		  $mapping_object->last_sync = current_time( 'timestamp' );
 		  $mapping_object->last_sync_action = 'push';
 		  $mapping_object->save();
 
@@ -866,7 +866,7 @@ class Salesforce_Push {
 			$error_messages[] = $error->message;
 		  }
 		  if ($mapping_object) {
-			$mapping_object->last_sync = $_SERVER['REQUEST_TIME'];
+			$mapping_object->last_sync = current_time( 'timestamp' );
 			$mapping_object->last_sync_action = 'push';
 			$mapping_object->last_sync_status = $this->mappings->status_error;
 			$mapping_object->last_sync_message = t('Push error via %function with the following messages: @message.', array(
