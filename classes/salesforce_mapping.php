@@ -323,20 +323,20 @@ class Salesforce_Mapping {
                 $where = '';
             }
 
-            $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where, ARRAY_A );
+            $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . $order, ARRAY_A );
             if ( !empty( $mappings ) && $this->wpdb->num_rows === 1 ) {
                 $mappings = $mappings[0];
             }
-            return $mappings;
 
         } else { // get all of em
-            $mappings = $this->wpdb->get_results( "SELECT * FROM $table" , ARRAY_A );
+            $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $order, ARRAY_A );
             if ( !empty( $mappings ) && $this->wpdb->num_rows === 1 ) {
                 $mappings = $mappings[0];
             }
-            return $mappings;
         }
-        
+
+        return $mappings;
+
     }
 
     /**
