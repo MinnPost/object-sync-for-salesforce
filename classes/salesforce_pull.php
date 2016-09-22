@@ -355,11 +355,11 @@ class Salesforce_Pull {
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
 				// (using an incompatible data may lead to exceptions).
-				$last_delete_sync = $last_delete_sync > current_time( 'timestamp' ) - 2505600 ? $last_delete_sync : current_time( 'timestamp' ) - 2505600;
+				$last_delete_sync = $last_delete_sync > ( current_time( 'timestamp' ) - 2505600 ) ? $last_delete_sync : ( current_time( 'timestamp' ) - 2505600 );
 
 				// get_deleted() constraint: startDate must be at least one minute greater
 				// than endDate.
-				$now = $now > $last_delete_sync + 60 ? $now : $now + 60;
+				$now = $now > ( $last_delete_sync + 60 ) ? $now : $now + 60;
 				$last_delete_sync_sf = gmdate( 'Y-m-d\TH:i:s\Z', $last_delete_sync );
 				$now_sf = gmdate( 'Y-m-d\TH:i:s\Z', $now );
 
@@ -653,7 +653,8 @@ class Salesforce_Pull {
 					$status
 				);
 
-				$mapping_object = $this->create_object_match( $object, $object_id, $salesforce_id, $mapping );
+				// create the mapping object between the rows
+				$mapping_object = $this->create_object_map( $salesforce_object, $wordpress_id, $mapping );
 
 				// hook for pull success
 				do_action( 'salesforce_rest_api_pull_success', $op, $sfapi->response, $synced_object );
