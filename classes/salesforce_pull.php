@@ -239,6 +239,7 @@ class Salesforce_Pull {
 			$soql = new Salesforce_Select_Query( $type );
 
 			// Convert field mappings to SOQL.
+			// this is why we don't use the get_updated_records method
 			$soql->fields = array_merge( $mapped_fields, array(
 			  'Id' => 'Id',
 			  $mapping['pull_trigger_field'] => $mapping['pull_trigger_field']
@@ -284,7 +285,8 @@ class Salesforce_Pull {
 				$next_records_url = isset( $response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $response['nextRecordsUrl'] ) : FALSE;
 
 				while ( $next_records_url ) {
-					$new_results = $sfapi->api_call( $next_records_url );
+					// shouldn't cache this either. it's going into the queue if it exists anyway.
+					$new_results = $sfapi->api_call( $next_records_url, array(), 'GET', array( 'cache' => FALSE ) );
 					$new_response = $new_results['data'];
 					if ( !isset( $new_response['errorCode'] ) ) {
 						// Write items to the queue.
