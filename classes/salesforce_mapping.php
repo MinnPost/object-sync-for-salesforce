@@ -303,9 +303,9 @@ class Salesforce_Mapping {
     */
     public function get_object_maps( $id = NULL, $conditions = array(), $reset = false ) {
         $table = $this->object_map_table;
+        $order = ' ORDER BY object_updated, created';
         if ( $id !== NULL ) { // get one fieldmap
-            $map = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
-            return $map;
+            $mappings = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
         } elseif ( !empty( $conditions ) ) { // get multiple but with a limitation
             $mappings = array();
         
