@@ -814,7 +814,7 @@ class Salesforce {
 	*/
 	public function get_deleted( $type, $start_date, $end_date ) {
 		$options = array( 'cache' => FALSE ); // this is timestamp level specific; probably should not cache it
-		return $this->api_call( "sobjects/{$type}/deleted/?start={$start_date}&end={$end_date}", 'GET', $options );
+		return $this->api_call( "sobjects/{$type}/deleted/?start={$start_date}&end={$end_date}", array(), 'GET', $options );
 	}
 
 
@@ -872,7 +872,7 @@ class Salesforce {
 		$end = urlencode( gmdate( DATE_ATOM, $end ) );
 
 		$options = array( 'cache' => FALSE ); // this is timestamp level specific; probably should not cache it
-		return $this->api_call( "sobjects/{$type}/updated/?start=$start&end=$end", 'GET', $options );
+		return $this->api_call( "sobjects/{$type}/updated/?start=$start&end=$end", array(), 'GET', $options );
 	}
 
 	/**
