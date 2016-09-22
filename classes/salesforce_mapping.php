@@ -430,7 +430,7 @@ class Salesforce_Mapping {
     * @param array $mapping
     *   Mapping object.
     * @param array $object
-    *   WordPress object.
+    *   WordPress or Salesforce object data.
     * @param array $trigger
     *   What triggered this mapping?
     * @param bool $use_soap
