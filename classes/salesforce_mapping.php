@@ -414,14 +414,36 @@ class Salesforce_Mapping {
     * @param bool $reset
     *   Whether or not the cache should be cleared and fetch from current data.
     *
-    * @return SalesforceMappingObject
-    *   The requested SalesforceMappingObject or FALSE if none was found.
+    * @return array $map
+    *   The most recent fieldmap
     */
     public function load_by_salesforce( $salesforce_id, $reset = FALSE ) {
         $conditions = array(
             'salesforce_id' => $salesforce_id
         );
-        return $this->get_object_maps( NULL, $conditions, $reset );
+
+        $map = $this->get_object_maps( NULL, $conditions, $reset );
+
+        if ( isset( $map[0] ) && is_array( $map[0] ) && count( $map ) > 1 ) {
+            $log = '';
+            $log .= 'Mapping: there is more than one mapped WordPress object for the Salesforce object ' . $salesforce_id . '. These WordPress IDs are: ';
+            $i = 0;
+            foreach ( $map as $mapping ) {
+                $i++;
+                if ( isset( $mapping['wordpress_id'])) {
+                    $log .= 'object type: ' . $mapping['wordpress_object'] . ', id: ' . $mapping['wordpress_id'];
+                }
+                if ( $i !== count( $map ) ) {
+                    $log .= '; ';
+                } else {
+                    $log .= '.';
+                }
+            }
+            $map = $map[0];
+            error_log($log);
+        }
+
+        return $map;
     }
 
     /**
