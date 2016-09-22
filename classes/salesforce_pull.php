@@ -962,4 +962,36 @@ class Salesforce_Pull {
 		}
 	}
 
+	/**
+	* Create an object map between a Salesforce object and a WordPress object
+	*
+	* @param array $salesforce_object
+	*	Array of the salesforce object's data
+	* @param string $wordpress_id
+	*	Unique identifier for the WordPress object
+	* @param array $field_mapping
+	*	The row that maps the object types together, including which fields match which other fields
+	*
+	* @return array $mapping object
+	*	This is the database row that maps the objects, including the IDs for each one, and the WP object type
+	*
+	*/
+	private function create_object_map( $salesforce_object, $wordpress_id, $field_mapping ) {
+		// Create object map and save it
+		$mapping_object = $this->mappings->create_object_map(
+			array(
+				'wordpress_id' => $wordpress_id, // wordpress unique id
+				'salesforce_id' => $salesforce_object['Id'], // salesforce unique id. we don't care what kind of object it is at this point
+				'wordpress_object' => $field_mapping['wordpress_object'], // keep track of what kind of wp object this is
+				'last_sync' => current_time( 'mysql' ),
+				'last_sync_action' => 'push',
+				'last_sync_status' => $this->mappings->status_success,
+				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
+			)
+		);
+
+		return $mapping_object;
+
+	}
+
 }
