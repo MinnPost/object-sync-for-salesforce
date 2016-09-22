@@ -192,12 +192,12 @@ class Salesforce_Pull {
 	* and places each updated SF object into the queue for later processing.
 	*
 	* todo: figure out why the drupal module has two for loops over apparently the same data
+	* i think it's because it wants to run a separate SOQL thing for each type of object in SF
 	*/
 	private function salesforce_pull_get_updated_records() {
-
 		$sfapi = $this->salesforce['sfapi'];
 		foreach ( $this->mappings->get_fieldmaps() as $fieldmap ) {
-			$type = $fieldmap['salesforce_object'];
+			$type = $fieldmap['salesforce_object']; // this sets the salesfore object type for the SOQL query
 			$mapped_fields = array();
 			$mapped_record_types = array();
 
