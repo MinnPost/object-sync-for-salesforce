@@ -148,7 +148,7 @@ class Salesforce_Rest_API {
 
 		$this->logging = $this->logging( $this->wpdb, $this->version, $this->text_domain );
 
-		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->text_domain );
+		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->text_domain, $this->logging );
 
 		$this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain, $this->mappings, $this->logging );
 		$this->salesforce = $this->salesforce_get_api();
@@ -182,9 +182,9 @@ class Salesforce_Rest_API {
 	 *
 	 * @return object
 	 */
-	private function mappings( &$wpdb, $version, $text_domain ) {
+	private function mappings( &$wpdb, $version, $text_domain, $logging ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
-		$mappings = new Salesforce_Mapping( $wpdb, $version, $text_domain );
+		$mappings = new Salesforce_Mapping( $wpdb, $version, $text_domain, $logging );
 		return $mappings;
 	}
 

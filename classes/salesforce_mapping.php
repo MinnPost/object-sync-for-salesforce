@@ -5,6 +5,8 @@ class Salesforce_Mapping {
 	protected $wpdb;
     protected $version;
     protected $text_domain;
+    protected $logging;
+
     protected $fieldmap_table;
     protected $object_map_table;
 
@@ -40,12 +42,14 @@ class Salesforce_Mapping {
     * @param object $wpdb
     * @param string $version
     * @param string $text_domain
+    * @param object $logging
     * @throws \Exception
     */
-    public function __construct( $wpdb, $version, $text_domain ) {
+    public function __construct( $wpdb, $version, $text_domain, $logging ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->text_domain = $text_domain;
+        $this->logging = $logging;
 
         $this->fieldmap_table = $this->wpdb->prefix . 'salesforce_field_map';
         $this->object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
