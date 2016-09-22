@@ -813,7 +813,8 @@ class Salesforce {
 	* @return GetDeletedResult
 	*/
 	public function get_deleted( $type, $start_date, $end_date ) {
-		return $this->api_call( "sobjects/{$type}/deleted/?start={$start_date}&end={$end_date}" );
+		$options = array( 'cache' => FALSE ); // this is timestamp level specific; probably should not cache it
+		return $this->api_call( "sobjects/{$type}/deleted/?start={$start_date}&end={$end_date}", 'GET', $options );
 	}
 
 
@@ -837,7 +838,7 @@ class Salesforce {
 	* Return a list of SFIDs for the given object, which have been created or
 	* updated in the given timeframe. 
 	*
-	* @param int $name
+	* @param string $type
 	*   Object type name, E.g., Contact, Account.
 	*   
 	* @param int $start
@@ -859,18 +860,19 @@ class Salesforce {
 	*
 	* part of core API calls
 	*/
-	public function get_updated( $name, $start = null, $end = null ) {
+	public function get_updated( $type, $start = null, $end = null ) {
 		if ( empty( $start ) ) {
 		  $start = strtotime( '-29 days' );
 		}
 		$start = urlencode( gmdate( DATE_ATOM, $start ) );
 
-		if (empty( $end ) ) {
+		if ( empty( $end ) ) {
 		  $end = time();
 		}
 		$end = urlencode( gmdate( DATE_ATOM, $end ) );
 
-		return $this->api_call( "sobjects/{$name}/updated/?start=$start&end=$end" );
+		$options = array( 'cache' => FALSE ); // this is timestamp level specific; probably should not cache it
+		return $this->api_call( "sobjects/{$type}/updated/?start=$start&end=$end", 'GET', $options );
 	}
 
 	/**
