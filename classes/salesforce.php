@@ -604,6 +604,8 @@ class Salesforce {
 	*
 	* @param string $query
 	*   The SOQL query.
+	* @param array $options
+	*   Allow for the query to have options based on what the user needs from it, ie caching, read/write, etc.
 	* @param boolean $all
 	*   Whether this should get all results for the query
 	* @param boolean $explain
@@ -614,21 +616,21 @@ class Salesforce {
 	*
 	* part of core API calls
 	*/
-	public function query( $query, $all = false, $explain = false ) {
+	public function query( $query, $options = array(), $all = FALSE, $explain = FALSE ) {
 		$search_data = [
             'q' => $query,
         ];
-        if ( $explain ) {
+        if ( $explain === TRUE ) {
             $search_data['explain'] = $search_data['q'];
             unset( $search_data['q'] );
         }
         // all is a search through deleted and merged data as well
-        if ( $all ) {
+        if ( $all === TRUE ) {
             $path = 'queryAll';
         } else {
             $path = 'query';
         }
-		$result = $this->api_call( $path . '?' . http_build_query( $search_data ) );
+		$result = $this->api_call( $path . '?' . http_build_query( $search_data ), array(), 'GET', $options );
 		return $result;
 	}
 
