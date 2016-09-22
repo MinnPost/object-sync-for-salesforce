@@ -259,7 +259,8 @@ class Salesforce_Pull {
 
 			// Execute query
 			// have to cast it to string to make sure it uses the magic method
-			$results = $sfapi->query( (string) $soql );
+			// we don't want to cache this because timestamps
+			$results = $sfapi->query( (string) $soql, array( 'cache' => FALSE ) );
 			$response = $results['data'];
 			$version_path = parse_url( $sfapi->get_api_endpoint(), PHP_URL_PATH );
 
