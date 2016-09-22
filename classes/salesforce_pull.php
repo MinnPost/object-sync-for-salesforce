@@ -178,7 +178,7 @@ class Salesforce_Pull {
 		$pull_throttle = get_option( 'salesforce_api_pull_throttle', 5 );
 		$last_sync = get_option( 'salesforce_api_pull_last_sync', 0 );
 
-		if ( current_time( 'timestamp' ) > $last_sync + $pull_throttle ) {
+		if ( current_time( 'timestamp' ) > ( $last_sync + $pull_throttle ) ) {
 			return TRUE;
 		} else {
 			return FALSE;
