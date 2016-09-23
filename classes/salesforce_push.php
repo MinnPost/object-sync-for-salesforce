@@ -389,6 +389,14 @@ class Salesforce_Push {
 		// this returns the row that maps the individual wordpress row to the individual salesforce row
 		$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object["$object_id"] );
 
+		// make sure these data versions are integers bc php's mysql is weird
+		if ( isset( $mapping_object['salesforce_data_version'] ) ) {
+			$mapping_object['salesforce_data_version'] = absint( $mapping_object['salesforce_data_version'] );
+		}
+		if ( isset( $mapping_object['wordpress_data_version'] ) ) {
+			$mapping_object['wordpress_data_version'] = absint( $mapping_object['wordpress_data_version'] );
+		}
+
 		$synced_object = array(
 			'wordpress_object' => $object,
 			'mapping_object' => $mapping_object,
@@ -761,6 +769,9 @@ class Salesforce_Push {
 			$mapping_object['last_sync_action'] = 'push';
 			$mapping_object['last_sync'] = current_time( 'mysql' );
 
+			// tell the mapping object that we have a new version of the wordpress data
+			$mapping_object['wordpress_data_version']++;
+
 			// update that mapping object
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
@@ -795,6 +806,7 @@ class Salesforce_Push {
 				'last_sync_action' => 'push',
 				'last_sync_status' => $this->mappings->status_success,
 				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
+				'wordpress_data_version' => 1
 			)
 		);
 
