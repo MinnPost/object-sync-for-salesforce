@@ -73,6 +73,9 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
                 case 'hours':
                     $seconds = 3600;
                     break;
+                case 'days':
+                    $seconds = 86400;
+                    break;
             }
 
             $key = $schedule_unit . '_' . $schedule_number;
