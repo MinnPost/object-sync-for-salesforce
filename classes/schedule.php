@@ -39,6 +39,8 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
         $this->logging = $logging;
         $this->schedulable_classes = $schedulable_classes;
 
+        $this->identifier = $this->schedule_name;
+
         $this->add_filters();
         add_action( $this->schedule_name, array( $this, 'maybe_handle' ) ); // run the handle method
 
