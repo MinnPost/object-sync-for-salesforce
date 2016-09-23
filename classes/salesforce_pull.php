@@ -651,13 +651,13 @@ class Salesforce_Pull {
 				return;
 			}
 
-			if ( !isset( $salesforce_data ) ) {
-				// if we didn't set $salesforce_data already, set it now to api call result
-				$salesforce_data = $result['data'];
+			if ( !isset( $wordpress_data ) ) {
+				// if we didn't set $wordpress_data already, set it now to the wp query result
+				//$wordpress_data = $result['data'];
 			}
 
-			// salesforce api call was successful
-			// this means the object has already been created/updated in salesforce
+			// wordpress call was successful
+			// this means the object has already been created/updated in wordpress
 			// i think maybe this is redundant and will never get called. leaving it here for now because drupal module has it
 			if ( empty($result['errorCode'] ) ) {
 				$salesforce_id = $salesforce_data['id'];
