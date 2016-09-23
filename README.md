@@ -139,6 +139,7 @@ The admin section is divided into tabs:
     - New fieldmaps can also be added. They require a label, a WordPress object, and a Salesforce object. Fields to map are displayed based on what fields each object has, after the object is chosen.
 5. Scheduling
     - This tab defines schedule settings for each class in the `schedulable_classes` array. Each class can be run at any interval, as defined in minutes, hours, or days.
+    - If you change the schedule for one of the classes, it will do its initial run immediately, and then the next time it runs will be at the updated interval.
 6. Log Settings
     - This tab allows admin users to tell the plugin whether or not it should log any events. If it is enabled, it will use the `logging` class. If it is not, nothing will happen.
     - Users can set what statuses to log (error, success, and/or notice), if and how often entries should be deleted, and which events between WordPress and Salesforce should be logged.
