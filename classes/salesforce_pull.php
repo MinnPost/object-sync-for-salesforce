@@ -418,7 +418,14 @@ class Salesforce_Pull {
 		$sfapi = $this->salesforce['sfapi'];
 
 		// this returns the row that maps the individual salesforce row to the individual wordpress row
-		$mapping_object = $this->mappings->load_by_salesforce( $object['Id'] );
+		if ( isset( $object['Id'] ) ) {
+			$mapping_object = $this->mappings->load_by_salesforce( $object['Id'] );
+		} else {
+			// if we don't have a salesforce object id, we've got no business doing stuff in wordpress
+			// todo: we should create a log entry for this so user knows
+			error_log('there is no object Id for ' . print_r($object, true));
+			return;
+		}
 
 		// hook to allow other plugins to define or alter the mapping object
 		$mapping_object = apply_filters( 'salesforce_rest_api_pull_mapping_object', $mapping_object, $object, $mapping );
