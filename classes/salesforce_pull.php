@@ -423,6 +423,29 @@ class Salesforce_Pull {
 		// hook to allow other plugins to define or alter the mapping object
 		$mapping_object = apply_filters( 'salesforce_rest_api_pull_mapping_object', $mapping_object, $object, $mapping );
 
+		// make sure these data versions are integers bc php's mysql is weird
+		if ( isset( $mapping_object['salesforce_data_version'] ) ) {
+			$mapping_object['salesforce_data_version'] = absint( $mapping_object['salesforce_data_version'] );
+		}
+		if ( isset( $mapping_object['wordpress_data_version'] ) ) {
+			$mapping_object['wordpress_data_version'] = absint( $mapping_object['wordpress_data_version'] );
+		}
+
+		// we already have the data from salesforce at this point; we just need to work with it in wordpress, unless they are the same
+
+		// tell the mapping object that we have a new version of the salesforce data
+		$mapping_object['salesforce_data_version']++;
+
+		// the wordpress and salesforce versions of the data are the same. don't do anything.
+		if ( $mapping_object['wordpress_data_version'] === $mapping_object['salesforce_data_version'] ) {
+			// if there is an actual mapping object row, update it so the version numbers will be correct
+			// if we are sending data to wordpress, this happens after that data gets saved
+			if ( isset( $mapping_object['id'] ) ) {
+				$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+			}
+			return;
+		}
+
 		$synced_object = array(
 			'salesforce_object' => $object,
 			'mapping_object' => $mapping_object,
@@ -433,7 +456,7 @@ class Salesforce_Pull {
 
 		// deleting mapped objects
 		if ( $sf_sync_trigger == $this->mappings->sync_sf_delete ) {
-			if ( $mapping_object ) {
+			if ( isset( $mapping_object['id'] ) ) {
 				$op = 'Delete';
 				$wordpress_check = $this->mappings->load_by_wordpress( $mapping_object['wordpress_id'] );
 				if ( count( $wordpress_check ) == count( $wordpress_check, COUNT_RECURSIVE ) ) {
@@ -526,7 +549,7 @@ class Salesforce_Pull {
 		}
 
 		// are these objects already connected in wordpress?
-		if ( $mapping_object ) {
+		if ( isset( $mapping_object['id'] ) ) {
 			$is_new = FALSE;
 		} else {
 			$is_new = TRUE;
@@ -536,6 +559,7 @@ class Salesforce_Pull {
 		$hold_exceptions = count( $mapping_object ) > 1;
 		$exception = FALSE;
 
+		// map the salesforce values to wordpress fields
 		$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
 
 		// does this do any good for the pull? probably?
@@ -554,6 +578,8 @@ class Salesforce_Pull {
 			$key_value = $params['key']['value'];
 			unset( $params['key'] );
 		}
+
+		// methods to run the wp create or update operations
 
 		// uses one ampersand because bit
 		if ( $is_new === FALSE && ( $mapping['sync_triggers'] & $this->mappings->sync_sf_update ) ) {
@@ -577,9 +603,7 @@ class Salesforce_Pull {
 		// create and save mapping object
 
 		if ( $is_new === TRUE ) {
-			// create new object link in wp because the systems don't know about each other yetif ( $is_new === TRUE ) {
 			// create new object link in wp because the systems don't know about each other yet
-			error_log('create new object link for this new object');
 
 			// setup SF record type. CampaignMember objects get their Campaign's type
 			// i am still a bit confused about this
@@ -757,11 +781,14 @@ class Salesforce_Pull {
 
 			}
 
-			// tell the mapping object - whether it is new or already existed - how we just used it
-			$mapping_object['last_sync_action'] = 'pull';
-			$mapping_object['last_sync'] = current_time( 'mysql' );
+			// check to see if we actually updated anything in wordpress
+			if ( $mapping_object['wordpress_data_version'] !== $mapping_object['salesforce_data_version'] ) {
+				// tell the mapping object - whether it is new or already existed - how we just used it
+				$mapping_object['last_sync_action'] = 'pull';
+				$mapping_object['last_sync'] = current_time( 'mysql' );
+			}
 
-			// update that mapping object
+			// update that mapping object. the salesforce data version will be set here as well because we set it earlier
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 		}
@@ -991,6 +1018,7 @@ class Salesforce_Pull {
 				'last_sync_action' => 'push',
 				'last_sync_status' => $this->mappings->status_success,
 				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
+				'salesforce_data_version' => 1
 			)
 		);
 
