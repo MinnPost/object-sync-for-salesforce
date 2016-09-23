@@ -425,6 +425,7 @@ class Salesforce_Mapping {
         $map = $this->get_object_maps( NULL, $conditions, $reset );
 
         if ( isset( $map[0] ) && is_array( $map[0] ) && count( $map ) > 1 ) {
+            $status = 'notice';
             $log = '';
             $log .= 'Mapping: there is more than one mapped WordPress object for the Salesforce object ' . $salesforce_id . '. These WordPress IDs are: ';
             $i = 0;
@@ -440,7 +441,12 @@ class Salesforce_Mapping {
                 }
             }
             $map = $map[0];
-            error_log($log);
+            $logging->setup(
+                __( ucfirst( $status ) . ': Mapping: there is more than one mapped WordPress object for the Salesforce object ' . $salesforce_id, $this->text_domain ),
+                $log,
+                $sf_sync_trigger,
+                $status
+            );
         }
 
         return $map;
