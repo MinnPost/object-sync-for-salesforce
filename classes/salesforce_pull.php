@@ -423,6 +423,11 @@ class Salesforce_Pull {
 		} else {
 			// if we don't have a salesforce object id, we've got no business doing stuff in wordpress
 			$status = 'error';
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			}
 			$logging->setup(
 				__( ucfirst( $status ) . ': Salesforce Pull: unable to process queue item because it has no Salesforce Id.', $this->text_domain ),
 				print_r( $object, true ),

@@ -441,6 +441,12 @@ class Salesforce_Mapping {
                 }
             }
             $map = $map[0];
+            // create log entry for multiple maps
+            if ( isset( $this->logging ) ) {
+                $logging = $this->logging;
+            } else if ( class_exists( 'Salesforce_Logging' ) ) {
+                $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+            }
             $logging->setup(
                 __( ucfirst( $status ) . ': Mapping: there is more than one mapped WordPress object for the Salesforce object ' . $salesforce_id, $this->text_domain ),
                 $log,
