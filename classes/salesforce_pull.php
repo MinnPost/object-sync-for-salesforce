@@ -422,8 +422,13 @@ class Salesforce_Pull {
 			$mapping_object = $this->mappings->load_by_salesforce( $object['Id'] );
 		} else {
 			// if we don't have a salesforce object id, we've got no business doing stuff in wordpress
-			// todo: we should create a log entry for this so user knows
-			error_log('there is no object Id for ' . print_r($object, true));
+			$status = 'error';
+			$logging->setup(
+				__( ucfirst( $status ) . ':Salesforce Pull: unable to process queue item because it has no Salesforce Id.', $this->text_domain ),
+				print_r( $object, true ),
+				$sf_sync_trigger,
+				$status
+			);
 			return;
 		}
 
