@@ -683,9 +683,12 @@ class Salesforce_Pull {
 				return;
 			}
 
-			if ( !isset( $wordpress_data ) ) {
-				// if we didn't set $wordpress_data already, set it now to the wp query result
-				//$wordpress_data = $result['data'];
+			// set $wordpress_data to the query result
+			$wordpress_data = $result['data'];
+			if ( isset( $wordpress_data["$object_id"] ) ) {
+				$wordpress_id = $wordpress_data["$object_id"];
+			} else {
+				$wordpress_id = 0;
 			}
 
 			// wordpress call was successful
