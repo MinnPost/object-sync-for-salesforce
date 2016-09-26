@@ -676,15 +676,22 @@ class Salesforce {
 	*   Values of the fields to set for the object.
 	*
 	* @return array
-	*   "id" : "001D000000IqhSLIAZ",
-	*   "errors" : [ ],
-	*   "success" : true
+	*	json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
+	*	code: 201
+	*   data:
+	*     "id" : "00190000001pPvHAAU",
+	*     "success" : true
+	*     "errors" : [ ],
+	*   from_cache: 
+	*   cached: 
+	*   is_redo: 
 	*
 	* part of core API calls
 	*/
 	public function object_create( $name, $params ) {
 		$options = array( 'type' => 'write' );
-		return $this->api_call( "sobjects/{$name}", $params, 'POST', $options );
+		$result = $this->api_call( "sobjects/{$name}", $params, 'POST', $options );
+		return $result;
 	}
 
 	/**
@@ -704,13 +711,15 @@ class Salesforce {
 	*   Values of the fields to set for the object.
 	*
 	* @return array
-	*   success:
+	*	json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
+	*	code: 201
+	*   data:
 	*     "id" : "00190000001pPvHAAU",
-	*     "errors" : [ ],
 	*     "success" : true
-	*   error:
-	*     "message" : "The requested resource does not exist"
-	*     "errorCode" : "NOT_FOUND"
+	*     "errors" : [ ],
+	*   from_cache: 
+	*   cached: 
+	*   is_redo: 
 	*
 	* part of core API calls
 	*/
