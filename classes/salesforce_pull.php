@@ -443,9 +443,13 @@ class Salesforce_Pull {
 		// make sure these data versions are integers bc php's mysql is weird
 		if ( isset( $mapping_object['salesforce_data_version'] ) ) {
 			$mapping_object['salesforce_data_version'] = absint( $mapping_object['salesforce_data_version'] );
+		} else {
+			$mapping_object['salesforce_data_version'] = 0;
 		}
 		if ( isset( $mapping_object['wordpress_data_version'] ) ) {
 			$mapping_object['wordpress_data_version'] = absint( $mapping_object['wordpress_data_version'] );
+		} else {
+			$mapping_object['wordpress_data_version'] = 0;
 		}
 
 		// we already have the data from salesforce at this point; we just need to work with it in wordpress, unless they are the same
