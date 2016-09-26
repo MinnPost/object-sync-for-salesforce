@@ -760,7 +760,8 @@ class Salesforce_Pull {
 			// there is an existing object link
 			// if the last sync is greater than the last time this object was updated, skip it
 			// this keeps us from doing redundant syncs
-			if ( $mapping_object['last_sync'] > $mapping_object['object_updated'] ) {
+			// because SF stores all DateTimes in UTC.
+			if ( get_gmt_from_date( $mapping_object['last_sync'], 'Y-m-d\TH:i:s\Z' ) > $object[$mapping['pull_trigger_field']] ) {
 				$status = 'notice';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
