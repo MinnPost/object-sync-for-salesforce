@@ -450,7 +450,8 @@ class Salesforce_Mapping {
             $logging->setup(
                 __( ucfirst( $status ) . ': Mapping: there is more than one mapped WordPress object for the Salesforce object ' . $salesforce_id, $this->text_domain ),
                 $log,
-                $sf_sync_trigger,
+                0,
+                0,
                 $status
             );
         }
