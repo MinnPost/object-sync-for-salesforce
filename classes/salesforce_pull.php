@@ -691,11 +691,11 @@ class Salesforce_Pull {
 				$wordpress_id = 0;
 			}
 
-			// wordpress call was successful
+			// wordpress crud call was successful
 			// this means the object has already been created/updated in wordpress
-			// i think maybe this is redundant and will never get called. leaving it here for now because drupal module has it
-			if ( empty($result['errorCode'] ) ) {
-				$salesforce_id = $salesforce_data['id'];
+			// this is not redundant because this is where it creates the object mapping rows in wordpress if the object does not already have one (we are still inside $is_new === TRUE here)
+
+			if ( empty($result['errors'] ) ) {
 				$status = 'success';
 
 				if ( isset( $this->logging ) ) {
@@ -713,7 +713,7 @@ class Salesforce_Pull {
 				);
 
 				// create the mapping object between the rows
-				$mapping_object = $this->create_object_map( $salesforce_object, $wordpress_id, $mapping );
+				$mapping_object = $this->create_object_map( $object, $wordpress_id, $mapping );
 
 				// hook for pull success
 				do_action( 'salesforce_rest_api_pull_success', $op, $result, $synced_object );
