@@ -584,7 +584,11 @@ class Salesforce_Pull {
 		// map the salesforce values to wordpress fields
 		$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
 
-		// does this do any good for the pull? probably?
+		// if we don't get any params, there are no fields that should be sent to wordpress
+		if ( empty( $params ) ) {
+			return;
+		}
+
 		// if there is a prematch wordpress field - ie email - on the fieldmap object
 		if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
 			$prematch_field_wordpress = $params['prematch']['wordpress_field'];
