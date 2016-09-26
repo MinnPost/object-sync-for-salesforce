@@ -506,7 +506,7 @@ class Salesforce_Pull {
 						);
 
 						// hook for pull fail
-						do_action( 'salesforce_rest_api_pull_fail', $op, $sfapi->response, $synced_object );
+						do_action( 'salesforce_rest_api_pull_fail', $op, $result, $synced_object );
 
 					}
 
@@ -528,8 +528,8 @@ class Salesforce_Pull {
 						);
 
 						// hook for pull success
-						do_action( 'salesforce_rest_api_pull_success', $op, $sfapi->response, $synced_object );
 					}*/
+						do_action( 'salesforce_rest_api_pull_success', $op, $result, $synced_object );
 				} else {
 					$more_ids = '<p>The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress ID. They are: ';
 					$i = 0;
@@ -637,12 +637,11 @@ class Salesforce_Pull {
 
 				// hook to allow other plugins to modify the $salesforce_id string here
 				// use hook to change the object that is being matched to developer's own criteria
-				// ex: match a Salesforce Contact based on a connected email address object
+				// ex: match a WordPress user based on some other criteria than the predefined ones
 				// returns a $salesforce_id.
 				// it should keep NULL if there is no match
 				// the function that calls this hook needs to check the mapping to make sure the wordpress object is the right type
-				// does this hook need to be different for pull?
-				$salesforce_id = apply_filters( 'salesforce_rest_api_find_object_match', NULL, $object, $mapping, 'pull' );
+				$wordpress_id = apply_filters( 'salesforce_rest_api_find_wp_object_match', NULL, $object, $mapping, 'pull' );
 
 			}
 			catch ( WordpressException $e ) {
@@ -675,7 +674,7 @@ class Salesforce_Pull {
 				);
 
 				// hook for pull fail
-				do_action( 'salesforce_rest_api_pull_fail', $op, $sfapi->response, $synced_object );
+				do_action( 'salesforce_rest_api_pull_fail', $op, $result, $synced_object );
 
 				return;
 			}
@@ -710,7 +709,7 @@ class Salesforce_Pull {
 				$mapping_object = $this->create_object_map( $salesforce_object, $wordpress_id, $mapping );
 
 				// hook for pull success
-				do_action( 'salesforce_rest_api_pull_success', $op, $sfapi->response, $synced_object );
+				do_action( 'salesforce_rest_api_pull_success', $op, $result, $synced_object );
 			} else {
 
 				// create log entry for failed create or upsert
@@ -732,7 +731,7 @@ class Salesforce_Pull {
 				);
 
 				// hook for pull fail
-				do_action( 'salesforce_rest_api_pull_fail', $op, $sfapi->response, $synced_object );
+				do_action( 'salesforce_rest_api_pull_fail', $op, $result, $synced_object );
 
 				return;
 			}
@@ -781,7 +780,7 @@ class Salesforce_Pull {
 				);
 
 				// hook for pull success
-				do_action( 'salesforce_rest_api_pull_success', $op, $sfapi->response, $synced_object );
+				do_action( 'salesforce_rest_api_pull_success', $op, $result, $synced_object );
 
 			}
 			catch ( WordpressException $e ) {
@@ -805,7 +804,7 @@ class Salesforce_Pull {
 				$mapping_object['last_sync_message'] = $e->getMessage();
 
 				// hook for pull fail
-				do_action( 'salesforce_rest_api_pull_fail', $op, $sfapi->response, $synced_object );
+				do_action( 'salesforce_rest_api_pull_fail', $op, $result, $synced_object );
 
 			}
 
