@@ -488,7 +488,7 @@ class Salesforce_Pull {
 					/*try {
 						//$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 					}
-					catch ( SalesforceException $e ) {
+					catch ( WordpressException $e ) {
 						$status = 'error';
 						// create log entry for failed delete
 						if ( isset( $this->logging ) ) {
@@ -498,10 +498,10 @@ class Salesforce_Pull {
 						}
 
 						$logging->setup(
-							__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+							__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . '(' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
 							$e->getMessage(),
 							$sf_sync_trigger,
-							$object["$object_id"],
+							$mapping_object['wordpress_id'],
 							$status
 						);
 
@@ -520,10 +520,10 @@ class Salesforce_Pull {
 						}
 
 						$logging->setup(
-							__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
-							'',
+							__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . '(' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
+							$e->getMessage(),
 							$sf_sync_trigger,
-							$object["$object_id"],
+							$mapping_object['wordpress_id'],
 							$status
 						);
 
@@ -556,7 +556,7 @@ class Salesforce_Pull {
 						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ') did not delete the Salesforce item...', $this->text_domain ),
 						$more_ids,
 						$sf_sync_trigger,
-						$object["$object_id"],
+						$mapping_object['wordpress_id'],
 						$status
 					);
 				}
@@ -645,25 +645,32 @@ class Salesforce_Pull {
 				$salesforce_id = apply_filters( 'salesforce_rest_api_find_object_match', NULL, $object, $mapping, 'pull' );
 
 			}
-			catch ( SalesforceException $e ) {
+			catch ( WordpressException $e ) {
 				// create log entry for failed create or upsert
 				$status = 'error';
-				$title = ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'];
+				$title = ucfirst( $status ) . ': ' . $op . ' ' . $mapping['wordpress_object'];
 				if ( $salesforce_id !== NULL ) {
 					$title .= ' ' . $salesforce_id;
 				}
-				$title .=  ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')';
+				$title .=  ' (Salesforce ' . $mapping['salesforce_object'] . ' with Id ' . ' of ' . $object['Id'] . ')';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} else if ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
+				// if we know the wordpress object id we can put it in there
+				if ( $wordpress_id !== NULL ) {
+					$parent = $wordpress_id;
+				} else {
+					$parent = 0;
+				}
+
 				$logging->setup(
 					__( $title, $this->text_domain ),
 					$e->getMessage(),
 					$sf_sync_trigger,
-					$object["$object_id"],
+					$parent,
 					$status
 				);
 
@@ -692,10 +699,10 @@ class Salesforce_Pull {
 				}
 
 				$logging->setup(
-					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $salesforce_id . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $wordpress_id . ' (Salesforce ' . $mapping['salesforce_object'] . 'ID of ' . $object['Id'] . ')', $this->text_domain ),
 					'',
 					$sf_sync_trigger,
-					$object["$object_id"],
+					$wordpress_id,
 					$status
 				);
 
@@ -717,10 +724,10 @@ class Salesforce_Pull {
 				}
 
 				$logging->setup(
-					__( $salesforce_data['errorCode'] . ' ' . $status . ' syncing: ' . $op . ' to Salesforce (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
-					'Object: ' . $mapping['salesforce_object'] . '<br>br>' . 'Message: ' . $salesforce_data['message'],
+					__( $status . ' syncing: ' . $op . ' to WordPress (Salesforce ' . $mapping['salesforce_object'] . ' Id ' . $object['Id'] . ')', $this->text_domain ),
+					'Object: ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $wordpress_id . '<br>br>' . 'Message: ' . print_r( $result['errors'], true ),
 					$sf_sync_trigger,
-					$object["$object_id"],
+					$wordpress_id,
 					$status
 				);
 
@@ -741,12 +748,11 @@ class Salesforce_Pull {
 				} else if ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
-
 				$logging->setup(
-					__( ucfirst( $status ) . ': ' . $op . ': Did not sync WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ' with ' . $mapping_object['salesforce_id'] . ' ' . $mapping_object['salesforce_id'] . ' because the last sync timestamp was greater than the object updated timestamp', $this->text_domain ),
-					'Last sync time: ' . $mapping_object['last_sync'] . '<br>' . 'Object updated time: ' . $mapping_object['object_updated'],
+					__( ucfirst( $status ) . ': ' . $op . ': Did not sync Salesforce ' . $mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ' with WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' field of ' . $mapping_object['wordpress_id'] . ' because the last sync timestamp was greater than the object updated timestamp', $this->text_domain ),
+					'Last sync time: ' . $mapping_object['last_sync'] . '<br>' . 'Object updated time: ' . get_date_from_gmt( $object[$mapping['pull_trigger_field']] ),
 					$sf_sync_trigger,
-					$object["$object_id"],
+					$mapping_object['wordpress_id'],
 					$status
 				);
 				return;
@@ -767,10 +773,10 @@ class Salesforce_Pull {
 				}
 
 				$logging->setup(
-					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' ( Salesforce ' . $mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ')', $this->text_domain ),
 					'',
 					$sf_sync_trigger,
-					$object["$object_id"],
+					$mapping_object['wordpress_id'],
 					$status
 				);
 
@@ -778,7 +784,7 @@ class Salesforce_Pull {
 				do_action( 'salesforce_rest_api_pull_success', $op, $sfapi->response, $synced_object );
 
 			}
-			catch ( SalesforceException $e ) {
+			catch ( WordpressException $e ) {
 				// create log entry for failed update
 				$status = 'error';
 				if ( isset( $this->logging ) ) {
@@ -788,10 +794,10 @@ class Salesforce_Pull {
 				}
 
 				$logging->setup(
-					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')', $this->text_domain ),
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' ( Salesforce ' . $mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ')', $this->text_domain ),
 					$e->getMessage(),
 					$sf_sync_trigger,
-					$object["$object_id"],
+					$mapping_object['wordpress_id'],
 					$status
 				);
 
@@ -1013,6 +1019,7 @@ class Salesforce_Pull {
 		if (!empty($exception)) {
 			throw $exception;
 		}
+
 	}
 
 	/**
