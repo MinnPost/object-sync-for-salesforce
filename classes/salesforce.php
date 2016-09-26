@@ -750,6 +750,14 @@ class Salesforce {
 	* part of core API calls
 	*
 	* @return array
+	*	json: {"success":true,"body":""}
+    *	code: 204
+    *	data:
+          success: 1
+          body:
+    *	from_cache:
+    *	cached:
+    *	is_redo:
 	*/
 	public function object_update( $name, $id, $params ) {
 		$options = array( 'type' => 'write' );
