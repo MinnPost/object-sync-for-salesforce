@@ -647,6 +647,19 @@ class Salesforce_Pull {
 				// the function that calls this hook needs to check the mapping to make sure the wordpress object is the right type
 				$wordpress_id = apply_filters( 'salesforce_rest_api_find_wp_object_match', NULL, $object, $mapping, 'pull' );
 
+				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || $wordpress_id !== NULL ) {
+
+					// if either prematch criteria exists, make the values queryable
+
+
+					$op = 'Upsert';
+
+
+				} else {
+					// No key or prematch field exists on this field map object, create a new object in WordPress.
+					$op = 'Create';
+				}
+
 			}
 			catch ( WordpressException $e ) {
 				// create log entry for failed create or upsert
