@@ -407,8 +407,6 @@ class Salesforce_Pull {
 	*/
 	function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
-		error_log('type is ' . $object_type . ' and object is ' . print_r($object, true) . ' and mapping is ' . print_r($mapping, true) . ' and trigger is ' . $sf_sync_trigger );
-
 		// if salesforce is not authorized, don't do anything.
 		// it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
 		if ( $this->salesforce['is_authorized'] !== true ) {
