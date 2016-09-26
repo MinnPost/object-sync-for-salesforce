@@ -406,7 +406,7 @@ class Wordpress {
     * @param array $params
     *   Values of the fields to set for the object.
     *
-    * part of core API calls
+    * part of CRUD for WordPress objects
     *
     * @return array
     *   data:
@@ -422,6 +422,29 @@ class Wordpress {
         $id_field = $structure['id_field'];
 
         $result = array( 'data' => array( 'success' => 'update this object: ' . $name ), 'errors' => array());
+        return $result;
+    }
+
+    /**
+    * Delete a WordPress object.
+    *
+    * @param string $name
+    *   Object type name, E.g., user, post, comment
+    * @param string $id
+    *   WordPress id of the object.
+    *
+    * @return array
+    *   data:
+          success: 1
+    *   "errors" : [ ],
+    *
+    * part of CRUD for WordPress objects
+    */
+    public function object_delete( $name, $id ) {
+        $structure = $this->get_wordpress_table_structure( $name );
+        $id_field = $structure['id_field'];
+
+        $result = array( 'data' => array( 'success' => 'delete this object: ' . $name ), 'errors' => array());
         return $result;
     }
 
