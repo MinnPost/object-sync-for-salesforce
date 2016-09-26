@@ -471,6 +471,9 @@ class Salesforce_Pull {
 			'mapping' => $mapping,
 		);
 
+		$structure = $this->wordpress->get_wordpress_table_structure( $mapping['wordpress_object'] );
+		$object_id = $structure['id_field'];
+
 		$op = '';
 
 		// deleting mapped objects
