@@ -322,4 +322,110 @@ class Wordpress {
 
 	}
 
+    /**
+    * Create a new object of a given type.
+    *
+    * @param string $name
+    *   Object type name, E.g., user, post, comment
+    * @param array $params
+    *   Values of the fields to set for the object.
+    *
+    * @return array
+    *   data:
+    *     "id" : 123,
+    *     "success" : true
+    *   "errors" : [ ],
+    *   from_cache: 
+    *   cached: 
+    *   is_redo: 
+    *
+    * part of CRUD for WordPress objects
+    */
+    public function object_create( $name, $params ) {
+
+        $structure = $this->get_wordpress_table_structure( $name );
+        $id_field = $structure['id_field'];
+
+        $result = array( 'data' => array( $id_field => 99999, 'success' => 'create this object: ' . $name ), 'errors' => array() );
+        return $result;
+    }
+
+    /**
+    * Create new records or update existing records.
+    *
+    * The new records or updated records are based on the value of the specified
+    * field.  If the value is not unique, REST API returns a 300 response with
+    * the list of matching records.
+    *
+    * @param string $name
+    *   Object type name, E.g., user, post, comment
+    * @param string $key
+    *   The field to check if this record should be created or updated.
+    * @param string $value
+    *   The value for this record of the field specified for $key.
+    * @param array $params
+    *   Values of the fields to set for the object.
+    *
+    * @return array
+    *   data:
+    *     "id" : 123,
+    *     "success" : true
+    *   "errors" : [ ],
+    *   from_cache: 
+    *   cached: 
+    *   is_redo: 
+    *
+    * part of CRUD for WordPress objects
+    */
+    public function object_upsert( $name, $key, $value, $params ) {
+
+        $structure = $this->get_wordpress_table_structure( $name );
+        $id_field = $structure['id_field'];
+
+        // If key is set, remove from $params to avoid UPSERT errors.
+        if ( isset( $params[$key] ) ) {
+          unset( $params[$key] );
+        }
+
+        /*$data = $this->api_call( "sobjects/{$name}/{$key}/{$value}", $params, 'PATCH', $options );
+        if ( $this->response['code'] == 300 ) {
+          $data['message'] = esc_html__( 'The value provided is not unique.', $this->text_domain );
+        }*/
+        $result = array( 'data' => array( $id_field => 99999, 'success' => 'upsert this object: ' . $name ), 'errors' => array());
+        return $result;
+
+    }
+
+    /**
+    * Update an existing object.
+    *
+    * @param string $name
+    *   Object type name, E.g., user, post, comment
+    * @param string $id
+    *   WordPress id of the object.
+    * @param array $params
+    *   Values of the fields to set for the object.
+    *
+    * part of core API calls
+    *
+    * @return array
+    *   data:
+          success: 1
+    *   "errors" : [ ],
+    *   from_cache:
+    *   cached:
+    *   is_redo:
+    */
+    public function object_update( $name, $id, $params ) {
+
+        $structure = $this->get_wordpress_table_structure( $name );
+        $id_field = $structure['id_field'];
+
+        $result = array( 'data' => array( 'success' => 'update this object: ' . $name ), 'errors' => array());
+        return $result;
+    }
+
+}
+
+class WordpressException extends Exception {
 }
