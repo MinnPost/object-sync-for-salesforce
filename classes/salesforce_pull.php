@@ -501,7 +501,7 @@ class Salesforce_Pull {
 						}
 
 						$logging->setup(
-							__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . '(' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
+							__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
 							$e->getMessage(),
 							$sf_sync_trigger,
 							$mapping_object['wordpress_id'],
@@ -523,7 +523,7 @@ class Salesforce_Pull {
 						}
 
 						$logging->setup(
-							__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . '(' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
+							__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
 							'',
 							$sf_sync_trigger,
 							$mapping_object['wordpress_id'],
@@ -556,7 +556,7 @@ class Salesforce_Pull {
 					}
 
 					$logging->setup(
-						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ') did not delete the Salesforce item...', $this->text_domain ),
+						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ') did not delete the WordPress item...', $this->text_domain ),
 						$more_ids,
 						$sf_sync_trigger,
 						$mapping_object['wordpress_id'],
