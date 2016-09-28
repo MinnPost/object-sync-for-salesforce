@@ -483,7 +483,7 @@ class Salesforce_Pull {
 		if ( $sf_sync_trigger == $this->mappings->sync_sf_delete ) {
 			if ( isset( $mapping_object['id'] ) ) {
 				$op = 'Delete';
-				$wordpress_check = $this->mappings->load_by_wordpress( $mapping_object['wordpress_id'] );
+				$wordpress_check = $this->mappings->load_by_wordpress( $mapping_object['wordpress_object'], $mapping_object['wordpress_id'] );
 				if ( count( $wordpress_check ) == count( $wordpress_check, COUNT_RECURSIVE ) ) {
 
 					error_log('because we deleted salesforce ' . $mapping_object['salesforce_id'] . ' we should also be deleting wordpress ' . $mapping_object['wordpress_object'] . ' ' . $mapping_object['wordpress_id'] );
@@ -501,7 +501,7 @@ class Salesforce_Pull {
 						}
 
 						$logging->setup(
-							__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . '(' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
+							__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . '(' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
 							$e->getMessage(),
 							$sf_sync_trigger,
 							$mapping_object['wordpress_id'],
@@ -523,8 +523,8 @@ class Salesforce_Pull {
 						}
 
 						$logging->setup(
-							__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . '(' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
-							$e->getMessage(),
+							__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . '(' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
+							'',
 							$sf_sync_trigger,
 							$mapping_object['wordpress_id'],
 							$status
@@ -556,7 +556,7 @@ class Salesforce_Pull {
 					}
 
 					$logging->setup(
-						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ') did not delete the Salesforce item...', $this->text_domain ),
+						__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ') did not delete the Salesforce item...', $this->text_domain ),
 						$more_ids,
 						$sf_sync_trigger,
 						$mapping_object['wordpress_id'],
