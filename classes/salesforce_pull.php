@@ -102,7 +102,7 @@ class Salesforce_Pull {
 			$this->salesforce_pull_get_deleted_records();
 
 			// Store this request time for the throttle check.
-			update_option( 'salesforce_api_pull_last_sync', current_time( 'timestamp') );
+			update_option( 'salesforce_api_pull_last_sync', current_time( 'timestamp', true ) );
 			return TRUE;
 
 		} else {
@@ -178,7 +178,7 @@ class Salesforce_Pull {
 		$pull_throttle = get_option( 'salesforce_api_pull_throttle', 5 );
 		$last_sync = get_option( 'salesforce_api_pull_last_sync', 0 );
 
-		if ( current_time( 'timestamp' ) > ( $last_sync + $pull_throttle ) ) {
+		if ( current_time( 'timestamp', true ) > ( $last_sync + $pull_throttle ) ) {
 			return TRUE;
 		} else {
 			return FALSE;
@@ -307,7 +307,7 @@ class Salesforce_Pull {
 					$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : FALSE;
 				}
 
-				update_option( 'salesforce_api_pull_last_sync_' . $type, current_time( 'timestamp') );
+				update_option( 'salesforce_api_pull_last_sync_' . $type, current_time( 'timestamp', true ) );
 
 			} else {
 
@@ -348,21 +348,22 @@ class Salesforce_Pull {
 			// Iterate over each field mapping to determine our parameters.
 			foreach ( $this->mappings->get_fieldmaps( NULL, array('salesforce_object' => $type ) ) as $mapping ) {
 
-				$last_delete_sync = get_option( 'salesforce_api_pull_delete_last_' . $type, current_time( 'timestamp' ) );
-				update_option( 'salesforce_api_pull_delete_last_' . $type, current_time( 'timestamp' ) );
-
-				$now = current_time( 'timestamp' );
+				$last_delete_sync = get_option( 'salesforce_api_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
+				$now = current_time( 'timestamp', true );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
-				// (using an incompatible data may lead to exceptions).
-				$last_delete_sync = $last_delete_sync > ( current_time( 'timestamp' ) - 2505600 ) ? $last_delete_sync : ( current_time( 'timestamp' ) - 2505600 );
+				// (using an incompatible date may lead to exceptions).
+				$last_delete_sync = $last_delete_sync > ( current_time( 'timestamp', true ) - 2505600 ) ? $last_delete_sync : ( current_time( 'timestamp', true ) - 2505600 );
 
 				// get_deleted() constraint: startDate must be at least one minute greater
 				// than endDate.
 				$now = $now > ( $last_delete_sync + 60 ) ? $now : $now + 60;
+
+				// need to be using gmdate for salesforce call
 				$last_delete_sync_sf = gmdate( 'Y-m-d\TH:i:s\Z', $last_delete_sync );
 				$now_sf = gmdate( 'Y-m-d\TH:i:s\Z', $now );
 
+				// salesforce call
 				$deleted = $sfapi->get_deleted( $type, $last_delete_sync_sf, $now_sf );
 
 				if ( empty( $deleted['data']['deletedRecords'] ) ) {
@@ -385,6 +386,8 @@ class Salesforce_Pull {
 					$this->schedule->save()->dispatch();
 
 				}
+
+				update_option( 'salesforce_api_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 
 			}
 		}
