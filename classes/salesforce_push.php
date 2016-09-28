@@ -389,6 +389,9 @@ class Salesforce_Push {
 		// this returns the row that maps the individual wordpress row to the individual salesforce row
 		$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object["$object_id"] );
 
+		// hook to allow other plugins to define or alter the mapping object
+		$mapping_object = apply_filters( 'salesforce_rest_api_push_mapping_object', $mapping_object, $object, $mapping );
+
 		// make sure these data versions are integers bc php's mysql is weird
 		if ( isset( $mapping_object['salesforce_data_version'] ) ) {
 			$mapping_object['salesforce_data_version'] = absint( $mapping_object['salesforce_data_version'] );
