@@ -349,7 +349,9 @@ class Salesforce_Mapping {
     */
     public function update_object_map( $posted = array(), $id = '' ) {
         $data = $this->setup_object_map_data( $posted );
-        $data['object_updated'] = current_time( 'mysql' );
+        if ( !isset( $data['object_updated'] ) ) {
+            $data['object_updated'] = current_time( 'mysql' );
+        }
         $update = $this->wpdb->update( $this->object_map_table, $data, array( 'id' => $id ) );
         if ( $update === FALSE ) {
             return false;
