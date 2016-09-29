@@ -444,7 +444,49 @@ class Wordpress {
         $structure = $this->get_wordpress_table_structure( $name );
         $id_field = $structure['id_field'];
 
-        $result = array( 'data' => array( 'success' => 'delete this object: ' . $name ), 'errors' => array());
+        switch ( $name ) {
+            case 'user':
+                $success = $this->user_delete( $id );
+                break;
+            case 'post':
+                $success = 'delete a post';
+                break;
+            case 'attachment':
+                $success = 'delete attachment';
+                break;
+            case 'category':
+            case 'tag':
+                $success = 'delete a taxonomy';
+                break;
+            case 'comment':
+                $success = 'delete a comment';
+                break;
+            default:
+                $success = 'delete an unmatched item';
+                break;
+        }
+
+        $result = array( 'data' => array( 'success' => $success ), 'errors' => array());
+        return $result;
+    }
+
+    /**
+    * Delete a WordPress user.
+    *
+    * @param int $id
+    *   User ID
+    * @param int $reassign
+    *   If we should reassign any posts to other users
+    *   We don't change this from NULL anywhere in this plugin
+    *
+    * @return boolean
+    *   true if successful
+    *
+    */
+    private function user_delete( $id, $reassign = NULL ) {
+        // according to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error
+        include_once( './wp-admin/includes/user.php' );
+        $result = wp_delete_user( $id, $reassign );
         return $result;
     }
 
