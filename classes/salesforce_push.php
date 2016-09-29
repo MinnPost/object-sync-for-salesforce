@@ -281,12 +281,6 @@ class Salesforce_Push {
 	*
 	*/
 	private function salesforce_push_object_crud( $object_type, $object, $sf_sync_trigger ) {
-		// avoid duplicate processing if this object has just been updated by Salesforce pull
-		// todo: start saving this data once we are doing a salesforce pull
-		if ( isset( $object->salesforce_pull ) && $object->salesforce_pull ) {
-			return FALSE;
-		}
-
 		// load mappings that match this criteria
 		// in this case, it's all mappings that correspond to the posted wordpress object
 		$sf_mappings = $this->mappings->get_fieldmaps(
