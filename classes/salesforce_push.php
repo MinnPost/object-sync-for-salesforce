@@ -370,7 +370,7 @@ class Salesforce_Push {
 
 		// if salesforce is not authorized, don't do anything.
 		// it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
-		if ( $this->salesforce['is_authorized'] !== true ) {
+		if ( $this->salesforce['is_authorized'] !== TRUE ) {
 			return;
 		}
 
