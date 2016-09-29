@@ -410,13 +410,6 @@ class Salesforce_Pull {
 	*/
 	function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
-		// if salesforce is not authorized, don't do anything.
-		// it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
-		if ( $this->salesforce['is_authorized'] !== true ) {
-			return;
-		}
-
-		$sfapi = $this->salesforce['sfapi'];
 
 		// this returns the row that maps the individual salesforce row to the individual wordpress row
 		if ( isset( $object['Id'] ) ) {
