@@ -421,7 +421,30 @@ class Wordpress {
         $structure = $this->get_wordpress_table_structure( $name );
         $id_field = $structure['id_field'];
 
-        $result = array( 'data' => array( 'success' => 'update this object: ' . $name ), 'errors' => array());
+        switch ( $name ) {
+            case 'user':
+                // user id does not come through by default, but we need it to pass to wp method
+                $params['ID'] = $id;
+                $result = $this->user_update( $params );
+                break;
+            case 'post':
+                $result = array('update a post');
+                break;
+            case 'attachment':
+                $result = array('update attachment');
+                break;
+            case 'category':
+            case 'tag':
+                $result = array('update a taxonomy');
+                break;
+            case 'comment':
+                $result = array('update a comment');
+                break;
+            default:
+                $result = array('update an unmatched item');
+                break;
+        }
+
         return $result;
     }
 
@@ -467,6 +490,31 @@ class Wordpress {
         }
 
         $result = array( 'data' => array( 'success' => $success ), 'errors' => array());
+        return $result;
+    }
+
+    /**
+    * Update a WordPress user.
+    *
+    * @param array $userdata
+    *   array of user data params
+    *
+    * @return array
+    *   data:
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function user_update( $userdata ) {
+        $user_id = wp_update_user( $userdata );
+        if ( is_wp_error( $user_id ) ) {
+            $success = FALSE;
+            $errors = $user_id;
+        } else {
+            $success = TRUE;
+        }
+
+        $result = array( 'data' => array( 'success' => $success ), 'errors' => array() );
         return $result;
     }
 
