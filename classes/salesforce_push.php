@@ -368,6 +368,33 @@ class Salesforce_Push {
 	*/
 	public function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
+		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
+		$object_id_field = $structure['id_field'];
+
+		$exists_query = 'SELECT ' . $object_id_field . ' FROM ' . $structure['content_table'] . ' WHERE ' . $object_id_field . ' = ' . $object["$object_id_field"];
+		$object_exists = $this->wpdb->get_row( $exists_query );
+		if ( $object_exists === NULL ) {
+			$this->schedule->cancel_by_name( $this->schedule_name );
+			error_log('cancel because deleted');
+			$status = 'notice';
+			// create log entry for failed delete
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			}
+
+			$logging->setup(
+				__( ucfirst( $status ) . ': Unable to delete WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id_field . ' of ' . $object["$object_id_field"] . ' (Salesforce ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ') because the WordPress object has already been deleted.', $this->text_domain ),
+				'',
+				$sf_sync_trigger,
+				$object["$object_id_field"],
+				$status
+			);
+
+			return;
+		}
+
 		// if salesforce is not authorized, don't do anything.
 		// it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
 		if ( $this->salesforce['is_authorized'] !== TRUE ) {
