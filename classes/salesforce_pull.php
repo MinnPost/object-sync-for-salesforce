@@ -521,8 +521,8 @@ class Salesforce_Pull {
 						);
 
 						// hook for pull success
-					}*/
 						do_action( 'salesforce_rest_api_pull_success', $op, $result, $synced_object );
+					}
 				} else {
 					$more_ids = '<p>The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress ID. They are: ';
 					$i = 0;
