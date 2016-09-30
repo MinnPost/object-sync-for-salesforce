@@ -432,7 +432,7 @@ class Salesforce_Push {
 
 		// deleting mapped objects
 		if ( $sf_sync_trigger == $this->mappings->sync_wordpress_delete ) {
-			if ( $mapping_object ) {
+			if ( isset( $mapping_object['id'] ) ) {
 				$op = 'Delete';
 
 				$salesforce_check = $this->mappings->load_by_salesforce( $mapping_object['salesforce_id'] );
@@ -524,7 +524,7 @@ class Salesforce_Push {
 		}
 
 		// are these objects already connected in wordpress?
-		if ( $mapping_object ) {
+		if ( isset( $mapping_object['id'] ) ) {
 			$is_new = FALSE;
 		} else {
 			$is_new = TRUE;
