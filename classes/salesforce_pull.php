@@ -478,10 +478,8 @@ class Salesforce_Pull {
 				$wordpress_check = $this->mappings->load_by_wordpress( $mapping_object['wordpress_object'], $mapping_object['wordpress_id'] );
 				if ( count( $wordpress_check ) == count( $wordpress_check, COUNT_RECURSIVE ) ) {
 
-					error_log('because we deleted salesforce ' . $mapping_object['salesforce_id'] . ' we should also be deleting wordpress ' . $mapping_object['wordpress_object'] . ' ' . $mapping_object['wordpress_id'] );
-
-					/*try {
-						//$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
+					try {
+						$result = $this->wordpress->object_delete( $mapping['wordpress_object'], $mapping_object['wordpress_id'] );
 					}
 					catch ( WordpressException $e ) {
 						$status = 'error';
