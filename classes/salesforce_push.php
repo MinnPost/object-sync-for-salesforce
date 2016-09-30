@@ -416,9 +416,19 @@ class Salesforce_Push {
 		// make sure these data versions are integers bc php's mysql is weird
 		if ( isset( $mapping_object['salesforce_data_version'] ) ) {
 			$mapping_object['salesforce_data_version'] = absint( $mapping_object['salesforce_data_version'] );
+		} else {
+			$mapping_object['salesforce_data_version'] = 0;
 		}
 		if ( isset( $mapping_object['wordpress_data_version'] ) ) {
 			$mapping_object['wordpress_data_version'] = absint( $mapping_object['wordpress_data_version'] );
+			error_log('increase the wp data version');
+			// this should only run if we are on a push originated change
+			// how are we supposed to figure that out??
+			$mapping_object['wordpress_data_version']++;
+		} else {
+			error_log('there is no wp version so we should start at 1 because this is a push');
+			$mapping_object['wordpress_data_version'] = 1;
+		}
 		}
 
 		$synced_object = array(
@@ -793,9 +803,6 @@ class Salesforce_Push {
 			$mapping_object['last_sync_action'] = 'push';
 			$mapping_object['last_sync'] = current_time( 'mysql' );
 
-			// tell the mapping object that we have a new version of the wordpress data
-			$mapping_object['wordpress_data_version']++;
-
 			// update that mapping object
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
@@ -830,7 +837,8 @@ class Salesforce_Push {
 				'last_sync_action' => 'push',
 				'last_sync_status' => $this->mappings->status_success,
 				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
-				'wordpress_data_version' => 1
+				'wordpress_data_version' => 1,
+				'salesforce_data_version' => 0
 			)
 		);
 

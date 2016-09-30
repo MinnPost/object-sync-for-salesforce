@@ -436,8 +436,11 @@ class Salesforce_Pull {
 		// make sure these data versions are integers bc php's mysql is weird
 		if ( isset( $mapping_object['salesforce_data_version'] ) ) {
 			$mapping_object['salesforce_data_version'] = absint( $mapping_object['salesforce_data_version'] );
+			$mapping_object['salesforce_data_version']++;
+			error_log('we should always update the sf version');
 		} else {
-			$mapping_object['salesforce_data_version'] = 0;
+			error_log('there is no sf version so we should start at 1 because this is a pull');
+			$mapping_object['salesforce_data_version'] = 1;
 		}
 		if ( isset( $mapping_object['wordpress_data_version'] ) ) {
 			$mapping_object['wordpress_data_version'] = absint( $mapping_object['wordpress_data_version'] );
@@ -446,9 +449,6 @@ class Salesforce_Pull {
 		}
 
 		// we already have the data from salesforce at this point; we just need to work with it in wordpress, unless they are the same
-
-		// tell the mapping object that we have a new version of the salesforce data
-		$mapping_object['salesforce_data_version']++;
 
 		// the wordpress and salesforce versions of the data are the same. don't do anything.
 		if ( $mapping_object['wordpress_data_version'] === $mapping_object['salesforce_data_version'] ) {
@@ -1060,6 +1060,7 @@ class Salesforce_Pull {
 				'last_sync_action' => 'push',
 				'last_sync_status' => $this->mappings->status_success,
 				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
+				'wordpress_data_version' => 0,
 				'salesforce_data_version' => 1
 			)
 		);
