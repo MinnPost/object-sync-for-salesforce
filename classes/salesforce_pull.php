@@ -775,7 +775,7 @@ class Salesforce_Pull {
 
 			try {
 				$op = 'Update';
-				$result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );
+				$result = $this->wordpress->object_update( $mapping['wordpress_object'], $mapping_object['wordpress_id'], $params );
 
 				$mapping_object['last_sync_status'] = $this->mappings->status_success;
 				$mapping_object['last_sync_message'] = __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain );
