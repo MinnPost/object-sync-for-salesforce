@@ -429,7 +429,20 @@ class Salesforce_Push {
 			error_log('there is no wp version so we should start at 1 because this is a push');
 			$mapping_object['wordpress_data_version'] = 1;
 		}
+
+		// the wordpress and salesforce versions of the data are the same. don't do anything.
+		if ( $mapping_object['wordpress_data_version'] === $mapping_object['salesforce_data_version'] ) {
+			// if there is an actual mapping object row, update it so the version numbers will be correct
+			// if we are sending data to wordpress, this happens after that data gets saved
+			if ( isset( $mapping_object['id'] ) ) {
+				error_log('data numbers match. update the object map and do not push.');
+				$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+			}
+			error_log('there is not a mapping object but the versions match. do not push.');
+			return;
 		}
+
+		error_log('continue with the push here because wp ' . $mapping_object['wordpress_data_version'] . ' is not equal to ' . $mapping_object['salesforce_data_version']);
 
 		$synced_object = array(
 			'wordpress_object' => $object,
@@ -729,6 +742,8 @@ class Salesforce_Push {
 			// there is an existing object link
 			// if the last sync is greater than the last time this object was updated, skip it
 			// this keeps us from doing redundant syncs
+			$mapping_object['object_updated'] = current_time( 'mysql' );
+			error_log('compare ' . $mapping_object['last_sync'] . ' to ' . $mapping_object['object_updated']);
 			if ( $mapping_object['last_sync'] > $mapping_object['object_updated'] ) {
 				$status = 'notice';
 				if ( isset( $this->logging ) ) {
@@ -799,10 +814,15 @@ class Salesforce_Push {
 
 			}
 
-			// tell the mapping object that pre-existed how we just used it
-			$mapping_object['last_sync_action'] = 'push';
-			$mapping_object['last_sync'] = current_time( 'mysql' );
-
+			// check to see if we actually updated anything in salesforce
+			if ( $mapping_object['salesforce_data_version'] !== $mapping_object['wordpress_data_version'] ) {
+				// tell the mapping object - whether it is new or already existed - how we just used it
+				$mapping_object['last_sync_action'] = 'push';
+				$mapping_object['last_sync'] = current_time( 'mysql' );
+				error_log('sf data version is ' . $mapping_object['salesforce_data_version'] . ' and wp version is ' . $mapping_object['wordpress_data_version'] . '. should we update?');
+				error_log('change the last sync action to push');
+			}
+			error_log('update the map from push');
 			// update that mapping object
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 

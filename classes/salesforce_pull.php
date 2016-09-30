@@ -455,6 +455,7 @@ class Salesforce_Pull {
 			// if there is an actual mapping object row, update it so the version numbers will be correct
 			// if we are sending data to wordpress, this happens after that data gets saved
 			if ( isset( $mapping_object['id'] ) ) {
+				error_log('update the object map');
 				$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 			}
 			return;
@@ -622,6 +623,7 @@ class Salesforce_Pull {
 		// create and save mapping object
 
 		if ( $is_new === TRUE ) {
+			error_log('create map');
 			// create new object link in wp because the systems don't know about each other yet
 
 			// setup SF record type. CampaignMember objects get their Campaign's type
@@ -827,9 +829,11 @@ class Salesforce_Pull {
 				// tell the mapping object - whether it is new or already existed - how we just used it
 				$mapping_object['last_sync_action'] = 'pull';
 				$mapping_object['last_sync'] = current_time( 'mysql' );
+				error_log('change the last sync action to pull');
 			}
 
 			// update that mapping object. the salesforce data version will be set here as well because we set it earlier
+			error_log('update map from pull');
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 		}
