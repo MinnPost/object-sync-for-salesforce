@@ -410,7 +410,6 @@ class Salesforce_Pull {
 	*/
 	function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
-
 		// this returns the row that maps the individual salesforce row to the individual wordpress row
 		if ( isset( $object['Id'] ) ) {
 			$mapping_object = $this->mappings->load_by_salesforce( $object['Id'] );
@@ -754,7 +753,7 @@ class Salesforce_Pull {
 
 		} else {
 			// there is an existing object link
-			// if the last sync is greater than the last time this object was updated, skip it
+			// if the last sync is greater than the last time this object was updated by salesforce, skip it
 			// this keeps us from doing redundant syncs
 			// because SF stores all DateTimes in UTC.
 			if ( get_gmt_from_date( $mapping_object['last_sync'], 'Y-m-d\TH:i:s\Z' ) > $object[$mapping['pull_trigger_field']] ) {
