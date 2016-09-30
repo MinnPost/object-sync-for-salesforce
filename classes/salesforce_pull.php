@@ -458,8 +458,11 @@ class Salesforce_Pull {
 				error_log('update the object map');
 				$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 			}
+			error_log('data numbers match. do not pull.');
 			return;
 		}
+
+		error_log('continue with the pull here because wp ' . $mapping_object['wordpress_data_version'] . ' is not equal to sf ' . $mapping_object['salesforce_data_version']);
 
 		$synced_object = array(
 			'salesforce_object' => $object,
