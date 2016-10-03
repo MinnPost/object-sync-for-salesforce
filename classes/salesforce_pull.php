@@ -436,10 +436,10 @@ class Salesforce_Pull {
 		// make sure these data versions are integers bc php's mysql is weird
 		if ( isset( $mapping_object['salesforce_data_version'] ) ) {
 			$mapping_object['salesforce_data_version'] = absint( $mapping_object['salesforce_data_version'] );
+			// we should always update the salesforce data version rather than doing a check first, because this is a pull call
 			$mapping_object['salesforce_data_version']++;
-			error_log('we should always update the sf version');
 		} else {
-			error_log('there is no sf version so we should start at 1 because this is a pull');
+			// there is no sf version so we should start at 1 because this is a pull
 			$mapping_object['salesforce_data_version'] = 1;
 		}
 		if ( isset( $mapping_object['wordpress_data_version'] ) ) {
@@ -455,15 +455,12 @@ class Salesforce_Pull {
 			// if there is an actual mapping object row, update it so the version numbers will be correct
 			// if we are sending data to wordpress, this happens after that data gets saved
 			if ( isset( $mapping_object['id'] ) ) {
-				error_log('update the object map');
 				$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 			}
-			error_log('data numbers match. do not pull.');
-			return;
+			return; // do not continue pulling data
 		}
 
-		error_log('continue with the pull here because wp ' . $mapping_object['wordpress_data_version'] . ' is not equal to sf ' . $mapping_object['salesforce_data_version']);
-
+		// continue the pull because wp and sf data versions are not equal
 		$synced_object = array(
 			'salesforce_object' => $object,
 			'mapping_object' => $mapping_object,
@@ -626,7 +623,6 @@ class Salesforce_Pull {
 		// create and save mapping object
 
 		if ( $is_new === TRUE ) {
-			error_log('create map');
 			// create new object link in wp because the systems don't know about each other yet
 
 			// setup SF record type. CampaignMember objects get their Campaign's type
@@ -832,11 +828,9 @@ class Salesforce_Pull {
 				// tell the mapping object - whether it is new or already existed - how we just used it
 				$mapping_object['last_sync_action'] = 'pull';
 				$mapping_object['last_sync'] = current_time( 'mysql' );
-				error_log('change the last sync action to pull');
 			}
 
 			// update that mapping object. the salesforce data version will be set here as well because we set it earlier
-			error_log('update map from pull');
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 		}
