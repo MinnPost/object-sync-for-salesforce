@@ -6,7 +6,7 @@ Defines an API that enables WordPress to interact with the Salesforce REST API. 
 
 This plugin creates a mapping functionality between Salesforce objects and WordPress content types. For any supported WordPress content types (e.g. post, page, user, or any custom content type in your installation), you can assign Salesforce objects that will be created / updated when the data in WordPress is saved. For each such assignment, you choose which WordPress and Salesforce fields should be mapped to one another.
 
-This suite also includes an API architecture which allows for additional plugins to be easily plugged in (e.g. for webforms, contact form submits, etc).
+This plugin also includes API hooks that allow for additional plugins to modify what data the plugin is working with, or what happens upon specific events.
   
 For a more detailed description of each component class, see below.
 
@@ -72,6 +72,21 @@ Map WordPress content (including users) to Salesforce fields, including field le
 
 1. This class defines important values for each triggering event (create, edit, delete from both WordPress and Salesforce), how to identify which direction an object should use (WordPress, Salesforce, or sync), and data tables in WordPress. This class is available to the `wordpress`, `salesforce`, `schedule`, `salesforce_push`, `salesforce_pull`, and `admin` classes.
 2. There is a basic create/read/update/delete setup, including loading all results or a subset. Results can also be loaded by specific conditions, or by WordPress or Salesforce IDs.
+3. Each row includes an attribute for `wordpress_data_version` and `salesforce_data_version` that keep track of which system has been changed in order to keep the data synced.
+
+This class determines what to do when the `salesforce_push` and `salesforce_pull` classes fire events. An explanation:
+
+#### Starting with a WordPress change
+
+1. `salesforce_push` creates/updates/deletes an object in Salesforce and a `salesforce_mapping` row. It also increments the `wordpress_data_version` attribute on the `salesforce_mapping` row.
+2. The Salesforce data change fires the `get_updated_records` method on `salesforce_pull` because the item has a new modified date according to the API call. It then sends this data to the `salesforce_pull_process_records` method, which increments the `salesforce_data_version` and compares version numbers. Since they now match, it does not send data to the `wordpress` class.
+
+#### Starting with a Salesforce change
+
+1. The `schedule` for `salesforce_pull` runs. It finds that a mapped object has new/updated/deleted records in Salesforce, and stores the mapped data in the queue.
+2. When the `schedule` runs again, the `salesforce_pull_process_records` method increments the `salesforce_data_version` number and compares to the `wordpress_data_version`. Since it is greater, it passes its data to the `wordpress` class for processing.
+3. If WordPress does process it, it increments the `wordpress_data_version` after saving data.
+4. When the WordPress item changes, it fires the actions that check for created/updated/deleted data. Because the versions match, it does not send data to the `salesforce` class.
 
 
 ### Wordpress (wordpress)
