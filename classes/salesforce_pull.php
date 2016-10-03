@@ -645,13 +645,27 @@ class Salesforce_Pull {
 
 					// if either prematch criteria exists, make the values queryable
 
+					if ( isset($prematch_field_wordpress ) ) {
+						$upsert_key = $prematch_field_salesforce;
+						$upsert_value = $encoded_prematch_value;
+					} elseif ( isset( $key_field_wordpress ) ) {
+						$upsert_key = $key_field_salesforce;
+						$upsert_value = $encoded_key_value;
+					}
+
+					if ( $wordpress_id !== NULL ) {
+						$upsert_key = $object_id;
+						$upsert_value = $wordpress_id;
+					}
 
 					$op = 'Upsert';
 
+					$result = $this->wordpress->object_upsert( $mapping['wordpress_object'], $upsert_key, $upsert_value, $params );
 
 				} else {
 					// No key or prematch field exists on this field map object, create a new object in WordPress.
 					$op = 'Create';
+					$result = $this->wordpress->object_create( $mapping['wordpress_object'], $params );
 				}
 
 			}
