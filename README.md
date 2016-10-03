@@ -145,6 +145,7 @@ Pull Salesforce data into WordPress according to the mapping settings. This is a
 2. Get any data that matches the criteria and send it to the `schedule` class.
 3. When the scheduled event runs again, process the data based on what kind of operation WordPress needs - delete, upsert, create, or update - and format the Salesforce data accordingly.
 4. Send the data - mapped according to the fieldmap - to the `wordpress` class for working with the core WordPress CRUD methods.
+5. Create an Ajax endpoint that can be called to initialize a `salesforce_pull` and handle the queue if it has data in it.
 
 
 ### Admin (admin)
