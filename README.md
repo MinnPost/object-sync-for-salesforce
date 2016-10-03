@@ -81,6 +81,7 @@ This class handles getting and setting WordPress core data.
 1. Get information, including content and metadata table structures, about all objects available in WordPress, including custom post types.
 2. Get data about objects based on their table structures and make it available to the plugin.
 3. Store and retrieve cache data.
+4. Calls for CRUD operations on different types of WordPress objects using the core WordPress calls if they exist, and `wpdb` calls otherwise.
 
 
 ### Salesforce (salesforce)
@@ -119,6 +120,16 @@ Push WordPress data into Salesforce according to the mapping settings, including
 3. Find out what kind of operation Salesforce needs - delete, upsert, create, or update - and format the WordPress data accordingly.
 4. Send the data - mapped according to the fieldmap - to the `salesforce` class for sending to the Salesforce REST API.
 5. Call the `schedule` class, and send the data to it, if the fieldmap is asynchronous.
+
+
+### Salesforce Pull (salesforce_pull)
+
+Pull Salesforce data into WordPress according to the mapping settings. This is always asynchronous, and depends on the schedule settings.
+
+1. When scheduled event runs, check for updated and deleted Salesforce records that are part of mapped objects in the `salesforce_mapping` class.
+2. Get any data that matches the criteria and send it to the `schedule` class.
+3. When the scheduled event runs again, process the data based on what kind of operation WordPress needs - delete, upsert, create, or update - and format the Salesforce data accordingly.
+4. Send the data - mapped according to the fieldmap - to the `wordpress` class for working with the core WordPress CRUD methods.
 
 
 ### Admin (admin)
