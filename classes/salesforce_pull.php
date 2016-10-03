@@ -98,8 +98,8 @@ class Salesforce_Pull {
 
 		if ( $this->salesforce['is_authorized'] === TRUE && $this->check_throttle() === TRUE ) {
 
-			$this->salesforce_pull_get_updated_records();
-			$this->salesforce_pull_get_deleted_records();
+			$this->get_updated_records();
+			$this->get_deleted_records();
 
 			// Store this request time for the throttle check.
 			update_option( 'salesforce_api_pull_last_sync', current_time( 'timestamp', true ) );
@@ -194,7 +194,7 @@ class Salesforce_Pull {
 	* todo: figure out why the drupal module has two for loops over apparently the same data
 	* i think it's because it wants to run a separate SOQL thing for each type of object in SF
 	*/
-	private function salesforce_pull_get_updated_records() {
+	private function get_updated_records() {
 		$sfapi = $this->salesforce['sfapi'];
 		foreach ( $this->mappings->get_fieldmaps() as $fieldmap ) {
 			$type = $fieldmap['salesforce_object']; // this sets the salesfore object type for the SOQL query
@@ -336,7 +336,7 @@ class Salesforce_Pull {
 	/**
 	* Get deleted records from salesforce.
 	*/
-	private function salesforce_pull_get_deleted_records() {
+	private function get_deleted_records() {
 
 		$sfapi = $this->salesforce['sfapi'];
 
