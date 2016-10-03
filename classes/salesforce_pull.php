@@ -791,7 +791,7 @@ class Salesforce_Pull {
 				}
 
 				$logging->setup(
-					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' ( Salesforce ' . $mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ')', $this->text_domain ),
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (Salesforce ' . $mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ')', $this->text_domain ),
 					'',
 					$sf_sync_trigger,
 					$mapping_object['wordpress_id'],
@@ -812,7 +812,7 @@ class Salesforce_Pull {
 				}
 
 				$logging->setup(
-					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' ( Salesforce ' . $mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ')', $this->text_domain ),
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (Salesforce ' . $mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ')', $this->text_domain ),
 					$e->getMessage(),
 					$sf_sync_trigger,
 					$mapping_object['wordpress_id'],
