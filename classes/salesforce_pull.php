@@ -601,27 +601,6 @@ class Salesforce_Pull {
 
 		// methods to run the wp create or update operations
 
-		// uses one ampersand because bit
-		if ( $is_new === FALSE && ( $mapping['sync_triggers'] & $this->mappings->sync_sf_update ) ) {
-			try {
-
-			} catch ( Exception $e ) {
-
-			}
-		} else {
-			$is_new = TRUE;
-		}
-
-		if ( !$is_new && $mapping['sync_triggers'] & $this->mappings->sync_sf_create ) {
-			try {
-
-			} catch( Exception $e ) {
-
-			}
-		}
-
-		// create and save mapping object
-
 		if ( $is_new === TRUE ) {
 			// create new object link in wp because the systems don't know about each other yet
 
