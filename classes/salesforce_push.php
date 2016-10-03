@@ -374,7 +374,20 @@ class Salesforce_Push {
 		$exists_query = 'SELECT ' . $object_id_field . ' FROM ' . $structure['content_table'] . ' WHERE ' . $object_id_field . ' = ' . $object["$object_id_field"];
 		$object_exists = $this->wpdb->get_row( $exists_query );
 		if ( $object_exists === NULL ) {
+			// remove it from the schedule
 			$this->schedule->cancel_by_name( $this->schedule_name );
+
+			// we should also delete the mapping object since the wordpress item is gone
+			// this returns the row that maps the individual wordpress row to the individual salesforce row
+			$mapping_object = $this->mappings->load_by_wordpress( $mapping['wordpress_object'], $object["$object_id_field"] );
+
+			if ( isset( $mapping_object['id'] ) ) {
+				$this->mappings->delete_object_map( $mapping_object['id'] );
+			} else {
+				$mapping_object['salesforce_id'] = 'unknown';
+			}
+
+			// create a log entry
 			error_log('cancel because deleted');
 			$status = 'notice';
 			// create log entry for failed delete
