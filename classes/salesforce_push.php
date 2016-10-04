@@ -74,7 +74,7 @@ class Salesforce_Push {
 					add_action( 'edit_terms', array( &$this, 'edit_term' ), 10, 2 );
 					add_action( 'delete_term', array( &$this, 'delete_term' ), 10, 4 );
 				} elseif ( $object_type === 'comment' ) {
-					add_action( 'comment_post', array( &$this, 'add_comment', 3 ) );
+					add_action( 'comment_post', array( &$this, 'add_comment' ), 10, 3 );
 					add_action( 'edit_comment', array( &$this, 'edit_comment' ) );
 					add_action( 'delete_comment', array( &$this, 'delete_comment' ) ); // to be clear: this only runs when the comment gets deleted from the trash, either manually or automatically
 				} else { // this is for custom post types
