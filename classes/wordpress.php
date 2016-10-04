@@ -495,10 +495,10 @@ class Wordpress {
                 $success = $this->user_delete( $id );
                 break;
             case 'post':
-                $success = 'delete a post';
+                $success = $this->post_delete( $id );
                 break;
             case 'attachment':
-                $success = 'delete attachment';
+                $success = $this->attachment_delete( $id );
                 break;
             case 'category':
             case 'tag':
@@ -626,6 +626,42 @@ class Wordpress {
         // according to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error
         include_once( './wp-admin/includes/user.php' );
         $result = wp_delete_user( $id, $reassign );
+        return $result;
+    }
+
+    /**
+    * Delete a WordPress post.
+    *
+    * @param int $id
+    *   Post ID
+    * @param bool $force_delete
+    *   If we should bypass the trash
+    *   We don't change this from FALSE anywhere in this plugin
+    *
+    * @return mixed
+    *   post object if successful, false if failed
+    *
+    */
+    private function post_delete( $id, $force_delete = FALSE ) {
+        $result = wp_delete_post( $id, $force_delete );
+        return $result;
+    }
+
+    /**
+    * Delete a WordPress attachment.
+    *
+    * @param int $id
+    *   Post ID
+    * @param bool $force_delete
+    *   If we should bypass the trash
+    *   We don't change this from FALSE anywhere in this plugin
+    *
+    * @return mixed
+    *   attachment object if successful, false if failed
+    *
+    */
+    private function attachment_delete( $id, $force_delete = FALSE ) {
+        $result = wp_delete_attachment( $id, $force_delete );
         return $result;
     }
 
