@@ -126,6 +126,10 @@ class Salesforce_Push {
 		if ( isset( $post->post_status ) && $post->post_status === 'auto-draft' ) {
 			return;
 		}
+		// this plugin does not sync log posts with salesforce
+		if ( isset( $post->post_type ) && $post->post_type === 'wp_log' ) {
+			return;
+		}
 	    if ( $post->post_modified_gmt == $post->post_date_gmt && $post->post_status !== 'trash' ){
 	        $update = 0;
 	        $delete = 0;
