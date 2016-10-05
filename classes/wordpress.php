@@ -505,7 +505,7 @@ class Wordpress {
                 $success = 'delete a taxonomy';
                 break;
             case 'comment':
-                $success = 'delete a comment';
+                $success = $this->comment_delete( $id );
                 break;
             default:
                 $success = 'delete an unmatched item';
@@ -662,6 +662,24 @@ class Wordpress {
     */
     private function attachment_delete( $id, $force_delete = FALSE ) {
         $result = wp_delete_attachment( $id, $force_delete );
+        return $result;
+    }
+
+    /**
+    * Delete a WordPress comment.
+    *
+    * @param int $id
+    *   Post ID
+    * @param bool $force_delete
+    *   If we should bypass the trash
+    *   We don't change this from FALSE anywhere in this plugin
+    *
+    * @return boolean
+    *   true if successful, false if failed
+    *
+    */
+    private function comment_delete( $id, $force_delete = FALSE ) {
+        $result = wp_delete_comment( $id, $force_delete );
         return $result;
     }
 
