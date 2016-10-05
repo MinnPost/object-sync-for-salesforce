@@ -705,7 +705,7 @@ class Salesforce_Pull {
 				}
 
 				$logging->setup(
-					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $wordpress_id . ' (Salesforce ' . $mapping['salesforce_object'] . 'ID of ' . $object['Id'] . ')', $this->text_domain ),
+					__( ucfirst( $status ) . ': ' . $op . ' ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $wordpress_id . ' (Salesforce ' . $mapping['salesforce_object'] . ' ID of ' . $object['Id'] . ')', $this->text_domain ),
 					'',
 					$sf_sync_trigger,
 					$wordpress_id,
