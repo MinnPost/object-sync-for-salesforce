@@ -508,7 +508,8 @@ class Wordpress {
                 $success = $this->comment_delete( $id );
                 break;
             default:
-                $success = 'delete an unmatched item';
+                // custom post types don't need to change for deleting
+                $success = $this->post_delete( $id );
                 break;
         }
 
