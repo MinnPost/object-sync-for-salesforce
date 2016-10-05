@@ -502,7 +502,7 @@ class Wordpress {
                 break;
             case 'category':
             case 'tag':
-                $success = 'delete a taxonomy';
+                $success = $this->term_delete( $id, $name );
                 break;
             case 'comment':
                 $success = $this->comment_delete( $id );
@@ -662,6 +662,23 @@ class Wordpress {
     */
     private function attachment_delete( $id, $force_delete = FALSE ) {
         $result = wp_delete_attachment( $id, $force_delete );
+        return $result;
+    }
+
+    /**
+    * Delete a WordPress term.
+    *
+    * @param int $id
+    *   Post ID
+    * @param string $taxonomy
+    *   What taxonomy the term is - category, tag, etc.
+    *
+    * @return bool
+    *   true if successful, false if failed
+    *
+    */
+    private function term_delete( $id, $taxonomy ) {
+        $result = wp_delete_term( $id, $taxonomy );
         return $result;
     }
 

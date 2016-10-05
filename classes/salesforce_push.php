@@ -206,14 +206,15 @@ class Salesforce_Push {
 	/**
 	* Callback method for deleting a term
 	*
-	* @param string $term_id
+	* @param int $term (id)
 	* @param int $term_taxonomy_id
-	* @param string $taxonomy_slug
-	* @param object $already_deleted_term
+	* @param string $taxonomy (slug)
+	* @param object $deleted_term
 	*/
-	public function delete_term( $term_id, $term_taxonomy_id, $taxonomy_slug, $already_deleted_term ) {
-		$term = $this->wordpress->get_wordpress_object_data( $taxonomy, $term_id );
-		$this->object_delete( $term, $taxonomy );
+	public function delete_term( $term, $tt_id, $taxonomy, $deleted_term ) {
+		$deleted_term = ( array ) $deleted_term;
+		$type = $deleted_term['taxonomy'];
+		$this->object_delete( $deleted_term, $type );
 	}
 
 	/**
