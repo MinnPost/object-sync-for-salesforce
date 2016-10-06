@@ -370,7 +370,7 @@ class Wordpress_Salesforce_Admin {
                                                 } else {
                                                     $checked_sf_wp = '';
                                                     $checked_wp_sf = '';
-                                                    $checked_sync = '';
+                                                    $checked_sync = ' checked'; // by default, start with Sync checked
                                                 }
                                                 
                                                 ?>
