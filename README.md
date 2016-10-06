@@ -181,6 +181,11 @@ The admin section is divided into tabs:
 
 Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill in functional gaps missing in the REST API. Will require the Salesforce PHP Toolkit, if/when we choose to do it.
 
+The Drupal module apparently requires SOAP to batch records on a push. On creating a fieldmap, it says this:
+
+    Requires the "Salesforce SOAP (salesforce_soap)" module to be enabled, and the "Process asynchronously" option to be checked. Push items will be processed in a single batch to the Salesforce API rather than one at a time. This may be preferable if API limits are of concern, although changes are not reflected immediately in Salesforce.
+    
+
 ## API
 
 This plugin will aim to reproduce at least the hooks provided by the Drupal suite, so that other WordPress plugins can build on top of them.
