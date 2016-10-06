@@ -303,7 +303,7 @@ class Wordpress_Salesforce_Admin {
                                                     <?php
                                                     $wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
                                                     foreach ( $wordpress_fields as $wordpress_field ) {
-                                                        if ( isset( $value['wordpress_field'] ) && $value['wordpress_field'] === $wordpress_field['key'] ) {
+                                                        if ( isset( $value['wordpress_field']['label'] ) && $value['wordpress_field']['label'] === $wordpress_field['key'] ) {
                                                             $selected = ' selected';
                                                         } else {
                                                             $selected = '';
@@ -1105,11 +1105,12 @@ class Wordpress_Salesforce_Admin {
             // send the row to the fieldmap class
             // if it is add or clone, use the create method
             $method = esc_attr( $_POST['method'] );
+            $wordpress_fields = $this->get_wordpress_object_fields( $_POST['wordpress_object'] );
             if ( $method === 'add' || $method === 'clone' ) {
-                $result = $this->mappings->create_fieldmap( $_POST );
+                $result = $this->mappings->create_fieldmap( $_POST, $wordpress_fields );
             } elseif ( $method === 'edit' ) { // if it is edit, use the update method
                 $id = esc_attr( $_POST['id'] );
-                $result = $this->mappings->update_fieldmap( $_POST, $id );
+                $result = $this->mappings->update_fieldmap( $_POST, $wordpress_fields, $id );
             }
             if ( $result === false ) { // if the database didn't save, it's still ane rror
                 set_transient( $cachekey, $_POST, 0 );

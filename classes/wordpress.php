@@ -68,6 +68,8 @@ class Wordpress {
 		if ( $object_type === 'attachment' ) {
             $object_table_structure = array(
 				'object_name' => 'post',
+                'content_methods' => array( 'create' => 'wp_insert_attachment', 'read' => 'wp_get_attachment_image', 'update' => 'update_attached_file', 'delete' => 'wp_delete_attachment' ),
+                'meta_methods' => array( 'create' => 'wp_generate_attachment_metadata', 'read' => 'wp_get_attachment_metadata', 'update' => 'wp_update_attachment_metadata', 'delete' => '' ),
 				'content_table' => $this->wpdb->prefix . 'posts',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'postmeta',
@@ -78,6 +80,8 @@ class Wordpress {
         } elseif ( $object_type === 'user' ) {
             $object_table_structure = array(
 				'object_name' => 'user',
+                'content_methods' => array( 'create' => 'wp_create_user', 'read' => 'get_userdata', 'update' => 'wp_update_user', 'delete' => 'wp_delete_user' ),
+                'meta_methods' => array( 'create' => 'add_user_meta', 'read' => 'get_user_meta', 'update' => 'update_user_meta', 'delete' => 'wp_delete_attachment' ),
 				'content_table' => $this->wpdb->prefix . 'users',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'usermeta',
@@ -92,6 +96,8 @@ class Wordpress {
         } elseif ( $object_type === 'post' ) {
             $object_table_structure = array(
 				'object_name' => 'post',
+                'content_methods' => array( 'create' => 'wp_insert_post', 'read' => 'get_post', 'update' => 'wp_update_post', 'delete' => 'wp_delete_post' ),
+                'meta_methods' => array( 'create' => 'add_post_meta', 'read' => 'get_post_meta', 'update' => 'update_post_meta', 'delete' => 'delete_post_meta' ),
 				'content_table' => $this->wpdb->prefix . 'posts',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'postmeta',
@@ -102,6 +108,8 @@ class Wordpress {
         } elseif ( $object_type === 'category' || $object_type === 'tag' ) {
             $object_table_structure = array(
 				'object_name' => 'term',
+                'content_methods' => array( 'create' => 'wp_insert_term', 'read' => 'get_term', 'update' => 'wp_update_term', 'delete' => 'wp_delete_term' ),
+                'meta_methods' => array( 'create' => 'add_term_meta', 'read' => 'get_term_meta', 'update' => 'update_term_meta', 'delete' => 'delete_metadata' ),
 				'content_table' => $this->wpdb->prefix . 'terms',
 				'id_field' => 'term_id',
 				'meta_table' => $this->wpdb->prefix . 'termmeta',
@@ -112,6 +120,8 @@ class Wordpress {
         } elseif ( $object_type === 'comment' ) {
         	$object_table_structure = array(
 				'object_name' => 'comment',
+                'content_methods' => array( 'create' => 'wp_insert_comment', 'read' => 'get_comment', 'update' => 'wp_update_comment', 'delete' => 'wp_delete_comment' ),
+                'meta_methods' => array( 'create' => 'add_comment_meta', 'read' => 'get_comment_meta', 'update' => 'update_comment_meta', 'delete' => 'delete_comment_metadata' ),
 				'content_table' => $this->wpdb->prefix . 'comments',
 				'id_field' => 'comment_ID',
 				'meta_table' => $this->wpdb->prefix . 'commentmeta',
@@ -122,6 +132,8 @@ class Wordpress {
         } else { // this is for custom post types
             $object_table_structure = array(
 				'object_name' => 'post',
+                'content_methods' => array( 'create' => 'wp_insert_post', 'read' => 'get_post', 'update' => 'wp_update_post', 'delete' => 'wp_delete_post' ),
+                'meta_methods' => array( 'create' => 'add_post_meta', 'read' => 'get_post_meta', 'update' => 'update_post_meta', 'delete' => 'delete_post_meta' ),
 				'content_table' => $this->wpdb->prefix . 'posts',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'postmeta',
@@ -146,11 +158,15 @@ class Wordpress {
     	$object_table_structure = $this->get_wordpress_table_structure( $wordpress_object );
 
 		$meta_table = $object_table_structure['meta_table'];
+        $meta_methods = $object_table_structure['meta_methods'];
 		$content_table = $object_table_structure['content_table'];
+        $content_methods = $object_table_structure['content_methods'];
 		$id_field = $object_table_structure['id_field'];
 		$object_name = $object_table_structure['object_name'];
 		$where = $object_table_structure['where'];
 		$ignore_keys = $object_table_structure['ignore_keys'];
+
+        // todo: put in a hook for additional/revised data here
 
 		$object_fields = array();
 
@@ -162,7 +178,7 @@ class Wordpress {
 	            $object_fields['from_cache'] = true;
 	            $object_fields['cached'] = true;
 	        } else {
-	            $object_fields['data'] = $this->object_fields( $object_name, $id_field, $content_table, $meta_table, $where, $ignore_keys );
+	            $object_fields['data'] = $this->object_fields( $object_name, $id_field, $content_table, $content_methods, $meta_table, $meta_methods, $where, $ignore_keys );
 	            if ( !empty( $object_fields['data'] ) ) {
 	                $object_fields['cached'] = $this->cache_set( $wordpress_object, array( 'data', 'meta'), $object_fields['data'], $this->options['cache_expiration'] );
 	            } else {
@@ -171,7 +187,7 @@ class Wordpress {
 	            $object_fields['from_cache'] = false;
 	        }
 	    } else {
-	    	$object_fields['data'] = $this->object_fields( $object_name, $id_field, $content_table, $meta_table, $where, $ignore_keys );
+	    	$object_fields['data'] = $this->object_fields( $object_name, $id_field, $content_table, $content_methods, $meta_table, $meta_methods, $where, $ignore_keys );
 	        $object_fields['from_cache'] = false;
 	        $object_fields['cached'] = false;
 	    }
@@ -273,19 +289,21 @@ class Wordpress {
 	/**
      * Get all the fields for an object
      * The important thing here is returning the fields as an array:
-     * $all_fields = array( 'key' => 'key name', 'table' => 'table name' );
+     * $all_fields = array( 'key' => 'key name', 'table' => 'table name', 'methods' => array( 'create' => '', 'read' => '', 'update' => '', 'delete' => '' ) );
      * if there's a better way to do this than the mess of queries below, we should switch to that when we can
      * we just need to make sure we get all applicable fields for the object itself, as well as its meta fields
      *
      * @param string $object_name
      * @param string $id_field
      * @param string $content_table
+     * @param array $content_methods
      * @param string $meta_table
+     * @param array $meta_methods
      * @param string $where
      * @param array $ignore_keys
      * @return array $all_fields
      */
-	private function object_fields( $object_name, $id_field, $content_table, $meta_table, $where, $ignore_keys ) {
+	private function object_fields( $object_name, $id_field, $content_table, $content_methods, $meta_table, $meta_methods, $where, $ignore_keys ) {
 		// these two queries load all the fields from the specified object unless they have been specified as ignore fields
     	// they also load the fields that are meta_keys from the specified object's meta table
     	// todo: figure out how to handle other tables, especially things like advanced custom fields
@@ -308,13 +326,13 @@ class Wordpress {
 
         foreach ( $data_fields as $key => $value ) {
         	if ( !in_array( $value->COLUMN_NAME, $ignore_keys ) ) {
-        		$all_fields[] = array( 'key' => $value->COLUMN_NAME, 'table' => $content_table );
+        		$all_fields[] = array( 'key' => $value->COLUMN_NAME, 'table' => $content_table, 'methods' => $content_methods );
         	}
         }
 
         foreach ( $meta_fields as $key => $value ) {
         	if ( !in_array( $value->meta_key, $ignore_keys ) ) {
-        		$all_fields[] = array( 'key' => $value->meta_key, 'table' => $meta_table );
+        		$all_fields[] = array( 'key' => $value->meta_key, 'table' => $meta_table, 'methods' => $meta_methods );
         	}
         }
 

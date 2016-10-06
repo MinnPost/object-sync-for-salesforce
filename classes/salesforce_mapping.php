@@ -98,8 +98,8 @@ class Salesforce_Mapping {
     * @param array $posted
     * @throws \Exception
     */
-    public function create_fieldmap( $posted = array() ) {
-    	$data = $this->setup_fieldmap_data( $posted );
+    public function create_fieldmap( $posted = array(), $wordpress_fields = array() ) {
+    	$data = $this->setup_fieldmap_data( $posted, $wordpress_fields );
     	$insert = $this->wpdb->insert( $this->fieldmap_table, $data );
     	if ( $insert === 1 ) {
     		return $this->wpdb->insert_id;
@@ -181,8 +181,8 @@ class Salesforce_Mapping {
     * @return $map
     * @throws \Exception
     */
-    public function update_fieldmap( $posted = array(), $id = '' ) {
-    	$data = $this->setup_fieldmap_data( $posted );
+    public function update_fieldmap( $posted = array(), $wordpress_fields = array(), $id = '' ) {
+    	$data = $this->setup_fieldmap_data( $posted, $wordpress_fields );
     	$update = $this->wpdb->update( $this->fieldmap_table, $data, array( 'id' => $id ) );
     	if ( $update === FALSE ) {
     		return false;
@@ -197,11 +197,12 @@ class Salesforce_Mapping {
     * @param array $posted
     * @return $data
     */
-    private function setup_fieldmap_data( $posted = array() ) {
+    private function setup_fieldmap_data( $posted = array(), $wordpress_fields = array() ) {
     	$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
 		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
+                $method_key = array_search( $key, array_column( $wordpress_fields, 'key' ) );
 				if ( !isset( $posted['direction'][$key] ) ) {
 					$posted['direction'][$key] = 'sync';
 				}
@@ -216,7 +217,10 @@ class Salesforce_Mapping {
 				}
 				if ( $posted['is_delete'][$key] === false ) {
 					$setup['fields'][$key] = array(
-						'wordpress_field' => sanitize_text_field( $posted['wordpress_field'][$key] ),
+						'wordpress_field' => array(
+                            'label' => sanitize_text_field( $posted['wordpress_field'][$key] ),
+                            'methods' => $wordpress_fields[$method_key]
+                        ),
 						'salesforce_field' => sanitize_text_field( $posted['salesforce_field'][$key] ),
                         'is_prematch' => sanitize_text_field( $posted['is_prematch'][$key] ),
 						'is_key' => sanitize_text_field( $posted['is_key'][$key] ),
@@ -500,7 +504,7 @@ class Salesforce_Mapping {
             }
 
             $salesforce_field = $fieldmap['salesforce_field'];
-            $wordpress_field = $fieldmap['wordpress_field'];
+            $wordpress_field = $fieldmap['wordpress_field']['label'];
 
             // a wordpress event caused this
             if ( in_array( $trigger, array_values( $wordpress_haystack ) ) ) {
