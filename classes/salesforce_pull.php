@@ -623,13 +623,12 @@ class Salesforce_Pull {
 				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || $wordpress_id !== NULL ) {
 
 					// if either prematch criteria exists, make the values queryable
-
 					if ( isset($prematch_field_wordpress ) ) {
 						$upsert_key = $prematch_field_salesforce;
-						$upsert_value = $encoded_prematch_value;
+						$upsert_value = $prematch_value;
 					} elseif ( isset( $key_field_wordpress ) ) {
 						$upsert_key = $key_field_salesforce;
-						$upsert_value = $encoded_key_value;
+						$upsert_value = $key_value;
 					}
 
 					if ( $wordpress_id !== NULL ) {
@@ -833,7 +832,7 @@ class Salesforce_Pull {
 
 		
 
-		foreach ( $sf_mappings as $sf_mapping ) {
+		/*foreach ( $sf_mappings as $sf_mapping ) {
 
 			$exists = $mapping_object ? TRUE : FALSE;
 
@@ -1021,7 +1020,7 @@ class Salesforce_Pull {
 				$mapping_object->last_sync_action = 'pull';
 				$mapping_object->save();
 			}
-		}
+		}*/
 	
 		if (!empty($exception)) {
 			throw $exception;
