@@ -202,7 +202,7 @@ class Salesforce_Mapping {
 		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
-                $method_key = array_search( $key, array_column( $wordpress_fields, 'key' ) );
+                $method_key = array_search( $value, array_column( $wordpress_fields, 'key' ) );
 				if ( !isset( $posted['direction'][$key] ) ) {
 					$posted['direction'][$key] = 'sync';
 				}
@@ -219,7 +219,7 @@ class Salesforce_Mapping {
 					$setup['fields'][$key] = array(
 						'wordpress_field' => array(
                             'label' => sanitize_text_field( $posted['wordpress_field'][$key] ),
-                            'methods' => $wordpress_fields[$method_key]
+                            'methods' => $wordpress_fields[$method_key]['methods']
                         ),
 						'salesforce_field' => sanitize_text_field( $posted['salesforce_field'][$key] ),
                         'is_prematch' => sanitize_text_field( $posted['is_prematch'][$key] ),
