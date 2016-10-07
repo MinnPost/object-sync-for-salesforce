@@ -517,9 +517,6 @@ class Salesforce_Mapping {
                 
                 $params[$salesforce_field] = $object[$wordpress_field];
 
-                // todo: we could use this syntax but i think maybe it doesn't work for older php?
-                //$params[$fieldmap['salesforce_field']] = $object[$fieldmap['wordpress_field']];
-
                 // if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
                 // but still put its name in the params array so we can check for it later
                 if ( $fieldmap['is_key'] === '1' ) {
@@ -545,10 +542,9 @@ class Salesforce_Mapping {
             } else if ( in_array( $trigger, $salesforce_haystack ) ) {
 
                 // a salesforce event caused this
-                $params[$wordpress_field] = $object[$salesforce_field];
-
-                // todo: we could use this syntax but i think maybe it doesn't work for older php?
-                //$params[$fieldmap['salesforce_field']] = $object[$fieldmap['wordpress_field']];
+                // make an array because we need to store the methods for each field as well
+                $params[$wordpress_field] = array();
+                $params[$wordpress_field]['value'] = $object[$salesforce_field];
 
                 // if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
                 // but still put its name in the params array so we can check for it later
@@ -559,7 +555,8 @@ class Salesforce_Mapping {
                     $params['key'] = array(
                         'salesforce_field' => $salesforce_field,
                         'wordpress_field' => $wordpress_field,
-                        'value' => $object[$salesforce_field]
+                        'value' => $object[$salesforce_field],
+                        'method_read' => $fieldmap['wordpress_field']['methods']['read']
                     );
                 }
 
@@ -568,9 +565,25 @@ class Salesforce_Mapping {
                     $params['prematch'] = array(
                         'salesforce_field' => $salesforce_field,
                         'wordpress_field' => $wordpress_field,
-                        'value' => $object[$salesforce_field]
+                        'value' => $object[$salesforce_field],
+                        'method_read' => $fieldmap['wordpress_field']['methods']['read']
                     );
                 }
+
+                switch ( $trigger ) {
+                    case $this->sync_sf_create:
+                        $params[$wordpress_field]['method_modify'] = $fieldmap['wordpress_field']['methods']['create'];
+                        break;
+                    case $this->sync_sf_update:
+                        $params[$wordpress_field]['method_modify'] = $fieldmap['wordpress_field']['methods']['update'];
+                        break;
+                    case $this->sync_sf_delete:
+                        $params[$wordpress_field]['method_modify'] = $fieldmap['wordpress_field']['methods']['delete'];
+                        break;
+                }
+
+                $params[$wordpress_field]['method_read'] = $fieldmap['wordpress_field']['methods']['read'];
+
             }
 
         }
