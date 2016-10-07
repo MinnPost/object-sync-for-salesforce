@@ -80,7 +80,7 @@ class Wordpress {
         } elseif ( $object_type === 'user' ) {
             $object_table_structure = array(
 				'object_name' => 'user',
-                'content_methods' => array( 'create' => 'wp_create_user', 'read' => 'get_userdata', 'update' => 'wp_update_user', 'delete' => 'wp_delete_user' ),
+                'content_methods' => array( 'create' => 'wp_create_user', 'read' => 'get_user_by', 'update' => 'wp_update_user', 'delete' => 'wp_delete_user' ),
                 'meta_methods' => array( 'create' => 'add_user_meta', 'read' => 'get_user_meta', 'update' => 'update_user_meta', 'delete' => 'wp_delete_attachment' ),
 				'content_table' => $this->wpdb->prefix . 'users',
 				'id_field' => 'ID',
