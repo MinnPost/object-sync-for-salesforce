@@ -588,6 +588,10 @@ class Salesforce_Pull {
 			$prematch_field_wordpress = $params['prematch']['wordpress_field'];
 			$prematch_field_salesforce = $params['prematch']['salesforce_field'];
 			$prematch_value = $params['prematch']['value'];
+			$prematch_methods = array(
+				'method_modify' => $params['prematch']['method_read'],
+				'method_read' => $params['prematch']['method_read']
+			);
 			unset( $params['prematch'] );
 		}
 
@@ -596,6 +600,10 @@ class Salesforce_Pull {
 			$key_field_wordpress = $params['key']['wordpress_field'];
 			$key_field_salesforce = $params['key']['salesforce_field'];
 			$key_value = $params['key']['value'];
+			$key_methods = array(
+				'method_modify' => $params['key']['method_read'],
+				'method_read' => $params['key']['method_read']
+			);
 			unset( $params['key'] );
 		}
 
@@ -620,25 +628,28 @@ class Salesforce_Pull {
 				// the function that calls this hook needs to check the mapping to make sure the wordpress object is the right type
 				$wordpress_id = apply_filters( 'salesforce_rest_api_find_wp_object_match', NULL, $object, $mapping, 'pull' );
 
-				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || $wordpress_id !== NULL ) {
+				if ( isset( $prematch_field_salesforce ) || isset( $key_field_salesforce ) || $wordpress_id !== NULL ) {
 
 					// if either prematch criteria exists, make the values queryable
-					if ( isset($prematch_field_wordpress ) ) {
-						$upsert_key = $prematch_field_salesforce;
+					if ( isset($prematch_field_salesforce ) ) {
+						$upsert_key = $prematch_field_wordpress;
 						$upsert_value = $prematch_value;
-					} elseif ( isset( $key_field_wordpress ) ) {
-						$upsert_key = $key_field_salesforce;
+						$upsert_methods = $prematch_methods;
+					} elseif ( isset( $key_field_salesforce ) ) {
+						$upsert_key = $key_field_wordpress;
 						$upsert_value = $key_value;
+						$upsert_methods = $key_methods;
 					}
 
 					if ( $wordpress_id !== NULL ) {
 						$upsert_key = $object_id;
 						$upsert_value = $wordpress_id;
+						$upsert_methods = array();
 					}
 
 					$op = 'Upsert';
 
-					$result = $this->wordpress->object_upsert( $mapping['wordpress_object'], $upsert_key, $upsert_value, $params );
+					$result = $this->wordpress->object_upsert( $mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params );
 
 				} else {
 					// No key or prematch field exists on this field map object, create a new object in WordPress.
