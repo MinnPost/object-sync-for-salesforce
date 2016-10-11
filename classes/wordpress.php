@@ -489,8 +489,7 @@ class Wordpress {
         switch ( $name ) {
             case 'user':
                 // user id does not come through by default, but we need it to pass to wp method
-                $params['ID'] = $id;
-                $result = $this->user_update( $params );
+                $result = $this->user_update( $id, $params );
                 break;
             case 'post':
                 $result = array('update a post');
@@ -582,30 +581,46 @@ class Wordpress {
             $username = $params['user_login']['value'];
         }
 
+        // this is a new user
         if ( NULL == username_exists( $username ) ) {
 
-          // Generate the password and create the user
-          $password = wp_generate_password( 12, FALSE );
-          $user_id = wp_create_user( $username, $password, $email_address );
+            // Generate the password and create the user
+            $password = wp_generate_password( 12, FALSE );
+            $user_id = wp_create_user( $username, $password, $email_address );
 
-          // if we have other fields
-          wp_update_user(
-            array(
-              $id_field          =>    $user_id,
-              'nickname'    =>    $email_address
-            )
-          );
+            // we already have the user's email and/or login, so don't do anything with them
+            unset( $params['user_email'] );
+            unset( $params['user_login'] );
 
-          // todo: figure out how to format all the possible data that can go here
+            foreach ( $params as $key => $value ) {
+                if ( $value['method_modify'] === 'add_user_meta' ) {
+                    error_log('we should add a meta field for ' . $key . ' with a value of ' . $value['value'] );
+                } else {
+                    error_log('we should update the meta field');
+                }
+            }
 
-          // set the role
-          $user = new WP_User( $user_id );
-          //$user->set_role( 'contributor' );
+            // if we have other fields
+            /*wp_update_user(
+                array(
+                    $id_field          =>    $user_id,
+                    'nickname'    =>    $email_address
+                )
+            );
 
-          // send notification of new user
-          // todo: make sure this respects other settings.
-          // ex: if admin users never get notifications, this should not force a notification
-          wp_new_user_notification( $user_id, NULL, 'admin user' );
+            // todo: figure out how to deal with permissions here
+
+            // set the role
+            $user = new WP_User( $user_id );
+            //$user->set_role( 'contributor' );
+            */
+
+            
+
+            // send notification of new user
+            // todo: make sure this respects other settings.
+            // ex: if admin users never get notifications, this should not force a notification
+            //wp_new_user_notification( $user_id, NULL, 'admin user' );
 
 
         } else {
@@ -704,9 +719,12 @@ class Wordpress {
 
     }
 
+    /**
     * Update a WordPress user.
     *
-    * @param array $userdata
+    * @param string $user_id
+    *   the ID for the user to be updated. This value needs to be in the array that is sent to wp_update_user
+    * @param array $params
     *   array of user data params
     *
     * @return array
@@ -715,8 +733,15 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function user_update( $userdata ) {
-        $user_id = wp_update_user( $userdata );
+    private function user_update( $user_id, $params ) {
+
+        error_log('we want to update user with id of ' . $user_id);
+
+        foreach ( $params as $field ) {
+            error_log('field is ' . print_r($field, true));
+        }
+
+        $user_id = wp_update_user( $params );
         if ( is_wp_error( $user_id ) ) {
             $success = FALSE;
             $errors = $user_id;
