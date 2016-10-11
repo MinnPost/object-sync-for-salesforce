@@ -78,10 +78,11 @@ class Wordpress {
 				'ignore_keys' => array()
 			);
         } elseif ( $object_type === 'user' ) {
+            // user meta fields need to use update_user_meta for create as well, otherwise it'll just get created twice because apparently when the post is created it's already there
             $object_table_structure = array(
 				'object_name' => 'user',
                 'content_methods' => array( 'create' => 'wp_create_user', 'read' => 'get_user_by', 'update' => 'wp_update_user', 'delete' => 'wp_delete_user' ),
-                'meta_methods' => array( 'create' => 'add_user_meta', 'read' => 'get_user_meta', 'update' => 'update_user_meta', 'delete' => 'wp_delete_attachment' ),
+                'meta_methods' => array( 'create' => 'update_user_meta', 'read' => 'get_user_meta', 'update' => 'update_user_meta', 'delete' => 'wp_delete_attachment' ),
 				'content_table' => $this->wpdb->prefix . 'users',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'usermeta',
@@ -593,34 +594,16 @@ class Wordpress {
             unset( $params['user_login'] );
 
             foreach ( $params as $key => $value ) {
-                if ( $value['method_modify'] === 'add_user_meta' ) {
-                    error_log('we should add a meta field for ' . $key . ' with a value of ' . $value['value'] );
-                } else {
-                    error_log('we should update the meta field');
-                }
+                $method = $value['method_modify'];
+                $method( $user_id, $key, $value['value'] );
             }
 
-            // if we have other fields
-            /*wp_update_user(
-                array(
-                    $id_field          =>    $user_id,
-                    'nickname'    =>    $email_address
-                )
-            );
-
-            // todo: figure out how to deal with permissions here
-
-            // set the role
-            $user = new WP_User( $user_id );
-            //$user->set_role( 'contributor' );
-            */
-
-            
+            // todo: add a hook for setting permissions and other data here            
 
             // send notification of new user
             // todo: make sure this respects other settings.
             // ex: if admin users never get notifications, this should not force a notification
-            //wp_new_user_notification( $user_id, NULL, 'admin user' );
+            wp_new_user_notification( $user_id, NULL, 'admin user' );
 
 
         } else {
