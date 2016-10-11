@@ -228,7 +228,7 @@ class Salesforce_Pull {
 					// Add the RecordTypeId field so we can use it when processing the queued SF objects.
 					$mapped_fields['RecordTypeId'] = 'RecordTypeId';
 				}
-			}	
+			}
 
 			// There are no field mappings configured to pull data from Salesforce so
 			// move on to the next mapped object. Prevents querying unmapped data.
@@ -239,18 +239,22 @@ class Salesforce_Pull {
 			$soql = new Salesforce_Select_Query( $type );
 
 			// Convert field mappings to SOQL.
-			// this is why we don't use the get_updated_records method
+			// this is why we don't use the get_updated method on the salesforce class
 			$soql->fields = array_merge( $mapped_fields, array(
 			  'Id' => 'Id',
 			  $mapping['pull_trigger_field'] => $mapping['pull_trigger_field']
 			) );
 
+			if ( in_array( $this->mappings->sync_sf_create, $mapping['sync_triggers'] ) ) {
+				$soql->fields['CreatedDate'] = 'CreatedDate';
+			}
+
 			// If no lastupdate, get all records, else get records since last pull.
 			// this should be what keeps it from getting all the records, whether or not they've ever been updated
 			$sf_last_sync = get_option( 'salesforce_api_pull_last_sync_' . $type, NULL );
 			if ( $sf_last_sync ) {
-			  $last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
-			  $soql->add_condition( $mapping['pull_trigger_field'], $last_sync, '>' );
+				$last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
+				$soql->add_condition( $mapping['pull_trigger_field'], $last_sync, '>' );
 			}
 
 			// If Record Type is specified, restrict query.
@@ -269,11 +273,18 @@ class Salesforce_Pull {
 				// Write items to the queue.
 				foreach ( $response['records'] as $result ) {
 
+					// if this record is new as of the last sync, use the create trigger
+					if ( isset( $result['CreatedDate'] ) && $result['CreatedDate'] > $last_sync ) {
+						$trigger = $this->mappings->sync_sf_create;
+					} else {
+						$trigger = $this->mappings->sync_sf_update;
+					}
+
 					$data = array(
 						'object_type' => $type,
 						'object' => $result,
 						'mapping' => $mapping,
-						'sf_sync_trigger' => $this->mappings->sync_sf_update // sf update trigger
+						'sf_sync_trigger' => $trigger // use the appropriate trigger based on when this was created
 					);
 
 					$this->schedule->push_to_queue( $data );
