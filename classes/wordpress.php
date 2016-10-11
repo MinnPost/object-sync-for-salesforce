@@ -586,6 +586,8 @@ class Wordpress {
         if ( NULL == username_exists( $username ) ) {
 
             // Generate the password and create the user
+            // todo: figure out why this just sends the user a password set link instead of respecting the parameter
+            // maybe that's fine but need to find out
             $password = wp_generate_password( 12, FALSE );
             $user_id = wp_create_user( $username, $password, $email_address );
 
@@ -717,20 +719,31 @@ class Wordpress {
     *
     */
     private function user_update( $user_id, $params ) {
-
-        error_log('we want to update user with id of ' . $user_id);
-
-        foreach ( $params as $field ) {
-            error_log('field is ' . print_r($field, true));
+        $content = array();
+        $content['ID'] = $user_id;
+        foreach ( $params as $key => $value ) {
+            if ( $value['method_modify'] === 'wp_update_user' ) {
+                $content[$key] = $value['value'];
+                unset( $params[$key] );
+            }
         }
 
-        $user_id = wp_update_user( $params );
+        $user_id = wp_update_user( $content );
+
         if ( is_wp_error( $user_id ) ) {
             $success = FALSE;
             $errors = $user_id;
         } else {
             $success = TRUE;
             $errors = array();
+            foreach ( $params as $key => $value ) {
+                $method = $value['method_modify'];
+                $meta_id = $method( $user_id, $key, $value['value'] );
+                if ( $meta_id === FALSE ) {
+                    $success = FALSE;
+                    $errors[] = array( 'key' => $key, 'value' => $value );
+                }
+            }
         }
 
         $result = array( 'data' => array( 'success' => $success ), 'errors' => $errors );
