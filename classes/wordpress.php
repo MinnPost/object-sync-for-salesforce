@@ -555,7 +555,7 @@ class Wordpress {
                 break;
         }
 
-        $result = array( 'data' => array( 'success' => $success ), 'errors' => array());
+        $result = array( 'data' => array( 'success' => $success ), 'errors' => array() );
         return $result;
     }
 
@@ -620,7 +620,7 @@ class Wordpress {
                     $meta_id = $method( $user_id, $key, $value['value'] );
                     if ( $meta_id === FALSE ) {
                         $success = FALSE;
-                        $errors[] = array( 'key' => $key, 'value' => $value );
+                        $errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                     }
                 }
 
