@@ -754,6 +754,8 @@ class Wordpress {
     *   the ID for the user to be updated. This value needs to be in the array that is sent to wp_update_user
     * @param array $params
     *   array of user data params
+    * @param string $id_field
+    *   optional string of what the ID field is, if it is ever not ID
     *
     * @return array
     *   data:
@@ -761,9 +763,9 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function user_update( $user_id, $params ) {
+    private function user_update( $user_id, $params, $id_field = 'ID' ) {
         $content = array();
-        $content['ID'] = $user_id;
+        $content[$id_field] = $user_id;
         foreach ( $params as $key => $value ) {
             if ( $value['method_modify'] === 'wp_update_user' ) {
                 $content[$key] = $value['value'];
@@ -789,7 +791,7 @@ class Wordpress {
             }
         }
 
-        $result = array( 'data' => array( 'success' => $success ), 'errors' => $errors );
+        $result = array( 'data' => array( $id_field => $user_id, 'success' => $success ), 'errors' => $errors );
         return $result;
     }
 
@@ -818,6 +820,8 @@ class Wordpress {
     *
     * @param array $post
     *   array of post data
+    * @param string $id_field
+    *   optional string of what the ID field is, if it is ever not ID
     *
     * @return array
     *   data:
@@ -825,7 +829,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function post_update( $post ) {
+    private function post_update( $post, $id_field = 'ID' ) {
         // from wp docs:
         // Before calling wp_update_post() it is necessary to create an array to pass the necessary elements. Unlike wp_insert_post(), it is only necessary to pass the ID of the post to be updated and the elements to be updated. The names of the elements should match those in the database. 
         $post_id = wp_update_post( $post, FALSE ); // true on second param means it will return a WP_Error object
@@ -838,7 +842,7 @@ class Wordpress {
             $errors = array();
         }
 
-        $result = array( 'data' => array( 'success' => $success ), 'errors' => $errors );
+        $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
         return $result;
     }
 
