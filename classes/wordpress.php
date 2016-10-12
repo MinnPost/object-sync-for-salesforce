@@ -580,33 +580,58 @@ class Wordpress {
         $email_address = $params['user_email']['value'];
         if ( isset( $params['user_login']['value'] ) ) { // user_login is used by username_exists
             $username = $params['user_login']['value'];
+        } else {
+            $params['user_login'] = array(
+                'value' => $username,
+                'method_modify' => 'wp_create_user',
+                'method_read' => 'get_user_by'
+            );
         }
 
         // this is a new user
         if ( NULL == username_exists( $username ) ) {
 
-            // Generate the password and create the user
-            // todo: figure out why this just sends the user a password set link instead of respecting the parameter
-            // maybe that's fine but need to find out
-            $password = wp_generate_password( 12, FALSE );
-            $user_id = wp_create_user( $username, $password, $email_address );
-
-            // we already have the user's email and/or login, so don't do anything with them
-            unset( $params['user_email'] );
-            unset( $params['user_login'] );
+            // Create the user
+            // todo: by default wordpress sends a password reset link so this password doesn't get used. this is probably fine though?
+            $params['user_pass'] = array(
+                'value' => wp_generate_password( 12, FALSE ),
+                'method_modify' => 'wp_create_user',
+                'method_read' => 'get_user_by'
+            );
 
             foreach ( $params as $key => $value ) {
-                $method = $value['method_modify'];
-                $method( $user_id, $key, $value['value'] );
+                // make this wp_insert_user after the cache clears
+                if ( $value['method_modify'] === 'wp_create_user' ) {
+                    $content[$key] = $value['value'];
+                    unset( $params[$key] );
+                }
             }
 
-            // todo: add a hook for setting permissions and other data here            
+            $user_id = wp_insert_user( $content );
 
-            // send notification of new user
-            // todo: make sure this respects other settings.
-            // ex: if admin users never get notifications, this should not force a notification
-            wp_new_user_notification( $user_id, NULL, 'admin user' );
+            if ( is_wp_error( $user_id ) ) {
+                $success = FALSE;
+                $errors = $user_id;
+            } else {
+                $success = TRUE;
+                $errors = array();
+                foreach ( $params as $key => $value ) {
+                    $method = $value['method_modify'];
+                    $meta_id = $method( $user_id, $key, $value['value'] );
+                    if ( $meta_id === FALSE ) {
+                        $success = FALSE;
+                        $errors[] = array( 'key' => $key, 'value' => $value );
+                    }
+                }
 
+                // todo: add a hook for setting permissions and other data here            
+
+                // send notification of new user
+                // todo: make sure this respects other settings.
+                // ex: if admin users never get notifications, this should not force a notification
+                wp_new_user_notification( $user_id, NULL, 'admin user' );
+
+            }
 
         } else {
             $user_id = username_exists( $username );
@@ -649,19 +674,37 @@ class Wordpress {
     */
     private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID' ) {
 
-        // if the key is user_email, we need to make it just email because sigh
-        $method = $methods['method_read'];
+        // if the key is user_email, we need to make it just email because that is how the wordpress method reads it
+        $method = $methods['method_match'];
         if ( $method !== '' ) {
             // this should give us the user object
             // todo: this is probably not robust enough for necessary options for data here
             $user = $method( str_replace( 'user_', '', $key ), $value );
             if ( isset( $user->ID ) ) {
+                // user does exist after checking the matching value. we want its id
                 $user_id = $user->ID;
-            } else {
-                // user does not exist after checking the matching value. create it.
+                // on the prematch fields, we specify the method_update param
+                if ( isset( $methods['method_update'] ) ) {
+                    $method = $methods['method_update'];
+                } else {
+                    $method = $methods['method_modify'];
+                }
                 $params[$key] = array(
                     'value' => $value,
-                    'method_modify' => $methods['method_modify'],
+                    'method_modify' => $method,
+                    'method_read' => $methods['method_read']
+                );
+            } else {
+                // user does not exist after checking the matching value. create it.
+                // on the prematch fields, we specify the method_create param
+                if ( isset( $methods['method_create'] ) ) {
+                    $method = $methods['method_create'];
+                } else {
+                    $method = $methods['method_modify'];
+                }
+                $params[$key] = array(
+                    'value' => $value,
+                    'method_modify' => $method,
                     'method_read' => $methods['method_read']
                 );
                 $result = $this->user_create( $params );

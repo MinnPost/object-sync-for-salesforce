@@ -600,7 +600,9 @@ class Salesforce_Pull {
 			$prematch_field_salesforce = $params['prematch']['salesforce_field'];
 			$prematch_value = $params['prematch']['value'];
 			$prematch_methods = array(
-				'method_modify' => $params['prematch']['method_read'],
+				'method_match' => $params['prematch']['method_read'],
+				'method_create' => $params['prematch']['method_create'],
+				'method_update' => $params['prematch']['method_update'],
 				'method_read' => $params['prematch']['method_read']
 			);
 			unset( $params['prematch'] );
@@ -612,7 +614,9 @@ class Salesforce_Pull {
 			$key_field_salesforce = $params['key']['salesforce_field'];
 			$key_value = $params['key']['value'];
 			$key_methods = array(
-				'method_modify' => $params['key']['method_read'],
+				'method_match' => $params['prematch']['method_read'],
+				'method_create' => $params['prematch']['method_create'],
+				'method_update' => $params['prematch']['method_update'],
 				'method_read' => $params['key']['method_read']
 			);
 			unset( $params['key'] );
@@ -748,6 +752,10 @@ class Salesforce_Pull {
 					$logging = $this->logging;
 				} else if ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				if ( is_object( $wordpress_id ) ) {
+					$wordpress_id = print_r( $wordpress_id, true );
 				}
 
 				$logging->setup(
