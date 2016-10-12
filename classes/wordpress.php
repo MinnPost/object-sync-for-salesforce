@@ -370,20 +370,20 @@ class Wordpress {
                 $result = $this->user_create( $params, $id_field );
                 break;
             case 'post':
-                $result = array('create a post');
+                $result = array( 'data' => array( 'success' => 9999 ), 'errors' => array() );
                 break;
             case 'attachment':
-                $result = array('create attachment');
+                $result = array( 'data' => array( 'success' => 9999 ), 'errors' => array() );
                 break;
             case 'category':
             case 'tag':
-                $result = array('create a taxonomy');
+                $result = array( 'data' => array( 'success' => 9999 ), 'errors' => array() );
                 break;
             case 'comment':
-                $result = array('create a comment');
+                $result = array( 'data' => array( 'success' => 9999 ), 'errors' => array() );
                 break;
             default:
-                $result = array('create an unmatched item');
+                $result = array( 'data' => array( 'success' => 9999 ), 'errors' => array() );
                 break;
         }
 
@@ -493,20 +493,20 @@ class Wordpress {
                 $result = $this->user_update( $id, $params );
                 break;
             case 'post':
-                $result = array('update a post');
+                $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
                 break;
             case 'attachment':
-                $result = array('update attachment');
+                $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
                 break;
             case 'category':
             case 'tag':
-                $result = array('update a taxonomy');
+                $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
                 break;
             case 'comment':
-                $result = array('update a comment');
+                $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
                 break;
             default:
-                $result = array('update an unmatched item');
+                $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
                 break;
         }
 
@@ -810,6 +810,35 @@ class Wordpress {
         // according to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error
         include_once( './wp-admin/includes/user.php' );
         $result = wp_delete_user( $id, $reassign );
+        return $result;
+    }
+
+    /**
+    * Update a WordPress post.
+    *
+    * @param array $post
+    *   array of post data
+    *
+    * @return array
+    *   data:
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function post_update( $post ) {
+        // from wp docs:
+        // Before calling wp_update_post() it is necessary to create an array to pass the necessary elements. Unlike wp_insert_post(), it is only necessary to pass the ID of the post to be updated and the elements to be updated. The names of the elements should match those in the database. 
+        $post_id = wp_update_post( $post, FALSE ); // true on second param means it will return a WP_Error object
+        // todo: we need to figure out how to update the metadata/custom fields that we will support
+        if ( $post_id === 0 ) {
+            $success = FALSE;
+            $errors = array();
+        } else {
+            $success = TRUE;
+            $errors = array();
+        }
+
+        $result = array( 'data' => array( 'success' => $success ), 'errors' => $errors );
         return $result;
     }
 
