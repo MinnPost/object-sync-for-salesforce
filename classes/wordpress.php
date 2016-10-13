@@ -81,7 +81,7 @@ class Wordpress {
             // user meta fields need to use update_user_meta for create as well, otherwise it'll just get created twice because apparently when the post is created it's already there
             $object_table_structure = array(
 				'object_name' => 'user',
-                'content_methods' => array( 'create' => 'wp_create_user', 'read' => 'get_user_by', 'update' => 'wp_update_user', 'delete' => 'wp_delete_user' ),
+                'content_methods' => array( 'create' => 'wp_insert_user', 'read' => 'get_user_by', 'update' => 'wp_update_user', 'delete' => 'wp_delete_user' ),
                 'meta_methods' => array( 'create' => 'update_user_meta', 'read' => 'get_user_meta', 'update' => 'update_user_meta', 'delete' => 'wp_delete_attachment' ),
 				'content_table' => $this->wpdb->prefix . 'users',
 				'id_field' => 'ID',
@@ -313,7 +313,7 @@ class Wordpress {
         $select_data = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $content_table . '"';
         $data_fields = $this->wpdb->get_results( $select_data );
 
-        $select_meta = $select = '
+        $select_meta = '
         SELECT DISTINCT ' . $meta_table . '.meta_key
         FROM ' . $content_table . '
         LEFT JOIN ' . $meta_table . '
@@ -562,7 +562,7 @@ class Wordpress {
     /**
     * Create a new WordPress user.
     *
-    * @param array $userdata
+    * @param array $params
     *   array of user data params
     *
     * @return array
@@ -583,7 +583,7 @@ class Wordpress {
         } else {
             $params['user_login'] = array(
                 'value' => $username,
-                'method_modify' => 'wp_create_user',
+                'method_modify' => 'wp_insert_user',
                 'method_read' => 'get_user_by'
             );
         }
@@ -595,13 +595,12 @@ class Wordpress {
             // todo: by default wordpress sends a password reset link so this password doesn't get used. this is probably fine though?
             $params['user_pass'] = array(
                 'value' => wp_generate_password( 12, FALSE ),
-                'method_modify' => 'wp_create_user',
+                'method_modify' => 'wp_insert_user',
                 'method_read' => 'get_user_by'
             );
 
             foreach ( $params as $key => $value ) {
-                // make this wp_insert_user after the cache clears
-                if ( $value['method_modify'] === 'wp_create_user' ) {
+                if ( $value['method_modify'] === 'wp_insert_user' ) {
                     $content[$key] = $value['value'];
                     unset( $params[$key] );
                 }
