@@ -639,13 +639,12 @@ class Salesforce_Pull {
 			// setup SF record type. CampaignMember objects get their Campaign's type
 			// i am still a bit confused about this
 			// we should store this as a meta field on each object, if it meets these criteria
+			// we need to store the read/modify attributes because the field doesn't exist in the mapping
 			if ( $mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type && empty( $params['RecordTypeId'] ) && ( $mapping['salesforce_object'] !== 'CampaignMember') ) {
 				$params['RecordTypeId'] = array(
 					'value' => $mapping['salesforce_record_type_default'],
-					'create' => 'update_' . $object_type . '_meta',
-					'read' => 'get_' . $object_type . '_meta',
-					'update' => 'update_' . $object_type . '_meta',
-					'delete' => ''
+					'method_modify' => 'update_' . $mapping['wordpress_object'] . '_meta',
+            		'method_read' => 'get_' . $mapping['wordpress_object'] . '_meta'
 				);
 			}
 
