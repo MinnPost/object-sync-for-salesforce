@@ -421,6 +421,15 @@ class Salesforce_Pull {
 	*/
 	function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
+		// todo: drupal module gets the mapping object first, and then loops through each one
+		// it adds the RecordTypeId value from the object to the mapping criteria
+		// with this it checks the mapping object to make sure that type is in its 'allowed' list
+		// i am not really sure if this is necessary, or how to do it if it is
+		// we have added the RecordTypeId to the object's metadata, if it exists, so that we could do this
+		if ( isset( $object['RecordTypeId'] ) && $object['RecordTypeId'] !== $this->mappings->salesforce_default_record_type ) {
+			// use this condition to filter the mappings, at that time
+		}
+
 		// this returns the row that maps the individual salesforce row to the individual wordpress row
 		if ( isset( $object['Id'] ) ) {
 			$mapping_object = $this->mappings->load_by_salesforce( $object['Id'] );

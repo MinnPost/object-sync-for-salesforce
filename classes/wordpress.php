@@ -370,7 +370,7 @@ class Wordpress {
                 $result = $this->user_create( $params, $id_field );
                 break;
             case 'post':
-                $result = array( 'data' => array( 'success' => 9999 ), 'errors' => array() );
+                $result = $this->post_create( $params, $id_field );
                 break;
             case 'attachment':
                 $result = array( 'data' => array( 'success' => 9999 ), 'errors' => array() );
@@ -815,6 +815,57 @@ class Wordpress {
     }
 
     /**
+    * Create a new WordPress post.
+    *
+    * @param array $params
+    *   array of post data params
+    *
+    * @return array
+    *   data:
+    *     ID : 123,
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function post_create( $params, $id_field = 'ID' ) {
+        foreach ( $params as $key => $value ) {
+            if ( $value['method_modify'] === 'wp_insert_post' ) {
+                $content[$key] = $value['value'];
+                unset( $params[$key] );
+            }
+        }
+        $post_id = wp_insert_post( $content );
+
+        if ( is_wp_error( $post_id ) ) {
+            $success = FALSE;
+            $errors = $post_id;
+        } else {
+            $success = TRUE;
+            $errors = array();
+            foreach ( $params as $key => $value ) {
+                $method = $value['method_modify'];
+                $meta_id = $method( $post_id, $key, $value['value'] );
+                if ( $meta_id === FALSE ) {
+                    $success = FALSE;
+                    $errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
+                }
+            }
+            // todo: add a hook for setting other data here
+        }
+
+        if ( is_wp_error( $post_id ) ) {
+            $success = FALSE;
+            $errors = $post_id;
+        } else {
+            $success = TRUE;
+            $errors = array();
+        }
+
+        $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
+
+        return $result;
+
+    }
     * Update a WordPress post.
     *
     * @param array $post
