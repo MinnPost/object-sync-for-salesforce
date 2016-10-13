@@ -629,8 +629,15 @@ class Salesforce_Pull {
 
 			// setup SF record type. CampaignMember objects get their Campaign's type
 			// i am still a bit confused about this
+			// we should store this as a meta field on each object, if it meets these criteria
 			if ( $mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type && empty( $params['RecordTypeId'] ) && ( $mapping['salesforce_object'] !== 'CampaignMember') ) {
-				$params['RecordTypeId'] = $mapping['salesforce_record_type_default'];
+				$params['RecordTypeId'] = array(
+					'value' => $mapping['salesforce_record_type_default'],
+					'create' => 'update_' . $object_type . '_meta',
+					'read' => 'get_' . $object_type . '_meta',
+					'update' => 'update_' . $object_type . '_meta',
+					'delete' => ''
+				);
 			}
 
 			try {
