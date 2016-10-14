@@ -1041,7 +1041,7 @@ class Wordpress {
     * Delete a WordPress attachment.
     *
     * @param int $id
-    *   Post ID
+    *   Attachment ID
     * @param bool $force_delete
     *   If we should bypass the trash
     *   We don't change this from FALSE anywhere in this plugin
@@ -1059,7 +1059,7 @@ class Wordpress {
     * Delete a WordPress term.
     *
     * @param int $id
-    *   Post ID
+    *   Term ID
     * @param string $taxonomy
     *   What taxonomy the term is - category, tag, etc.
     *
@@ -1076,7 +1076,7 @@ class Wordpress {
     * Delete a WordPress comment.
     *
     * @param int $id
-    *   Post ID
+    *   Comment ID
     * @param bool $force_delete
     *   If we should bypass the trash
     *   We don't change this from FALSE anywhere in this plugin
