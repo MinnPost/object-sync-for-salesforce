@@ -97,7 +97,7 @@ class Wordpress {
         } elseif ( $object_type === 'post' ) {
             $object_table_structure = array(
 				'object_name' => 'post',
-                'content_methods' => array( 'create' => 'wp_insert_post', 'read' => 'get_post', 'update' => 'wp_update_post', 'delete' => 'wp_delete_post' ),
+                'content_methods' => array( 'create' => 'wp_insert_post', 'read' => 'get_posts', 'update' => 'wp_update_post', 'delete' => 'wp_delete_post' ),
                 'meta_methods' => array( 'create' => 'add_post_meta', 'read' => 'get_post_meta', 'update' => 'update_post_meta', 'delete' => 'delete_post_meta' ),
 				'content_table' => $this->wpdb->prefix . 'posts',
 				'id_field' => 'ID',
@@ -436,7 +436,7 @@ class Wordpress {
                 $result = $this->user_upsert( $key, $value, $methods, $params );
                 break;
             case 'post':
-                $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
+                $result = $this->post_upsert( $key, $value, $methods, $params );
                 break;
             case 'attachment':
                 $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
@@ -864,6 +864,110 @@ class Wordpress {
         $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
 
         return $result;
+
+    }
+
+    /**
+    * Create a new WordPress post or update it if a match is found.
+    *
+    * @param string $key
+    *   what key we are looking at for possible matches
+    * @param string $value
+    *   what value we are looking at for possible matches
+    * @param array $methods
+    *   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
+    * @param array $params
+    *   array of post data params
+    * @param string $id_field
+    *   optional string of what the ID field is, if it is ever not ID
+    *
+    * @return array
+    *   data:
+    *     ID : 123,
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID' ) {
+
+        $method = $methods['method_match'];
+
+        if ( $method !== '' ) {
+            // by default, posts use get_posts as the method, which uses the following parameters
+            /*
+                $args = array(
+                    'posts_per_page'   => 5,
+                    'offset'           => 0,
+                    'category'         => '',
+                    'category_name'    => '',
+                    'orderby'          => 'date',
+                    'order'            => 'DESC',
+                    'include'          => '',
+                    'exclude'          => '',
+                    'meta_key'         => '',
+                    'meta_value'       => '',
+                    'post_type'        => 'post',
+                    'post_mime_type'   => '',
+                    'post_parent'      => '',
+                    'author'       => '',
+                    'author_name'      => '',
+                    'post_status'      => 'publish',
+                    'suppress_filters' => true 
+                );
+            */
+            // this should give us the post object
+            // todo: this is probably not robust enough for necessary options for data here
+            $args = array( $key => $value );
+            $post = $method( $args );
+            if ( isset( $post->ID ) ) {
+                // post does exist after checking the matching value. we want its id
+                $post_id = $post->ID;
+                // on the prematch fields, we specify the method_update param
+                if ( isset( $methods['method_update'] ) ) {
+                    $method = $methods['method_update'];
+                } else {
+                    $method = $methods['method_modify'];
+                }
+                $params[$key] = array(
+                    'value' => $value,
+                    'method_modify' => $method,
+                    'method_read' => $methods['method_read']
+                );
+            } else {
+                // post does not exist after checking the matching value. create it.
+                // on the prematch fields, we specify the method_create param
+                if ( isset( $methods['method_create'] ) ) {
+                    $method = $methods['method_create'];
+                } else {
+                    $method = $methods['method_modify'];
+                }
+                $params[$key] = array(
+                    'value' => $value,
+                    'method_modify' => $method,
+                    'method_read' => $methods['method_read']
+                );
+                $result = $this->post_create( $params );
+                return $result;
+            }
+        } else {
+            // there is no method by which to check the post. we can check other ways here.
+            $params[$key] = array(
+                'value' => $value,
+                'method_modify' => $methods['method_modify'],
+                'method_read' => $methods['method_read']
+            );
+
+            // post does not exist after more checking. we want to create it
+            $result = $this->post_create( $params );
+            return $result;
+
+        }
+
+        if ( isset( $post_id ) ) {
+            $result = $this->post_update( $post_id, $params );
+            return $result;
+        }
+        // todo: log an error here because we don't have a post id or a new post
 
     }
 
