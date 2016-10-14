@@ -493,7 +493,7 @@ class Wordpress {
                 $result = $this->user_update( $id, $params );
                 break;
             case 'post':
-                $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
+                $result = $this->post_update( $id, $params );
                 break;
             case 'attachment':
                 $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
@@ -866,10 +866,14 @@ class Wordpress {
         return $result;
 
     }
+
+    /**
     * Update a WordPress post.
     *
-    * @param array $post
-    *   array of post data
+    * @param string $post_id
+    *   the ID for the post to be updated. This value needs to be in the array that is sent to wp_update_post
+    * @param array $params
+    *   array of post data params
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not ID
     *
@@ -879,17 +883,32 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function post_update( $post, $id_field = 'ID' ) {
-        // from wp docs:
-        // Before calling wp_update_post() it is necessary to create an array to pass the necessary elements. Unlike wp_insert_post(), it is only necessary to pass the ID of the post to be updated and the elements to be updated. The names of the elements should match those in the database. 
-        $post_id = wp_update_post( $post, FALSE ); // true on second param means it will return a WP_Error object
-        // todo: we need to figure out how to update the metadata/custom fields that we will support
-        if ( $post_id === 0 ) {
+    private function post_update( $post_id, $params, $id_field = 'ID' ) {
+        $content = array();
+        $content[$id_field] = $post_id;
+        foreach ( $params as $key => $value ) {
+            if ( $value['method_modify'] === 'wp_update_post' ) {
+                $content[$key] = $value['value'];
+                unset( $params[$key] );
+            }
+        }
+
+        $post_id = wp_update_post( $content );
+
+        if ( is_wp_error( $post_id ) ) {
             $success = FALSE;
-            $errors = array();
+            $errors = $post_id;
         } else {
             $success = TRUE;
             $errors = array();
+            foreach ( $params as $key => $value ) {
+                $method = $value['method_modify'];
+                $meta_id = $method( $post_id, $key, $value['value'] );
+                if ( $meta_id === FALSE ) {
+                    $success = FALSE;
+                    $errors[] = array( 'key' => $key, 'value' => $value );
+                }
+            }
         }
 
         $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
