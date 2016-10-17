@@ -490,10 +490,10 @@ class Wordpress {
         switch ( $name ) {
             case 'user':
                 // user id does not come through by default, but we need it to pass to wp method
-                $result = $this->user_update( $id, $params );
+                $result = $this->user_update( $id, $params, $id_field );
                 break;
             case 'post':
-                $result = $this->post_update( $id, $params );
+                $result = $this->post_update( $id, $params, $id_field );
                 break;
             case 'attachment':
                 $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
