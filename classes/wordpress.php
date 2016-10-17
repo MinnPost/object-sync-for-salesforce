@@ -310,8 +310,7 @@ class Wordpress {
     	// todo: figure out how to handle other tables, especially things like advanced custom fields
     	// maybe a box for a custom query, since custom fields get done in so many ways
     	// eventually this would be the kind of thing we could use fields api for, if it ever gets done
-        $select_data = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $content_table . '"';
-        $data_fields = $this->wpdb->get_results( $select_data );
+        $data_fields = $this->wpdb->get_col("DESC {$content_table}", 0);
 
         $select_meta = '
         SELECT DISTINCT ' . $meta_table . '.meta_key
@@ -326,8 +325,8 @@ class Wordpress {
         $all_fields = array();
 
         foreach ( $data_fields as $key => $value ) {
-        	if ( !in_array( $value->COLUMN_NAME, $ignore_keys ) ) {
-        		$all_fields[] = array( 'key' => $value->COLUMN_NAME, 'table' => $content_table, 'methods' => $content_methods );
+        	if ( !in_array( $value, $ignore_keys ) ) {
+        		$all_fields[] = array( 'key' => $value, 'table' => $content_table, 'methods' => $content_methods );
         	}
         }
 
