@@ -113,7 +113,7 @@ class Wordpress {
                 'meta_methods' => array( 'create' => 'add_term_meta', 'read' => 'get_term_meta', 'update' => 'update_term_meta', 'delete' => 'delete_metadata' ),
 				'content_table' => $this->wpdb->prefix . 'terms',
 				'id_field' => 'term_id',
-				'meta_table' => $this->wpdb->prefix . 'termmeta',
+				'meta_table' => array( $this->wpdb->prefix . 'termmeta', $this->wpdb->prefix . 'term_taxonomy' ),
 				'meta_join_field' => 'term_id',
 				'where' => '',
 				'ignore_keys' => array()
@@ -312,6 +312,10 @@ class Wordpress {
     	// eventually this would be the kind of thing we could use fields api for, if it ever gets done
         $data_fields = $this->wpdb->get_col("DESC {$content_table}", 0);
 
+        if ( is_array( $meta_table ) ) {
+            $tax_table = $meta_table[1];
+            $meta_table = $meta_table[0];
+        }
         $select_meta = '
         SELECT DISTINCT ' . $meta_table . '.meta_key
         FROM ' . $content_table . '
@@ -334,6 +338,16 @@ class Wordpress {
         	if ( !in_array( $value->meta_key, $ignore_keys ) ) {
         		$all_fields[] = array( 'key' => $value->meta_key, 'table' => $meta_table, 'methods' => $meta_methods );
         	}
+        }
+
+        if ( $object_name === 'term' ) {
+            $taxonomy = $this->wpdb->get_col("DESC {$tax_table}", 0);
+            foreach ( $taxonomy as $key => $value ) {
+                $exists = array_search( $value, array_column( $all_fields, 'key' ) );
+                if ( $exists !== 0 ) {
+                    $all_fields[] = array( 'key' => $value, 'table' => $tax_table, 'methods' => $content_methods );
+                }
+            }
         }
 
         return $all_fields;
