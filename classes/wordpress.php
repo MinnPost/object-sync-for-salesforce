@@ -109,7 +109,7 @@ class Wordpress {
         } elseif ( $object_type === 'category' || $object_type === 'tag' ) {
             $object_table_structure = array(
 				'object_name' => 'term',
-                'content_methods' => array( 'create' => 'wp_insert_term', 'read' => 'get_term', 'update' => 'wp_update_term', 'delete' => 'wp_delete_term' ),
+                'content_methods' => array( 'create' => 'wp_insert_term', 'read' => 'get_term_by', 'update' => 'wp_update_term', 'delete' => 'wp_delete_term' ),
                 'meta_methods' => array( 'create' => 'add_term_meta', 'read' => 'get_term_meta', 'update' => 'update_term_meta', 'delete' => 'delete_metadata' ),
 				'content_table' => $this->wpdb->prefix . 'terms',
 				'id_field' => 'term_id',
@@ -446,17 +446,17 @@ class Wordpress {
 
         switch ( $name ) {
             case 'user':
-                $result = $this->user_upsert( $key, $value, $methods, $params );
+                $result = $this->user_upsert( $key, $value, $methods, $params, $id_field );
                 break;
             case 'post':
-                $result = $this->post_upsert( $key, $value, $methods, $params );
+                $result = $this->post_upsert( $key, $value, $methods, $params, $id_field );
                 break;
             case 'attachment':
                 $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
                 break;
             case 'category':
             case 'tag':
-                $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
+                $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field );
                 break;
             case 'comment':
                 $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
@@ -465,11 +465,6 @@ class Wordpress {
                 $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
                 break;
         }
-
-        /*$data = $this->api_call( "sobjects/{$name}/{$key}/{$value}", $params, 'PATCH', $options );
-        if ( $this->response['code'] == 300 ) {
-          $data['message'] = esc_html__( 'The value provided is not unique.', $this->text_domain );
-        }*/
 
         return $result;
 
@@ -1137,6 +1132,77 @@ class Wordpress {
     }
 
     /**
+    * Create a new WordPress term or update it if a match is found.
+    *
+    * @param string $key
+    *   what key we are looking at for possible matches
+    * @param string $value
+    *   what value we are looking at for possible matches
+    * @param array $methods
+    *   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
+    * @param array $params
+    *   array of term data params
+    * @param string $taxonomy
+    *   the taxonomy to which to add the term. this is required.
+    * @param string $id_field
+    *   optional string of what the ID field is, if it is ever not ID
+    *
+    * @return array
+    *   data:
+    *     ID : 123,
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID' ) {
+
+        // if the key is user_email, we need to make it just email because that is how the wordpress method reads it
+        $method = $methods['method_match'];
+        if ( $method !== '' ) {
+            // this should give us the term object
+            // todo: this is probably not robust enough for necessary options for data here
+            $term = $method( $key, $value, $taxonomy ); // we need to put the taxonomy in there probably
+            if ( isset( $term->{$id_field} ) ) {
+                // term does exist after checking the matching value. we want its id
+                $term_id = $term->{$id_field};
+                // on the prematch fields, we specify the method_update param
+                if ( isset( $methods['method_update'] ) ) {
+                    $method = $methods['method_update'];
+                } else {
+                    $method = $methods['method_modify'];
+                }
+                $params[$key] = array(
+                    'value' => $value,
+                    'method_modify' => $method,
+                    'method_read' => $methods['method_read']
+                );
+            } else {
+                // term does not exist after checking the matching value. create it.
+                // on the prematch fields, we specify the method_create param
+                if ( isset( $methods['method_create'] ) ) {
+                    $method = $methods['method_create'];
+                } else {
+                    $method = $methods['method_modify'];
+                }
+                $params[$key] = array(
+                    'value' => $value,
+                    'method_modify' => $method,
+                    'method_read' => $methods['method_read']
+                );
+                $result = $this->term_create( $params, $taxonomy, $id_field );
+                return $result;
+            }
+        }
+
+        if ( isset( $term_id ) ) {
+            $result = $this->term_update( $term_id, $params, $taxonomy, $id_field );
+            return $result;
+        }
+        // todo: log an error here because we don't have a user id or a new user
+
+    }
+
+    /**
     * Update a WordPress term.
     *
     * @param string $term_id
@@ -1160,7 +1226,7 @@ class Wordpress {
         }
         $args = array();
         foreach ( $params as $key => $value ) {
-            if ( $value['method_modify'] === 'wp_update_term' ) {
+            if ( $value['method_modify'] === 'wp_update_term' || $value['method_modify'] === 'wp_insert_term' ) {
                 $args[$key] = $value['value'];
                 unset( $params[$key] );
             }
