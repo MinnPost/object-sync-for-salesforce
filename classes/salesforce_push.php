@@ -392,6 +392,8 @@ class Salesforce_Push {
 				$mapping_object['salesforce_id'] = 'unknown';
 			}
 
+			// todo: figure out if there's another way to do this. it creates a failed to delete entry after a salesforce object was deleted and then the corresponding wp object was successfully deleted. it shouldn't have to do this because it already ran successfully
+
 			// create a log entry
 			$status = 'notice';
 			// create log entry for failed delete
