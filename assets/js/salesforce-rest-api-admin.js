@@ -84,7 +84,7 @@ function add_field_mapping_row() {
 			$(this).parent().append('<span class="missing-object">You have to pick a WordPress object and a Salesforce object to add field mapping.');
 		}
 		return false;
-	})
+	});
 }
 
 
@@ -118,11 +118,20 @@ function fieldmap_fields(wordpress_object, salesforce_object, row_count) {
 	});
 }
 
+// as the drupal plugin does, we only allow one field to be a prematch or key
+$(document).on('click', '.column-is_prematch input', function() {
+	$('.column-is_prematch input').not(this).prop('checked', false);  
+});
+
+$(document).on('click', '.column-is_key input', function() {
+	$('.column-is_key input').not(this).prop('checked', false);  
+});
+
 $(document).ready(function() {
 
 	$('#wordpress_object, #salesforce_object').on('change', function() {
 		$('table.fields tbody tr').remove();
-	})
+	});
 
 	// todo: need to fix this so it doesn't run all the spinners at the same time when there are multiples on the same page
 	$(document).ajaxStart(function(){
