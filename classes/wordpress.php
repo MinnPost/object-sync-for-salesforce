@@ -513,7 +513,7 @@ class Wordpress {
                 break;
             case 'category':
             case 'tag':
-                $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
+                $result = $this->term_update( $id, $params, $name, $id_field );
                 break;
             case 'comment':
                 $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
@@ -1117,6 +1117,69 @@ class Wordpress {
                 if ( $meta_id === FALSE ) {
                     $success = FALSE;
                     $errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
+                }
+            }
+            // todo: add a hook for setting other data here
+        }
+
+        if ( is_wp_error( $term ) ) {
+            $success = FALSE;
+            $errors = $term;
+        } else {
+            $success = TRUE;
+            $errors = array();
+        }
+
+        $result = array( 'data' => array( $id_field => $term_id, 'success' => $success ), 'errors' => $errors );
+
+        return $result;
+
+    }
+
+    /**
+    * Update a WordPress term.
+    *
+    * @param string $term_id
+    *   the ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term
+    * @param array $params
+    *   array of term data params
+    * @param string $taxonomy
+    *   the taxonomy to which to add the term. this is required.
+    * @param string $id_field
+    *   optional string of what the ID field is, if it is ever not ID
+    *
+    * @return array
+    *   data:
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function term_update( $term_id, $params, $taxonomy, $id_field = 'ID' ) {
+        if ( $taxonomy === 'tag' ) {
+            $taxonomy = 'post_tag';
+        }
+        $args = array();
+        foreach ( $params as $key => $value ) {
+            if ( $value['method_modify'] === 'wp_update_term' ) {
+                $args[$key] = $value['value'];
+                unset( $params[$key] );
+            }
+        }
+        $term = wp_update_term( $term_id, $taxonomy, $args );
+
+        if ( is_wp_error( $term ) ) {
+            $success = FALSE;
+            $errors = $term;
+        } else {
+            $term_id = $term["$id_field"];
+            $success = TRUE;
+            $errors = array();
+            foreach ( $params as $key => $value ) {
+                $method = $value['method_modify'];
+                $meta_id = $method( $term_id, $key, $value['value'] );
+                if ( $meta_id === FALSE ) {
+                    $success = FALSE;
+                    $errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
             // todo: add a hook for setting other data here
