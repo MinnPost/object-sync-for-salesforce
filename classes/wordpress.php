@@ -1199,19 +1199,20 @@ class Wordpress {
 
     }
 
+    /**
     * Delete a WordPress term.
     *
-    * @param int $id
-    *   Term ID
+    * @param string $term_id
+    *   the ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term
     * @param string $taxonomy
-    *   What taxonomy the term is - category, tag, etc.
+    *   the taxonomy from which to delete the term. this is required.
     *
     * @return bool
     *   true if successful, false if failed
     *
     */
-    private function term_delete( $id, $taxonomy ) {
-        $result = wp_delete_term( $id, $taxonomy );
+    private function term_delete( $term_id, $taxonomy ) {
+        $result = wp_delete_term( $term_id, $taxonomy );
         return $result;
     }
 
