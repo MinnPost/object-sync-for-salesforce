@@ -394,7 +394,7 @@ class Wordpress {
                 $result = $this->term_create( $params, $name, $id_field );
                 break;
             case 'comment':
-                $result = array( 'data' => array( 'success' => 9999 ), 'errors' => array() );
+                $result = $this->comment_create( $params, $id_field );
                 break;
             default:
                 $result = array( 'data' => array( 'success' => 9999 ), 'errors' => array() );
@@ -1291,6 +1291,63 @@ class Wordpress {
     }
 
     /**
+    * Create a new WordPress comment.
+    *
+    * @param array $params
+    *   array of comment data params
+    * @param string $id_field
+    *   optional string of what the ID field is, if it is ever not comment_ID
+    *
+    * @return array
+    *   data:
+    *     ID : 123,
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function comment_create( $params, $id_field = 'comment_ID' ) {
+        foreach ( $params as $key => $value ) {
+            // tried using wp_new_comment here but it wouldn't complete - even trying to log its result did nothing
+            // todo: maybe try to fix this. the sanitizing is nice, although maybe not essential since this stuff is already coming from salesforce
+            if ( $value['method_modify'] === 'wp_insert_comment' ) {
+                $content[$key] = $value['value'];
+                unset( $params[$key] );
+            }
+        }
+
+        $comment_id = wp_insert_comment( $content );
+
+        if ( is_wp_error( $comment_id ) ) {
+            $success = FALSE;
+            $errors = $comment_id;
+        } else {
+            $success = TRUE;
+            $errors = array();
+            foreach ( $params as $key => $value ) {
+                $method = $value['method_modify'];
+                $meta_id = $method( $comment_id, $key, $value['value'] );
+                if ( $meta_id === FALSE ) {
+                    $success = FALSE;
+                    $errors[] = array( 'message' => __( 'Tried to add meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
+                }
+            }
+            // todo: add a hook for setting other data here
+        }
+
+        if ( is_wp_error( $comment_id ) ) {
+            $success = FALSE;
+            $errors = $comment_id;
+        } else {
+            $success = TRUE;
+            $errors = array();
+        }
+
+        $result = array( 'data' => array( $id_field => $comment_id, 'success' => $success ), 'errors' => $errors );
+
+        return $result;
+
+    }
+
     * Delete a WordPress comment.
     *
     * @param int $id
