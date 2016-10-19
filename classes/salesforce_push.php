@@ -69,7 +69,7 @@ class Salesforce_Push {
 		    		add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
 		    		add_action( 'edit_attachment', array( &$this, 'edit_attachment' ) );
 		    		add_action( 'delete_attachment', array( &$this, 'delete_attachment' ) );
-		    	} elseif ( $object_type === 'category' || $object_type === 'tag' ) {
+		    	} elseif ( $object_type === 'category' || $object_type === 'tag' || $object_type === 'post_tag' ) {
 					add_action( 'create_term', array( &$this, 'add_term' ), 10, 3 );
 					add_action( 'edit_terms', array( &$this, 'edit_term' ), 10, 2 );
 					add_action( 'delete_term', array( &$this, 'delete_term' ), 10, 4 );

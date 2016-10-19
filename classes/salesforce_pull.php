@@ -642,7 +642,7 @@ class Salesforce_Pull {
 			// we need to store the read/modify attributes because the field doesn't exist in the mapping
 			if ( $mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type && empty( $params['RecordTypeId'] ) && ( $mapping['salesforce_object'] !== 'CampaignMember') ) {
 				$type = $mapping['wordpress_object'];
-				if ( $mapping['wordpress_object'] === 'category' || $mapping['wordpress_object'] === 'tag' ) {
+				if ( $mapping['wordpress_object'] === 'category' || $mapping['wordpress_object'] === 'tag' || $mapping['wordpress_object'] === 'post_tag' ) {
 					$type = 'term';
 				}
 				$params['RecordTypeId'] = array(

@@ -215,7 +215,7 @@ class Wordpress {
     		$data = get_userdata( $object_id );
     	} elseif ( $object_type === 'post' || $object_type === 'attachment' ) {
     		$data = get_post( $object_id );
-    	} elseif ( $object_type === 'category' || $object_type === 'tag' ) {
+    	} elseif ( $object_type === 'category' || $object_type === 'tag' || $object_type === 'post_tag' ) {
 			$data = get_term( $object_id );
 		} elseif ( $object_type === 'comment' ) {
 			$data = get_comment( $object_id );
@@ -390,6 +390,7 @@ class Wordpress {
                 break;
             case 'category':
             case 'tag':
+            case 'post_tag':
                 $result = $this->term_create( $params, $name, $id_field );
                 break;
             case 'comment':
@@ -456,6 +457,7 @@ class Wordpress {
                 break;
             case 'category':
             case 'tag':
+            case 'post_tag':
                 $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field );
                 break;
             case 'comment':
@@ -508,6 +510,7 @@ class Wordpress {
                 break;
             case 'category':
             case 'tag':
+            case 'post_tag':
                 $result = $this->term_update( $id, $params, $name, $id_field );
                 break;
             case 'comment':
@@ -552,6 +555,7 @@ class Wordpress {
                 break;
             case 'category':
             case 'tag':
+            case 'post_tag':
                 $success = $this->term_delete( $id, $name );
                 break;
             case 'comment':
@@ -1155,8 +1159,9 @@ class Wordpress {
     *
     */
     private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID' ) {
-
-        // if the key is user_email, we need to make it just email because that is how the wordpress method reads it
+        if ( $taxonomy === 'tag' ) {
+            $taxonomy = 'post_tag';
+        }
         $method = $methods['method_match'];
         if ( $method !== '' ) {
             // this should give us the term object
@@ -1278,6 +1283,9 @@ class Wordpress {
     *
     */
     private function term_delete( $term_id, $taxonomy ) {
+        if ( $taxonomy === 'tag' ) {
+            $taxonomy = 'post_tag';
+        }
         $result = wp_delete_term( $term_id, $taxonomy );
         return $result;
     }
