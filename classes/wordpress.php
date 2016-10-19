@@ -514,7 +514,7 @@ class Wordpress {
                 $result = $this->term_update( $id, $params, $name, $id_field );
                 break;
             case 'comment':
-                $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
+                $result = $this->comment_update( $id, $params, $id_field );
                 break;
             default:
                 $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
@@ -1348,6 +1348,70 @@ class Wordpress {
 
     }
 
+
+    /**
+    * Update a WordPress comment.
+    *
+    * @param string $comment_id
+    *   the ID for the comment to be updated. This value needs to be in the array that is sent to wp_update_comment
+    * @param array $params
+    *   array of comment data params
+    * @param string $taxonomy
+    *   the taxonomy to which to add the comment. this is required.
+    * @param string $id_field
+    *   optional string of what the ID field is, if it is ever not ID
+    *
+    * @return array
+    *   data:
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function comment_update( $comment_id, $params, $id_field = 'comment_ID' ) {
+        $content = array();
+        $content[$id_field] = $comment_id;
+        foreach ( $params as $key => $value ) {
+            if ( $value['method_modify'] === 'wp_update_comment' ) {
+                $content[$key] = $value['value'];
+                unset( $params[$key] );
+            }
+        }
+
+        $comment = wp_update_comment( $content );
+
+        if ( is_wp_error( $comment ) ) {
+            $success = FALSE;
+            $errors = $comment;
+        } else {
+            $comment_id = $comment["$id_field"];
+            $success = TRUE;
+            $errors = array();
+            foreach ( $params as $key => $value ) {
+                $method = $value['method_modify'];
+                $meta_id = $method( $comment_id, $key, $value['value'] );
+                if ( $meta_id === FALSE ) {
+                    $success = FALSE;
+                    $errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
+                }
+            }
+            // todo: add a hook for setting other data here
+        }
+
+        if ( is_wp_error( $comment ) ) {
+            $success = FALSE;
+            $errors = $comment;
+        } else {
+            $success = TRUE;
+            $errors = array();
+        }
+
+        $result = array( 'data' => array( $id_field => $comment_id, 'success' => $success ), 'errors' => $errors );
+
+        return $result;
+
+    }
+
+    /**
     * Delete a WordPress comment.
     *
     * @param int $id
