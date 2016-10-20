@@ -121,7 +121,7 @@ class Wordpress {
         } elseif ( $object_type === 'comment' ) {
         	$object_table_structure = array(
 				'object_name' => 'comment',
-                'content_methods' => array( 'create' => 'wp_insert_comment', 'read' => 'get_comment', 'update' => 'wp_update_comment', 'delete' => 'wp_delete_comment' ),
+                'content_methods' => array( 'create' => 'wp_insert_comment', 'read' => 'get_comments', 'update' => 'wp_update_comment', 'delete' => 'wp_delete_comment' ),
                 'meta_methods' => array( 'create' => 'add_comment_meta', 'read' => 'get_comment_meta', 'update' => 'update_comment_meta', 'delete' => 'delete_comment_metadata' ),
 				'content_table' => $this->wpdb->prefix . 'comments',
 				'id_field' => 'comment_ID',
