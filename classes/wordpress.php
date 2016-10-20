@@ -1388,11 +1388,10 @@ class Wordpress {
 
         $comment = wp_update_comment( $content );
 
-        if ( is_wp_error( $comment ) ) {
+        if ( $updated === 0 ) {
             $success = FALSE;
-            $errors = $comment;
+            $errors = $updated;
         } else {
-            $comment_id = $comment["$id_field"];
             $success = TRUE;
             $errors = array();
             foreach ( $params as $key => $value ) {
@@ -1406,9 +1405,9 @@ class Wordpress {
             // todo: add a hook for setting other data here
         }
 
-        if ( is_wp_error( $comment ) ) {
+        if ( is_wp_error( $updated ) ) {
             $success = FALSE;
-            $errors = $comment;
+            $errors = $updated;
         } else {
             $success = TRUE;
             $errors = array();
