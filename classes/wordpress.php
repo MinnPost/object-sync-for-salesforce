@@ -461,7 +461,7 @@ class Wordpress {
                 $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field );
                 break;
             case 'comment':
-                $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
+                $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field );
                 break;
             default:
                 $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
@@ -1357,6 +1357,100 @@ class Wordpress {
 
     }
 
+    /**
+    * Create a new WordPress comment or update it if a match is found.
+    *
+    * @param string $key
+    *   what key we are looking at for possible matches
+    * @param string $value
+    *   what value we are looking at for possible matches
+    * @param array $methods
+    *   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
+    * @param array $params
+    *   array of comment data params
+    * @param string $id_field
+    *   optional string of what the ID field is, if it is ever not comment_ID
+    *
+    * @return array
+    *   data:
+    *     ID : 123,
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID' ) {
+        $method = $methods['method_match'];
+        if ( $method === 'get_comment' ) {
+            $method = 'get_comments';
+        }
+        if ( $method !== '' ) {
+            // this should give us the comment object
+            $match = array();
+            if ( $key === 'comment_author' ) {
+                $match['author__in'] = array( $value );
+            } else {
+                $key = str_replace( 'comment_', '', $key );
+                $match[$key] = $value;
+            }
+            $comments = $method( $match );
+
+            if ( count( $comments ) === 1 ) {
+                $comment = $comments[0];
+                // comment does exist after checking the matching value. we want its id
+                $comment_id = $comment->{$id_field};
+                // on the prematch fields, we specify the method_update param
+                if ( isset( $methods['method_update'] ) ) {
+                    $method = $methods['method_update'];
+                } else {
+                    $method = $methods['method_modify'];
+                }
+                $params[$key] = array(
+                    'value' => $value,
+                    'method_modify' => $method,
+                    'method_read' => $methods['method_read']
+                );
+            } else if ( count( $comments ) > 1 ) {
+                $status = 'notice';
+                // create log entry for multiple matches
+                if ( isset( $this->logging ) ) {
+                    $logging = $this->logging;
+                } else if ( class_exists( 'Salesforce_Logging' ) ) {
+                    $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+                }
+                $logging->setup(
+                    __( 'Comments: there are ' . $count . ' comment matches for the Salesforce key ' . $key . ' with the value of ' . $value, $this->text_domain ),
+                    '',
+                    0,
+                    0,
+                    $status
+                );
+            } else {
+                // comment does not exist after checking the matching value. create it.
+                // on the prematch fields, we specify the method_create param
+                if ( isset( $methods['method_create'] ) ) {
+                    $method = $methods['method_create'];
+                } else {
+                    $method = $methods['method_modify'];
+                }
+                $params[$key] = array(
+                    'value' => $value,
+                    'method_modify' => $method,
+                    'method_read' => $methods['method_read']
+                );
+                $result = $this->comment_create( $params, $id_field );
+                return $result;
+            }
+        }
+
+        if ( isset( $comment_id ) ) {
+            foreach ( $params as $key => $value ) {
+                $params[$key]['method_modify'] = $methods['method_update'];
+            }
+            $result = $this->comment_update( $comment_id, $params, $id_field );
+            return $result;
+        }
+
+    }
 
     /**
     * Update a WordPress comment.
@@ -1386,7 +1480,7 @@ class Wordpress {
             }
         }
 
-        $comment = wp_update_comment( $content );
+        $updated = wp_update_comment( $content );
 
         if ( $updated === 0 ) {
             $success = FALSE;
