@@ -691,9 +691,9 @@ class Wordpress {
             // this should give us the user object
             // todo: this is probably not robust enough for necessary options for data here
             $user = $method( str_replace( 'user_', '', $key ), $value );
-            if ( isset( $user->ID ) ) {
+            if ( isset( $user->{$id_field} ) ) {
                 // user does exist after checking the matching value. we want its id
-                $user_id = $user->ID;
+                $user_id = $user->{$id_field};
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
@@ -934,9 +934,9 @@ class Wordpress {
             // todo: this is probably not robust enough for necessary options for data here
             $args = array( $key => $value );
             $post = $method( $args );
-            if ( isset( $post->ID ) ) {
+            if ( isset( $post->{$id_field} ) ) {
                 // post does exist after checking the matching value. we want its id
-                $post_id = $post->ID;
+                $post_id = $post->{$id_field};
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
