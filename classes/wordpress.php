@@ -752,7 +752,7 @@ class Wordpress {
 
         if ( isset( $user_id ) ) {
             foreach ( $params as $key => $value ) {
-                $value['method_modify'] === 'wp_update_user';
+                $params[$key]['method_modify'] = $methods['method_update'];
             }
             $result = $this->user_update( $user_id, $params );
             return $result;
@@ -980,7 +980,7 @@ class Wordpress {
 
         if ( isset( $post_id ) ) {
             foreach ( $params as $key => $value ) {
-                $value['method_modify'] === 'wp_update_post';
+                $params[$key]['method_modify'] = $methods['method_update'];
             }
             $result = $this->post_update( $post_id, $params );
             return $result;
@@ -1207,7 +1207,7 @@ class Wordpress {
 
         if ( isset( $term_id ) ) {
             foreach ( $params as $key => $value ) {
-                $value['method_modify'] === 'wp_update_term';
+                $params[$key]['method_modify'] = $methods['method_update'];
             }
             $result = $this->term_update( $term_id, $params, $taxonomy, $id_field );
             return $result;
