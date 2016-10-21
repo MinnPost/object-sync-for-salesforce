@@ -1416,7 +1416,7 @@ class Wordpress {
                     $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
                 }
                 $logging->setup(
-                    __( 'Comments: there are ' . $count . ' comment matches for the Salesforce key ' . $key . ' with the value of ' . $value, $this->text_domain ),
+                    __( ucfirst( $status ) . ': Comments: there are ' . $count . ' comment matches for the Salesforce key ' . $key . ' with the value of ' . $value, $this->text_domain ),
                     '',
                     0,
                     0,
