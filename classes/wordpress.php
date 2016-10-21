@@ -908,35 +908,33 @@ class Wordpress {
         $method = $methods['method_match'];
 
         if ( $method !== '' ) {
-            // by default, posts use get_posts as the method, which uses the following parameters
-            /*
-                $args = array(
-                    'posts_per_page'   => 5,
-                    'offset'           => 0,
-                    'category'         => '',
-                    'category_name'    => '',
-                    'orderby'          => 'date',
-                    'order'            => 'DESC',
-                    'include'          => '',
-                    'exclude'          => '',
-                    'meta_key'         => '',
-                    'meta_value'       => '',
-                    'post_type'        => 'post',
-                    'post_mime_type'   => '',
-                    'post_parent'      => '',
-                    'author'       => '',
-                    'author_name'      => '',
-                    'post_status'      => 'publish',
-                    'suppress_filters' => true 
-                );
-            */
+            // by default, posts use get_posts as the method. args can be like this
+            // the args don't really make sense, and are inconsistently documented
             // this should give us the post object
-            // todo: this is probably not robust enough for necessary options for data here
-            $args = array( $key => $value );
-            $post = $method( $args );
-            if ( isset( $post->{$id_field} ) ) {
+            // todo: could probably make a hook here for additional matching
+            if ( $key === 'post_title' ) {
+                $params['post_title'] = array(
+                    'value' => $value,
+                    'method_modify' => $method,
+                    'method_read' => $methods['method_read']
+                );
+                $key = 'name';
+                $value = sanitize_title( $value );
+            }
+
+            $post_statuses = array( 'publish', 'draft' );
+
+            $args = array(
+                $key => $value,
+                'post_type' => 'post',
+                'post_status' => $post_statuses
+            );
+
+            $posts = $method( $args );
+
+            if ( isset( $posts[0]->{$id_field} ) ) {
                 // post does exist after checking the matching value. we want its id
-                $post_id = $post->{$id_field};
+                $post_id = $posts[0]->{$id_field};
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
