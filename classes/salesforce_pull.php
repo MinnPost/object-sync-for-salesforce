@@ -683,7 +683,7 @@ class Salesforce_Pull {
 
 					$op = 'Upsert';
 
-					$result = $this->wordpress->object_upsert( $mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $ignore_drafts );
+					$result = $this->wordpress->object_upsert( $mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $mapping['ignore_drafts'] );
 
 				} else {
 					// No key or prematch field exists on this field map object, create a new object in WordPress.
