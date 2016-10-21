@@ -386,7 +386,7 @@ class Wordpress {
                 $result = $this->post_create( $params, $id_field );
                 break;
             case 'attachment':
-                $result = array( 'data' => array( 'success' => 9999 ), 'errors' => array() );
+                $result = $this->attachment_create( $params, $id_field );
                 break;
             case 'category':
             case 'tag':
@@ -1057,6 +1057,68 @@ class Wordpress {
     }
 
     /**
+    * Create a new WordPress attachment.
+    *
+    * @param array $params
+    *   array of attachment data params
+    *
+    * @return array
+    *   data:
+    *     ID : 123,
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function attachment_create( $params, $id_field = 'ID' ) {
+        // WP requires post_title, post_content (can be empty), post_status, and post_mime_type to create an attachment
+        foreach ( $params as $key => $value ) {
+            if ( $value['method_modify'] === 'wp_insert_attachment' ) {
+                $content[$key] = $value['value'];
+                unset( $params[$key] );
+            }
+        }
+        // todo: let's add a hook so developers can pass filename and parent fields here, and then we can generate metadata as well
+        // i think this should not be part of core though
+        if ( isset( $params['filename']['value'] ) ) {
+            $filename = $params['filename']['value'];
+        } else {
+            $filename = FALSE;
+        }
+
+        if ( isset( $params['parent']['value'] ) ) {
+            $parent = $params['parent']['value'];
+        } else {
+            $parent = 0;
+        }
+
+        $attachment_id = wp_insert_attachment( $content, $filename, $parent );
+
+        if ( is_wp_error( $attachment_id ) ) {
+            $success = FALSE;
+            $errors = $attachment_id;
+        } else {
+            $success = TRUE;
+            $errors = array();
+
+            if ( $filename !== FALSE ) {
+                // according to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file
+                require_once( ABSPATH . 'wp-admin/includes/image.php' );
+                // generate metadata for the attachment
+                $attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
+                wp_update_attachment_metadata( $attach_id, $attach_data );
+            }
+
+            if ( $parent !== 0 ) {
+                set_post_thumbnail( $parent_post_id, $attach_id );
+            }
+        }
+
+        $result = array( 'data' => array( $id_field => $attachment_id, 'success' => $success ), 'errors' => $errors );
+
+        return $result;
+
+    }
+
     * Delete a WordPress attachment.
     *
     * @param int $id
