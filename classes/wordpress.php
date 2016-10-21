@@ -133,7 +133,7 @@ class Wordpress {
         } else { // this is for custom post types
             $object_table_structure = array(
 				'object_name' => 'post',
-                'content_methods' => array( 'create' => 'wp_insert_post', 'read' => 'get_post', 'update' => 'wp_update_post', 'delete' => 'wp_delete_post' ),
+                'content_methods' => array( 'create' => 'wp_insert_post', 'read' => 'get_posts', 'update' => 'wp_update_post', 'delete' => 'wp_delete_post' ),
                 'meta_methods' => array( 'create' => 'add_post_meta', 'read' => 'get_post_meta', 'update' => 'update_post_meta', 'delete' => 'delete_post_meta' ),
 				'content_table' => $this->wpdb->prefix . 'posts',
 				'id_field' => 'ID',
