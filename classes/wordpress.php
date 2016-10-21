@@ -435,7 +435,7 @@ class Wordpress {
     *
     * part of CRUD for WordPress objects
     */
-    public function object_upsert( $name, $key, $value, $methods = array(), $params ) {
+    public function object_upsert( $name, $key, $value, $methods = array(), $params, $ignore_drafts = TRUE ) {
 
         $structure = $this->get_wordpress_table_structure( $name );
         $id_field = $structure['id_field'];
@@ -447,10 +447,10 @@ class Wordpress {
 
         switch ( $name ) {
             case 'user':
-                $result = $this->user_upsert( $key, $value, $methods, $params, $id_field );
+                $result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
                 break;
             case 'post':
-                $result = $this->post_upsert( $key, $value, $methods, $params, $id_field );
+                $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
                 break;
             case 'attachment':
                 $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
@@ -458,10 +458,10 @@ class Wordpress {
             case 'category':
             case 'tag':
             case 'post_tag':
-                $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field );
+                $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $ignore_drafts );
                 break;
             case 'comment':
-                $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field );
+                $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
                 break;
             default:
                 $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
@@ -683,7 +683,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID' ) {
+    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $ignore_drafts = TRUE ) {
 
         // if the key is user_email, we need to make it just email because that is how the wordpress method reads it
         $method = $methods['method_match'];
@@ -903,7 +903,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID' ) {
+    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $ignore_drafts = TRUE ) {
 
         $method = $methods['method_match'];
 
@@ -923,6 +923,9 @@ class Wordpress {
             }
 
             $post_statuses = array( 'publish', 'draft' );
+            if ( $ignore_drafts !== TRUE ) {
+                $post_statuses[] = 'draft';
+            }
 
             $args = array(
                 $key => $value,
@@ -1162,7 +1165,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID' ) {
+    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $ignore_drafts = TRUE ) {
         if ( $taxonomy === 'tag' ) {
             $taxonomy = 'post_tag';
         }
@@ -1376,7 +1379,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID' ) {
+    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $ignore_drafts = TRUE ) {
         $method = $methods['method_match'];
         if ( $method === 'get_comment' ) {
             $method = 'get_comments';
