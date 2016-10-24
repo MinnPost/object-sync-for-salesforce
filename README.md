@@ -174,9 +174,6 @@ The admin section is divided into tabs:
 
 ### Classes Todo
 
-#### Salesforce Pull (salesforce_pull)
-  Pull Salesforce object updates into WordPress.
-
 #### Salesforce Soap (salesforce_soap)
 
 Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill in functional gaps missing in the REST API. Will require the Salesforce PHP Toolkit, if/when we choose to do it.

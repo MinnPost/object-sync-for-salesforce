@@ -68,7 +68,7 @@ class Wordpress {
 		if ( $object_type === 'attachment' ) {
             $object_table_structure = array(
 				'object_name' => 'post',
-                'content_methods' => array( 'create' => 'wp_insert_attachment', 'read' => 'wp_get_attachment_image', 'update' => 'update_attached_file', 'delete' => 'wp_delete_attachment' ),
+                'content_methods' => array( 'create' => 'wp_insert_attachment', 'read' => 'get_posts', 'update' => 'update_attached_file', 'delete' => 'wp_delete_attachment' ),
                 'meta_methods' => array( 'create' => 'wp_generate_attachment_metadata', 'read' => 'wp_get_attachment_metadata', 'update' => 'wp_update_attachment_metadata', 'delete' => '' ),
 				'content_table' => $this->wpdb->prefix . 'posts',
 				'id_field' => 'ID',
@@ -453,7 +453,7 @@ class Wordpress {
                 $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
                 break;
             case 'attachment':
-                $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
+                $result = $this->attachment_upsert( $key, $value, $methods, $params, $id_field );
                 break;
             case 'category':
             case 'tag':
@@ -895,6 +895,8 @@ class Wordpress {
     *   array of post data params
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not ID
+    * @param bool @ignore_drafts
+    * indicates whether we should match against draft posts
     *
     * @return array
     *   data:
@@ -922,7 +924,7 @@ class Wordpress {
                 $value = sanitize_title( $value );
             }
 
-            $post_statuses = array( 'publish', 'draft' );
+            $post_statuses = array( 'publish' );
             if ( $ignore_drafts !== TRUE ) {
                 $post_statuses[] = 'draft';
             }
@@ -1116,6 +1118,110 @@ class Wordpress {
         $result = array( 'data' => array( $id_field => $attachment_id, 'success' => $success ), 'errors' => $errors );
 
         return $result;
+
+    }
+
+    /**
+    * Create a new WordPress attachment or update it if a match is found.
+    *
+    * @param string $key
+    *   what key we are looking at for possible matches
+    * @param string $value
+    *   what value we are looking at for possible matches
+    * @param array $methods
+    *   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
+    * @param array $params
+    *   array of attachment data params
+    * @param string $id_field
+    *   optional string of what the ID field is, if it is ever not ID
+    *
+    * @return array
+    *   data:
+    *     ID : 123,
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function attachment_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID' ) {
+
+        $method = $methods['method_match'];
+        $method = 'get_posts';
+
+        if ( $method !== '' ) {
+            // get_posts is more helpful here, so that is the method attachment uses for 'read'
+            // by default, posts use get_posts as the method. args can be like this
+            // the args don't really make sense, and are inconsistently documented
+            // this should give us the post object
+            // todo: could probably make a hook here for additional matching
+            if ( $key === 'post_title' ) {
+                $params['post_title'] = array(
+                    'value' => $value,
+                    'method_modify' => $method,
+                    'method_read' => $methods['method_read']
+                );
+                $key = 'name';
+                $value = sanitize_title( $value );
+            }
+
+            $args = array(
+                $key => $value,
+                'post_type' => 'attachment'
+            );
+
+            $posts = $method( $args );
+
+            if ( isset( $posts[0]->{$id_field} ) ) {
+                // attachment does exist after checking the matching value. we want its id
+                $attachment_id = $posts[0]->{$id_field};
+                // on the prematch fields, we specify the method_update param
+                if ( isset( $methods['method_update'] ) ) {
+                    $method = $methods['method_update'];
+                } else {
+                    $method = $methods['method_modify'];
+                }
+                $params[$key] = array(
+                    'value' => $value,
+                    'method_modify' => $method,
+                    'method_read' => $methods['method_read']
+                );
+            } else {
+                // post does not exist after checking the matching value. create it.
+                // on the prematch fields, we specify the method_create param
+                if ( isset( $methods['method_create'] ) ) {
+                    $method = $methods['method_create'];
+                } else {
+                    $method = $methods['method_modify'];
+                }
+                $params[$key] = array(
+                    'value' => $value,
+                    'method_modify' => $method,
+                    'method_read' => $methods['method_read']
+                );
+                $result = $this->attachment_create( $params );
+                return $result;
+            }
+        } else {
+            // there is no method by which to check the attachment. we can check other ways here.
+            $params[$key] = array(
+                'value' => $value,
+                'method_modify' => $methods['method_modify'],
+                'method_read' => $methods['method_read']
+            );
+
+            // attachment does not exist after more checking. we want to create it
+            $result = $this->attachment_create( $params );
+            return $result;
+
+        }
+
+        if ( isset( $attachment_id ) ) {
+            foreach ( $params as $key => $value ) {
+                $params[$key]['method_modify'] = $methods['method_update'];
+            }
+            $result = $this->attachment_update( $attachment_id, $params );
+            return $result;
+        }
+        // todo: log an error here because we don't have an attachment id or a new attachment
 
     }
 
