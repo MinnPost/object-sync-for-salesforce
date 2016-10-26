@@ -1364,4 +1364,17 @@ class Wordpress_Salesforce_Admin {
         }
     }
 
+    /**
+    * Load the schedule class
+    */ 
+    private function schedule( $schedule_name ) {
+        if ( ! class_exists( 'Wordpress_Salesforce_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
+            require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
+            require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
+        }
+        $schedule = new Wordpress_Salesforce_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $schedule_name, $this->logging, $this->schedulable_classes );
+        $this->schedule = $schedule;
+        return $schedule;
+    }
+
 }
