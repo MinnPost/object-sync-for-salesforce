@@ -1399,7 +1399,6 @@ class Wordpress_Salesforce_Admin {
     private function get_schedule_count( $schedule_name = '' ) {
         if ( $schedule_name !== '' ) {
             $schedule = $this->schedule( $schedule_name );
-            $schedule->cancel_by_name( $schedule_name );
             return $this->schedule->count_queue_items( $schedule_name );
         } else {
             return 'unknown';
