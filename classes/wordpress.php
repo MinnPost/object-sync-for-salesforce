@@ -803,6 +803,7 @@ class Wordpress {
                     $errors[] = array( 'key' => $key, 'value' => $value );
                 }
             }
+            // todo: add a hook for setting other data here
         }
 
         $result = array( 'data' => array( $id_field => $user_id, 'success' => $success ), 'errors' => $errors );
@@ -1031,6 +1032,7 @@ class Wordpress {
                     $errors[] = array( 'key' => $key, 'value' => $value );
                 }
             }
+            // todo: add a hook for setting other data here
         }
 
         $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
@@ -1110,6 +1112,7 @@ class Wordpress {
             if ( $parent !== 0 ) {
                 set_post_thumbnail( $parent_post_id, $attach_id );
             }
+            // todo: add a hook for setting other data here
         }
 
         $result = array( 'data' => array( $id_field => $attachment_id, 'success' => $success ), 'errors' => $errors );
@@ -1512,6 +1515,7 @@ class Wordpress {
         } else {
             $success = TRUE;
             $errors = array();
+            // todo: add a hook for setting other data here
         }
 
         $result = array( 'data' => array( $id_field => $comment_id, 'success' => $success ), 'errors' => $errors );
