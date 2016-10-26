@@ -1222,6 +1222,28 @@ class Wordpress {
 
     }
 
+    /**
+    * Update a WordPress attachment.
+    *
+    * @param string $attachment_id
+    *   the ID for the attachment to be updated. This value needs to be in the array that is sent to the update methods
+    * @param array $params
+    *   array of attachment data params
+    * @param string $id_field
+    *   optional string of what the ID field is, if it is ever not ID
+    *
+    * @return array
+    *   data:
+          success: 1
+    *   "errors" : [ ],
+    *
+    */
+    private function attachment_update( $attachment_id, $params, $id_field = 'ID' ) {
+        $content = array();
+        $content[$id_field] = $attachment_id;
+    }
+
+    /**
     * Delete a WordPress attachment.
     *
     * @param int $id
