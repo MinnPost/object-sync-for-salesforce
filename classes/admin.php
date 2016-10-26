@@ -540,6 +540,13 @@ class Wordpress_Salesforce_Admin {
                     $message = $this->logout();
                     echo '<p>' . $message . '</p>';
                     break;
+                case 'clear_schedule':
+                    if ( isset( $_GET['schedule_name'] ) )  {
+                        $schedule_name = urlencode( $_GET['schedule_name'] );
+                    }
+                    $message = $this->clear_schedule( $schedule_name );
+                    echo '<p>' . $message . '</p>';
+                    break;
                 case 'settings':
                     $consumer_key = $this->login_credentials['consumer_key'];
                     $consumer_secret = $this->login_credentials['consumer_secret'];
@@ -598,7 +605,7 @@ class Wordpress_Salesforce_Admin {
         $link_default = array( &$this, 'display_link' );
         $this->fields_settings( 'settings', 'settings', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default ) );
         $this->fields_fieldmaps( 'fieldmaps', 'objects' );
-        $this->fields_scheduling( 'schedule', 'schedule', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default, 'select' => $input_select_default ) );
+        $this->fields_scheduling( 'schedule', 'schedule', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default, 'select' => $input_select_default, 'link' => $link_default ) );
         $this->fields_log_settings( 'log_settings', 'log_settings', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default ) );
     }
 
@@ -751,7 +758,7 @@ class Wordpress_Salesforce_Admin {
             add_settings_section( $key, $value['label'], null, $page );
             $schedule_settings = array(
                 $key . '_schedule_number' => array(
-                    'title' => 'Run schedule every',
+                    'title' => __( 'Run schedule every', $this->text_domain ),
                     'callback' => $callbacks['text'],
                     'page' => $page,
                     'section' => $key,
@@ -762,7 +769,7 @@ class Wordpress_Salesforce_Admin {
                     ),
                 ),
                 $key . '_schedule_unit' => array(
-                    'title' => 'Time unit',
+                    'title' => __( 'Time unit', $this->text_domain ),
                     'callback' => $callbacks['select'],
                     'page' => $page,
                     'section' => $key,
@@ -784,6 +791,17 @@ class Wordpress_Salesforce_Admin {
                             ),
                         )
                     )
+                ),
+                $key . '_clear_button' => array(
+                    'title' => __( 'This queue has ' . $this->get_schedule_count( $key ) . ' items', $this->text_domain ),
+                    'callback' => $callbacks['link'],
+                    'page' => $page,
+                    'section' => $key,
+                    'args' => array(
+                        'label' => 'Clear this queue',
+                        'desc' => '',
+                        'url' => '?page=salesforce-api-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key,
+                    ),
                 ),
             );
             foreach ( $schedule_settings as $key => $attributes ) {
@@ -1361,6 +1379,30 @@ class Wordpress_Salesforce_Admin {
             $tab = urlencode( $_GET['tab'] );   
         } else {
             $tab = '';
+        }
+    }
+
+    /**
+    * Clear schedule
+    * This clears the schedule if the user clicks the button
+    */ 
+    private function clear_schedule( $schedule_name = '' ) {
+        if ( $schedule_name !== '' ) {
+            $schedule = $this->schedule( $schedule_name );
+            $schedule->cancel_by_name( $schedule_name );
+            return 'You have cleared the ' . $schedule_name . ' schedule.';
+        } else {
+            return 'You need to specify the name of the schedule you want to clear.';
+        }
+    }
+
+    private function get_schedule_count( $schedule_name = '' ) {
+        if ( $schedule_name !== '' ) {
+            $schedule = $this->schedule( $schedule_name );
+            $schedule->cancel_by_name( $schedule_name );
+            return $this->schedule->count_queue_items( $schedule_name );
+        } else {
+            return 'unknown';
         }
     }
 

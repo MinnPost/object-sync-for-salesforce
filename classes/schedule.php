@@ -240,6 +240,38 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
         }
     }
 
+    /**
+     * How many items are in this queue?
+     * Based on is_queue_empty from base library
+     *
+     * @return bool
+     */
+    public function count_queue_items( $schedule_name = '' ) {
+        $wpdb = $this->wpdb;
+
+        $table  = $wpdb->options;
+        $column = 'option_name';
+
+        if ( is_multisite() ) {
+            $table  = $wpdb->sitemeta;
+            $column = 'meta_key';
+        }
+
+        if ( $schedule_name === '' ) {
+            $key = $this->identifier . '_batch_%';
+        } else {
+            $key = $schedule_name . '_batch_%';
+        }
+
+        $count = $wpdb->get_var( $wpdb->prepare( "
+            SELECT COUNT(*)
+            FROM {$table}
+            WHERE {$column} LIKE %s
+        ", $key ) );
+
+        return $count;
+    }
+
 	/**
 	 * Complete
 	 *
