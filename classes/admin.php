@@ -14,11 +14,14 @@ class Wordpress_Salesforce_Admin {
     /**
     * Create default WordPress admin functionality for Salesforce
     *
-    * @param array $loggedin
-    * @param array $text_domain
-    * @param object $salesforce
+    * @param object $wpdb
+    * @param string $version
+    * @param array $login_credentials
+    * @param string $text_domain
     * @param object $wordpress
+    * @param object $salesforce
     * @param object $mappings
+    * @param object $logging
     * @param array $schedulable_classes
     * @throws \Exception
     */
