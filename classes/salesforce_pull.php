@@ -156,6 +156,10 @@ class Salesforce_Pull {
 		}
 	}
 
+	/**
+    * Clear schedule
+    * This clears the schedule if the user clicks the button
+    */ 
 	private function schedule() {
 		if ( ! class_exists( 'Wordpress_Salesforce_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
 			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
