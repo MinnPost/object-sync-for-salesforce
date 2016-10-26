@@ -234,9 +234,11 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
             $name = $this->identifier . '_cron';
         }
         if ( ! $this->is_queue_empty() ) {
-            $batch = $this->get_batch();
-            $this->delete( $batch->key );
-            wp_clear_scheduled_hook( $name );
+            while ( $this->count_queue_items() > 0 ) {
+                $batch = $this->get_batch();
+                $this->delete( $batch->key );
+                wp_clear_scheduled_hook( $name );
+            }
         }
     }
 
