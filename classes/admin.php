@@ -796,7 +796,7 @@ class Wordpress_Salesforce_Admin {
                     )
                 ),
                 $key . '_clear_button' => array(
-                    'title' => __( 'This queue has ' . $this->get_schedule_count( $key ) . ' items', $this->text_domain ),
+                    'title' => __( 'This queue has ' . $this->get_schedule_count( $key ) . ' ' . ( $this->get_schedule_count( $key ) === '1' ? 'item' : 'items' ), $this->text_domain ),
                     'callback' => $callbacks['link'],
                     'page' => $page,
                     'section' => $key,
