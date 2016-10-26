@@ -22,7 +22,7 @@ class Wordpress_Salesforce_Admin {
     * @param array $schedulable_classes
     * @throws \Exception
     */
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedulable_classes ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
@@ -30,6 +30,7 @@ class Wordpress_Salesforce_Admin {
         $this->wordpress = $wordpress;
         $this->salesforce = $salesforce;
         $this->mappings = $mappings;
+        $this->logging = $logging;
         $this->schedulable_classes = $schedulable_classes;
 
         // todo: we should think about what kind of admin_notices to use, if any

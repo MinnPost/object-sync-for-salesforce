@@ -157,7 +157,7 @@ class Salesforce_Rest_API {
 
 		$this->pull = $this->pull( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 
-		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedulable_classes );
+		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 
 		//add_action		( 'plugins_loaded', 					array( $this, 'textdomain'				) 			);
 		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
@@ -280,9 +280,9 @@ class Salesforce_Rest_API {
 	* @param array $parent_settings
 	* @throws \Exception
 	*/
-	private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedulable_classes ) {
+	private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
-		$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedulable_classes );
+		$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
 		add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
 		add_filter( 'plugin_action_links', array( &$this, 'plugin_action_links' ), 10, 5 );
