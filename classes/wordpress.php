@@ -914,26 +914,23 @@ class Wordpress {
             // the args don't really make sense, and are inconsistently documented
             // this should give us the post object
             // todo: could probably make a hook here for additional matching
+            $args = array();
             if ( $key === 'post_title' ) {
                 $params['post_title'] = array(
                     'value' => $value,
                     'method_modify' => $method,
                     'method_read' => $methods['method_read']
                 );
-                $key = 'name';
-                $value = sanitize_title( $value );
+                $args['name'] = sanitize_title( $value );
+            } else {
+                $args[$key] = $value;
             }
-
+            $args['post_type'] = 'post';
             $post_statuses = array( 'publish' );
             if ( $ignore_drafts !== TRUE ) {
                 $post_statuses[] = 'draft';
             }
-
-            $args = array(
-                $key => $value,
-                'post_type' => 'post',
-                'post_status' => $post_statuses
-            );
+            $args['post_status'] = $post_statuses;
 
             $posts = $method( $args );
 
@@ -1145,7 +1142,6 @@ class Wordpress {
     private function attachment_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID' ) {
 
         $method = $methods['method_match'];
-        $method = 'get_posts';
 
         if ( $method !== '' ) {
             // get_posts is more helpful here, so that is the method attachment uses for 'read'
@@ -1153,20 +1149,18 @@ class Wordpress {
             // the args don't really make sense, and are inconsistently documented
             // this should give us the post object
             // todo: could probably make a hook here for additional matching
+            $args = array();
             if ( $key === 'post_title' ) {
                 $params['post_title'] = array(
                     'value' => $value,
                     'method_modify' => $method,
                     'method_read' => $methods['method_read']
                 );
-                $key = 'name';
-                $value = sanitize_title( $value );
+                $args['name'] = sanitize_title( $value );
+            } else {
+                $args[$key] = $value;
             }
-
-            $args = array(
-                $key => $value,
-                'post_type' => 'attachment'
-            );
+            $args['post_type'] = 'attachment';
 
             $posts = $method( $args );
 
@@ -1185,7 +1179,7 @@ class Wordpress {
                     'method_read' => $methods['method_read']
                 );
             } else {
-                // post does not exist after checking the matching value. create it.
+                // attachment does not exist after checking the matching value. create it.
                 // on the prematch fields, we specify the method_create param
                 if ( isset( $methods['method_create'] ) ) {
                     $method = $methods['method_create'];
