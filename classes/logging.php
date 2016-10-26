@@ -41,6 +41,12 @@ class Salesforce_Logging extends WP_Logging {
             add_filter( 'wp_logging_should_we_prune', array( $this, 'set_prune_option' ), 10, 1 );
             add_filter( 'wp_logging_prune_when', array( $this, 'set_prune_age' ), 10, 1 );
             add_filter( 'wp_logging_prune_query_args', array( $this, 'set_prune_args' ), 10, 1 );
+
+            $scheduled = wp_next_scheduled( 'wp_logging_prune_routine' );
+            if ( $scheduled === FALSE ) {
+                wp_schedule_event( time(), 'hourly', 'wp_logging_prune_routine' );
+            }
+
         }
     }
 
