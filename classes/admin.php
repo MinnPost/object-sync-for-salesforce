@@ -595,6 +595,7 @@ class Wordpress_Salesforce_Admin {
         $input_callback_default = array( &$this, 'display_input_field' );
         $input_checkboxes_default = array( &$this, 'display_checkboxes' );
         $input_select_default = array( &$this, 'display_select' );
+        $link_default = array( &$this, 'display_link' );
         $this->fields_settings( 'settings', 'settings', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default ) );
         $this->fields_fieldmaps( 'fieldmaps', 'objects' );
         $this->fields_scheduling( 'schedule', 'schedule', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default, 'select' => $input_select_default ) );
@@ -1261,6 +1262,24 @@ class Wordpress_Salesforce_Admin {
             echo '<p class="description">' . $desc . '</p>';
         }
         echo '</div>';
+    }
+
+    /**
+    * Default display for <a href> links
+    *
+    * @param array $args
+    */
+    public function display_link( $args ) {
+        $label   = $args['label'];
+        $desc   = $args['desc'];
+        $url = $args['url'];
+
+        echo '<p><a class="button-primary" href="' . $url . '">' . $label . '</a></p>';
+
+        if ( $desc != '' ) {
+            echo '<p class="description">' . $desc . '</p>';
+        }
+
     }
 
     /**
