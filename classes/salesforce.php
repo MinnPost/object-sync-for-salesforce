@@ -323,9 +323,12 @@ class Salesforce {
 			$curl_error = curl_error( $curl );
 			if ( $curl_error !== '' ) {
 				throw new SalesforceException( $curl_error );
-			} elseif ( $data[0]['errorCode'] !== '' ) { // salesforce uses this structure to return errors
+			} elseif ( isset( $data[0]['errorCode'] ) && $data[0]['errorCode'] !== '' ) { // salesforce uses this structure to return errors
 				//throw new SalesforceException( $data[0]['message'], -1, $code );
 				throw new SalesforceException( esc_html__( 'URL: ' . $url . ' Message: ' . $data[0]['message'] . '  Code: ' . $code, $this->text_domain ) );
+			} else {
+				// todo: have not tested this case. need to see what it does if it happens again
+				error_log( 'data is ' . print_r( $data, true ) );
 			}
 		}
 
