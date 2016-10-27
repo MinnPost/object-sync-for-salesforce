@@ -26,8 +26,6 @@ class Salesforce_Pull {
 	* @param object $wordpress
 	* @param object $salesforce
 	* @param object $mappings
-	* @param object $schedule
-	* @param string $schedule_name
 	* @param object $logging
 	* @param array $schedulable_classes
 	* @throws \Exception
@@ -157,8 +155,8 @@ class Salesforce_Pull {
 	}
 
 	/**
-    * Clear schedule
-    * This clears the schedule if the user clicks the button
+    * Load schedule
+    * This loads the schedule class
     */ 
 	private function schedule() {
 		if ( ! class_exists( 'Wordpress_Salesforce_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
