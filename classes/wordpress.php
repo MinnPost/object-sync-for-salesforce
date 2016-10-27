@@ -68,7 +68,7 @@ class Wordpress {
 		if ( $object_type === 'attachment' ) {
             $object_table_structure = array(
 				'object_name' => 'post',
-                'content_methods' => array( 'create' => 'wp_insert_attachment', 'read' => 'get_posts', 'update' => 'update_attached_file', 'delete' => 'wp_delete_attachment' ),
+                'content_methods' => array( 'create' => 'wp_insert_attachment', 'read' => 'get_posts', 'update' => 'wp_insert_attachment', 'delete' => 'wp_delete_attachment' ),
                 'meta_methods' => array( 'create' => 'wp_generate_attachment_metadata', 'read' => 'wp_get_attachment_metadata', 'update' => 'wp_update_attachment_metadata', 'delete' => '' ),
 				'content_table' => $this->wpdb->prefix . 'posts',
 				'id_field' => 'ID',
@@ -506,7 +506,7 @@ class Wordpress {
                 $result = $this->post_update( $id, $params, $id_field );
                 break;
             case 'attachment':
-                $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
+                $result = $this->attachment_update( $id, $params, $id_field );
                 break;
             case 'category':
             case 'tag':
@@ -1105,12 +1105,12 @@ class Wordpress {
                 // according to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file
                 require_once( ABSPATH . 'wp-admin/includes/image.php' );
                 // generate metadata for the attachment
-                $attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
-                wp_update_attachment_metadata( $attach_id, $attach_data );
+                $attach_data = wp_generate_attachment_metadata( $attachment_id, $filename );
+                wp_update_attachment_metadata( $attachment_id, $attach_data );
             }
 
             if ( $parent !== 0 ) {
-                set_post_thumbnail( $parent_post_id, $attach_id );
+                set_post_thumbnail( $parent_post_id, $attachment_id );
             }
             // todo: add a hook for setting other data here
         }
@@ -1237,10 +1237,82 @@ class Wordpress {
           success: 1
     *   "errors" : [ ],
     *
+    * Note: this method uses wp_insert_attachment for core content fields as there isn't a corresponding method for updating these rows
+    * it does use wp_update_attachment_metadata for the meta fields, though.
+    * developers should use hooks to change this, if it does not meet their needs
+    *
     */
     private function attachment_update( $attachment_id, $params, $id_field = 'ID' ) {
         $content = array();
         $content[$id_field] = $attachment_id;
+        foreach ( $params as $key => $value ) {
+            if ( $value['method_modify'] === 'wp_insert_attachment' ) { // should also be insert attachment maybe
+                $content[$key] = $value['value'];
+                unset( $params[$key] );
+            }
+        }
+
+        // todo: need hook here to take filename and parent fields here, and perhaps other fields since it is an update
+
+        if ( isset( $params['filename']['value'] ) ) {
+            $filename = $params['filename']['value'];
+        } else {
+            $filename = FALSE;
+        }
+
+        if ( isset( $params['parent']['value'] ) ) {
+            $parent = $params['parent']['value'];
+        } else {
+            $parent = 0;
+        }
+
+        $attachment_id = wp_insert_attachment( $content, $filename, $parent );
+
+        if ( is_wp_error( $attachment_id ) ) {
+            $success = FALSE;
+            $errors = $attachment_id;
+        } else {
+            $success = TRUE;
+            $errors = array();
+
+            
+            if ( $filename !== FALSE ) {
+                // according to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file
+                require_once( ABSPATH . 'wp-admin/includes/image.php' );
+                // generate metadata for the attachment
+                $attach_data = wp_generate_attachment_metadata( $attachment_id, $filename );
+            }
+
+            // put the data from salesforce into the meta array
+            $attach_new_data = array();
+            foreach ( $params as $key => $value ) {
+                $method = $value['method_modify'];
+                //$meta_updated = $method( $attachment_id, $key, $value['value'] );
+                $attach_new_data[$key] = $value['value'];
+            }
+
+            if ( isset( $attach_data ) ) {
+                $attach_data = array_merge( $attach_data, $attach_new_data );
+            } else {
+                $attach_data = $attach_new_data;
+            }
+
+            $meta_updated = wp_update_attachment_metadata( $attachment_id, $attach_data );
+
+            if ( $meta_updated === FALSE ) {
+                $success = FALSE;
+                $errors[] = array( 'key' => $key, 'value' => $value );
+            }
+
+            if ( $parent !== 0 ) {
+                set_post_thumbnail( $parent_post_id, $attachment_id );
+            }
+            // todo: add a hook for setting other data here
+
+        }
+
+        $result = array( 'data' => array( $id_field => $attachment_id, 'success' => $success ), 'errors' => $errors );
+        return $result;
     }
 
     /**
