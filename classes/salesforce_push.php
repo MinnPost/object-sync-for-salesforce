@@ -26,8 +26,6 @@ class Salesforce_Push {
 	* @param object $wordpress
 	* @param object $salesforce
 	* @param object $mappings
-	* @param object $schedule
-	* @param string $schedule_name
 	* @param object $logging
 	* @param array $schedulable_classes
 	* @throws \Exception
