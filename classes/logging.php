@@ -26,6 +26,8 @@ class Salesforce_Logging extends WP_Logging {
         $this->enabled = get_option( 'salesforce_api_enable_logging', FALSE );
         $this->statuses_to_log = get_option( 'salesforce_api_statuses_to_log', array() );
 
+        $this->schedule_name = 'wp_logging_prune_routine';
+
         $this->init();
 
     }
@@ -37,17 +39,71 @@ class Salesforce_Logging extends WP_Logging {
     */
     private function init() {
         if ( $this->enabled === '1' ) {
+            add_filter( 'cron_schedules', array( $this, 'add_prune_interval' ) );
             add_filter( 'wp_log_types', array( $this, 'set_log_types' ), 10, 1 );
             add_filter( 'wp_logging_should_we_prune', array( $this, 'set_prune_option' ), 10, 1 );
             add_filter( 'wp_logging_prune_when', array( $this, 'set_prune_age' ), 10, 1 );
             add_filter( 'wp_logging_prune_query_args', array( $this, 'set_prune_args' ), 10, 1 );
 
-            $scheduled = wp_next_scheduled( 'wp_logging_prune_routine' );
-            if ( $scheduled === FALSE ) {
-                wp_schedule_event( time(), 'hourly', 'wp_logging_prune_routine' );
+            $schedule_unit = get_option( 'salesforce_api_logs_how_often_unit', '' );
+            $schedule_number = get_option( 'salesforce_api_logs_how_often_number', '' );
+            $frequency = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
+            $key = $frequency['key'];
+
+            if ( !wp_next_scheduled( $this->schedule_name ) ) {
+                wp_schedule_event( time(), $key, $this->schedule_name );
             }
 
         }
+    }
+
+    /**
+    * add interval to wp schedules based on admin settings
+    *
+    * @return array $frequency
+    */
+    public function add_prune_interval( $schedules ) {
+
+        $schedule_unit = get_option( 'salesforce_api_logs_how_often_unit', '' );
+        $schedule_number = get_option( 'salesforce_api_logs_how_often_number', '' );
+        $frequency = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
+        $key = $frequency['key'];
+        $seconds = $frequency['seconds'];
+
+        $schedules[$key] = array(
+            'interval' => $seconds * $schedule_number,
+            'display' => 'Every ' . $schedule_number . ' ' . $schedule_unit
+        );
+
+        return $schedules;
+
+    }
+
+    /**
+    * Convert the schedule frequency from the admin settings into an array
+    * interval must be in seconds for the class to use it
+    *
+    */
+    public function get_schedule_frequency( $unit, $number ) {
+
+        switch ( $unit ) {
+            case 'minutes':
+                $seconds = 60;
+                break;
+            case 'hours':
+                $seconds = 3600;
+                break;
+            case 'days':
+                $seconds = 86400;
+                break;
+            default:
+                $seconds = 0;
+        }
+
+        $key = $unit . '_' . $number;
+
+        return array( 'key' => $key, 'seconds' => $seconds );
+
     }
 
     /**
@@ -97,7 +153,7 @@ class Salesforce_Logging extends WP_Logging {
     * @return array $args
     */
     public function set_prune_args( $args ) {
-        $args['log_type'] = 'salesforce';
+        $args['wp_log_type'] = 'salesforce';
         return $args;
     }
 

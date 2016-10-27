@@ -602,14 +602,23 @@ class Wordpress_Salesforce_Admin {
     public function salesforce_settings_forms() {
         $page = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $section = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
+        
         $input_callback_default = array( &$this, 'display_input_field' );
         $input_checkboxes_default = array( &$this, 'display_checkboxes' );
         $input_select_default = array( &$this, 'display_select' );
         $link_default = array( &$this, 'display_link' );
-        $this->fields_settings( 'settings', 'settings', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default ) );
+
+        $all_field_callbacks = array(
+            'text' => $input_callback_default,
+            'checkboxes' => $input_checkboxes_default,
+            'select' => $input_select_default,
+            'link' => $link_default
+        );
+
+        $this->fields_settings( 'settings', 'settings', $all_field_callbacks );
         $this->fields_fieldmaps( 'fieldmaps', 'objects' );
-        $this->fields_scheduling( 'schedule', 'schedule', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default, 'select' => $input_select_default, 'link' => $link_default ) );
-        $this->fields_log_settings( 'log_settings', 'log_settings', array( 'text' => $input_callback_default, 'checkboxes' => $input_checkboxes_default ) );
+        $this->fields_scheduling( 'schedule', 'schedule', $all_field_callbacks );
+        $this->fields_log_settings( 'log_settings', 'log_settings', $all_field_callbacks );
     }
 
     /**
@@ -900,6 +909,42 @@ class Wordpress_Salesforce_Admin {
                     'default' => '2 weeks',
                     'constant' => ''
                 ),
+            ),
+            'logs_how_often_number' => array(
+                'title' => __( 'Check for old logs every', $this->text_domain ),
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'text',
+                    'desc' => '',
+                    'default' => '1',
+                    'constant' => ''
+                ),
+            ),
+            'logs_how_often_unit' => array(
+                'title' => __( 'Time unit', $this->text_domain ),
+                    'callback' => $callbacks['select'],
+                    'page' => $page,
+                    'section' => $section,
+                    'args' => array(
+                        'type' => 'select',
+                        'desc' => 'These two fields are how often the site will check for logs to delete.',
+                        'items' => array(
+                            'minutes' => array(
+                                'text' => 'Minutes',
+                                'value' => 'minutes',
+                            ),
+                            'hours' => array(
+                                'text' => 'Hours',
+                                'value' => 'hours',
+                            ),
+                            'days' => array(
+                                'text' => 'Days',
+                                'value' => 'days',
+                            ),
+                        )
+                    )
             ),
             'triggers_to_log' => array(
                 'title' => 'Triggers to log',
