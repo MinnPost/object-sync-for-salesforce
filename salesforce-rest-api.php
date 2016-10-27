@@ -123,8 +123,8 @@ class Salesforce_Rest_API {
 
         // example to modify the array of classes by adding one and removing one
 		/*
-		add_filter( 'salesforce_rest_api_modify_schedulable_classes', 'modify_scheduleable_classes', 10, 1 );
-		function modify_scheduleable_classes( $schedulable_classes ) {
+		add_filter( 'salesforce_rest_api_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
+		function modify_schedulable_classes( $schedulable_classes ) {
 			$schedulable_classes = array(
 	            array(
 	                'name' => 'salesforce_push',
