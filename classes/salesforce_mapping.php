@@ -515,7 +515,7 @@ class Salesforce_Mapping {
                     continue;
                 }*/
                 
-                $params[$salesforce_field] = $object[$wordpress_field];
+                $params[$fieldmap['salesforce_field']] = $object[$fieldmap['wordpress_field']['label']];
 
                 // if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
                 // but still put its name in the params array so we can check for it later
@@ -526,7 +526,7 @@ class Salesforce_Mapping {
                     $params['key'] = array(
                         'salesforce_field' => $salesforce_field,
                         'wordpress_field' => $wordpress_field,
-                        'value' => $object[$wordpress_field]
+                        'value' => $object[$fieldmap['wordpress_field']['label']]
                     );
                 }
 
@@ -535,7 +535,7 @@ class Salesforce_Mapping {
                     $params['prematch'] = array(
                         'salesforce_field' => $salesforce_field,
                         'wordpress_field' => $wordpress_field,
-                        'value' => $object[$wordpress_field]
+                        'value' => $object[$fieldmap['wordpress_field']['label']]
                     );
                 }
 
@@ -543,14 +543,14 @@ class Salesforce_Mapping {
 
                 // a salesforce event caused this
                 // make an array because we need to store the methods for each field as well
-                $params[$wordpress_field] = array();
+                $params[$fieldmap['wordpress_field']['label']] = array();
                 $params[$wordpress_field]['value'] = $object[$salesforce_field];
 
                 // if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
                 // but still put its name in the params array so we can check for it later
                 if ( $fieldmap['is_key'] === '1' ) {
                     if ( !$use_soap ) {
-                        unset( $params[$wordpress_field] );
+                        unset( $params[$fieldmap['wordpress_field']['label']] );
                     }
                     $params['key'] = array(
                         'salesforce_field' => $salesforce_field,
