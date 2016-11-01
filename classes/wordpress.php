@@ -10,7 +10,6 @@ class Wordpress {
     protected $text_domain;
     protected $mappings;
     protected $logging;
-    public $wordpress_types_not_posts;
 
     /**
     * Objects, properties, and methods to get core WordPress data for the plugin
@@ -19,17 +18,19 @@ class Wordpress {
     * @param string $version
     * @param string $text_domain
     * @param object $mappings
-    * @param array $wordpress_types_not_posts
-    * @param array $wordpress_types_ignore
     * @throws \Exception
     */
-	public function __construct( $wpdb, $version, $text_domain, $mappings, $logging, $wordpress_types_not_posts = array(), $wordpress_types_ignore = array() ) {
+	public function __construct( $wpdb, $version, $text_domain, $mappings, $logging ) {
 		$this->wpdb = &$wpdb;
 		$this->version = $version;
 		$this->text_domain = $text_domain;
 		$this->mappings = $mappings;
         $this->logging = $logging;
-		$this->wordpress_objects = $this->get_object_types( $wordpress_types_not_posts, $wordpress_types_ignore );
+
+        add_action( 'admin_init', function() {
+            $this->wordpress_objects = $this->get_object_types();
+        } );
+
 		$this->options = array(
 			'cache' => true,
 			'cache_expiration' => $this->cache_expiration( 'wordpress_data_cache', 86400 ),
@@ -40,20 +41,45 @@ class Wordpress {
 	/**
     * Get WordPress object types
     * 
-    * @param array $wordpress_types_not_posts
-    * @param array $wordpress_types_ignore
     * @return array $wordpress_objects
     */
-	public function get_object_types( $wordpress_types_not_posts, $wordpress_types_ignore ) {
+	public function get_object_types() {
+
+        // allow developers to specify, especially non-post, content types that should be included or ignored
+
+        // example to add/remove types
+        /*
+        add_filter( 'salesforce_rest_api_add_more_wordpress_types', 'add_more_types', 10, 1 );
+        function add_more_types( $more_types ) {
+            $more_types = array( 'foo' );
+            // or $more_types[] = 'foo';
+            return $more_types;
+        }
+
+        add_filter( 'salesforce_rest_api_remove_wordoress_types', 'remove_types', 10, 1 );
+        function remove_types( $types_to_remove ) {
+            $types_to_remove = array( 'acme_product' );
+            // or $types_to_remove[] = 'acme_product';
+            return $types_to_remove;
+        }
+        */
+
+        $wordpress_types_not_posts_include = apply_filters( 'salesforce_rest_api_add_more_wordpress_types', array() );
+        $wordpress_types_ignore = apply_filters( 'salesforce_rest_api_remove_wordpress_types', array( 'wp_log') );
+
 		$wordpress_objects = array();
-		if ( empty( $wordpress_types_not_posts ) ) {
-            $wordpress_types_not_posts = array( 'user', 'comment', 'category', 'tag' );
+
+		if ( empty( $wordpress_types_not_posts_include ) ) {
+            $wordpress_types_not_posts_include = array( 'user', 'comment', 'category', 'tag' );
         }
+
         $wordpress_objects = get_post_types();
+        $wordpress_objects = array_merge( $wordpress_objects, $wordpress_types_not_posts_include );
+
         if ( !empty( $wordpress_types_ignore ) ) {
-        	$wordpress_objects = array_diff( $wordpress_objects, $wordpress_types_ignore );
+            $wordpress_objects = array_diff( $wordpress_objects, $wordpress_types_ignore );
         }
-        $wordpress_objects = array_merge( $wordpress_objects, $wordpress_types_not_posts );
+
         sort( $wordpress_objects );
 		return $wordpress_objects;
 	}
