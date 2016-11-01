@@ -770,6 +770,9 @@ class Salesforce_Push {
 					$object["$object_id"],
 					$status
 				);
+				// if this happens, the salesforce version has already increased before we get here, but now nothing is happening so we need to reduce it
+				$mapping_object['salesforce_data_version']--;
+				$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 				return;
 			}
 

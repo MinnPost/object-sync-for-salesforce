@@ -813,6 +813,9 @@ class Salesforce_Pull {
 					$mapping_object['wordpress_id'],
 					$status
 				);
+				// if this happens, the wordpress version has already increased before we get here, but now nothing is happening so we need to reduce it
+				$mapping_object['wordpress_data_version']--;
+				$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 				return;
 			}
 
