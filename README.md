@@ -197,6 +197,7 @@ Current hooks include:
 - `salesforce_rest_api_modify_schedulable_classes`: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
 - `salesforce_rest_api_add_more_wordpress_types`: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
 - `salesforce_rest_api_remove_wordpress_types`: remove WordPress content types from the list of what can be mapped to Salesforce objects. By default, we use this for the `wp_log` type that is included with this plugin.
+- `salesforce_rest_api_create_custom_wordpress_item`: allow plugins to run their own create methods for adding new WordPress objects, if they cannot use built in methods.
 
 ### Actions
 

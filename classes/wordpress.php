@@ -423,7 +423,24 @@ class Wordpress {
                 $result = $this->comment_create( $params, $id_field );
                 break;
             default:
-                $result = array( 'data' => array( 'success' => 9999 ), 'errors' => array() );
+
+                // developers can use this hook to create objects with their own methods
+                // the returned $result needs to be an array like this
+                // $id_field should be the database key; i.e. 'ID' and the value should be the new item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+                // $success should be a boolean value
+                /*
+                    $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
+                */
+                // use hook like: add_filter( 'salesforce_rest_api_create_custom_wordpress_item', add_object, 10, 1 );
+                // the one param is: array( 'name' => objecttype, 'params' => array_of_params )
+
+                // check to see if someone is calling the filter, and apply it if so
+                if ( !has_filter( 'salesforce_rest_api_create_custom_wordpress_item' ) ) {
+                    $result = $this->post_create( $params, $id_field, $name );
+                } else {
+                    $result = apply_filters( 'salesforce_rest_api_create_custom_wordpress_item', array( 'name' => $name, 'params' => $params ) );
+                }
+
                 break;
         }
 
@@ -861,6 +878,10 @@ class Wordpress {
     *
     * @param array $params
     *   array of post data params
+    * @param string $id_field
+    *   optional string of what the ID field is, if it is ever not ID
+    * @param string $post_type
+    *   optional string for custom post type, if applicable
     *
     * @return array
     *   data:
@@ -869,13 +890,18 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function post_create( $params, $id_field = 'ID' ) {
+    private function post_create( $params, $id_field = 'ID', $post_type = '' ) {
         foreach ( $params as $key => $value ) {
             if ( $value['method_modify'] === 'wp_insert_post' ) {
                 $content[$key] = $value['value'];
                 unset( $params[$key] );
             }
         }
+
+        if ( $post_type !== '' ) {
+            $content['post_type'] = $post_type;
+        }
+
         $post_id = wp_insert_post( $content );
 
         if ( is_wp_error( $post_id ) ) {
@@ -884,6 +910,9 @@ class Wordpress {
         } else {
             $success = TRUE;
             $errors = array();
+            // if it's a custom post type, fix the methods
+            $params['RecordTypeId']['method_modify'] = 'update_post_meta';
+            $params['RecordTypeId']['method_read'] = 'get_post_meta';
             foreach ( $params as $key => $value ) {
                 $method = $value['method_modify'];
                 $meta_id = $method( $post_id, $key, $value['value'] );
@@ -1050,6 +1079,9 @@ class Wordpress {
         } else {
             $success = TRUE;
             $errors = array();
+            // if it's a custom post type, fix the methods
+            $params['RecordTypeId']['method_modify'] = 'update_post_meta';
+            $params['RecordTypeId']['method_read'] = 'get_post_meta';
             foreach ( $params as $key => $value ) {
                 $method = $value['method_modify'];
                 $meta_id = $method( $post_id, $key, $value['value'] );
