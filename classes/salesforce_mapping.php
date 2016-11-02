@@ -303,18 +303,15 @@ class Salesforce_Mapping {
     /**
     * Get one or more object map rows between WordPress and Salesforce objects
     *
-    * @param int $id
     * @param array $conditions
     * @param bool $reset
     * @return $map or $mappings
     * @throws \Exception
     */
-    public function get_object_maps( $id = NULL, $conditions = array(), $reset = false ) {
+    public function get_object_maps( $conditions = array(), $reset = false ) {
         $table = $this->object_map_table;
         $order = ' ORDER BY object_updated, created';
-        if ( $id !== NULL ) { // get one fieldmap
-            $mappings = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
-        } elseif ( !empty( $conditions ) ) { // get multiple but with a limitation
+        if ( !empty( $conditions ) ) { // get multiple but with a limitation
             $mappings = array();
         
             if ( !empty( $conditions ) ) {
@@ -413,7 +410,7 @@ class Salesforce_Mapping {
         'wordpress_id' => $object_id,
         'wordpress_object' => $object_type,
       );
-      return $this->get_object_maps( NULL, $conditions, $reset );
+      return $this->get_object_maps( $conditions, $reset );
     }
 
     /**
@@ -432,7 +429,7 @@ class Salesforce_Mapping {
             'salesforce_id' => $salesforce_id
         );
 
-        $map = $this->get_object_maps( NULL, $conditions, $reset );
+        $map = $this->get_object_maps( $conditions, $reset );
 
         if ( isset( $map[0] ) && is_array( $map[0] ) && count( $map ) > 1 ) {
             $status = 'notice';
