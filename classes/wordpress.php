@@ -751,7 +751,7 @@ class Wordpress {
                 apply_filters( 'salesforce_rest_api_set_more_user_data', array(
                     'user_id' => $user_id,
                     'params' => $params
-                );
+                ) );
 
                 // send notification of new user
                 // todo: figure out what permissions out to get notifications for this and make sure it works the right way
@@ -934,7 +934,7 @@ class Wordpress {
             apply_filters( 'salesforce_rest_api_set_more_user_data', array(
                 'user_id' => $user_id,
                 'params' => $params
-            );
+            ) );
         }
 
         $result = array( 'data' => array( $id_field => $user_id, 'success' => $success ), 'errors' => $errors );
@@ -1013,7 +1013,7 @@ class Wordpress {
             apply_filters( 'salesforce_rest_api_set_more_post_data', array(
                 'post_id' => $post_id,
                 'params' => $params
-            );
+            ) );
         }
 
         if ( is_wp_error( $post_id ) ) {
@@ -1206,7 +1206,7 @@ class Wordpress {
             apply_filters( 'salesforce_rest_api_set_more_post_data', array(
                 'post_id' => $post_id,
                 'params' => $params
-            );
+            ) );
         }
 
         $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
@@ -1290,7 +1290,7 @@ class Wordpress {
             apply_filters( 'salesforce_rest_api_set_more_attachment_data', array(
                 'attachment_id' => $attachment_id,
                 'params' => $params
-            );
+            ) );
         }
 
         $result = array( 'data' => array( $id_field => $attachment_id, 'success' => $success ), 'errors' => $errors );
@@ -1501,7 +1501,7 @@ class Wordpress {
             apply_filters( 'salesforce_rest_api_set_more_attachment_data', array(
                 'attachment_id' => $attachment_id,
                 'params' => $params
-            );
+            ) );
 
         }
 
@@ -1582,7 +1582,7 @@ class Wordpress {
             apply_filters( 'salesforce_rest_api_set_more_term_data', array(
                 'term_id' => $term_id,
                 'params' => $params
-            );
+            ) );
         }
 
         if ( is_wp_error( $term ) ) {
@@ -1736,7 +1736,7 @@ class Wordpress {
             apply_filters( 'salesforce_rest_api_set_more_term_data', array(
                 'term_id' => $term_id,
                 'params' => $params
-            );
+            ) );
         }
 
         if ( is_wp_error( $term ) ) {
@@ -1818,7 +1818,7 @@ class Wordpress {
             apply_filters( 'salesforce_rest_api_set_more_comment_data', array(
                 'comment_id' => $comment_id,
                 'params' => $params
-            );
+            ) );
         }
 
         if ( is_wp_error( $comment_id ) ) {
@@ -1993,7 +1993,7 @@ class Wordpress {
             apply_filters( 'salesforce_rest_api_set_more_comment_data', array(
                 'comment_id' => $comment_id,
                 'params' => $params
-            );
+            ) );
         }
 
         if ( is_wp_error( $updated ) ) {
