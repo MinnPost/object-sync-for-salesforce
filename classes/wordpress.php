@@ -432,13 +432,17 @@ class Wordpress {
                     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
                 */
                 // use hook like: add_filter( 'salesforce_rest_api_create_custom_wordpress_item', add_object, 10, 1 );
-                // the one param is: array( 'name' => objecttype, 'params' => array_of_params )
+                // the one param is: array( 'name' => objecttype, 'params' => array_of_params, 'id_field' => idfield )
 
                 // check to see if someone is calling the filter, and apply it if so
                 if ( !has_filter( 'salesforce_rest_api_create_custom_wordpress_item' ) ) {
                     $result = $this->post_create( $params, $id_field, $name );
                 } else {
-                    $result = apply_filters( 'salesforce_rest_api_create_custom_wordpress_item', array( 'name' => $name, 'params' => $params ) );
+                    $result = apply_filters( 'salesforce_rest_api_create_custom_wordpress_item', array(
+                        'params' => $params,
+                        'name' => $name,
+                        'id_field' => $id_field
+                    ) );
                 }
 
                 break;
@@ -507,7 +511,32 @@ class Wordpress {
                 $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
                 break;
             default:
-                $result = array( 'data' => array( $id_field => 999999, 'success' => TRUE ), 'errors' => $errors );
+                
+                // developers can use this hook to upsert objects with their own methods
+                // the returned $result needs to be an array like this
+                // $id_field should be the database key; i.e. 'ID' and the value should be the item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+                // $success should be a boolean value
+                /*
+                    $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
+                */
+                // use hook like: add_filter( 'salesforce_rest_api_upsert_custom_wordpress_item', add_object, 10, 1 );
+                // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'ignore_drafts' => ignoredrafts, 'methods' => methods )
+
+                // check to see if someone is calling the filter, and apply it if so
+                if ( !has_filter( 'salesforce_rest_api_upsert_custom_wordpress_item' ) ) {
+                    $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts, $name );
+                } else {
+                    $result = apply_filters( 'salesforce_rest_api_upsert_custom_wordpress_item', array(
+                        'key' => $key,
+                        'value' => $value,
+                        'methods' => $methods,
+                        'params' => $params,
+                        'id_field' => $id_field,
+                        'ignore_drafts' => $ignore_drafts,
+                        'name' => $name
+                    ) );
+                }
+
                 break;
         }
 
@@ -560,7 +589,32 @@ class Wordpress {
                 $result = $this->comment_update( $id, $params, $id_field );
                 break;
             default:
-                $result = array( 'data' => array( 'success' => TRUE ), 'errors' => array() );
+                
+                // developers can use this hook to update objects with their own methods
+                // the returned $result needs to be an array like this
+                // $id_field should be the database key; i.e. 'ID' and the value should be the updated item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+                // $success should be a boolean value
+                /*
+                    $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
+                */
+                // use hook like: add_filter( 'salesforce_rest_api_update_custom_wordpress_item', add_object, 10, 1 );
+                // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'ignore_drafts' => ignoredrafts, 'methods' => methods )
+
+                // check to see if someone is calling the filter, and apply it if so
+                if ( !has_filter( 'salesforce_rest_api_update_custom_wordpress_item' ) ) {
+                    $result = $this->post_update( $key, $value, $methods, $params, $id_field, $ignore_drafts, $name );
+                } else {
+                    $result = apply_filters( 'salesforce_rest_api_update_custom_wordpress_item', array(
+                        'key' => $key,
+                        'value' => $value,
+                        'methods' => $methods,
+                        'params' => $params,
+                        'id_field' => $id_field,
+                        'ignore_drafts' => $ignore_drafts,
+                        'name' => $name
+                    ) );
+                }
+
                 break;
         }
 
@@ -605,7 +659,22 @@ class Wordpress {
                 $success = $this->comment_delete( $id );
                 break;
             default:
-                // custom post types don't need to change for deleting
+
+                // developers can use this hook to delete objects with their own methods
+                // the returned $success is an object of the correct type, or a FALSE
+                // use hook like: add_filter( 'salesforce_rest_api_delete_custom_wordpress_item', add_object, 10, 1 );
+                // the one param is: array( 'id' => id, 'name' => objecttype )
+
+                // check to see if someone is calling the filter, and apply it if so
+                if ( !has_filter( 'salesforce_rest_api_delete_custom_wordpress_item' ) ) {
+                    $success = $this->post_delete( $id );
+                } else {
+                    $success = apply_filters( 'salesforce_rest_api_delete_custom_wordpress_item', array(
+                        'id' => $id,
+                        'name' => $name
+                    ) );
+                }
+
                 $success = $this->post_delete( $id );
                 break;
         }
@@ -953,6 +1022,8 @@ class Wordpress {
     *   optional string of what the ID field is, if it is ever not ID
     * @param bool @ignore_drafts
     * indicates whether we should match against draft posts
+    * @param string $post_type
+    *   optional string for custom post type, if applicable
     *
     * @return array
     *   data:
@@ -961,7 +1032,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $ignore_drafts = TRUE ) {
+    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $ignore_drafts = TRUE, $post_type = 'post' ) {
 
         $method = $methods['method_match'];
 
@@ -981,7 +1052,7 @@ class Wordpress {
             } else {
                 $args[$key] = $value;
             }
-            $args['post_type'] = 'post';
+            $args['post_type'] = $post_type;
             $post_statuses = array( 'publish' );
             if ( $ignore_drafts !== TRUE ) {
                 $post_statuses[] = 'draft';
@@ -1054,6 +1125,8 @@ class Wordpress {
     *   array of post data params
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not ID
+    * @param string $post_type
+    *   optional string for custom post type, if applicable
     *
     * @return array
     *   data:
@@ -1061,7 +1134,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function post_update( $post_id, $params, $id_field = 'ID' ) {
+    private function post_update( $post_id, $params, $id_field = 'ID', $post_type = '' ) {
         $content = array();
         $content[$id_field] = $post_id;
         foreach ( $params as $key => $value ) {
@@ -1069,6 +1142,10 @@ class Wordpress {
                 $content[$key] = $value['value'];
                 unset( $params[$key] );
             }
+        }
+
+        if ( $post_type !== '' ) {
+            $content['post_type'] = $post_type;
         }
 
         $post_id = wp_update_post( $content );
