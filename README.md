@@ -201,6 +201,11 @@ Current hooks include:
 - `salesforce_rest_api_upsert_custom_wordpress_item`: allow plugins to run their own upsert methods for checking for existence of, and then adding or updating, new WordPress objects, if they cannot use built in methods.
 - `salesforce_rest_api_update_custom_wordpress_item`: allow plugins to run their own update methods for updating existing, mapped WordPress objects, if they cannot use built in methods.
 - `salesforce_rest_api_delete_custom_wordpress_item`: allow plugins to run their own delete methods for deleting existing, mapped WordPress objects, if they cannot use built in methods.
+- `salesforce_rest_api_set_more_user_data`: allow plugins to set more data on user objects when users are created or updated. This could be used for permissions, for example.
+- `salesforce_rest_api_set_more_post_data`: allow plugins to set more data on post objects when posts are created or updated.
+- `salesforce_rest_api_set_more_attachment_data`: allow plugins to set more data on attachment objects when attachments are created or updated.
+- `salesforce_rest_api_set_more_term_data`: allow plugins to set more data on term objects when terms are created or updated.
+- `salesforce_rest_api_set_more_comment_data`: allow plugins to set more data on comment objects when comments are created or updated.
 
 ### Actions
 

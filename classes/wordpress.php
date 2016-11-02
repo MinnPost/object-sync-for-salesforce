@@ -747,11 +747,14 @@ class Wordpress {
                     }
                 }
 
-                // todo: add a hook for setting permissions and other data here            
+                // developers can use this hook to set any other user data - permissions, etc
+                apply_filters( 'salesforce_rest_api_set_more_user_data', array(
+                    'user_id' => $user_id,
+                    'params' => $params
+                );
 
                 // send notification of new user
-                // todo: make sure this respects other settings.
-                // ex: if admin users never get notifications, this should not force a notification
+                // todo: figure out what permissions out to get notifications for this and make sure it works the right way
                 wp_new_user_notification( $user_id, NULL, 'admin user' );
 
             }
@@ -869,7 +872,19 @@ class Wordpress {
             $result = $this->user_update( $user_id, $params );
             return $result;
         }
-        // todo: log an error here because we don't have a user id or a new user
+        // create log entry for lack of a user id
+        if ( isset( $this->logging ) ) {
+            $logging = $this->logging;
+        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+            $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+        }
+        $logging->setup(
+            __( 'Error: Users: Tried to run user_upsert, and ended up without a user id', $this->text_domain ),
+            '',
+            0,
+            0,
+            'error'
+        );
 
     }
 
@@ -915,7 +930,11 @@ class Wordpress {
                     $errors[] = array( 'key' => $key, 'value' => $value );
                 }
             }
-            // todo: add a hook for setting other data here
+            // developers can use this hook to set any other user data - permissions, etc
+            apply_filters( 'salesforce_rest_api_set_more_user_data', array(
+                'user_id' => $user_id,
+                'params' => $params
+            );
         }
 
         $result = array( 'data' => array( $id_field => $user_id, 'success' => $success ), 'errors' => $errors );
@@ -990,7 +1009,11 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
-            // todo: add a hook for setting other data here
+            // developers can use this hook to set any other post data
+            apply_filters( 'salesforce_rest_api_set_more_post_data', array(
+                'post_id' => $post_id,
+                'params' => $params
+            );
         }
 
         if ( is_wp_error( $post_id ) ) {
@@ -1112,7 +1135,19 @@ class Wordpress {
             $result = $this->post_update( $post_id, $params );
             return $result;
         }
-        // todo: log an error here because we don't have a post id or a new post
+        // create log entry for lack of a post id
+        if ( isset( $this->logging ) ) {
+            $logging = $this->logging;
+        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+            $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+        }
+        $logging->setup(
+            __( 'Error: Posts: Tried to run post_upsert, and ended up without a post id', $this->text_domain ),
+            '',
+            0,
+            0,
+            'error'
+        );
 
     }
 
@@ -1167,7 +1202,11 @@ class Wordpress {
                     $errors[] = array( 'key' => $key, 'value' => $value );
                 }
             }
-            // todo: add a hook for setting other data here
+            // developers can use this hook to set any other post data
+            apply_filters( 'salesforce_rest_api_set_more_post_data', array(
+                'post_id' => $post_id,
+                'params' => $params
+            );
         }
 
         $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
@@ -1247,7 +1286,11 @@ class Wordpress {
             if ( $parent !== 0 ) {
                 set_post_thumbnail( $parent_post_id, $attachment_id );
             }
-            // todo: add a hook for setting other data here
+            // developers can use this hook to set any other attachment data
+            apply_filters( 'salesforce_rest_api_set_more_attachment_data', array(
+                'attachment_id' => $attachment_id,
+                'params' => $params
+            );
         }
 
         $result = array( 'data' => array( $id_field => $attachment_id, 'success' => $success ), 'errors' => $errors );
@@ -1353,7 +1396,20 @@ class Wordpress {
             $result = $this->attachment_update( $attachment_id, $params );
             return $result;
         }
-        // todo: log an error here because we don't have an attachment id or a new attachment
+        
+        // create log entry for lack of an attachment id
+        if ( isset( $this->logging ) ) {
+            $logging = $this->logging;
+        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+            $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+        }
+        $logging->setup(
+            __( 'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id', $this->text_domain ),
+            '',
+            0,
+            0,
+            'error'
+        );
 
     }
 
@@ -1386,8 +1442,6 @@ class Wordpress {
                 unset( $params[$key] );
             }
         }
-
-        // todo: need hook here to take filename and parent fields here, and perhaps other fields since it is an update
 
         if ( isset( $params['filename']['value'] ) ) {
             $filename = $params['filename']['value'];
@@ -1442,7 +1496,12 @@ class Wordpress {
             if ( $parent !== 0 ) {
                 set_post_thumbnail( $parent_post_id, $attachment_id );
             }
-            // todo: add a hook for setting other data here
+
+            // developers can use this hook to set any other attachment data
+            apply_filters( 'salesforce_rest_api_set_more_attachment_data', array(
+                'attachment_id' => $attachment_id,
+                'params' => $params
+            );
 
         }
 
@@ -1519,7 +1578,11 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
-            // todo: add a hook for setting other data here
+            // developers can use this hook to set any other term data
+            apply_filters( 'salesforce_rest_api_set_more_term_data', array(
+                'term_id' => $term_id,
+                'params' => $params
+            );
         }
 
         if ( is_wp_error( $term ) ) {
@@ -1607,7 +1670,19 @@ class Wordpress {
             $result = $this->term_update( $term_id, $params, $taxonomy, $id_field );
             return $result;
         }
-        // todo: log an error here because we don't have a user id or a new user
+        // create log entry for lack of a term id
+        if ( isset( $this->logging ) ) {
+            $logging = $this->logging;
+        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+            $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+        }
+        $logging->setup(
+            __( 'Error: Terms: Tried to run term_upsert, and ended up without a term id', $this->text_domain ),
+            '',
+            0,
+            0,
+            'error'
+        );
 
     }
 
@@ -1657,7 +1732,11 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
-            // todo: add a hook for setting other data here
+            // developers can use this hook to set any other term data
+            apply_filters( 'salesforce_rest_api_set_more_term_data', array(
+                'term_id' => $term_id,
+                'params' => $params
+            );
         }
 
         if ( is_wp_error( $term ) ) {
@@ -1735,7 +1814,11 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to add meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
-            // todo: add a hook for setting other data here
+            // developers can use this hook to set any other comment data
+            apply_filters( 'salesforce_rest_api_set_more_comment_data', array(
+                'comment_id' => $comment_id,
+                'params' => $params
+            );
         }
 
         if ( is_wp_error( $comment_id ) ) {
@@ -1744,7 +1827,6 @@ class Wordpress {
         } else {
             $success = TRUE;
             $errors = array();
-            // todo: add a hook for setting other data here
         }
 
         $result = array( 'data' => array( $id_field => $comment_id, 'success' => $success ), 'errors' => $errors );
@@ -1846,6 +1928,21 @@ class Wordpress {
             return $result;
         }
 
+
+        // create log entry for lack of a comment id
+        if ( isset( $this->logging ) ) {
+            $logging = $this->logging;
+        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+            $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+        }
+        $logging->setup(
+            __( 'Error: Comments: Tried to run comment_upsert, and ended up without a comment id', $this->text_domain ),
+            '',
+            0,
+            0,
+            'error'
+        );
+
     }
 
     /**
@@ -1892,7 +1989,11 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
-            // todo: add a hook for setting other data here
+            // developers can use this hook to set any other comment data
+            apply_filters( 'salesforce_rest_api_set_more_comment_data', array(
+                'comment_id' => $comment_id,
+                'params' => $params
+            );
         }
 
         if ( is_wp_error( $updated ) ) {
