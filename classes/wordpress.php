@@ -3,6 +3,10 @@
  * @file
  */
 
+if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
+    die();
+}
+
 class Wordpress {
 
 	protected $wpdb;

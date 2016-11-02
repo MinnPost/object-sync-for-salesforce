@@ -4,6 +4,10 @@
  * Class representing a Salesforce SELECT SOQL query.
  */
 
+if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
+    die();
+}
+
 class Salesforce_Select_Query {
 
 	public $fields = array();

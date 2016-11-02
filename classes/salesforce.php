@@ -4,6 +4,10 @@
  * Objects, properties, and methods to communicate with the Salesforce REST API
  */
 
+if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
+    die();
+}
+
 /**
  * Ability to authorize and communicate with the Salesforce REST API.
  */
