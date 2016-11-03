@@ -136,11 +136,15 @@ class Salesforce_Mapping {
                 $where = ' WHERE ';
                 $i = 0;
                 foreach ( $conditions as $key => $value ) {
-                    $i++;
-                    if ( $i > 1 ) {
-                        $where .= ' AND ';
+                    if ( $key === 'salesforce_record_types_allowed' ) {
+                        $record_type = $value;
+                    } else {
+                        $i++;
+                        if ( $i > 1 ) {
+                            $where .= ' AND ';
+                        }
+                        $where .= '`' . $key . '`' . ' = "' . $value . '"';
                     }
-                    $where .= '`' . $key . '`' . ' = "' . $value . '"';
                 }
             } else {
                 $where = '';
@@ -148,13 +152,16 @@ class Salesforce_Mapping {
 
             $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . ' ORDER BY `weight`', ARRAY_A );
 
-            if (!empty($mappings)) {
-                $index = 0;
-                foreach ( $mappings as $mapping ) {
-                    $mappings[$index]['salesforce_record_types_allowed'] = maybe_unserialize( $mapping['salesforce_record_types_allowed'] );
-                    $mappings[$index]['fields'] = maybe_unserialize( $mapping['fields'] );
-                    $mappings[$index]['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
-                    $index++;
+            if ( !empty( $mappings ) ) {
+                foreach ( $mappings as $id => $mapping ) {
+                    
+                    $mappings[$id]['salesforce_record_types_allowed'] = maybe_unserialize( $mapping['salesforce_record_types_allowed'] );
+                    $mappings[$id]['fields'] = maybe_unserialize( $mapping['fields'] );
+                    $mappings[$id]['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
+                    if ( isset ( $record_type ) && in_array( $record_type, $mapping['salesforce_record_types_allowed'] ) ) {
+                        error_log('unset this record because its type is not allowed');
+                        unset( $mappings[$id] );
+                    }
                 }
             }
 
@@ -163,15 +170,19 @@ class Salesforce_Mapping {
         } else { // get all of em
 
             $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `ignore_drafts`, `weight` FROM $table" , ARRAY_A );
-            if (!empty($mappings)) {
-                $index = 0;
-                foreach ( $mappings as $mapping ) {
-                    $mappings[$index]['salesforce_record_types_allowed'] = maybe_unserialize( $mapping['salesforce_record_types_allowed'] );
-                    $mappings[$index]['fields'] = maybe_unserialize( $mapping['fields'] );
-                    $mappings[$index]['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
-                    $index++;
+            
+            if ( !empty( $mappings ) ) {
+                foreach ( $mappings as $id => $mapping ) {
+                    $mappings[$id]['salesforce_record_types_allowed'] = maybe_unserialize( $mapping['salesforce_record_types_allowed'] );
+                    $mappings[$id]['fields'] = maybe_unserialize( $mapping['fields'] );
+                    $mappings[$id]['sync_triggers'] = maybe_unserialize( $mapping['sync_triggers'] );
+                    if ( isset ( $record_type ) && in_array( $record_type, $mapping['salesforce_record_types_allowed'] ) ) {
+                        error_log('unset this record because its type is not allowed');
+                        unset( $mappings[$id] );
+                    }
                 }
             }
+            
             return $mappings;
         }
         
