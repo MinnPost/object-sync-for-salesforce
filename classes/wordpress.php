@@ -999,21 +999,27 @@ class Wordpress {
             $success = TRUE;
             $errors = array();
             // if it's a custom post type, fix the methods
-            $params['RecordTypeId']['method_modify'] = 'update_post_meta';
-            $params['RecordTypeId']['method_read'] = 'get_post_meta';
-            foreach ( $params as $key => $value ) {
-                $method = $value['method_modify'];
-                $meta_id = $method( $post_id, $key, $value['value'] );
-                if ( $meta_id === FALSE ) {
-                    $success = FALSE;
-                    $errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
+            if ( isset( $params['RecordTypeId']['value'] ) ) {
+                $params['RecordTypeId']['method_modify'] = 'update_post_meta';
+                $params['RecordTypeId']['method_read'] = 'get_post_meta';
+            }
+            if ( is_array( $params ) && !empty( $params ) ) {
+                foreach ( $params as $key => $value ) {
+                    $method = $value['method_modify'];
+                    $meta_id = $method( $post_id, $key, $value['value'] );
+                    if ( $meta_id === FALSE ) {
+                        $success = FALSE;
+                        $errors[] = array( 'key' => $key, 'value' => $value );
+                    }
                 }
             }
+
             // developers can use this hook to set any other post data
             apply_filters( 'salesforce_rest_api_set_more_post_data', array(
                 'post_id' => $post_id,
                 'params' => $params
             ) );
+
         }
 
         if ( is_wp_error( $post_id ) ) {
@@ -1192,14 +1198,18 @@ class Wordpress {
             $success = TRUE;
             $errors = array();
             // if it's a custom post type, fix the methods
-            $params['RecordTypeId']['method_modify'] = 'update_post_meta';
-            $params['RecordTypeId']['method_read'] = 'get_post_meta';
-            foreach ( $params as $key => $value ) {
-                $method = $value['method_modify'];
-                $meta_id = $method( $post_id, $key, $value['value'] );
-                if ( $meta_id === FALSE ) {
-                    $success = FALSE;
-                    $errors[] = array( 'key' => $key, 'value' => $value );
+            if ( isset( $params['RecordTypeId']['value'] ) ) {
+                $params['RecordTypeId']['method_modify'] = 'update_post_meta';
+                $params['RecordTypeId']['method_read'] = 'get_post_meta';
+            }
+            if ( is_array( $params ) && !empty( $params ) ) {
+                foreach ( $params as $key => $value ) {
+                    $method = $value['method_modify'];
+                    $meta_id = $method( $post_id, $key, $value['value'] );
+                    if ( $meta_id === FALSE ) {
+                        $success = FALSE;
+                        $errors[] = array( 'key' => $key, 'value' => $value );
+                    }
                 }
             }
             // developers can use this hook to set any other post data
