@@ -606,16 +606,12 @@ class Wordpress {
 
                 // check to see if someone is calling the filter, and apply it if so
                 if ( !has_filter( 'salesforce_rest_api_update_custom_wordpress_item' ) ) {
-                    $result = $this->post_update( $key, $value, $methods, $params, $id_field, $ignore_drafts, $name );
+                    $result = $this->post_update( $id, $params, $id_field );
                 } else {
                     $result = apply_filters( 'salesforce_rest_api_update_custom_wordpress_item', array(
-                        'key' => $key,
-                        'value' => $value,
-                        'methods' => $methods,
+                        'id' => $id,
                         'params' => $params,
-                        'id_field' => $id_field,
-                        'ignore_drafts' => $ignore_drafts,
-                        'name' => $name
+                        'id_field' => $id_field
                     ) );
                 }
 
