@@ -42,7 +42,7 @@ class Wordpress_Salesforce_Activate {
           push_async tinyint(1) NOT NULL DEFAULT '0',
           ignore_drafts tinyint(1) NOT NULL DEFAULT '0',
           weight tinyint(1) NOT NULL DEFAULT '0',
-          PRIMARY KEY (id)
+          PRIMARY KEY  (id)
         ) $charset_collate";
 
         $object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
@@ -57,7 +57,11 @@ class Wordpress_Salesforce_Activate {
           last_sync_action varchar(128) DEFAULT NULL,
           last_sync_status tinyint(3) NOT NULL DEFAULT '0',
           last_sync_message varchar(255) DEFAULT NULL,
-          PRIMARY KEY (id)
+          PRIMARY KEY  (id),
+          UNIQUE KEY salesforce (salesforce_id),
+          UNIQUE KEY salesforce_wordpress (wordpress_object,wordpress_id),
+          KEY wordpress_object (wordpress_object,wordpress_id),
+          KEY salesforce_object (salesforce_id)
         ) $charset_collate";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
