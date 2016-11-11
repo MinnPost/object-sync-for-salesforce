@@ -202,8 +202,8 @@ class Salesforce_Pull {
 	*/
 	private function get_updated_records() {
 		$sfapi = $this->salesforce['sfapi'];
-		foreach ( $this->mappings->get_fieldmaps() as $fieldmap ) {
-			$type = $fieldmap['salesforce_object']; // this sets the salesfore object type for the SOQL query
+		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
+			$type = $salesforce_mapping['salesforce_object']; // this sets the salesfore object type for the SOQL query
 			$mapped_fields = array();
 			$mapped_record_types = array();
 
@@ -358,9 +358,9 @@ class Salesforce_Pull {
 		$sfapi = $this->salesforce['sfapi'];
 
 		// Load all unique SF record types that we have mappings for.
-		foreach ( $this->mappings->get_fieldmaps() as $fieldmap ) {
+		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
 
-			$type = $fieldmap['salesforce_object'];
+			$type = $salesforce_mapping['salesforce_object'];
 
 			// Iterate over each field mapping to determine our parameters.
 			foreach ( $this->mappings->get_fieldmaps( NULL, array('salesforce_object' => $type ) ) as $mapping ) {
