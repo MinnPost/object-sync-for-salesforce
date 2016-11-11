@@ -55,7 +55,7 @@ class Wordpress_Salesforce_Activate {
           object_updated datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
           last_sync datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
           last_sync_action varchar(128) DEFAULT NULL,
-          last_sync_status tinyint(3) NOT NULL DEFAULT '0',
+          last_sync_status tinyint(1) NOT NULL DEFAULT '0',
           last_sync_message varchar(255) DEFAULT NULL,
           PRIMARY KEY  (id),
           UNIQUE KEY salesforce (salesforce_id),
