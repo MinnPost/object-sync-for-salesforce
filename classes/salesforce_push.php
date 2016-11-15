@@ -288,6 +288,42 @@ class Salesforce_Push {
 	*
 	*/
 	private function salesforce_push_object_crud( $object_type, $object, $sf_sync_trigger ) {
+
+		$salesforce_pull = get_transient( 'salesforce_pulling' );
+		if ( $salesforce_pull === '1' ) {
+			error_log('stop pushing and return');
+			return;
+		} else {
+			// maybe we need to clear the pull flag here instead of on the pull class
+			// is there any way to figure out which trigger it is here???
+			error_log('pull is ' . $salesforce_pull . ' not 1. keep pushing.');
+		}
+
+		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
+		$object_id_field = $structure['id_field'];
+
+		error_log('push object is ' . print_r($object, true));
+
+		if ( isset( $object[$object_id_field] ) ) {
+			error_log('load map ' . $object_type . ' with id ' . $object[$object_id_field] );
+			$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object[$object_id_field] );
+		} else {
+			// if we don't have a salesforce object id, we've got no business doing stuff in wordpress
+			$status = 'error';
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			}
+			$logging->setup(
+				__( ucfirst( $status ) . ': Salesforce Push: unable to process queue item because it has no WordPress ' . $object_id_field . '.', $this->text_domain ),
+				print_r( $object, true ),
+				$sf_sync_trigger,
+				$status
+			);
+			return;
+		}
+
 		// load mappings that match this criteria
 		// in this case, it's all mappings that correspond to the posted wordpress object
 		$sf_mappings = $this->mappings->get_fieldmaps(
@@ -380,6 +416,8 @@ class Salesforce_Push {
 
 		$exists_query = 'SELECT ' . $object_id_field . ' FROM ' . $structure['content_table'] . ' WHERE ' . $object_id_field . ' = ' . $object["$object_id_field"];
 		$object_exists = $this->wpdb->get_row( $exists_query );
+
+		// this means the object doesn't exist in wordpress. presumably has been deleted.
 		if ( $object_exists === NULL ) {
 			// remove it from the schedule
 			$this->schedule->cancel_by_name( $this->schedule_name );
@@ -434,32 +472,7 @@ class Salesforce_Push {
 		// hook to allow other plugins to define or alter the mapping object
 		$mapping_object = apply_filters( 'salesforce_rest_api_push_mapping_object', $mapping_object, $object, $mapping );
 
-		// make sure these data versions are integers bc php's mysql is weird
-		if ( isset( $mapping_object['salesforce_data_version'] ) ) {
-			$mapping_object['salesforce_data_version'] = absint( $mapping_object['salesforce_data_version'] );
-		} else {
-			$mapping_object['salesforce_data_version'] = 0;
-		}
-		if ( isset( $mapping_object['wordpress_data_version'] ) ) {
-			$mapping_object['wordpress_data_version'] = absint( $mapping_object['wordpress_data_version'] );
-			// always increase the wp version because this is a push call
-			$mapping_object['wordpress_data_version']++;
-		} else {
-			// because this is a push, start at 1 if there is no wp data version
-			$mapping_object['wordpress_data_version'] = 1;
-		}
-
-		// the wordpress and salesforce versions of the data are the same. don't do anything.
-		if ( $mapping_object['wordpress_data_version'] === $mapping_object['salesforce_data_version'] ) {
-			// if there is an actual mapping object row, update it so the version numbers will be correct
-			// if we are sending data to wordpress, this happens after that data gets saved
-			if ( isset( $mapping_object['id'] ) ) {
-				$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
-			}
-			return; // do not continue pushing data
-		}
-
-		// continue the push because wp and sf data versions are not equal
+		// we already have the data from wordpress at this point; we just need to work with it in salesforce
 		$synced_object = array(
 			'wordpress_object' => $object,
 			'mapping_object' => $mapping_object,
@@ -565,10 +578,15 @@ class Salesforce_Push {
 		// are these objects already connected in wordpress?
 		if ( isset( $mapping_object['id'] ) ) {
 			$is_new = FALSE;
+			$mapping_object_id = $mapping_object['id'];
 		} else {
 			$is_new = TRUE;
 		}
 
+		$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name );
+		set_transient( 'salesforce_pushing', 1, $seconds );
+
+		// map the wordpress values to salesforce fields
 		$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
 
 		// if we don't get any params, there are no fields that should be sent to salesforce
@@ -593,6 +611,7 @@ class Salesforce_Push {
 		}
 
 		if ( $is_new === TRUE ) {
+
 			// create new object link in wp because the systems don't know about each other yet
 
 			// setup SF record type. CampaignMember objects get their Campaign's type
@@ -724,6 +743,7 @@ class Salesforce_Push {
 					$status
 				);
 
+				// create the mapping object between the rows
 				$mapping_object = $this->create_object_map( $object, $object_id, $salesforce_id, $mapping );
 
 				// hook for push success
@@ -755,6 +775,7 @@ class Salesforce_Push {
 			}
 
 		} else {
+
 			// there is an existing object link
 			// if the last sync is greater than the last time this object was updated, skip it
 			// this keeps us from doing redundant syncs
@@ -830,11 +851,11 @@ class Salesforce_Push {
 			}
 
 			// check to see if we actually updated anything in salesforce
-			if ( $mapping_object['salesforce_data_version'] !== $mapping_object['wordpress_data_version'] ) {
+			//if ( $mapping_object['salesforce_data_version'] !== $mapping_object['wordpress_data_version'] ) {
 				// tell the mapping object - whether it is new or already existed - how we just used it
 				$mapping_object['last_sync_action'] = 'push';
 				$mapping_object['last_sync'] = current_time( 'mysql' );
-			}
+			//}
 			// update that mapping object
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
@@ -868,9 +889,7 @@ class Salesforce_Push {
 				'last_sync' => current_time( 'mysql' ),
 				'last_sync_action' => 'push',
 				'last_sync_status' => $this->mappings->status_success,
-				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
-				'wordpress_data_version' => 1,
-				'salesforce_data_version' => 0
+				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain )
 			)
 		);
 
