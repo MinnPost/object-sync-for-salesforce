@@ -339,6 +339,7 @@ class Salesforce {
 					__( $title, $this->text_domain ),
 					$curl_error,
 					0,
+					0,
 					$status
 				);
 			} elseif ( isset( $data[0]['errorCode'] ) && $data[0]['errorCode'] !== '' ) { // salesforce uses this structure to return errors
@@ -355,6 +356,7 @@ class Salesforce {
 					__( $title, $this->text_domain ),
 					esc_html__( 'URL: ' . $url . ' Message: ' . $data[0]['message'] . '  Code: ' . $code, $this->text_domain ),
 					0,
+					0,
 					$status
 				);
 			} else {
@@ -369,6 +371,7 @@ class Salesforce {
 				$logging->setup(
 					__( $title, $this->text_domain ),
 					print_r( $data, true ),
+					0,
 					0,
 					$status
 				);
