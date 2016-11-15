@@ -116,11 +116,45 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 			case 'hours':
 				$seconds = 3600;
 				break;
+            case 'days':
+                $seconds = 86400;
+                break;
+            default:
+                $seconds = 0;
 		}
 
 		$key = $schedule_unit . '_' . $schedule_number;
 
 		return $key;
+
+    }
+
+    /**
+    * Convert the schedule frequency from the admin settings into seconds
+    *
+    */
+    public function get_schedule_frequency_seconds( $name = '' ) {
+
+        $schedule_number = get_option( 'salesforce_api_' . $name . '_schedule_number', '' );
+        $schedule_unit = get_option( 'salesforce_api_' . $name . '_schedule_unit', '' );
+
+        switch ( $schedule_unit ) {
+            case 'minutes':
+                $seconds = 60;
+                break;
+            case 'hours':
+                $seconds = 3600;
+                break;
+            case 'days':
+                $seconds = 86400;
+                break;
+            default:
+                $seconds = 0;
+        }
+
+        $total = $seconds * $schedule_number;
+
+        return $total;
 
     }
 
