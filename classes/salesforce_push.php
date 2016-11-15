@@ -583,9 +583,6 @@ class Salesforce_Push {
 			$is_new = TRUE;
 		}
 
-		$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name );
-		set_transient( 'salesforce_pushing', 1, $seconds );
-
 		// map the wordpress values to salesforce fields
 		$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
 
@@ -609,6 +606,8 @@ class Salesforce_Push {
 			$key_value = $params['key']['value'];
 			unset( $params['key'] );
 		}
+
+		$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name );
 
 		if ( $is_new === TRUE ) {
 
@@ -743,6 +742,8 @@ class Salesforce_Push {
 					$status
 				);
 
+				set_transient( 'salesforce_pushing_' . $salesforce_id, 1, $seconds );
+
 				// create the mapping object between the rows
 				$mapping_object = $this->create_object_map( $object, $object_id, $salesforce_id, $mapping );
 
@@ -820,6 +821,8 @@ class Salesforce_Push {
 					$object["$object_id"],
 					$status
 				);
+
+				set_transient( 'salesforce_pushing_' . $mapping_object['salesforce_id'], 1, $seconds );
 
 				// hook for push success
 				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );

@@ -446,6 +446,8 @@ class Salesforce_Pull {
 		$hold_exceptions = count( $salesforce_mappings ) > 1;
 		$exception = FALSE;
 
+		$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name );
+
 		foreach ( $salesforce_mappings as $salesforce_mapping ) {
 
 			// this returns the row that maps the individual salesforce row to the individual wordpress row
@@ -468,7 +470,7 @@ class Salesforce_Pull {
 				return;
 			}
 
-			$salesforce_push = get_transient( 'salesforce_pushing' );
+			$salesforce_push = get_transient( 'salesforce_pushing_' . $object['Id'] );
 			if ( $salesforce_push === '1' ) {
 				error_log('stop pulling and return.');
 				return;
@@ -602,9 +604,6 @@ class Salesforce_Pull {
 			} else {
 				$is_new = TRUE;
 			}
-
-			$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name );
-			set_transient( 'salesforce_pulling', 1, $seconds );
 
 			// map the salesforce values to wordpress fields
 			$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
@@ -778,6 +777,8 @@ class Salesforce_Pull {
 						$status
 					);
 
+					set_transient( 'salesforce_pulling_' . $wordpress_id, 1, $seconds );
+
 					// create the mapping object between the rows
 					$mapping_object = $this->create_object_map( $object, $wordpress_id, $mapping );
 
@@ -845,6 +846,8 @@ class Salesforce_Pull {
 						$mapping_object['wordpress_id'],
 						$status
 					);
+
+					set_transient( 'salesforce_pulling_' . $mapping_object['wordpress_id'], 1, $seconds );
 
 					// hook for pull success
 					do_action( 'salesforce_rest_api_pull_success', $op, $result, $synced_object );
