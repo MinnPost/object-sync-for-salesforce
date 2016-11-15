@@ -401,11 +401,11 @@ class Salesforce_Mapping {
      *   The requested SalesforceMappingObject or FALSE if none was found.
      */
     public function load_by_wordpress( $object_type, $object_id, $reset = FALSE ) {
-      $conditions = array(
-        'wordpress_id' => $object_id,
-        'wordpress_object' => $object_type,
-      );
-      return $this->get_object_maps( $conditions, $reset );
+        $conditions = array(
+            'wordpress_id' => $object_id,
+            'wordpress_object' => $object_type,
+        );
+        return $this->get_object_maps( $conditions, $reset );
     }
 
     /**
