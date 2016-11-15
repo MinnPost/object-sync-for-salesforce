@@ -326,13 +326,52 @@ class Salesforce {
 		if ( !in_array( $code, $this->success_or_refresh_codes ) ) {
 			$curl_error = curl_error( $curl );
 			if ( $curl_error !== '' ) {
-				throw new SalesforceException( $curl_error );
+				// create log entry for failed curl
+				$status = 'error';
+				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
+					__( $title, $this->text_domain ),
+					$curl_error,
+					0,
+					$status
+				);
 			} elseif ( isset( $data[0]['errorCode'] ) && $data[0]['errorCode'] !== '' ) { // salesforce uses this structure to return errors
-				//throw new SalesforceException( $data[0]['message'], -1, $code );
-				throw new SalesforceException( esc_html__( 'URL: ' . $url . ' Message: ' . $data[0]['message'] . '  Code: ' . $code, $this->text_domain ) );
+				// create log entry for failed curl
+				$status = 'error';
+				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+
+				$logging->setup(
+					__( $title, $this->text_domain ),
+					esc_html__( 'URL: ' . $url . ' Message: ' . $data[0]['message'] . '  Code: ' . $code, $this->text_domain ),
+					0,
+					$status
+				);
 			} else {
-				// todo: have not tested this case. need to see what it does if it happens again
-				error_log( 'data is ' . print_r( $data, true ) );
+				// create log entry for failed curl
+				$status = 'error';
+				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				}
+				$logging->setup(
+					__( $title, $this->text_domain ),
+					print_r( $data, true ),
+					0,
+					$status
+				);
 			}
 		}
 
