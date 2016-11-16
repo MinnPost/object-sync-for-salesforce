@@ -75,18 +75,18 @@ class Salesforce {
 	*/
 	public static function convert_id( $sf_id_15 ) {
 		if ( strlen( $sf_id_15) != 15 ) {
-		  return $sf_id_15;
+			return $sf_id_15;
 		}
 		$chunks = str_split( $sf_id_15, 5 );
 		$extra = '';
 		foreach ( $chunks as $chunk ) {
-		  $chars = str_split( $chunk, 1 );
-		  $bits = '';
-		  foreach ( $chars as $char ) {
-		    $bits .= ( !is_numeric( $char ) && $char == strtoupper( $char ) ) ? '1' : '0';
-		  }
-		  $map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345';
-		  $extra .= substr( $map, base_convert( strrev( $bits ), 2, 10 ), 1 );
+			$chars = str_split( $chunk, 1 );
+			$bits = '';
+			foreach ( $chars as $char ) {
+				$bits .= ( !is_numeric( $char ) && $char == strtoupper( $char ) ) ? '1' : '0';
+			}
+			$map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345';
+			$extra .= substr( $map, base_convert( strrev( $bits ), 2, 10 ), 1 );
 		}
 		return $sf_id_15 . $extra;
 	}
