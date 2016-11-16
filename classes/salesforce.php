@@ -296,10 +296,10 @@ class Salesforce {
 		curl_setopt( $curl, CURLOPT_URL, $url );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
 		curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, TRUE );
-		if ( $headers !== false ) {
+		if ( $headers !== FALSE ) {
 			curl_setopt( $curl, CURLOPT_HTTPHEADER, $headers );
 		} else {
-			curl_setopt( $curl, CURLOPT_HEADER, false );
+			curl_setopt( $curl, CURLOPT_HEADER, FALSE );
 		}
 
 		if ( $method === 'POST' ) {
@@ -314,7 +314,7 @@ class Salesforce {
 
 		if ( ( $method === 'PATCH' || $method === 'DELETE' ) && $json_response === '' && $code === 204 ) {
 			// delete and patch requests return a 204 with an empty body upon success for whatever reason
-			$data = array( 'success' => true, 'body' => '' );
+			$data = array( 'success' => TRUE, 'body' => '' );
 			curl_close( $curl );
 			return array( 'json' => json_encode( $data ), 'code' => $code, 'data' => $data );
 		}
@@ -324,7 +324,7 @@ class Salesforce {
             $json_response = gzinflate( substr( $json_response, 10 ) );
         }
 		
-		$data = json_decode( $json_response, true ); // decode it into an array
+		$data = json_decode( $json_response, TRUE ); // decode it into an array
 
 		// don't use the exception if the status is a success one, or if it just needs a refresh token (salesforce uses 401 for this)
 		if ( !in_array( $code, $this->success_or_refresh_codes ) ) {
@@ -475,35 +475,35 @@ class Salesforce {
 	protected function refresh_token() {
 		$refresh_token = $this->get_refresh_token();
 		if ( empty( $refresh_token ) ) {
-		  throw new SalesforceException( esc_html__( 'There is no refresh token.', $this->text_domain ) );
+			throw new SalesforceException( esc_html__( 'There is no refresh token.', $this->text_domain ) );
 		}
 
 		$data = array(
-		  'grant_type' => 'refresh_token',
-		  'refresh_token' => $refresh_token,
-		  'client_id' => $this->consumer_key,
-		  'client_secret' => $this->consumer_secret,
+			'grant_type' => 'refresh_token',
+			'refresh_token' => $refresh_token,
+			'client_id' => $this->consumer_key,
+			'client_secret' => $this->consumer_secret,
 		);
 
 		$url = $this->login_url . $this->token_path;
 		$headers = array(
-		  // This is an undocumented requirement on Salesforce's end.
-		  'Content-Type' => 'Content-Type: application/x-www-form-urlencoded',
-		  'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
-		  'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
+			// This is an undocumented requirement on Salesforce's end.
+			'Content-Type' => 'Content-Type: application/x-www-form-urlencoded',
+			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
+			'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
 		);
-		$headers = false;
+		$headers = FALSE;
 		$response = $this->http_request( $url, $data, $headers, 'POST' );
 
 		if ( $response['code'] != 200 ) {
-		  // @TODO: Deal with error better.
-		  throw new SalesforceException( esc_html__( 'Unable to get a Salesforce access token.', $this->text_domain ), $response['code'] );
+			// @TODO: Deal with error better.
+			throw new SalesforceException( esc_html__( 'Unable to get a Salesforce access token.', $this->text_domain ), $response['code'] );
 		}
 
 		$data = $response['data'];
 
 		if ( is_array( $data ) && isset($data['error'] ) ) {
-		  throw new SalesforceException( $data['error_description'], $data['error'] );
+			throw new SalesforceException( $data['error_description'], $data['error'] );
 		}
 
 		$this->set_access_token( $data['access_token'] );
@@ -521,13 +521,13 @@ class Salesforce {
 	*/
 	protected function set_identity( $id ) {
 		$headers = array(
-		  'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
-		  //'Content-type' => 'application/json',
-		  'Accept-Encoding' => 'Accept-Encoding: gzip, deflate'
+			'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
+			//'Content-type' => 'application/json',
+			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate'
 		);
 		$response = $this->http_request( $id, NULL, $headers );
 		if ( $response['code'] != 200 ) {
-		  throw new SalesforceException( esc_html__( 'Unable to access identity service.', $this->text_domain ), $response['code'] );
+			throw new SalesforceException( esc_html__( 'Unable to access identity service.', $this->text_domain ), $response['code'] );
 		}
 		$data = $response['data'];
 		update_option( 'salesforce_api_identity', $data );
@@ -549,12 +549,12 @@ class Salesforce {
 	*/
 	public function get_authorization_code() {
 		$url = add_query_arg( 
-		    array( 
-		        'response_type' => 'code',
-		        'client_id' => $this->consumer_key,
-		        'redirect_uri' => $this->redirect_url(),
-		    ), 
-		    $this->login_url . $this->authorize_path
+			array( 
+				'response_type' => 'code',
+				'client_id' => $this->consumer_key,
+				'redirect_uri' => $this->redirect_url(),
+			),
+			$this->login_url . $this->authorize_path
 		);
 		return $url;
 	}
@@ -567,35 +567,35 @@ class Salesforce {
 	*/
 	public function request_token( $code ) {
 		$data = array(
-		  'code' => $code,
-		  'grant_type' => 'authorization_code',
-		  'client_id' => $this->consumer_key,
-		  'client_secret' => $this->consumer_secret,
-		  'redirect_uri' => $this->redirect_url(),
+			'code' => $code,
+			'grant_type' => 'authorization_code',
+			'client_id' => $this->consumer_key,
+			'client_secret' => $this->consumer_secret,
+			'redirect_uri' => $this->redirect_url(),
 		);
 
 		$url = $this->login_url . $this->token_path;
 		$headers = array(
-		  // This is an undocumented requirement on SF's end.
-		  //'Content-Type' => 'application/x-www-form-urlencoded',
-		  'Accept-Encoding' => 'Accept-Encoding: gzip, deflate'
+			// This is an undocumented requirement on SF's end.
+			//'Content-Type' => 'application/x-www-form-urlencoded',
+			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate'
 		);
 		$response = $this->http_request( $url, $data, $headers, 'POST' );
 
 		$data = $response['data'];
 
 		if ( $response['code'] != 200 ) {
-		  $error = isset( $data['error_description'] ) ? $data['error_description'] : $response['error'];
-		  throw new SalesforceException( $error, $response['code'] );
+			$error = isset( $data['error_description'] ) ? $data['error_description'] : $response['error'];
+			throw new SalesforceException( $error, $response['code'] );
 		}
 
 		// Ensure all required attributes are returned. They can be omitted if the
 		// OAUTH scope is inadequate.
 		$required = array( 'refresh_token', 'access_token', 'id', 'instance_url' );
 		foreach ( $required as $key ) {
-		  if ( !isset($data[$key] ) ) {
-		    return FALSE;
-		  }
+			if ( !isset($data[$key] ) ) {
+				return FALSE;
+			}
 		}
 
 		$this->set_refresh_token( $data['refresh_token'] );
@@ -635,16 +635,16 @@ class Salesforce {
 	*/
 	public function objects( $conditions = array( 'updateable' => TRUE, 'triggerable' => TRUE ), $reset = FALSE ) {
 
-	  	$result = $this->api_call( 'sobjects' );
+		$result = $this->api_call( 'sobjects' );
 
 		if (!empty( $conditions ) ) {
-		  foreach ( $result['data']['sobjects'] as $key => $object ) {
-		    foreach ( $conditions as $condition => $value ) {
-		      if ( $object[$condition] != $value ) {
-		        unset( $result['data']['sobjects'][$key] );
-		      }
-		    }
-		  }
+			foreach ( $result['data']['sobjects'] as $key => $object ) {
+				foreach ( $conditions as $condition => $value ) {
+					if ( $object[$condition] != $value ) {
+						unset( $result['data']['sobjects'][$key] );
+					}
+				}
+			}
 		}
 
 		ksort( $result['data']['sobjects'] );
@@ -671,18 +671,18 @@ class Salesforce {
 	*/
 	public function query( $query, $options = array(), $all = FALSE, $explain = FALSE ) {
 		$search_data = [
-            'q' => $query,
-        ];
-        if ( $explain === TRUE ) {
-            $search_data['explain'] = $search_data['q'];
-            unset( $search_data['q'] );
-        }
-        // all is a search through deleted and merged data as well
-        if ( $all === TRUE ) {
-            $path = 'queryAll';
-        } else {
-            $path = 'query';
-        }
+			'q' => $query,
+		];
+		if ( $explain === TRUE ) {
+			$search_data['explain'] = $search_data['q'];
+			unset( $search_data['q'] );
+		}
+		// all is a search through deleted and merged data as well
+		if ( $all === TRUE ) {
+			$path = 'queryAll';
+		} else {
+			$path = 'query';
+		}
 		$result = $this->api_call( $path . '?' . http_build_query( $search_data ), array(), 'GET', $options );
 		return $result;
 	}
@@ -702,16 +702,16 @@ class Salesforce {
 	* part of core API calls
 	*/
 	public function object_describe( $name, $reset = FALSE ) {
-		if (empty($name)) {
-		  return array();
+		if ( empty( $name ) ) {
+			return array();
 		}
-  		$object = $this->api_call( "sobjects/{$name}/describe" );
+		$object = $this->api_call( "sobjects/{$name}/describe" );
 		// Sort field properties, because salesforce API always provides them in a
 		// random order. We sort them so that stored and exported data are
 		// standardized and predictable.
 		foreach ( $object['data']['fields'] as &$field ) {
 			ksort( $field );
-			if (!empty( $field['picklistValues'] ) ) {
+			if ( !empty( $field['picklistValues'] ) ) {
 				foreach ( $field['picklistValues'] as &$picklist_value ) {
 					ksort( $picklist_value );
 				}
@@ -780,12 +780,12 @@ class Salesforce {
 		$options = array( 'type' => 'write' );
 		// If key is set, remove from $params to avoid UPSERT errors.
 		if ( isset( $params[$key] ) ) {
-		  unset( $params[$key] );
+			unset( $params[$key] );
 		}
 
 		$data = $this->api_call( "sobjects/{$name}/{$key}/{$value}", $params, 'PATCH', $options );
 		if ( $this->response['code'] == 300 ) {
-		  $data['message'] = esc_html__( 'The value provided is not unique.', $this->text_domain );
+			$data['message'] = esc_html__( 'The value provided is not unique.', $this->text_domain );
 		}
 		return $data;
 	}
@@ -901,7 +901,7 @@ class Salesforce {
 	public function list_resources() {
 		$resources = $this->api_call('');
 		foreach ( $resources as $key => $path ) {
-		  $items[$key] = $path;
+			$items[$key] = $path;
 		}
 		return $items;
 	}
@@ -934,12 +934,12 @@ class Salesforce {
 	*/
 	public function get_updated( $type, $start = null, $end = null ) {
 		if ( empty( $start ) ) {
-		  $start = strtotime( '-29 days' );
+			$start = strtotime( '-29 days' );
 		}
 		$start = urlencode( gmdate( DATE_ATOM, $start ) );
 
 		if ( empty( $end ) ) {
-		  $end = time();
+			$end = time();
 		}
 		$end = urlencode( gmdate( DATE_ATOM, $end ) );
 
