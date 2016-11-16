@@ -104,11 +104,15 @@ class Salesforce {
 	* @throws SalesforceException
 	*/
 	public function get_sobject_type( $sf_id ) {
-		$objects = $this->objects( array( 'keyPrefix' => substr( $sf_id, 0, 3 ) ) );
+		$objects = $this->objects(
+			array(
+				'keyPrefix' => substr( $sf_id, 0, 3 )
+			)
+		);
 		if ( count( $objects ) == 1 ) {
-		  // keyPrefix is unique across objects. If there is exactly one return value from objects(), then we have a match.
-		  $object = reset( $objects );
-		  return $object['name'];
+			// keyPrefix is unique across objects. If there is exactly one return value from objects(), then we have a match.
+			$object = reset( $objects );
+			return $object['name'];
 		}
 		// Otherwise, we did not find a match.
 		return FALSE;
