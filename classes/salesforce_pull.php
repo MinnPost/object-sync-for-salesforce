@@ -607,9 +607,12 @@ class Salesforce_Pull {
 			// are these objects already connected in wordpress?
 			if ( isset( $mapping_object['id'] ) ) {
 				$is_new = FALSE;
-				$mapping_object_id = $mapping_object['id'];
+				$mapping_object_id_transient = $mapping_object['id'];
 			} else {
+				// there is not a mapping object for this wordpress object id yet
+				// check for that transient with the currently pushing id
 				$is_new = TRUE;
+				$mapping_object_id_transient = get_transient( 'salesforce_pushing_object_id' );
 			}
 
 			// map the salesforce values to wordpress fields
@@ -652,7 +655,14 @@ class Salesforce_Pull {
 
 			if ( $is_new === TRUE && ( $sf_sync_trigger == $this->mappings->sync_sf_create ) ) {
 
-				// create new object link in wp because the systems don't know about each other yet
+				// right here we should set the pulling transient
+				// this means we have to create the mapping object here as well, and update it with the correct IDs after successful response
+				// create the mapping object between the rows
+				$mapping_object_id = $this->create_object_map( $object, 0, $mapping );
+				set_transient( 'salesforce_pulling_' . $mapping_object_id, 1, $seconds );
+				set_transient( 'salesforce_pulling_object_id', $mapping_object_id );
+				$mapping_object = $this->mappings->get_object_maps( array( 'id' => $mapping_object_id ) );
+
 
 				// setup SF record type. CampaignMember objects get their Campaign's type
 				// i am still a bit confused about this
@@ -784,10 +794,9 @@ class Salesforce_Pull {
 						$status
 					);
 
-					set_transient( 'salesforce_pulling_' . $wordpress_id, 1, $seconds );
-
-					// create the mapping object between the rows
-					$mapping_object = $this->create_object_map( $object, $wordpress_id, $mapping );
+					// update that mapping object
+					$mapping_object['wordpress_id'] = $wordpress_id;
+					$mapping_object = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 					// hook for pull success
 					do_action( 'salesforce_rest_api_pull_success', $op, $result, $synced_object );
@@ -823,6 +832,11 @@ class Salesforce_Pull {
 
 			} else if ( $is_new === FALSE && ( $sf_sync_trigger == $this->mappings->sync_sf_update ) ) {
 
+				// right here we should set the pulling transient
+				error_log('set value for salesforce_pulling_' . $mapping_object['id'] . ' to 1');
+				set_transient( 'salesforce_pulling_' . $mapping_object['id'], 1, $seconds );
+				set_transient( 'salesforce_pulling_object_id', $mapping_object['id'] );
+
 				// there is an existing object link
 				// if the last sync is greater than the last time this object was updated by salesforce, skip it
 				// this keeps us from doing redundant syncs
@@ -853,8 +867,6 @@ class Salesforce_Pull {
 						$mapping_object['wordpress_id'],
 						$status
 					);
-
-					set_transient( 'salesforce_pulling_' . $mapping_object['wordpress_id'], 1, $seconds );
 
 					// hook for pull success
 					do_action( 'salesforce_rest_api_pull_success', $op, $result, $synced_object );

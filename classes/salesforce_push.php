@@ -289,24 +289,28 @@ class Salesforce_Push {
 	*/
 	private function salesforce_push_object_crud( $object_type, $object, $sf_sync_trigger ) {
 
-		$salesforce_pull = get_transient( 'salesforce_pulling' );
-		if ( $salesforce_pull === '1' ) {
-			error_log('stop pushing and return');
-			return;
-		} else {
-			// maybe we need to clear the pull flag here instead of on the pull class
-			// is there any way to figure out which trigger it is here???
-			error_log('pull is ' . $salesforce_pull . ' not 1. keep pushing.');
-		}
-
 		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
 		$object_id_field = $structure['id_field'];
 
-		error_log('push object is ' . print_r($object, true));
-
+		// there is a wordpress object to push
 		if ( isset( $object[$object_id_field] ) ) {
-			error_log('load map ' . $object_type . ' with id ' . $object[$object_id_field] );
+
 			$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object[$object_id_field] );
+
+			// there is already a mapping object for this wordpress object
+			if ( isset( $mapping_object['id'] ) ) {
+				$mapping_object_id_transient = $mapping_object['id'];
+			} else {
+				// there is not a mapping object for this wordpress object id yet
+				// check for that transient with the currently pulling id
+				$mapping_object_id_transient = (int) get_transient( 'salesforce_pulling_object_id' );
+			}
+
+			$salesforce_pulling = (int) get_transient( 'salesforce_pulling_' . $mapping_object_id_transient );
+			if ( $salesforce_pulling === 1 ) {
+				return FALSE;
+			}
+
 		} else {
 			// if we don't have a wordpress object id, we've got no business doing stuff in salesforce
 			$status = 'error';
@@ -578,7 +582,6 @@ class Salesforce_Push {
 		// are these objects already connected in wordpress?
 		if ( isset( $mapping_object['id'] ) ) {
 			$is_new = FALSE;
-			$mapping_object_id = $mapping_object['id'];
 		} else {
 			$is_new = TRUE;
 		}
