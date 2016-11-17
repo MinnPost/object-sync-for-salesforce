@@ -297,7 +297,6 @@ class Salesforce_Push {
 
 		// there is a wordpress object to push
 		if ( isset( $object[$object_id_field] ) ) {
-
 			$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object[$object_id_field] );
 
 			// there is already a mapping object for this wordpress object
@@ -311,6 +310,7 @@ class Salesforce_Push {
 
 			$salesforce_pulling = (int) get_transient( 'salesforce_pulling_' . $mapping_object_id_transient );
 			if ( $salesforce_pulling === 1 ) {
+				delete_transient( 'salesforce_pulling_' . $mapping_object_id_transient );
 				return FALSE;
 			}
 

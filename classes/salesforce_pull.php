@@ -618,6 +618,7 @@ class Salesforce_Pull {
 			// drupal only does a salesforce_pull flag, but we might as well do push and pull because wordpress
 			$salesforce_pushing = (int) get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
 			if ( $salesforce_pushing === 1 ) {
+				delete_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
 				continue;
 			}
 
