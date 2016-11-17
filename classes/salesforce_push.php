@@ -125,6 +125,9 @@ class Salesforce_Push {
 	* @param object $post
 	*/
 	public function post_actions( $post_id, $post ) {
+
+		$post_type = $post->post_type;
+
 		if ( isset( $post->post_status ) && $post->post_status === 'auto-draft' ) {
 			return;
 		}
@@ -142,13 +145,13 @@ class Salesforce_Push {
 	    	$update = 0;
 	    	$delete = 1;
 	    }
-	    $post = $this->wordpress->get_wordpress_object_data( 'post', $post_id );
+	    $post = $this->wordpress->get_wordpress_object_data( $post->post_type, $post_id );
 		if ( $update === 1 ) {
-			$this->object_update( $post, 'post' );
+			$this->object_update( $post, $post_type );
 		} elseif ( $delete === 1) {
-			$this->object_delete( $post, 'post' );
+			$this->object_delete( $post, $post_type );
 		} else {
-			$this->object_insert( $post, 'post' );
+			$this->object_insert( $post, $post_type );
 		}
 	}
 
@@ -377,6 +380,7 @@ class Salesforce_Push {
 					// create new schedule based on the options for this current class
 					// this will use the existing schedule if it already exists; otherwise it'll create one
 					$this->schedule->use_schedule( $this->schedule_name );
+					error_log('save data to push queue');
 					$this->schedule->push_to_queue( $data );
 					$this->schedule->save()->dispatch();
 
@@ -489,11 +493,13 @@ class Salesforce_Push {
 		// deleting mapped objects
 		if ( $sf_sync_trigger == $this->mappings->sync_wordpress_delete ) {
 			if ( isset( $mapping_object['id'] ) ) {
+				error_log('start to delete');
 				$op = 'Delete';
 
 				$salesforce_check = $this->mappings->load_by_salesforce( $mapping_object['salesforce_id'] );
 
 				if ( count( $salesforce_check ) == count( $salesforce_check, COUNT_RECURSIVE ) ) {
+					error_log('count is right. try to delete ' . $mapping['salesforce_object'] . ' with id of ' . $mapping_object['salesforce_id']);
 					try {
 						$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 					}
@@ -588,6 +594,11 @@ class Salesforce_Push {
 
 		// map the wordpress values to salesforce fields
 		$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
+
+		// hook to allow other plugins to modify the $params array
+		// use hook to map fields between the wordpress and salesforce objects
+		// returns $params.
+		$params = apply_filters( 'salesforce_rest_api_push_params_modify', $params, $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
 
 		// if we don't get any params, there are no fields that should be sent to salesforce
 		if ( empty( $params ) ) {
@@ -924,70 +935,64 @@ class Salesforce_Push {
 	 *   Entities that were synced with Salesforce.
 	 */
 	function salesforce_push_process_soap_results($op, $results, $synced_entities) {
-	  foreach ($results as $key => $result) {
-		$synced_entity = $synced_entities[$key];
-		$mapping_object = empty($synced_entity['mapping_object']) ? FALSE : $synced_entity['mapping_object'];
-		if ($result->success) {
-		  if (drupal_strtolower($op) == 'delete' && $mapping_object) {
-			$mapping_object->delete();
-			return;
-		  }
+		foreach ($results as $key => $result) {
+			$synced_entity = $synced_entities[$key];
+			$mapping_object = empty( $synced_entity['mapping_object'] ) ? FALSE : $synced_entity['mapping_object'];
+			if ( $result->success ) {
+				if ( mb_strtolower( $op ) == 'delete' && $mapping_object ) {
+					$mapping_object->delete();
+					return;
+				}
+				if ( !$mapping_object ) {
+					// Create mapping object, saved below.
+					$wrapper = $synced_entity['entity_wrapper'];
+					list( $entity_id ) = entity_extract_ids( $wrapper->type(), $wrapper->value() );
+					$mapping_object = entity_create( 'salesforce_mapping_object', array(
+						'entity_id' => $entity_id,
+						'entity_type' => $wrapper->type(),
+						'salesforce_id' => $result->id,
+						'last_sync_message' => t('Mapping object created via !function.', array('!function' => __FUNCTION__)),
+						)
+					);
+				} else {
+					$mapping_object->last_sync_message = __( 'Mapping object updated via !function.', array( '!function' => __FUNCTION__ ) );
+				}
 
-		  if (!$mapping_object) {
-			// Create mapping object, saved below.
-			$wrapper = $synced_entity['entity_wrapper'];
-			list($entity_id) = entity_extract_ids($wrapper->type(), $wrapper->value());
-			$mapping_object = entity_create('salesforce_mapping_object', array(
-			  'entity_id' => $entity_id,
-			  'entity_type' => $wrapper->type(),
-			  'salesforce_id' => $result->id,
-			  'last_sync_message' => t('Mapping object created via !function.', array('!function' => __FUNCTION__)),
-			));
-		  }
-		  else {
-			$mapping_object->last_sync_message = t('Mapping object updated via !function.', array('!function' => __FUNCTION__));
-		  }
+				$mapping_object->last_sync_status = $this->mappings->status_success;
+				$mapping_object->last_sync = current_time( 'timestamp' );
+				$mapping_object->last_sync_action = 'push';
+				$mapping_object->save();
 
-		  $mapping_object->last_sync_status = $this->mappings->status_success;
-		  $mapping_object->last_sync = current_time( 'timestamp' );
-		  $mapping_object->last_sync_action = 'push';
-		  $mapping_object->save();
+				watchdog( 'salesforce_push', '%op: Salesforce object %id', array( '%id' => $result->id, '%op' => $op ) );
 
-		  watchdog('salesforce_push', '%op: Salesforce object %id',
-			array('%id' => $result->id, '%op' => $op)
-		  );
-
-		  do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
+				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
+			} else {
+				// Otherwise, the item is considered failed.
+				$error_messages = array();
+				foreach ( $result->errors as $error ) {
+					watchdog( 'salesforce_push', '%op error for Salesforce object %id. @code: @message',
+					array(
+						'%id' => $result->id,
+						'@code' => $error->statusCode,
+						'@message' => $error->message,
+						'%op' => $op,
+						), WATCHDOG_ERROR );
+					$error_messages[] = $error->message;
+				}
+				if ( $mapping_object ) {
+					$mapping_object->last_sync = current_time( 'timestamp' );
+					$mapping_object->last_sync_action = 'push';
+					$mapping_object->last_sync_status = $this->mappings->status_error;
+					$mapping_object->last_sync_message = __( 'Push error via %function with the following messages: @message.', array(
+							'%function' => __FUNCTION__,
+							'@message' => implode(' | ', $error_messages),
+						)
+					);
+					$mapping_object->save();
+				}
+				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
+			}
 		}
-		else {
-		  // Otherwise, the item is considered failed.
-		  $error_messages = array();
-		  foreach ($result->errors as $error) {
-			watchdog('salesforce_push', '%op error for Salesforce object %id. @code: @message',
-			  array(
-				'%id' => $result->id,
-				'@code' => $error->statusCode,
-				'@message' => $error->message,
-				'%op' => $op,
-			  ),
-			  WATCHDOG_ERROR
-			);
-			$error_messages[] = $error->message;
-		  }
-		  if ($mapping_object) {
-			$mapping_object->last_sync = current_time( 'timestamp' );
-			$mapping_object->last_sync_action = 'push';
-			$mapping_object->last_sync_status = $this->mappings->status_error;
-			$mapping_object->last_sync_message = t('Push error via %function with the following messages: @message.', array(
-			  '%function' => __FUNCTION__,
-			  '@message' => implode(' | ', $error_messages),
-			));
-			$mapping_object->save();
-		  }
-
-		  do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
-		}
-	  }
 	}
 	
 }
