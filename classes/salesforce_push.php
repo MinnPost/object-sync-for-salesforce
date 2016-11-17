@@ -610,7 +610,7 @@ class Salesforce_Push {
 			unset( $params['key'] );
 		}
 
-		$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name );
+		$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name ) + 60;
 
 		if ( $is_new === TRUE ) {
 

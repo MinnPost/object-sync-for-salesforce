@@ -443,7 +443,7 @@ class Salesforce_Pull {
 		$hold_exceptions = count( $salesforce_mappings ) > 1;
 		$exception = FALSE;
 
-		$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name );
+		$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name ) + 60;
 
 		foreach ( $salesforce_mappings as $salesforce_mapping ) {
 
