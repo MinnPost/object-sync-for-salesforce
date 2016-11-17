@@ -293,8 +293,6 @@ class Salesforce_Pull {
 						'sf_sync_trigger' => $trigger // use the appropriate trigger based on when this was created
 					);
 
-					error_log('get updated records result is ' . print_r($data, true));
-
 					$this->schedule->push_to_queue( $data );
 					$this->schedule->save()->dispatch();
 
@@ -439,7 +437,6 @@ class Salesforce_Pull {
 		}
 
 		$salesforce_mappings = $this->mappings->get_fieldmaps( NULL, $mapping_conditions );
-		//$salesforce_mappings = array();
 
 		// these lines come from drupal and have to do with whether to throw errors or not
 		// todo: should test this
@@ -920,8 +917,8 @@ class Salesforce_Pull {
 	* @param array $field_mapping
 	*	The row that maps the object types together, including which fields match which other fields
 	*
-	* @return array $mapping object
-	*	This is the database row that maps the objects, including the IDs for each one, and the WP object type
+	* @return int $wpdb->insert_id
+	*	This is the database row for the map object
 	*
 	*/
 	private function create_object_map( $salesforce_object, $wordpress_id, $field_mapping ) {

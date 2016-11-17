@@ -308,7 +308,7 @@ class Salesforce_Push {
 			error_log('load map ' . $object_type . ' with id ' . $object[$object_id_field] );
 			$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object[$object_id_field] );
 		} else {
-			// if we don't have a salesforce object id, we've got no business doing stuff in wordpress
+			// if we don't have a wordpress object id, we've got no business doing stuff in salesforce
 			$status = 'error';
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
@@ -878,8 +878,8 @@ class Salesforce_Push {
 	* @param array $field_mapping
 	*	The row that maps the object types together, including which fields match which other fields
 	*
-	* @return array $mapping object
-	*	This is the database row that maps the objects, including the IDs for each one, and the WP object type
+	* @return int $wpdb->insert_id
+	*	This is the database row for the map object
 	*
 	*/
 	private function create_object_map( $wordpress_object, $id_field_name, $salesforce_id, $field_mapping ) {
@@ -904,6 +904,7 @@ class Salesforce_Push {
 	 * Process SOAP API batch results.
 	 *
 	 * Create or update mapped object entities and log results.
+	 * todo: fix this for wordpress if we decide to support soap
 	 *
 	 * @param string $op
 	 *   Operation performed.
