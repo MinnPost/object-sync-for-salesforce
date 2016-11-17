@@ -467,12 +467,22 @@ class Salesforce_Pull {
 				return;
 			}
 
-			$salesforce_push = get_transient( 'salesforce_pushing_' . $object['Id'] );
-			if ( $salesforce_push === '1' ) {
-				error_log('stop pulling and return.');
-				return;
-			} else {
-				error_log('push is ' . $salesforce_push . ' not 1. keep pulling.');
+			// hook to allow other plugins to prevent a pull per-mapping.
+			$pull_allowed = apply_filters( 'salesforce_rest_api_pull_object_allowed', TRUE, $object_type, $object, $sf_sync_trigger, $salesforce_mapping );
+
+			// example to keep from pulling the Contact with id of abcdef
+			/*
+			add_filter( 'salesforce_rest_api_pull_object_allowed', 'check_user', 10, 5 );
+			// can always reduce this number if all the arguments are not necessary
+			function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
+				if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
+					return FALSE;
+				}
+			}
+			*/
+
+			if ( $pull_allowed === FALSE ) {
+				continue;
 			}
 
 			// if there's already a connection between the objects, $mapping_object will be an array
