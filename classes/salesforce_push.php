@@ -614,7 +614,13 @@ class Salesforce_Push {
 
 		if ( $is_new === TRUE ) {
 
-			// create new object link in wp because the systems don't know about each other yet
+			// right here we should set the pushing transient
+			// this means we have to create the mapping object here as well, and update it with the correct IDs after successful response
+			// create the mapping object between the rows
+			$mapping_object_id = $this->create_object_map( $object, $object_id, 0, $mapping );
+			set_transient( 'salesforce_pushing_' . $mapping_object_id, 1, $seconds );
+			set_transient( 'salesforce_pushing_object_id', $mapping_object_id );
+			$mapping_object = $this->mappings->get_object_maps( array( 'id' => $mapping_object_id ) );
 
 			// setup SF record type. CampaignMember objects get their Campaign's type
 			// i am still a bit confused about this
@@ -745,10 +751,9 @@ class Salesforce_Push {
 					$status
 				);
 
-				set_transient( 'salesforce_pushing_' . $salesforce_id, 1, $seconds );
-
-				// create the mapping object between the rows
-				$mapping_object = $this->create_object_map( $object, $object_id, $salesforce_id, $mapping );
+				// update that mapping object
+				$mapping_object['salesforce_id'] = $salesforce_id;
+				$mapping_object = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 				// hook for push success
 				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
@@ -779,6 +784,10 @@ class Salesforce_Push {
 			}
 
 		} else {
+
+			// right here we should set the pushing transient
+			set_transient( 'salesforce_pushing_' . $mapping_object['id'], 1, $seconds );
+			set_transient( 'salesforce_pushing_object_id', $mapping_object['id'] );
 
 			// there is an existing object link
 			// if the last sync is greater than the last time this object was updated, skip it
@@ -824,8 +833,6 @@ class Salesforce_Push {
 					$object["$object_id"],
 					$status
 				);
-
-				set_transient( 'salesforce_pushing_' . $mapping_object['salesforce_id'], 1, $seconds );
 
 				// hook for push success
 				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );

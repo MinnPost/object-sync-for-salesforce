@@ -615,6 +615,12 @@ class Salesforce_Pull {
 				$mapping_object_id_transient = get_transient( 'salesforce_pushing_object_id' );
 			}
 
+			// drupal only does a salesforce_pull flag, but we might as well do push and pull because wordpress
+			$salesforce_pushing = (int) get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
+			if ( $salesforce_pushing === 1 ) {
+				continue;
+			}
+
 			// map the salesforce values to wordpress fields
 			$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
 
@@ -833,7 +839,6 @@ class Salesforce_Pull {
 			} else if ( $is_new === FALSE && ( $sf_sync_trigger == $this->mappings->sync_sf_update ) ) {
 
 				// right here we should set the pulling transient
-				error_log('set value for salesforce_pulling_' . $mapping_object['id'] . ' to 1');
 				set_transient( 'salesforce_pulling_' . $mapping_object['id'], 1, $seconds );
 				set_transient( 'salesforce_pulling_object_id', $mapping_object['id'] );
 
