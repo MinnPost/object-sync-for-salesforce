@@ -625,6 +625,11 @@ class Salesforce_Pull {
 			// map the salesforce values to wordpress fields
 			$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
 
+			// hook to allow other plugins to modify the $params array
+			// use hook to map fields between the wordpress and salesforce objects
+			// returns $params.
+			$params = apply_filters( 'salesforce_rest_api_pull_params_modify', $params, $mapping, $object, $sf_sync_trigger, FALSE, $is_new );
+
 			// if we don't get any params, there are no fields that should be sent to wordpress
 			if ( empty( $params ) ) {
 				return;

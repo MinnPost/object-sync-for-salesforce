@@ -193,6 +193,8 @@ Current hooks include:
 
 - `salesforce_rest_api_push_object_allowed`: prevent a push per-mapping.
 - `salesforce_rest_api_pull_object_allowed`: prevent a pull per-mapping.
+- `salesforce_rest_api_pull_params_modify`: change what parameters are being sent to WordPress before syncing occurs
+- `salesforce_rest_api_push_params_modify`: change what parameters are being sent to Salesforce before syncing occurs
 - `salesforce_rest_api_find_sf_object_match`: modify the $salesforce_id string here
 - `salesforce_rest_api_settings_tabs`: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
 - `salesforce_rest_api_modify_schedulable_classes`: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
@@ -215,7 +217,6 @@ Current hooks include:
 
 TODO hooks include:
 
-- `hook_salesforce_push_params_alter`: change what parameters are being sent to Salesforce before syncing occurs
 - `hook_salesforce_mapping_entity_uris_alter`: provide URLs manually for object types. Drupal does this within the salesforce_mapping module
 - `hook_salesforce_pull_entity_value_alter`: change the value being put into the CMS after getting it from Salesforce
 - `hook_salesforce_query_alter`: change a SOQL query before it gets sent to Salesforce
