@@ -311,6 +311,10 @@ class Salesforce_Push {
 			$salesforce_pulling = (int) get_transient( 'salesforce_pulling_' . $mapping_object_id_transient );
 			if ( $salesforce_pulling === 1 ) {
 				delete_transient( 'salesforce_pulling_' . $mapping_object_id_transient );
+				$pulling_id = get_transient( 'salesforce_pulling_object_id' );
+				if ( $pulling_id === $mapping_object_id_transient ) {
+					delete_transient( 'salesforce_pulling_object_id' );
+				}
 				return FALSE;
 			}
 

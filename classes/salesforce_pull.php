@@ -445,6 +445,8 @@ class Salesforce_Pull {
 
 		$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name ) + 60;
 
+		$transients_to_delete = array();
+
 		foreach ( $salesforce_mappings as $salesforce_mapping ) {
 
 			// this returns the row that maps the individual salesforce row to the individual wordpress row
@@ -503,9 +505,32 @@ class Salesforce_Pull {
 
 			$op = '';
 
+			// are these objects already connected in wordpress?
+			if ( isset( $mapping_object['id'] ) ) {
+				$is_new = FALSE;
+				$mapping_object_id_transient = $mapping_object['id'];
+			} else {
+				// there is not a mapping object for this wordpress object id yet
+				// check for that transient with the currently pushing id
+				$is_new = TRUE;
+				$mapping_object_id_transient = get_transient( 'salesforce_pushing_object_id' );
+			}
+
+			// drupal only does a salesforce_pull flag, but we might as well do push and pull because wordpress
+			$salesforce_pushing = (int) get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
+			if ( $salesforce_pushing === 1 ) {
+				error_log('pushing right now. do not pull.');
+				$transients_to_delete[] = $mapping_object_id_transient;
+				continue;
+			}
+
 			// deleting mapped objects
 			if ( $sf_sync_trigger == $this->mappings->sync_sf_delete ) {
 				if ( isset( $mapping_object['id'] ) ) {
+					
+					set_transient( 'salesforce_pulling_' . $mapping_object['id'], 1, $seconds );
+					set_transient( 'salesforce_pulling_object_id', $mapping_object['id'] );
+
 					$op = 'Delete';
 					$wordpress_check = $this->mappings->load_by_wordpress( $mapping_object['wordpress_object'], $mapping_object['wordpress_id'] );
 					if ( count( $wordpress_check ) == count( $wordpress_check, COUNT_RECURSIVE ) ) {
@@ -602,24 +627,6 @@ class Salesforce_Pull {
 				} // there is no map row
 
 			  	return;
-			}
-
-			// are these objects already connected in wordpress?
-			if ( isset( $mapping_object['id'] ) ) {
-				$is_new = FALSE;
-				$mapping_object_id_transient = $mapping_object['id'];
-			} else {
-				// there is not a mapping object for this wordpress object id yet
-				// check for that transient with the currently pushing id
-				$is_new = TRUE;
-				$mapping_object_id_transient = get_transient( 'salesforce_pushing_object_id' );
-			}
-
-			// drupal only does a salesforce_pull flag, but we might as well do push and pull because wordpress
-			$salesforce_pushing = (int) get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
-			if ( $salesforce_pushing === 1 ) {
-				delete_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
-				continue;
 			}
 
 			// map the salesforce values to wordpress fields
@@ -932,6 +939,17 @@ class Salesforce_Pull {
 			// end of the if statement for is_new & update or create trigger
 			// this keeps stuff from running too many times, and also keeps it from using the wrong methods. we don't need a generic } else { here at this time.
 
+		}
+
+		// delete transients that we've already processed
+		foreach ( $transients_to_delete as $mapping_object_id_transient ) {
+			error_log('delete transient ' . $mapping_object_id_transient);
+			delete_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
+		}
+
+		$pushing_id = get_transient( 'salesforce_pushing_object_id' );
+		if ( in_array( $pushing_id, $transients_to_delete ) ) {
+			delete_transient( 'salesforce_pushing_object_id' );
 		}
 	
 		if ( !empty( $exception ) ) {
