@@ -943,7 +943,6 @@ class Salesforce_Pull {
 
 		// delete transients that we've already processed
 		foreach ( $transients_to_delete as $mapping_object_id_transient ) {
-			error_log('delete transient ' . $mapping_object_id_transient);
 			delete_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
 		}
 
