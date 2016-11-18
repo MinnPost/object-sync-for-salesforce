@@ -422,46 +422,6 @@ class Salesforce_Push {
 		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
 		$object_id_field = $structure['id_field'];
 
-		$exists_query = 'SELECT ' . $object_id_field . ' FROM ' . $structure['content_table'] . ' WHERE ' . $object_id_field . ' = ' . $object["$object_id_field"];
-		$object_exists = $this->wpdb->get_row( $exists_query );
-
-		// this means the object doesn't exist in wordpress. presumably has been deleted.
-		if ( $object_exists === NULL ) {
-			// remove it from the schedule
-			$this->schedule->cancel_by_name( $this->schedule_name );
-
-			// we should also delete the mapping object since the wordpress item is gone
-			// this returns the row that maps the individual wordpress row to the individual salesforce row
-			$mapping_object = $this->mappings->load_by_wordpress( $mapping['wordpress_object'], $object["$object_id_field"] );
-
-			if ( isset( $mapping_object['id'] ) ) {
-				$this->mappings->delete_object_map( $mapping_object['id'] );
-			} else {
-				$mapping_object['salesforce_id'] = 'unknown';
-			}
-
-			// todo: figure out if there's another way to do this. it creates a failed to delete entry after a salesforce object was deleted and then the corresponding wp object was successfully deleted. it shouldn't have to do this because it already ran successfully
-
-			// create a log entry
-			$status = 'notice';
-			// create log entry for failed delete
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} else if ( class_exists( 'Salesforce_Logging' ) ) {
-				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
-			}
-
-			$logging->setup(
-				__( ucfirst( $status ) . ': Unable to delete WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id_field . ' of ' . $object["$object_id_field"] . ' (Salesforce ' . $mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ') because the WordPress object has already been deleted.', $this->text_domain ),
-				'',
-				$sf_sync_trigger,
-				$object["$object_id_field"],
-				$status
-			);
-
-			return;
-		}
-
 		// if salesforce is not authorized, don't do anything.
 		// it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
 		if ( $this->salesforce['is_authorized'] !== TRUE ) {
