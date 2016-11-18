@@ -384,7 +384,6 @@ class Salesforce_Push {
 					// create new schedule based on the options for this current class
 					// this will use the existing schedule if it already exists; otherwise it'll create one
 					$this->schedule->use_schedule( $this->schedule_name );
-					error_log('save data to push queue');
 					$this->schedule->push_to_queue( $data );
 					$this->schedule->save()->dispatch();
 
