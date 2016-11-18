@@ -493,13 +493,11 @@ class Salesforce_Push {
 		// deleting mapped objects
 		if ( $sf_sync_trigger == $this->mappings->sync_wordpress_delete ) {
 			if ( isset( $mapping_object['id'] ) ) {
-				error_log('start to delete');
 				$op = 'Delete';
 
 				$salesforce_check = $this->mappings->load_by_salesforce( $mapping_object['salesforce_id'] );
 
 				if ( count( $salesforce_check ) == count( $salesforce_check, COUNT_RECURSIVE ) ) {
-					error_log('count is right. try to delete ' . $mapping['salesforce_object'] . ' with id of ' . $mapping_object['salesforce_id']);
 					try {
 						$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 					}
