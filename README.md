@@ -209,6 +209,9 @@ Current hooks include:
 - `salesforce_rest_api_set_more_attachment_data`: allow plugins to set more data on attachment objects when attachments are created or updated.
 - `salesforce_rest_api_set_more_term_data`: allow plugins to set more data on term objects when terms are created or updated.
 - `salesforce_rest_api_set_more_comment_data`: allow plugins to set more data on comment objects when comments are created or updated.
+- `salesforce_rest_api_set_initial_attachment_data`: allow plugins to add filename or parent data when creating attachment objects.
+- `salesforce_rest_api_wordpress_object_fields`: when getting the fields for a WordPress object, allow plugins to add more (and also cache the array).
+- `salesforce_rest_api_wordpress_object_data`: when getting the data for a WordPress object, allow plugins to add more, change the formatting, etc.
 
 ### Actions
 

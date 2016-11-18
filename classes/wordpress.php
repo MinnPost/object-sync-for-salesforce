@@ -197,8 +197,6 @@ class Wordpress {
 		$where = $object_table_structure['where'];
 		$ignore_keys = $object_table_structure['ignore_keys'];
 
-        // todo: put in a hook for additional/revised data here
-
 		$object_fields = array();
 
         // should cache that array
@@ -222,6 +220,13 @@ class Wordpress {
 	        $object_fields['from_cache'] = false;
 	        $object_fields['cached'] = false;
 	    }
+
+        // developers can use this hook to change the wordpress object field array
+        // the returned $object_fields needs to be an array like the above
+        // $object_fields = array( 'data' => array(), 'from_cache' => bool, 'cached' => bool );
+        // this is useful for custom objects that do not use the normal metadata table structure
+
+        $object_fields = apply_filters( 'salesforce_rest_api_wordpress_object_fields', $object_fields );
         
 		return $object_fields['data'];
 
@@ -229,9 +234,6 @@ class Wordpress {
 
     /**
     * Get WordPress data based on what object it is
-    * todo: figure out how much formatting to do to the data.
-    * example: user has an array of capabilities and such
-    * we probably don't care about this, but the plugin should maybe address it
     * 
     * @param string $object_type
     * @param string $object_id
@@ -258,6 +260,13 @@ class Wordpress {
     		$field = $value['key'];
     		$wordpress_object[$field] = $data->{$field};
     	}
+
+        // developers can use this hook to change the wordpress object
+        // including any formatting that needs to happen to the data
+        // the returned $wordpress_object needs to be an array like the above
+        // this is useful for custom objects or custom formatting
+        
+        $wordpress_object = apply_filters( 'salesforce_rest_api_wordpress_object_data', $wordpress_object );
 
     	return $wordpress_object;
 
@@ -337,7 +346,6 @@ class Wordpress {
 	private function object_fields( $object_name, $id_field, $content_table, $content_methods, $meta_table, $meta_methods, $where, $ignore_keys ) {
 		// these two queries load all the fields from the specified object unless they have been specified as ignore fields
     	// they also load the fields that are meta_keys from the specified object's meta table
-    	// todo: figure out how to handle other tables, especially things like advanced custom fields
     	// maybe a box for a custom query, since custom fields get done in so many ways
     	// eventually this would be the kind of thing we could use fields api for, if it ever gets done
         $data_fields = $this->wpdb->get_col("DESC {$content_table}", 0);
@@ -1262,8 +1270,10 @@ class Wordpress {
                 unset( $params[$key] );
             }
         }
-        // todo: let's add a hook so developers can pass filename and parent fields here, and then we can generate metadata as well
-        // i think this should not be part of core though
+
+        // developers can use this hook to pass filename and parent data for the attachment
+        $params = apply_filters( 'salesforce_rest_api_set_initial_attachment_data', $params );
+
         if ( isset( $params['filename']['value'] ) ) {
             $filename = $params['filename']['value'];
         } else {
