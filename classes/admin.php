@@ -61,6 +61,7 @@ class Wordpress_Salesforce_Admin {
         add_action( 'admin_init', array( &$this, 'salesforce_settings_forms' ) );
         add_action( 'admin_post_post_fieldmap', array( &$this, 'prepare_fieldmap_data' ) );
         add_action( 'admin_notices', array( &$this, 'fieldmap_error_notice' ) );
+        add_action( 'admin_notices', array( $this, 'permission_error_notice' ) );
         add_action( 'admin_post_delete_fieldmap', array( &$this, 'delete_fieldmap' ) );
         add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ) );
         add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ) );
@@ -87,6 +88,10 @@ class Wordpress_Salesforce_Admin {
     public function show_admin_page() {
         echo '<div class="wrap">';
         echo '<h1>' . get_admin_page_title() . '</h1>';
+        $allowed = $this->check_wordpress_admin_permissions();
+        if ( FALSE === $allowed ) {
+            return;
+        }
         $tabs = array(
             'settings' => 'Settings',
             'authorize' => 'Authorize',
@@ -106,8 +111,6 @@ class Wordpress_Salesforce_Admin {
 
         $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $this->tabs( $tabs, $tab );
-
-        $this->wordpress_admin_permissions();
 
         $consumer_key = $this->login_credentials['consumer_key'];
         $consumer_secret = $this->login_credentials['consumer_secret'];
@@ -1413,14 +1416,26 @@ class Wordpress_Salesforce_Admin {
     * Check Wordpress Admin permissions
     * Check if the current user is allowed to access the Salesforce plugin options
     */
-    private function wordpress_admin_permissions() {
+    private function check_wordpress_admin_permissions() {
 
         // todo: we are going to need a way to integrate this with roles, permissions, etc that are not built into wordpress
 
         if ( ! current_user_can('manage_options') ) {
-            return;
+            return FALSE;
+        } else {
+            return TRUE;
         }
 
+    }
+
+    public function permission_error_notice() {
+        if ( $this->check_wordpress_admin_permissions() === FALSE ) {
+        ?>
+        <div class="notice notice-error">
+            <p><?php _e( "Your account does not have permission to edit the Salesforce REST API plugin's settings.", $this->text_domain ); ?></p>
+        </div>
+        <?php
+        }
     }
 
     /**
