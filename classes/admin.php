@@ -107,10 +107,7 @@ class Wordpress_Salesforce_Admin {
         $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $this->tabs( $tabs, $tab );
 
-        // todo: figure out what exact permissions to require here, and maybe use an admin notice and a redirect for users who don't have those permissions
-        if ( ! current_user_can('manage_options') ) {
-            return;
-        }
+        $this->wordpress_admin_permissions();
 
         $consumer_key = $this->login_credentials['consumer_key'];
         $consumer_secret = $this->login_credentials['consumer_secret'];
@@ -1404,12 +1401,26 @@ class Wordpress_Salesforce_Admin {
     * Deauthorize WordPress from Salesforce.
     * This deletes the tokens from the database; it does not currently do anything in Salesforce
     * todo: maybe delete the authorized stuff inside Salesforce? or maybe on an uninstall method?
-    */ 
+    */
     private function logout() {
         $this->access_token = delete_option( 'salesforce_api_access_token' );
         $this->instance_url = delete_option( 'salesforce_api_instance_url' );
         $this->refresh_token = delete_option( 'salesforce_api_refresh_token' );
         return 'You have been logged out. You can use use the connect button to log in again.';
+    }
+
+    /**
+    * Check Wordpress Admin permissions
+    * Check if the current user is allowed to access the Salesforce plugin options
+    */
+    private function wordpress_admin_permissions() {
+
+        // todo: we are going to need a way to integrate this with roles, permissions, etc that are not built into wordpress
+
+        if ( ! current_user_can('manage_options') ) {
+            return;
+        }
+
     }
 
     /**
