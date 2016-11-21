@@ -149,7 +149,8 @@ class Salesforce {
 	*   Any method can supply options for the API call, and they'll be preserved as far as the curl request
 	*	They get merged with the class options
 	* @param string $type
-	*   Type of call. Defaults to 'rest' - currently we don't support other types
+	*   Type of call. Defaults to 'rest' - currently we don't support other types.
+	*	Other exammple in Drupal is 'apexrest'
 	*
 	* @return mixed
 	*   The requested response.
@@ -217,6 +218,7 @@ class Salesforce {
 	*	This is where it gets merged with $this->options
 	* @param string $type
 	*   Type of call. Defaults to 'rest' - currently we don't support other types
+	*	Other exammple in Drupal is 'apexrest'
 	*
 	* @return array
 	*   The requested data.
