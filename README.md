@@ -218,11 +218,6 @@ Current hooks include:
 - `salesforce_rest_api_push_fail`: what to do if a push to Salesforce fails
 - `salesforce_rest_api_push_success`: what to do if a push to Salesforce is successful
 
-TODO hooks include:
-
-- `hook_salesforce_mapping_entity_uris_alter`: provide URLs manually for object types. Drupal does this within the salesforce_mapping module
-- `hook_salesforce_pull_entity_value_alter`: change the value being put into the CMS after getting it from Salesforce
-- `hook_salesforce_query_alter`: change a SOQL query before it gets sent to Salesforce
 
 ## Notes
 
