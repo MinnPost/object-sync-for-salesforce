@@ -467,8 +467,8 @@ class Salesforce {
 	* Refresh access token based on the refresh token. Updates session variable.
 	*
 	* todo: figure out how to do this as part of the schedule class
-	* currently this won't work because schedule runs too often. but if we can get multiple queues, we could put 
-	* this kind of event into a 24 hour event, for example
+	* this is a scheduleable class and so we could add a method from this class to run every 24 hours, but it's unclear to me that we need it. salesforce seems to refresh itself as it needs to.
+	* but it could be a performance boost to do it at scheduleable intervals instead.
 	*
 	* @throws SalesforceException
 	*/
