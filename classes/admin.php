@@ -66,6 +66,10 @@ class Wordpress_Salesforce_Admin {
         add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ) );
         add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ) );
         add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ) );
+
+        add_action( 'edit_user_profile', array( $this, 'show_salesforce_user_fields' ) );
+        add_action( 'personal_options_update', array( $this, 'save_salesforce_user_fields' ) );
+        add_action( 'edit_user_profile_update', array( $this, 'save_salesforce_user_fields' ) );
     }
 
     /**
@@ -1443,6 +1447,76 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
+    * Show what we know about this user's relationship to a Salesforce object, if any
+    * @param object $user
+    *
+    */
+    public function show_salesforce_user_fields( $user ) {
+        if ( $this->check_wordpress_admin_permissions() === TRUE ) {
+            $mapping = $this->mappings->load_by_wordpress( 'user', $user->ID );
+            ?>
+            <h2>Salesforce</h2>
+            <?php if ( isset( $mapping['id'] ) ) { ?>
+                <table class="wp-list-table widefat striped mapped-user">
+                    <thead>
+                        <caption><h3>This user is mapped to a Salesforce object</h3></caption>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Salesforce Id</th>
+                            <td><a href="<?php echo $this->salesforce['sfapi']->get_instance_url() . '/' . $mapping['salesforce_id']; ?>"><?php echo $mapping['salesforce_id']; ?></a></td>
+                            <td><a href="#" class="edit-salesforce-mapping">Edit</a></td>
+                        </tr>
+                        <tr>
+                            <th>Last Sync Message</th>
+                            <td><?php if ( isset( $mapping['last_sync_message'] ) ) { echo $mapping['last_sync_message']; } else { echo ''; } ?></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th>Last Sync Action</th>
+                            <td><?php if ( isset( $mapping['last_sync_action'] ) ) { echo $mapping['last_sync_action']; } else { echo ''; } ?></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th>Last Sync Status</th>
+                            <td><?php if ( isset( $mapping['last_sync_status'] ) && $mapping['last_sync_status'] === '1' ) { echo 'success'; } else if ( isset( $mapping['last_sync_status'] ) && $mapping['last_sync_status'] === '0' ) { echo 'error'; } else { echo ''; } ?></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th>Last Sync</th>
+                            <td><?php if ( isset( $mapping['last_sync'] ) ) { echo $mapping['last_sync']; } else { echo ''; } ?></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            <?php } else { ?>
+                <p>This user is not mapped to an object in Salesforce. You can run a push to send this object to Salesforce, which will cause it to follow the plugin's normal mapping conventions, or you can create a manual link to a Salesforce object.</p>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="salesforce_id">Salesforce ID</label></th>
+                        <td>
+                            <input type="text" name="salesforce_id" id="salesforce_id" value="" class="regular-text" /><br />
+                            <span class="description">Enter a Salesforce object ID.</span>
+                        </td>
+                    </tr>
+                </table>
+            <?php }
+        }
+    }
+
+    /**
+    * If the user profile has been mapped to Salesforce, do it
+    * @param int $user_id
+    *
+    */
+    public function save_salesforce_user_fields( $user_id ) {
+        if ( isset ( $_POST['salesforce_id'] ) ) {
+            $mapping_object = $this->create_object_map( $user_id, 'user', $_POST['salesforce_id'] );
+
+        }
+    }
+
+    /**
     * Render tabs for settings pages in admin
     * @param array $tabs
     * @param string $tab
@@ -1498,6 +1572,40 @@ class Wordpress_Salesforce_Admin {
         $schedule = new Wordpress_Salesforce_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $schedule_name, $this->logging, $this->schedulable_classes );
         $this->schedule = $schedule;
         return $schedule;
+    }
+
+    /**
+    * Create an object map between a WordPress object and a Salesforce object
+    *
+    * @param int $wordpress_id
+    *   Unique identifier for the WordPress object
+    * @param string $wordpress_object
+    *   What kind of object is it?
+    * @param string $salesforce_id
+    *   Unique identifier for the Salesforce object
+    * @param string $action
+    *   Did we push or pull?
+    *
+    * @return int $wpdb->insert_id
+    *   This is the database row for the map object
+    *
+    */
+    private function create_object_map( $wordpress_id, $wordpress_object, $salesforce_id, $action = '' ) {
+        // Create object map and save it
+        $mapping_object = $this->mappings->create_object_map(
+            array(
+                'wordpress_id' => $wordpress_id, // wordpress unique id
+                'salesforce_id' => $salesforce_id, // salesforce unique id. we don't care what kind of object it is at this point
+                'wordpress_object' => $wordpress_object, // keep track of what kind of wp object this is
+                'last_sync' => current_time( 'mysql' ),
+                'last_sync_action' => $action,
+                'last_sync_status' => $this->mappings->status_success,
+                'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain )
+            )
+        );
+
+        return $mapping_object;
+
     }
 
 }

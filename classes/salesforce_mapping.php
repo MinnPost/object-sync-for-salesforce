@@ -290,6 +290,23 @@ class Salesforce_Mapping {
         $insert = $this->wpdb->insert( $this->object_map_table, $data );
         if ( $insert === 1 ) {
             return $this->wpdb->insert_id;
+        } else if ( strpos( $this->wpdb->last_error, 'Duplicate entry' ) !== FALSE ) {
+            $mapping = $this->load_by_salesforce( $posted['salesforce_id'] );
+            $id = $mapping['id'];
+            $status = 'error';
+            if ( isset( $this->logging ) ) {
+                $logging = $this->logging;
+            } else if ( class_exists( 'Salesforce_Logging' ) ) {
+                $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+            }
+            $logging->setup(
+                __( ucfirst( $status ) . ': Mapping: there is already a WordPress object mapped to the Salesforce object ' . $posted['salesforce_id'] . ' and the mapping object ID is ' . $id, $this->text_domain ),
+                '',
+                0,
+                0,
+                $status
+            );
+            return $id;
         } else {
             return false;
         }
