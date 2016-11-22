@@ -1428,6 +1428,10 @@ class Wordpress_Salesforce_Admin {
 
     }
 
+    /**
+    * Notice for permission denied error
+    * If an unauthorized user visits this plugin area in the admin, this message will show
+    */
     public function permission_error_notice() {
         if ( $this->check_wordpress_admin_permissions() === FALSE ) {
         ?>
