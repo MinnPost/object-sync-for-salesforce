@@ -1456,14 +1456,14 @@ class Wordpress_Salesforce_Admin {
             $mapping = $this->mappings->load_by_wordpress( 'user', $user->ID );
             ?>
             <h2>Salesforce</h2>
-            <?php if ( isset( $mapping['id'] ) ) { ?>
+            <?php if ( isset( $mapping['id'] ) && !isset($_GET['edit_salesforce_mapping']) ) { ?>
                 <table class="wp-list-table widefat striped mapped-salesforce-user">
                     <caption>This user is mapped to a Salesforce object</caption>
                     <tbody>
                         <tr>
                             <th>Salesforce Id</th>
                             <td><a href="<?php echo $this->salesforce['sfapi']->get_instance_url() . '/' . $mapping['salesforce_id']; ?>"><?php echo $mapping['salesforce_id']; ?></a></td>
-                            <td><a href="#" class="edit-salesforce-mapping">Edit</a></td>
+                            <td><a href="<?php echo get_admin_url( null, 'user-edit.php?user_id=' . $user->ID ) . '&amp;edit_salesforce_mapping=true'; ?>" class="edit-salesforce-mapping">Edit</a></td>
                         </tr>
                         <tr>
                             <th>Last Sync Message</th>
@@ -1487,6 +1487,18 @@ class Wordpress_Salesforce_Admin {
                         </tr>
                     </tbody>
                 </table>
+            <?php } else if ( isset($_GET['edit_salesforce_mapping']) && urlencode( $_GET['edit_salesforce_mapping'] ) === 'true' ) { ?>
+                <input type="hidden" name="salesforce_update_mapped_user" value="1" />
+                <p>You can change the Salesforce object that this WordPress user maps to by changing the ID and updating this user.</p>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="salesforce_id">Salesforce ID</label></th>
+                        <td>
+                            <input type="text" name="salesforce_id" id="salesforce_id" value="<?php if ( isset( $mapping['id'] ) ) { echo $mapping['salesforce_id']; } ?>" class="regular-text" /><br />
+                            <span class="description">Enter a Salesforce object ID.</span>
+                        </td>
+                    </tr>
+                </table>
             <?php } else { ?>
                 <p>This user is not mapped to an object in Salesforce. You can run a push to send this object to Salesforce, which will cause it to follow the plugin's normal mapping conventions, or you can create a manual link to a Salesforce object.</p>
                 <table class="form-table">
@@ -1509,7 +1521,13 @@ class Wordpress_Salesforce_Admin {
     */
     public function save_salesforce_user_fields( $user_id ) {
         if ( isset ( $_POST['salesforce_id'] ) ) {
-            $mapping_object = $this->create_object_map( $user_id, 'user', $_POST['salesforce_id'] );
+            if ( isset( $_POST['salesforce_update_mapped_user'] ) && urlencode( $_POST['salesforce_update_mapped_user'] === '1' ) ) {
+                $mapping_object = $this->mappings->get_object_maps( array( 'wordpress_id' => $user_id, 'wordpress_object' => 'user' ) );
+                $mapping_object['salesforce_id'] = $_POST['salesforce_id'];
+                $result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+            } else {
+                $mapping_object = $this->create_object_map( $user_id, 'user', $_POST['salesforce_id'] );
+            }
 
         }
     }
