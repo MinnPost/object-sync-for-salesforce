@@ -835,12 +835,10 @@ class Salesforce_Push {
 
 			}
 
-			// check to see if we actually updated anything in salesforce
-			//if ( $mapping_object['salesforce_data_version'] !== $mapping_object['wordpress_data_version'] ) {
-				// tell the mapping object - whether it is new or already existed - how we just used it
-				$mapping_object['last_sync_action'] = 'push';
-				$mapping_object['last_sync'] = current_time( 'mysql' );
-			//}
+			// tell the mapping object - whether it is new or already existed - how we just used it
+			$mapping_object['last_sync_action'] = 'push';
+			$mapping_object['last_sync'] = current_time( 'mysql' );
+			
 			// update that mapping object
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
