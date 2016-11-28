@@ -1457,10 +1457,8 @@ class Wordpress_Salesforce_Admin {
             ?>
             <h2>Salesforce</h2>
             <?php if ( isset( $mapping['id'] ) ) { ?>
-                <table class="wp-list-table widefat striped mapped-user">
-                    <thead>
-                        <caption><h3>This user is mapped to a Salesforce object</h3></caption>
-                    </thead>
+                <table class="wp-list-table widefat striped mapped-salesforce-user">
+                    <caption>This user is mapped to a Salesforce object</caption>
                     <tbody>
                         <tr>
                             <th>Salesforce Id</th>

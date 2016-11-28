@@ -54,3 +54,15 @@ form.fieldmap div input, form.fieldmap div select {
   display: inline-block;
   margin-left: 10px;
 }
+
+table.mapped-salesforce-user caption {
+  color: #555;
+  padding: 8px 10px;
+  border: 1px solid #e5e5e5;
+  border-bottom: 0;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  font-size: 14px;
+  font-weight: 400;
+  text-align: left;
+  line-height: 1.3em;
+}
