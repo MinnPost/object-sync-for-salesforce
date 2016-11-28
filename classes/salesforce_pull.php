@@ -114,6 +114,7 @@ class Salesforce_Pull {
 	}
 
 	/**
+	* this is drupal code. need to remove it eventually.
 	* Implements hook_form_FORM_ID_alter().
 	*/
 	function salesforce_pull_form_salesforce_settings_form_alter(&$form, &$form_state, $form_id) {
@@ -150,6 +151,7 @@ class Salesforce_Pull {
 
 	/**
 	* Element validation callback for the webhook key.
+	* this is drupal code. need to remove it or make it for wordpress eventually.
 	*/
 	function salesforce_pull_webhook_key_validate($element, &$form_state, $form) {
 	// If there is no key set, generate a default key.
@@ -411,6 +413,21 @@ class Salesforce_Pull {
 	}
 
 	/**
+	* Method for ajax hooks to call for pulling manually
+	*
+	* @param string $object_type
+	* @param string $salesforce_id
+	* @param string $wordpress_object
+	*
+	*/
+	public function manual_pull( $object_type, $salesforce_id, $wordpress_object ) {
+		$sfapi = $this->salesforce['sfapi'];
+		$object = $sfapi->api_call( 'sobjects/' . $object_type . '/' . $salesforce_id );
+		$mapping = $this->mappings->get_fieldmaps( NULL, array( 'salesforce_object' => $object_type, 'wordpress_object' => $wordpress_object ) );
+		$this->salesforce_pull_process_records( $object_type, $object['data'], $mapping[0], $this->mappings->sync_sf_update );
+	}
+
+	/**
 	* Sync WordPress objects and Salesforce objects from the queue using the REST API.
 	*
 	* @param string $object_type
@@ -425,7 +442,7 @@ class Salesforce_Pull {
 	* @return true or exit the method
 	*
 	*/
-	function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
+	private function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
 		$mapping_conditions = array(
 			'salesforce_object' => $object_type

@@ -1185,11 +1185,15 @@ class Wordpress_Salesforce_Admin {
     * This takes either the $_POST array via ajax, or can be directly called with $salesforce_id fields
     * 
     * @param string $salesforce_id
+    * @param string $wordpress_object
     */
-    public function pull_from_salesforce( $salesforce_id = '' ) {
-        if ( empty( $salesforce_id ) ) {
+    public function pull_from_salesforce( $salesforce_id = '', $wordpress_object = '' ) {
+        if ( empty( $wordpress_object ) && empty( $salesforce_id ) ) {
+            $wordpress_object = $_POST['wordpress_object'];
             $salesforce_id = $_POST['salesforce_id'];
         }
+        $type = $this->salesforce['sfapi']->get_sobject_type( $salesforce_id );
+        $result = $this->pull->manual_pull( $type, $salesforce_id, $wordpress_object ); // we want the wp object to make sure we get the right fieldmap
         if ( !empty( $_POST ) ) {
             wp_send_json_success( $result );
         } else {

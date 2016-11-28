@@ -136,9 +136,11 @@ function push_and_pull_objects() {
 	});
 	$('.pull_from_salesforce_button').on('click', function() {
 		var salesforce_id = $('#salesforce_id_ajax').val();
+		var wordpress_object = $('#wordpress_object_ajax').val();
 		var data = {
 			'action' : 'pull_from_salesforce',
-			'salesforce_id' : salesforce_id
+			'salesforce_id' : salesforce_id,
+			'wordpress_object' : wordpress_object
 		}
 		$.post(ajaxurl, data, function(response) {
 			if (response.success === true) {
