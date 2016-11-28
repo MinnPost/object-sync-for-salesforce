@@ -87,6 +87,17 @@ class Salesforce_Push {
 	}
 
 	/**
+	* Method for ajax hooks to call for pushing manually
+	*
+	* @param array $object
+	* @param string $type
+	*
+	*/
+	public function manual_object_update( $object, $type ) {
+		$this->salesforce_push_object_crud( $type, $object, $this->mappings->sync_wordpress_update, TRUE );
+	}
+
+	/**
 	* Callback method for adding a user
 	*
 	* @param string $user_id
@@ -288,9 +299,11 @@ class Salesforce_Push {
 	*   The object object.
 	* @param int $sf_sync_trigger
 	*   The trigger being responded to.
+	* @param bool $manual
+	*	Are we calling this manually?
 	*
 	*/
-	private function salesforce_push_object_crud( $object_type, $object, $sf_sync_trigger ) {
+	private function salesforce_push_object_crud( $object_type, $object, $sf_sync_trigger, $manual = FALSE ) {
 
 		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
 		$object_id_field = $structure['id_field'];
@@ -372,7 +385,7 @@ class Salesforce_Push {
 					// skip this object if it is a draft and the fieldmap settings told us to ignore it
 					continue;
 				}
-				if ( isset( $mapping['push_async'] ) && ( $mapping['push_async'] === '1' ) ) {
+				if ( isset( $mapping['push_async'] ) && ( $mapping['push_async'] === '1' ) && $manual === FALSE ) {
 		  			// this item is async and we want to save it to the queue
 					$data = array(
 						'object_type' => $object_type,
@@ -838,7 +851,7 @@ class Salesforce_Push {
 			// tell the mapping object - whether it is new or already existed - how we just used it
 			$mapping_object['last_sync_action'] = 'push';
 			$mapping_object['last_sync'] = current_time( 'mysql' );
-			
+
 			// update that mapping object
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 

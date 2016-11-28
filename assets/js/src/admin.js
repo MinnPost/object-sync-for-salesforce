@@ -118,6 +118,37 @@ function fieldmap_fields(wordpress_object, salesforce_object, row_count) {
 	});
 }
 
+function push_and_pull_objects() {
+	$('.push_to_salesforce_button').on('click', function() {
+		var wordpress_object = $('#wordpress_object_ajax').val();
+		var wordpress_id = $('#wordpress_id_ajax').val();
+		var data = {
+			'action' : 'push_to_salesforce',
+			'wordpress_object' : wordpress_object,
+			'wordpress_id' : wordpress_id
+		}
+		$.post(ajaxurl, data, function(response) {
+			if (response.success === true) {
+				$('.salesforce_user_ajax_message').text('This object has been pushed to Salesforce').delay(2000).fadeOut();
+			}
+		});
+		return false;
+	});
+	$('.pull_from_salesforce_button').on('click', function() {
+		var salesforce_id = $('#salesforce_id_ajax').val();
+		var data = {
+			'action' : 'pull_from_salesforce',
+			'salesforce_id' : salesforce_id
+		}
+		$.post(ajaxurl, data, function(response) {
+			if (response.success === true) {
+				$('.salesforce_user_ajax_message').text('This object has been pulled from Salesforce').delay(2000).fadeOut();
+			}
+		});
+		return false;
+	});
+}
+
 // as the drupal plugin does, we only allow one field to be a prematch or key
 $(document).on('click', '.column-is_prematch input', function() {
 	$('.column-is_prematch input').not(this).prop('checked', false);  
@@ -141,4 +172,5 @@ $(document).ready(function() {
 	});
 	salesforce_object_fields();
 	add_field_mapping_row();
+	push_and_pull_objects();
 });

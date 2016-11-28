@@ -13,6 +13,8 @@ class Wordpress_Salesforce_Admin {
     protected $salesforce;
     protected $wordpress;
     protected $mappings;
+    protected $push;
+    protected $pull;
     protected $schedulable_classes;
 
     /**
@@ -29,7 +31,7 @@ class Wordpress_Salesforce_Admin {
     * @param array $schedulable_classes
     * @throws \Exception
     */
-    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
+    public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
@@ -37,18 +39,15 @@ class Wordpress_Salesforce_Admin {
         $this->wordpress = $wordpress;
         $this->salesforce = $salesforce;
         $this->mappings = $mappings;
+        $this->push = $push;
+        $this->pull = $pull;
         $this->logging = $logging;
         $this->schedulable_classes = $schedulable_classes;
 
         // todo: we should think about what kind of admin_notices to use, if any
         // https://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
 
-        // todo: we need a way to show the salesforce data and trigger automatic actions from the admin view of the user profile
-
         $this->add_actions();
-
-        // we can map objects to salesforce that are not 'posts' but we need to tell the plugin what they are
-        // this can be done when calling this class, or here as a default
 
     }
 
@@ -67,9 +66,13 @@ class Wordpress_Salesforce_Admin {
         add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ) );
         add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ) );
 
+        add_action( 'wp_ajax_push_to_salesforce', array( $this, 'push_to_salesforce' ) );
+        add_action( 'wp_ajax_pull_from_salesforce', array( $this, 'pull_from_salesforce' ) );
+
         add_action( 'edit_user_profile', array( $this, 'show_salesforce_user_fields' ) );
         add_action( 'personal_options_update', array( $this, 'save_salesforce_user_fields' ) );
         add_action( 'edit_user_profile_update', array( $this, 'save_salesforce_user_fields' ) );
+
     }
 
     /**
@@ -1157,6 +1160,44 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
+    * Manually push the WordPress object to Salesforce
+    * This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $wordpress_id fields
+    * 
+    * @param string $wordpress_object
+    * @param int $wordpress_id
+    */
+    public function push_to_salesforce( $wordpress_object = '', $wordpress_id = '' ) {
+        if ( empty( $wordpress_object ) && empty( $wordpress_id ) ) {
+            $wordpress_object = $_POST['wordpress_object'];
+            $wordpress_id = $_POST['wordpress_id'];
+        }
+        $data = $this->wordpress->get_wordpress_object_data( $wordpress_object, $wordpress_id );
+        $result = $this->push->manual_object_update( $data, $wordpress_object );
+        if ( !empty( $_POST ) ) {
+            wp_send_json_success( $result );
+        } else {
+            return $result;
+        }
+    }
+
+    /**
+    * Manually pull the Salesforce object into WordPress
+    * This takes either the $_POST array via ajax, or can be directly called with $salesforce_id fields
+    * 
+    * @param string $salesforce_id
+    */
+    public function pull_from_salesforce( $salesforce_id = '' ) {
+        if ( empty( $salesforce_id ) ) {
+            $salesforce_id = $_POST['salesforce_id'];
+        }
+        if ( !empty( $_POST ) ) {
+            wp_send_json_success( $result );
+        } else {
+            return $result;
+        }
+    }
+
+    /**
     * Prepare fieldmap data and redirect after processing
     * This runs when the create or update forms are submitted
     * It is public because it depends on an admin hook
@@ -1456,7 +1497,11 @@ class Wordpress_Salesforce_Admin {
             $mapping = $this->mappings->load_by_wordpress( 'user', $user->ID );
             ?>
             <h2>Salesforce</h2>
+            <div class="salesforce_user_ajax_message"></div>
             <?php if ( isset( $mapping['id'] ) && !isset($_GET['edit_salesforce_mapping']) ) { ?>
+                <input type="hidden" name="salesforce_id" id="salesforce_id_ajax" value="<?php echo $mapping['salesforce_id']; ?>" />
+                <input type="hidden" name="wordpress_id" id="wordpress_id_ajax" value="<?php echo $mapping['wordpress_id']; ?>" />
+                <input type="hidden" name="wordpress_object" id="wordpress_object_ajax" value="<?php echo $mapping['wordpress_object']; ?>" />
                 <table class="wp-list-table widefat striped mapped-salesforce-user">
                     <caption>This user is mapped to a Salesforce object</caption>
                     <tbody>
@@ -1485,6 +1530,9 @@ class Wordpress_Salesforce_Admin {
                             <td><?php if ( isset( $mapping['last_sync'] ) ) { echo $mapping['last_sync']; } else { echo ''; } ?></td>
                             <td>&nbsp;</td>
                         </tr>
+                        <tr>
+                            <th>Actions</th>
+                            <td><a href="#" class="push_to_salesforce_button">Push to Salesforce</a> <a href="#" class="pull_from_salesforce_button">Pull from Salesforce</a></td>
                     </tbody>
                 </table>
             <?php } else if ( isset($_GET['edit_salesforce_mapping']) && urlencode( $_GET['edit_salesforce_mapping'] ) === 'true' ) { ?>
