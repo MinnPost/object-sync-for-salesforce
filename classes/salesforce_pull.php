@@ -442,7 +442,7 @@ class Salesforce_Pull {
 	* @return true or exit the method
 	*
 	*/
-	private function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
+	public function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
 		$mapping_conditions = array(
 			'salesforce_object' => $object_type
