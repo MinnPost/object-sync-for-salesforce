@@ -164,8 +164,9 @@ function update_salesforce_user_summary() {
 			$('td.last_sync_message').text(response.data.last_sync_message);
 			$('td.last_sync_action').text(response.data.last_sync_action);
 			$('td.last_sync_status').text(response.data.last_sync_status);
-			if (response.data.last_sync === 1) {
-				$('td.last_sync').text('Success');
+			$('td.last_sync').text(response.data.last_sync);
+			if (response.data.last_sync_status === '1') {
+				$('td.last_sync_status').text('success');
 			}
 		}
 	});
