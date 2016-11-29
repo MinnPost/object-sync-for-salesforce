@@ -10,64 +10,77 @@ function salesforce_object_fields() {
 	if ($('.pull_trigger_field > *').length === 0) {
 		$('.pull_trigger_field').hide();
 	}
-	$('#salesforce_object').on('change', function() {
-		var data = {
-			'action' : 'get_salesforce_object_description',
-			'include' : ['fields', 'recordTypeInfos'],
-			'field_type' : 'datetime',
-			'salesforce_object' : this.value
-		}
-		$.post(ajaxurl, data, function(response) {
 
-			var record_types_allowed_markup = '', record_type_default_markup = '', date_markup = '';
+	var delay = (function(){
+	  var timer = 0;
+	  return function(callback, ms){
+	    clearTimeout (timer);
+	    timer = setTimeout(callback, ms);
+	  };
+	})();
 
-			if ($(response.data.recordTypeInfos).length > 0) {
-				record_types_allowed_markup += '<label for="salesforce_record_types_allowed">Allowed Record Types:</label><div class="checkboxes">';
-				$.each(response.data.recordTypeInfos, function(index, value) {
-					record_types_allowed_markup += '<label><input type="checkbox" class="form-checkbox" value="' + index + '" name="salesforce_record_types_allowed[' + index + ']" id="salesforce_record_types_allowed-' + index + '"> ' + value + '</label>';
-				});
-				record_types_allowed_markup += '</div>';
-
-
-				record_type_default_markup += '<label for="salesforce_record_type_default">Default Record Type:</label>';
-				record_type_default_markup += '<select name="salesforce_record_type_default" id="salesforce_record_type_default"><option value="">- Select record type -</option>';
-				$.each(response.data.recordTypeInfos, function(index, value) {
-					record_type_default_markup += '<option value="' + index + '">' + value + '</option>';
-				});
+	$('#salesforce_object').on('change', function(el) {
+		var that = this;
+		var delay_time = 1000;
+		delay(function(){
+			var data = {
+				'action' : 'get_salesforce_object_description',
+				'include' : ['fields', 'recordTypeInfos'],
+				'field_type' : 'datetime',
+				'salesforce_object' : that.value
 			}
+			$.post(ajaxurl, data, function(response) {
 
-			$('.salesforce_record_types_allowed').html(record_types_allowed_markup);
-			$('.salesforce_record_type_default').html(record_type_default_markup);
+				var record_types_allowed_markup = '', record_type_default_markup = '', date_markup = '';
 
-			if ($(response.data.fields).length > 0) {
-				date_markup += '<label for="pull_trigger_field">Date field to trigger pull:</label>';
-				date_markup += '<select name="pull_trigger_field" id="pull_trigger_field"><option value="">- Select date field -</option>'
-				$.each(response.data.fields, function(index, value) {
-					date_markup += '<option value="' + value.name + '">' + value.label + '</option>';
-				});
-				date_markup += '</select>';
-				date_markup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>'
-			}
+				if ($(response.data.recordTypeInfos).length > 0) {
+					record_types_allowed_markup += '<label for="salesforce_record_types_allowed">Allowed Record Types:</label><div class="checkboxes">';
+					$.each(response.data.recordTypeInfos, function(index, value) {
+						record_types_allowed_markup += '<label><input type="checkbox" class="form-checkbox" value="' + index + '" name="salesforce_record_types_allowed[' + index + ']" id="salesforce_record_types_allowed-' + index + '"> ' + value + '</label>';
+					});
+					record_types_allowed_markup += '</div>';
 
-			$('.pull_trigger_field').html(date_markup);
 
-			if (record_types_allowed_markup !== '') {
-				$('.salesforce_record_types_allowed').show();
-			} else {
-				$('.salesforce_record_types_allowed').hide();
-			}
-			if (record_type_default_markup !== '') {
-				$('.salesforce_record_type_default').show();
-			} else {
-				$('.salesforce_record_type_default').hide();
-			}
+					record_type_default_markup += '<label for="salesforce_record_type_default">Default Record Type:</label>';
+					record_type_default_markup += '<select name="salesforce_record_type_default" id="salesforce_record_type_default"><option value="">- Select record type -</option>';
+					$.each(response.data.recordTypeInfos, function(index, value) {
+						record_type_default_markup += '<option value="' + index + '">' + value + '</option>';
+					});
+				}
 
-			if (date_markup !== '') {
-				$('.pull_trigger_field').show();
-			} else {
-				$('.pull_trigger_field').hide();
-			}
-		});
+				$('.salesforce_record_types_allowed').html(record_types_allowed_markup);
+				$('.salesforce_record_type_default').html(record_type_default_markup);
+
+				if ($(response.data.fields).length > 0) {
+					date_markup += '<label for="pull_trigger_field">Date field to trigger pull:</label>';
+					date_markup += '<select name="pull_trigger_field" id="pull_trigger_field"><option value="">- Select date field -</option>'
+					$.each(response.data.fields, function(index, value) {
+						date_markup += '<option value="' + value.name + '">' + value.label + '</option>';
+					});
+					date_markup += '</select>';
+					date_markup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>'
+				}
+
+				$('.pull_trigger_field').html(date_markup);
+
+				if (record_types_allowed_markup !== '') {
+					$('.salesforce_record_types_allowed').show();
+				} else {
+					$('.salesforce_record_types_allowed').hide();
+				}
+				if (record_type_default_markup !== '') {
+					$('.salesforce_record_type_default').show();
+				} else {
+					$('.salesforce_record_type_default').hide();
+				}
+
+				if (date_markup !== '') {
+					$('.pull_trigger_field').show();
+				} else {
+					$('.pull_trigger_field').hide();
+				}
+			});
+		}, delay_time );
 	});
 }
 
@@ -186,8 +199,13 @@ $(document).on('click', '.column-is_key input', function() {
 
 $(document).ready(function() {
 
+	var timeout;
 	$('#wordpress_object, #salesforce_object').on('change', function() {
-		$('table.fields tbody tr').remove();
+		clearTimeout(timeout);
+		timeout = setTimeout(function() {
+			$('table.fields tbody tr').fadeOut();
+			$('table.fields tbody tr').remove();
+		}, 1000);
 	});
 
 	// todo: need to fix this so it doesn't run all the spinners at the same time when there are multiples on the same page
