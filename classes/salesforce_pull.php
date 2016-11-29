@@ -455,8 +455,7 @@ class Salesforce_Pull {
 
 		$salesforce_mappings = $this->mappings->get_fieldmaps( NULL, $mapping_conditions );
 
-		// these lines come from drupal and have to do with whether to throw errors or not
-		// todo: should test this
+		// from drupal: if there is more than one mapping, don't throw exceptions
 		$hold_exceptions = count( $salesforce_mappings ) > 1;
 		$exception = FALSE;
 
@@ -570,7 +569,7 @@ class Salesforce_Pull {
 								$status
 							);
 
-							if ( !$hold_exceptions ) {
+							if ( $hold_exceptions === FALSE ) {
 								throw $e;
 							}
 							if ( empty( $exception ) ) {
@@ -784,7 +783,7 @@ class Salesforce_Pull {
 						$status
 					);
 
-					if ( !$hold_exceptions ) {
+					if ( $hold_exceptions === FALSE ) {
 						throw $e;
 					}
 					if ( empty( $exception ) ) {
@@ -926,7 +925,7 @@ class Salesforce_Pull {
 					$mapping_object['last_sync_status'] = $this->mappings->status_error;
 					$mapping_object['last_sync_message'] = $e->getMessage();
 
-					if ( !$hold_exceptions ) {
+					if ( $hold_exceptions === FALSE ) {
 						throw $e;
 					}
 					if ( empty( $exception ) ) {
