@@ -87,8 +87,7 @@ class Wordpress_Salesforce_Admin {
     * Render full admin pages in WordPress
     * This allows other plugins to add tabs to the Salesforce settings screen
     *
-    * todo: maybe create separate html template/views for this
-    * todo: do some better css so it doesn't look awful
+    * todo: better front end: html, organization of html into templates, css, js
     *
     */ 
     public function show_admin_page() {
