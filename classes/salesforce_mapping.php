@@ -100,6 +100,7 @@ class Salesforce_Mapping {
     * Create a fieldmap row between a WordPress and Salesforce object
     *
     * @param array $posted
+    * @param array $wordpress_fields
     * @throws \Exception
     */
     public function create_fieldmap( $posted = array(), $wordpress_fields = array() ) {
@@ -176,7 +177,8 @@ class Salesforce_Mapping {
     * Update a fieldmap row between a WordPress and Salesforce object
     *
     * @param array $posted
-    * @param array $id
+    * @param array $wordpress_fields
+    * @param int $id
     * @return $map
     * @throws \Exception
     */
@@ -191,9 +193,11 @@ class Salesforce_Mapping {
     }
 
     /**
-    * 
+    * Setup fieldmap data
+    * Sets up the database entry for mapping the object types between Salesforce and WordPress
     *
     * @param array $posted
+    * @param array $wordpress_fields
     * @return $data
     */
     private function setup_fieldmap_data( $posted = array(), $wordpress_fields = array() ) {
