@@ -199,8 +199,8 @@ class Salesforce_Pull {
 	* Executes a SOQL query based on defined mappings, loops through the results,
 	* and places each updated SF object into the queue for later processing.
 	*
-	* todo: figure out why the drupal module has two for loops over apparently the same data
-	* i think it's because it wants to run a separate SOQL thing for each type of object in SF
+	* We copy the convention from the Drupal module here, and run a separate SOQL query for each type of object in SF
+	*
 	*/
 	private function get_updated_records() {
 		$sfapi = $this->salesforce['sfapi'];
@@ -332,7 +332,6 @@ class Salesforce_Pull {
 			} else {
 
 				// create log entry for failed pull
-				// todo: make this log the right stuff
 				$status = 'error';
 				$title = ucfirst( $status ) . ': ' . $response['errorCode'] . ' ' . $salesforce_mapping['salesforce_object'];
 				if ( isset( $this->logging ) ) {
