@@ -55,6 +55,20 @@ form.fieldmap div input, form.fieldmap div select {
   margin-left: 10px;
 }
 
+.salesforce_user_ajax_message {
+  margin: 5px 0 15px;
+  padding: 1px 12px;
+  border-left: 4px solid #46b450;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+.salesforce_user_ajax_message p {
+  margin: 0.5em 0;
+  padding: 2px;
+}
+
+table.mapped-salesforce-user {
+  width: auto;
+}
 table.mapped-salesforce-user caption {
   color: #555;
   padding: 8px 10px;
@@ -65,4 +79,9 @@ table.mapped-salesforce-user caption {
   font-weight: 400;
   text-align: left;
   line-height: 1.3em;
+}
+table.mapped-salesforce-user tr th {
+  width: 140px;
+  border-right: 1px solid #e5e5e5;
+  font-size: 13px;
 }

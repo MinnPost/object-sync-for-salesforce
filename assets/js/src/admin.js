@@ -119,6 +119,7 @@ function fieldmap_fields(wordpress_object, salesforce_object, row_count) {
 }
 
 function push_and_pull_objects() {
+	$('.salesforce_user_ajax_message').hide();
 	$('.push_to_salesforce_button').on('click', function() {
 		var wordpress_object = $('#wordpress_object_ajax').val();
 		var wordpress_id = $('#wordpress_id_ajax').val();
@@ -129,8 +130,9 @@ function push_and_pull_objects() {
 		}
 		$.post(ajaxurl, data, function(response) {
 			if (response.success === true) {
-				$('.salesforce_user_ajax_message').text('This object has been pushed to Salesforce').delay(2000).fadeOut();
 				update_salesforce_user_summary();
+				$('.salesforce_user_ajax_message').width($('.mapped-salesforce-user').width() - 27);
+				$('.salesforce_user_ajax_message').html('<p>This object has been pushed to Salesforce.</p>').fadeIn().delay(4000).fadeOut();
 			}
 		});
 		return false;
@@ -145,8 +147,9 @@ function push_and_pull_objects() {
 		}
 		$.post(ajaxurl, data, function(response) {
 			if (response.success === true) {
-				$('.salesforce_user_ajax_message').text('This object has been pulled from Salesforce').delay(2000).fadeOut();
 				update_salesforce_user_summary();
+				$('.salesforce_user_ajax_message').width($('.mapped-salesforce-user').width() - 27);
+				$('.salesforce_user_ajax_message').html('<p>This object has been pulled from Salesforce.</p>').fadeIn().delay(4000).fadeOut();
 			}
 		});
 		return false;

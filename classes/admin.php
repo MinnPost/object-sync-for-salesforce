@@ -1520,7 +1520,6 @@ class Wordpress_Salesforce_Admin {
             $mapping = $this->mappings->load_by_wordpress( 'user', $user->ID );
             ?>
             <h2>Salesforce</h2>
-            <div class="salesforce_user_ajax_message"></div>
             <?php if ( isset( $mapping['id'] ) && !isset($_GET['edit_salesforce_mapping']) ) { ?>
                 <input type="hidden" name="mapping_id" id="mapping_id_ajax" value="<?php echo $mapping['id']; ?>" />
                 <input type="hidden" name="salesforce_id" id="salesforce_id_ajax" value="<?php echo $mapping['salesforce_id']; ?>" />
@@ -1556,9 +1555,13 @@ class Wordpress_Salesforce_Admin {
                         </tr>
                         <tr>
                             <th>Actions</th>
-                            <td><a href="#" class="push_to_salesforce_button">Push to Salesforce</a> <a href="#" class="pull_from_salesforce_button">Pull from Salesforce</a></td>
+                            <td>
+                                <a href="#" class="button button-secondary push_to_salesforce_button">Push to Salesforce</a>
+                                <a href="#" class="button button-secondary pull_from_salesforce_button">Pull from Salesforce</a>
+                            </td>
                     </tbody>
                 </table>
+                <div class="salesforce_user_ajax_message"></div>
             <?php } else if ( isset($_GET['edit_salesforce_mapping']) && urlencode( $_GET['edit_salesforce_mapping'] ) === 'true' ) { ?>
                 <input type="hidden" name="salesforce_update_mapped_user" value="1" />
                 <p>You can change the Salesforce object that this WordPress user maps to by changing the ID and updating this user.</p>
