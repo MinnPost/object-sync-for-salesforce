@@ -1570,6 +1570,7 @@ class Wordpress_Salesforce_Admin {
                     </tr>
                 </table>
             <?php } else { ?>
+                <input type="hidden" name="salesforce_create_mapped_user" value="1" />
                 <p>This user is not mapped to an object in Salesforce. You can run a push to send this object to Salesforce, which will cause it to follow the plugin's normal mapping conventions, or you can create a manual link to a Salesforce object.</p>
                 <table class="form-table">
                     <tr>
@@ -1595,10 +1596,9 @@ class Wordpress_Salesforce_Admin {
                 $mapping_object = $this->mappings->get_object_maps( array( 'wordpress_id' => $user_id, 'wordpress_object' => 'user' ) );
                 $mapping_object['salesforce_id'] = $_POST['salesforce_id'];
                 $result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
-            } else {
+            } else if ( isset( $_POST['salesforce_create_mapped_user'] ) && urlencode( $_POST['salesforce_create_mapped_user'] === '1' ) ) {
                 $mapping_object = $this->create_object_map( $user_id, 'user', $_POST['salesforce_id'] );
             }
-
         }
     }
 
