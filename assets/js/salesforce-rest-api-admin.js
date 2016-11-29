@@ -130,6 +130,7 @@ function push_and_pull_objects() {
 		$.post(ajaxurl, data, function(response) {
 			if (response.success === true) {
 				$('.salesforce_user_ajax_message').text('This object has been pushed to Salesforce').delay(2000).fadeOut();
+				update_salesforce_user_summary();
 			}
 		});
 		return false;
@@ -145,9 +146,28 @@ function push_and_pull_objects() {
 		$.post(ajaxurl, data, function(response) {
 			if (response.success === true) {
 				$('.salesforce_user_ajax_message').text('This object has been pulled from Salesforce').delay(2000).fadeOut();
+				update_salesforce_user_summary();
 			}
 		});
 		return false;
+	});
+}
+
+function update_salesforce_user_summary() {
+	var mapping_id = $('#mapping_id_ajax').val();
+	var data = {
+		'action' : 'refresh_mapped_data',
+		'mapping_id' : mapping_id
+	}
+	$.post(ajaxurl, data, function(response) {
+		if (response.success === true) {
+			$('td.last_sync_message').text(response.data.last_sync_message);
+			$('td.last_sync_action').text(response.data.last_sync_action);
+			$('td.last_sync_status').text(response.data.last_sync_status);
+			if (response.data.last_sync === 1) {
+				$('td.last_sync').text('Success');
+			}
+		}
 	});
 }
 

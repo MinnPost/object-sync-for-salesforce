@@ -65,9 +65,9 @@ class Wordpress_Salesforce_Admin {
         add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ) );
         add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ) );
         add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ) );
-
         add_action( 'wp_ajax_push_to_salesforce', array( $this, 'push_to_salesforce' ) );
         add_action( 'wp_ajax_pull_from_salesforce', array( $this, 'pull_from_salesforce' ) );
+        add_action( 'wp_ajax_refresh_mapped_data', array( $this, 'refresh_mapped_data' ) );
 
         add_action( 'edit_user_profile', array( $this, 'show_salesforce_user_fields' ) );
         add_action( 'personal_options_update', array( $this, 'save_salesforce_user_fields' ) );
@@ -1202,6 +1202,25 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
+    * Manually pull the Salesforce object into WordPress
+    * This takes either the $_POST array via ajax, or can be directly called with $salesforce_id fields
+    * 
+    * @param string $salesforce_id
+    * @param string $wordpress_object
+    */
+    public function refresh_mapped_data( $mapping_id = '' ) {
+        if ( empty( $mapping_id ) ) {
+            $mapping_id = $_POST['mapping_id'];
+        }
+        $result = $this->mappings->get_object_maps( array( 'id' => $mapping_id ) );
+        if ( !empty( $_POST ) ) {
+            wp_send_json_success( $result );
+        } else {
+            return $result;
+        }
+    }
+
+    /**
     * Prepare fieldmap data and redirect after processing
     * This runs when the create or update forms are submitted
     * It is public because it depends on an admin hook
@@ -1503,6 +1522,7 @@ class Wordpress_Salesforce_Admin {
             <h2>Salesforce</h2>
             <div class="salesforce_user_ajax_message"></div>
             <?php if ( isset( $mapping['id'] ) && !isset($_GET['edit_salesforce_mapping']) ) { ?>
+                <input type="hidden" name="mapping_id" id="mapping_id_ajax" value="<?php echo $mapping['id']; ?>" />
                 <input type="hidden" name="salesforce_id" id="salesforce_id_ajax" value="<?php echo $mapping['salesforce_id']; ?>" />
                 <input type="hidden" name="wordpress_id" id="wordpress_id_ajax" value="<?php echo $mapping['wordpress_id']; ?>" />
                 <input type="hidden" name="wordpress_object" id="wordpress_object_ajax" value="<?php echo $mapping['wordpress_object']; ?>" />
@@ -1516,22 +1536,22 @@ class Wordpress_Salesforce_Admin {
                         </tr>
                         <tr>
                             <th>Last Sync Message</th>
-                            <td><?php if ( isset( $mapping['last_sync_message'] ) ) { echo $mapping['last_sync_message']; } else { echo ''; } ?></td>
+                            <td class="last_sync_message"><?php if ( isset( $mapping['last_sync_message'] ) ) { echo $mapping['last_sync_message']; } else { echo ''; } ?></td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <th>Last Sync Action</th>
-                            <td><?php if ( isset( $mapping['last_sync_action'] ) ) { echo $mapping['last_sync_action']; } else { echo ''; } ?></td>
+                            <td class="last_sync_action"><?php if ( isset( $mapping['last_sync_action'] ) ) { echo $mapping['last_sync_action']; } else { echo ''; } ?></td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <th>Last Sync Status</th>
-                            <td><?php if ( isset( $mapping['last_sync_status'] ) && $mapping['last_sync_status'] === '1' ) { echo 'success'; } else if ( isset( $mapping['last_sync_status'] ) && $mapping['last_sync_status'] === '0' ) { echo 'error'; } else { echo ''; } ?></td>
+                            <td class="last_sync_status"><?php if ( isset( $mapping['last_sync_status'] ) && $mapping['last_sync_status'] === '1' ) { echo 'success'; } else if ( isset( $mapping['last_sync_status'] ) && $mapping['last_sync_status'] === '0' ) { echo 'error'; } else { echo ''; } ?></td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <th>Last Sync</th>
-                            <td><?php if ( isset( $mapping['last_sync'] ) ) { echo $mapping['last_sync']; } else { echo ''; } ?></td>
+                            <td class="last_sync"><?php if ( isset( $mapping['last_sync'] ) ) { echo $mapping['last_sync']; } else { echo ''; } ?></td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
