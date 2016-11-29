@@ -1224,7 +1224,6 @@ class Wordpress_Salesforce_Admin {
     * It is public because it depends on an admin hook
     * It then calls the salesforce_mapping class and sends prepared data over to it, then redirects to the correct page
     * This method does include error handling, by loading the submission in a transient if there is an error, and then deleting it upon success
-    * todo: figure out if this structure makes sense
     *
     */
     public function prepare_fieldmap_data() {
@@ -1272,7 +1271,6 @@ class Wordpress_Salesforce_Admin {
     * This runs when the delete link is clicked, after the user confirms
     * It is public because it depends on an admin hook
     * It then calls the salesforce_mapping class and the delete method
-    * todo: figure out if this structure makes sense
     *
     */
     public function delete_fieldmap() {
@@ -1290,7 +1288,7 @@ class Wordpress_Salesforce_Admin {
 
     /**
     * Fieldmap error notice
-    * This runs if a mapping method has had an error. We could probably give it more helpful messaging.
+    * This runs if a mapping method has had an error.
     * It is public because it depends on the admin_notices hook
     * todo: better error messages
     *
@@ -1420,7 +1418,6 @@ class Wordpress_Salesforce_Admin {
 
     /**
     * Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it
-    * todo: figure out if we should create some template files for this
     *
     * @param object $sfapi
     */
@@ -1469,7 +1466,7 @@ class Wordpress_Salesforce_Admin {
     /**
     * Deauthorize WordPress from Salesforce.
     * This deletes the tokens from the database; it does not currently do anything in Salesforce
-    * todo: maybe delete the authorized stuff inside Salesforce? or maybe on an uninstall method?
+    * For this plugin at this time, that is the decision we are making: don't do any kind of authorization stuff inside Salesforce
     */
     private function logout() {
         $this->access_token = delete_option( 'salesforce_api_access_token' );
