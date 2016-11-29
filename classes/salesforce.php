@@ -547,7 +547,6 @@ class Salesforce {
 
 	/**
 	* OAuth step 1: Redirect to Salesforce and request and authorization code.
-	* todo: probably need to make this just print the url
 	*/
 	public function get_authorization_code() {
 		$url = add_query_arg( 
