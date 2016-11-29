@@ -101,10 +101,11 @@ class Salesforce_Mapping {
     *
     * @param array $posted
     * @param array $wordpress_fields
+    * @param array $salesforce_fields
     * @throws \Exception
     */
-    public function create_fieldmap( $posted = array(), $wordpress_fields = array() ) {
-    	$data = $this->setup_fieldmap_data( $posted, $wordpress_fields );
+    public function create_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array() ) {
+    	$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
     	$insert = $this->wpdb->insert( $this->fieldmap_table, $data );
     	if ( $insert === 1 ) {
     		return $this->wpdb->insert_id;
@@ -178,12 +179,13 @@ class Salesforce_Mapping {
     *
     * @param array $posted
     * @param array $wordpress_fields
+    * @param array $salesforce_fields
     * @param int $id
     * @return $map
     * @throws \Exception
     */
-    public function update_fieldmap( $posted = array(), $wordpress_fields = array(), $id = '' ) {
-    	$data = $this->setup_fieldmap_data( $posted, $wordpress_fields );
+    public function update_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array(), $id = '' ) {
+    	$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
     	$update = $this->wpdb->update( $this->fieldmap_table, $data, array( 'id' => $id ) );
     	if ( $update === FALSE ) {
     		return false;
@@ -198,9 +200,10 @@ class Salesforce_Mapping {
     *
     * @param array $posted
     * @param array $wordpress_fields
+    * @param array $salesforce_fields
     * @return $data
     */
-    private function setup_fieldmap_data( $posted = array(), $wordpress_fields = array() ) {
+    private function setup_fieldmap_data( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array() ) {
     	$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
 		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
@@ -219,12 +222,16 @@ class Salesforce_Mapping {
 					$posted['is_delete'][$key] = false;
 				}
 				if ( $posted['is_delete'][$key] === false ) {
+                    $updateable_key = array_search( $posted['salesforce_field'][$key], array_column( $salesforce_fields, 'name' ) );
 					$setup['fields'][$key] = array(
 						'wordpress_field' => array(
                             'label' => sanitize_text_field( $posted['wordpress_field'][$key] ),
                             'methods' => $wordpress_fields[$method_key]['methods']
                         ),
-						'salesforce_field' => sanitize_text_field( $posted['salesforce_field'][$key] ),
+						'salesforce_field' => array(
+                            'label' => sanitize_text_field( $posted['salesforce_field'][$key] ),
+                            'updateable' => $salesforce_fields[$updateable_key]['updateable']
+                        ),
                         'is_prematch' => sanitize_text_field( $posted['is_prematch'][$key] ),
 						'is_key' => sanitize_text_field( $posted['is_key'][$key] ),
 						'direction' => sanitize_text_field( $posted['direction'][$key] ),
@@ -520,19 +527,18 @@ class Salesforce_Mapping {
                 continue;
             }
 
-            $salesforce_field = $fieldmap['salesforce_field'];
+            $salesforce_field = $fieldmap['salesforce_field']['label'];
             $wordpress_field = $fieldmap['wordpress_field']['label'];
 
             // a wordpress event caused this
             if ( in_array( $trigger, array_values( $wordpress_haystack ) ) ) {
+
                 // Skip fields that aren't updateable when a mapped object already exists
-                // maybe we should put this into the salesforce module so we don't load fields that aren't updateable anyway. otherwise i am unclear what this even is.
-                // todo: figure out what this even is
-                /*if ( !$is_new && !$fieldmap['salesforce_field']['updateable'] ) {
+                if ( ( $trigger === $this->sync_wordpress_update || $trigger === $this->sync_wordpress_delete ) && (int) $fieldmap['salesforce_field']['updateable'] !== 1 ) {
                     continue;
-                }*/
+                }
                 
-                $params[$fieldmap['salesforce_field']] = $object[$fieldmap['wordpress_field']['label']];
+                $params[$fieldmap['salesforce_field']['label']] = $object[$fieldmap['wordpress_field']['label']];
 
                 // if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
                 // but still put its name in the params array so we can check for it later
@@ -561,7 +567,7 @@ class Salesforce_Mapping {
                 // a salesforce event caused this
                 // make an array because we need to store the methods for each field as well
                 $params[$fieldmap['wordpress_field']['label']] = array();
-                $params[$wordpress_field]['value'] = $object[$salesforce_field];
+                $params[$wordpress_field]['value'] = $object[$fieldmap['salesforce_field']['label']];
 
                 // if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
                 // but still put its name in the params array so we can check for it later
@@ -572,7 +578,7 @@ class Salesforce_Mapping {
                     $params['key'] = array(
                         'salesforce_field' => $salesforce_field,
                         'wordpress_field' => $wordpress_field,
-                        'value' => $object[$salesforce_field],
+                        'value' => $object[$fieldmap['salesforce_field']['label']],
                         'method_read' => $fieldmap['wordpress_field']['methods']['read'],
                         'method_create' => $fieldmap['wordpress_field']['methods']['create'],
                         'method_update' => $fieldmap['wordpress_field']['methods']['update']
@@ -584,7 +590,7 @@ class Salesforce_Mapping {
                     $params['prematch'] = array(
                         'salesforce_field' => $salesforce_field,
                         'wordpress_field' => $wordpress_field,
-                        'value' => $object[$salesforce_field],
+                        'value' => $object[$fieldmap['salesforce_field']['label']],
                         'method_read' => $fieldmap['wordpress_field']['methods']['read'],
                         'method_create' => $fieldmap['wordpress_field']['methods']['create'],
                         'method_update' => $fieldmap['wordpress_field']['methods']['update']

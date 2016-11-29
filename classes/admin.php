@@ -333,7 +333,7 @@ class Wordpress_Salesforce_Admin {
                                                     <?php
                                                     $salesforce_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object ) );
                                                     foreach ( $salesforce_fields as $salesforce_field ) {
-                                                        if ( isset( $value['salesforce_field'] ) && $value['salesforce_field'] === $salesforce_field['name'] ) {
+                                                        if ( isset( $value['salesforce_field']['label'] ) && $value['salesforce_field']['label'] === $salesforce_field['name'] ) {
                                                             $selected = ' selected';
                                                         } else {
                                                             $selected = '';
@@ -1242,12 +1242,13 @@ class Wordpress_Salesforce_Admin {
             // send the row to the fieldmap class
             // if it is add or clone, use the create method
             $method = esc_attr( $_POST['method'] );
+            $salesforce_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $_POST['salesforce_object'] ) );
             $wordpress_fields = $this->get_wordpress_object_fields( $_POST['wordpress_object'] );
             if ( $method === 'add' || $method === 'clone' ) {
-                $result = $this->mappings->create_fieldmap( $_POST, $wordpress_fields );
+                $result = $this->mappings->create_fieldmap( $_POST, $wordpress_fields, $salesforce_fields );
             } elseif ( $method === 'edit' ) { // if it is edit, use the update method
                 $id = esc_attr( $_POST['id'] );
-                $result = $this->mappings->update_fieldmap( $_POST, $wordpress_fields, $id );
+                $result = $this->mappings->update_fieldmap( $_POST, $wordpress_fields, $salesforce_fields, $id );
             }
             if ( $result === false ) { // if the database didn't save, it's still ane rror
                 set_transient( $cachekey, $_POST, 0 );

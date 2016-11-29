@@ -218,12 +218,13 @@ class Salesforce_Pull {
 						continue;
 					}
 
-					if ( is_array( $field['salesforce_field'] ) && !isset( $field['salesforce_field'] ) ) {
+					// Some field map types (Relation) store a collection of SF objects.
+					if ( is_array( $field['salesforce_field'] ) && !isset( $field['salesforce_field']['label'] ) ) {
 						foreach ( $field['salesforce_field'] as $sf_field ) {
-							$mapped_fields[$sf_field] = $sf_field;
+							$mapped_fields[$sf_field['label']] = $sf_field['label'];
 						}
 					} else {
-						$mapped_fields[$field['salesforce_field']] = $field['salesforce_field'];
+						$mapped_fields[$field['salesforce_field']['label']] = $field['salesforce_field']['label'];
 					}
 				}
 
