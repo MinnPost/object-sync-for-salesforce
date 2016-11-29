@@ -158,9 +158,7 @@ class Salesforce_Rest_API {
 		$this->pull = $this->pull( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull, $this->logging, $this->schedulable_classes );
-
-		//add_action		( 'plugins_loaded', 					array( $this, 'textdomain'				) 			);
-		//add_action		( 'wp_enqueue_scripts',					array( $this, 'front_scripts'			),	10		);
+		
 	}
 
 	/**
