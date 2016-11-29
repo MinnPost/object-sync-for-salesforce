@@ -53,7 +53,6 @@ class Wordpress_Salesforce_Admin {
 
     /**
     * Create the action hooks to create the admin page(s)
-    * todo: maybe we should make this extensible by other plugins
     *
     */
     public function add_actions() {
