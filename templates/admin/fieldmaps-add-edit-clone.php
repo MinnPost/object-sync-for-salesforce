@@ -47,7 +47,15 @@
                 <option value="">- Select object type -</option>
                 <?php
                 $sfapi = $this->salesforce['sfapi'];
-                $salesforce_objects = $sfapi->objects();
+                $object_filters = maybe_unserialize( get_option( 'salesforce_api_object_filters' ), array() );
+                $conditions = array();
+                if ( in_array( 'updateable', $object_filters ) ) {
+                    $conditions['updateable'] = TRUE;
+                }
+                if ( in_array( 'triggerable', $object_filters ) ) {
+                    $conditions['triggerable'] = TRUE;
+                }
+                $salesforce_objects = $sfapi->objects( $conditions );
                 foreach ( $salesforce_objects as $object ) {
                     if ( isset( $salesforce_object ) && $salesforce_object === $object['name'] ) {
                         $selected = ' selected';

@@ -971,17 +971,18 @@ class Wordpress_Salesforce_Admin {
     public function display_checkboxes( $args ) {
         $type = 'checkbox';
         $name = $args['name'];
-        $options = get_option( $name );
+        $options = get_option( $name, array() );
         foreach ( $args['items'] as $key => $value ) {
             $text = $value['text'];
             $id = $value['id'];
             $desc = $value['desc'];
             $checked = '';
-            if (is_array( $options ) && in_array( $key, $options ) ) {
+            if ( is_array( $options ) && in_array( $key, $options ) ) {
                 $checked = 'checked';
-            }
-            if ( isset( $value['default'] ) && $value['default'] === TRUE ) {
-                $checked = 'checked';
+            } else if ( is_array( $options ) && empty( $options ) ) {
+                if ( isset( $value['default'] ) && $value['default'] === TRUE ) {
+                    $checked = 'checked';
+                }
             }
             echo '<div class="checkbox"><label><input type="' . $type. '" value="' . $key . '" name="' . $name . '[]" id="' . $id . '" ' . $checked . ' />' . $text . '</label></div>';
             if ( $desc != '' ) {

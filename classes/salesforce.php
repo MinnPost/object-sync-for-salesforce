@@ -638,7 +638,7 @@ class Salesforce {
 
 		$result = $this->api_call( 'sobjects' );
 
-		if (!empty( $conditions ) ) {
+		if ( !empty( $conditions ) ) {
 			foreach ( $result['data']['sobjects'] as $key => $object ) {
 				foreach ( $conditions as $condition => $value ) {
 					if ( $object[$condition] != $value ) {
