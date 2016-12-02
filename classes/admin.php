@@ -1115,75 +1115,13 @@ class Wordpress_Salesforce_Admin {
     public function show_salesforce_user_fields( $user ) {
         if ( $this->check_wordpress_admin_permissions() === TRUE ) {
             $mapping = $this->mappings->load_by_wordpress( 'user', $user->ID );
-            ?>
-            <h2>Salesforce</h2>
-            <?php if ( isset( $mapping['id'] ) && !isset($_GET['edit_salesforce_mapping']) ) { ?>
-                <input type="hidden" name="mapping_id" id="mapping_id_ajax" value="<?php echo $mapping['id']; ?>" />
-                <input type="hidden" name="salesforce_id" id="salesforce_id_ajax" value="<?php echo $mapping['salesforce_id']; ?>" />
-                <input type="hidden" name="wordpress_id" id="wordpress_id_ajax" value="<?php echo $mapping['wordpress_id']; ?>" />
-                <input type="hidden" name="wordpress_object" id="wordpress_object_ajax" value="<?php echo $mapping['wordpress_object']; ?>" />
-                <table class="wp-list-table widefat striped mapped-salesforce-user">
-                    <caption>This user is mapped to a Salesforce object</caption>
-                    <tbody>
-                        <tr>
-                            <th>Salesforce Id</th>
-                            <td><a href="<?php echo $this->salesforce['sfapi']->get_instance_url() . '/' . $mapping['salesforce_id']; ?>"><?php echo $mapping['salesforce_id']; ?></a></td>
-                            <td><a href="<?php echo get_admin_url( null, 'user-edit.php?user_id=' . $user->ID ) . '&amp;edit_salesforce_mapping=true'; ?>" class="edit-salesforce-mapping">Edit</a></td>
-                        </tr>
-                        <tr>
-                            <th>Last Sync Message</th>
-                            <td class="last_sync_message"><?php if ( isset( $mapping['last_sync_message'] ) ) { echo $mapping['last_sync_message']; } else { echo ''; } ?></td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th>Last Sync Action</th>
-                            <td class="last_sync_action"><?php if ( isset( $mapping['last_sync_action'] ) ) { echo $mapping['last_sync_action']; } else { echo ''; } ?></td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th>Last Sync Status</th>
-                            <td class="last_sync_status"><?php if ( isset( $mapping['last_sync_status'] ) && $mapping['last_sync_status'] === '1' ) { echo 'success'; } else if ( isset( $mapping['last_sync_status'] ) && $mapping['last_sync_status'] === '0' ) { echo 'error'; } else { echo ''; } ?></td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th>Last Sync</th>
-                            <td class="last_sync"><?php if ( isset( $mapping['last_sync'] ) ) { echo $mapping['last_sync']; } else { echo ''; } ?></td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th>Actions</th>
-                            <td>
-                                <a href="#" class="button button-secondary push_to_salesforce_button">Push to Salesforce</a>
-                                <a href="#" class="button button-secondary pull_from_salesforce_button">Pull from Salesforce</a>
-                            </td>
-                    </tbody>
-                </table>
-                <div class="salesforce_user_ajax_message"></div>
-            <?php } else if ( isset($_GET['edit_salesforce_mapping']) && urlencode( $_GET['edit_salesforce_mapping'] ) === 'true' ) { ?>
-                <input type="hidden" name="salesforce_update_mapped_user" value="1" />
-                <p>You can change the Salesforce object that this WordPress user maps to by changing the ID and updating this user.</p>
-                <table class="form-table">
-                    <tr>
-                        <th><label for="salesforce_id">Salesforce ID</label></th>
-                        <td>
-                            <input type="text" name="salesforce_id" id="salesforce_id" value="<?php if ( isset( $mapping['id'] ) ) { echo $mapping['salesforce_id']; } ?>" class="regular-text" /><br />
-                            <span class="description">Enter a Salesforce object ID.</span>
-                        </td>
-                    </tr>
-                </table>
-            <?php } else { ?>
-                <input type="hidden" name="salesforce_create_mapped_user" value="1" />
-                <p>This user is not mapped to an object in Salesforce. You can run a push to send this object to Salesforce, which will cause it to follow the plugin's normal mapping conventions, or you can create a manual link to a Salesforce object.</p>
-                <table class="form-table">
-                    <tr>
-                        <th><label for="salesforce_id">Salesforce ID</label></th>
-                        <td>
-                            <input type="text" name="salesforce_id" id="salesforce_id" value="" class="regular-text" /><br />
-                            <span class="description">Enter a Salesforce object ID.</span>
-                        </td>
-                    </tr>
-                </table>
-            <?php }
+            if ( isset( $mapping['id'] ) && !isset($_GET['edit_salesforce_mapping']) ) {
+                require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
+            } else if ( isset($_GET['edit_salesforce_mapping']) && urlencode( $_GET['edit_salesforce_mapping'] ) === 'true' ) {
+                require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
+            } else {
+                require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
+            }
         }
     }
 
