@@ -92,515 +92,130 @@ class Wordpress_Salesforce_Admin {
     */ 
     public function show_admin_page() {
         echo '<div class="wrap">';
-        echo '<h1>' . get_admin_page_title() . '</h1>';
-        $allowed = $this->check_wordpress_admin_permissions();
-        if ( FALSE === $allowed ) {
-            return;
-        }
-        $tabs = array(
-            'settings' => 'Settings',
-            'authorize' => 'Authorize',
-            'fieldmaps' => 'Fieldmaps',
-            'schedule' => 'Scheduling',
-        ); // this creates the tabs for the admin
+            echo '<h1>' . get_admin_page_title() . '</h1>';
+            $allowed = $this->check_wordpress_admin_permissions();
+            if ( FALSE === $allowed ) {
+                return;
+            }
+            $tabs = array(
+                'settings' => 'Settings',
+                'authorize' => 'Authorize',
+                'fieldmaps' => 'Fieldmaps',
+                'schedule' => 'Scheduling',
+            ); // this creates the tabs for the admin
 
-        // optionally make tab(s) for logging and log settings
-        $logging_enabled = get_option( 'salesforce_api_enable_logging', FALSE );
-        if ( $logging_enabled === '1' ) {
-            $tabs['log_settings'] = 'Log Settings';
-        }
-
-        // filter for extending the tabs available on the page
-        // currently it will go into the default switch case for $tab
-        $tabs = apply_filters( 'salesforce_rest_api_settings_tabs', $tabs );
-
-        $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
-        $this->tabs( $tabs, $tab );
-
-        $consumer_key = $this->login_credentials['consumer_key'];
-        $consumer_secret = $this->login_credentials['consumer_secret'];
-        $callback_url = $this->login_credentials['callback_url'];
-        $text_domain = $this->text_domain;
-
-        try {
-            switch ( $tab ) {
-                case 'authorize':
-                    if ( isset( $_GET['code'] ) )  {
-                        $is_authorized = $this->salesforce['sfapi']->request_token( esc_attr( $_GET['code'] ) );
-                        echo "<script>window.location = '$callback_url';</script>";
-                    } elseif ( $this->salesforce['is_authorized'] === true ) {
-                        echo '<div class="success"><h2>Salesforce is successfully authenticated.</h2></div>';
-                        echo '<p><a class="button-primary" href="' . $callback_url . '&amp;tab=logout">Disconnect from Salesforce</a></p>';
-                        $demo = $this->demo( $this->salesforce['sfapi'] );
-                        echo $demo;
-                    } elseif ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
-                        echo '<p><a class="button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
-                    } // need to throw an error here if all the stuff is missing
-                    break;
-                case 'fieldmaps':
-                    if ( isset( $_GET['method'] ) ) {
-                        $method = esc_attr( $_GET['method'] );
-                        $error_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=' . $method );
-                        $success_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps' );
-
-                        if ( isset( $_GET['transient'] ) ) {
-                            $transient = esc_html( $_GET['transient'] );
-                            $posted = get_transient( $transient );
-                        }
-
-                        if ( isset( $posted ) && is_array( $posted ) ) {
-                            $map = $posted;
-                        } elseif ( $method === 'edit' || $method === 'clone' || $method === 'delete' ) {
-                            $map = $this->mappings->get_fieldmaps( $_GET['id'] );
-                        }
-
-                        if ( isset( $map ) && is_array( $map ) ) {
-                            $label = $map['label'];
-                            $salesforce_object = $map['salesforce_object'];
-                            $salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
-                            $salesforce_record_type_default = $map['salesforce_record_type_default'];
-                            $wordpress_object = $map['wordpress_object'];
-                            $pull_trigger_field = $map['pull_trigger_field'];
-                            $fieldmap_fields = $map['fields'];
-                            $sync_triggers = $map['sync_triggers'];
-                            $push_async = $map['push_async'];
-                            $ignore_drafts = $map['ignore_drafts'];
-                            $weight = $map['weight'];
-                        }
-                        
-                        if ( $method === 'add' || $method === 'edit' || $method === 'clone' ) { ?>
-                        <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>" class="fieldmap">
-                            <input type="hidden" name="redirect_url_error" value="<?php echo $error_url; ?>" />
-                            <input type="hidden" name="redirect_url_success" value="<?php echo $success_url; ?>" />
-                            <?php
-                            if ( isset( $transient ) ) {
-                            ?>
-                            <input type="hidden" name="transient" value="<?php echo $transient; ?>" />
-                            <?php    
-                            }
-                            ?>
-                            <input type="hidden" name="action" value="post_fieldmap" >
-                            <input type="hidden" name="method" value="<?php echo $method; ?>" />
-                            <?php if ( $method === 'edit' ) {
-                            ?>
-                            <input type="hidden" name="id" value="<?php echo $map['id']; ?>" />
-                            <?php
-                            }
-                            ?>
-                            <div class="fieldmap_label">
-                                <label for="label">Label: </label>
-                                <input type="text" id="label" name="label" required value="<?php echo isset( $label ) ? $label : ''; ?>" />
-                            </div>
-                            <fieldset class="wordpress_side">
-                                <div class="wordpress_object">
-                                    <label for="wordpress_object">WordPress Object: </label>
-                                    <select id="wordpress_object" name="wordpress_object" required>
-                                        <option value="">- Select object type -</option>
-                                        <?php
-                                        $wordpress_objects = $this->wordpress->wordpress_objects;
-                                        foreach ( $wordpress_objects as $object ) {
-                                            if ( isset( $wordpress_object ) && $wordpress_object === $object ) {
-                                                $selected = ' selected';
-                                            } else {
-                                                $selected = '';
-                                            }
-                                            echo '<option value="' . $object . '"' . $selected . '>' . $object . '</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </fieldset>
-                            <fieldset class="salesforce_side">
-                                <div class="salesforce_object">
-                                    <label for="salesforce_object">Salesforce Object: </label>
-                                    <div class="spinner"></div>
-                                    <select id="salesforce_object" name="salesforce_object" required>
-                                        <option value="">- Select object type -</option>
-                                        <?php
-                                        $sfapi = $this->salesforce['sfapi'];
-                                        $salesforce_objects = $sfapi->objects();
-                                        foreach ( $salesforce_objects as $object ) {
-                                            if ( isset( $salesforce_object ) && $salesforce_object === $object['name'] ) {
-                                                $selected = ' selected';
-                                            } else {
-                                                $selected = '';
-                                            }
-                                            echo '<option value="' . $object['name'] . '"' . $selected . '>' . $object['label'] . '</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="salesforce_record_types_allowed">
-                                    <?php
-                                    if ( isset( $salesforce_record_types_allowed ) ) {
-                                        $record_types = $this->get_salesforce_object_description( array( 'salesforce_object' => $salesforce_object, 'include' => 'recordTypeInfos' ) );
-                                        if ( isset( $record_types['recordTypeInfos'] ) ) {
-                                            echo '<label for="salesforce_record_types_allowed">Allowed Record Types:</label>';
-                                            echo '<div class="checkboxes">';
-                                            foreach ( $record_types['recordTypeInfos'] as $key => $value ) {
-                                                if ( in_array( $key, $salesforce_record_types_allowed ) ) {
-                                                    $checked = ' checked';
-                                                } else {
-                                                    $checked = '';
-                                                }
-                                                echo '<label><input type="checkbox" class="form-checkbox" value="' . $key . '" name="salesforce_record_types_allowed[' . $key . ']" id="salesforce_record_types_allowed-' . $key . '" ' . $checked . '> ' . $value . '</label>';
-                                            }
-                                            echo '</div>';
-                                        }
-                                    }
-                                    ?>
-                                </div>
-                                <div class="salesforce_record_type_default">
-                                    <?php
-                                    if ( isset( $salesforce_record_type_default ) ) {
-                                        $record_types = $this->get_salesforce_object_description( array( 'salesforce_object' => $salesforce_object, 'include' => 'recordTypeInfos' ) );
-                                        if ( isset( $record_types['recordTypeInfos'] ) ) {
-                                            echo '<label for="salesforce_record_type_default">Default Record Type:</label>';
-                                            echo '<select id="salesforce_record_type_default" name="salesforce_record_type_default" required><option value="">- Select record type -</option>';
-                                            foreach ( $record_types['recordTypeInfos'] as $key => $value ) {
-                                                if ( isset( $salesforce_record_type_default ) && $salesforce_record_type_default === $key ) {
-                                                    $selected = ' selected';
-                                                } else {
-                                                    $selected = '';
-                                                }
-                                                if ( !isset( $salesforce_record_types_allowed ) || in_array( $key, $salesforce_record_types_allowed ) ) {
-                                                    echo '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
-                                                }
-                                            }
-                                            echo '</select>';
-                                        }
-                                    }
-                                    ?>
-                                </div>
-                                <div class="pull_trigger_field">
-                                    <?php
-                                    if ( isset( $pull_trigger_field ) ) {
-                                        echo '<label for="pull_trigger_field">Date field to trigger pull:</label>';
-                                        $object_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object, 'type' => 'datetime' ) );
-                                        echo '<select name="pull_trigger_field" id="pull_trigger_field">';
-                                        foreach( $object_fields as $key => $value ) {
-                                            if ( $pull_trigger_field === $value['name'] ) {
-                                                $selected = ' selected';
-                                            } else {
-                                                $selected = '';
-                                            }
-                                            echo '<option value="' . $value['name'] . '" ' . $selected . '>' . $value['label'] . '</option>';
-                                        }
-                                        echo '</select>';
-                                    }
-                                    ?>
-                                </div>
-                            </fieldset>
-                            <fieldset class="fields">
-                                <legend>Fieldmap</legend>
-                                <table class="wp-list-table widefat striped fields">
-                                    <thead>
-                                        <tr>
-                                            <th class="column-wordpress_field">WordPress Field</th>
-                                            <th class="column-salesforce_field">Salesforce Field</th>
-                                            <th class="column-is_prematch">Prematch</th>
-                                            <th class="column-is_key">Salesforce Key</th>
-                                            <th class="column-direction">Direction</th>
-                                            <th class="column-is_delete">Delete</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        if ( isset( $fieldmap_fields ) && $fieldmap_fields !== NULL && is_array( $fieldmap_fields ) ) {
-                                            foreach ( $fieldmap_fields as $key => $value ) {
-                                        ?>
-                                        <tr>
-                                            <td class="column-wordpress_field">
-                                                <select name="wordpress_field[<?php echo $key; ?>]" id="wordpress_field-<?php echo $key; ?>">
-                                                    <option value="">- Select WordPress field -</option>
-                                                    <?php
-                                                    $wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
-                                                    foreach ( $wordpress_fields as $wordpress_field ) {
-                                                        if ( isset( $value['wordpress_field']['label'] ) && $value['wordpress_field']['label'] === $wordpress_field['key'] ) {
-                                                            $selected = ' selected';
-                                                        } else {
-                                                            $selected = '';
-                                                        }
-                                                        echo '<option value="' . $wordpress_field['key'] . '"' . $selected . '> ' . $wordpress_field['key'] . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                                
-                                            </td>
-                                            <td class="column-salesforce_field">
-                                                <select name="salesforce_field[<?php echo $key; ?>]" id="salesforce_field-<?php echo $key; ?>">
-                                                    <option value="">- Select Salesforce field -</option>
-                                                    <?php
-                                                    $salesforce_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object ) );
-                                                    foreach ( $salesforce_fields as $salesforce_field ) {
-                                                        if ( isset( $value['salesforce_field']['label'] ) && $value['salesforce_field']['label'] === $salesforce_field['name'] ) {
-                                                            $selected = ' selected';
-                                                        } else {
-                                                            $selected = '';
-                                                        }
-                                                        echo '<option value="' . $salesforce_field['name'] . '"' . $selected . '> ' . $salesforce_field['label'] . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                                
-                                            </td>
-                                            <td class="column-is_prematch">
-                                                <?php
-                                                if ( isset( $value['is_prematch'] ) && $value['is_prematch'] === '1' ) {
-                                                    $checked = ' checked';
-                                                } else {
-                                                    $checked = '';
-                                                }
-                                                ?>
-                                                <input type="checkbox" name="is_prematch[<?php echo $key; ?>]" id="is_prematch-<?php echo $key; ?>" value="1" <?php echo $checked; ?> title="This pair should be checked for existing matches in Salesforce before adding" />
-                                            </td>
-                                            <td class="column-is_key">
-                                                <?php
-                                                if ( isset( $value['is_key'] ) && $value['is_key'] === '1' ) {
-                                                    $checked = ' checked';
-                                                } else {
-                                                    $checked = '';
-                                                }
-                                                ?>
-                                                <input type="checkbox" name="is_key[<?php echo $key; ?>]" id="is_key-<?php echo $key; ?>" value="1" <?php echo $checked; ?> title="This Salesforce field is an External ID in Salesforce" />
-                                            </td>
-                                            <td class="column-direction">
-                                                <?php
-                                                if ( isset( $value['direction'] ) ) {
-                                                    if ( $value['direction'] === 'sf_wp' ) {
-                                                        $checked_sf_wp = ' checked';
-                                                        $checked_wp_sf = '';
-                                                        $checked_sync = '';
-                                                    } elseif ( $value['direction'] === 'wp_sf' ) {
-                                                        $checked_sf_wp = '';
-                                                        $checked_wp_sf = ' checked';
-                                                        $checked_sync = '';
-                                                    } else {
-                                                        $checked_sf_wp = '';
-                                                        $checked_wp_sf = '';
-                                                        $checked_sync = ' checked';
-                                                    }
-                                                } else {
-                                                    $checked_sf_wp = '';
-                                                    $checked_wp_sf = '';
-                                                    $checked_sync = ' checked'; // by default, start with Sync checked
-                                                }
-                                                
-                                                ?>
-                                                <div class="radios">
-                                                    <label><input type="radio" value="sf_wp" name="direction[<?php echo $key; ?>]" id="direction-<?php echo $key; ?>-sf-wp" <?php echo $checked_sf_wp; ?> required>  Salesforce to WordPress</label>
-                                                    <label><input type="radio" value="wp_sf" name="direction[<?php echo $key; ?>]" id="direction-<?php echo $key; ?>-wp-sf" <?php echo $checked_wp_sf; ?> required>  WordPress to Salesforce</label>
-                                                    <label><input type="radio" value="sync" name="direction[<?php echo $key; ?>]" id="direction-<?php echo $key; ?>-sync" <?php echo $checked_sync; ?> required>  Sync</label>
-                                                </div>
-                                            </td>
-                                            <td class="column-is_delete">
-                                                <input type="checkbox" name="is_delete[<?php echo $key; ?>]" id="is_delete-<?php echo $key; ?>" value="1" />
-                                            </td>
-                                        </tr>
-                                        <?php
-                                            }   
-                                        } elseif ( isset( $wordpress_object ) && isset( $salesforce_object ) ) {
-                                        ?>
-                                        <tr>
-                                            <td class="column-wordpress_field">
-                                                <select name="wordpress_field[0]" id="wordpress_field-0">
-                                                    <option value="">- Select WordPress field -</option>
-                                                    <?php
-                                                    $wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
-                                                    foreach ( $wordpress_fields as $wordpress_field ) {
-                                                        echo '<option value="' . $wordpress_field['key'] . '"> ' . $wordpress_field['key'] . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </td>
-                                            <td class="column-salesforce_field">
-                                                <select name="salesforce_field[0]" id="salesforce_field-0">
-                                                    <option value="">- Select Salesforce field -</option>
-                                                    <?php
-                                                    $salesforce_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object ) );
-                                                    foreach ( $salesforce_fields as $salesforce_field ) {
-                                                        echo '<option value="' . $salesforce_field['name'] . '"> ' . $salesforce_field['label'] . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </td>
-                                            <td class="column-is_prematch">
-                                                <input type="checkbox" name="is_prematch[0]" id="is_prematch-0" value="1" />
-                                            </td>
-                                            <td class="column-is_key">
-                                                <input type="checkbox" name="is_key[0]" id="is_key-0" value="1" />
-                                            </td>
-                                            <td class="column-direction">
-                                                <div class="radios">
-                                                    <label><input type="radio" value="sf_wp" name="direction[0]" id="direction-0-sf-wp" required>  Salesforce to WordPress</label>
-                                                    <label><input type="radio" value="wp_sf" name="direction[0]" id="direction-0-wp-sf" required>  WordPress to Salesforce</label>
-                                                    <label><input type="radio" value="sync" name="direction[0]" id="direction-0-sync" required checked>  Sync</label>
-                                                </div>
-                                            </td>
-                                            <td class="column-is_delete">
-                                                <input type="checkbox" name="is_delete[0]" id="is_delete-0" value="1" />
-                                            </td>
-                                        </tr>
-                                        <?php
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
-                                <!--<div class="spinner"></div>-->
-                                <?php
-                                if ( isset( $fieldmap_fields ) && $fieldmap_fields !== NULL ) {
-                                    $add_button_label = 'Add another field mapping';
-                                } else {
-                                    $add_button_label = 'Add field mapping';
-                                }
-                                ?>
-                                <p><button type="button" id="add-field-mapping" class="button button-secondary"><?php echo $add_button_label; ?></button></p>
-                                <p class="description">Prematch tells the plugin to match records that have the same value before sending data to Salesforce. Salesforce Key indicates the Salesforce field is an External ID. If either of these is checked, the plugin will do an UPSERT to avoid duplicate data when possible.</p>
-                            </fieldset>
-                            <fieldset class="sync_triggers">
-                                <legend>Action triggers</legend>
-                                <div class="checkboxes">
-                                    <?php
-                                    $wordpress_create_checked = '';
-                                    $wordpress_update_checked = '';
-                                    $wordpress_delete_checked = '';
-                                    $salesforce_create_checked = '';
-                                    $salesforce_update_checked = '';
-                                    $salesforce_delete_checked = '';
-                                    if ( isset( $sync_triggers ) && is_array( $sync_triggers ) ) {
-                                        foreach ( $sync_triggers as $trigger ) {
-                                            switch ($trigger) {
-                                                case $this->mappings->sync_wordpress_create:
-                                                    $wordpress_create_checked = ' checked';
-                                                    break;
-                                                case $this->mappings->sync_wordpress_update:
-                                                    $wordpress_update_checked = ' checked';
-                                                    break;
-                                                case $this->mappings->sync_wordpress_delete:
-                                                    $wordpress_delete_checked = ' checked';
-                                                    break;
-                                                case $this->mappings->sync_sf_create:
-                                                    $salesforce_create_checked = ' checked';
-                                                    break;
-                                                case $this->mappings->sync_sf_update:
-                                                    $salesforce_update_checked = ' checked';
-                                                    break;
-                                                case $this->mappings->sync_sf_delete:
-                                                    $salesforce_delete_checked = ' checked';
-                                                    break;
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_create; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-create" <?php echo $wordpress_create_checked; ?>> WordPress create</label>
-                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_update; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-update" <?php echo $wordpress_update_checked; ?>>WordPress update</label>
-                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_delete; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-delete" <?php echo $wordpress_delete_checked; ?>>WordPress delete</label>
-                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_create; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-create" <?php echo $salesforce_create_checked; ?>> Salesforce create</label>
-                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_update; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-update" <?php echo $salesforce_update_checked; ?>> Salesforce update</label>
-                                    <label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_delete; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-delete" <?php echo $salesforce_delete_checked; ?>> Salesforce delete</label>
-                                    <p class="description">Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. These settings are used by the <code>salesforce_push</code> and <code>salesforce_pull</code> modules respectively.</p>
-                                </div>
-                                <div class="checkboxes">
-                                    <label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo isset( $push_async ) && $push_async === '1' ? ' checked' : ''; ?>> Process asynchronously</label>
-                                    <p class="description">If selected, push data will be queued for processing and synchronized when <code>wp_cron</code> is run. This may increase site performance, but changes will not be reflected in real time.</p>
-                                </div>
-                                <div class="checkboxes">
-                                    <label><input type="checkbox" name="ignore_drafts" id="ignore-drafts" value="1" <?php echo isset( $ignore_drafts ) && $ignore_drafts === '1' ? ' checked' : ''; ?>> Ignore drafts</label>
-                                    <p class="description">If selected, WordPress will not send drafts of this object type (if it creates drafts for it) to Salesforce.</p>
-                                </div>
-                                <div class="fieldmap_label">
-                                    <label for="label">Weight: </label>
-                                    <input type="number" id="weight" name="weight" value="<?php echo isset( $weight ) ? $weight : ''; ?>" />
-                                    <p class="description">Weight is intended for use when you have multiple fieldmaps for the same object, either in WordPress or Salesforce.</p>
-                                    <p class="description">For example, if you map WordPress users to Salesforce Contacts, and then map the users to Salesforce Leads as well, you could assign a numeric weight to indicate which one gets processed first. Otherwise, you can safely leave it blank.</p>
-                                </div>
-                            </fieldset>
-                            <?php echo submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
-                        </form>
-                        <?php 
-                        } elseif ( $method === 'delete' ) {
-                            ?>
-                            <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
-                                <input type="hidden" name="redirect_url_error" value="<?php echo $error_url; ?>" />
-                                <input type="hidden" name="redirect_url_success" value="<?php echo $success_url; ?>" />
-                                <input type="hidden" name="id" value="<?php echo $map['id']; ?>" />
-                                <input type="hidden" name="action" value="delete_fieldmap">
-                                <h2>Are you sure you want to delete this fieldmap?</h2>
-                                <p>This fieldmap is called <strong><?php echo $map['label']; ?></strong> and it maps the Salesforce <?php echo $map['salesforce_object']; ?> object to the WordPress <?php echo $map['wordpress_object']; ?> object.</p>
-                                <?php echo submit_button( 'Confirm deletion' ); ?>
-                            </form>
-                            <?php
-                        }
-                    } else {
-                        $table = '';
-                        $table .= '<h3>Fieldmaps <a class="page-title-action" href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=add' ) . '">Add New</a></h3>';
-                        $table .= '<table class="widefat striped"><thead><summary></summary><tr><th>Label</th><th>WordPress Object</th><th>Salesforce Object</th><th colspan="3">Actions</th></thead><tbody>';
-                        $results = $this->mappings->get_fieldmaps();
-                        if ( count( $results ) > 0 ) {
-                            foreach ( $results as $record ) {
-                                $table .= '<tr><td>' . $record['label'] . '</td><td>' . $record['wordpress_object'] . '</td><td>' . $record['salesforce_object'] . '</td><td><a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=edit&id=' . $record['id'] ) . '">Edit</a></td><td><a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=clone&id=' . $record['id'] ) . '">Clone</a></td><td><a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=delete&id=' . $record['id'] ) . '">Delete</a></td><td><a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=export&id=' . $record['id'] ) . '">Export</a></td></tr>';
-                            }
-                        } else {
-                            $table .= '<tr><td colspan="4"><p>No fieldmaps exist yet. You can <a href="' .get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=add' ) . '">add one</a>.</p></td></tr>';
-                        }
-                        $table .= '</tbody></table>';
-                        echo $table;
-
-                    }
-                    break;
-                case 'logout':
-                    $message = $this->logout();
-                    echo '<p>' . $message . '</p>';
-                    break;
-                case 'clear_schedule':
-                    if ( isset( $_GET['schedule_name'] ) )  {
-                        $schedule_name = urlencode( $_GET['schedule_name'] );
-                    }
-                    $message = $this->clear_schedule( $schedule_name );
-                    echo '<p>' . $message . '</p>';
-                    break;
-                case 'settings':
-                    $consumer_key = $this->login_credentials['consumer_key'];
-                    $consumer_secret = $this->login_credentials['consumer_secret'];
-
-                    if ($consumer_key && $consumer_secret) {
-
-                        if ( $this->salesforce['is_authorized'] === true ) {
-                            echo '<form method="post" action="options.php">';
-                                echo settings_fields( $tab ) . do_settings_sections( $tab );
-                                submit_button( 'Save settings' );
-                            echo '</form>';
-
-                        } else {
-                            salesforce_set_message( esc_html__( 'Salesforce needs to be authorized to connect to this website.', $this->text_domain ), 'error' );
-                        }
-                    } else {
-                        echo '<form method="post" action="options.php">';
-                            echo settings_fields( $tab ) . do_settings_sections( $tab );
-                            submit_button( 'Save settings' );
-                        echo '</form>';
-                    }
-                    break;
-                default:
-                    echo '<form method="post" action="options.php">';
-                        echo settings_fields( $tab ) . do_settings_sections( $tab );
-                        submit_button( 'Save settings' );
-                    echo '</form>';
-                    break;
+            // optionally make tab(s) for logging and log settings
+            $logging_enabled = get_option( 'salesforce_api_enable_logging', FALSE );
+            if ( $logging_enabled === '1' ) {
+                $tabs['log_settings'] = 'Log Settings';
             }
 
-        }
-        catch( SalesforceApiException $Ex ) {
-            //salesforce_api_admin_render_header( $Ex->getStatus().': Error '.$Ex->getCode().', '.$Ex->getMessage(), 'error' );
-            //print_r($Ex);
-            echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
-        }
-        catch( Exception $Ex ) {
-            echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
-        }
+            // filter for extending the tabs available on the page
+            // currently it will go into the default switch case for $tab
+            $tabs = apply_filters( 'salesforce_rest_api_settings_tabs', $tabs );
 
+            $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
+            $this->tabs( $tabs, $tab );
+
+            $consumer_key = $this->login_credentials['consumer_key'];
+            $consumer_secret = $this->login_credentials['consumer_secret'];
+            $callback_url = $this->login_credentials['callback_url'];
+            $text_domain = $this->text_domain;
+
+            try {
+                switch ( $tab ) {
+                    case 'authorize':
+                        if ( isset( $_GET['code'] ) )  {
+                            $is_authorized = $this->salesforce['sfapi']->request_token( esc_attr( $_GET['code'] ) );
+                            echo "<script>window.location = '$callback_url';</script>";
+                        } elseif ( $this->salesforce['is_authorized'] === true ) {
+                            require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/authorized.php' );
+                            $this->demo( $this->salesforce['sfapi'] );
+                        } elseif ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
+                            echo '<p><a class="button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
+                        } // need to throw an error here if all the stuff is missing
+                        break;
+                    case 'fieldmaps':
+                        if ( isset( $_GET['method'] ) ) {
+
+                            $method = esc_attr( $_GET['method'] );
+                            $error_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=' . $method );
+                            $success_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps' );
+
+                            if ( isset( $_GET['transient'] ) ) {
+                                $transient = esc_html( $_GET['transient'] );
+                                $posted = get_transient( $transient );
+                            }
+
+                            if ( isset( $posted ) && is_array( $posted ) ) {
+                                $map = $posted;
+                            } elseif ( $method === 'edit' || $method === 'clone' || $method === 'delete' ) {
+                                $map = $this->mappings->get_fieldmaps( $_GET['id'] );
+                            }
+
+                            if ( isset( $map ) && is_array( $map ) ) {
+                                $label = $map['label'];
+                                $salesforce_object = $map['salesforce_object'];
+                                $salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
+                                $salesforce_record_type_default = $map['salesforce_record_type_default'];
+                                $wordpress_object = $map['wordpress_object'];
+                                $pull_trigger_field = $map['pull_trigger_field'];
+                                $fieldmap_fields = $map['fields'];
+                                $sync_triggers = $map['sync_triggers'];
+                                $push_async = $map['push_async'];
+                                $ignore_drafts = $map['ignore_drafts'];
+                                $weight = $map['weight'];
+                            }
+                            
+                            if ( $method === 'add' || $method === 'edit' || $method === 'clone' ) {
+                                require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/fieldmaps-add-edit-clone.php' );
+                            } elseif ( $method === 'delete' ) {
+                                require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/fieldmaps-delete.php' );
+                            }
+
+                        } else {
+                            $fieldmaps = $this->mappings->get_fieldmaps();
+                            require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/fieldmaps-list.php' );
+                        }
+                        break;
+                    case 'logout':
+                        $message = $this->logout();
+                        echo '<p>' . $message . '</p>';
+                        break;
+                    case 'clear_schedule':
+                        if ( isset( $_GET['schedule_name'] ) )  {
+                            $schedule_name = urlencode( $_GET['schedule_name'] );
+                        }
+                        $message = $this->clear_schedule( $schedule_name );
+                        echo '<p>' . $message . '</p>';
+                        break;
+                    case 'settings':
+                        $consumer_key = $this->login_credentials['consumer_key'];
+                        $consumer_secret = $this->login_credentials['consumer_secret'];
+                        if ( $consumer_key && $consumer_secret ) {
+                            if ( $this->salesforce['is_authorized'] === true ) {
+                                require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+                            } else {
+                                $message = __( 'Salesforce needs to be authorized to connect to this website.', $this->text_domain );
+                                require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
+                            }
+                        } else {
+                            require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+                        }
+                        break;
+                    default:
+                        require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+                        break;
+                }
+
+            }
+            catch( SalesforceApiException $Ex ) {
+                echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
+            }
+            catch( Exception $Ex ) {
+                echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
+            }
         echo '</div>';
-
     }
 
     /**
@@ -1429,45 +1044,25 @@ class Wordpress_Salesforce_Admin {
     * @param object $sfapi
     */
     private function demo( $sfapi ) {
-        $demo = '';
-        $demo .= '<h3>Salesforce Demo</h3>';
 
-        $demo .= '<p>Currently, we are using version ' . $this->login_credentials['rest_api_version'] . ' of the Salesforce REST API. Available versions are displayed below.';
         $versions = $sfapi->get_api_versions();
-        $response = $versions['data'];
 
         // format this array into html so users can see the versions
+        $versions_is_cached = $versions['cached'] === true ? '' : 'not ';
+        $versions_from_cache = $versions['from_cache'] === true ? 'were' : 'were not';
+        $versions_is_redo = $versions['is_redo'] === true ? '' : 'not ';
+        $versions_andorbut = $versions['from_cache'] === true ? 'and' : 'but';
 
-        $is_cached = $versions['cached'] === true ? '' : 'not ';
-        $from_cache = $versions['from_cache'] === true ? 'were' : 'were not';
-        $is_redo = $versions['is_redo'] === true ? '' : 'not ';
-        $andorbut = $versions['from_cache'] === true ? 'and' : 'but';
-        $demo .= '<table class="widefat striped"><thead><summary><h4>Available Salesforce API versions. This list is ' . $is_cached . 'cached, ' . $andorbut . ' items ' . $from_cache . ' loaded from the cache. This is not an authenticated request, so it does not touch the Salesforce token.</h4></summary><tr><th>Label</th><th>URL</th><th>Version</th></thead>';
-        foreach ( $response as $version ) {
-            $class = '';
-            if ( $version['version'] === $this->login_credentials['rest_api_version'] ) {
-                $class = ' class="current"';
-            }
-            $demo .= '<tr' . $class . '><td>' . $version['label'] . '</td><td>' . $version['url'] . '</td><td>' . $version['version'] . '</td></tr>';
-        }
-        $demo .= '</table>';
-
-        $result = $sfapi->query('SELECT Name, Id from Contact LIMIT 100');
-        $response = $result['data'];
+        $contacts = $sfapi->query('SELECT Name, Id from Contact LIMIT 100');
 
         // format this array into html so users can see the contacts
-        $is_cached = $result['cached'] === true ? '' : 'not ';
-        $from_cache = $result['from_cache'] === true ? 'were' : 'were not';
-        $andorbut = $result['from_cache'] === true ? 'and' : 'but';
-        $is_redo = $result['is_redo'] === true ? '' : 'not ';
+        $contacts_is_cached = $contacts['cached'] === true ? '' : 'not ';
+        $contacts_from_cache = $contacts['from_cache'] === true ? 'were' : 'were not';
+        $contacts_andorbut = $contacts['from_cache'] === true ? 'and' : 'but';
+        $contacts_is_redo = $contacts['is_redo'] === true ? '' : 'not ';
 
-        $demo .= '<table class="widefat striped"><thead><summary><h4>Salesforce successfully returned ' . $response['totalSize'] . ' ' . $response['records'][0]['attributes']['type'] . ' records. They are ' . $is_cached . 'cached, ' . $andorbut . ' they ' . $from_cache . ' loaded from the cache. This request did ' . $is_redo . 'require refreshing the Salesforce token.</h4></summary><tr><th>Contact ID</th><th>Name</th></thead>';
+        require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/demo.php' );
 
-        foreach ( $response['records'] as $record ) {
-            $demo .= '<tr><td>' . $record['Id'] . '</td><td>' . $record['Name'] . '</td></tr>';
-        }
-        $demo .= '</table>';
-        return $demo;
     }
     
     /**
