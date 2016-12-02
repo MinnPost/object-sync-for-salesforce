@@ -19,8 +19,17 @@ form.fieldmap fieldset.fields {
 }
 
 form.fieldmap legend {
-  padding-left: 10px;
+  padding-left: 12px;
+  margin-top: 15px;
   position: absolute;
+}
+
+form.fieldmap fieldset.fields > :nth-child(2) {
+  padding-top: 35px;
+}
+
+form.fieldmap fieldset.sync_triggers > :nth-child(2) {
+  padding-top: 45px;
 }
 
 form.fieldmap div {
@@ -53,11 +62,6 @@ form.fieldmap div input, form.fieldmap div select {
 .fieldmap table td div {
   padding-top: 0;
   padding-left: 0;
-}
-
-.fieldmap .missing-object {
-  display: inline-block;
-  margin-left: 10px;
 }
 
 .salesforce_user_ajax_message {

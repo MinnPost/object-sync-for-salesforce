@@ -132,7 +132,7 @@ class Wordpress_Salesforce_Admin {
                             require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/authorized.php' );
                             $this->demo( $this->salesforce['sfapi'] );
                         } elseif ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
-                            echo '<p><a class="button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
+                            echo '<p><a class="button button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
                         } else {
                             $message = __( 'Salesforce needs to be authorized to connect to this website but the credentials are missing.', $this->text_domain );
                             require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );

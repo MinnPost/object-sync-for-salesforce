@@ -24,9 +24,6 @@
             <td>
                 <a href="<?php echo get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=delete&id=' . $record['id'] ); ?>">Delete</a>
             </td>
-            <td>
-                <a href="<?php echo get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=export&id=' . $record['id'] ); ?>">Export</a>
-            </td>
         </tr>
             <?php }
         } else { ?>

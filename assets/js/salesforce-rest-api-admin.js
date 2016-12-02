@@ -94,7 +94,7 @@ function add_field_mapping_row() {
 			fieldmap_fields(wordpress_object, salesforce_object, row_count);
 			$(this).parent().find('.missing-object').remove();
 		} else {
-			$(this).parent().append('<span class="missing-object">You have to pick a WordPress object and a Salesforce object to add field mapping.');
+			$(this).parent().prepend('<div class="error missing-object"><span>You have to pick a WordPress object and a Salesforce object to add field mapping.</span></div>');
 		}
 		return false;
 	});
