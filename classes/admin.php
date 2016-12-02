@@ -822,6 +822,7 @@ class Wordpress_Salesforce_Admin {
                         'label' => 'Clear this queue',
                         'desc' => '',
                         'url' => '?page=salesforce-api-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key,
+                        'link_class' => 'button button-secondary'
                     ),
                 ),
             );
@@ -1364,7 +1365,7 @@ class Wordpress_Salesforce_Admin {
             if ( isset( $value['default'] ) && $value['default'] === TRUE ) {
                 $checked = 'checked';
             }
-            echo '<div><label><input type="' . $type. '" value="' . $key . '" name="' . $name . '[]" id="' . $id . '" ' . $checked . ' />' . $text . '</label></div>';
+            echo '<div class="checkbox"><label><input type="' . $type. '" value="' . $key . '" name="' . $name . '[]" id="' . $id . '" ' . $checked . ' />' . $text . '</label></div>';
             if ( $desc != '' ) {
                 echo '<p class="description">' . $desc . '</p>';
             }
@@ -1408,8 +1409,13 @@ class Wordpress_Salesforce_Admin {
         $label   = $args['label'];
         $desc   = $args['desc'];
         $url = $args['url'];
+        if ( isset( $args['link_class'] ) ) {
+            $class = ' class="' . $args['link_class'] . '"';
+        } else {
+            $class = '';
+        }
 
-        echo '<p><a class="button-primary" href="' . $url . '">' . $label . '</a></p>';
+        echo '<p><a' . $class . ' href="' . $url . '">' . $label . '</a></p>';
 
         if ( $desc != '' ) {
             echo '<p class="description">' . $desc . '</p>';

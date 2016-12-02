@@ -3,6 +3,13 @@ $border-color: #e1e1e1;
 $vertical-space: 15px;
 $horizontal-space: 10px;
 
+.form-table td div.checkbox {
+	line-height: 1.3;
+	margin-bottom: 9px;
+}
+
+// fieldmap form
+
 form.fieldmap .spinner {
 	display: inline-block;
 	float: none
@@ -53,8 +60,9 @@ form.fieldmap div input, form.fieldmap div select {
 	margin-left: $horizontal-space;
 }
 
+// messages to display
 .salesforce_user_ajax_message {
-	margin: 5px 0 15px;
+	margin: 5px 0 $vertical-space;
 	padding: 1px 12px;
 	border-left: 4px solid #46b450;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
@@ -64,12 +72,13 @@ form.fieldmap div input, form.fieldmap div select {
 	}
 }
 
+// profile table for salesforce info
 table.mapped-salesforce-user {
 	width: auto;
 	caption {
 		color: #555;
-		padding: 8px 10px;
-		border: 1px solid #e5e5e5;
+		padding: 8px $horizontal-space;
+		border: 1px solid $border-color;
 		border-bottom: 0;
 	    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 	    font-size: 14px;
