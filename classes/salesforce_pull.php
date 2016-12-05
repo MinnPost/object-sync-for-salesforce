@@ -307,6 +307,8 @@ class Salesforce_Pull {
 
 	/**
 	* Get deleted records from salesforce.
+	* Note that deletions can only be queried via REST with an API version >= 29.0.
+	*
 	*/
 	private function get_deleted_records() {
 
