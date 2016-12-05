@@ -114,53 +114,6 @@ class Salesforce_Pull {
 	}
 
 	/**
-	* this is drupal code. need to remove it eventually.
-	* Implements hook_form_FORM_ID_alter().
-	*/
-	function salesforce_pull_form_salesforce_settings_form_alter(&$form, &$form_state, $form_id) {
-
-		$webhooks_enabled = variable_get('salesforce_pull_webhook_enable', FALSE);
-		$form['salesforce_pull_webhook_enable'] = array(
-		'#type' => 'checkbox',
-		'#title' => t('Enable webhooks'),
-		'#description' => t('Allow external applications to trigger Salesforce sync with a web request.'),
-		'#default_value' => $webhooks_enabled,
-		);
-
-		$webhook_key = variable_get('salesforce_pull_webhook_key', drupal_random_key());
-		$url = url('salesforce/webhook/pull', array(
-		'query' => array('key' => $webhook_key),
-		'absolute' => TRUE
-		));
-
-		$form['salesforce_pull_webhook_key'] = array(
-		'#type' => 'textfield',
-		'#title' => t('Webhook key'),
-		'#description' => t('A secret key that is required in the webhook request url (@url).<br>
-		  Leave blank to auto-generate a new random key.', array('@url' => $url)),
-		'#default_value' => $webhook_key,
-		'#states' => array(
-		  // Only show this field when the 'webhook_enable' checkbox is enabled.
-		  'visible' => array(
-			':input[name="salesforce_pull_webhook_enable"]' => array('checked' => TRUE),
-		  ),
-		),
-		'#element_validate' => array('salesforce_pull_webhook_key_validate'),
-		);
-	}
-
-	/**
-	* Element validation callback for the webhook key.
-	* this is drupal code. need to remove it or make it for wordpress eventually.
-	*/
-	function salesforce_pull_webhook_key_validate($element, &$form_state, $form) {
-	// If there is no key set, generate a default key.
-		if (empty($element['#value'])) {
-			form_set_value($form['salesforce_pull_webhook_key'], drupal_random_key(), $form_state);
-		}
-	}
-
-	/**
     * Load schedule
     * This loads the schedule class
     */ 
