@@ -314,6 +314,9 @@ class Salesforce_Pull {
 
 		$sfapi = $this->salesforce['sfapi'];
 
+		// check for merged records before deleting
+  		$merged = $this->check_merged_records();
+
 		// Load all unique SF record types that we have mappings for.
 		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
 
@@ -338,33 +341,181 @@ class Salesforce_Pull {
 				$now_sf = gmdate( 'Y-m-d\TH:i:s\Z', $now );
 
 				// salesforce call
-				$deleted = $sfapi->get_deleted( $type, $last_delete_sync_sf, $now_sf );
+				$results = $sfapi->get_deleted( $type, $last_delete_sync_sf, $now_sf );
 
-				if ( empty( $deleted['data']['deletedRecords'] ) ) {
+				if ( empty( $results['data']['deletedRecords'] ) ) {
 					continue;
 				}
 
-				foreach ( $deleted['data']['deletedRecords'] as $result ) {
-					// salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?
-					if ( !isset( $result['Id'] ) && isset( $result['id']) ) {
-						$result['Id'] = $result['id'];
-					}
-					$data = array(
-						'object_type' => $type,
-						'object' => $result,
-						'mapping' => $mapping,
-						'sf_sync_trigger' => $this->mappings->sync_sf_delete // sf delete trigger
-					);
+				if ( !isset( $results['errorCode'] ) ) {
+					// Handle merges from Salesforce
+			        $old_contact = 'Old_Contact__c';
+			        $merged_object = 'Contact__c';
+					
+					foreach ( $results['data']['deletedRecords'] as $result ) {
+						foreach ( $merged['data']['records'] as $merged_result ) {
+							if ( !isset( $result['Id'] ) && isset( $result['id']) ) {
+								$result['Id'] = $result['id'];
+							}
+							if ( $result['Id'] === $merged_result[$old_contact] ) {
+								// put a merge into the queue
+								$merge = $result;
+								$merge['merge'] = TRUE;
+								$data = array(
+									'object_type' => $type,
+									'object' => $merge,
+									'mapping' => $mapping,
+									'sf_sync_trigger' => $this->mappings->sync_sf_delete // sf delete trigger
+								);
 
-					$this->schedule->push_to_queue( $data );
-					$this->schedule->save()->dispatch();
+								$this->schedule->push_to_queue( $data );
+								$this->schedule->save()->dispatch();
+							}
+						}
+					}
+
+					foreach ( $results['data']['deletedRecords'] as $result ) {
+						// salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?
+						if ( !isset( $result['Id'] ) && isset( $result['id']) ) {
+							$result['Id'] = $result['id'];
+						}
+						// put a delete into the queue
+						$delete = $result;
+						$delete['delete'] = TRUE;
+						$data = array(
+							'object_type' => $type,
+							'object' => $delete,
+							'mapping' => $mapping,
+							'sf_sync_trigger' => $this->mappings->sync_sf_delete // sf delete trigger
+						);
+
+						$this->schedule->push_to_queue( $data );
+						$this->schedule->save()->dispatch();
+
+					}
+
+					// Handle requests larger than the batch limit (usually 2000).
+					$next_records_url = isset( $results['nextRecordsUrl'] ) ? str_replace( $version_path, '', $results['nextRecordsUrl'] ) : FALSE;
+
+					while ( $next_records_url ) {
+						// shouldn't cache this either. it's going into the queue if it exists anyway.
+						$new_result = $sfapi->api_call( $next_records_url, array(), 'GET', array( 'cache' => FALSE ) );
+						$new_response = $new_results['data'];
+						if ( !isset( $new_response['errorCode'] ) ) {
+							// handle queuing more merges
+							foreach ( $results['data']['deletedRecords'] as $result ) {
+								foreach ( $merged['data']['records'] as $merged_result ) {
+									if ( !isset( $result['Id'] ) && isset( $result['id']) ) {
+										$result['Id'] = $result['id'];
+									}
+									if ( $result['Id'] === $merged_result[$old_contact] ) {
+										// put a merge into the queue
+										$merge = $result;
+										$merge['merge'] = TRUE;
+										$data = array(
+											'object_type' => $type,
+											'object' => $merge,
+											'mapping' => $mapping,
+											'merge' => TRUE,
+											'sf_sync_trigger' => $this->mappings->sync_sf_delete // sf delete trigger
+										);
+
+										$this->schedule->push_to_queue( $data );
+										$this->schedule->save()->dispatch();
+									}
+								}
+							}
+							// queue more deletes
+							foreach ( $new_response['records'] as $result ) {
+								// put a delete into the queue
+								$delete = $result;
+								$delete['delete'] = TRUE;
+								$data = array(
+									'object_type' => $type,
+									'object' => $delete,
+									'mapping' => $mapping,
+									'sf_sync_trigger' => $this->mappings->sync_sf_delete // sf delete trigger
+								);
+
+								$this->schedule->push_to_queue( $data );
+								$this->schedule->save()->dispatch();
+							}
+						}
+
+						$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : FALSE;
+					}
+
+					update_option( 'salesforce_api_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 
 				}
 
-				update_option( 'salesforce_api_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
-
 			}
 		}
+	}
+
+	/**
+	* Get merged records from salesforce.
+	*
+	*/
+	private function check_merged_records() {
+
+		// this is all weird because there is no Merged_Contact object (or Merged_Contact__c)
+		$type = 'Merged_Contact';
+		$fields = array(
+			'Contact' => 'Contact',
+			'Old_Contact' => 'Old_Contact',
+			'LastModifiedDate' => 'LastModifiedDate'
+		);
+
+		// drupal has a hook to modify the above values, although they seem to be planning a ui for it
+		$fields = apply_filters( 'salesforce_rest_api_pull_merge_fields', $fields, $type );
+
+		$last_delete_sync = get_option( 'salesforce_api_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
+
+		$sfapi = $this->salesforce['sfapi'];
+
+		$soql = new Salesforce_Select_Query( $type );
+
+		$fields['Id'] = 'Id';
+
+		// Convert field mappings to SOQL.
+		$soql->fields = $fields;
+
+		// If no lastupdate, get all records, else get records since last pull.
+		// this should be what keeps it from getting all the records, whether or not they've ever been merged
+		$sf_last_sync = get_option( 'salesforce_api_pull_last_sync_' . $type, NULL );
+		if ( $sf_last_sync ) {
+			$last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
+			$soql->add_condition( $salesforce_mapping['pull_trigger_field'], $last_sync, '>' );
+		}
+
+		// Execute query
+		// have to cast it to string to make sure it uses the magic method
+		// we don't want to cache this because timestamps
+		$results = $sfapi->query( (string) $soql, array( 'cache' => FALSE ) );
+		$response = $results['data'];
+		$version_path = parse_url( $sfapi->get_api_endpoint(), PHP_URL_PATH );
+
+		if ( !isset( $response['errorCode'] ) ) {
+			$merged_records = $response;
+			// Handle requests larger than the batch limit (usually 2000).
+			$next_records_url = isset( $response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $response['nextRecordsUrl'] ) : FALSE;
+			while ($next_records_url) {
+				$new_results = $sfapi->api_call( $next_records_url, array(), 'GET', array( 'cache' => FALSE ) );
+				$new_response = $new_results['data'];
+				if ( !isset( $new_response['errorCode'] ) ) {
+					// Write items to the queue.
+					foreach ( $new_response['records'] as $result ) {
+						$merged_records[] = $result;
+					}
+				}
+			}
+			$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : FALSE;
+
+			return $merged_records;
+
+		}
+
 	}
 
 	/**
@@ -496,85 +647,28 @@ class Salesforce_Pull {
 
 			// deleting mapped objects
 			if ( $sf_sync_trigger == $this->mappings->sync_sf_delete ) {
+
 				if ( isset( $mapping_object['id'] ) ) {
 					
 					set_transient( 'salesforce_pulling_' . $mapping_object['id'], 1, $seconds );
 					set_transient( 'salesforce_pulling_object_id', $mapping_object['id'] );
 
-					$op = 'Delete';
-					$wordpress_check = $this->mappings->load_by_wordpress( $mapping_object['wordpress_object'], $mapping_object['wordpress_id'] );
-					if ( count( $wordpress_check ) == count( $wordpress_check, COUNT_RECURSIVE ) ) {
-						try {
-							$result = $this->wordpress->object_delete( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'] );
+					if ( $object['merge'] === TRUE ) {
+						$op = 'Merge';
+
+						// hook to allow other plugins to do things when Salesforce objects are merged
+						$object = apply_filters( 'salesforce_rest_api_pull_object_merge', $object, $mapping_object, $mapping_object['wordpress_object'], $object_id, $mapping_object['wordpress_id'] );
+
+						// example
+						/*
+						add_filter( 'salesforce_rest_api_pull_object_merge', 'merge_stuff', 10, 5 );
+						function merge_stuff( $sf_object, $mapping_object, $wp_object, $id_field, $wp_id ) {
+							// the mapping object is going to be deleted, but we don't know the new sf id yet
 						}
-						catch ( WordpressException $e ) {
-							$status = 'error';
-							// create log entry for failed delete
-							if ( isset( $this->logging ) ) {
-								$logging = $this->logging;
-							} else if ( class_exists( 'Salesforce_Logging' ) ) {
-								$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
-							}
+						*/
 
-							$logging->setup(
-								__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
-								$e->getMessage(),
-								$sf_sync_trigger,
-								$mapping_object['wordpress_id'],
-								$status
-							);
-
-							if ( $hold_exceptions === FALSE ) {
-								throw $e;
-							}
-							if ( empty( $exception ) ) {
-								$exception = $e;
-							} else {
-								$my_class = get_class( $e );
-								$exception = new $my_class( $e->getMessage(), $e->getCode(), $exception );
-							}
-
-							// hook for pull fail
-							do_action( 'salesforce_rest_api_pull_fail', $op, $result, $synced_object );
-
-						}
-
-						if ( !isset( $e ) ) {
-							// create log entry for successful delete if the result had no errors
-							$status = 'success';
-							if ( isset( $this->logging ) ) {
-								$logging = $this->logging;
-							} else if ( class_exists( 'Salesforce_Logging' ) ) {
-								$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
-							}
-
-							$logging->setup(
-								__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
-								'',
-								$sf_sync_trigger,
-								$mapping_object['wordpress_id'],
-								$status
-							);
-
-							// hook for pull success
-							do_action( 'salesforce_rest_api_pull_success', $op, $result, $synced_object );
-						}
-					} else {
-						$more_ids = '<p>The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress ID. They are: ';
-						$i = 0;
-						foreach ( $wordpress_check as $match ) {
-							$i++;
-							$more_ids .= $match['salesforce_id'];
-							if ( $i !== count( $wordpress_check ) ) {
-								$more_ids .= ', ';
-							} else {
-								$more_ids .= '.</p>';
-							}
-						}
-
-						$more_ids .= '<p>The map row between this Salesforce object and the WordPress object, as stored in the WordPress database, will be deleted, and this Salesforce object has been deleted, but the WordPress object row will remain untouched.</p>';
-
-						$status = 'notice';
+						// create log entry for merge
+						$status = 'success';
 						if ( isset( $this->logging ) ) {
 							$logging = $this->logging;
 						} else if ( class_exists( 'Salesforce_Logging' ) ) {
@@ -582,12 +676,104 @@ class Salesforce_Pull {
 						}
 
 						$logging->setup(
-							__( ucfirst( $status ) . ': ' . $op . ' ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ') did not delete the WordPress item...', $this->text_domain ),
-							$more_ids,
+							__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ': ' . $mapping_object['wordpress_id'] . ' associated with Salesforce ' . $salesforce_mapping['salesforce_object'] . ' ID: ' . $mapping_object['salesforce_id'], $this->text_domain ),
+							'',
 							$sf_sync_trigger,
 							$mapping_object['wordpress_id'],
 							$status
 						);
+
+					} else {
+
+						$op = 'Delete';
+						$wordpress_check = $this->mappings->load_by_wordpress( $mapping_object['wordpress_object'], $mapping_object['wordpress_id'] );
+						if ( count( $wordpress_check ) == count( $wordpress_check, COUNT_RECURSIVE ) ) {
+							try {
+								$result = $this->wordpress->object_delete( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'] );
+							}
+							catch ( WordpressException $e ) {
+								$status = 'error';
+								// create log entry for failed delete
+								if ( isset( $this->logging ) ) {
+									$logging = $this->logging;
+								} else if ( class_exists( 'Salesforce_Logging' ) ) {
+									$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+								}
+
+								$logging->setup(
+									__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
+									$e->getMessage(),
+									$sf_sync_trigger,
+									$mapping_object['wordpress_id'],
+									$status
+								);
+
+								if ( $hold_exceptions === FALSE ) {
+									throw $e;
+								}
+								if ( empty( $exception ) ) {
+									$exception = $e;
+								} else {
+									$my_class = get_class( $e );
+									$exception = new $my_class( $e->getMessage(), $e->getCode(), $exception );
+								}
+
+								// hook for pull fail
+								do_action( 'salesforce_rest_api_pull_fail', $op, $result, $synced_object );
+
+							}
+
+							if ( !isset( $e ) ) {
+								// create log entry for successful delete if the result had no errors
+								$status = 'success';
+								if ( isset( $this->logging ) ) {
+									$logging = $this->logging;
+								} else if ( class_exists( 'Salesforce_Logging' ) ) {
+									$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+								}
+
+								$logging->setup(
+									__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
+									'',
+									$sf_sync_trigger,
+									$mapping_object['wordpress_id'],
+									$status
+								);
+
+								// hook for pull success
+								do_action( 'salesforce_rest_api_pull_success', $op, $result, $synced_object );
+							}
+						} else {
+							$more_ids = '<p>The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress ID. They are: ';
+							$i = 0;
+							foreach ( $wordpress_check as $match ) {
+								$i++;
+								$more_ids .= $match['salesforce_id'];
+								if ( $i !== count( $wordpress_check ) ) {
+									$more_ids .= ', ';
+								} else {
+									$more_ids .= '.</p>';
+								}
+							}
+
+							$more_ids .= '<p>The map row between this Salesforce object and the WordPress object, as stored in the WordPress database, will be deleted, and this Salesforce object has been deleted, but the WordPress object row will remain untouched.</p>';
+
+							$status = 'notice';
+							if ( isset( $this->logging ) ) {
+								$logging = $this->logging;
+							} else if ( class_exists( 'Salesforce_Logging' ) ) {
+								$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+							}
+
+							$logging->setup(
+								__( ucfirst( $status ) . ': ' . $op . ' ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ') did not delete the WordPress item...', $this->text_domain ),
+								$more_ids,
+								$sf_sync_trigger,
+								$mapping_object['wordpress_id'],
+								$status
+							);
+						}
+
 					}
 
 					// delete the map row from wordpress after the wordpress row has been deleted
