@@ -55,7 +55,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     *
     */
     public function add_filters() {
-		add_filter( 'cron_schedules', array( &$this, 'set_schedule_frequency' ) );
+		add_filter( 'cron_schedules', array( $this, 'set_schedule_frequency' ) );
     }
 
     /**
