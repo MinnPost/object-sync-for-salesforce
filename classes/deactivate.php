@@ -22,7 +22,7 @@ class Wordpress_Salesforce_Deactivate {
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'clear_schedule' ) );
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'delete_log_post_type' ) );
-        register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'remove_roles_capabilities' ) );
+        register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'remove_roles_capabilities' ) );
     }
 
     /**
