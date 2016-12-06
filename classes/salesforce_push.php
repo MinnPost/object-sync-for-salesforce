@@ -623,6 +623,10 @@ class Salesforce_Push {
 				// the function that calls this hook needs to check the mapping to make sure the wordpress object is the right type
 				$salesforce_id = apply_filters( 'salesforce_rest_api_find_sf_object_match', NULL, $object, $mapping, 'push' );
 
+				// hook to allow other plugins to do something right before salesforce data is saved
+				// ex: run wordpress methods on an object if it exists, or do something in preparation for it if it doesn't
+				do_action( 'salesforce_rest_api_pre_push', $salesforce_id, $mapping, $object, $params );
+
 				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || $salesforce_id !== NULL ) {
 					
 					// if either prematch criteria exists, make the values queryable

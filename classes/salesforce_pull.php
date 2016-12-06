@@ -679,6 +679,10 @@ class Salesforce_Pull {
 					// the function that calls this hook needs to check the mapping to make sure the wordpress object is the right type
 					$wordpress_id = apply_filters( 'salesforce_rest_api_find_wp_object_match', NULL, $object, $mapping, 'pull' );
 
+					// hook to allow other plugins to do something right before wordpress data is saved
+					// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't
+					do_action( 'salesforce_rest_api_pre_pull', $wordpress_id, $mapping, $object, $params );
+
 					if ( isset( $prematch_field_salesforce ) || isset( $key_field_salesforce ) || $wordpress_id !== NULL ) {
 
 						// if either prematch criteria exists, make the values queryable

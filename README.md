@@ -215,6 +215,10 @@ Current hooks include:
 
 ### Actions
 
+- `salesforce_rest_api_pre_pull`: run an action immediately before WordPress data is saved
+- `salesforce_rest_api_pull_fail`: what to do if a pull from Salesforce fails
+- `salesforce_rest_api_pull_success`: what to do if a pull from Salesforce is successful
+- `salesforce_rest_api_pre_push`: run an action immediately before Salesforce data is saved
 - `salesforce_rest_api_push_fail`: what to do if a push to Salesforce fails
 - `salesforce_rest_api_push_success`: what to do if a push to Salesforce is successful
 
