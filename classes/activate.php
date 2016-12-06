@@ -23,6 +23,7 @@ class Wordpress_Salesforce_Activate {
         $this->version = $version;
         $this->installed_version = get_option( 'salesforce_rest_api_db_version', '' );
         register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'wordpress_salesforce_tables' ) );
+        register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'add_roles_capabilities' ) );
         add_action( 'plugins_loaded', array( &$this, 'wordpress_salesforce_update_db_check' ) );
     }
 
@@ -89,6 +90,31 @@ class Wordpress_Salesforce_Activate {
         if ( get_site_option( 'salesforce_rest_api_db_version' ) != $this->version ) {
             $this->wordpress_salesforce_tables();
         }
+    }
+
+    /**
+    * Add roles and capabilities
+    * This adds the configure_salesforce capability to the admin role
+    *
+    * It also allows other plugins to add the capability to other roles
+    *
+    */ 
+    public function add_roles_capabilities() {
+
+        // by default, only administrators can configure the plugin
+        $role = get_role( 'administrator' );
+        $role->add_cap( 'configure_salesforce' );
+
+        // hook that allows other roles to configure the plugin as well
+        $roles = apply_filters( 'salesforce_rest_api_roles', NULL );
+
+        // for each role that we have, give it the configure salesforce capability
+        if ( $roles !== NULL ) {
+            foreach ( $roles as $role ) {
+                $role->add_cap( 'configure_salesforce' );
+            }
+        }
+        
     }
 
 }

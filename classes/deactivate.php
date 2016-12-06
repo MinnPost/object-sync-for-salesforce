@@ -22,6 +22,7 @@ class Wordpress_Salesforce_Deactivate {
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'clear_schedule' ) );
         register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'delete_log_post_type' ) );
+        register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'remove_roles_capabilities' ) );
     }
 
     /**
@@ -55,6 +56,31 @@ class Wordpress_Salesforce_Deactivate {
     */ 
     public function delete_log_post_type() {
         unregister_post_type( 'wp_log' );
+    }
+
+    /**
+    * Remove roles and capabilities
+    * This removes the configure_salesforce capability from the admin role
+    *
+    * It also allows other plugins to remove the capability from other roles
+    *
+    */ 
+    public function remove_roles_capabilities() {
+
+        // by default, only administrators can configure the plugin
+        $role = get_role( 'administrator' );
+        $role->remove_cap( 'configure_salesforce' );
+
+        // hook that allows other roles to configure the plugin as well
+        $roles = apply_filters( 'salesforce_rest_api_roles', NULL );
+
+        // for each role that we have, remove the configure salesforce capability
+        if ( $roles !== NULL ) {
+            foreach ( $roles as $role ) {
+                $role->remove_cap( 'configure_salesforce' );
+            }
+        }
+        
     }
 
 }

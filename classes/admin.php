@@ -80,7 +80,7 @@ class Wordpress_Salesforce_Admin {
     */
     public function create_admin_menu() {
         $title = __('Salesforce','salesforce-api');
-        add_options_page( $title, $title, 'manage_options', 'salesforce-api-admin', array( &$this, 'show_admin_page', ) );
+        add_options_page( $title, $title, 'configure_salesforce', 'salesforce-api-admin', array( $this, 'show_admin_page', ) );
     }
 
     /**
@@ -1089,7 +1089,7 @@ class Wordpress_Salesforce_Admin {
 
         // todo: we are going to need a way to integrate this with roles, permissions, etc that are not built into wordpress
 
-        if ( ! current_user_can('manage_options') ) {
+        if ( ! current_user_can( 'configure_salesforce' ) ) {
             return FALSE;
         } else {
             return TRUE;
