@@ -22,9 +22,9 @@ class Wordpress_Salesforce_Activate {
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->installed_version = get_option( 'salesforce_rest_api_db_version', '' );
-        register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( &$this, 'wordpress_salesforce_tables' ) );
+        register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'wordpress_salesforce_tables' ) );
         register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'add_roles_capabilities' ) );
-        add_action( 'plugins_loaded', array( &$this, 'wordpress_salesforce_update_db_check' ) );
+        add_action( 'plugins_loaded', array( $this, 'wordpress_salesforce_update_db_check' ) );
     }
 
     /**
