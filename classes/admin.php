@@ -230,10 +230,10 @@ class Wordpress_Salesforce_Admin {
         $page = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $section = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         
-        $input_callback_default = array( &$this, 'display_input_field' );
-        $input_checkboxes_default = array( &$this, 'display_checkboxes' );
-        $input_select_default = array( &$this, 'display_select' );
-        $link_default = array( &$this, 'display_link' );
+        $input_callback_default = array( $this, 'display_input_field' );
+        $input_checkboxes_default = array( $this, 'display_checkboxes' );
+        $input_select_default = array( $this, 'display_select' );
+        $link_default = array( $this, 'display_link' );
 
         $all_field_callbacks = array(
             'text' => $input_callback_default,
