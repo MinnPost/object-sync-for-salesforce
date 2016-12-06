@@ -756,10 +756,7 @@ class Wordpress {
                 }
 
                 // developers can use this hook to set any other user data - permissions, etc
-                apply_filters( 'salesforce_rest_api_set_more_user_data', array(
-                    'user_id' => $user_id,
-                    'params' => $params
-                ) );
+                do_action( 'salesforce_rest_api_set_more_user_data', $user_id, $params );
 
                 // send notification of new user
                 // todo: figure out what permissions out to get notifications for this and make sure it works the right way
@@ -938,11 +935,10 @@ class Wordpress {
                     $errors[] = array( 'key' => $key, 'value' => $value );
                 }
             }
+            
             // developers can use this hook to set any other user data - permissions, etc
-            apply_filters( 'salesforce_rest_api_set_more_user_data', array(
-                'user_id' => $user_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_user_data', $user_id, $params );
+
         }
 
         $result = array( 'data' => array( $id_field => $user_id, 'success' => $success ), 'errors' => $errors );
@@ -1023,10 +1019,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other post data
-            apply_filters( 'salesforce_rest_api_set_more_post_data', array(
-                'post_id' => $post_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_post_data', $post_id, $params );
 
         }
 
@@ -1220,11 +1213,10 @@ class Wordpress {
                     }
                 }
             }
+
             // developers can use this hook to set any other post data
-            apply_filters( 'salesforce_rest_api_set_more_post_data', array(
-                'post_id' => $post_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_post_data', $post_id, $params );
+
         }
 
         $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
@@ -1306,11 +1298,10 @@ class Wordpress {
             if ( $parent !== 0 ) {
                 set_post_thumbnail( $parent_post_id, $attachment_id );
             }
+
             // developers can use this hook to set any other attachment data
-            apply_filters( 'salesforce_rest_api_set_more_attachment_data', array(
-                'attachment_id' => $attachment_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_attachment_data', $attachment_id, $params );
+
         }
 
         $result = array( 'data' => array( $id_field => $attachment_id, 'success' => $success ), 'errors' => $errors );
@@ -1518,10 +1509,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other attachment data
-            apply_filters( 'salesforce_rest_api_set_more_attachment_data', array(
-                'attachment_id' => $attachment_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_attachment_data', $attachment_id, $params );
 
         }
 
@@ -1598,11 +1586,10 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
+            
             // developers can use this hook to set any other term data
-            apply_filters( 'salesforce_rest_api_set_more_term_data', array(
-                'term_id' => $term_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_term_data', $term_id, $params );
+            
         }
 
         if ( is_wp_error( $term ) ) {
@@ -1752,11 +1739,10 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
+
             // developers can use this hook to set any other term data
-            apply_filters( 'salesforce_rest_api_set_more_term_data', array(
-                'term_id' => $term_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_term_data', $term_id, $params );
+
         }
 
         if ( is_wp_error( $term ) ) {
@@ -1834,11 +1820,10 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to add meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
+
             // developers can use this hook to set any other comment data
-            apply_filters( 'salesforce_rest_api_set_more_comment_data', array(
-                'comment_id' => $comment_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_comment_data', $comment_id, $params );
+
         }
 
         if ( is_wp_error( $comment_id ) ) {
@@ -2009,11 +1994,10 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
+            
             // developers can use this hook to set any other comment data
-            apply_filters( 'salesforce_rest_api_set_more_comment_data', array(
-                'comment_id' => $comment_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_comment_data', $comment_id, $params );
+
         }
 
         if ( is_wp_error( $updated ) ) {
