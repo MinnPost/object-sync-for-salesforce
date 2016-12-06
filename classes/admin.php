@@ -56,11 +56,11 @@ class Wordpress_Salesforce_Admin {
     *
     */
     public function add_actions() {
-        add_action( 'admin_init', array( &$this, 'salesforce_settings_forms' ) );
-        add_action( 'admin_post_post_fieldmap', array( &$this, 'prepare_fieldmap_data' ) );
-        add_action( 'admin_notices', array( &$this, 'fieldmap_error_notice' ) );
+        add_action( 'admin_init', array( $this, 'salesforce_settings_forms' ) );
+        add_action( 'admin_post_post_fieldmap', array( $this, 'prepare_fieldmap_data' ) );
+        add_action( 'admin_notices', array( $this, 'fieldmap_error_notice' ) );
         add_action( 'admin_notices', array( $this, 'permission_error_notice' ) );
-        add_action( 'admin_post_delete_fieldmap', array( &$this, 'delete_fieldmap' ) );
+        add_action( 'admin_post_delete_fieldmap', array( $this, 'delete_fieldmap' ) );
         add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ) );
         add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ) );
         add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ) );
