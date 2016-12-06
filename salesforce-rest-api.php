@@ -283,7 +283,7 @@ class Salesforce_Rest_API {
 		$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes );
 		add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
-		add_filter( 'plugin_action_links', array( &$this, 'plugin_action_links' ), 10, 5 );
+		add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 5 );
 	}
 
 	/**
