@@ -802,6 +802,11 @@ class Salesforce_Push {
 
 			// try to make a salesforce update call
 			try {
+
+				// hook to allow other plugins to do something right before salesforce data is saved
+				// ex: run wordpress methods on an object if it exists, or do something in preparation for it if it doesn't
+				do_action( 'salesforce_rest_api_pre_push', $mapping_object['salesforce_id'], $mapping, $object, $params );
+
 				$op = 'Update';
 				$result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );
 
