@@ -553,10 +553,11 @@ class Salesforce {
 			array( 
 				'response_type' => 'code',
 				'client_id' => $this->consumer_key,
-				'redirect_uri' => $this->redirect_url(),
+				'redirect_uri' => $this->callback_url,
 			),
 			$this->login_url . $this->authorize_path
 		);
+		error_log('url is ' . $url);
 		return $url;
 	}
 
@@ -572,7 +573,7 @@ class Salesforce {
 			'grant_type' => 'authorization_code',
 			'client_id' => $this->consumer_key,
 			'client_secret' => $this->consumer_secret,
-			'redirect_uri' => $this->redirect_url(),
+			'redirect_uri' => $this->callback_url,
 		);
 
 		$url = $this->login_url . $this->token_path;
@@ -605,16 +606,6 @@ class Salesforce {
 		$this->set_instance_url( $data['instance_url'] );
 
 		return TRUE;
-	}
-
-	/**
-	* Helper to build the redirect URL for OAUTH workflow.
-	*
-	* @return string
-	*   Redirect URL.
-	*/
-	protected function redirect_url() {
-		return get_option( 'salesforce_api_callback_url', FALSE );
 	}
 
 	/* Core API calls */
