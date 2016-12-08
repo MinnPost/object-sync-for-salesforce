@@ -195,11 +195,11 @@ class Wordpress_Salesforce_Admin {
                     case 'settings':
                         $consumer_key = $this->login_credentials['consumer_key'];
                         $consumer_secret = $this->login_credentials['consumer_secret'];
-                        if ( $consumer_key && $consumer_secret ) {
-                            if ( $this->salesforce['is_authorized'] === true ) {
+                        if ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
+                            if ( $this->salesforce['is_authorized'] === TRUE ) {
                                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
                             } else {
-                                $message = __( 'Salesforce needs to be authorized to connect to this website.', $this->text_domain );
+                                $message = __( 'Salesforce needs to be authorized to connect to this website. Use the <a href="' . $callback_url . '">Authorize tab</a> to connect.', $this->text_domain );
                                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
                             }
                         } else {
