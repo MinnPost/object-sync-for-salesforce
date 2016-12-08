@@ -266,6 +266,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
+                    'validate' => 'validate_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_CONSUMER_KEY'
                 ),
@@ -278,6 +279,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
+                    'validate' => 'validate_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_CONSUMER_SECRET'
                 ),
@@ -289,6 +291,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'url',
+                    'validate' => 'validate_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_CALLBACK_URL'
                 ),
@@ -300,6 +303,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'url',
+                    'validate' => 'validate_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_LOGIN_BASE_URL'
                 ),
@@ -311,6 +315,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
+                    'validate' => 'validate_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_API_VERSION'
                 ),
@@ -322,6 +327,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'checkboxes',
+                    'validate' => 'validate_text',
                     'desc' => 'Allows you to limit which Salesforce objects can be mapped',
                     'items' => array(
                         'triggerable' => array(
@@ -346,6 +352,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
+                    'validate' => 'validate_text',
                     'desc' => 'Number of seconds to wait between repeated salesforce pulls.<br>Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage.',
                     'constant' => ''
                 ),
@@ -356,6 +363,7 @@ class Wordpress_Salesforce_Admin {
             $name = 'salesforce_api_' . $key;
             $title = $attributes['title'];
             $callback = $attributes['callback'];
+            $validate = $attributes['args']['validate'];
             $page = $attributes['page'];
             $section = $attributes['section'];
             $args = array_merge(
@@ -368,8 +376,31 @@ class Wordpress_Salesforce_Admin {
                 )
             );
             add_settings_field( $id, $title, $callback, $page, $section, $args );
-            register_setting( $page, $id );
+            register_setting( $page, $id, array( $this, $validate ) );
         }
+    }
+
+    // this method does not fire an error if it is private, but also doesn't work
+    public function validate_text( $input ) {
+
+        $output = '';
+
+        if ( isset( $input ) && !is_array( $input ) ) {
+            $output = strip_tags( stripslashes( $input ) );
+        }
+
+        if ( isset( $input ) && is_array( $input ) ) {
+            
+            foreach( $input as $key => $value ) {
+                if ( isset( $input[$key] ) ) {
+                    $output[$key] = strip_tags( stripslashes( $input[ $key ] ) );
+                }
+            }
+            
+        }
+
+        // Return the array processing any additional functions filtered by this action
+        return apply_filters( array( $this, 'validate_text' ), $output, $input );
     }
 
     /**
