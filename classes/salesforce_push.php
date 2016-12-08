@@ -685,9 +685,6 @@ class Salesforce_Push {
 					$result = $sfapi->object_create( $mapping['salesforce_object'], $params );
 				}
 
-				// hook to allow other plugins to do something right after salesforce data is saved
-				// ex: run wordpress methods on an object if it has been synced
-				do_action( 'salesforce_rest_api_post_push', $salesforce_id, $mapping, $object, $params );
 			}
 			catch ( SalesforceException $e ) {
 				// create log entry for failed create or upsert
@@ -831,10 +828,6 @@ class Salesforce_Push {
 					$object["$object_id"],
 					$status
 				);
-
-				// hook to allow other plugins to do something right after salesforce data is saved
-				// ex: run wordpress methods on an object if it has been synced
-				do_action( 'salesforce_rest_api_post_push', $mapping_object['salesforce_id'], $mapping, $object, $params );
 
 				// hook for push success
 				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
