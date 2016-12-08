@@ -226,7 +226,7 @@ class Salesforce {
 	protected function api_http_request( $path, $params, $method, $options = array(), $type = 'rest' ) {
 		$options = array_merge( $this->options, $options ); // this will override a value in $this->options with the one in $options if there is a matching key
 		$url = $this->get_api_endpoint( $type ) . $path;
-		if ( isset( $options['full_url'] ) && $options['full_url'] === true ) {
+		if ( isset( $options['full_url'] ) && $options['full_url'] === TRUE ) {
 			$url = $path;
 		}
 		$headers = array(
@@ -237,39 +237,39 @@ class Salesforce {
 		if ( $method === 'POST' || $method === 'PATCH' ) {
 			$headers['Content-Type'] = 'Content-Type: application/json';
 		}
-		if ( isset( $options['authenticated'] ) && $options['authenticated'] === true ) {
-			$headers = false;
+		if ( isset( $options['authenticated'] ) && $options['authenticated'] === TRUE ) {
+			$headers = FALSE;
 		}
 		// if this request should be cached, see if it already exists
 		// if it is already cached, load it. if not, load it and then cache it if it should be cached
 		// add parameters to the array so we can tell if it was cached or not
-		if ( $options['cache'] === true && $options['type'] !== 'write' ) { 
+		if ( $options['cache'] === TRUE && $options['type'] !== 'write' ) { 
 			$cached = $this->wordpress->cache_get( $url, $params );
 			if ( is_array( $cached ) ) {
 				$result = $cached;
-				$result['from_cache'] = true;
-				$result['cached'] = true;
+				$result['from_cache'] = TRUE;
+				$result['cached'] = TRUE;
     		} else {
     			$data = json_encode( $params );
 				$result = $this->http_request( $url, $data, $headers, $method, $options );
 				if ( in_array( $result['code'], $this->success_codes ) ) {
 					$result['cached'] = $this->wordpress->cache_set( $url, $params, $result, $options['cache_expiration'] );
 				} else {
-					$result['cached'] = false;
+					$result['cached'] = FALSE;
 				}
-				$result['from_cache'] = false;
+				$result['from_cache'] = FALSE;
     		}
 		} else {
 			$data = json_encode( $params );
 			$result = $this->http_request( $url, $data, $headers, $method, $options );
-			$result['from_cache'] = false;
-			$result['cached'] = false;
+			$result['from_cache'] = FALSE;
+			$result['cached'] = FALSE;
 		}
 
-		if ( isset( $options['is_redo'] ) && $options['is_redo'] === true ) {
-			$result['is_redo'] = true;
+		if ( isset( $options['is_redo'] ) && $options['is_redo'] === TRUE ) {
+			$result['is_redo'] = TRUE;
 		} else {
-			$result['is_redo'] = false;
+			$result['is_redo'] = TRUE;
 		}
 
 		return $result;
