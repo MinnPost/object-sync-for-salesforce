@@ -533,8 +533,8 @@ class Salesforce_Mapping {
             // a wordpress event caused this
             if ( in_array( $trigger, array_values( $wordpress_haystack ) ) ) {
 
-                // Skip fields that aren't updateable when a mapped object already exists
-                if ( ( $trigger === $this->sync_wordpress_update || $trigger === $this->sync_wordpress_delete ) && (int) $fieldmap['salesforce_field']['updateable'] !== 1 ) {
+                // Skip fields that aren't updateable when mapping params because salesforce will error otherwise
+                if ( (int) $fieldmap['salesforce_field']['updateable'] !== 1 ) {
                     continue;
                 }
                 
