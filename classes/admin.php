@@ -128,7 +128,7 @@ class Wordpress_Salesforce_Admin {
                         if ( isset( $_GET['code'] ) )  {
                             $is_authorized = $this->salesforce['sfapi']->request_token( esc_attr( $_GET['code'] ) );
                             echo "<script>window.location = '$callback_url';</script>";
-                        } elseif ( $this->salesforce['is_authorized'] === true ) {
+                        } elseif ( $this->salesforce['is_authorized'] === TRUE ) {
                             require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/authorized.php' );
                             $this->demo( $this->salesforce['sfapi'] );
                         } elseif ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
@@ -195,12 +195,13 @@ class Wordpress_Salesforce_Admin {
                     case 'settings':
                         $consumer_key = $this->login_credentials['consumer_key'];
                         $consumer_secret = $this->login_credentials['consumer_secret'];
-                        if ( $consumer_key && $consumer_secret ) {
-                            if ( $this->salesforce['is_authorized'] === true ) {
+                        if ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
+                            if ( $this->salesforce['is_authorized'] === TRUE ) {
                                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
                             } else {
-                                $message = __( 'Salesforce needs to be authorized to connect to this website.', $this->text_domain );
+                                $message = __( 'Salesforce needs to be authorized to connect to this website. Use the <a href="' . $callback_url . '">Authorize tab</a> to connect.', $this->text_domain );
                                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
+                                require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
                             }
                         } else {
                             require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
@@ -317,7 +318,7 @@ class Wordpress_Salesforce_Admin {
                     'type' => 'text',
                     'validate' => 'validate_text',
                     'desc' => '',
-                    'constant' => 'SALESFORCE_API_VERSION'
+                    'constant' => 'SALESFORCE_API_VERSION',
                 ),
             ),
             'object_filters' => array(
@@ -358,6 +359,22 @@ class Wordpress_Salesforce_Admin {
                 ),
             ),
         );
+
+        if ( $this->salesforce['sfapi']->is_authorized() === TRUE ) {
+            $salesforce_settings['api_version'] = array(
+                'title' => 'Salesforce API Version',
+                'callback' => $callbacks['select'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'select',
+                    'desc' => '',
+                    'constant' => 'SALESFORCE_API_VERSION',
+                    'items' => $this->version_options()
+                ),
+            );
+        }
+
         foreach ( $salesforce_settings as $key => $attributes ) {
             $id = 'salesforce_api_' . $key;
             $name = 'salesforce_api_' . $key;
@@ -679,10 +696,10 @@ class Wordpress_Salesforce_Admin {
     * @return array $object_settings
     */
     public function get_salesforce_object_description( $data = array() ) {
-        $ajax = false;
+        $ajax = FALSE;
         if ( empty( $data ) ) {
             $data = $_POST;
-            $ajax = true;
+            $ajax = TRUE;
         }
 
         $object_description = array();
@@ -717,7 +734,7 @@ class Wordpress_Salesforce_Admin {
             }
         }
 
-        if ( $ajax === true ) {
+        if ( $ajax === TRUE ) {
             wp_send_json_success( $object_description );
         } else {
             return $object_description;
@@ -766,15 +783,15 @@ class Wordpress_Salesforce_Admin {
     * @return array $object_fields
     */
     public function get_wordpress_object_fields( $wordpress_object = '' ) {
-        $ajax = false;
+        $ajax = FALSE;
         if ( empty( $wordpress_object ) ) {
             $wordpress_object = $_POST['wordpress_object'];
-            $ajax = true;
+            $ajax = TRUE;
         }
         
         $object_fields = $this->wordpress->get_wordpress_object_fields( $wordpress_object );
         
-        if ( $ajax === true ) {
+        if ( $ajax === TRUE ) {
             wp_send_json_success( $object_fields );
         } else {
             return $object_fields;
@@ -877,13 +894,13 @@ class Wordpress_Salesforce_Admin {
     *
     */
     public function prepare_fieldmap_data() {
-        $error = false;
+        $error = FALSE;
         $cachekey = md5( json_encode( $_POST ) );
         
         if ( !isset( $_POST['label'] ) || !isset( $_POST['salesforce_object'] ) || !isset( $_POST['wordpress_object'] ) ) {
-            $error = true;
+            $error = TRUE;
         }
-        if ( $error === true ) {
+        if ( $error === TRUE ) {
             set_transient( $cachekey, $_POST, 0 );
             if ( $cachekey !== '' ) {
                 $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
@@ -900,7 +917,7 @@ class Wordpress_Salesforce_Admin {
                 $id = esc_attr( $_POST['id'] );
                 $result = $this->mappings->update_fieldmap( $_POST, $wordpress_fields, $salesforce_fields, $id );
             }
-            if ( $result === false ) { // if the database didn't save, it's still ane rror
+            if ( $result === FALSE ) { // if the database didn't save, it's still ane rror
                 set_transient( $cachekey, $_POST, 0 );
                 if ( $cachekey !== '' ) {
                     $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
@@ -927,7 +944,7 @@ class Wordpress_Salesforce_Admin {
     public function delete_fieldmap() {
         if ( $_POST['id'] ) {
             $result = $this->mappings->delete_fieldmap( $_POST['id'] );
-            if ( $result === true ) {
+            if ( $result === TRUE ) {
                 $url = esc_url_raw( $_POST['redirect_url_success'] );
             } else {
                 $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&id=' . $_POST['id'];
@@ -1032,22 +1049,43 @@ class Wordpress_Salesforce_Admin {
         $id     = $args['label_for'];
         $name   = $args['name'];
         $desc   = $args['desc'];
-        $current_value = get_option( $name );
-        echo '<div><select id="' . $id . '" name="' . $name . '"><option value="">- Select one -</option>';
-        foreach ( $args['items'] as $key => $value ) {
-            $text = $value['text'];
-            $value = $value['value'];
-            $selected = '';
-            if ( $key === $current_value ) {
-                $selected = ' selected';
+        if ( !defined( $args['constant'] ) ) {
+            $current_value = get_option( $name );
+            echo '<div><select id="' . $id . '" name="' . $name . '"><option value="">- Select one -</option>';
+            foreach ( $args['items'] as $key => $value ) {
+                $text = $value['text'];
+                $value = $value['value'];
+                $selected = '';
+                if ( $key === $current_value || $value === $current_value ) {
+                    $selected = ' selected';
+                }
+                echo '<option value="' . $value . '"' . $selected . '>' . $text . '</option>';
             }
-            echo '<option value="' . $value . '"' . $selected . '>' . $text . '</option>';
+            echo '</select>';
+            if ( $desc != '' ) {
+                echo '<p class="description">' . $desc . '</p>';
+            }
+            echo '</div>';
+        } else {
+            echo '<p><code>Defined in wp-config.php</code></p>';
         }
-        echo '</select>';
-        if ( $desc != '' ) {
-            echo '<p class="description">' . $desc . '</p>';
+    }
+
+    /**
+    * Dropdown formatted list of Salesforce API versions
+    *
+    * @return array $args
+    */
+    private function version_options() {
+        $versions = $this->salesforce['sfapi']->get_api_versions();
+        $args = array();
+        foreach ( $versions['data'] as $key => $value ) {
+            $args[] = array(
+                'value' => $value['version'],
+                'text' => $value['label'] . ' (' . $value['version'] . ')'
+            );
         }
-        echo '</div>';
+        return $args;
     }
 
     /**
@@ -1083,18 +1121,18 @@ class Wordpress_Salesforce_Admin {
         $versions = $sfapi->get_api_versions();
 
         // format this array into html so users can see the versions
-        $versions_is_cached = $versions['cached'] === true ? '' : 'not ';
-        $versions_from_cache = $versions['from_cache'] === true ? 'were' : 'were not';
-        $versions_is_redo = $versions['is_redo'] === true ? '' : 'not ';
-        $versions_andorbut = $versions['from_cache'] === true ? 'and' : 'but';
+        $versions_is_cached = $versions['cached'] === TRUE ? '' : 'not ';
+        $versions_from_cache = $versions['from_cache'] === TRUE ? 'were' : 'were not';
+        $versions_is_redo = $versions['is_redo'] === TRUE ? '' : 'not ';
+        $versions_andorbut = $versions['from_cache'] === TRUE ? 'and' : 'but';
 
         $contacts = $sfapi->query('SELECT Name, Id from Contact LIMIT 100');
 
         // format this array into html so users can see the contacts
-        $contacts_is_cached = $contacts['cached'] === true ? '' : 'not ';
-        $contacts_from_cache = $contacts['from_cache'] === true ? 'were' : 'were not';
-        $contacts_andorbut = $contacts['from_cache'] === true ? 'and' : 'but';
-        $contacts_is_redo = $contacts['is_redo'] === true ? '' : 'not ';
+        $contacts_is_cached = $contacts['cached'] === TRUE ? '' : 'not ';
+        $contacts_from_cache = $contacts['from_cache'] === TRUE ? 'were' : 'were not';
+        $contacts_andorbut = $contacts['from_cache'] === TRUE ? 'and' : 'but';
+        $contacts_is_redo = $contacts['is_redo'] === TRUE ? '' : 'not ';
 
         require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/demo.php' );
 
