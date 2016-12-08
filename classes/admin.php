@@ -306,13 +306,14 @@ class Wordpress_Salesforce_Admin {
             ),
             'api_version' => array(
                 'title' => 'Salesforce API Version',
-                'callback' => $callbacks['text'],
+                'callback' => $callbacks['select'],
                 'page' => $page,
                 'section' => $section,
                 'args' => array(
-                    'type' => 'text',
+                    'type' => 'select',
                     'desc' => '',
-                    'constant' => 'SALESFORCE_API_VERSION'
+                    'constant' => 'SALESFORCE_API_VERSION',
+                    'items' => $this->version_options()
                 ),
             ),
             'object_filters' => array(
@@ -1001,22 +1002,43 @@ class Wordpress_Salesforce_Admin {
         $id     = $args['label_for'];
         $name   = $args['name'];
         $desc   = $args['desc'];
-        $current_value = get_option( $name );
-        echo '<div><select id="' . $id . '" name="' . $name . '"><option value="">- Select one -</option>';
-        foreach ( $args['items'] as $key => $value ) {
-            $text = $value['text'];
-            $value = $value['value'];
-            $selected = '';
-            if ( $key === $current_value ) {
-                $selected = ' selected';
+        if ( !defined( $args['constant'] ) ) {
+            $current_value = get_option( $name );
+            echo '<div><select id="' . $id . '" name="' . $name . '"><option value="">- Select one -</option>';
+            foreach ( $args['items'] as $key => $value ) {
+                $text = $value['text'];
+                $value = $value['value'];
+                $selected = '';
+                if ( $key === $current_value || $value === $current_value ) {
+                    $selected = ' selected';
+                }
+                echo '<option value="' . $value . '"' . $selected . '>' . $text . '</option>';
             }
-            echo '<option value="' . $value . '"' . $selected . '>' . $text . '</option>';
+            echo '</select>';
+            if ( $desc != '' ) {
+                echo '<p class="description">' . $desc . '</p>';
+            }
+            echo '</div>';
+        } else {
+            echo '<p><code>Defined in wp-config.php</code></p>';
         }
-        echo '</select>';
-        if ( $desc != '' ) {
-            echo '<p class="description">' . $desc . '</p>';
+    }
+
+    /**
+    * Dropdown formatted list of Salesforce API versions
+    *
+    * @return array $args
+    */
+    private function version_options() {
+        $versions = $this->salesforce['sfapi']->get_api_versions();
+        $args = array();
+        foreach ( $versions['data'] as $key => $value ) {
+            $args[] = array(
+                'value' => $value['version'],
+                'text' => $value['label'] . ' (' . $value['version'] . ')'
+            );
         }
-        echo '</div>';
+        return $args;
     }
 
     /**
