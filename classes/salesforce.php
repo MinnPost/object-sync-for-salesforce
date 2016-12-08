@@ -132,7 +132,7 @@ class Salesforce {
 	* This is not an authenticated call, so it would not be a helpful test
 	*/
 	public function get_api_versions() {
-		$options = array( 'authenticated' => false, 'full_url' => true );
+		$options = array( 'authenticated' => FALSE, 'full_url' => TRUE );
 		return $this->api_call( $this->get_instance_url() . '/services/data', [], 'GET', $options );
 	}
 
