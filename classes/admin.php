@@ -958,7 +958,7 @@ class Wordpress_Salesforce_Admin {
             $class = 'checkbox';
         }
 
-        if ( !defined( $args['constant'] ) ) {
+        if ( !isset( $args['constant'] ) || !defined( $args['constant'] ) ) {
             $value  = esc_attr( get_option( $id, '' ) );
             if ( $type === 'checkbox' ) {
                 if ( $value === '1' ) {
@@ -1018,7 +1018,7 @@ class Wordpress_Salesforce_Admin {
         $id     = $args['label_for'];
         $name   = $args['name'];
         $desc   = $args['desc'];
-        if ( !defined( $args['constant'] ) ) {
+        if ( !isset( $args['constant'] ) || !defined( $args['constant'] ) ) {
             $current_value = get_option( $name );
             echo '<div><select id="' . $id . '" name="' . $name . '"><option value="">- Select one -</option>';
             foreach ( $args['items'] as $key => $value ) {
