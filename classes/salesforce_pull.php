@@ -712,6 +712,10 @@ class Salesforce_Pull {
 						$result = $this->wordpress->object_create( $salesforce_mapping['wordpress_object'], $params );
 					}
 
+					// hook to allow other plugins to do something right after wordpress data is saved
+					// ex: run outside methods on an object if it has been synced
+					do_action( 'salesforce_rest_api_post_pull', $wordpress_id, $mapping, $object, $params );
+
 				}
 				catch ( WordpressException $e ) {
 					// create log entry for failed create or upsert
@@ -864,6 +868,10 @@ class Salesforce_Pull {
 						$mapping_object['wordpress_id'],
 						$status
 					);
+
+					// hook to allow other plugins to do something right after wordpress data is saved
+					// ex: run outside methods on an object if it has been synced
+					do_action( 'salesforce_rest_api_post_pull', $mapping_object['wordpress_id'], $mapping, $object, $params );
 
 					// hook for pull success
 					do_action( 'salesforce_rest_api_pull_success', $op, $result, $synced_object );
