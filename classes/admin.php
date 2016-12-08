@@ -201,6 +201,7 @@ class Wordpress_Salesforce_Admin {
                             } else {
                                 $message = __( 'Salesforce needs to be authorized to connect to this website. Use the <a href="' . $callback_url . '">Authorize tab</a> to connect.', $this->text_domain );
                                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
+                                require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
                             }
                         } else {
                             require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
@@ -306,14 +307,13 @@ class Wordpress_Salesforce_Admin {
             ),
             'api_version' => array(
                 'title' => 'Salesforce API Version',
-                'callback' => $callbacks['select'],
+                'callback' => $callbacks['text'],
                 'page' => $page,
                 'section' => $section,
                 'args' => array(
-                    'type' => 'select',
+                    'type' => 'text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_API_VERSION',
-                    'items' => $this->version_options()
                 ),
             ),
             'object_filters' => array(
@@ -352,6 +352,22 @@ class Wordpress_Salesforce_Admin {
                 ),
             ),
         );
+
+        if ( $this->salesforce['sfapi']->is_authorized() === TRUE ) {
+            $salesforce_settings['api_version'] = array(
+                'title' => 'Salesforce API Version',
+                'callback' => $callbacks['select'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'select',
+                    'desc' => '',
+                    'constant' => 'SALESFORCE_API_VERSION',
+                    'items' => $this->version_options()
+                ),
+            );
+        }
+
         foreach ( $salesforce_settings as $key => $attributes ) {
             $id = 'salesforce_api_' . $key;
             $name = 'salesforce_api_' . $key;
