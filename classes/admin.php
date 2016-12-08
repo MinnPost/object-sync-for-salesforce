@@ -368,6 +368,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'select',
+                    'validate' => 'validate_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_API_VERSION',
                     'items' => $this->version_options()
