@@ -435,9 +435,6 @@ class Salesforce_Push {
 	*/
 	public function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
-		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
-		$object_id_field = $structure['id_field'];
-
 		// if salesforce is not authorized, don't do anything.
 		// it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
 		if ( $this->salesforce['is_authorized'] !== TRUE ) {
