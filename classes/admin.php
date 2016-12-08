@@ -360,7 +360,7 @@ class Wordpress_Salesforce_Admin {
             ),
         );
 
-        if ( $this->salesforce['sfapi']->is_authorized() === TRUE ) {
+        if ( is_object( $this->salesforce['sfapi'] ) === TRUE && $this->salesforce['sfapi']->is_authorized() === TRUE ) {
             $salesforce_settings['api_version'] = array(
                 'title' => 'Salesforce API Version',
                 'callback' => $callbacks['select'],
