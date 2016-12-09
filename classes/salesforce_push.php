@@ -435,9 +435,6 @@ class Salesforce_Push {
 	*/
 	public function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
-		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
-		$object_id_field = $structure['id_field'];
-
 		// if salesforce is not authorized, don't do anything.
 		// it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.
 		if ( $this->salesforce['is_authorized'] !== TRUE ) {
@@ -495,7 +492,7 @@ class Salesforce_Push {
 						);
 
 						// hook for push fail
-						do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
+						do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object, $object_id );
 
 					}
 
@@ -517,7 +514,7 @@ class Salesforce_Push {
 						);
 
 						// hook for push success
-						do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
+						do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object, $object_id );
 					}
 				} else {
 					$more_ids = '<p>The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are: ';
@@ -625,7 +622,7 @@ class Salesforce_Push {
 
 				// hook to allow other plugins to do something right before salesforce data is saved
 				// ex: run wordpress methods on an object if it exists, or do something in preparation for it if it doesn't
-				do_action( 'salesforce_rest_api_pre_push', $salesforce_id, $mapping, $object, $params );
+				do_action( 'salesforce_rest_api_pre_push', $salesforce_id, $mapping, $object, $object_id, $params );
 
 				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || $salesforce_id !== NULL ) {
 					
@@ -684,6 +681,7 @@ class Salesforce_Push {
 					$op = 'Create';
 					$result = $sfapi->object_create( $mapping['salesforce_object'], $params );
 				}
+
 			}
 			catch ( SalesforceException $e ) {
 				// create log entry for failed create or upsert
@@ -745,7 +743,7 @@ class Salesforce_Push {
 				$mapping_object = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 				// hook for push success
-				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
+				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object, $object_id );
 			} else {
 
 				// create log entry for failed create or upsert
@@ -805,7 +803,7 @@ class Salesforce_Push {
 
 				// hook to allow other plugins to do something right before salesforce data is saved
 				// ex: run wordpress methods on an object if it exists, or do something in preparation for it if it doesn't
-				do_action( 'salesforce_rest_api_pre_push', $mapping_object['salesforce_id'], $mapping, $object, $params );
+				do_action( 'salesforce_rest_api_pre_push', $mapping_object['salesforce_id'], $mapping, $object, $object_id, $params );
 
 				$op = 'Update';
 				$result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );
@@ -829,7 +827,7 @@ class Salesforce_Push {
 				);
 
 				// hook for push success
-				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
+				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object, $object_id );
 
 			}
 			catch ( SalesforceException $e ) {
@@ -946,7 +944,7 @@ class Salesforce_Push {
 
 				watchdog( 'salesforce_push', '%op: Salesforce object %id', array( '%id' => $result->id, '%op' => $op ) );
 
-				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object );
+				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object, $object_id );
 			} else {
 				// Otherwise, the item is considered failed.
 				$error_messages = array();
@@ -971,7 +969,7 @@ class Salesforce_Push {
 					);
 					$mapping_object->save();
 				}
-				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
+				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object, $object_id );
 			}
 		}
 	}
