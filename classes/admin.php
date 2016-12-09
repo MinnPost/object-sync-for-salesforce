@@ -918,7 +918,7 @@ class Wordpress_Salesforce_Admin {
                 $id = esc_attr( $_POST['id'] );
                 $result = $this->mappings->update_fieldmap( $_POST, $wordpress_fields, $salesforce_fields, $id );
             }
-            if ( $result === FALSE ) { // if the database didn't save, it's still ane rror
+            if ( $result === FALSE ) { // if the database didn't save, it's still an error
                 set_transient( $cachekey, $_POST, 0 );
                 if ( $cachekey !== '' ) {
                     $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
