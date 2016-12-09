@@ -434,7 +434,8 @@ class Wordpress_Salesforce_Admin {
                     'page' => $page,
                     'section' => $key,
                     'args' => array(
-                        'type' => 'text',
+                        'type' => 'number',
+                        'validate' => 'sanitize_text',
                         'desc' => '',
                         'constant' => ''
                     ),
@@ -446,6 +447,7 @@ class Wordpress_Salesforce_Admin {
                     'section' => $key,
                     'args' => array(
                         'type' => 'select',
+                        'validate' => 'sanitize_text',
                         'desc' => '',
                         'items' => array(
                             'minutes' => array(
@@ -516,6 +518,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'checkbox',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => ''
                 ),
@@ -527,6 +530,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'checkboxes',
+                    'validate' => 'sanitize_text',
                     'desc' => 'these are the statuses to log',
                     'items' => array(
                         'error' => array(
@@ -554,6 +558,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'checkbox',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => ''
                 ),
@@ -565,6 +570,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
+                    'validate' => 'sanitize_text',
                     'desc' => 'If automatic deleting is enabled, it will affect logs this old.',
                     'default' => '2 weeks',
                     'constant' => ''
@@ -576,7 +582,8 @@ class Wordpress_Salesforce_Admin {
                 'page' => $page,
                 'section' => $section,
                 'args' => array(
-                    'type' => 'text',
+                    'type' => 'number',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'default' => '1',
                     'constant' => ''
@@ -589,6 +596,7 @@ class Wordpress_Salesforce_Admin {
                     'section' => $section,
                     'args' => array(
                         'type' => 'select',
+                        'validate' => 'sanitize_text',
                         'desc' => 'These two fields are how often the site will check for logs to delete.',
                         'items' => array(
                             'minutes' => array(
@@ -613,6 +621,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'checkboxes',
+                    'validate' => 'sanitize_text',
                     'desc' => 'these are the triggers to log',
                     'items' => array(
                         $this->mappings->sync_wordpress_create => array(
