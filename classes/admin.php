@@ -393,6 +393,11 @@ class Wordpress_Salesforce_Admin {
                     'name' => $name
                 )
             );
+
+            if ( isset( $attributes['args']['constant'] ) && defined( $attributes['args']['constant'] ) ) {
+                $validate = '';
+            }
+
             add_settings_field( $id, $title, $callback, $page, $section, $args );
             register_setting( $page, $id, array( $this, $validate ) );
         }
