@@ -267,7 +267,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
-                    'validate' => 'validate_text',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_CONSUMER_KEY'
                 ),
@@ -280,7 +280,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
-                    'validate' => 'validate_text',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_CONSUMER_SECRET'
                 ),
@@ -292,7 +292,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'url',
-                    'validate' => 'validate_text',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_CALLBACK_URL'
                 ),
@@ -304,7 +304,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'url',
-                    'validate' => 'validate_text',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_LOGIN_BASE_URL'
                 ),
@@ -316,7 +316,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
-                    'validate' => 'validate_text',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_API_VERSION',
                 ),
@@ -328,7 +328,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'checkboxes',
-                    'validate' => 'validate_text',
+                    'validate' => 'sanitize_text',
                     'desc' => 'Allows you to limit which Salesforce objects can be mapped',
                     'items' => array(
                         'triggerable' => array(
@@ -352,8 +352,8 @@ class Wordpress_Salesforce_Admin {
                 'page' => $page,
                 'section' => $section,
                 'args' => array(
-                    'type' => 'text',
-                    'validate' => 'validate_text',
+                    'type' => 'number',
+                    'validate' => 'sanitize_text',
                     'desc' => 'Number of seconds to wait between repeated salesforce pulls.<br>Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage.',
                     'constant' => ''
                 ),
@@ -368,7 +368,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'select',
-                    'validate' => 'validate_text',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_API_VERSION',
                     'items' => $this->version_options()
@@ -398,8 +398,17 @@ class Wordpress_Salesforce_Admin {
         }
     }
 
-    // this method does not fire an error if it is private, but also doesn't work
-    public function validate_text( $input ) {
+    /**
+    * Basic sanitize method for text
+    * This makes the field's input safe enough to use. It does not differentiate based on what type of field we are dealing with, so if we need to validate input the field should use a different method
+    * This method does not fire an error if it is private, but also doesn't work
+    *
+    * @param mixed $input
+    *
+    * @return mixed $output
+    */
+    // 
+    public function sanitize_text( $input ) {
 
         $output = '';
 
@@ -417,8 +426,7 @@ class Wordpress_Salesforce_Admin {
             
         }
 
-        // Return the array processing any additional functions filtered by this action
-        return apply_filters( array( $this, 'validate_text' ), $output, $input );
+        return $output;
     }
 
     /**
