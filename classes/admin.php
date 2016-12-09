@@ -394,6 +394,7 @@ class Wordpress_Salesforce_Admin {
                 )
             );
 
+            // if there is a constant and it is defined, don't run a validate function
             if ( isset( $attributes['args']['constant'] ) && defined( $attributes['args']['constant'] ) ) {
                 $validate = '';
             }
@@ -401,37 +402,6 @@ class Wordpress_Salesforce_Admin {
             add_settings_field( $id, $title, $callback, $page, $section, $args );
             register_setting( $page, $id, array( $this, $validate ) );
         }
-    }
-
-    /**
-    * Basic sanitize method for text
-    * This makes the field's input safe enough to use. It does not differentiate based on what type of field we are dealing with, so if we need to validate input the field should use a different method
-    * This method does not fire an error if it is private, but also doesn't work
-    *
-    * @param mixed $input
-    *
-    * @return mixed $output
-    */
-    // 
-    public function sanitize_text( $input ) {
-
-        $output = '';
-
-        if ( isset( $input ) && !is_array( $input ) ) {
-            $output = strip_tags( stripslashes( $input ) );
-        }
-
-        if ( isset( $input ) && is_array( $input ) ) {
-            
-            foreach( $input as $key => $value ) {
-                if ( isset( $input[$key] ) ) {
-                    $output[$key] = strip_tags( stripslashes( $input[ $key ] ) );
-                }
-            }
-            
-        }
-
-        return $output;
     }
 
     /**
@@ -1249,6 +1219,37 @@ class Wordpress_Salesforce_Admin {
         } else {
             $tab = '';
         }
+    }
+
+    /**
+    * Basic sanitize method for text
+    * This makes the field's input safe enough to use. It does not differentiate based on what type of field we are dealing with, so if we need to validate input the field should use a different method
+    * This method does not fire an error if it is private, but also doesn't work
+    *
+    * @param mixed $input
+    *
+    * @return mixed $output
+    */
+    // 
+    public function sanitize_text( $input ) {
+
+        $output = '';
+
+        if ( isset( $input ) && !is_array( $input ) ) {
+            $output = strip_tags( stripslashes( $input ) );
+        }
+
+        if ( isset( $input ) && is_array( $input ) ) {
+            
+            foreach( $input as $key => $value ) {
+                if ( isset( $input[$key] ) ) {
+                    $output[$key] = strip_tags( stripslashes( $input[ $key ] ) );
+                }
+            }
+            
+        }
+
+        return $output;
     }
 
     /**
