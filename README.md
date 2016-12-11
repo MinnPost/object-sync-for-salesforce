@@ -30,6 +30,16 @@ For a more detailed description of each component class, see below.
   - http://php.net/soap
   - http://php.net/openssl
 
+## Installing from GitHub
+
+If you are installing from the git repo instead of the WordPress plugin directory, use these instructions. You have to already have [Composer](https://getcomposer.org) installed. I use [Homebrew](http://brew.sh/) for this.
+
+1. Run `cd` to get into the `wp-plugins` directory of a WordPress install.
+2. Run `git clone https://github.com/MinnPost/salesforce-rest-api.git`
+3. Run `cd salesforce-rest-api`
+4. Run `composer install`
+5. This will take a little whle. You can then activate the plugin as you would a normal WordPress plugin.
+
 ## Classes
 
 ### Salesforce REST API
