@@ -38,7 +38,7 @@ If you are installing from the git repo instead of the WordPress plugin director
 2. Run `git clone https://github.com/MinnPost/salesforce-rest-api.git`
 3. Run `cd salesforce-rest-api`
 4. Run `composer install`
-5. This will take a little whle. You can then activate the plugin as you would a normal WordPress plugin.
+5. This will take a little while as Composer installs third-party libraries the plugin needs. You can then activate the plugin as you would a normal WordPress plugin.
 
 ## Classes
 
