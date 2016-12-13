@@ -63,7 +63,9 @@ These classes create or delete the plugin's custom database tables. Tables are:
 1. `wp_salesforce_field_map`: Given WordPress and Salesforce objects, map their corresponding fields (in an array) to each other. This sets which fields the two systems sync, whether it happens asynchronously, what order to use if there are conflicts, and whether to sync WordPress drafts of the object.
 2. `wp_salesforce_object_map`: Map individual object items between WordPress and Salesforce, and save the dates and API messages when they are last imported and exported.
 
-The `deactivate` class also stops recurring tasks created by the `schedule` class, and deletes the custom post type for logging if it exists.
+The `activate` class also creates a new capability called `configure_salesforce` and assigns it to the `administrator` role in WordPress, and other roles as well if the filter is used.
+
+The `deactivate` class also stops recurring tasks created by the `schedule` class, and deletes the custom post type for logging if it exists. It also removes the `configure_salesforce` capability, and removes it from the roles used in the activate version of the filter.
 
 
 ### Logging (logging)
@@ -201,6 +203,7 @@ Current hooks include:
 
 ### Filters
 
+- `salesforce_rest_api_roles_configure_salesforce`: allow other plugins to give the `configure_salesforce` capability to WordPress roles in addition to the `administrator` role.
 - `salesforce_rest_api_push_object_allowed`: prevent a push per-mapping.
 - `salesforce_rest_api_pull_object_allowed`: prevent a pull per-mapping.
 - `salesforce_rest_api_pull_params_modify`: change what parameters are being sent to WordPress before syncing occurs
