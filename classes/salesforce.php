@@ -168,36 +168,33 @@ class Salesforce {
 				// Refresh token.
 				$this->refresh_token();
 				// Rebuild our request and repeat request.
-				$options['is_redo'] = true;
+				$options['is_redo'] = TRUE;
 				$this->response = $this->api_http_request( $path, $params, $method, $options, $type );
 				// Throw an error if we still have bad response.
 				if ( !in_array( $this->response['code'], $this->success_codes ) ) {
 					throw new SalesforceException( $this->response['data'][0]['message'], $this->response['code'] );
 				}
-
-			break;
-
-		case in_array( $this->response['code'], $this->success_codes ):
-			// All clear.
-			break;
-
-		default:
-			// We have problem and no specific Salesforce error provided.
-			if ( empty( $this->response['data'] ) ) {
-				throw new SalesforceException( $this->response['error'], $this->response['code'] );
-			}
+				break;
+			case in_array( $this->response['code'], $this->success_codes ):
+				// All clear.
+				break;
+			default:
+				// We have problem and no specific Salesforce error provided.
+				if ( empty( $this->response['data'] ) ) {
+					throw new SalesforceException( $this->response['error'], $this->response['code'] );
+				}
 		}
 
 		if ( !empty( $this->response['data'][0] ) && count( $this->response['data'] ) == 1 ) {
-		  $this->response['data'] = $this->response['data'][0];
+			$this->response['data'] = $this->response['data'][0];
 		}
 
 		if ( isset( $this->response['data']['error'] ) ) {
-		  throw new SalesforceException( $this->response['data']['error_description'], $this->response['data']['error'] );
+			throw new SalesforceException( $this->response['data']['error_description'], $this->response['data']['error'] );
 		}
 
 		if ( !empty($this->response['data']['errorCode'] ) ) {
-		  throw new SalesforceException( $this->response['data']['message'], $this->response['code'] );
+			throw new SalesforceException( $this->response['data']['message'], $this->response['code'] );
 		}
 		
 		return $this->response;
@@ -269,7 +266,7 @@ class Salesforce {
 		if ( isset( $options['is_redo'] ) && $options['is_redo'] === TRUE ) {
 			$result['is_redo'] = TRUE;
 		} else {
-			$result['is_redo'] = TRUE;
+			$result['is_redo'] = FALSE;
 		}
 
 		return $result;
@@ -557,7 +554,6 @@ class Salesforce {
 			),
 			$this->login_url . $this->authorize_path
 		);
-		error_log('url is ' . $url);
 		return $url;
 	}
 
