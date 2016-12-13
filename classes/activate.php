@@ -51,7 +51,9 @@ class Wordpress_Salesforce_Activate {
             push_async tinyint(1) NOT NULL DEFAULT '0',
             ignore_drafts tinyint(1) NOT NULL DEFAULT '0',
             weight tinyint(1) NOT NULL DEFAULT '0',
-            PRIMARY KEY  (id)
+            PRIMARY KEY  (id),
+            UNIQUE KEY name (name),
+            KEY name_sf_type_wordpress_type (wordpress_object,salesforce_object)
         ) $charset_collate";
 
         $object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
