@@ -1148,7 +1148,13 @@ class Wordpress_Salesforce_Admin {
     */
     private function check_wordpress_admin_permissions() {
 
-        // todo: we are going to need a way to integrate this with roles, permissions, etc that are not built into wordpress
+        // one programmatic way to give this capability to additional user roles is the 
+        // salesforce_rest_api_roles_configure_salesforce hook
+        // it runs on activation of this plugin, and will assign the below capability to any role
+        // coming from the hook
+
+        // alternatively, other roles can get this capability in whatever other way you like
+        // point is: to administer this plugin, you need this capability
 
         if ( ! current_user_can( 'configure_salesforce' ) ) {
             return FALSE;
