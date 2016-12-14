@@ -685,17 +685,17 @@ class Wordpress_Salesforce_Admin {
         require_once plugin_dir_path( __FILE__ ) . '../classes/admin_notice.php';
         
         $notices = array(
-            'fieldmap' => array(
-                'condition' => isset( $_GET['transient'] ),
-                'message' => 'Errors kept this fieldmap from being saved.',
-                'type' => 'error',
-                'dismissible' => TRUE
-            ),
             'permission' => array(
                 'condition' => $this->check_wordpress_admin_permissions() === FALSE,
                 'message' => "Your account does not have permission to edit the Salesforce REST API plugin's settings.",
                 'type' => 'error',
                 'dismissible' => FALSE,
+            ),
+            'fieldmap' => array(
+                'condition' => isset( $_GET['transient'] ),
+                'message' => 'Errors kept this fieldmap from being saved.',
+                'type' => 'error',
+                'dismissible' => TRUE
             ),
         );
 
