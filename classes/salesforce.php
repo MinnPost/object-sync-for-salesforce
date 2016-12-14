@@ -242,7 +242,8 @@ class Salesforce {
 		// add parameters to the array so we can tell if it was cached or not
 		if ( $options['cache'] === TRUE && $options['type'] !== 'write' ) { 
 			$cached = $this->wordpress->cache_get( $url, $params );
-			if ( is_array( $cached ) ) {
+			// some api calls can send a reset option, in which case we should redo the request anyway
+			if ( is_array( $cached ) && ( !isset( $options['reset'] ) || $options['reset'] !== TRUE ) ) {
 				$result = $cached;
 				$result['from_cache'] = TRUE;
 				$result['cached'] = TRUE;
@@ -618,12 +619,15 @@ class Salesforce {
 	* @return array
 	*   Available objects and metadata.
 	*
-	* part of core API calls
+	* part of core API calls. this call does require authentication, and the basic url it becomes is like this:
+	* https://instance.salesforce.com/services/data/v#.0/sobjects
+	*
 	* updateable is really how the api spells it
 	*/
 	public function objects( $conditions = array( 'updateable' => TRUE, 'triggerable' => TRUE ), $reset = FALSE ) {
 
-		$result = $this->api_call( 'sobjects' );
+		$options = array( 'reset' => $reset );
+		$result = $this->api_call( 'sobjects', array(), 'GET', $options );
 
 		if ( !empty( $conditions ) ) {
 			foreach ( $result['data']['sobjects'] as $key => $object ) {
@@ -693,7 +697,8 @@ class Salesforce {
 		if ( empty( $name ) ) {
 			return array();
 		}
-		$object = $this->api_call( "sobjects/{$name}/describe" );
+		$options = array( 'reset' => $reset );
+		$object = $this->api_call( "sobjects/{$name}/describe", array(), 'GET', $options );
 		// Sort field properties, because salesforce API always provides them in a
 		// random order. We sort them so that stored and exported data are
 		// standardized and predictable.
