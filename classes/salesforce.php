@@ -62,6 +62,9 @@ class Salesforce {
 		$this->refresh_code = 401;
 		$this->success_or_refresh_codes = $this->success_codes;
 		$this->success_or_refresh_codes[] = $this->refresh_code;
+
+		$this->debug = get_option( 'salesforce_api_debug_mode', FALSE );
+
 	}
 
 	/**
@@ -268,6 +271,26 @@ class Salesforce {
 			$result['is_redo'] = TRUE;
 		} else {
 			$result['is_redo'] = FALSE;
+		}
+
+		// it would be very unfortunate to ever have to do this in a production site
+		if ( (int) $this->debug === 1 ) {
+			// create log entry for the api call if debug is true
+			$status = 'debug';
+			$title = ucfirst( $status ) . ': on Salesforce API HTTP Request to URL: ' . $url;
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			}
+
+			$logging->setup(
+				__( $title, $this->text_domain ),
+				print_r( $result, true ),
+				0,
+				0,
+				$status
+			);
 		}
 
 		return $result;

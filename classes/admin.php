@@ -355,6 +355,19 @@ class Wordpress_Salesforce_Admin {
                     'constant' => ''
                 ),
             ),
+            'debug_mode' => array(
+                'title' => 'Debug moode?',
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'checkbox',
+                    'validate' => 'sanitize_text',
+                    'desc' => 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create <strong>a lot</strong> of entries if enabled; it is not recommended to use it in a production environment.',
+                    'constant' => ''
+                ),
+            ),
+
         );
 
         if ( is_object( $this->salesforce['sfapi'] ) === TRUE && $this->salesforce['sfapi']->is_authorized() === TRUE ) {
@@ -544,7 +557,12 @@ class Wordpress_Salesforce_Admin {
                             'text' => 'Notice',
                             'id' => 'notice',
                             'desc' => ''
-                        )
+                        ),
+                        'debug' => array(
+                            'text' => 'Debug',
+                            'id' => 'debug',
+                            'desc' => ''
+                        ),
                     )
                 )
             ),
