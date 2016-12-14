@@ -956,11 +956,10 @@ class Wordpress_Salesforce_Admin {
     */
     public function fieldmap_error_notice() {
         if ( isset( $_GET['transient'] ) ) {
-        ?>
-        <div class="error notice">
-            <p><?php _e( 'Errors kept this fieldmap from being saved.', $this->text_domain ); ?></p>
-        </div>
-        <?php
+            $notice_class = ' notice-error';
+            $text_domain = $this->text_domain;
+            $message = 'Errors kept this fieldmap from being saved.';
+            require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/notice.php' );
         }
     }
 
@@ -1165,11 +1164,10 @@ class Wordpress_Salesforce_Admin {
     */
     public function permission_error_notice() {
         if ( $this->check_wordpress_admin_permissions() === FALSE ) {
-        ?>
-        <div class="notice notice-error">
-            <p><?php _e( "Your account does not have permission to edit the Salesforce REST API plugin's settings.", $this->text_domain ); ?></p>
-        </div>
-        <?php
+            $notice_class = ' notice-error';
+            $text_domain = $this->text_domain;
+            $message = "Your account does not have permission to edit the Salesforce REST API plugin's settings.";
+            require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/notice.php' );
         }
     }
 
