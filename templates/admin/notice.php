@@ -1,3 +1,3 @@
-<div class="notice<?php echo $notice_class; ?>">
-    <p><?php __( $message, $text_domain ); ?></p>
+<div class="notice<?php echo $class; ?><?php echo $dismissible; ?>">
+	<p><?php _e( $message, $text_domain ); ?></p>
 </div>

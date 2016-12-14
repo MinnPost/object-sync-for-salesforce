@@ -44,9 +44,6 @@ class Wordpress_Salesforce_Admin {
         $this->logging = $logging;
         $this->schedulable_classes = $schedulable_classes;
 
-        // todo: we should think about what kind of admin_notices to use, if any
-        // https://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
-
         $this->add_actions();
 
     }
@@ -57,9 +54,9 @@ class Wordpress_Salesforce_Admin {
     */
     public function add_actions() {
         add_action( 'admin_init', array( $this, 'salesforce_settings_forms' ) );
+        add_action( 'admin_init', array( $this, 'notices' ) );
         add_action( 'admin_post_post_fieldmap', array( $this, 'prepare_fieldmap_data' ) );
-        add_action( 'admin_notices', array( $this, 'fieldmap_error_notice' ) );
-        add_action( 'admin_notices', array( $this, 'permission_error_notice' ) );
+
         add_action( 'admin_post_delete_fieldmap', array( $this, 'delete_fieldmap' ) );
         add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ) );
         add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ) );
@@ -680,6 +677,63 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
+    * Create the notices, settings, and conditions by which admin notices should appear
+    *
+    */
+    public function notices() {
+
+        require_once plugin_dir_path( __FILE__ ) . '../classes/admin_notice.php';
+        
+        $notices = array(
+            'fieldmap' => array(
+                'condition' => isset( $_GET['transient'] ),
+                'message' => 'Errors kept this fieldmap from being saved.',
+                'type' => 'error',
+                'dismissible' => TRUE
+            ),
+            'permission' => array(
+                'condition' => $this->check_wordpress_admin_permissions() === FALSE,
+                'message' => "Your account does not have permission to edit the Salesforce REST API plugin's settings.",
+                'type' => 'error',
+                'dismissible' => FALSE,
+            ),
+        );
+
+        $domain = $this->text_domain;
+
+        foreach ( $notices as $key => $value ) {
+
+            $condition = $value['condition'];
+            $message = $value['message'];
+
+            if ( isset( $value['dismissible'] ) ) {
+                $dismissible = $value['dismissible'];
+            } else {
+                $dismissible = FALSE;
+            }
+
+            if ( isset( $value['domain'] ) ) {
+                $domain = $value['domain'];
+            }
+
+            if ( isset( $value['type'] ) ) {
+                $type = $value['type'];
+            } else {
+                $type = '';
+            }
+
+            if ( !isset( $value['template'] ) ) {
+                $template = '';
+            }
+
+            if ( $condition ) {
+                new Admin_Notice( $condition, $message, $domain, $dismissible, $type, $template );
+            }
+        }
+
+    }
+
+    /**
     * Get all the Salesforce object settings for fieldmapping
     * This takes either the $_POST array via ajax, or can be directly called with a $data array
     * 
@@ -948,22 +1002,6 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
-    * Fieldmap error notice
-    * This runs if a mapping method has had an error.
-    * It is public because it depends on the admin_notices hook
-    * todo: better error messages
-    *
-    */
-    public function fieldmap_error_notice() {
-        if ( isset( $_GET['transient'] ) ) {
-            $notice_class = ' notice-error';
-            $text_domain = $this->text_domain;
-            $message = 'Errors kept this fieldmap from being saved.';
-            require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/notice.php' );
-        }
-    }
-
-    /**
     * Default display for <input> fields
     *
     * @param array $args
@@ -1162,19 +1200,6 @@ class Wordpress_Salesforce_Admin {
             return TRUE;
         }
 
-    }
-
-    /**
-    * Notice for permission denied error
-    * If an unauthorized user visits this plugin area in the admin, this message will show
-    */
-    public function permission_error_notice() {
-        if ( $this->check_wordpress_admin_permissions() === FALSE ) {
-            $notice_class = ' notice-error';
-            $text_domain = $this->text_domain;
-            $message = "Your account does not have permission to edit the Salesforce REST API plugin's settings.";
-            require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/notice.php' );
-        }
     }
 
     /**
