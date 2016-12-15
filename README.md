@@ -220,6 +220,8 @@ Current hooks include:
 - `salesforce_rest_api_set_initial_attachment_data`: allow plugins to add filename or parent data when creating attachment objects.
 - `salesforce_rest_api_wordpress_object_fields`: when getting the fields for a WordPress object, allow plugins to add more (and also cache the array).
 - `salesforce_rest_api_wordpress_object_data`: when getting the data for a WordPress object, allow plugins to add more, change the formatting, etc.
+- `salesforce_rest_api_modify_upsert_key`: allow developers to change the key by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
+- `salesforce_rest_api_modify_upsert_value`: allow developers to change the value by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
 
 ### Actions
 

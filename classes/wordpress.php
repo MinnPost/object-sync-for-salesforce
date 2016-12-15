@@ -504,6 +504,10 @@ class Wordpress {
           unset( $params[$key] );
         }
 
+        // allow developers to change both the key and value by which objects should be matched
+        $key = apply_filters( 'salesforce_rest_api_modify_upsert_key', $key );
+        $value = apply_filters( 'salesforce_rest_api_modify_upsert_value', $value );
+
         switch ( $name ) {
             case 'user':
                 $result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
@@ -809,7 +813,6 @@ class Wordpress {
         $method = $methods['method_match'];
         if ( $method !== '' ) {
             // this should give us the user object
-            // todo: this is probably not robust enough for necessary options for data here
             $user = $method( str_replace( 'user_', '', $key ), $value );
             if ( isset( $user->{$id_field} ) ) {
                 // user does exist after checking the matching value. we want its id
@@ -1070,7 +1073,6 @@ class Wordpress {
             // by default, posts use get_posts as the method. args can be like this
             // the args don't really make sense, and are inconsistently documented
             // this should give us the post object
-            // todo: could probably make a hook here for additional matching
             $args = array();
             if ( $key === 'post_title' ) {
                 $params['post_title'] = array(
@@ -1340,7 +1342,6 @@ class Wordpress {
             // by default, posts use get_posts as the method. args can be like this
             // the args don't really make sense, and are inconsistently documented
             // this should give us the post object
-            // todo: could probably make a hook here for additional matching
             $args = array();
             if ( $key === 'post_title' ) {
                 $params['post_title'] = array(
@@ -1636,7 +1637,6 @@ class Wordpress {
         $method = $methods['method_match'];
         if ( $method !== '' ) {
             // this should give us the term object
-            // todo: this is probably not robust enough for necessary options for data here
             $term = $method( $key, $value, $taxonomy ); // we need to put the taxonomy in there probably
             if ( isset( $term->{$id_field} ) ) {
                 // term does exist after checking the matching value. we want its id
