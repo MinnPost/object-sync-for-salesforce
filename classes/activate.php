@@ -111,7 +111,7 @@ class Wordpress_Salesforce_Activate {
         $roles = apply_filters( 'salesforce_rest_api_roles_configure_salesforce', NULL );
 
         // for each role that we have, give it the configure salesforce capability
-        if ( $roles !== NULL ) {
+        if ( NULL !== $roles ) {
             foreach ( $roles as $role ) {
                 $role->add_cap( 'configure_salesforce' );
             }
