@@ -240,7 +240,7 @@ class Salesforce_Push {
 	* @param int|string comment_approved
 	* @param array $commentdata
 	*/
-	public function add_comment( $comment_id, $comment_approved, $commentdata ) {
+	public function add_comment( $comment_id, $comment_approved, $commentdata = array() ) {
 		$comment = $this->wordpress->get_wordpress_object_data( 'comment', $comment_id );
 		$this->object_insert( $comment, 'comment' );
 	}
