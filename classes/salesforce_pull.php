@@ -289,7 +289,7 @@ class Salesforce_Pull {
 				$title = ucfirst( $status ) . ': ' . $response['errorCode'] . ' ' . $salesforce_mapping['salesforce_object'];
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
@@ -428,7 +428,7 @@ class Salesforce_Pull {
 				$status = 'error';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 				$logging->setup(
@@ -512,7 +512,7 @@ class Salesforce_Pull {
 							// create log entry for failed delete
 							if ( isset( $this->logging ) ) {
 								$logging = $this->logging;
-							} else if ( class_exists( 'Salesforce_Logging' ) ) {
+							} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 								$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 							}
 
@@ -544,7 +544,7 @@ class Salesforce_Pull {
 							$status = 'success';
 							if ( isset( $this->logging ) ) {
 								$logging = $this->logging;
-							} else if ( class_exists( 'Salesforce_Logging' ) ) {
+							} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 								$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 							}
 
@@ -577,7 +577,7 @@ class Salesforce_Pull {
 						$status = 'notice';
 						if ( isset( $this->logging ) ) {
 							$logging = $this->logging;
-						} else if ( class_exists( 'Salesforce_Logging' ) ) {
+						} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 							$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 						}
 
@@ -723,7 +723,7 @@ class Salesforce_Pull {
 					$title .=  ' (Salesforce ' . $salesforce_mapping['salesforce_object'] . ' with Id ' . ' of ' . $object['Id'] . ')';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 
@@ -775,7 +775,7 @@ class Salesforce_Pull {
 
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 
@@ -801,7 +801,7 @@ class Salesforce_Pull {
 					$status = 'error';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 
@@ -823,7 +823,7 @@ class Salesforce_Pull {
 					return;
 				}
 
-			} else if ( $is_new === FALSE && ( $sf_sync_trigger == $this->mappings->sync_sf_update ) ) {
+			} elseif ( $is_new === FALSE && ( $sf_sync_trigger == $this->mappings->sync_sf_update ) ) {
 
 				// right here we should set the pulling transient
 				set_transient( 'salesforce_pulling_' . $mapping_object['id'], 1, $seconds );
@@ -853,7 +853,7 @@ class Salesforce_Pull {
 					$status = 'success';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 
@@ -874,7 +874,7 @@ class Salesforce_Pull {
 					$status = 'error';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 

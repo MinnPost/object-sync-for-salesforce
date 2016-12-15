@@ -336,7 +336,7 @@ class Salesforce_Push {
 			$status = 'error';
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} else if ( class_exists( 'Salesforce_Logging' ) ) {
+			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 			}
 			$logging->setup(
@@ -479,7 +479,7 @@ class Salesforce_Push {
 						// create log entry for failed delete
 						if ( isset( $this->logging ) ) {
 							$logging = $this->logging;
-						} else if ( class_exists( 'Salesforce_Logging' ) ) {
+						} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 							$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 						}
 
@@ -501,7 +501,7 @@ class Salesforce_Push {
 						$status = 'success';
 						if ( isset( $this->logging ) ) {
 							$logging = $this->logging;
-						} else if ( class_exists( 'Salesforce_Logging' ) ) {
+						} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 							$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 						}
 
@@ -534,7 +534,7 @@ class Salesforce_Push {
 					$status = 'notice';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} else if ( class_exists( 'Salesforce_Logging' ) ) {
+					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 
@@ -693,7 +693,7 @@ class Salesforce_Push {
 				$title .=  ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
@@ -726,7 +726,7 @@ class Salesforce_Push {
 
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
@@ -752,7 +752,7 @@ class Salesforce_Push {
 				$status = 'error';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
@@ -784,7 +784,7 @@ class Salesforce_Push {
 				$status = 'notice';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
@@ -814,7 +814,7 @@ class Salesforce_Push {
 				$status = 'success';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
@@ -835,7 +835,7 @@ class Salesforce_Push {
 				$status = 'error';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 

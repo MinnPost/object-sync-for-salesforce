@@ -279,7 +279,7 @@ class Salesforce {
 			$title = ucfirst( $status ) . ': on Salesforce API HTTP Request to URL: ' . $url;
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} else if ( class_exists( 'Salesforce_Logging' ) ) {
+			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 			}
 
@@ -357,7 +357,7 @@ class Salesforce {
 				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
@@ -374,7 +374,7 @@ class Salesforce {
 				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
@@ -391,7 +391,7 @@ class Salesforce {
 				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} else if ( class_exists( 'Salesforce_Logging' ) ) {
+				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 				$logging->setup(

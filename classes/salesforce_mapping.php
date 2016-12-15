@@ -301,13 +301,13 @@ class Salesforce_Mapping {
         $insert = $this->wpdb->insert( $this->object_map_table, $data );
         if ( $insert === 1 ) {
             return $this->wpdb->insert_id;
-        } else if ( strpos( $this->wpdb->last_error, 'Duplicate entry' ) !== FALSE ) {
+        } elseif ( strpos( $this->wpdb->last_error, 'Duplicate entry' ) !== FALSE ) {
             $mapping = $this->load_by_salesforce( $posted['salesforce_id'] );
             $id = $mapping['id'];
             $status = 'error';
             if ( isset( $this->logging ) ) {
                 $logging = $this->logging;
-            } else if ( class_exists( 'Salesforce_Logging' ) ) {
+            } elseif ( class_exists( 'Salesforce_Logging' ) ) {
                 $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
             }
             $logging->setup(
@@ -474,7 +474,7 @@ class Salesforce_Mapping {
             // create log entry for multiple maps
             if ( isset( $this->logging ) ) {
                 $logging = $this->logging;
-            } else if ( class_exists( 'Salesforce_Logging' ) ) {
+            } elseif ( class_exists( 'Salesforce_Logging' ) ) {
                 $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
             }
             $logging->setup(
@@ -562,7 +562,7 @@ class Salesforce_Mapping {
                     );
                 }
 
-            } else if ( in_array( $trigger, $salesforce_haystack ) ) {
+            } elseif ( in_array( $trigger, $salesforce_haystack ) ) {
 
                 // a salesforce event caused this
                 // make an array because we need to store the methods for each field as well

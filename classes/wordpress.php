@@ -883,7 +883,7 @@ class Wordpress {
         // create log entry for lack of a user id
         if ( isset( $this->logging ) ) {
             $logging = $this->logging;
-        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+        } elseif ( class_exists( 'Salesforce_Logging' ) ) {
             $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
         }
         $logging->setup(
@@ -1147,7 +1147,7 @@ class Wordpress {
         // create log entry for lack of a post id
         if ( isset( $this->logging ) ) {
             $logging = $this->logging;
-        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+        } elseif ( class_exists( 'Salesforce_Logging' ) ) {
             $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
         }
         $logging->setup(
@@ -1412,7 +1412,7 @@ class Wordpress {
         // create log entry for lack of an attachment id
         if ( isset( $this->logging ) ) {
             $logging = $this->logging;
-        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+        } elseif ( class_exists( 'Salesforce_Logging' ) ) {
             $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
         }
         $logging->setup(
@@ -1680,7 +1680,7 @@ class Wordpress {
         // create log entry for lack of a term id
         if ( isset( $this->logging ) ) {
             $logging = $this->logging;
-        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+        } elseif ( class_exists( 'Salesforce_Logging' ) ) {
             $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
         }
         $logging->setup(
@@ -1907,12 +1907,12 @@ class Wordpress {
                     'method_modify' => $method,
                     'method_read' => $methods['method_read']
                 );
-            } else if ( count( $comments ) > 1 ) {
+            } elseif ( count( $comments ) > 1 ) {
                 $status = 'notice';
                 // create log entry for multiple matches
                 if ( isset( $this->logging ) ) {
                     $logging = $this->logging;
-                } else if ( class_exists( 'Salesforce_Logging' ) ) {
+                } elseif ( class_exists( 'Salesforce_Logging' ) ) {
                     $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
                 }
                 $logging->setup(
@@ -1952,7 +1952,7 @@ class Wordpress {
         // create log entry for lack of a comment id
         if ( isset( $this->logging ) ) {
             $logging = $this->logging;
-        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+        } elseif ( class_exists( 'Salesforce_Logging' ) ) {
             $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
         }
         $logging->setup(

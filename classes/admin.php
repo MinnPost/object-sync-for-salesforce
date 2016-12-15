@@ -1075,7 +1075,7 @@ class Wordpress_Salesforce_Admin {
             $checked = '';
             if ( is_array( $options ) && in_array( $key, $options ) ) {
                 $checked = 'checked';
-            } else if ( is_array( $options ) && empty( $options ) ) {
+            } elseif ( is_array( $options ) && empty( $options ) ) {
                 if ( isset( $value['default'] ) && $value['default'] === TRUE ) {
                     $checked = 'checked';
                 }
@@ -1230,7 +1230,7 @@ class Wordpress_Salesforce_Admin {
             $mapping = $this->mappings->load_by_wordpress( 'user', $user->ID );
             if ( isset( $mapping['id'] ) && !isset($_GET['edit_salesforce_mapping']) ) {
                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
-            } else if ( isset($_GET['edit_salesforce_mapping']) && urlencode( $_GET['edit_salesforce_mapping'] ) === 'true' ) {
+            } elseif ( isset($_GET['edit_salesforce_mapping']) && urlencode( $_GET['edit_salesforce_mapping'] ) === 'true' ) {
                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
             } else {
                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
@@ -1249,7 +1249,7 @@ class Wordpress_Salesforce_Admin {
                 $mapping_object = $this->mappings->get_object_maps( array( 'wordpress_id' => $user_id, 'wordpress_object' => 'user' ) );
                 $mapping_object['salesforce_id'] = $_POST['salesforce_id'];
                 $result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
-            } else if ( isset( $_POST['salesforce_create_mapped_user'] ) && urlencode( $_POST['salesforce_create_mapped_user'] === '1' ) ) {
+            } elseif ( isset( $_POST['salesforce_create_mapped_user'] ) && urlencode( $_POST['salesforce_create_mapped_user'] === '1' ) ) {
                 $mapping_object = $this->create_object_map( $user_id, 'user', $_POST['salesforce_id'] );
             }
         }
