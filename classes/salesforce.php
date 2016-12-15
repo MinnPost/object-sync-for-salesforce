@@ -124,7 +124,6 @@ class Salesforce {
 	/**
 	* Determine if this SF instance is fully configured.
 	*
-	* @TODO: Consider making a test API call.
 	*/
 	public function is_authorized() {
 		return !empty( $this->consumer_key ) && !empty( $this->consumer_secret ) && $this->get_refresh_token();
