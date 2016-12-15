@@ -44,17 +44,17 @@ class Admin_Notice {
 
         // class for the notice to use
         $class = '';
-        if ( $this->type !== '' ) {
+        if ( '' !== $this->type ) {
             $class = ' notice-' . $this->type;
         }
 
         $dismissible = '';
-        if ( $this->dismissible === TRUE ) {
+        if ( TRUE === $this->dismissible ) {
             $dismissible = ' is-dismissible';
         }
 
         // template for notice has a default
-        if ( $this->template === '' ) {
+        if ( '' === $this->template ) {
             $template = plugin_dir_path( __FILE__ ) . '/../templates/admin/notice.php';
         } else {
             $template = $this->template;
