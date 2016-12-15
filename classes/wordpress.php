@@ -151,7 +151,7 @@ class Wordpress {
         } elseif ( $object_type === 'comment' ) {
         	$object_table_structure = array(
 				'object_name' => 'comment',
-                'content_methods' => array( 'create' => 'wp_insert_comment', 'read' => 'get_comments', 'update' => 'wp_update_comment', 'delete' => 'wp_delete_comment' ),
+                'content_methods' => array( 'create' => 'wp_new_comment', 'read' => 'get_comments', 'update' => 'wp_update_comment', 'delete' => 'wp_delete_comment' ),
                 'meta_methods' => array( 'create' => 'add_comment_meta', 'read' => 'get_comment_meta', 'update' => 'update_comment_meta', 'delete' => 'delete_comment_metadata' ),
 				'content_table' => $this->wpdb->prefix . 'comments',
 				'id_field' => 'comment_ID',
@@ -1796,9 +1796,7 @@ class Wordpress {
     */
     private function comment_create( $params, $id_field = 'comment_ID' ) {
         foreach ( $params as $key => $value ) {
-            // tried using wp_new_comment here but it wouldn't complete - even trying to log its result did nothing
-            // todo: maybe try to fix this. the sanitizing is nice, although maybe not essential since this stuff is already coming from salesforce
-            if ( $value['method_modify'] === 'wp_insert_comment' ) {
+            if ( $value['method_modify'] === 'wp_new_comment' ) {
                 $content[$key] = $value['value'];
                 unset( $params[$key] );
             }
