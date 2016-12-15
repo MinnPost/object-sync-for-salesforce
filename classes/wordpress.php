@@ -724,7 +724,7 @@ class Wordpress {
         if ( NULL == username_exists( $username ) ) {
 
             // Create the user
-            // todo: by default wordpress sends a password reset link so this password doesn't get used. this is probably fine though?
+            // wordpress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email
             $params['user_pass'] = array(
                 'value' => wp_generate_password( 12, FALSE ),
                 'method_modify' => 'wp_insert_user',
