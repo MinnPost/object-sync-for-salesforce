@@ -1804,6 +1804,60 @@ class Wordpress {
             }
         }
 
+        // fields that are required for comments, even if they are empty values
+        if ( !isset( $content['comment_author'] ) ) {
+            $content['comment_author'] = '';
+        }
+        if ( !isset( $content['comment_author_IP'] ) ) {
+            $content['comment_author_IP'] = '';
+        }
+        if ( !isset( $content['comment_author_email'] ) ) {
+            $content['comment_author_email'] = '';
+        }
+        if ( !isset( $content['comment_author_url'] ) ) {
+            $content['comment_author_url'] = '';
+        }
+        if ( !isset( $content['comment_type'] ) ) {
+            $content['comment_type'] = '';
+        }
+
+        // here, we copy some code from wp_new_comment since that method doesn't work in this case
+        if ( isset( $content['user_ID'] ) ) {
+            $content['user_id'] = $content['user_ID'] = (int) $content['user_ID'];
+        } else {
+            $content['user_id'] = 0;
+        }
+
+        $prefiltered_user_id = ( isset( $content['user_id'] ) ) ? (int) $content['user_id'] : 0;
+
+        $content = apply_filters( 'preprocess_comment', $content );
+
+        if ( isset( $content['comment_post_ID'] ) ) {
+            $content['comment_post_ID'] = (int) $content['comment_post_ID'];
+        }
+        if ( isset( $content['user_ID'] ) && $prefiltered_user_id !== (int) $content['user_ID'] ) {
+            $content['user_id'] = $content['user_ID'] = (int) $content['user_ID'];
+        } elseif ( isset( $content['user_id'] ) ) {
+            $content['user_id'] = (int) $content['user_id'];
+        }
+
+        $content['comment_parent'] = isset( $content['comment_parent'] ) ? absint( $content['comment_parent'] ) : 0;
+        $parent_status = ( 0 < $content['comment_parent'] ) ? wp_get_comment_status( $content['comment_parent'] ) : '';
+        $content['comment_parent'] = ( 'approved' == $parent_status || 'unapproved' == $parent_status ) ? $content['comment_parent'] : 0;
+
+        if ( !isset( $content['comment_date'] ) ) {
+            $content['comment_date'] = current_time( 'mysql' );
+        }
+        if ( !isset( $content['comment_date_gmt'] ) ) {
+            $content['comment_date_gmt'] = current_time( 'mysql' );
+        }
+
+        $content = wp_filter_comment($content);
+
+        if ( !isset( $content['comment_approved'] ) ) {
+            $content['comment_approved'] = wp_allow_comment($content);
+        }
+
         $comment_id = wp_insert_comment( $content );
 
         if ( is_wp_error( $comment_id ) ) {
@@ -1825,6 +1879,20 @@ class Wordpress {
             do_action( 'salesforce_rest_api_set_more_comment_data', $comment_id, $params );
 
         }
+
+        do_action( 'comment_post', $comment_id, $content['comment_approved'] );
+
+        if ( 'spam' !== $content['comment_approved'] ) { // If it's spam save it silently for later crunching
+            if ( '0' == $content['comment_approved'] ) {
+                wp_notify_moderator( $comment_id );
+            }
+            // wp_notify_postauthor() checks if notifying the author of their own comment.
+            // By default, it won't, but filters can override this.
+            if ( get_option( 'comments_notify' ) && $content['comment_approved'] ) {
+                wp_notify_postauthor( $comment_id );
+            }
+        }
+        // end of core stuff copied from wp_new_comment
 
         if ( is_wp_error( $comment_id ) ) {
             $success = FALSE;
