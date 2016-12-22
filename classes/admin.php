@@ -1190,10 +1190,6 @@ class Wordpress_Salesforce_Admin {
         $contacts_andorbut = $contacts['from_cache'] === TRUE ? 'and' : 'but';
         $contacts_is_redo = $contacts['is_redo'] === TRUE ? '' : 'not ';
 
-
-        $report = $sfapi->analytics_run( 'reports', '00OF0000006ZU9e', 'instances', 'GET' );
-        print_r($report);
-
         require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/demo.php' );
 
     }

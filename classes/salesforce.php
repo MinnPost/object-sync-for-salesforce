@@ -853,10 +853,6 @@ class Salesforce {
 		return $this->api_call( "sobjects/{$name}/{$id}", array(), 'GET' );
 	}
 
-	public function analytics_run( $name, $id, $return, $method = 'GET', $options = array() ) {
-		return $this->api_call( "analytics/{$name}/{$id}/{$return}", $options, $method );	
-	}
-
 	/**
 	* Return a full loaded Salesforce object from External ID.
 	*
