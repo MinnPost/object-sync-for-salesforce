@@ -1,9 +1,15 @@
 <?php
+/**
+ * @file
+ */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * Create default WordPress admin functionality for Salesforce to configure the plugin.
+ */
 class Wordpress_Salesforce_Admin {
 
     protected $wpdb;
@@ -18,7 +24,7 @@ class Wordpress_Salesforce_Admin {
     protected $schedulable_classes;
 
     /**
-    * Create default WordPress admin functionality for Salesforce
+    * Constructor which sets up admin pages
     *
     * @param object $wpdb
     * @param string $version
@@ -27,6 +33,8 @@ class Wordpress_Salesforce_Admin {
     * @param object $wordpress
     * @param object $salesforce
     * @param object $mappings
+    * @param object $push
+    * @param object $pull
     * @param object $logging
     * @param array $schedulable_classes
     * @throws \Exception

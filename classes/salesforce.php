@@ -1,7 +1,6 @@
 <?php
 /**
  * @file
- * Objects, properties, and methods to communicate with the Salesforce REST API
  */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
@@ -9,14 +8,14 @@ if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
 }
 
 /**
- * Ability to authorize and communicate with the Salesforce REST API.
+ * Ability to authorize and communicate with the Salesforce REST API. This class can make read and write calls to Salesforce, and also cache the responses in WordPress
  */
 class Salesforce {
 
 	public $response;
 
 	/**
-	* Constructor which initializes the consumer.
+	* Constructor which initializes the Salesforce API.
 	*
 	* @param string $consumer_key
 	*   Salesforce key to connect to your Salesforce instance.

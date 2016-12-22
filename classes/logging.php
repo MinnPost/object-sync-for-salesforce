@@ -1,9 +1,15 @@
 <?php
+/**
+ * @file
+ */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * Log events based on plugin settings
+ */
 class Salesforce_Logging extends WP_Logging {
 
 	protected $wpdb;
@@ -15,7 +21,7 @@ class Salesforce_Logging extends WP_Logging {
 
 
     /**
-    * Functionality for using the WP_Logging class
+    * Constructor which sets content type and pruning
     *
     * @param object $wpdb
     * @param string $version
@@ -37,7 +43,7 @@ class Salesforce_Logging extends WP_Logging {
     }
 
     /**
-    * start
+    * Start. This creates a schedule for pruning logs, and also the custom content type
     *
     * @throws \Exception
     */

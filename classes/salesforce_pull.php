@@ -1,9 +1,15 @@
 <?php
+/**
+ * @file
+ */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
 	die();
 }
 
+/**
+ * Pull data from Salesforce into WordPress
+ */
 class Salesforce_Pull {
 
 	protected $wpdb;
@@ -21,7 +27,7 @@ class Salesforce_Pull {
 	public $schedule_name; // allow for naming the queue in case there are multiple queues
 
 	/**
-	* Functionality for pulling Salesforce objects into WordPress
+	* Constructor which sets up pull schedule
 	*
 	* @param object $wpdb
 	* @param string $version

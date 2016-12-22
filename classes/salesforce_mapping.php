@@ -1,9 +1,15 @@
 <?php
+/**
+ * @file
+ */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * Map objects and records between WordPress and Salesforce
+ */
 class Salesforce_Mapping {
 
 	protected $wpdb;
@@ -41,7 +47,7 @@ class Salesforce_Mapping {
     public $status_error;
 
     /**
-    * Functionality for mapping Salesforce and WordPress objects
+    * Constructor which sets up links between the systems
     *
     * @param object $wpdb
     * @param string $version

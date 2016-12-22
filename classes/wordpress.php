@@ -7,6 +7,9 @@ if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * Pull data from Salesforce into WordPress
+ */
 class Wordpress {
 
 	protected $wpdb;
@@ -16,7 +19,7 @@ class Wordpress {
     protected $logging;
 
     /**
-    * Objects, properties, and methods to get core WordPress data for the plugin
+    * Constructor which discovers objects in WordPress
     *
     * @param object $wpdb
     * @param string $version

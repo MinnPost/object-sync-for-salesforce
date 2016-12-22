@@ -1,9 +1,15 @@
 <?php
+/**
+ * @file
+ */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * Schedule events in a queue in WordPress
+ */
 class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 
 	protected $wpdb;
@@ -17,7 +23,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     protected $logging;
 
 	/**
-    * Functionality for syncing WordPress objects with Salesforce
+    * Constructor which sets up schedule and handler for when schedule runs
     *
     * @param object $wpdb
     * @param string $version

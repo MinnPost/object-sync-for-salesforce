@@ -1,18 +1,26 @@
 <?php
+/**
+ * @file
+ */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * What to do when the plugin is deactivated
+ */
 class Wordpress_Salesforce_Deactivate {
 
     protected $wpdb;
     protected $version;
 
     /**
-    * What to do when the plugin is deactivated
+    * Constructor which sets up deactivate hooks
     * @param object $wpdb
     * @param string $version
+    * @param string $text_domain
+    * @param array $schedulable_classes
     *
     */
     public function __construct( $wpdb, $version, $text_domain, $schedulable_classes ) {

@@ -1,9 +1,15 @@
 <?php
+/**
+ * @file
+ */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * What to do when the plugin is activated
+ */
 class Wordpress_Salesforce_Activate {
 
     protected $wpdb;
@@ -11,7 +17,7 @@ class Wordpress_Salesforce_Activate {
     protected $installed_version;
 
     /**
-    * What to do when the plugin is activated
+    * Constructor which sets up activate hooks
     *
     * @param object $wpdb
     * @param string $version

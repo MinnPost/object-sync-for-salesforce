@@ -1,9 +1,15 @@
 <?php
+/**
+ * @file
+ */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * Generate notices in the WordPress admin
+ */
 class Admin_Notice {
 
     protected $condition;
@@ -14,7 +20,7 @@ class Admin_Notice {
     protected $template;
 
     /**
-    * Make an admin notice
+    * Constructor which sets up the admin_notices hook for rendering
     *
     * @param mixed $condition
     * @param string $message

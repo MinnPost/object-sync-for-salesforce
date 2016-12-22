@@ -1,9 +1,15 @@
 <?php
+/**
+ * @file
+ */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * Push data from WordPress into Salesforce
+ */
 class Salesforce_Push {
 
 	protected $wpdb;
@@ -21,7 +27,7 @@ class Salesforce_Push {
 	public $schedule_name; // allow for naming the queue in case there are multiple queues
 
 	/**
-	* Functionality for pushing WordPress objects into Salesforce
+	* Constructor which sets up push schedule
 	*
 	* @param object $wpdb
 	* @param string $version
