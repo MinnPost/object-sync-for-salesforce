@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Salesforce_Push</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+		</div>
+
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
+				<li><a href="class-Salesforce.html">Salesforce</a></li>
+				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
+				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
+				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
+				<li class="active"><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
+				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
+				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
+				<li><a href="class-Wordpress.html">Wordpress</a></li>
+				<li><a href="class-Wordpress_Salesforce_Activate.html">Wordpress_Salesforce_Activate</a></li>
+				<li><a href="class-Wordpress_Salesforce_Admin.html">Wordpress_Salesforce_Admin</a></li>
+				<li><a href="class-Wordpress_Salesforce_Deactivate.html">Wordpress_Salesforce_Deactivate</a></li>
+				<li><a href="class-Wordpress_Salesforce_Schedule.html">Wordpress_Salesforce_Schedule</a></li>
+			</ul>
+
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-SalesforceException.html">SalesforceException</a></li>
+				<li><a href="class-SalesforcePullException.html">SalesforcePullException</a></li>
+				<li><a href="class-WordpressException.html">WordpressException</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Salesforce_Push</h1>
+
+
+	<div class="description">
+	<p>Push data from WordPress into Salesforce</p>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		
+
+			<b>Located at</b> <a href="source-class-Salesforce_Push.html#10-983" title="Go to source code">salesforce_push.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Salesforce_Push.html#29-58" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+
+		<div class="description short">
+			<p>Constructor which sets up push schedule</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Constructor which sets up push schedule</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$wpdb</var></dt>
+					<dd></dd>
+					<dt><var>$version</var></dt>
+					<dd></dd>
+					<dt><var>$login_credentials</var></dt>
+					<dd></dd>
+					<dt><var>$text_domain</var></dt>
+					<dd></dd>
+					<dt><var>$wordpress</var></dt>
+					<dd></dd>
+					<dt><var>$salesforce</var></dt>
+					<dd></dd>
+					<dt><var>$mappings</var></dt>
+					<dd></dd>
+					<dt><var>$logging</var></dt>
+					<dd></dd>
+					<dt><var>$schedulable_classes</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="manual_object_update" id="_manual_object_update">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_manual_object_update">#</a>
+		<code><a href="source-class-Salesforce_Push.html#95-104" title="Go to source code">manual_object_update</a>( <span>array <var>$object</var></span>, <span>string <var>$type</var></span> )</code>
+
+		<div class="description short">
+			<p>Method for ajax hooks to call for pushing manually</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Method for ajax hooks to call for pushing manually</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$object</var></dt>
+					<dd></dd>
+					<dt><var>$type</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="add_user" id="_add_user">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_add_user">#</a>
+		<code><a href="source-class-Salesforce_Push.html#106-114" title="Go to source code">add_user</a>( <span>string <var>$user_id</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for adding a user</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for adding a user</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$user_id</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="edit_user" id="_edit_user">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_edit_user">#</a>
+		<code><a href="source-class-Salesforce_Push.html#116-125" title="Go to source code">edit_user</a>( <span>string <var>$user_id</var></span>, <span>object <var>$old_user_data</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for editing a user</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for editing a user</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$user_id</var></dt>
+					<dd></dd>
+					<dt><var>$old_user_data</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="delete_user" id="_delete_user">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_delete_user">#</a>
+		<code><a href="source-class-Salesforce_Push.html#127-135" title="Go to source code">delete_user</a>( <span>string <var>$user_id</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for deleting a user</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for deleting a user</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$user_id</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="post_actions" id="_post_actions">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_post_actions">#</a>
+		<code><a href="source-class-Salesforce_Push.html#137-173" title="Go to source code">post_actions</a>( <span>string <var>$post_id</var></span>, <span>object <var>$post</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for posts of any type
+This can handle create, update, and delete actions</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for posts of any type
+This can handle create, update, and delete actions</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$post_id</var></dt>
+					<dd></dd>
+					<dt><var>$post</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="add_attachment" id="_add_attachment">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_add_attachment">#</a>
+		<code><a href="source-class-Salesforce_Push.html#175-183" title="Go to source code">add_attachment</a>( <span>string <var>$post_id</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for adding an attachment</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for adding an attachment</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$post_id</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="edit_attachment" id="_edit_attachment">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_edit_attachment">#</a>
+		<code><a href="source-class-Salesforce_Push.html#185-193" title="Go to source code">edit_attachment</a>( <span>string <var>$post_id</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for editing an attachment</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for editing an attachment</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$post_id</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="delete_attachment" id="_delete_attachment">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_delete_attachment">#</a>
+		<code><a href="source-class-Salesforce_Push.html#195-203" title="Go to source code">delete_attachment</a>( <span>string <var>$post_id</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for editing an attachment</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for editing an attachment</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$post_id</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="add_term" id="_add_term">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_add_term">#</a>
+		<code><a href="source-class-Salesforce_Push.html#205-215" title="Go to source code">add_term</a>( <span>string <var>$term_id</var></span>, <span>string <var>$tt_id</var></span>, <span>string <var>$taxonomy</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for adding a term</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for adding a term</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$term_id</var></dt>
+					<dd></dd>
+					<dt><var>$tt_id</var></dt>
+					<dd></dd>
+					<dt><var>$taxonomy</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="edit_term" id="_edit_term">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_edit_term">#</a>
+		<code><a href="source-class-Salesforce_Push.html#217-226" title="Go to source code">edit_term</a>( <span>string <var>$term_id</var></span>, <span>string <var>$taxonomy</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for editing a term</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for editing a term</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$term_id</var></dt>
+					<dd></dd>
+					<dt><var>$taxonomy</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="delete_term" id="_delete_term">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_delete_term">#</a>
+		<code><a href="source-class-Salesforce_Push.html#228-240" title="Go to source code">delete_term</a>( <span>integer <var>$term</var></span>, <span>integer <var>$tt_id</var></span>, <span>string <var>$taxonomy</var></span>, <span>object <var>$deleted_term</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for deleting a term</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for deleting a term</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$term</var></dt>
+					<dd>(id)</dd>
+					<dt><var>$tt_id</var></dt>
+					<dd>$term_taxonomy_id</dd>
+					<dt><var>$taxonomy</var></dt>
+					<dd>(slug)</dd>
+					<dt><var>$deleted_term</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="add_comment" id="_add_comment">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_add_comment">#</a>
+		<code><a href="source-class-Salesforce_Push.html#242-252" title="Go to source code">add_comment</a>( <span>string <var>$comment_id</var></span>, <span>integer|string <var>$comment_approved</var></span>, <span>array <var>$commentdata</var> = <span class="php-keyword1">array</span>() </span> )</code>
+
+		<div class="description short">
+			<p>Callback method for adding a comment</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for adding a comment</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$comment_id</var></dt>
+					<dd></dd>
+					<dt><var>$comment_approved</var></dt>
+					<dd>comment_approved</dd>
+					<dt><var>$commentdata</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="edit_comment" id="_edit_comment">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_edit_comment">#</a>
+		<code><a href="source-class-Salesforce_Push.html#254-262" title="Go to source code">edit_comment</a>( <span>string <var>$comment_id</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for editing a comment</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for editing a comment</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$comment_id</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="delete_comment" id="_delete_comment">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_delete_comment">#</a>
+		<code><a href="source-class-Salesforce_Push.html#264-272" title="Go to source code">delete_comment</a>( <span>string <var>$comment_id</var></span> )</code>
+
+		<div class="description short">
+			<p>Callback method for deleting a comment</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Callback method for deleting a comment</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$comment_id</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="salesforce_push_sync_rest" id="_salesforce_push_sync_rest">
+
+		<td class="attributes"><code>
+			 public 
+
+			true
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_salesforce_push_sync_rest">#</a>
+		<code><a href="source-class-Salesforce_Push.html#427-873" title="Go to source code">salesforce_push_sync_rest</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
+
+		<div class="description short">
+			<p>Sync WordPress objects and Salesforce objects using the REST API.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Sync WordPress objects and Salesforce objects using the REST API.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$object_type</var></dt>
+					<dd>Type of WordPress object.</dd>
+					<dt><var>$object</var></dt>
+					<dd>The object object.</dd>
+					<dt><var>$mapping</var></dt>
+					<dd>Salesforce mapping object.</dd>
+					<dt><var>$sf_sync_trigger</var></dt>
+					<dd>Trigger for this sync.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					true<br>or exit the method
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="salesforce_push_process_soap_results" id="_salesforce_push_process_soap_results">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_salesforce_push_process_soap_results">#</a>
+		<code><a href="source-class-Salesforce_Push.html#909-981" title="Go to source code">salesforce_push_process_soap_results</a>( <span>string <var>$op</var></span>, <span>array <var>$results</var></span>, <span>array <var>$synced_entities</var></span> )</code>
+
+		<div class="description short">
+			<p>Process SOAP API batch results.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Process SOAP API batch results.</p>
+
+<p>Create or update mapped object entities and log results.
+todo: fix this for wordpress if we decide to support soap</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$op</var></dt>
+					<dd>Operation performed.</dd>
+					<dt><var>$results</var></dt>
+					<dd>Array of result objects provided by Salesforce.</dd>
+					<dt><var>$synced_entities</var></dt>
+					<dd>Entities that were synced with Salesforce.</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="wpdb" id="$wpdb">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Push.html#15" title="Go to source code"><var>$wpdb</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$wpdb" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="version" id="$version">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Push.html#16" title="Go to source code"><var>$version</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$version" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="login_credentials" id="$login_credentials">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Push.html#17" title="Go to source code"><var>$login_credentials</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$login_credentials" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="text_domain" id="$text_domain">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Push.html#18" title="Go to source code"><var>$text_domain</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$text_domain" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="salesforce" id="$salesforce">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Push.html#19" title="Go to source code"><var>$salesforce</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$salesforce" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="mappings" id="$mappings">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Push.html#20" title="Go to source code"><var>$mappings</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$mappings" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="logging" id="$logging">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Push.html#21" title="Go to source code"><var>$logging</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$logging" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="schedulable_classes" id="$schedulable_classes">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Push.html#22" title="Go to source code"><var>$schedulable_classes</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$schedulable_classes" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="schedule_name" id="$schedule_name">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Push.html#24-27" title="Go to source code"><var>$schedule_name</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$schedule_name" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>
