@@ -87,7 +87,7 @@ class Salesforce_Rest_API {
 	}
 
 	/**
-	 * This is our constructor
+	 * Constructor that sets up the parameters to pass to all the other classes, and the methods that call the other classes
 	 *
 	 * @return void
 	 */
