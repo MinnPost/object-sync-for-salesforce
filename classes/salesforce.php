@@ -852,8 +852,28 @@ class Salesforce {
 		return $this->api_call( "sobjects/{$name}/{$id}", array(), 'GET' );
 	}
 
-	public function analytics_run( $name, $id, $return, $method = 'GET', $options = array() ) {
-		return $this->api_call( "analytics/{$name}/{$id}/{$return}", $options, $method );	
+	/**
+	* Make a call to the Analytics API
+	*
+	* @param string $name
+	*   Object type name, E.g., Report
+	* @param string $id
+	*   Salesforce id of the object.
+	* @param string $route
+	*   What comes after the ID? E.g. instances, ?includeDetails=True
+	* @param array $params
+	*   Params to put with the request
+	* @param string $method
+	*   GET or POST
+	*
+	* @return object
+	*   Object of the requested Salesforce object.
+	*
+	* part of core API calls
+	*/
+	public function analytics_api( $name, $id, $route = '', $params = array(), $method = 'GET' ) {
+		$options = array( 'cache' => FALSE );
+		return $this->api_call( "analytics/{$name}/{$id}/{$route}", $params, $method, $options );	
 	}
 
 	/**
