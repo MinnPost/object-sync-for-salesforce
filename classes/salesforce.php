@@ -229,7 +229,6 @@ class Salesforce {
 		}
 		$headers = array(
 		  'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
-		  //'Content-type' => 'application/json',
 		  'Accept-Encoding' => 'Accept-Encoding: gzip, deflate'
 		);
 		if ( $method === 'POST' || $method === 'PATCH' ) {
