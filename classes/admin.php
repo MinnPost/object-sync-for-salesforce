@@ -136,7 +136,7 @@ class Wordpress_Salesforce_Admin {
                         } elseif ( $this->salesforce['is_authorized'] === TRUE ) {
                             require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/authorized.php' );
                             $this->demo( $this->salesforce['sfapi'] );
-                        } elseif ( is_object ( $this->salesforce['sfapi'] === TRUE ) && isset( $consumer_key ) && isset( $consumer_secret ) ) {
+                        } elseif ( is_object ( $this->salesforce['sfapi'] ) === TRUE && isset( $consumer_key ) && isset( $consumer_secret ) ) {
                             echo '<p><a class="button button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
                         } else {
                             $message = __( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=settings' ) . '">Settings</a> tab to add them.', $this->text_domain );
@@ -312,6 +312,32 @@ class Wordpress_Salesforce_Admin {
                     'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_LOGIN_BASE_URL'
+                ),
+            ),
+            'authorize_url_path' => array(
+                'title' => 'Authorize URL Path',
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'text',
+                    'validate' => 'sanitize_text',
+                    'desc' => 'For most Salesforce installs, this should not be changed.',
+                    'constant' => 'SALESFORCE_AUTHORIZE_URL_PATH',
+                    'default' => '/services/oauth2/authorize'
+                ),
+            ),
+            'token_url_path' => array(
+                'title' => 'Token URL Path',
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'text',
+                    'validate' => 'sanitize_text',
+                    'desc' => 'For most Salesforce installs, this should not be changed.',
+                    'constant' => 'SALESFORCE_TOKEN_URL_PATH',
+                    'default' => '/services/oauth2/token'
                 ),
             ),
             'api_version' => array(
