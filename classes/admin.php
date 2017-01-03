@@ -136,7 +136,7 @@ class Wordpress_Salesforce_Admin {
                         } elseif ( $this->salesforce['is_authorized'] === TRUE ) {
                             require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/authorized.php' );
                             $this->demo( $this->salesforce['sfapi'] );
-                        } elseif ( is_object ( $this->salesforce['sfapi'] === TRUE ) && isset( $consumer_key ) && isset( $consumer_secret ) ) {
+                        } elseif ( is_object ( $this->salesforce['sfapi'] ) === TRUE && isset( $consumer_key ) && isset( $consumer_secret ) ) {
                             echo '<p><a class="button button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
                         } else {
                             $message = __( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=settings' ) . '">Settings</a> tab to add them.', $this->text_domain );
