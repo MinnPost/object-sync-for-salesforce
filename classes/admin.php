@@ -1191,8 +1191,47 @@ class Wordpress_Salesforce_Admin {
         $contacts_is_redo = $contacts['is_redo'] === TRUE ? '' : 'not ';
 
 
-        $report = $sfapi->analytics_run( 'reports', '00OF0000006ZU9e', 'instances', 'GET' );
-        print_r($report);
+        $id = $sfapi->convert_id( '00OF0000006ZU9e' );
+
+        $result = $sfapi->analytics_api(
+            'reports',
+            $id,
+            '?includeDetails=true',
+            array(),
+            'GET'
+        );
+
+        // check for $result['data']['factMap']
+
+        if ( !isset( $result['data']['attributes']['status'] ) || $result['data']['attributes']['status'] !== 'Success' ) {
+            echo '<p>re run the report here I think</p>';
+            $params = array('reportMetadata' => $result['data']['reportMetadata']);
+            $report = $sfapi->analytics_api(
+                'reports',
+                $id,
+                'instances',
+                $params,
+                'POST'
+            );
+            $instance_id = $report['data']['id'];
+            $result = $sfapi->analytics_api(
+                'reports',
+                $id,
+                'instances/' . $instance_id,
+                array(),
+                'GET'
+            );
+        } 
+
+        if ( $result['data']['attributes']['status'] === 'Success' ) {
+            $factmap = $result['data']['factMap'];
+            foreach ( $factmap as $array ) {
+                if ( isset( $array['aggregates'] ) ) {
+                    $value = $array['aggregates'][1]['value'];
+                    break;
+                }
+            }
+        }
 
         require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/demo.php' );
 
