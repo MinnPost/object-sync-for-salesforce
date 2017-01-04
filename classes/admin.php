@@ -1216,20 +1216,6 @@ class Wordpress_Salesforce_Admin {
         $contacts_andorbut = $contacts['from_cache'] === TRUE ? 'and' : 'but';
         $contacts_is_redo = $contacts['is_redo'] === TRUE ? '' : 'not ';
 
-        // this is a report id
-        $id = '00OF0000006ZU9e';
-        $result = $sfapi->run_analytics_report( $id, TRUE );
-
-        if ( $result['data']['attributes']['status'] === 'Success' ) {
-            $factmap = $result['data']['factMap'];
-            foreach ( $factmap as $array ) {
-                if ( isset( $array['aggregates'] ) ) {
-                    $value = $array['aggregates'][1]['value'];
-                    break;
-                }
-            }
-        }
-
         require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/demo.php' );
 
     }
