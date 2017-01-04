@@ -872,8 +872,7 @@ class Salesforce {
 	* part of core API calls
 	*/
 	public function analytics_api( $name, $id, $route = '', $params = array(), $method = 'GET' ) {
-		$options = array( 'cache' => FALSE );
-		return $this->api_call( "analytics/{$name}/{$id}/{$route}", $params, $method, $options );	
+		return $this->api_call( "analytics/{$name}/{$id}/{$route}", $params, $method );	
 	}
 
 	/**
