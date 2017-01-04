@@ -876,6 +876,61 @@ class Salesforce {
 	}
 
 	/**
+	* Run a specific Analytics report
+	*
+	* @param string $id
+	*   Salesforce id of the object.
+	* @param bool $async
+	*   Whether the report is asynchronous
+	* @param array $params
+	*   Params to put with the request
+	* @param string $method
+	*   GET or POST
+	*
+	* @return object
+	*   Object of the requested Salesforce object.
+	*
+	* part of core API calls
+	*/
+	public function run_analytics_report( $id, $async = TRUE, $params = array(), $method = 'GET', $cache_expiration = '' ) {
+		$id = $this->convert_id( $id );
+        $report_url = 'analytics/reports/' . $id . '/' . 'instances';
+        $instance_id = $this->wordpress->cache_get( $report_url, '' );
+
+        // there is no stored instance id or this is synchronous; retrieve the results for that instance
+        if ( FALSE === $async || FALSE === $instance_id ) {
+
+        	$result = $this->analytics_api(
+                'reports',
+                $id,
+                '?includeDetails=true',
+                array(),
+                'GET'
+            );
+
+            $params = array('reportMetadata' => $result['data']['reportMetadata']);
+            $report = $this->analytics_api(
+                'reports',
+                $id,
+                'instances',
+                $params,
+                'POST'
+            );
+            $instance_id = $report['data']['id'];
+
+            // cache the instance id so we can get the report results if they are applicable
+            if ( $cache_expiration === '' ) {
+            	$cache_expiration = $this->cache_expiration();
+            }
+            $this->wordpress->cache_set( $report_url, '', $instance_id, $cache_expiration );
+
+        }
+
+        return $this->api_call( $report_url . "/{$instance_id}", $params, $method );	
+
+	}
+
+	/**
 	* Return a full loaded Salesforce object from External ID.
 	*
 	* @param string $name

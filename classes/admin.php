@@ -1216,38 +1216,9 @@ class Wordpress_Salesforce_Admin {
         $contacts_andorbut = $contacts['from_cache'] === TRUE ? 'and' : 'but';
         $contacts_is_redo = $contacts['is_redo'] === TRUE ? '' : 'not ';
 
-
-        $id = $sfapi->convert_id( '00OF0000006ZU9e' );
-
-        $result = $sfapi->analytics_api(
-            'reports',
-            $id,
-            '?includeDetails=true',
-            array(),
-            'GET'
-        );
-
-        // check for $result['data']['factMap']
-
-        if ( !isset( $result['data']['attributes']['status'] ) || $result['data']['attributes']['status'] !== 'Success' ) {
-            echo '<p>re run the report here I think</p>';
-            $params = array('reportMetadata' => $result['data']['reportMetadata']);
-            $report = $sfapi->analytics_api(
-                'reports',
-                $id,
-                'instances',
-                $params,
-                'POST'
-            );
-            $instance_id = $report['data']['id'];
-            $result = $sfapi->analytics_api(
-                'reports',
-                $id,
-                'instances/' . $instance_id,
-                array(),
-                'GET'
-            );
-        } 
+        // this is a report id
+        $id = '00OF0000006ZU9e';
+        $result = $sfapi->run_analytics_report( $id, TRUE );
 
         if ( $result['data']['attributes']['status'] === 'Success' ) {
             $factmap = $result['data']['factMap'];
