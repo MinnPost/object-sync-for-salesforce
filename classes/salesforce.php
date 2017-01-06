@@ -163,6 +163,12 @@ class Salesforce {
 			$this->refresh_token();
 		}
 		$this->response = $this->api_http_request( $path, $params, $method, $options, $type );
+
+		// analytic calls that are expired return 404s for some absurd reason
+		if ( $this->response['code'] && debug_backtrace()[1]['function'] === 'run_analytics_report' ) {
+			return $this->response;
+		}
+
 		switch ( $this->response['code'] ) {
 			// The session ID or OAuth token used has expired or is invalid.
 			case $this->response['code'] === $this->refresh_code:
@@ -912,26 +918,48 @@ class Salesforce {
                 array(),
                 'GET'
             );
+            // if we get a reportmetadata array out of this, continue
+        	if ( is_array( $result['data']['reportMetadata'] ) ) {
+        		$params = array('reportMetadata' => $result['data']['reportMetadata']);
+	            $report = $this->analytics_api(
+	                'reports',
+	                $id,
+	                'instances',
+	                $params,
+	                'POST'
+	            );
+	            // if we get an id from the post, that is the instance id
+	            if ( isset( $report['data']['id'] ) ) {
+	            	$instance_id = $report['data']['id'];
+	            } else {
+	        		// run the call again if we don't have an instance id
+	        		error_log('run report again. we have no instance id.');
+	        		$this->run_analytics_report( $id, TRUE );
+	        	}
 
-            $params = array('reportMetadata' => $result['data']['reportMetadata']);
-            $report = $this->analytics_api(
-                'reports',
-                $id,
-                'instances',
-                $params,
-                'POST'
-            );
-            $instance_id = $report['data']['id'];
-
-            // cache the instance id so we can get the report results if they are applicable
-            if ( $cache_expiration === '' ) {
-            	$cache_expiration = $this->cache_expiration();
-            }
-            $this->wordpress->cache_set( $report_url, '', $instance_id, $cache_expiration );
+	            // cache the instance id so we can get the report results if they are applicable
+	            if ( $cache_expiration === '' ) {
+	            	$cache_expiration = $this->cache_expiration();
+	            }
+	            $this->wordpress->cache_set( $report_url, '', $instance_id, $cache_expiration );
+        	} else {
+        		// run the call again if we don't have a reportMetadata array
+        		error_log('run report again. we have no reportmetadata.');
+        		$this->run_analytics_report( $id, TRUE );
+        	}
+            
 
         }
 
-        return $this->api_call( $report_url . "/{$instance_id}", $params, $method );	
+        $result = $this->api_call( $report_url . "/{$instance_id}", array(), $method );
+
+        // the report instance is expired. rerun it.
+        if ( $result['code'] === 404 ) {
+        	error_log('run report again. it expired.');
+        	$this->run_analytics_report( $id, TRUE, TRUE );
+        }
+
+        return $result;
 
 	}
 
