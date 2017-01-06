@@ -892,9 +892,14 @@ class Salesforce {
 	*
 	* part of core API calls
 	*/
-	public function run_analytics_report( $id, $async = TRUE, $params = array(), $method = 'GET', $cache_expiration = '' ) {
+	public function run_analytics_report( $id, $async = TRUE, $clear_cache = False, $params = array(), $method = 'GET', $cache_expiration = '' ) {
 		$id = $this->convert_id( $id );
         $report_url = 'analytics/reports/' . $id . '/' . 'instances';
+
+        if ( $clear_cache === TRUE ) {
+        	delete_transient( $report_url );
+        }
+
         $instance_id = $this->wordpress->cache_get( $report_url, '' );
 
         // there is no stored instance id or this is synchronous; retrieve the results for that instance
