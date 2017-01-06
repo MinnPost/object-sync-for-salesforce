@@ -213,7 +213,18 @@ class Wordpress_Salesforce_Admin {
                         }
                         break;
                     default:
-                        require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+                        $include_settings = apply_filters( 'salesforce_rest_api_settings_tab_include_settings', TRUE );
+                        $content_before = apply_filters( 'salesforce_rest_api_settings_tab_content_before', NULL );
+                        $content_after = apply_filters( 'salesforce_rest_api_settings_tab_content_after', NULL );
+                        if ( NULL !== $content_before ) {
+                            echo $content_before;
+                        }
+                        if ( TRUE === $include_settings ) {
+                            require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+                        }
+                        if ( NULL !== $content_after ) {
+                            echo $content_after;
+                        }
                         break;
                 }
 

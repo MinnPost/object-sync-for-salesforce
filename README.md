@@ -210,6 +210,9 @@ Current hooks include:
 - `salesforce_rest_api_push_params_modify`: change what parameters are being sent to Salesforce before syncing occurs
 - `salesforce_rest_api_find_sf_object_match`: modify the $salesforce_id string here
 - `salesforce_rest_api_settings_tabs`: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
+- `salesforce_rest_api_settings_tab_include_settings`: when adding tabs to the Salesforce Settings screen, determine whether or not to include the default settings PHP template, which we use to render the form.
+- `salesforce_rest_api_settings_tab_content_before`: when adding tabs to the Salesforce Settings screen, send additional content to display before the settings form.
+- `salesforce_rest_api_settings_tab_content_after`: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form.
 - `salesforce_rest_api_modify_schedulable_classes`: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
 - `salesforce_rest_api_add_more_wordpress_types`: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
 - `salesforce_rest_api_remove_wordpress_types`: remove WordPress content types from the list of what can be mapped to Salesforce objects. By default, we use this for the `wp_log` type that is included with this plugin.
