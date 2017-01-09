@@ -898,7 +898,7 @@ class Salesforce {
 	*
 	* part of core API calls
 	*/
-	public function run_analytics_report( $id, $async = TRUE, $clear_cache = False, $params = array(), $method = 'GET', $cache_expiration = '' ) {
+	public function run_analytics_report( $id, $async = TRUE, $clear_cache = False, $params = array(), $method = 'GET', $report_cache_expiration = '', $cache_instance = TRUE, $instance_cache_expiration = '' ) {
 		$id = $this->convert_id( $id );
         $report_url = 'analytics/reports/' . $id . '/' . 'instances';
 
@@ -938,10 +938,10 @@ class Salesforce {
 	        	}
 
 	            // cache the instance id so we can get the report results if they are applicable
-	            if ( $cache_expiration === '' ) {
-	            	$cache_expiration = $this->cache_expiration();
+	            if ( $report_cache_expiration === '' ) {
+	            	$report_cache_expiration = $this->cache_expiration();
 	            }
-	            $this->wordpress->cache_set( $report_url, '', $instance_id, $cache_expiration );
+	            $this->wordpress->cache_set( $report_url, '', $instance_id, $report_cache_expiration );
         	} else {
         		// run the call again if we don't have a reportMetadata array
         		error_log('run report again. we have no reportmetadata.');
@@ -957,6 +957,23 @@ class Salesforce {
         if ( $result['code'] === 404 ) {
         	error_log('run report again. it expired.');
         	$this->run_analytics_report( $id, TRUE, TRUE );
+        }
+
+        // cache the instance results if the setting says so
+        // do this because salesforce will have errors if the instance has expired or is currently running
+        if ( $result['data']['attributes']['status'] === 'Success' && TRUE === $cache_instance ) {
+        	error_log('cache that instance');
+            if ( $instance_cache_expiration === '' ) {
+            	$instance_cache_expiration = $this->cache_expiration();
+            }
+            $this->wordpress->cache_set( $report_url . '_' . $instance_id, '', $result, $instance_cache_expiration );
+        } else {
+        	// if the report didn't get a success, try to load it from the cache
+        	error_log('load instance from cache');
+        	$cached = $this->cache_get( $report_url . '_' . $instance_id );
+	        if ( is_array( $cached ) ) {
+	            $result = $cached;
+	        }
         }
 
         return $result;
