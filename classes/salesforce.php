@@ -959,8 +959,10 @@ class Salesforce {
         	$this->run_analytics_report( $id, TRUE, TRUE );
         }
 
-        // cache the instance results if the setting says so
+        // cache the instance results as a long fallback if the setting says so
         // do this because salesforce will have errors if the instance has expired or is currently running
+        // remember: the result of the above api_call is already cached (or not) according to the plugin's generic settings
+        // this is fine i think, although it is a bit of redundancy in this case
         if ( $result['data']['attributes']['status'] === 'Success' && TRUE === $cache_instance ) {
         	error_log('cache that instance');
             if ( $instance_cache_expiration === '' ) {
