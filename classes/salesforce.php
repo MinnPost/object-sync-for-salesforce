@@ -968,11 +968,11 @@ class Salesforce {
             if ( $instance_cache_expiration === '' ) {
             	$instance_cache_expiration = $this->cache_expiration();
             }
-            $this->wordpress->cache_set( $report_url . '_' . $instance_id, '', $result, $instance_cache_expiration );
+            $this->wordpress->cache_set( $report_url . '_instance_fallback', '', $result, $instance_cache_expiration );
         } else {
         	// if the report didn't get a success, try to load it from the cache
         	error_log('load instance from cache');
-        	$cached = $this->cache_get( $report_url . '_' . $instance_id );
+        	$cached = $this->cache_get( $report_url . '_instance_fallback' );
 	        if ( is_array( $cached ) ) {
 	            $result = $cached;
 	        }
