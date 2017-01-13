@@ -972,7 +972,7 @@ class Salesforce {
         } else {
         	// if the report didn't get a success, try to load it from the cache
         	error_log('load instance from cache');
-        	$cached = $this->cache_get( $report_url . '_instance_fallback' );
+        	$cached = $this->wordpress->cache_get( $report_url . '_instance_fallback', '' );
 	        if ( is_array( $cached ) ) {
 	            $result = $cached;
 	        }
