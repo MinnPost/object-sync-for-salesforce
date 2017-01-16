@@ -948,11 +948,13 @@ class Wordpress_Salesforce_Admin {
         }
         $data = $this->wordpress->get_wordpress_object_data( $wordpress_object, $wordpress_id );
         $result = $this->push->manual_object_update( $data, $wordpress_object );
-        if ( !empty( $_POST ) ) {
+
+        if ( !empty( $_POST['wordpress_object'] ) && !empty( $_POST['wordpress_id'] ) ) {
             wp_send_json_success( $result );
         } else {
             return $result;
         }
+
     }
 
     /**
@@ -1289,13 +1291,17 @@ class Wordpress_Salesforce_Admin {
     *
     */
     public function save_salesforce_user_fields( $user_id ) {
-        if ( isset ( $_POST['salesforce_id'] ) ) {
-            if ( isset( $_POST['salesforce_update_mapped_user'] ) && urlencode( $_POST['salesforce_update_mapped_user'] === '1' ) ) {
-                $mapping_object = $this->mappings->get_object_maps( array( 'wordpress_id' => $user_id, 'wordpress_object' => 'user' ) );
-                $mapping_object['salesforce_id'] = $_POST['salesforce_id'];
-                $result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
-            } elseif ( isset( $_POST['salesforce_create_mapped_user'] ) && urlencode( $_POST['salesforce_create_mapped_user'] === '1' ) ) {
+        if ( isset( $_POST['salesforce_update_mapped_user'] ) && urlencode( $_POST['salesforce_update_mapped_user'] === '1' ) ) {
+            $mapping_object = $this->mappings->get_object_maps( array( 'wordpress_id' => $user_id, 'wordpress_object' => 'user' ) );
+            $mapping_object['salesforce_id'] = $_POST['salesforce_id'];
+            $result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+        } elseif ( isset( $_POST['salesforce_create_mapped_user'] ) && urlencode( $_POST['salesforce_create_mapped_user'] === '1' ) ) {
+            // if a Salesforce ID was entered
+            if ( isset( $_POST['salesforce_id'] ) && !empty( $_POST['salesforce_id'] ) ) {
                 $mapping_object = $this->create_object_map( $user_id, 'user', $_POST['salesforce_id'] );
+            } else if ( isset( $_POST['push_new_user_to_salesforce'] ) ) {
+                // otherwise, create a new record in Salesforce
+                $result = $this->push_to_salesforce( 'user', $user_id );
             }
         }
     }

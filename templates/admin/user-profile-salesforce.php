@@ -37,6 +37,7 @@
                 <a href="#" class="button button-secondary push_to_salesforce_button">Push to Salesforce</a>
                 <a href="#" class="button button-secondary pull_from_salesforce_button">Pull from Salesforce</a>
             </td>
+        </tr>
     </tbody>
 </table>
 <div class="salesforce_user_ajax_message"></div>

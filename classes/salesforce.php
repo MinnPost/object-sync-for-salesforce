@@ -976,6 +976,7 @@ class Salesforce {
 	        if ( is_array( $cached ) ) {
 	            $result = $cached;
 	        }
+	        error_log('result is ' . print_r($result, true));
         }
 
         return $result;
