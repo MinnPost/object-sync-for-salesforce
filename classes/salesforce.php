@@ -968,10 +968,8 @@ class Salesforce {
         	$cached = $this->wordpress->cache_get( $report_url . '_instance_cached', '' );
         	if ( is_array( $cached ) ) {
 	            $result = $cached;
-	            error_log('result is cached');
 	        } else {
 	        	if ( $result['data']['attributes']['status'] === 'Success' ) {
-		        	error_log('cache that result');
 		            if ( $instance_cache_expiration === '' ) {
 		            	$instance_cache_expiration = $this->cache_expiration();
 		            }
