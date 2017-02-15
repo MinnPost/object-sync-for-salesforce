@@ -304,7 +304,24 @@ class Salesforce_Mapping {
     public function create_object_map( $posted = array() ) {
         $data = $this->setup_object_map_data( $posted );
         $data['created'] = current_time( 'mysql' );
-        $insert = $this->wpdb->insert( $this->object_map_table, $data );
+        if ( $posted['salesforce_id'] !== 0 ) {
+            $insert = $this->wpdb->insert( $this->object_map_table, $data );
+        } else {
+            $status = 'error';
+            if ( isset( $this->logging ) ) {
+                $logging = $this->logging;
+            } elseif ( class_exists( 'Salesforce_Logging' ) ) {
+                $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+            }
+            $logging->setup(
+                __( ucfirst( $status ) . ': Mapping: error caused by trying to map the WordPress ' . $posted['wordpress_object'] . ' with ID of ' . $posted['wordpress_id'] . ' to Salesforce ID of 0, which is invalid.', $this->text_domain ),
+                '',
+                0,
+                0,
+                $status
+            );
+            return false;
+        }
         if ( $insert === 1 ) {
             return $this->wpdb->insert_id;
         } elseif ( strpos( $this->wpdb->last_error, 'Duplicate entry' ) !== FALSE ) {
