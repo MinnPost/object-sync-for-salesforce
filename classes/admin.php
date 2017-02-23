@@ -403,7 +403,7 @@ class Wordpress_Salesforce_Admin {
                 ),
             ),
             'debug_mode' => array(
-                'title' => 'Debug moode?',
+                'title' => 'Debug mode?',
                 'callback' => $callbacks['text'],
                 'page' => $page,
                 'section' => $section,
@@ -1319,7 +1319,7 @@ class Wordpress_Salesforce_Admin {
         $consumer_secret = $this->login_credentials['consumer_secret'];
         $callback_url = $this->login_credentials['callback_url'];
         $text_domain = $this->text_domain;
-        
+
         $current_tab = $tab;
         screen_icon();
         echo '<h2 class="nav-tab-wrapper">';
