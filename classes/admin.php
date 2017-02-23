@@ -200,7 +200,7 @@ class Wordpress_Salesforce_Admin {
                     case 'settings':
                         $consumer_key = $this->login_credentials['consumer_key'];
                         $consumer_secret = $this->login_credentials['consumer_secret'];
-                        if ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
+                        if ( isset( $consumer_key ) && isset( $consumer_secret ) && !empty( $consumer_key ) && !empty( $consumer_secret ) ) {
                             if ( $this->salesforce['is_authorized'] === TRUE ) {
                                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
                             } else {
@@ -361,6 +361,7 @@ class Wordpress_Salesforce_Admin {
                     'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_API_VERSION',
+                    'default' => '38.0'
                 ),
             ),
             'object_filters' => array(
@@ -397,7 +398,8 @@ class Wordpress_Salesforce_Admin {
                     'type' => 'number',
                     'validate' => 'sanitize_text',
                     'desc' => 'Number of seconds to wait between repeated salesforce pulls.<br>Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage.',
-                    'constant' => ''
+                    'constant' => '',
+                    'default' => 5
                 ),
             ),
             'debug_mode' => array(
@@ -1312,12 +1314,21 @@ class Wordpress_Salesforce_Admin {
     * @param string $tab
     */ 
     private function tabs( $tabs, $tab = '' ) {
+
+        $consumer_key = $this->login_credentials['consumer_key'];
+        $consumer_secret = $this->login_credentials['consumer_secret'];
+        $callback_url = $this->login_credentials['callback_url'];
+        $text_domain = $this->text_domain;
+        
         $current_tab = $tab;
         screen_icon();
         echo '<h2 class="nav-tab-wrapper">';
         foreach ( $tabs as $tab_key => $tab_caption ) {
             $active = $current_tab == $tab_key ? 'nav-tab-active' : '';
-            echo '<a class="nav-tab ' . $active . '" href="?page=salesforce-api-admin&tab=' . $tab_key . '">' . $tab_caption . '</a>';
+            if ( $tab_key === 'settings' || ( isset( $consumer_key ) && isset( $consumer_secret ) && !empty( $consumer_key ) && !empty( $consumer_secret ) ) ) {
+                echo '<a class="nav-tab ' . $active . '" href="?page=salesforce-api-admin&tab=' . $tab_key . '">' . $tab_caption . '</a>';
+            }
+            
         }
         echo '</h2>';
 
