@@ -12,7 +12,7 @@ To install the plugin in WordPress, your PHP environment needs the following:
   - [http://php.net/soap](http://php.net/soap)
   - [http://php.net/openssl](http://php.net/openssl)
 2. [Composer](https://getcomposer.org). You'll need to have the composer executable in your path, or be able to call it in another way (one recommended way of doing this is [Homebrew](http://brew.sh/)).
-3. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `example.com`.
+3. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
 
 ### Install for developers
 
@@ -28,7 +28,7 @@ Most users should install the plugin from the WordPress plugin directory (we wil
 
 Once the plugin is installed, whether from a direct upload of the folder, or from the WordPress plugin directory, you will have a `salesforce-rest-api` folder in your `/wp-content/plugins` directory. In the Plugins list in WordPress, you can activate it and find the settings link (you can also find this plugin's settings in the main Settings list in WordPress, under the Salesforce menu item).
 
-By default, the plugin's settings URL is `/wp-admin/options-general.php?page=salesforce-api-admin` (proceeded by whatever your domain's URL is).
+By default, the plugin's settings URL is `https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin`.
 
 ## Salesforce
 
