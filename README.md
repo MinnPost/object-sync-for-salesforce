@@ -13,7 +13,7 @@ For a more detailed description of each component class, see below.
 ## Requirements
 
 1. You need a Salesforce account. Developers can register at [http://www.developerforce.com/events/regular/registration.php](http://www.developerforce.com/events/regular/registration.php)
-2. You will need to create a remote application/connected app for authorization. In Salesforce go to Your Name > Setup > Create > Apps then create a new Connected App. Set the callback URL to: `https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin&tab=authorize` (must use SSL)
+2. You will need to create a remote application/connected app for authorization. In Salesforce go to Your Name > Setup > Create > Apps then create a new Connected App. Set the callback URL to: `https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin&tab=authorize` (**you must use SSL**)
 
     Select at least 'Perform requests on your behalf at any time' for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select 'Access and manage your data (api)' as one of these scopes.
 
@@ -23,22 +23,9 @@ For a more detailed description of each component class, see below.
     + [http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php](http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php)
     + [https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/](https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/)
 
-3. Your site needs to be SSL enabled to authorize the remote application using OAUTH.
-4. If using the SOAP API, PHP needs to be compiled with SOAP web services and
-  OpenSSL support, as per:
+## Installation and setup
 
-  - http://php.net/soap
-  - http://php.net/openssl
-
-## Installing from GitHub
-
-If you are installing from the git repo instead of the WordPress plugin directory, use these instructions. You have to already have [Composer](https://getcomposer.org) installed, and successfully have the executable in your path, or have it callable in another way. One recommended way of doing this is [Homebrew](http://brew.sh/).
-
-1. Run `cd` to get into the `wp-plugins` directory of a WordPress install.
-2. Run `git clone https://github.com/MinnPost/salesforce-rest-api.git`
-3. Run `cd salesforce-rest-api`
-4. Run `composer install`
-5. This will take a little while as Composer installs third-party libraries the plugin needs. You can then activate the plugin as you would a normal WordPress plugin.
+You can find a detailed instruction document for this plugin [in the docs folder](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/setup.md).
 
 ## Classes
 
