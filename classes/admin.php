@@ -111,9 +111,7 @@ class Wordpress_Salesforce_Admin {
 
             // optionally make tab(s) for logging and log settings
             $logging_enabled = get_option( 'salesforce_api_enable_logging', FALSE );
-            if ( $logging_enabled === '1' ) {
-                $tabs['log_settings'] = 'Log Settings';
-            }
+            $tabs['log_settings'] = 'Log Settings';
 
             // filter for extending the tabs available on the page
             // currently it will go into the default switch case for $tab
@@ -1319,7 +1317,7 @@ class Wordpress_Salesforce_Admin {
         $consumer_secret = $this->login_credentials['consumer_secret'];
         $callback_url = $this->login_credentials['callback_url'];
         $text_domain = $this->text_domain;
-
+        
         $current_tab = $tab;
         screen_icon();
         echo '<h2 class="nav-tab-wrapper">';
