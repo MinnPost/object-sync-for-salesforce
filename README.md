@@ -196,7 +196,7 @@ Current hooks include:
 - `salesforce_rest_api_pull_params_modify`: change what parameters are being sent to WordPress before syncing occurs
 - `salesforce_rest_api_push_params_modify`: change what parameters are being sent to Salesforce before syncing occurs
 - `salesforce_rest_api_find_sf_object_match`: modify the $salesforce_id string here
-- `salesforce_rest_api_settings_tabs`: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
+- `salesforce_rest_api_settings_tabs`: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin. [documentation](./docs/adding-settings.md#add-a-settings-tab)
 - `salesforce_rest_api_settings_tab_include_settings`: when adding tabs to the Salesforce Settings screen, determine whether or not to include the default settings PHP template, which we use to render the form.
 - `salesforce_rest_api_settings_tab_content_before`: when adding tabs to the Salesforce Settings screen, send additional content to display before the settings form.
 - `salesforce_rest_api_settings_tab_content_after`: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form.
