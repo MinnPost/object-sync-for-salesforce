@@ -18,7 +18,7 @@ Within this plugin, we can add any additional settings (or functionality) withou
 
 ### Code example
 
-The code takes two steps: one to add the tab, and one to populate it.
+The code takes two steps: one to add the tab, and one to populate it. The hook receives the `$tabs` array as its only parameter.
 
 #### Hook
 
@@ -58,7 +58,7 @@ This `minnpost_salesforce_settings_forms` method is only part of our Settings AP
 
 This plugin also contains hooks for modifying the existing settings tabs for the plugin:
 
-1. Change the template that is loaded for any/all of the settings tabs.
+1. Change or disable the template that is loaded for any/all of the settings tabs.
 2. Add content above or below the default content, on any/all of the settings tabs.
 
 ### Change the template
@@ -74,7 +74,47 @@ The contents for the admin settings tabs are displayed in PHP templates. The def
 </form>
 ```
 
-To change this, use the `salesforce_rest_api_settings_tab_include_settings` hook.
-
 #### Code example
 
+This hook sets a boolean value for whether or not the plugin should use the default template. To change or disable this, use the `salesforce_rest_api_settings_tab_include_settings` hook, which receives, and returns, a `TRUE` or `FALSE` for this setting.
+
+The hook also receives a variable for the currently activated tab in the plugin's settings. This allows you to use `$tab` to change only the tab(s) you want to change.
+
+```
+add_filter( 'salesforce_rest_api_settings_tab_include_settings', change_template, 10, 2 );
+function change_template( $use_default_template = TRUE, $tab ) {
+    require_once( 'your-file.php' );
+    return FALSE;
+    // if you use return TRUE instead, the default file will be displayed after whatever you use, so you can combine with, or entirely replace, the plugin's default
+}
+```
+
+### Add content to a tab
+
+There are two hooks that can add additional content to any/all of the plugin tabs. They run before and after the default template.
+
+#### Code examples
+
+To add content before, you can do this:
+
+```
+add_filter( 'salesforce_rest_api_settings_tab_content_before', add_content, 10, 2 );
+function add_content( $content_before = NULL, $tab ) {
+    if ( $tab === 'minnpost' ) {
+        $content_before = '<p>this is an intro.</p>';
+    }
+    return $content_before;
+}
+```
+
+And for adding content after, you can do this:
+
+```
+add_filter( 'salesforce_rest_api_settings_tab_content_after', add_content, 10, 2 );
+function add_content( $content_after = NULL, $tab ) {
+    if ( $tab === 'minnpost' ) {
+        $content_after = '<p>this is an outro.</p>';
+    }
+    return $content_after;
+}
+```
