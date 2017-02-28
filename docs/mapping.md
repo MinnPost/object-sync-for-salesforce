@@ -21,9 +21,11 @@ The settings for a WordPress fieldmap work like this:
 7. Ignore drafts: many WordPress objects create and save drafts while editing is happening. By default, this data is not sent to Salesforce, but it can be.
 8. Weight: if the same object is mapped multiple times, the weight will determine what happens first. This is in ascending order.
 
+Several hooks exist for modifying these options. See the [extending mapping options documentation](./extending-mapping-options.md).
+
 ### More on WordPress object
 
-By default, this includes: user, comment, category, tag, post, any other post types built into WordPress, and any custom post types that have been added by the default WordPress conventions. You can see more about this in the [WordPress documentation](https://codex.wordpress.org/Post_Types). The plugin also has hooks to modify what objects are included. You can read more about these in the [extending mapping documentation](./extending-mapping.md).
+By default, this includes: user, comment, category, tag, post, any other post types built into WordPress, and any custom post types that have been added by the default WordPress conventions. You can see more about this in the [WordPress documentation](https://codex.wordpress.org/Post_Types). The plugin also has hooks to modify what objects are included. You can read more about these in the [extending mapping options documentation](./extending-mapping-options.md).
 
 ### More on Salesforce object
 
