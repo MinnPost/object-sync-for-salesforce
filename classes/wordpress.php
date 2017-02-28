@@ -63,7 +63,7 @@ class Wordpress {
             return $more_types;
         }
 
-        add_filter( 'salesforce_rest_api_remove_wordoress_types', 'remove_types', 10, 1 );
+        add_filter( 'salesforce_rest_api_remove_wordpress_types', 'remove_types', 10, 1 );
         function remove_types( $types_to_remove ) {
             $types_to_remove = array( 'acme_product' );
             // or $types_to_remove[] = 'acme_product';
