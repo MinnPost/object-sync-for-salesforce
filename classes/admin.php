@@ -211,9 +211,9 @@ class Wordpress_Salesforce_Admin {
                         }
                         break;
                     default:
-                        $include_settings = apply_filters( 'salesforce_rest_api_settings_tab_include_settings', TRUE );
-                        $content_before = apply_filters( 'salesforce_rest_api_settings_tab_content_before', NULL );
-                        $content_after = apply_filters( 'salesforce_rest_api_settings_tab_content_after', NULL );
+                        $include_settings = apply_filters( 'salesforce_rest_api_settings_tab_include_settings', TRUE, $tab );
+                        $content_before = apply_filters( 'salesforce_rest_api_settings_tab_content_before', NULL, $tab );
+                        $content_after = apply_filters( 'salesforce_rest_api_settings_tab_content_after', NULL, $tab );
                         if ( NULL !== $content_before ) {
                             echo $content_before;
                         }
