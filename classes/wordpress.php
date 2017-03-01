@@ -229,7 +229,7 @@ class Wordpress {
         // $object_fields = array( 'data' => array(), 'from_cache' => bool, 'cached' => bool );
         // this is useful for custom objects that do not use the normal metadata table structure
 
-        $object_fields = apply_filters( 'salesforce_rest_api_wordpress_object_fields', $object_fields );
+        $object_fields = apply_filters( 'salesforce_rest_api_wordpress_object_fields', $object_fields, $wordpress_object );
         
 		return $object_fields['data'];
 
