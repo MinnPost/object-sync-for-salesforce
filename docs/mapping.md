@@ -4,6 +4,8 @@ This plugin refers to mapped objects - objects that share data between WordPress
 
 One instance of a fieldmap - a single Salesforce Contact that shares data with a single WordPress user - is an object map. This language is shared with the [Drupal Salesforce Suite](https://github.com/thinkshout/salesforce) on which this plugin is based. Object map terminology does not appear in the plugin's admin interface, but it is how the database is structured.
 
+Together, these mappings determine what the plugin should do when [`push`](./push.md) and [`pull`](./pull.md) events happen.
+
 ## Create/edit a fieldmap
 
 Use the Fieldmaps tab of the plugin settings, and click Add New to create a new fieldmap. This initial load can take a while, if the plugin needs to refresh its cached Salesforce data. The screen is the same if you edit an existing fieldmap, but it will already have data.
@@ -25,7 +27,9 @@ Several hooks exist for modifying these options. See the [extending mapping opti
 
 ### More on WordPress object
 
-By default, this includes: user, comment, category, tag, post, any other post types built into WordPress, and any custom post types that have been added by the default WordPress conventions. You can see more about this in the [WordPress documentation](https://codex.wordpress.org/Post_Types). The plugin also has hooks to modify what objects are included. You can read more about these in the [extending mapping options documentation](./extending-mapping-options.md).
+By default, this includes: user, comment, category, tag, post, any other post types built into WordPress, and any custom post types that have been added by the default WordPress conventions. You can see more about this in the [WordPress documentation](https://codex.wordpress.org/Post_Types).
+
+The plugin also has hooks to modify what objects are included. You can read more about these in the [extending mapping options documentation](./extending-mapping-options.md#available-wordpress-objects).
 
 ### More on Salesforce object
 
@@ -37,9 +41,17 @@ The date fields to trigger a pull request are how the plugin finds Salesforce re
 
 ![WordPress fieldmap](./assets/img/screenshots/05-wordpress-fieldmap.png)
 
+#### Wordpress fields
+
 WordPress does not currently have a way to get all fields from an object. This plugin attempts to do this by combining the fields from an object's main table (`wp_posts`, `wp_users`, etc.) with the metadata for that object (`wp_postmeta`, `wp_usermeta`, etc.). This isn't perfect, but it gets most fields.
 
+The plugin also has a hook to modify what fields are included for an object. You can read more about this in the [extending mapping options documentation](./extending-mapping-options.md#available-wordpress-fields).
+
+#### Salesforce fields
+
 Salesforce fields come from the `object_describe` API method.
+
+#### Other configuration
 
 Prematch determines whether the field should be used to match objects. If it is checked, the plugin will see objects that share a value in that pair to be matched.
 

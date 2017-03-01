@@ -59,7 +59,7 @@ The `deactivate` class also stops recurring tasks created by the `schedule` clas
 
 ### Logging (logging)
 
-This class extends the [WP Logging Class](https://github.com/pippinsplugins/WP-Logging) to log plugin-specific events. The main class is stored in the /vendor/wp-logging folder, which we need to somehow tie into this plugin. Our extension does a few things:
+This class extends the [WP Logging Class](https://github.com/pippinsplugins/WP-Logging) to log plugin-specific events. The main class is stored in the /vendor/wp-logging folder, which we tie into this plugin with composer. Our extension to this class does a few things:
 
 1. Force a type of 'salesforce' on all logs this plugin creates.
 2. Get logging-related options configured by the `admin` class.
