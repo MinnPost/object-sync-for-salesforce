@@ -203,14 +203,14 @@ Current hooks include:
 - `salesforce_rest_api_settings_tab_content_before`: when adding tabs to the Salesforce Settings screen, send additional content to display before the settings form. [documentation](./docs/adding-settings.md#add-content-to-a-tab)
 - `salesforce_rest_api_settings_tab_content_after`: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form. [documentation](./docs/adding-settings.md#add-content-to-a-tab)
 - `salesforce_rest_api_modify_schedulable_classes`: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
-- `salesforce_rest_api_add_more_wordpress_types`: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
-- `salesforce_rest_api_remove_wordpress_types`: remove WordPress content types from the list of what can be mapped to Salesforce objects. By default, we use this for the `wp_log` type that is included with this plugin.
+- `salesforce_rest_api_add_more_wordpress_types`: add additional WordPress content types to the list of what can be mapped to Salesforce objects. [documentation](./extending-mapping-options.md#available-wordpress-objects)
+- `salesforce_rest_api_remove_wordpress_types`: remove WordPress content types from the list of what can be mapped to Salesforce objects. By default, we use this for the `wp_log` type that is included with this plugin. [documentation](./extending-mapping-options.md#available-wordpress-objects)
 - `salesforce_rest_api_create_custom_wordpress_item`: allow plugins to run their own create methods for adding new WordPress objects, if they cannot use built in methods.
 - `salesforce_rest_api_upsert_custom_wordpress_item`: allow plugins to run their own upsert methods for checking for existence of, and then adding or updating, new WordPress objects, if they cannot use built in methods.
 - `salesforce_rest_api_update_custom_wordpress_item`: allow plugins to run their own update methods for updating existing, mapped WordPress objects, if they cannot use built in methods.
 - `salesforce_rest_api_delete_custom_wordpress_item`: allow plugins to run their own delete methods for deleting existing, mapped WordPress objects, if they cannot use built in methods.
 - `salesforce_rest_api_set_initial_attachment_data`: allow plugins to add filename or parent data when creating attachment objects.
-- `salesforce_rest_api_wordpress_object_fields`: when getting the fields for a WordPress object, allow plugins to add more (and also cache the array).
+- `salesforce_rest_api_wordpress_object_fields`: when getting the fields for a WordPress object, allow plugins to add more (and also cache the array). [documentation](./extending-mapping-options.md#available-wordpress-fields)
 - `salesforce_rest_api_wordpress_object_data`: when getting the data for a WordPress object, allow plugins to add more, change the formatting, etc.
 - `salesforce_rest_api_modify_upsert_key`: allow developers to change the key by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
 - `salesforce_rest_api_modify_upsert_value`: allow developers to change the value by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).

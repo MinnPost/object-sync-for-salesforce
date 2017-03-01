@@ -14,6 +14,8 @@ This is the full documentation for this plugin, extending the information in [th
 
 2. [Permissions](./permissions.md)
 
+    This plugin sets default permissions for its configuration in WordPress.
+
     For developers:
     
     - [Extending roles](./extending-roles.md)
@@ -29,3 +31,16 @@ This is the full documentation for this plugin, extending the information in [th
     For developers:
     
     - [Extending mapping options](./extending-mapping-options.md)
+
+5. [Pushing from WordPress to Salesforce](./push.md)
+
+    When mapped objects in WordPress are changed in ways that apply to the plugin's triggers (as defined in the mapping documentation), that data is "pushed" from WordPress to Salesforce where it acts on relevant Salesforce data.
+
+    For developers:
+
+6. [Pulling from Salesforce to WordPress](./pull.md)
+
+    When mapped objects in Salesforce are changed in ways that apply to the plugin's triggers (as defined in the mapping documentation), that data is "pulled" from Salesforce into WordPress where it acts on relevant WordPress data.
+
+    For developers:
+    
