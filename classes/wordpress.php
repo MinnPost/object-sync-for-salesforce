@@ -115,7 +115,7 @@ class Wordpress {
             $object_table_structure = array(
 				'object_name' => 'user',
                 'content_methods' => array( 'create' => 'wp_insert_user', 'read' => 'get_user_by', 'update' => 'wp_update_user', 'delete' => 'wp_delete_user' ),
-                'meta_methods' => array( 'create' => 'update_user_meta', 'read' => 'get_user_meta', 'update' => 'update_user_meta', 'delete' => 'wp_delete_attachment' ),
+                'meta_methods' => array( 'create' => 'update_user_meta', 'read' => 'get_user_meta', 'update' => 'update_user_meta', 'delete' => 'delete_user_meta' ),
 				'content_table' => $this->wpdb->prefix . 'users',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'usermeta',
