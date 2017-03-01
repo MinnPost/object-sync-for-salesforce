@@ -2,7 +2,7 @@
 
 Implements a mapping functionality between Salesforce objects and WordPress objects. This is based on the [Drupal Salesforce Suite](https://github.com/thinkshout/salesforce) (version 7.x-3.x-dev), but strives to use WordPress conventions rather than Drupal's whenever possible.
 
-Below is summary information, but you can also access [full documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/index.md).
+Below is summary information, but you can also access [full documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/readme.md).
 
 ## About
 
