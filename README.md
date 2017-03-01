@@ -179,57 +179,11 @@ The admin section is divided into tabs:
 
 Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill in functional gaps missing in the REST API. Will require the Salesforce PHP Toolkit, if/when we choose to do it.
 
-The Drupal module apparently requires SOAP to batch records on a push. On creating a fieldmap, it says this:
+## Developer hooks
 
-    Requires the "Salesforce SOAP (salesforce_soap)" module to be enabled, and the "Process asynchronously" option to be checked. Push items will be processed in a single batch to the Salesforce API rather than one at a time. This may be preferable if API limits are of concern, although changes are not reflected immediately in Salesforce.
-    
+This plugin contains many hooks to allow other WordPress plugins to extend the functionality. It aims to reproduce all hooks provided by the Drupal suite. It also includes many additional hooks that give WordPress developers additional functionality.
 
-## API
-
-This plugin will aim to reproduce at least the hooks provided by the Drupal suite, so that other WordPress plugins can build on top of them.
-
-Current hooks include:
-
-### Filters
-
-- `salesforce_rest_api_roles_configure_salesforce`: allow other plugins to give the `configure_salesforce` capability to WordPress roles in addition to the `administrator` role. [documentation](./docs/extending-roles.md)
-- `salesforce_rest_api_push_object_allowed`: prevent a push per-mapping.
-- `salesforce_rest_api_pull_object_allowed`: prevent a pull per-mapping.
-- `salesforce_rest_api_pull_params_modify`: change what parameters are being sent to WordPress before syncing occurs
-- `salesforce_rest_api_push_params_modify`: change what parameters are being sent to Salesforce before syncing occurs
-- `salesforce_rest_api_find_sf_object_match`: modify the $salesforce_id string here
-- `salesforce_rest_api_settings_tabs`: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin. [documentation](./docs/adding-settings.md#add-a-settings-tab)
-- `salesforce_rest_api_settings_tab_include_settings`: when adding tabs to the Salesforce Settings screen, determine whether or not to include the default settings PHP template, which we use to render the form. [documentation](./docs/adding-settings.md#change-the-template)
-- `salesforce_rest_api_settings_tab_content_before`: when adding tabs to the Salesforce Settings screen, send additional content to display before the settings form. [documentation](./docs/adding-settings.md#add-content-to-a-tab)
-- `salesforce_rest_api_settings_tab_content_after`: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form. [documentation](./docs/adding-settings.md#add-content-to-a-tab)
-- `salesforce_rest_api_modify_schedulable_classes`: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
-- `salesforce_rest_api_add_more_wordpress_types`: add additional WordPress content types to the list of what can be mapped to Salesforce objects. [documentation](./extending-mapping-options.md#available-wordpress-objects)
-- `salesforce_rest_api_remove_wordpress_types`: remove WordPress content types from the list of what can be mapped to Salesforce objects. By default, we use this for the `wp_log` type that is included with this plugin. [documentation](./extending-mapping-options.md#available-wordpress-objects)
-- `salesforce_rest_api_create_custom_wordpress_item`: allow plugins to run their own create methods for adding new WordPress objects, if they cannot use built in methods.
-- `salesforce_rest_api_upsert_custom_wordpress_item`: allow plugins to run their own upsert methods for checking for existence of, and then adding or updating, new WordPress objects, if they cannot use built in methods.
-- `salesforce_rest_api_update_custom_wordpress_item`: allow plugins to run their own update methods for updating existing, mapped WordPress objects, if they cannot use built in methods.
-- `salesforce_rest_api_delete_custom_wordpress_item`: allow plugins to run their own delete methods for deleting existing, mapped WordPress objects, if they cannot use built in methods.
-- `salesforce_rest_api_set_initial_attachment_data`: allow plugins to add filename or parent data when creating attachment objects.
-- `salesforce_rest_api_wordpress_object_fields`: when getting the fields for a WordPress object, allow plugins to add more (and also cache the array). [documentation](./extending-mapping-options.md#available-wordpress-fields)
-- `salesforce_rest_api_wordpress_object_data`: when getting the data for a WordPress object, allow plugins to add more, change the formatting, etc.
-- `salesforce_rest_api_modify_upsert_key`: allow developers to change the key by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
-- `salesforce_rest_api_modify_upsert_value`: allow developers to change the value by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
-
-### Actions
-
-- `salesforce_rest_api_pre_pull`: run an action immediately before WordPress data is saved
-- `salesforce_rest_api_post_pull`: run an action immediately after WordPress data is saved
-- `salesforce_rest_api_pull_fail`: what to do if a pull from Salesforce fails
-- `salesforce_rest_api_pull_success`: what to do if a pull from Salesforce is successful
-- `salesforce_rest_api_pre_push`: run an action immediately before Salesforce data is saved
-- `salesforce_rest_api_post_push`: run an action immediately after Salesforce data is saved
-- `salesforce_rest_api_push_fail`: what to do if a push to Salesforce fails
-- `salesforce_rest_api_push_success`: what to do if a push to Salesforce is successful
-- `salesforce_rest_api_set_more_user_data`: allow plugins to set more data on user objects when users are created or updated. This could be used for permissions, for example.
-- `salesforce_rest_api_set_more_post_data`: allow plugins to set more data on post objects when posts are created or updated.
-- `salesforce_rest_api_set_more_comment_data`: allow plugins to set more data on comment objects when comments are created or updated.
-- `salesforce_rest_api_set_more_attachment_data`: allow plugins to set more data on attachment objects when attachments are created or updated.
-- `salesforce_rest_api_set_more_term_data`: allow plugins to set more data on term objects when terms are created or updated.
+There is a full list of all hooks, with links to each hook's documentation, in the [developer hooks documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/all-developer-hooks.md) page.
 
 ## Notes
 
