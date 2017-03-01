@@ -4,21 +4,21 @@ This is the full documentation for this plugin, extending the information in [th
 
 ## Table of Contents
 
-1. [Setup](./setup.md)
+1. [Initial setup](./initial-setup.md)
     
     How to initially set up the plugin in both WordPress and Salesforce, including authenticating the plugin with Salesforce.
 
-    More: 
+    For developers:
     
-    - For developers: [Adding settings](./adding-settings.md)
+    - [Adding settings](./adding-settings.md)
 
 2. [Permissions](./permissions.md)
 
-    More:
+    For developers:
     
-    - For developers: [Extending roles](./extending-roles.md)
+    - [Extending roles](./extending-roles.md)
 
-3. [Syncing](./syncing.md)
+3. [Syncing setup](./syncing-setup.md)
     
     Options for how often WordPress and Salesforce will attempt to sync data.
 
@@ -26,6 +26,6 @@ This is the full documentation for this plugin, extending the information in [th
     
     Mapping WordPress and Salesforce objects to each other.
     
-    More:
+    For developers:
     
-    - For developers: [Extending mapping options](./extending-mapping-options.md)
+    - [Extending mapping options](./extending-mapping-options.md)

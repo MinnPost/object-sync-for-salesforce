@@ -27,7 +27,7 @@ For a more detailed description of each component class, see below.
 
 ## Installation and setup
 
-You can find a detailed instruction document for this plugin [in the docs folder](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/setup.md).
+You can find a detailed [initial setup instruction](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/initial-setup.md) document for this plugin.
 
 ## Classes
 

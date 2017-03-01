@@ -1,4 +1,4 @@
-# Setup
+# Initial Setup
 
 ## WordPress
 
