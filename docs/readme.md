@@ -43,4 +43,7 @@ This is the full documentation for this plugin, extending the information in [th
     When mapped objects in Salesforce are changed in ways that apply to the plugin's triggers (as defined in the mapping documentation), that data is "pulled" from Salesforce into WordPress where it acts on relevant WordPress data.
 
     For developers:
-    
+
+7. [All developer hooks](./all-developer-hooks.md)
+
+    This is a full list of all the developer hooks in the plugin. Each hook indicates what file contains it, and where the documentation for it resides.
