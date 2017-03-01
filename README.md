@@ -192,7 +192,7 @@ Current hooks include:
 
 ### Filters
 
-- `salesforce_rest_api_roles_configure_salesforce`: allow other plugins to give the `configure_salesforce` capability to WordPress roles in addition to the `administrator` role.
+- `salesforce_rest_api_roles_configure_salesforce`: allow other plugins to give the `configure_salesforce` capability to WordPress roles in addition to the `administrator` role. [documentation](./docs/extending-roles.md)
 - `salesforce_rest_api_push_object_allowed`: prevent a push per-mapping.
 - `salesforce_rest_api_pull_object_allowed`: prevent a pull per-mapping.
 - `salesforce_rest_api_pull_params_modify`: change what parameters are being sent to WordPress before syncing occurs
