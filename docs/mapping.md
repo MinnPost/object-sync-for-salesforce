@@ -18,8 +18,8 @@ The settings for a WordPress fieldmap work like this:
 4. Fieldmap: choose which fields from the WordPress object map to fields from the Salesforce object, and how the plugin should treat changes. See [below](#more-on-field-mapping) for more.
 5. Action triggers: the plugin can sync data when a record is changed in WordPress and/or Salesforce.
 6. Process asynchronously: whether push data will be sent to Salesforce immediately, or when `wp_cron` runs.
-7. Ignore drafts: many WordPress objects create and save drafts while editing is happening. By default, this data is not sent to Salesforce, but it can be.
-8. Weight: if the same object is mapped multiple times, the weight will determine what happens first. This is in ascending order.
+7. Push drafts: many WordPress objects create and save drafts while editing is happening. By default, this data is not sent to Salesforce. Checking the box causes it to be synced equally to live items.
+8. Weight: if the same object is mapped multiple times, the weight will determine what happens first. This is in ascending order, so objects with higher numerical values will be mapped after objects with lower numerical values.
 
 Several hooks exist for modifying these options. See the [extending mapping options documentation](./extending-mapping-options.md).
 

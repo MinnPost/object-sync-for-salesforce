@@ -55,7 +55,7 @@ class Wordpress_Salesforce_Activate {
             pull_trigger_field varchar(128) NOT NULL DEFAULT 'LastModifiedDate',
             sync_triggers text NOT NULL,
             push_async tinyint(1) NOT NULL DEFAULT '0',
-            ignore_drafts tinyint(1) NOT NULL DEFAULT '0',
+            push_drafts tinyint(1) NOT NULL DEFAULT '0',
             weight tinyint(1) NOT NULL DEFAULT '0',
             PRIMARY KEY  (id),
             UNIQUE KEY name (name),

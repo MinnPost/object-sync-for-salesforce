@@ -96,7 +96,7 @@ class Salesforce_Rest_API {
 		global $wpdb;
 
 		$this->wpdb = &$wpdb;
-		$this->version = '0.0.1';
+		$this->version = '0.0.2';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
 

@@ -169,7 +169,7 @@ class Wordpress_Salesforce_Admin {
                                 $fieldmap_fields = $map['fields'];
                                 $sync_triggers = $map['sync_triggers'];
                                 $push_async = $map['push_async'];
-                                $ignore_drafts = $map['ignore_drafts'];
+                                $push_drafts = $map['push_drafts'];
                                 $weight = $map['weight'];
                             }
                             

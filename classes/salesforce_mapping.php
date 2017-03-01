@@ -169,7 +169,7 @@ class Salesforce_Mapping {
 
         } else { // get all of em
 
-            $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `ignore_drafts`, `weight` FROM $table" , ARRAY_A );
+            $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table" , ARRAY_A );
             
             if ( !empty( $mappings ) ) {
                 $mappings = $this->prepare_fieldmap_data( $mappings );
@@ -274,7 +274,7 @@ class Salesforce_Mapping {
     		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
     	}
 		$data['push_async'] = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
-        $data['ignore_drafts'] = isset( $posted['ignore_drafts'] ) ? $posted['ignore_drafts'] : '';
+        $data['push_drafts'] = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
         $data['weight'] = isset( $posted['weight'] ) ? $posted['weight'] : '';
     	return $data;
     }

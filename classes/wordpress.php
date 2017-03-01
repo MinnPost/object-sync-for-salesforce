@@ -497,7 +497,7 @@ class Wordpress {
     *
     * part of CRUD for WordPress objects
     */
-    public function object_upsert( $name, $key, $value, $methods = array(), $params, $ignore_drafts = TRUE ) {
+    public function object_upsert( $name, $key, $value, $methods = array(), $params, $push_drafts = FALSE ) {
 
         $structure = $this->get_wordpress_table_structure( $name );
         $id_field = $structure['id_field'];
@@ -513,10 +513,10 @@ class Wordpress {
 
         switch ( $name ) {
             case 'user':
-                $result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
+                $result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
                 break;
             case 'post':
-                $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
+                $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
                 break;
             case 'attachment':
                 $result = $this->attachment_upsert( $key, $value, $methods, $params, $id_field );
@@ -524,10 +524,10 @@ class Wordpress {
             case 'category':
             case 'tag':
             case 'post_tag':
-                $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $ignore_drafts );
+                $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $push_drafts );
                 break;
             case 'comment':
-                $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
+                $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
                 break;
             default:
                 
@@ -539,11 +539,11 @@ class Wordpress {
                     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
                 */
                 // use hook like: add_filter( 'salesforce_rest_api_upsert_custom_wordpress_item', add_object, 10, 1 );
-                // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'ignore_drafts' => ignoredrafts, 'methods' => methods )
+                // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
 
                 // check to see if someone is calling the filter, and apply it if so
                 if ( !has_filter( 'salesforce_rest_api_upsert_custom_wordpress_item' ) ) {
-                    $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts, $name );
+                    $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name );
                 } else {
                     $result = apply_filters( 'salesforce_rest_api_upsert_custom_wordpress_item', array(
                         'key' => $key,
@@ -551,7 +551,7 @@ class Wordpress {
                         'methods' => $methods,
                         'params' => $params,
                         'id_field' => $id_field,
-                        'ignore_drafts' => $ignore_drafts,
+                        'push_drafts' => $push_drafts,
                         'name' => $name
                     ) );
                 }
@@ -617,7 +617,7 @@ class Wordpress {
                     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
                 */
                 // use hook like: add_filter( 'salesforce_rest_api_update_custom_wordpress_item', add_object, 10, 1 );
-                // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'ignore_drafts' => ignoredrafts, 'methods' => methods )
+                // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
 
                 // check to see if someone is calling the filter, and apply it if so
                 if ( !has_filter( 'salesforce_rest_api_update_custom_wordpress_item' ) ) {
@@ -810,7 +810,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $ignore_drafts = TRUE ) {
+    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = FALSE ) {
 
         // if the key is user_email, we need to make it just email because that is how the wordpress method reads it
         $method = $methods['method_match'];
@@ -1056,7 +1056,7 @@ class Wordpress {
     *   array of post data params
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not ID
-    * @param bool @ignore_drafts
+    * @param bool @push_drafts
     * indicates whether we should match against draft posts
     * @param string $post_type
     *   optional string for custom post type, if applicable
@@ -1068,7 +1068,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $ignore_drafts = TRUE, $post_type = 'post' ) {
+    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = FALSE, $post_type = 'post' ) {
 
         $method = $methods['method_match'];
 
@@ -1089,7 +1089,7 @@ class Wordpress {
             }
             $args['post_type'] = $post_type;
             $post_statuses = array( 'publish' );
-            if ( $ignore_drafts !== TRUE ) {
+            if ( $push_drafts === TRUE ) {
                 $post_statuses[] = 'draft';
             }
             $args['post_status'] = $post_statuses;
@@ -1633,7 +1633,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $ignore_drafts = TRUE ) {
+    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $push_drafts = FALSE ) {
         if ( $taxonomy === 'tag' ) {
             $taxonomy = 'post_tag';
         }
@@ -1879,7 +1879,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $ignore_drafts = TRUE ) {
+    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $push_drafts = FALSE ) {
         $method = $methods['method_match'];
         if ( $method === 'get_comment' ) {
             $method = 'get_comments';

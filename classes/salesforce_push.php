@@ -385,9 +385,9 @@ class Salesforce_Push {
 					continue;
 				}
 
-				// ignore drafts if the setting says so
+				// push drafts if the setting says so
 				// post status is draft, or post status is inherit and post type is not attachment
-				if ( isset( $mapping['ignore_drafts'] ) && $mapping['ignore_drafts'] === '1' && isset( $object['post_status'] ) && ( $object['post_status'] === 'draft'  || ( $object['post_status'] === 'inherit' && $object['post_type'] !== 'attachment' ) ) ) {
+				if ( ( !isset( $mapping['push_drafts'] ) || $mapping['push_drafts'] !== '1' ) && isset( $object['post_status'] ) && ( $object['post_status'] === 'draft'  || ( $object['post_status'] === 'inherit' && $object['post_type'] !== 'attachment' ) ) ) {
 					// skip this object if it is a draft and the fieldmap settings told us to ignore it
 					continue;
 				}
