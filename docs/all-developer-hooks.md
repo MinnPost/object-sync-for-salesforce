@@ -42,19 +42,19 @@ This page lists all developer hooks available in this plugin, with links to wher
     - documentation: (should put with push)
 - `salesforce_rest_api_settings_tabs`:
     - description: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
-    - code: 
+    - code: [classes/admin.php](../classes/admin.php)
     - documentation: [add a settings tab](./docs/adding-settings.md#add-a-settings-tab)
 - `salesforce_rest_api_settings_tab_include_settings`:
     - description: when adding tabs to the Salesforce Settings screen, determine whether or not to include the default settings PHP template, which we use to render the form.
-    - code: 
+    - code: [classes/admin.php](../classes/admin.php)
     - documentation: [change the template](./docs/adding-settings.md#change-the-template)
 - `salesforce_rest_api_settings_tab_content_before`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display before the settings form.
-    - code: 
+    - code: [classes/admin.php](../classes/admin.php)
     - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
 - `salesforce_rest_api_settings_tab_content_after`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form.
-    - code: 
+    - code: [classes/admin.php](../classes/admin.php)
     - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
 - `salesforce_rest_api_modify_schedulable_classes`:
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
@@ -62,11 +62,11 @@ This page lists all developer hooks available in this plugin, with links to wher
     - documentation: 
 - `salesforce_rest_api_add_more_wordpress_types`:
     - description: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
-    - code: 
+    - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-objects)
 - `salesforce_rest_api_remove_wordpress_types`:
     - description: remove WordPress content types from the list of what can be mapped to Salesforce objects. By default, we use this for the `wp_log` type that is included with this plugin.
-    - code: 
+    - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-objects)
 - `salesforce_rest_api_create_custom_wordpress_item`:
     - description: allow plugins to run their own create methods for adding new WordPress objects, if they cannot use built in methods.
@@ -90,7 +90,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - documentation: (should put in pull)
 - `salesforce_rest_api_wordpress_object_fields`:
     - description: when getting the fields for a WordPress object, allow plugins to add more (and also cache the array).
-    - code: 
+    - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-fields)
 - `salesforce_rest_api_wordpress_object_data`:
     - description: when getting the data for a WordPress object, allow plugins to add more, change the formatting, etc.
@@ -133,8 +133,8 @@ This page lists all developer hooks available in this plugin, with links to wher
     - documentation: (should put with push)
 - `salesforce_rest_api_set_more_user_data`:
     - description: allow plugins to set more data on user objects when users are created or updated. This could be used for permissions, for example.
-    - code: 
-    - documentation: 
+    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - documentation: (pull?)
 - `salesforce_rest_api_set_more_post_data`:
     - description: allow plugins to set more data on post objects when posts are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
