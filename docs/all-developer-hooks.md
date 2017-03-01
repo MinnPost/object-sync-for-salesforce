@@ -1,6 +1,6 @@
 # All developer hooks
 
-This page lists all developer hooks available in this plugin, with links to where they are documented.
+This page lists all developer hooks available in this plugin, with links to where in the plugin they are processed, and where in the documentation they are documented.
 
 ## Filters
 
