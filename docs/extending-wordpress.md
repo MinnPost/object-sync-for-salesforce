@@ -8,7 +8,7 @@ By default, the plugin supports create, read, update, delete methods for these o
 
 - user
 - post (including custom post types)
-- attachment
+- attachment [with caveats](#for-attachments)
 - category
 - tag
 - comment
@@ -134,4 +134,28 @@ $result = array(
     ),
     'errors' => $errors
 );
+```
+
+### For attachments
+
+If you are adding attachments to WordPress that come from Salesforce, you may need to do more than the default behavior, depending on exactly what data you have stored in Salesforce already.
+
+To facilitate this, there is the `salesforce_rest_api_set_initial_attachment_data` hook.
+
+#### Code example:
+
+```
+add_filter( 'salesforce_rest_api_set_initial_attachment_data', set_attachment, 10, 1 );
+function set_attachment( $params ) {
+    // set up the parameters available for an attachment
+    // the parameters will be stored based on the methods they use
+    // ex:
+    $params[$key] = array(
+        'value' => $value,
+        'method_modify' => $method_modify,
+        'method_create' => $method_create,
+        'method_read' => $methods['method_read']
+    );
+    return $params;
+}
 ```

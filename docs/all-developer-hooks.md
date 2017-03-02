@@ -87,7 +87,7 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `salesforce_rest_api_set_initial_attachment_data`:
     - description: allow plugins to add filename or parent data when creating attachment objects.
     - code: [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: (should put in pull)
+    - documentation: [extending wordpress](./extending-wordpress.md#for-attachments)
 - `salesforce_rest_api_wordpress_object_fields`:
     - description: when getting the fields for a WordPress object, allow plugins to add more (and also cache the array).
     - code: [classes/wordpress.php](../classes/wordpress.php)
