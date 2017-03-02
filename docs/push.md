@@ -1,1 +1,3 @@
 # Push from WordPress to Salesforce
+
+When a WordPress object type that is already mapped to a WordPress Salesforce type has an event that is an active trigger occur, a push occurs. An active trigger is an event (create, update, delete) that happens, in the case of push, in WordPress, and is selected in the specific fieldmap's settings. A mapped Salesforce object then needs to be created, updated, or deleted to the correct data.
