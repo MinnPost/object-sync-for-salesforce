@@ -59,7 +59,7 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `salesforce_rest_api_modify_schedulable_classes`:
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
     - code: [salesforce-rest-api.php](../../salesforce-rest-api.php)
-    - documentation: 
+    - documentation: [extending scheduling](./extending-scheduling.md)
 - `salesforce_rest_api_add_more_wordpress_types`:
     - description: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
     - code: [classes/wordpress.php](../classes/wordpress.php)

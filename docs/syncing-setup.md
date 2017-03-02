@@ -21,3 +21,7 @@ Pulling data from Salesforce always happens asynchronously. It will not happen i
 This Pull from Salesforce section is how you configure the frequency of pull `wp_cron` runs. They can also run at any frequency, depending on your data needs and your server capabilities. Add a number, and choose the time unit (in minutes, hours, or days).
 
 There is also a display of what is currently in the pull queue, if anything. If you have data in there and need to cancel its pull before it runs, click the Clear this queue button. This could happen in the event that data is pulled down from Salesforce, but it has not yet been saved in WordPress.
+
+## Scheduling other events
+
+By default, the plugin only schedules the above things. It also has a hook to modify what classes can be scheduled. You can read more about this in the [extending scheduling](./extending-scheduling.md) documentation.
