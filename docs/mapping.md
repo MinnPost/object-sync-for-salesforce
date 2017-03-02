@@ -62,3 +62,29 @@ A checked Prematch or Salesforce Key will cause the plugin to try to "upsert" th
 Direction chooses what to do with the field's data. If you select Salesforce to WordPress, this field won't be sent to Salesforce. If you select WordPress to Salesforce, this field won't be sent to Wordpress. If you choose Sync, it will go from one system to the other whenever it changes.
 
 Delete allows you to delete that fieldmap when you save the settings at the bottom of the page.
+
+## Mapping individual rows
+
+Individual object map rows - a WordPress user to a Salesforce Contact, for example - are created in several ways:
+
+1. Manually, if the interface supports this.
+
+    By default, this plugin can manually create object maps for users. You can see this at `https://<your site>/wp-admin/user-edit.php?user_id={userid}`. The {userid}, in this case, can be any user that isn't the currently logged in user. Don't use the {} in the actual URL.
+
+    You will need the ID of a Salesforce object for which there is a fieldmap (as defined above) to the WordPress user, or you can "Push to Salesforce as new record" to create a new record of that mapped Salesforce object type.
+
+2. From the Salesforce Push process.
+
+    When a WordPress object type that is already mapped to a Salesforce object type has an event that is an active trigger (as defined above).
+
+    - Create: if a new WordPress item is created, it will attempt to `insert` or `upsert` it into Salesforce. Upsert is used with the Prematch field defined above. You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
+    - Update: if there is already an object map between two objects, the plugin will attempt to update the out of date item.
+    - Delete: if there is already an object map between two objects, the plugin will attempt to delete the remaining item.
+
+3. From the Salesforce Pull process.
+
+    When a Salesforce object type that is already mapped to a WordPress object type has an event that is an active trigger (as defined above).
+
+    - Create: if a new Salesforce item is created, it will attempt to `insert` or `upsert` it into WordPress. Upsert is used with the Prematch field defined above. You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
+    - Update: if there is already an object map between two objects, the plugin will attempt to update the out of date item.
+    - Delete: if there is already an object map between two objects, the plugin will attempt to delete the remaining item.
