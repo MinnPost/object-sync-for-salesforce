@@ -10,15 +10,47 @@ Several hooks in the plugin expand how upsert works. They can be used with `push
 
 ### Change the key or value for the upsert match
 
-salesforce_rest_api_modify_upsert_key
-salesforce_rest_api_modify_upsert_value
+Use the `salesforce_rest_api_modify_upsert_key` hook to change an upsert key, or what the field is, by which an object should be matched. This only runs when an upsert operation is already running.
+
+Use the `salesforce_rest_api_modify_upsert_value` hook to change an upsert value, or what the field value is, by which an object should be matched. This only runs when an upsert operation is already running.
 
 ### Make a custom function for matching items
 
-salesforce_rest_api_find_wp_object_match
-salesforce_rest_api_find_sf_object_match
+This allows you to run entirely different functions to change what happens on an upsert. The `salesforce_rest_api_find_wp_object_match` runs on a `pull`, when the change happens in Salesforce. The `salesforce_rest_api_find_sf_object_match` runs on a `push`, when the change happens in WordPress.
 
+#### Example
 
+This is an example where email fields are mapped between Salesforce Contacts and WordPress users. But in this case, there is a custom Salesforce object for email addresses that allows Contacts to have multiple email addresses.
+
+The hook use expands the matching to check any of the email addresses associated with that Contact, and return the Contact ID for the object map if a match is found.
+
+```
+add_filter( 'salesforce_rest_api_find_sf_object_match', find_sf_object_match', 10, 4 );
+function find_sf_object_match( $salesforce_id, $wordpress_object, $mapping = array(), $action ) {
+    if ( $action === 'push' && $mapping['wordpress_object'] === 'user' ) {
+        if ( is_object( $this->salesforce ) ) {
+            $salesforce_api = $this->salesforce->salesforce['sfapi'];
+        } else {
+            $salesforce = $this->salesforce();
+            $salesforce_api = $salesforce->salesforce['sfapi'];
+        }
+        
+        if ( is_object( $salesforce_api ) ) {
+
+            // we want to see if the user's email address exists as a primary on any contact and use that contact if so
+            $mail = $wordpress_object['user_email'];
+            $query = "SELECT Primary_Contact__c FROM Email__c WHERE Email_Address__c = '$mail'";
+            $result = $salesforce_api->query( $query );
+
+            if ( $result['data']['totalSize'] === 1 ) {
+                $salesforce_id = $result['data']['records'][0]['Primary_Contact__c'];
+            }
+        }
+    }
+
+    return $salesforce_id;
+}
+```
 
 
 salesforce_rest_api_upsert_custom_wordpress_item (should be somewhere else though)
