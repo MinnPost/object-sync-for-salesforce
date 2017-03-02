@@ -8,15 +8,16 @@ In this case, an upsert query will happen in either system. A `push` will look f
 
 Several hooks in the plugin expand how upsert works. They can be used with `push` or `pull` events, depending on the hook.
 
-### Change the key or value
+### Change the key or value for the upsert match
 
+salesforce_rest_api_modify_upsert_key
+salesforce_rest_api_modify_upsert_value
 
-
+### Make a custom function for matching items
 
 salesforce_rest_api_find_wp_object_match
 salesforce_rest_api_find_sf_object_match
-salesforce_rest_api_modify_upsert_key
-salesforce_rest_api_modify_upsert_value
+
 
 
 

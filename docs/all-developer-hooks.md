@@ -27,7 +27,7 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `salesforce_rest_api_find_wp_object_match`:
     - description: modify the $wordpress_id string here
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
-    - documentation: [extending upsert](./extending-upsert.md)
+    - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
 - `salesforce_rest_api_push_params_modify`:
     - description: change what parameters are being sent to Salesforce before syncing occurs
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
@@ -39,7 +39,7 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `salesforce_rest_api_find_sf_object_match`:
     - description: modify the $salesforce_id string here
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
-    - documentation: [extending upsert](./extending-upsert.md)
+    - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
 - `salesforce_rest_api_settings_tabs`:
     - description: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
     - code: [classes/admin.php](../classes/admin.php)
@@ -99,11 +99,11 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `salesforce_rest_api_modify_upsert_key`:
     - description: allow developers to change the key by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
     - code: [classes/salesforce.php](../classes/salesforce.php) and [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: [extending upsert](./extending-upsert.md#change-the-key-or-value)
+    - documentation: [extending upsert](./extending-upsert.md#change-the-key-or-value-for-the-upsert-match)
 - `salesforce_rest_api_modify_upsert_value`:
     - description: allow developers to change the value by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
     - code: [classes/salesforce.php](../classes/salesforce.php) and [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: [extending upsert](./extending-upsert.md#change-the-key-or-value)
+    - documentation: [extending upsert](./extending-upsert.md#change-the-key-or-value-for-the-upsert-match)
 
 ## Actions
 
