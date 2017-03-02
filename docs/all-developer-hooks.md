@@ -71,19 +71,19 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `salesforce_rest_api_create_custom_wordpress_item`:
     - description: allow plugins to run their own create methods for adding new WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: (should put in pull or mapping)
+    - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
 - `salesforce_rest_api_upsert_custom_wordpress_item`:
     - description: allow plugins to run their own upsert methods for checking for existence of, and then adding or updating, new WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: (should put in pull or mapping)
+    - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
 - `salesforce_rest_api_update_custom_wordpress_item`:
     - description: allow plugins to run their own update methods for updating existing, mapped WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: (should put in pull or mapping)
+    - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
 - `salesforce_rest_api_delete_custom_wordpress_item`:
     - description: allow plugins to run their own delete methods for deleting existing, mapped WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: (should put in pull or mapping)
+    - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
 - `salesforce_rest_api_set_initial_attachment_data`:
     - description: allow plugins to add filename or parent data when creating attachment objects.
     - code: [classes/wordpress.php](../classes/wordpress.php)
@@ -94,7 +94,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-fields)
 - `salesforce_rest_api_wordpress_object_data`:
     - description: when getting the data for a WordPress object, allow plugins to add more, change the formatting, etc.
-    - code: [classes/activate.php](../classes/wordpress.php)
+    - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: (should put with mapping or push)
 - `salesforce_rest_api_modify_upsert_key`:
     - description: allow developers to change the key by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
