@@ -24,6 +24,10 @@ This is the full documentation for this plugin, extending the information in [th
     
     Options for how often WordPress and Salesforce will attempt to sync data.
 
+    For developers:
+
+    - [Extending scheduling](./extending-scheduling.md)
+
 4. [Mapping objects](./mapping.md)
     
     Mapping WordPress and Salesforce objects to each other.
@@ -38,11 +42,15 @@ This is the full documentation for this plugin, extending the information in [th
 
     For developers:
 
+    - [Accessing the Salesforce API object](./accessing-salesforce-object.md)
+
 6. [Pulling from Salesforce to WordPress](./pull.md)
 
     When mapped objects in Salesforce are changed in ways that apply to the plugin's triggers (as defined in the mapping documentation), that data is "pulled" from Salesforce into WordPress where it acts on relevant WordPress data.
 
     For developers:
+
+    - [Extending WordPress data modification](./extending-wordpress.md)
 
 7. [All developer hooks](./all-developer-hooks.md)
 
