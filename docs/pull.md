@@ -20,5 +20,6 @@ The Salesforce REST API includes many other methods, and we don't currently use 
 
 ## Using the Analytics API
 
-One thing to note is that the plugin's `salesforce` class includes basic support for the distinct [Salesforce Analytics API](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/sforce_analytics_rest_api_intro.htm). This can be used to, for example, display the results of a Salesforce Report in a WordPress widget.
+This plugin's `salesforce` class includes basic support for the distinct [Salesforce Analytics API](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/sforce_analytics_rest_api_intro.htm). This can be used to, for example, display the results of a Salesforce Report in a WordPress widget. Because this is dependent on what you have to analyze in your Salesforce install, and what you need to do with it in WordPress, this plugin does not include any syncing with this data by default.
 
+However, there is an [example plugin](https://github.com/minnpost/minnpost-donation-progress-widget) that shows a (very specific) use case. Additionally, there is some [documentation](./using-salesforce-analytics-api.md) about how this integration works, and what kind of code is required to use it.

@@ -151,3 +151,12 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: allow plugins to set more data on term objects when terms are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: (pull?)
+
+## Other developer information
+
+### Analytics API
+
+There is not a hook for this, but this plugin does work with the Salesforce Analytics API.
+
+    - code: [classes/salesforce.php](../classes/salesforce.php)
+    - documentation: [using the salesforce analytics api](./using-salesforce-analytics-api.md)
