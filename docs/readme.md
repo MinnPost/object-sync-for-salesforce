@@ -46,11 +46,12 @@ This is the full documentation for this plugin, extending the information in [th
 
 6. [Pulling from Salesforce to WordPress](./pull.md)
 
-    When mapped objects in Salesforce are changed in ways that apply to the plugin's triggers (as defined in the mapping documentation), that data is "pulled" from Salesforce into WordPress where it acts on relevant WordPress data.
+    When mapped objects in Salesforce are changed in ways that apply to the plugin's triggers (as defined in the mapping documentation), that data is "pulled" from Salesforce into WordPress where it can act on relevant WordPress data.
 
     For developers:
 
     - [Extending WordPress data modification](./extending-wordpress.md)
+    - [Using the Salesforce Analytics API](./using-salesforce-analytics-api.md)
 
 7. [All developer hooks](./all-developer-hooks.md)
 
