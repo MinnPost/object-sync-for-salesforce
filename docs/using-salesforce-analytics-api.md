@@ -1,11 +1,15 @@
 # Using the Salesforce Analytics API
 
-Currently, the plugin supports running and retrieving data from a Salesforce Report in two ways:
+Usage of this feature is very specific to how reporting works in a given Salesforce setup, but we've tried to provide a foundation of information. Important: with this plugin alone, Report data is not permantly stored in WordPress (it will/will not be cached according to your WordPress cache settings) with this integration, but this would be possible to build with additional plugins.
 
-1. Make an API call to an analytics URL. It follows this pattern: `/analytics/{$name}/{$id}/{$route}`.
-2. Run a Report based on its ID. This requires calling the [Salesforce API object](./accessing-salesforce-object.md).
+Currently, the plugin supports running a Salesforce Report, and retrieving data from it, in two ways:
 
-Assuming you have the object in the `$salesforce_api` variable, it works like this:
+1. `analytics_api()`: Make an API call to any Salesforce Analytics URL. It follows this pattern: `/analytics/{$name}/{$id}/{$route}`.
+2. `run_analytics_report`: Run a Report based on its ID. This requires calling the [Salesforce API object](./accessing-salesforce-object.md).
+
+Both methods send the URL and parameters to the plugin's `api_call()` method where it is called. This is where JSON processing, caching, logging, error handling, etc. happens. The JSON result of this method is similar to other API call methods.
+
+Assuming you have the plugin's Salesforce API object in the `$salesforce_api` variable, it works like this:
 
 ```
 $salesforce_api->run_analytics_report(
