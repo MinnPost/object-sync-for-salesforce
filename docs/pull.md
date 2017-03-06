@@ -6,9 +6,15 @@ What data gets pulled depends entirely on the settings defined as part of [setti
 
 When the data gets pulled depends on the [sync settings](./syncing-setup.md).
 
-## How Salesforce data is retrieved and saved in WordPress
+## How Salesforce data is retrieved and configured for WordPress
 
 The `salesforce` class of this plugin brings in the Salesforce REST API, and uses the methods it needs to read data in Salesforce. When an item needs to be pulled into WordPress, the API gets that data in a format the plugin can use. This plugin is then able to use WordPress methods to work with the data in WordPress.
+
+When the plugin understands what operation it needs to do - create, update, or delete - with the data it has, it creates a set of parameters. This includes each mapped field necessary for the object pair, and what methods need to be called to work with that field. It discards data for fields that are not included in the fieldmap.
+
+The plugin includes a hook to modify the array of parameters. This is [documented](./modify-parameters#salesforce-pull).
+
+## How Salesforce data is saved in WordPress
 
 The plugin has methods for creating, updating, and deleting all of the supported WordPress object types in the `wordpress` class. These methods determine what the object's structure is, what the field's structure is, and what methods need to be called to work with it.
 

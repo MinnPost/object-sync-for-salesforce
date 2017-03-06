@@ -6,7 +6,15 @@ What data gets pushed depends entirely on the settings defined as part of [setti
 
 When the data gets pushed depends on the [sync settings](./syncing-setup.md).
 
-## How WordPress data is retrieved and saved in Salesforce
+## How WordPress data is retrieved and configured for Salesforce
+
+The `wordpress` class of this plugin gets the `wpdb` object, and uses the methods it needs to read data in WordPress. When an item needs to be pulled into Salesforce, the class gets that data in a format the plugin can use. This plugin is then able to use the Salesforce API methods to work with the data in Salesforce.
+
+When the plugin understands what operation it needs to do - create, update, or delete - with the data it has, it creates a set of parameters. This includes each mapped field necessary for the object pair, and what methods need to be called to work with that field. It discards data for fields that are not included in the fieldmap.
+
+The plugin includes a hook to modify the array of parameters. This is [documented](./modify-parameters#salesforce-push).
+
+## How WordPress data is saved in Salesforce
 
 The `salesforce` class of this plugin brings in the Salesforce REST API, and uses the methods it needs to create, update, and delete data in Salesforce. When an item in WordPress needs to be sent to Salesforce, it uses the appropriate API method.
 
