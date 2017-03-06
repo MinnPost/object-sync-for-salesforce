@@ -10,7 +10,7 @@ When the data gets pulled depends on the [sync settings](./syncing-setup.md).
 
 The `salesforce` class of this plugin brings in the Salesforce REST API, and uses the methods it needs to read data in Salesforce. When an item needs to be pulled into WordPress, the API gets that data in a format the plugin can use. This plugin is then able to use WordPress methods to work with the data in WordPress.
 
-The plugin prepares the relationship between individual items - an individual WordPress user to an individual Salesforce Contact, for example - before saving data. This is the field map, and it the relationship between the object types, as well as the data that is being brought into WordPress. The plugin includes a hook to modify this field map, and it is [documented](./extending-mapping-object.md#salesforce-pull).
+The plugin prepares the relationship between individual items - an individual WordPress user to an individual Salesforce Contact, for example - before saving data. This is the object map, and it the relationship between the object types, as well as the data that is being brought into WordPress. The plugin includes a hook to modify this object map, and it is [documented](./extending-mapping-object.md#salesforce-pull).
 
 When the plugin understands what operation it needs to do - create, update, or delete - with the data it has, it creates a set of parameters. This includes each mapped field necessary for the object pair, and what methods need to be called to work with that field. It discards data for fields that are not included in the fieldmap.
 
