@@ -966,7 +966,8 @@ class Salesforce_Pull {
 				'last_sync' => current_time( 'mysql' ),
 				'last_sync_action' => 'pull',
 				'last_sync_status' => $this->mappings->status_success,
-				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain )
+				'last_sync_message' => __( 'Mapping object created via function: ' . __FUNCTION__, $this->text_domain ),
+				'action' => 'created'
 			)
 		);
 

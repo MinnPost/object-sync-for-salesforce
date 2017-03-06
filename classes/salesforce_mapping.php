@@ -304,7 +304,10 @@ class Salesforce_Mapping {
     public function create_object_map( $posted = array() ) {
         $data = $this->setup_object_map_data( $posted );
         $data['created'] = current_time( 'mysql' );
-        if ( $posted['salesforce_id'] !== 0 ) {
+        // check to see if we don't know the salesforce id, or if this is pending
+        // if it is pending, the map will get updated after it finishes running
+        if ( $data['salesforce_id'] !== 0 || $data['action'] === 'pending' ) {
+            unset( $data['action'] );
             $insert = $this->wpdb->insert( $this->object_map_table, $data );
         } else {
             $status = 'error';
@@ -314,7 +317,7 @@ class Salesforce_Mapping {
                 $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
             }
             $logging->setup(
-                __( ucfirst( $status ) . ': Mapping: error caused by trying to map the WordPress ' . $posted['wordpress_object'] . ' with ID of ' . $posted['wordpress_id'] . ' to Salesforce ID of 0, which is invalid.', $this->text_domain ),
+                __( ucfirst( $status ) . ': Mapping: error caused by trying to map the WordPress ' . $data['wordpress_object'] . ' with ID of ' . $data['wordpress_id'] . ' to Salesforce ID of 0, which is invalid.', $this->text_domain ),
                 '',
                 0,
                 0,
@@ -325,7 +328,7 @@ class Salesforce_Mapping {
         if ( $insert === 1 ) {
             return $this->wpdb->insert_id;
         } elseif ( strpos( $this->wpdb->last_error, 'Duplicate entry' ) !== FALSE ) {
-            $mapping = $this->load_by_salesforce( $posted['salesforce_id'] );
+            $mapping = $this->load_by_salesforce( $data['salesforce_id'] );
             $id = $mapping['id'];
             $status = 'error';
             if ( isset( $this->logging ) ) {
@@ -334,7 +337,7 @@ class Salesforce_Mapping {
                 $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
             }
             $logging->setup(
-                __( ucfirst( $status ) . ': Mapping: there is already a WordPress object mapped to the Salesforce object ' . $posted['salesforce_id'] . ' and the mapping object ID is ' . $id, $this->text_domain ),
+                __( ucfirst( $status ) . ': Mapping: there is already a WordPress object mapped to the Salesforce object ' . $data['salesforce_id'] . ' and the mapping object ID is ' . $id, $this->text_domain ),
                 '',
                 0,
                 0,
@@ -412,7 +415,7 @@ class Salesforce_Mapping {
     }
 
     /**
-    * 
+    * Setup the data for the object map
     *
     * @param array $posted
     * @return $data

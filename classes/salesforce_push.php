@@ -605,7 +605,7 @@ class Salesforce_Push {
 			// right here we should set the pushing transient
 			// this means we have to create the mapping object here as well, and update it with the correct IDs after successful response
 			// create the mapping object between the rows
-			$mapping_object_id = $this->create_object_map( $object, $object_id, 0, $mapping );
+			$mapping_object_id = $this->create_object_map( $object, $object_id, 0, $mapping, TRUE );
 			set_transient( 'salesforce_pushing_' . $mapping_object_id, 1, $seconds );
 			set_transient( 'salesforce_pushing_object_id', $mapping_object_id );
 			$mapping_object = $this->mappings->get_object_maps( array( 'id' => $mapping_object_id ) );
@@ -746,6 +746,7 @@ class Salesforce_Push {
 
 				// update that mapping object
 				$mapping_object['salesforce_id'] = $salesforce_id;
+				$mapping_object['last_sync_message'] = __( 'Mapping object created via function: ' . __FUNCTION__, $this->text_domain );
 				$mapping_object = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 				// hook for push success
@@ -888,7 +889,14 @@ class Salesforce_Push {
 	*	This is the database row for the map object
 	*
 	*/
-	private function create_object_map( $wordpress_object, $id_field_name, $salesforce_id, $field_mapping ) {
+	private function create_object_map( $wordpress_object, $id_field_name, $salesforce_id, $field_mapping, $pending = FALSE ) {
+
+		if ( $pending === TRUE ) {
+			$action = 'pending';
+		} else {
+			$action = 'created';
+		}
+
 		// Create object map and save it
 		$mapping_object = $this->mappings->create_object_map(
 			array(
@@ -898,7 +906,8 @@ class Salesforce_Push {
 				'last_sync' => current_time( 'mysql' ),
 				'last_sync_action' => 'push',
 				'last_sync_status' => $this->mappings->status_success,
-				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain )
+				'last_sync_message' => __( 'Mapping object ' . $action . ' via function: ' . __FUNCTION__, $this->text_domain ),
+				'action' => $action
 			)
 		);
 
