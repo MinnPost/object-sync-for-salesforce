@@ -19,11 +19,11 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `salesforce_rest_api_pull_params_modify`:
     - description: change what parameters are being sent to WordPress before syncing occurs
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
-    - documentation: [modify parameters](./modify-parameters#salesforce-push)
+    - documentation: [extend parameters](extending-parameters.md#salesforce-push)
 - `salesforce_pull_mapping_object`:
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
-    - documentation: (should put in either pull or mapping)
+    - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-pull)
 - `salesforce_rest_api_find_wp_object_match`:
     - description: modify the $wordpress_id string here
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
@@ -31,11 +31,11 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `salesforce_rest_api_push_params_modify`:
     - description: change what parameters are being sent to Salesforce before syncing occurs
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
-    - documentation: [modify parameters](./modify-parameters#salesforce-push)
+    - documentation: [extend parameters](extending-parameters.md#salesforce-push)
 - `salesforce_push_mapping_object`:
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
-    - documentation: (should put in either push or mapping)
+    - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-push)
 - `salesforce_rest_api_find_sf_object_match`:
     - description: modify the $salesforce_id string here
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)

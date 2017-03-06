@@ -10,9 +10,11 @@ When the data gets pushed depends on the [sync settings](./syncing-setup.md).
 
 The `wordpress` class of this plugin gets the `wpdb` object, and uses the methods it needs to read data in WordPress. When an item needs to be pulled into Salesforce, the class gets that data in a format the plugin can use. This plugin is then able to use the Salesforce API methods to work with the data in Salesforce.
 
+The plugin prepares the relationship between individual items - an individual WordPress user to an individual Salesforce Contact, for example - before saving data. This is the field map, and it the relationship between the object types, as well as the data that is being brought into Salesforce. The plugin includes a hook to modify this field map, and it is [documented](./extending-mapping-object.md#salesforce-push).
+
 When the plugin understands what operation it needs to do - create, update, or delete - with the data it has, it creates a set of parameters. This includes each mapped field necessary for the object pair, and what methods need to be called to work with that field. It discards data for fields that are not included in the fieldmap.
 
-The plugin includes a hook to modify the array of parameters. This is [documented](./modify-parameters#salesforce-push).
+The plugin includes a hook to modify the array of parameters. This is [documented](extending-parameters.md#salesforce-push).
 
 ## How WordPress data is saved in Salesforce
 

@@ -1,4 +1,4 @@
-# Modifying the parameters
+# Extending parameters
 
 When this plugin is syncing data, it matches fields between the two systems in a `$params` array. The structure of the array depends on whether the action is a `push` or `pull`, but the array always has the field of the system that is receiving data on the left, and the system that triggered it on the right.
 
