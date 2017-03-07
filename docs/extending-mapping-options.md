@@ -137,3 +137,7 @@ function add_field( $object_fields, $wordpress_object ) {
     return $object_fields;
 }
 ```
+
+## WordPress object data
+
+`salesforce_rest_api_wordpress_object_data`

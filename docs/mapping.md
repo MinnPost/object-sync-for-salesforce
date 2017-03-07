@@ -88,3 +88,7 @@ Individual object map rows - a WordPress user to a Salesforce Contact, for examp
     - Create: if a new Salesforce item is created, it will attempt to `insert` or `upsert` it into WordPress. Upsert is used with the Prematch field defined above. You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
     - Update: if there is already an object map between two objects, the plugin will attempt to update the out of date item.
     - Delete: if there is already an object map between two objects, the plugin will attempt to delete the remaining item.
+
+### Extending WordPress object data
+
+As you can for the list of objects, and the fields per object, you can also extend an individual WordPress item's data. This is [documented](./extending-mapping-objects.md#wordpress-object-data).

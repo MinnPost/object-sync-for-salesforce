@@ -95,7 +95,7 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `salesforce_rest_api_wordpress_object_data`:
     - description: when getting the data for a WordPress object, allow plugins to add more, change the formatting, etc.
     - code: [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: (should put with mapping or push)
+    - documentation: [extending mapping options](./extending-mapping-options.md#wordpress-object-data)
 - `salesforce_rest_api_modify_upsert_key`:
     - description: allow developers to change the key by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
     - code: [classes/salesforce.php](../classes/salesforce.php) and [classes/wordpress.php](../classes/wordpress.php)
