@@ -15,8 +15,8 @@ Both directions, `push` and `pull`, allow for this mapping object to be extended
 ```
 $mapping_object = array(
     'id' => 244
-    'wordpress_id' => 69158
-    'salesforce_id' => '0035600000G1vAsAAJ'
+    'wordpress_id' => a user id
+    'salesforce_id' => 'a contact id'
     'wordpress_object' => 'user'
     'created' => '2017-03-06 12:29:19'
     'object_updated' => '2017-03-07 07:34:50'
@@ -38,8 +38,8 @@ $mapping_object = array(
 ```
 $mapping_object = array(
     'id' => 242,
-    'wordpress_id' => 69156,
-    'salesforce_id' => '0035600000G1v7PAAR',
+    'wordpress_id' => a user id,
+    'salesforce_id' => 'a contact id',
     'wordpress_object' => 'user',
     'created' => '2017-03-06 11:58:31',
     'object_updated' => '0000-00-00 00:00:00',
