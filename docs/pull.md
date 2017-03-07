@@ -20,7 +20,7 @@ The plugin includes a hook to modify the array of parameters. This is [documente
 
 The plugin has methods for creating, updating, and deleting all of the supported WordPress object types in the `wordpress` class. These methods determine what the object's structure is, what the field's structure is, and what methods need to be called to work with it.
 
-This plugin also contains several hooks to do more with objects, including custom objects, in WordPress. These are [documented](./extending-wordpress.md).
+This plugin also contains several hooks to do more with objects, including both default and custom objects, in WordPress. These are [documented](./extending-wordpress.md).
 
 ## Using the API directly
 

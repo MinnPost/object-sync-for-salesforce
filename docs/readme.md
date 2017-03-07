@@ -43,8 +43,8 @@ This is the full documentation for this plugin, extending the information in [th
     For developers:
 
     - [Accessing the Salesforce API object](./accessing-salesforce-object.md)
-    - [Extending push parameters](extending-parameters.md#salesforce-push)
-    - [Extending mapping object](extending-mapping-object.md#salesforce-push)
+    - [Extending push parameters](./extending-parameters.md#salesforce-push)
+    - [Extending mapping object](./extending-mapping-object.md#salesforce-push)
 
 6. [Pulling from Salesforce to WordPress](./pull.md)
 
@@ -54,8 +54,8 @@ This is the full documentation for this plugin, extending the information in [th
 
     - [Extending WordPress data modification](./extending-wordpress.md)
     - [Using the Salesforce Analytics API](./using-salesforce-analytics-api.md)
-    - [Extending pull parameters](extending-parameters.md#salesforce-pull)
-    - [Extending mapping object](extending-mapping-object.md#salesforce-pull)
+    - [Extending pull parameters](./extending-parameters.md#salesforce-pull)
+    - [Extending mapping object](./extending-mapping-object.md#salesforce-pull)
 
 7. [All developer hooks](./all-developer-hooks.md)
 

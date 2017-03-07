@@ -134,23 +134,23 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `salesforce_rest_api_set_more_user_data`:
     - description: allow plugins to set more data on user objects when users are created or updated. This could be used for permissions, for example.
     - code: [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: (pull?)
+    - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
 - `salesforce_rest_api_set_more_post_data`:
     - description: allow plugins to set more data on post objects when posts are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: (pull?)
+    - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
 - `salesforce_rest_api_set_more_comment_data`:
     - description: allow plugins to set more data on comment objects when comments are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: (pull?)
+    - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
 - `salesforce_rest_api_set_more_attachment_data`:
     - description: allow plugins to set more data on attachment objects when attachments are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: (pull?)
+    - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
 - `salesforce_rest_api_set_more_term_data`:
     - description: allow plugins to set more data on term objects when terms are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
-    - documentation: (pull?)
+    - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
 
 ## Other developer features
 

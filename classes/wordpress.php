@@ -763,7 +763,7 @@ class Wordpress {
                 }
 
                 // developers can use this hook to set any other user data - permissions, etc
-                do_action( 'salesforce_rest_api_set_more_user_data', $user_id, $params );
+                do_action( 'salesforce_rest_api_set_more_user_data', $user_id, $params, 'create' );
 
                 // send notification of new user
                 // todo: figure out what permissions out to get notifications for this and make sure it works the right way
@@ -943,7 +943,7 @@ class Wordpress {
             }
             
             // developers can use this hook to set any other user data - permissions, etc
-            do_action( 'salesforce_rest_api_set_more_user_data', $user_id, $params );
+            do_action( 'salesforce_rest_api_set_more_user_data', $user_id, $params, 'update' );
 
         }
 
@@ -1025,7 +1025,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other post data
-            do_action( 'salesforce_rest_api_set_more_post_data', $post_id, $params );
+            do_action( 'salesforce_rest_api_set_more_post_data', $post_id, $params, 'create' );
 
         }
 
@@ -1220,7 +1220,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other post data
-            do_action( 'salesforce_rest_api_set_more_post_data', $post_id, $params );
+            do_action( 'salesforce_rest_api_set_more_post_data', $post_id, $params, 'update' );
 
         }
 
@@ -1305,7 +1305,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other attachment data
-            do_action( 'salesforce_rest_api_set_more_attachment_data', $attachment_id, $params );
+            do_action( 'salesforce_rest_api_set_more_attachment_data', $attachment_id, $params, 'create' );
 
         }
 
@@ -1513,7 +1513,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other attachment data
-            do_action( 'salesforce_rest_api_set_more_attachment_data', $attachment_id, $params );
+            do_action( 'salesforce_rest_api_set_more_attachment_data', $attachment_id, $params, 'update' );
 
         }
 
@@ -1592,7 +1592,7 @@ class Wordpress {
             }
             
             // developers can use this hook to set any other term data
-            do_action( 'salesforce_rest_api_set_more_term_data', $term_id, $params );
+            do_action( 'salesforce_rest_api_set_more_term_data', $term_id, $params, 'create' );
             
         }
 
@@ -1744,7 +1744,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other term data
-            do_action( 'salesforce_rest_api_set_more_term_data', $term_id, $params );
+            do_action( 'salesforce_rest_api_set_more_term_data', $term_id, $params, 'update' );
 
         }
 
@@ -1840,7 +1840,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other comment data
-            do_action( 'salesforce_rest_api_set_more_comment_data', $comment_id, $params );
+            do_action( 'salesforce_rest_api_set_more_comment_data', $comment_id, $params, 'create' );
 
         }
 
@@ -2014,7 +2014,7 @@ class Wordpress {
             }
             
             // developers can use this hook to set any other comment data
-            do_action( 'salesforce_rest_api_set_more_comment_data', $comment_id, $params );
+            do_action( 'salesforce_rest_api_set_more_comment_data', $comment_id, $params, 'update' );
 
         }
 
