@@ -23,7 +23,7 @@ function before_pull( $wordpress_id, $mapping, $object, $object_id, $params ) {
     // $wordpress_id is the object id
     // $mapping is the field map between the object types
     // $object is the object data
-    // $object_id is the id field's name
+    // $object_id is the wordpress id field's name
     // $params is the data mapping between the two systems
 }
 ```
@@ -73,3 +73,60 @@ The action hooks that run on around the save on a `push` event are:
 - `salesforce_rest_api_pre_push`
 - `salesforce_rest_api_push_fail`
 - `salesforce_rest_api_push_success`
+
+### Code examples
+
+#### Before push
+
+```
+add_action( 'salesforce_rest_api_pre_push', 'before_push', 10, 5 );
+function before_push( $salesforce_id, $mapping, $object, $object_id, $params ) {
+    // do things before the plugin saves any data in salesforce
+    // $salesforce_id is the object id
+    // $mapping is the field map between the object types
+    // $object is the object data
+    // $object_id is the wordpress id field's name
+    // $params is the data mapping between the two systems
+}
+```
+
+#### After fail
+
+```
+add_action( 'salesforce_rest_api_push_fail', 'push_fail', 10, 5 );
+function push_fail( $op, $response, $synced_object ) {
+    // do things if the save failed
+    // $op is what the plugin tried to do - create, update, upsert, delete
+    // $response is what was returned by the $salesforce class. sfapi->response
+    // $synced_object is an array like this:
+    /*
+    $synced_object = array(
+        'wordpress_object' => $object,
+        'mapping_object' => $mapping_object,
+        'queue_item' => FALSE,
+        'mapping' => $mapping,
+    );
+    */
+}
+```
+
+#### After success
+
+```
+add_action( 'salesforce_rest_api_push_success', 'push_success', 10, 3 );
+function push_success( $op, $response, $synced_object, $object_id ) {
+    // do things if the save succeeded
+    // $op is what the plugin did - create, update, upsert, delete
+    // $response is what was returned by the $salesforce class. sfapi->response
+    // $synced_object is an array like this:
+    /*
+    $synced_object = array(
+        'wordpress_object' => $object,
+        'mapping_object' => $mapping_object,
+        'queue_item' => FALSE,
+        'mapping' => $mapping,
+    );
+    */
+    $object_id is the salesforce object id
+}
+```
