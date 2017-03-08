@@ -127,6 +127,6 @@ function push_success( $op, $response, $synced_object, $object_id ) {
         'mapping' => $mapping,
     );
     */
-    $object_id is the salesforce object id
+    // $object_id is the salesforce object id
 }
 ```
