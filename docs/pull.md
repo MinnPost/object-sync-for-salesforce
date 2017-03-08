@@ -22,6 +22,8 @@ The plugin has methods for creating, updating, and deleting all of the supported
 
 This plugin also contains several hooks to do more with objects, including both default and custom objects, in WordPress. These are [documented](./extending-wordpress.md).
 
+Finally, the plugin contains a few hooks to perform actions right before, and right after, data is saved in WordPress. These are [documented](./extending-before-and-after-saving.md#salesforce-pull).
+
 ## Using the API directly
 
 The Salesforce REST API includes many other methods, and we don't currently use all of them. However, if you need to extend what can be done in Salesforce, the plugin always provides access to an instance of the API itself. We have [documented](./accessing-salesforce-object.md) how to access this.

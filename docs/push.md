@@ -20,6 +20,8 @@ The plugin includes a hook to modify the array of parameters. This is [documente
 
 The `salesforce` class of this plugin brings in the Salesforce REST API, and uses the methods it needs to create, update, and delete data in Salesforce. When an item in WordPress needs to be sent to Salesforce, it uses the appropriate API method.
 
+The plugin contains a few hooks to perform actions right before, and right after, data is saved in Salesforce. These are [documented](./extending-before-and-after-saving.md#salesforce-push).
+
 ## Using the API directly
 
 The Salesforce REST API includes many other methods, and we don't currently use all of them. However, if you need to extend what can be done in Salesforce, the plugin always provides access to an instance of the API itself. We have [documented](./accessing-salesforce-object.md) how to access this.
