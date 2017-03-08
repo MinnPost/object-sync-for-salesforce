@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Salesforce_Logging | Salesforce REST API</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+		</div>
+
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
+				<li><a href="class-Salesforce.html">Salesforce</a></li>
+				<li class="active"><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
+				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
+				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
+				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
+				<li><a href="class-Salesforce_Rest_API.html">Salesforce_Rest_API</a></li>
+				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
+				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
+				<li><a href="class-Wordpress.html">Wordpress</a></li>
+				<li><a href="class-Wordpress_Salesforce_Activate.html">Wordpress_Salesforce_Activate</a></li>
+				<li><a href="class-Wordpress_Salesforce_Admin.html">Wordpress_Salesforce_Admin</a></li>
+				<li><a href="class-Wordpress_Salesforce_Deactivate.html">Wordpress_Salesforce_Deactivate</a></li>
+				<li><a href="class-Wordpress_Salesforce_Schedule.html">Wordpress_Salesforce_Schedule</a></li>
+			</ul>
+
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-SalesforceException.html">SalesforceException</a></li>
+				<li><a href="class-SalesforcePullException.html">SalesforcePullException</a></li>
+				<li><a href="class-WordpressException.html">WordpressException</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+				<li>
+					<a href="annotation-group-todo.html" title="List of elements with todo annotation">
+						<span>Todo</span>
+					</a>
+				</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Salesforce_Logging</h1>
+
+
+	<div class="description">
+	<p>Log events based on plugin settings</p>
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+WP_Logging
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by">
+<b><span>Salesforce_Logging</span></b>			
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		
+
+			<b>Located at</b> <a href="source-class-Salesforce_Logging.html#10-333" title="Go to source code">logging.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#23-43" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span> )</code>
+
+		<div class="description short">
+			<p>Constructor which sets content type and pruning</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Constructor which sets content type and pruning</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$wpdb</var></dt>
+					<dd></dd>
+					<dt><var>$version</var></dt>
+					<dd></dd>
+					<dt><var>$text_domain</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="init" id="_init">
+
+		<td class="attributes"><code>
+			 private 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_init">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#45-68" title="Go to source code">init</a>( )</code>
+
+		<div class="description short">
+			<p>Start. This creates a schedule for pruning logs, and also the custom content type</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Start. This creates a schedule for pruning logs, and also the custom content type</p>
+
+
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="add_prune_interval" id="_add_prune_interval">
+
+		<td class="attributes"><code>
+			 public 
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_add_prune_interval">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#70-90" title="Go to source code">add_prune_interval</a>( <span> <var>$schedules</var></span> )</code>
+
+		<div class="description short">
+			<p>add interval to wp schedules based on admin settings</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>add interval to wp schedules based on admin settings</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>$frequency
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_schedule_frequency" id="_get_schedule_frequency">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_schedule_frequency">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#92-117" title="Go to source code">get_schedule_frequency</a>( <span> <var>$unit</var></span>, <span> <var>$number</var></span> )</code>
+
+		<div class="description short">
+			<p>Convert the schedule frequency from the admin settings into an array
+interval must be in seconds for the class to use it</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Convert the schedule frequency from the admin settings into an array
+interval must be in seconds for the class to use it</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_log_types" id="_set_log_types">
+
+		<td class="attributes"><code>
+			 public 
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_log_types">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#119-128" title="Go to source code">set_log_types</a>( <span>array <var>$terms</var></span> )</code>
+
+		<div class="description short">
+			<p>Set terms for Salesforce logs</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Set terms for Salesforce logs</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$terms</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>$terms
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_prune_option" id="_set_prune_option">
+
+		<td class="attributes"><code>
+			 public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_prune_option">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#130-142" title="Go to source code">set_prune_option</a>( <span>string <var>$should_we_prune</var></span> )</code>
+
+		<div class="description short">
+			<p>Should logs be pruned at all?</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Should logs be pruned at all?</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$should_we_prune</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>$should_we_prune
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_prune_age" id="_set_prune_age">
+
+		<td class="attributes"><code>
+			 public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_prune_age">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#144-157" title="Go to source code">set_prune_age</a>( <span>string <var>$how_old</var></span> )</code>
+
+		<div class="description short">
+			<p>Set how often to prune the Salesforce logs</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Set how often to prune the Salesforce logs</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$how_old</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>$how_old
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_prune_args" id="_set_prune_args">
+
+		<td class="attributes"><code>
+			 public 
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_prune_args">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#159-168" title="Go to source code">set_prune_args</a>( <span>array <var>$args</var></span> )</code>
+
+		<div class="description short">
+			<p>Set arguments for only getting the Salesforce logs</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Set arguments for only getting the Salesforce logs</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$args</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>$args
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setup" id="_setup">
+
+		<td class="attributes"><code>
+			 public 
+
+			none
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setup">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#171-190" title="Go to source code">setup</a>( <span> <var>$title</var></span>, <span> <var>$message</var></span>, <span> <var>$trigger</var></span>, <span> <var>$parent</var></span>, <span> <var>$status</var></span> )</code>
+
+		<div class="description short">
+			<p>Setup new log entry</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Setup new log entry</p>
+
+<p>Check and see if we should log anything, and if so, send it to add()</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					none
+				</div>
+
+
+				<h4>Since</h4>
+				<div class="list">
+						1.0<br>
+				</div>
+				<h4>Uses</h4>
+				<div class="list">
+						<code><a href="class-Salesforce_Logging.html#_add">Salesforce_Logging::add()</a></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="add" id="_add">
+
+		<td class="attributes"><code>
+			 public static
+
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_add">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#193-217" title="Go to source code">add</a>( <span> <var>$title</var> = <span class="php-quote">''</span></span>, <span> <var>$message</var> = <span class="php-quote">''</span></span>, <span> <var>$parent</var> = <span class="php-num">0</span></span>, <span> <var>$type</var> = <span class="php-quote">'salesforce'</span> </span> )</code>
+
+		<div class="description short">
+			<p>Create new log entry</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Create new log entry</p>
+
+<p>This is just a simple and fast way to log something. Use self::insert_log()
+if you need to store custom meta data</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					integer<br>The ID of the new log entry
+				</div>
+
+
+				<h4>Since</h4>
+				<div class="list">
+						1.0<br>
+				</div>
+				<h4>Uses</h4>
+				<div class="list">
+						self::insert_log()<br>
+				</div>
+				<h4>Used by</h4>
+				<div class="list">
+						<code><a href="class-Salesforce_Logging.html#_setup">Salesforce_Logging::setup()</a></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_logs" id="_get_logs">
+
+		<td class="attributes"><code>
+			 public static
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_logs">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#221-234" title="Go to source code">get_logs</a>( <span> <var>$object_id</var> = <span class="php-num">0</span></span>, <span> <var>$type</var> = <span class="php-quote">'salesforce'</span></span>, <span> <var>$paged</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+		<div class="description short">
+			<p>Easily retrieves log items for a particular object ID</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Easily retrieves log items for a particular object ID</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					array
+				</div>
+
+
+				<h4>Since</h4>
+				<div class="list">
+						1.0<br>
+				</div>
+				<h4>Uses</h4>
+				<div class="list">
+						<code><a href="class-Salesforce_Logging.html#_get_connected_logs">Salesforce_Logging::get_connected_logs()</a></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_connected_logs" id="_get_connected_logs">
+
+		<td class="attributes"><code>
+			 public static
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_connected_logs">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#238-286" title="Go to source code">get_connected_logs</a>( <span> <var>$args</var> = <span class="php-keyword1">array</span>() </span> )</code>
+
+		<div class="description short">
+			<p>Retrieve all connected logs</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Retrieve all connected logs</p>
+
+<p>Used for retrieving logs related to particular items, such as a specific purchase.</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>/ false
+				</div>
+
+
+				<h4>Since</h4>
+				<div class="list">
+						1.0<br>
+				</div>
+				<h4>Uses</h4>
+				<div class="list">
+						wp_parse_args()<br>
+						get_posts()<br>
+						get_query_var()<br>
+						self::valid_type()<br>
+				</div>
+				<h4>Used by</h4>
+				<div class="list">
+						<code><a href="class-Salesforce_Logging.html#_get_logs">Salesforce_Logging::get_logs()</a></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_log_count" id="_get_log_count">
+
+		<td class="attributes"><code>
+			 public static
+
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_log_count">#</a>
+		<code><a href="source-class-Salesforce_Logging.html#290-330" title="Go to source code">get_log_count</a>( <span> <var>$object_id</var> = <span class="php-num">0</span></span>, <span> <var>$type</var> = <span class="php-quote">'salesforce'</span></span>, <span> <var>$meta_query</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+		<div class="description short">
+			<p>Retrieves number of log entries connected to particular object ID</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Retrieves number of log entries connected to particular object ID</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					integer
+				</div>
+
+
+				<h4>Since</h4>
+				<div class="list">
+						1.0<br>
+				</div>
+				<h4>Uses</h4>
+				<div class="list">
+						WP_Query()<br>
+						self::valid_type()<br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="wpdb" id="$wpdb">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Logging.html#15" title="Go to source code"><var>$wpdb</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$wpdb" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="version" id="$version">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Logging.html#16" title="Go to source code"><var>$version</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$version" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="text_domain" id="$text_domain">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Logging.html#17" title="Go to source code"><var>$text_domain</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$text_domain" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="enabled" id="$enabled">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Logging.html#19" title="Go to source code"><var>$enabled</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$enabled" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="statuses_to_log" id="$statuses_to_log">
+		<td class="attributes"><code>
+			public  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Salesforce_Logging.html#20" title="Go to source code"><var>$statuses_to_log</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$statuses_to_log" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Salesforce REST API API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+source: [
+	classes/, salesforce-rest-api.php
+]
+destination: docs/code
+title: Salesforce REST API
+php: no
+debug: yes
+todo: yes
+accessLevels: [
+	public,
+	protected,
+	private
+]
