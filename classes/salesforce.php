@@ -728,6 +728,7 @@ class Salesforce {
 		// Sort field properties, because salesforce API always provides them in a
 		// random order. We sort them so that stored and exported data are
 		// standardized and predictable.
+		$fields = array();
 		foreach ( $object['data']['fields'] as &$field ) {
 			ksort( $field );
 			if ( !empty( $field['picklistValues'] ) ) {
@@ -735,7 +736,10 @@ class Salesforce {
 					ksort( $picklist_value );
 				}
 			}
+			$fields[$field['name']] = $field;
 		}
+		ksort( $fields );
+		$object['fields'] = $fields;
 		return $object;
 	}
 
