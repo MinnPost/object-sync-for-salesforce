@@ -1095,6 +1095,46 @@ class Salesforce {
 	}
 
 	/**
+	* Given a DeveloperName and SObject Name, return the SFID of the
+	* corresponding RecordType. DeveloperName doesn't change between Salesforce
+	* environments, so it's safer to rely on compared to SFID.
+	*
+	* @param string $name
+	*   Object type name, E.g., Contact, Account.
+	*
+	* @param string $devname 
+	*   RecordType DeveloperName, e.g. Donation, Membership, etc.
+	*
+	* @return string SFID
+	*   The Salesforce ID of the given Record Type, or null.
+	*/
+
+	public function get_record_type_id_by_developer_name( $name, $devname, $reset = FALSE ) {
+
+		// example of how this runs: $this->get_record_type_id_by_developer_name( 'Account', 'HH_Account' );
+
+		$cached = $this->wordpress->cache_get( 'salesforce_record_types', '' );
+		if ( is_array( $cached ) && ( !isset( $reset ) || $reset !== TRUE ) ) {
+			return !empty( $cached[$name][$devname] ) ? $cached[$name][$devname]['Id'] : NULL;
+		}
+
+		$query = new Salesforce_Select_Query( 'RecordType' );
+		$query->fields = array( 'Id', 'Name', 'DeveloperName', 'SobjectType' );
+
+		$result = $this->query( $query );
+		$record_types = array();
+
+		foreach ( $result['data']['records'] as $record_type ) {
+			$record_types[$record_type['SobjectType']][$record_type['DeveloperName']] = $record_type;
+		}
+
+		$cached = $this->wordpress->cache_set( 'salesforce_record_types', '', $record_types, $this->options['cache_expiration'] );
+
+		return !empty( $record_types[$name][$devname] ) ? $record_types[$name][$devname]['Id'] : NULL;
+
+	}
+
+	/**
      * If there is a WordPress setting for how long to keep the cache, return it and set the object property
      * Otherwise, return seconds in 24 hours
      *
