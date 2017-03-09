@@ -1,9 +1,15 @@
 <?php
+/**
+ * @file
+ */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * Create default WordPress admin functionality for Salesforce to configure the plugin.
+ */
 class Wordpress_Salesforce_Admin {
 
     protected $wpdb;
@@ -18,7 +24,7 @@ class Wordpress_Salesforce_Admin {
     protected $schedulable_classes;
 
     /**
-    * Create default WordPress admin functionality for Salesforce
+    * Constructor which sets up admin pages
     *
     * @param object $wpdb
     * @param string $version
@@ -27,6 +33,8 @@ class Wordpress_Salesforce_Admin {
     * @param object $wordpress
     * @param object $salesforce
     * @param object $mappings
+    * @param object $push
+    * @param object $pull
     * @param object $logging
     * @param array $schedulable_classes
     * @throws \Exception
@@ -44,9 +52,6 @@ class Wordpress_Salesforce_Admin {
         $this->logging = $logging;
         $this->schedulable_classes = $schedulable_classes;
 
-        // todo: we should think about what kind of admin_notices to use, if any
-        // https://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
-
         $this->add_actions();
 
     }
@@ -56,11 +61,11 @@ class Wordpress_Salesforce_Admin {
     *
     */
     public function add_actions() {
-        add_action( 'admin_init', array( &$this, 'salesforce_settings_forms' ) );
-        add_action( 'admin_post_post_fieldmap', array( &$this, 'prepare_fieldmap_data' ) );
-        add_action( 'admin_notices', array( &$this, 'fieldmap_error_notice' ) );
-        add_action( 'admin_notices', array( $this, 'permission_error_notice' ) );
-        add_action( 'admin_post_delete_fieldmap', array( &$this, 'delete_fieldmap' ) );
+        add_action( 'admin_init', array( $this, 'salesforce_settings_forms' ) );
+        add_action( 'admin_init', array( $this, 'notices' ) );
+        add_action( 'admin_post_post_fieldmap', array( $this, 'prepare_fieldmap_data' ) );
+
+        add_action( 'admin_post_delete_fieldmap', array( $this, 'delete_fieldmap' ) );
         add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ) );
         add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ) );
         add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ) );
@@ -80,7 +85,7 @@ class Wordpress_Salesforce_Admin {
     */
     public function create_admin_menu() {
         $title = __('Salesforce','salesforce-api');
-        add_options_page( $title, $title, 'manage_options', 'salesforce-api-admin', array( &$this, 'show_admin_page', ) );
+        add_options_page( $title, $title, 'configure_salesforce', 'salesforce-api-admin', array( $this, 'show_admin_page', ) );
     }
 
     /**
@@ -106,9 +111,7 @@ class Wordpress_Salesforce_Admin {
 
             // optionally make tab(s) for logging and log settings
             $logging_enabled = get_option( 'salesforce_api_enable_logging', FALSE );
-            if ( $logging_enabled === '1' ) {
-                $tabs['log_settings'] = 'Log Settings';
-            }
+            $tabs['log_settings'] = 'Log Settings';
 
             // filter for extending the tabs available on the page
             // currently it will go into the default switch case for $tab
@@ -128,13 +131,13 @@ class Wordpress_Salesforce_Admin {
                         if ( isset( $_GET['code'] ) )  {
                             $is_authorized = $this->salesforce['sfapi']->request_token( esc_attr( $_GET['code'] ) );
                             echo "<script>window.location = '$callback_url';</script>";
-                        } elseif ( $this->salesforce['is_authorized'] === true ) {
+                        } elseif ( $this->salesforce['is_authorized'] === TRUE ) {
                             require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/authorized.php' );
                             $this->demo( $this->salesforce['sfapi'] );
-                        } elseif ( isset( $consumer_key ) && isset( $consumer_secret ) ) {
+                        } elseif ( is_object ( $this->salesforce['sfapi'] ) === TRUE && isset( $consumer_key ) && isset( $consumer_secret ) ) {
                             echo '<p><a class="button button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
                         } else {
-                            $message = __( 'Salesforce needs to be authorized to connect to this website but the credentials are missing.', $this->text_domain );
+                            $message = __( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=settings' ) . '">Settings</a> tab to add them.', $this->text_domain );
                             require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
                         }
                         break;
@@ -166,7 +169,7 @@ class Wordpress_Salesforce_Admin {
                                 $fieldmap_fields = $map['fields'];
                                 $sync_triggers = $map['sync_triggers'];
                                 $push_async = $map['push_async'];
-                                $ignore_drafts = $map['ignore_drafts'];
+                                $push_drafts = $map['push_drafts'];
                                 $weight = $map['weight'];
                             }
                             
@@ -195,19 +198,31 @@ class Wordpress_Salesforce_Admin {
                     case 'settings':
                         $consumer_key = $this->login_credentials['consumer_key'];
                         $consumer_secret = $this->login_credentials['consumer_secret'];
-                        if ( $consumer_key && $consumer_secret ) {
-                            if ( $this->salesforce['is_authorized'] === true ) {
+                        if ( isset( $consumer_key ) && isset( $consumer_secret ) && !empty( $consumer_key ) && !empty( $consumer_secret ) ) {
+                            if ( $this->salesforce['is_authorized'] === TRUE ) {
                                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
                             } else {
-                                $message = __( 'Salesforce needs to be authorized to connect to this website.', $this->text_domain );
+                                $message = __( 'Salesforce needs to be authorized to connect to this website. Use the <a href="' . $callback_url . '">Authorize tab</a> to connect.', $this->text_domain );
                                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
+                                require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
                             }
                         } else {
                             require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
                         }
                         break;
                     default:
-                        require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+                        $include_settings = apply_filters( 'salesforce_rest_api_settings_tab_include_settings', TRUE, $tab );
+                        $content_before = apply_filters( 'salesforce_rest_api_settings_tab_content_before', NULL, $tab );
+                        $content_after = apply_filters( 'salesforce_rest_api_settings_tab_content_after', NULL, $tab );
+                        if ( NULL !== $content_before ) {
+                            echo $content_before;
+                        }
+                        if ( TRUE === $include_settings ) {
+                            require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+                        }
+                        if ( NULL !== $content_after ) {
+                            echo $content_after;
+                        }
                         break;
                 }
 
@@ -230,10 +245,10 @@ class Wordpress_Salesforce_Admin {
         $page = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         $section = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
         
-        $input_callback_default = array( &$this, 'display_input_field' );
-        $input_checkboxes_default = array( &$this, 'display_checkboxes' );
-        $input_select_default = array( &$this, 'display_select' );
-        $link_default = array( &$this, 'display_link' );
+        $input_callback_default = array( $this, 'display_input_field' );
+        $input_checkboxes_default = array( $this, 'display_checkboxes' );
+        $input_select_default = array( $this, 'display_select' );
+        $link_default = array( $this, 'display_link' );
 
         $all_field_callbacks = array(
             'text' => $input_callback_default,
@@ -266,6 +281,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_CONSUMER_KEY'
                 ),
@@ -278,6 +294,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_CONSUMER_SECRET'
                 ),
@@ -289,6 +306,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'url',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_CALLBACK_URL'
                 ),
@@ -300,8 +318,35 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'url',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_LOGIN_BASE_URL'
+                ),
+            ),
+            'authorize_url_path' => array(
+                'title' => 'Authorize URL Path',
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'text',
+                    'validate' => 'sanitize_text',
+                    'desc' => 'For most Salesforce installs, this should not be changed.',
+                    'constant' => 'SALESFORCE_AUTHORIZE_URL_PATH',
+                    'default' => '/services/oauth2/authorize'
+                ),
+            ),
+            'token_url_path' => array(
+                'title' => 'Token URL Path',
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'text',
+                    'validate' => 'sanitize_text',
+                    'desc' => 'For most Salesforce installs, this should not be changed.',
+                    'constant' => 'SALESFORCE_TOKEN_URL_PATH',
+                    'default' => '/services/oauth2/token'
                 ),
             ),
             'api_version' => array(
@@ -311,8 +356,10 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
-                    'constant' => 'SALESFORCE_API_VERSION'
+                    'constant' => 'SALESFORCE_API_VERSION',
+                    'default' => '38.0'
                 ),
             ),
             'object_filters' => array(
@@ -322,6 +369,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'checkboxes',
+                    'validate' => 'sanitize_text',
                     'desc' => 'Allows you to limit which Salesforce objects can be mapped',
                     'items' => array(
                         'triggerable' => array(
@@ -345,17 +393,50 @@ class Wordpress_Salesforce_Admin {
                 'page' => $page,
                 'section' => $section,
                 'args' => array(
-                    'type' => 'text',
+                    'type' => 'number',
+                    'validate' => 'sanitize_text',
                     'desc' => 'Number of seconds to wait between repeated salesforce pulls.<br>Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage.',
+                    'constant' => '',
+                    'default' => 5
+                ),
+            ),
+            'debug_mode' => array(
+                'title' => 'Debug mode?',
+                'callback' => $callbacks['text'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'checkbox',
+                    'validate' => 'sanitize_text',
+                    'desc' => 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create <strong>a lot</strong> of entries if enabled; it is not recommended to use it in a production environment.',
                     'constant' => ''
                 ),
             ),
+
         );
+
+        if ( is_object( $this->salesforce['sfapi'] ) === TRUE && $this->salesforce['sfapi']->is_authorized() === TRUE ) {
+            $salesforce_settings['api_version'] = array(
+                'title' => 'Salesforce API Version',
+                'callback' => $callbacks['select'],
+                'page' => $page,
+                'section' => $section,
+                'args' => array(
+                    'type' => 'select',
+                    'validate' => 'sanitize_text',
+                    'desc' => '',
+                    'constant' => 'SALESFORCE_API_VERSION',
+                    'items' => $this->version_options()
+                ),
+            );
+        }
+
         foreach ( $salesforce_settings as $key => $attributes ) {
             $id = 'salesforce_api_' . $key;
             $name = 'salesforce_api_' . $key;
             $title = $attributes['title'];
             $callback = $attributes['callback'];
+            $validate = $attributes['args']['validate'];
             $page = $attributes['page'];
             $section = $attributes['section'];
             $args = array_merge(
@@ -367,8 +448,14 @@ class Wordpress_Salesforce_Admin {
                     'name' => $name
                 )
             );
+
+            // if there is a constant and it is defined, don't run a validate function
+            if ( isset( $attributes['args']['constant'] ) && defined( $attributes['args']['constant'] ) ) {
+                $validate = '';
+            }
+
             add_settings_field( $id, $title, $callback, $page, $section, $args );
-            register_setting( $page, $id );
+            register_setting( $page, $id, array( $this, $validate ) );
         }
     }
 
@@ -402,7 +489,8 @@ class Wordpress_Salesforce_Admin {
                     'page' => $page,
                     'section' => $key,
                     'args' => array(
-                        'type' => 'text',
+                        'type' => 'number',
+                        'validate' => 'sanitize_text',
                         'desc' => '',
                         'constant' => ''
                     ),
@@ -414,6 +502,7 @@ class Wordpress_Salesforce_Admin {
                     'section' => $key,
                     'args' => array(
                         'type' => 'select',
+                        'validate' => 'sanitize_text',
                         'desc' => '',
                         'items' => array(
                             'minutes' => array(
@@ -484,6 +573,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'checkbox',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => ''
                 ),
@@ -495,6 +585,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'checkboxes',
+                    'validate' => 'sanitize_text',
                     'desc' => 'these are the statuses to log',
                     'items' => array(
                         'error' => array(
@@ -511,7 +602,12 @@ class Wordpress_Salesforce_Admin {
                             'text' => 'Notice',
                             'id' => 'notice',
                             'desc' => ''
-                        )
+                        ),
+                        'debug' => array(
+                            'text' => 'Debug',
+                            'id' => 'debug',
+                            'desc' => ''
+                        ),
                     )
                 )
             ),
@@ -522,6 +618,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'checkbox',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => ''
                 ),
@@ -533,6 +630,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'text',
+                    'validate' => 'sanitize_text',
                     'desc' => 'If automatic deleting is enabled, it will affect logs this old.',
                     'default' => '2 weeks',
                     'constant' => ''
@@ -544,7 +642,8 @@ class Wordpress_Salesforce_Admin {
                 'page' => $page,
                 'section' => $section,
                 'args' => array(
-                    'type' => 'text',
+                    'type' => 'number',
+                    'validate' => 'sanitize_text',
                     'desc' => '',
                     'default' => '1',
                     'constant' => ''
@@ -557,6 +656,7 @@ class Wordpress_Salesforce_Admin {
                     'section' => $section,
                     'args' => array(
                         'type' => 'select',
+                        'validate' => 'sanitize_text',
                         'desc' => 'These two fields are how often the site will check for logs to delete.',
                         'items' => array(
                             'minutes' => array(
@@ -581,6 +681,7 @@ class Wordpress_Salesforce_Admin {
                 'section' => $section,
                 'args' => array(
                     'type' => 'checkboxes',
+                    'validate' => 'sanitize_text',
                     'desc' => 'these are the triggers to log',
                     'items' => array(
                         $this->mappings->sync_wordpress_create => array(
@@ -639,6 +740,63 @@ class Wordpress_Salesforce_Admin {
     }
 
     /**
+    * Create the notices, settings, and conditions by which admin notices should appear
+    *
+    */
+    public function notices() {
+
+        require_once plugin_dir_path( __FILE__ ) . '../classes/admin_notice.php';
+        
+        $notices = array(
+            'permission' => array(
+                'condition' => $this->check_wordpress_admin_permissions() === FALSE,
+                'message' => "Your account does not have permission to edit the Salesforce REST API plugin's settings.",
+                'type' => 'error',
+                'dismissible' => FALSE,
+            ),
+            'fieldmap' => array(
+                'condition' => isset( $_GET['transient'] ),
+                'message' => 'Errors kept this fieldmap from being saved.',
+                'type' => 'error',
+                'dismissible' => TRUE
+            ),
+        );
+
+        $domain = $this->text_domain;
+
+        foreach ( $notices as $key => $value ) {
+
+            $condition = $value['condition'];
+            $message = $value['message'];
+
+            if ( isset( $value['dismissible'] ) ) {
+                $dismissible = $value['dismissible'];
+            } else {
+                $dismissible = FALSE;
+            }
+
+            if ( isset( $value['domain'] ) ) {
+                $domain = $value['domain'];
+            }
+
+            if ( isset( $value['type'] ) ) {
+                $type = $value['type'];
+            } else {
+                $type = '';
+            }
+
+            if ( !isset( $value['template'] ) ) {
+                $template = '';
+            }
+
+            if ( $condition ) {
+                new Admin_Notice( $condition, $message, $domain, $dismissible, $type, $template );
+            }
+        }
+
+    }
+
+    /**
     * Get all the Salesforce object settings for fieldmapping
     * This takes either the $_POST array via ajax, or can be directly called with a $data array
     * 
@@ -648,10 +806,10 @@ class Wordpress_Salesforce_Admin {
     * @return array $object_settings
     */
     public function get_salesforce_object_description( $data = array() ) {
-        $ajax = false;
+        $ajax = FALSE;
         if ( empty( $data ) ) {
             $data = $_POST;
-            $ajax = true;
+            $ajax = TRUE;
         }
 
         $object_description = array();
@@ -686,7 +844,7 @@ class Wordpress_Salesforce_Admin {
             }
         }
 
-        if ( $ajax === true ) {
+        if ( $ajax === TRUE ) {
             wp_send_json_success( $object_description );
         } else {
             return $object_description;
@@ -735,15 +893,15 @@ class Wordpress_Salesforce_Admin {
     * @return array $object_fields
     */
     public function get_wordpress_object_fields( $wordpress_object = '' ) {
-        $ajax = false;
+        $ajax = FALSE;
         if ( empty( $wordpress_object ) ) {
             $wordpress_object = $_POST['wordpress_object'];
-            $ajax = true;
+            $ajax = TRUE;
         }
         
         $object_fields = $this->wordpress->get_wordpress_object_fields( $wordpress_object );
         
-        if ( $ajax === true ) {
+        if ( $ajax === TRUE ) {
             wp_send_json_success( $object_fields );
         } else {
             return $object_fields;
@@ -790,11 +948,13 @@ class Wordpress_Salesforce_Admin {
         }
         $data = $this->wordpress->get_wordpress_object_data( $wordpress_object, $wordpress_id );
         $result = $this->push->manual_object_update( $data, $wordpress_object );
-        if ( !empty( $_POST ) ) {
+
+        if ( !empty( $_POST['wordpress_object'] ) && !empty( $_POST['wordpress_id'] ) ) {
             wp_send_json_success( $result );
         } else {
             return $result;
         }
+
     }
 
     /**
@@ -846,13 +1006,13 @@ class Wordpress_Salesforce_Admin {
     *
     */
     public function prepare_fieldmap_data() {
-        $error = false;
+        $error = FALSE;
         $cachekey = md5( json_encode( $_POST ) );
         
         if ( !isset( $_POST['label'] ) || !isset( $_POST['salesforce_object'] ) || !isset( $_POST['wordpress_object'] ) ) {
-            $error = true;
+            $error = TRUE;
         }
-        if ( $error === true ) {
+        if ( $error === TRUE ) {
             set_transient( $cachekey, $_POST, 0 );
             if ( $cachekey !== '' ) {
                 $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
@@ -869,7 +1029,7 @@ class Wordpress_Salesforce_Admin {
                 $id = esc_attr( $_POST['id'] );
                 $result = $this->mappings->update_fieldmap( $_POST, $wordpress_fields, $salesforce_fields, $id );
             }
-            if ( $result === false ) { // if the database didn't save, it's still ane rror
+            if ( $result === FALSE ) { // if the database didn't save, it's still an error
                 set_transient( $cachekey, $_POST, 0 );
                 if ( $cachekey !== '' ) {
                     $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
@@ -896,30 +1056,13 @@ class Wordpress_Salesforce_Admin {
     public function delete_fieldmap() {
         if ( $_POST['id'] ) {
             $result = $this->mappings->delete_fieldmap( $_POST['id'] );
-            if ( $result === true ) {
+            if ( $result === TRUE ) {
                 $url = esc_url_raw( $_POST['redirect_url_success'] );
             } else {
                 $url = esc_url_raw( $_POST['redirect_url_error'] ) . '&id=' . $_POST['id'];
             }
             wp_redirect( $url );
             exit();
-        }
-    }
-
-    /**
-    * Fieldmap error notice
-    * This runs if a mapping method has had an error.
-    * It is public because it depends on the admin_notices hook
-    * todo: better error messages
-    *
-    */
-    public function fieldmap_error_notice() {
-        if ( isset( $_GET['transient'] ) ) {
-        ?>
-        <div class="error notice">
-            <p><?php _e( 'Errors kept this fieldmap from being saved.', $this->text_domain ); ?></p>
-        </div>
-        <?php
         }
     }
 
@@ -941,7 +1084,7 @@ class Wordpress_Salesforce_Admin {
             $class = 'checkbox';
         }
 
-        if ( !defined( $args['constant'] ) ) {
+        if ( !isset( $args['constant'] ) || !defined( $args['constant'] ) ) {
             $value  = esc_attr( get_option( $id, '' ) );
             if ( $type === 'checkbox' ) {
                 if ( $value === '1' ) {
@@ -979,7 +1122,7 @@ class Wordpress_Salesforce_Admin {
             $checked = '';
             if ( is_array( $options ) && in_array( $key, $options ) ) {
                 $checked = 'checked';
-            } else if ( is_array( $options ) && empty( $options ) ) {
+            } elseif ( is_array( $options ) && empty( $options ) ) {
                 if ( isset( $value['default'] ) && $value['default'] === TRUE ) {
                     $checked = 'checked';
                 }
@@ -1001,22 +1144,43 @@ class Wordpress_Salesforce_Admin {
         $id     = $args['label_for'];
         $name   = $args['name'];
         $desc   = $args['desc'];
-        $current_value = get_option( $name );
-        echo '<div><select id="' . $id . '" name="' . $name . '"><option value="">- Select one -</option>';
-        foreach ( $args['items'] as $key => $value ) {
-            $text = $value['text'];
-            $value = $value['value'];
-            $selected = '';
-            if ( $key === $current_value ) {
-                $selected = ' selected';
+        if ( !isset( $args['constant'] ) || !defined( $args['constant'] ) ) {
+            $current_value = get_option( $name );
+            echo '<div><select id="' . $id . '" name="' . $name . '"><option value="">- Select one -</option>';
+            foreach ( $args['items'] as $key => $value ) {
+                $text = $value['text'];
+                $value = $value['value'];
+                $selected = '';
+                if ( $key === $current_value || $value === $current_value ) {
+                    $selected = ' selected';
+                }
+                echo '<option value="' . $value . '"' . $selected . '>' . $text . '</option>';
             }
-            echo '<option value="' . $value . '"' . $selected . '>' . $text . '</option>';
+            echo '</select>';
+            if ( $desc != '' ) {
+                echo '<p class="description">' . $desc . '</p>';
+            }
+            echo '</div>';
+        } else {
+            echo '<p><code>Defined in wp-config.php</code></p>';
         }
-        echo '</select>';
-        if ( $desc != '' ) {
-            echo '<p class="description">' . $desc . '</p>';
+    }
+
+    /**
+    * Dropdown formatted list of Salesforce API versions
+    *
+    * @return array $args
+    */
+    private function version_options() {
+        $versions = $this->salesforce['sfapi']->get_api_versions();
+        $args = array();
+        foreach ( $versions['data'] as $key => $value ) {
+            $args[] = array(
+                'value' => $value['version'],
+                'text' => $value['label'] . ' (' . $value['version'] . ')'
+            );
         }
-        echo '</div>';
+        return $args;
     }
 
     /**
@@ -1052,18 +1216,18 @@ class Wordpress_Salesforce_Admin {
         $versions = $sfapi->get_api_versions();
 
         // format this array into html so users can see the versions
-        $versions_is_cached = $versions['cached'] === true ? '' : 'not ';
-        $versions_from_cache = $versions['from_cache'] === true ? 'were' : 'were not';
-        $versions_is_redo = $versions['is_redo'] === true ? '' : 'not ';
-        $versions_andorbut = $versions['from_cache'] === true ? 'and' : 'but';
+        $versions_is_cached = $versions['cached'] === TRUE ? '' : 'not ';
+        $versions_from_cache = $versions['from_cache'] === TRUE ? 'were' : 'were not';
+        $versions_is_redo = $versions['is_redo'] === TRUE ? '' : 'not ';
+        $versions_andorbut = $versions['from_cache'] === TRUE ? 'and' : 'but';
 
         $contacts = $sfapi->query('SELECT Name, Id from Contact LIMIT 100');
 
         // format this array into html so users can see the contacts
-        $contacts_is_cached = $contacts['cached'] === true ? '' : 'not ';
-        $contacts_from_cache = $contacts['from_cache'] === true ? 'were' : 'were not';
-        $contacts_andorbut = $contacts['from_cache'] === true ? 'and' : 'but';
-        $contacts_is_redo = $contacts['is_redo'] === true ? '' : 'not ';
+        $contacts_is_cached = $contacts['cached'] === TRUE ? '' : 'not ';
+        $contacts_from_cache = $contacts['from_cache'] === TRUE ? 'were' : 'were not';
+        $contacts_andorbut = $contacts['from_cache'] === TRUE ? 'and' : 'but';
+        $contacts_is_redo = $contacts['is_redo'] === TRUE ? '' : 'not ';
 
         require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/demo.php' );
 
@@ -1087,28 +1251,20 @@ class Wordpress_Salesforce_Admin {
     */
     private function check_wordpress_admin_permissions() {
 
-        // todo: we are going to need a way to integrate this with roles, permissions, etc that are not built into wordpress
+        // one programmatic way to give this capability to additional user roles is the 
+        // salesforce_rest_api_roles_configure_salesforce hook
+        // it runs on activation of this plugin, and will assign the below capability to any role
+        // coming from the hook
 
-        if ( ! current_user_can('manage_options') ) {
+        // alternatively, other roles can get this capability in whatever other way you like
+        // point is: to administer this plugin, you need this capability
+
+        if ( ! current_user_can( 'configure_salesforce' ) ) {
             return FALSE;
         } else {
             return TRUE;
         }
 
-    }
-
-    /**
-    * Notice for permission denied error
-    * If an unauthorized user visits this plugin area in the admin, this message will show
-    */
-    public function permission_error_notice() {
-        if ( $this->check_wordpress_admin_permissions() === FALSE ) {
-        ?>
-        <div class="notice notice-error">
-            <p><?php _e( "Your account does not have permission to edit the Salesforce REST API plugin's settings.", $this->text_domain ); ?></p>
-        </div>
-        <?php
-        }
     }
 
     /**
@@ -1121,7 +1277,7 @@ class Wordpress_Salesforce_Admin {
             $mapping = $this->mappings->load_by_wordpress( 'user', $user->ID );
             if ( isset( $mapping['id'] ) && !isset($_GET['edit_salesforce_mapping']) ) {
                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
-            } else if ( isset($_GET['edit_salesforce_mapping']) && urlencode( $_GET['edit_salesforce_mapping'] ) === 'true' ) {
+            } elseif ( isset($_GET['edit_salesforce_mapping']) && urlencode( $_GET['edit_salesforce_mapping'] ) === 'true' ) {
                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
             } else {
                 require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
@@ -1135,13 +1291,17 @@ class Wordpress_Salesforce_Admin {
     *
     */
     public function save_salesforce_user_fields( $user_id ) {
-        if ( isset ( $_POST['salesforce_id'] ) ) {
-            if ( isset( $_POST['salesforce_update_mapped_user'] ) && urlencode( $_POST['salesforce_update_mapped_user'] === '1' ) ) {
-                $mapping_object = $this->mappings->get_object_maps( array( 'wordpress_id' => $user_id, 'wordpress_object' => 'user' ) );
-                $mapping_object['salesforce_id'] = $_POST['salesforce_id'];
-                $result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
-            } else if ( isset( $_POST['salesforce_create_mapped_user'] ) && urlencode( $_POST['salesforce_create_mapped_user'] === '1' ) ) {
+        if ( isset( $_POST['salesforce_update_mapped_user'] ) && urlencode( $_POST['salesforce_update_mapped_user'] === '1' ) ) {
+            $mapping_object = $this->mappings->get_object_maps( array( 'wordpress_id' => $user_id, 'wordpress_object' => 'user' ) );
+            $mapping_object['salesforce_id'] = $_POST['salesforce_id'];
+            $result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+        } elseif ( isset( $_POST['salesforce_create_mapped_user'] ) && urlencode( $_POST['salesforce_create_mapped_user'] === '1' ) ) {
+            // if a Salesforce ID was entered
+            if ( isset( $_POST['salesforce_id'] ) && !empty( $_POST['salesforce_id'] ) ) {
                 $mapping_object = $this->create_object_map( $user_id, 'user', $_POST['salesforce_id'] );
+            } else if ( isset( $_POST['push_new_user_to_salesforce'] ) ) {
+                // otherwise, create a new record in Salesforce
+                $result = $this->push_to_salesforce( 'user', $user_id );
             }
         }
     }
@@ -1152,12 +1312,21 @@ class Wordpress_Salesforce_Admin {
     * @param string $tab
     */ 
     private function tabs( $tabs, $tab = '' ) {
+
+        $consumer_key = $this->login_credentials['consumer_key'];
+        $consumer_secret = $this->login_credentials['consumer_secret'];
+        $callback_url = $this->login_credentials['callback_url'];
+        $text_domain = $this->text_domain;
+        
         $current_tab = $tab;
         screen_icon();
         echo '<h2 class="nav-tab-wrapper">';
         foreach ( $tabs as $tab_key => $tab_caption ) {
             $active = $current_tab == $tab_key ? 'nav-tab-active' : '';
-            echo '<a class="nav-tab ' . $active . '" href="?page=salesforce-api-admin&tab=' . $tab_key . '">' . $tab_caption . '</a>';
+            if ( $tab_key === 'settings' || ( isset( $consumer_key ) && isset( $consumer_secret ) && !empty( $consumer_key ) && !empty( $consumer_secret ) ) ) {
+                echo '<a class="nav-tab ' . $active . '" href="?page=salesforce-api-admin&tab=' . $tab_key . '">' . $tab_caption . '</a>';
+            }
+            
         }
         echo '</h2>';
 
@@ -1166,6 +1335,37 @@ class Wordpress_Salesforce_Admin {
         } else {
             $tab = '';
         }
+    }
+
+    /**
+    * Basic sanitize method for text
+    * This makes the field's input safe enough to use. It does not differentiate based on what type of field we are dealing with, so if we need to validate input the field should use a different method
+    * This method does not fire an error if it is private, but also doesn't work
+    *
+    * @param mixed $input
+    *
+    * @return mixed $output
+    */
+    // 
+    public function sanitize_text( $input ) {
+
+        $output = '';
+
+        if ( isset( $input ) && !is_array( $input ) ) {
+            $output = strip_tags( stripslashes( $input ) );
+        }
+
+        if ( isset( $input ) && is_array( $input ) ) {
+            
+            foreach( $input as $key => $value ) {
+                if ( isset( $input[$key] ) ) {
+                    $output[$key] = strip_tags( stripslashes( $input[ $key ] ) );
+                }
+            }
+            
+        }
+
+        return $output;
     }
 
     /**

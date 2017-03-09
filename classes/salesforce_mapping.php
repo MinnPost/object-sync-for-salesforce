@@ -1,9 +1,15 @@
 <?php
+/**
+ * @file
+ */
 
 if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * Map objects and records between WordPress and Salesforce
+ */
 class Salesforce_Mapping {
 
 	protected $wpdb;
@@ -41,7 +47,7 @@ class Salesforce_Mapping {
     public $status_error;
 
     /**
-    * Functionality for mapping Salesforce and WordPress objects
+    * Constructor which sets up links between the systems
     *
     * @param object $wpdb
     * @param string $version
@@ -163,7 +169,7 @@ class Salesforce_Mapping {
 
         } else { // get all of em
 
-            $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `ignore_drafts`, `weight` FROM $table" , ARRAY_A );
+            $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table" , ARRAY_A );
             
             if ( !empty( $mappings ) ) {
                 $mappings = $this->prepare_fieldmap_data( $mappings );
@@ -268,7 +274,7 @@ class Salesforce_Mapping {
     		$data['pull_trigger_field'] = $posted['pull_trigger_field'];
     	}
 		$data['push_async'] = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
-        $data['ignore_drafts'] = isset( $posted['ignore_drafts'] ) ? $posted['ignore_drafts'] : '';
+        $data['push_drafts'] = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
         $data['weight'] = isset( $posted['weight'] ) ? $posted['weight'] : '';
     	return $data;
     }
@@ -298,20 +304,40 @@ class Salesforce_Mapping {
     public function create_object_map( $posted = array() ) {
         $data = $this->setup_object_map_data( $posted );
         $data['created'] = current_time( 'mysql' );
-        $insert = $this->wpdb->insert( $this->object_map_table, $data );
+        // check to see if we don't know the salesforce id, or if this is pending
+        // if it is pending, the map will get updated after it finishes running
+        if ( $data['salesforce_id'] !== 0 || $data['action'] === 'pending' ) {
+            unset( $data['action'] );
+            $insert = $this->wpdb->insert( $this->object_map_table, $data );
+        } else {
+            $status = 'error';
+            if ( isset( $this->logging ) ) {
+                $logging = $this->logging;
+            } elseif ( class_exists( 'Salesforce_Logging' ) ) {
+                $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+            }
+            $logging->setup(
+                __( ucfirst( $status ) . ': Mapping: error caused by trying to map the WordPress ' . $data['wordpress_object'] . ' with ID of ' . $data['wordpress_id'] . ' to Salesforce ID of 0, which is invalid.', $this->text_domain ),
+                '',
+                0,
+                0,
+                $status
+            );
+            return false;
+        }
         if ( $insert === 1 ) {
             return $this->wpdb->insert_id;
-        } else if ( strpos( $this->wpdb->last_error, 'Duplicate entry' ) !== FALSE ) {
-            $mapping = $this->load_by_salesforce( $posted['salesforce_id'] );
+        } elseif ( strpos( $this->wpdb->last_error, 'Duplicate entry' ) !== FALSE ) {
+            $mapping = $this->load_by_salesforce( $data['salesforce_id'] );
             $id = $mapping['id'];
             $status = 'error';
             if ( isset( $this->logging ) ) {
                 $logging = $this->logging;
-            } else if ( class_exists( 'Salesforce_Logging' ) ) {
+            } elseif ( class_exists( 'Salesforce_Logging' ) ) {
                 $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
             }
             $logging->setup(
-                __( ucfirst( $status ) . ': Mapping: there is already a WordPress object mapped to the Salesforce object ' . $posted['salesforce_id'] . ' and the mapping object ID is ' . $id, $this->text_domain ),
+                __( ucfirst( $status ) . ': Mapping: there is already a WordPress object mapped to the Salesforce object ' . $data['salesforce_id'] . ' and the mapping object ID is ' . $id, $this->text_domain ),
                 '',
                 0,
                 0,
@@ -389,7 +415,7 @@ class Salesforce_Mapping {
     }
 
     /**
-    * 
+    * Setup the data for the object map
     *
     * @param array $posted
     * @return $data
@@ -474,7 +500,7 @@ class Salesforce_Mapping {
             // create log entry for multiple maps
             if ( isset( $this->logging ) ) {
                 $logging = $this->logging;
-            } else if ( class_exists( 'Salesforce_Logging' ) ) {
+            } elseif ( class_exists( 'Salesforce_Logging' ) ) {
                 $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
             }
             $logging->setup(
@@ -533,8 +559,8 @@ class Salesforce_Mapping {
             // a wordpress event caused this
             if ( in_array( $trigger, array_values( $wordpress_haystack ) ) ) {
 
-                // Skip fields that aren't updateable when a mapped object already exists
-                if ( ( $trigger === $this->sync_wordpress_update || $trigger === $this->sync_wordpress_delete ) && (int) $fieldmap['salesforce_field']['updateable'] !== 1 ) {
+                // Skip fields that aren't updateable when mapping params because salesforce will error otherwise
+                if ( (int) $fieldmap['salesforce_field']['updateable'] !== 1 ) {
                     continue;
                 }
                 
@@ -562,7 +588,7 @@ class Salesforce_Mapping {
                     );
                 }
 
-            } else if ( in_array( $trigger, $salesforce_haystack ) ) {
+            } elseif ( in_array( $trigger, $salesforce_haystack ) ) {
 
                 // a salesforce event caused this
                 // make an array because we need to store the methods for each field as well

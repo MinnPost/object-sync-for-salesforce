@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 RELEASE_DIR=release;
 SVN_PATH=$RELEASE_DIR/svn;
-SVN_REPO="https://plugins.svn.wordpress.org/repo-name/";
+SVN_REPO="https://plugins.svn.wordpress.org/salesforce-rest-api/";
 BLACKLIST=(
 .\*
 release.sh

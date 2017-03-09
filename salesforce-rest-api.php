@@ -10,31 +10,38 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: salesforce-rest-api
 */
 
-// Start up the plugin
+/**
+ * Start up the Salesforce REST API plugin; initialize parameters and classes
+ */
 class Salesforce_Rest_API {
 
 	/**
 	* @var object
+	* Global object of `$wpdb`, the WordPress database
 	*/
 	private $wpdb;
 
 	/**
 	* @var array
+	* Login credentials for the Salesforce API; comes from wp-config or from the plugin settings
 	*/
 	private $login_credentials;
 
 	/**
 	* @var string
+	* The plugin's text_domain for translation
 	*/
 	private $text_domain;
 
 	/**
 	* @var array
+	* Array of what classes in the plugin can be scheduled to occur with `wp_cron` events
 	*/
 	public $schedulable_classes;
 
 	/**
 	* @var string
+	* Current version of the plugin
 	*/
 	private $version;
 
@@ -45,40 +52,56 @@ class Salesforce_Rest_API {
 
 	/**
 	* @var object
+	* Load and initialize the Salesforce_Logging class
 	*/
 	private $logging;
 
 	/**
 	* @var object
+	* Load and initialize the Salesforce_Mapping class
 	*/
 	private $mappings;
 
 	/**
 	* @var object
+	* Load and initialize the Wordpress class
 	*/
 	private $wordpress;
 
 	/**
 	* @var object
+	* Load and initialize the Salesforce class.
+	* This contains the REST API methods
 	*/
 	public $salesforce;
 
 	/**
 	* @var object
+	* Load and initialize the Salesforce_Push class
 	*/
 	private $push;
 
 	/**
 	* @var object
+	* Load and initialize the Salesforce_Pull class
 	*/
 	private $pull;
 
 	/**
+	 * @var object
 	 * Static property to hold an instance of the class; this seems to make it reusable
 	 *
 	 */
 	static $instance = NULL;
 
+	/**
+	* Load the static $instance property that holds the instance of the class.
+	* This instance makes the class reusable by other plugins
+	*
+	* @return object
+	*   The sfapi object if it is authenticated (empty, otherwise)
+	*
+	*/
 	static public function get_instance() {
 		if ( self::$instance === NULL ) {
 			self::$instance = new Salesforce_Rest_API();
@@ -87,7 +110,7 @@ class Salesforce_Rest_API {
 	}
 
 	/**
-	 * This is our constructor
+	 * Constructor that sets up the parameters to pass to all the other classes, and the methods that call the other classes
 	 *
 	 * @return void
 	 */
@@ -96,7 +119,7 @@ class Salesforce_Rest_API {
 		global $wpdb;
 
 		$this->wpdb = &$wpdb;
-		$this->version = '0.0.1';
+		$this->version = '0.0.2';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'salesforce-rest-api';
 
@@ -164,7 +187,12 @@ class Salesforce_Rest_API {
 	/**
 	 * Log events
 	 *
+	 * @param object $wpdb
+	 * @param string $version
+	 * @param string $text_domain
+	 *
 	 * @return object
+	 *	Instance of Salesforce_Logging
 	 */
 	private function logging( &$wpdb, $version, $text_domain ) {
 		if ( ! class_exists( 'WP_Logging' ) && file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
@@ -178,7 +206,13 @@ class Salesforce_Rest_API {
 	/**
 	 * Map the Salesforce and WordPress objects and fields to each other
 	 *
+	 * @param object $wpdb
+	 * @param string $version
+	 * @param string $text_domain
+	 * @param object $logging
+	 *
 	 * @return object
+	 *	Instance of Salesforce_Mapping
 	 */
 	private function mappings( &$wpdb, $version, $text_domain, $logging ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
@@ -187,9 +221,16 @@ class Salesforce_Rest_API {
 	}
 
 	/**
-	* private helper to load methods for manipulating core WordPress data when needed
+	* Private helper to load methods for manipulating core WordPress data across the plugin
+	*
+	* @param object $wpdb
+	* @param string $version
+	* @param string $text_domain
+	* @param object $mappings
+	* @param object $logging
 	*
 	* @return object
+	*	Instance of Wordpress
 	*/
 	private function wordpress( $wpdb, $version, $text_domain, $mappings, $logging ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
@@ -198,7 +239,7 @@ class Salesforce_Rest_API {
 	}
 
 	/**
-	* Public helper to load the Salesforce API and see if it is authenticated
+	* Public helper to load the Salesforce API and see if it is authenticated.
 	* This is public so other plugins can access the same SF API instance
 	*
 	* @return array
@@ -232,6 +273,13 @@ class Salesforce_Rest_API {
 
 	/**
 	 * What to do upon activation of the plugin
+	 *
+	 * @param object $wpdb
+	 * @param string $version
+	 * @param string $text_domain
+	 *
+	 * @return object
+	 *	Instance of Wordpress_Salesforce_Activate
 	 */
 	private function activate( &$wpdb, $version, $text_domain ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
@@ -241,6 +289,14 @@ class Salesforce_Rest_API {
 
 	/**
 	 * What to do upon deactivation of the plugin
+	 *
+	 * @param object $wpdb
+	 * @param string $version
+	 * @param string $text_domain
+	 * @param array $schedulable_classes
+	 *
+	 * @return object
+	 *	Instance of Wordpress_Salesforce_Deactivate
 	 */
 	private function deactivate( &$wpdb, $version, $text_domain, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
@@ -251,7 +307,18 @@ class Salesforce_Rest_API {
 	/**
 	 * Methods to push data from WordPress to Salesforce
 	 *
+	 * @param object $wpdb
+	 * @param string $version
+	 * @param array $login_credentials
+	 * @param string $text_domain
+	 * @param object $wordpress
+	 * @param object $salesforce
+	 * @param object $mappings
+	 * @param object $logging
+	 * @param array $schedulable_classes
+	 *
 	 * @return object
+	 *	Instance of Salesforce_Push
 	 */
 	private function push( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
@@ -262,7 +329,17 @@ class Salesforce_Rest_API {
 	/**
 	 * Methods to pull data from Salesforce to WordPress
 	 *
+	 * @param object $wpdb
+	 * @param string $version
+	 * @param array $login_credentials
+	 * @param string $text_domain
+	 * @param object $wordpress
+	 * @param object $salesforce
+	 * @param object $mappings
+	 * @param object $logging
+	 * @param array $schedulable_classes
 	 * @return object
+	 *	Instance of Salesforce_Pull
 	 */
 	private function pull( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_pull.php';
@@ -271,25 +348,40 @@ class Salesforce_Rest_API {
 	}
 
 	/**
-	* load the admin class
-	* also creates admin menu, unless the plugin that calls this library has indicated that it has its own menu
+	* Load the admin class.
+	* This also creates admin menu, unless the plugin that calls this library has indicated that it has its own menu
 	*
+	* @param object $wpdb
+	* @param string $version
 	* @param array $login_credentials
-	* @param array $parent_settings
-	* @throws \Exception
+	* @param string $text_domain
+	* @param object $wordpress
+	* @param object $salesforce
+	* @param object $mappings
+	* @param object $push
+	* @param object $pull
+	* @param object $logging
+	* @param array $schedulable_classes
+	* @return object $admin
+	*	Instance of Wordpress_Salesforce_Admin
+	*
 	*/
 	private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
 		$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes );
 		add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
-		add_filter( 'plugin_action_links', array( &$this, 'plugin_action_links' ), 10, 5 );
+		add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 5 );
+		return $admin;
 	}
 
 	/**
 	* Display a Settings link on the main Plugins page
 	*
+	* @param array $links
+	* @param string $file
 	* @return array $links
+	*	These are the links that go with this plugin's entry
 	*/
 	public function plugin_action_links( $links, $file ) {
 		if ( $file == plugin_basename( __FILE__ ) ) {
@@ -302,7 +394,7 @@ class Salesforce_Rest_API {
 
 
 	/**
-	* Admin styles
+	* Admin styles. Load the CSS and JavaScript for the plugin's settings
 	*
 	* @return void
 	*/
@@ -312,7 +404,7 @@ class Salesforce_Rest_API {
 	}
 
 	/**
-	 * load textdomain
+	 * Load textdomain
 	 *
 	 * @return void
 	 */
@@ -321,13 +413,13 @@ class Salesforce_Rest_API {
 	}
 
 	/**
-	 * Get the pre-login Salesforce credentials
-	 * These depend on WordPress settings or constants
-	 * todo: need to investigate if the naming makes sense
-	 *
-	 * @return array $login_credentials
-	 * @throws \Exception
-	 */
+	* Get the pre-login Salesforce credentials.
+	* These depend on the plugin's settings or constants defined in wp-config.php.
+	*
+	* @return array $login_credentials
+	*	Includes all settings necessary to log into the Salesforce API.
+	*	Replaces settings options with wp-config.php values if they exist.
+	*/
 	private function get_login_credentials() {
 
 		$consumer_key = defined('SALESFORCE_CONSUMER_KEY') ? SALESFORCE_CONSUMER_KEY : get_option( 'salesforce_api_consumer_key', '' );
@@ -336,7 +428,7 @@ class Salesforce_Rest_API {
 		$login_base_url = defined('SALESFORCE_LOGIN_BASE_URL') ? SALESFORCE_LOGIN_BASE_URL : get_option( 'salesforce_api_login_base_url', '' );
 		$authorize_url_path = defined('SALESFORCE_AUTHORIZE_URL_PATH') ? SALESFORCE_AUTHORIZE_URL_PATH : get_option( 'salesforce_api_authorize_url_path', '' );
 		$token_url_path = defined('SALESFORCE_TOKEN_URL_PATH') ? SALESFORCE_TOKEN_URL_PATH : get_option( 'salesforce_api_token_url_path', '' );
-		$api_version = defined('SALESFORCE_API_VERSION') ? SALESFORCE_API_VERSION : get_option( 'salesforce_api_version', '' );
+		$api_version = defined('SALESFORCE_API_VERSION') ? SALESFORCE_API_VERSION : get_option( 'salesforce_api_api_version', '' );
 
 		$login_credentials = array(
 			'consumer_key' => $consumer_key,

@@ -20,7 +20,7 @@ This plugin also includes API hooks that allow for additional plugins to modify 
 1. Upload the `salesforce-rest-api` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Create a Salesforce account if you don't already have one. Developers can register at [http://www.developerforce.com/events/regular/registration.php](http://www.developerforce.com/events/regular/registration.php)
-4. In Salesforce, create a remote application/connected app for authorization. In Salesforce, go to Your Name > Setup > Create > Apps then create a new Connected App. Set the callback URL to: `https://<your site>/salesforce/oauth_callback` (must use SSL). Select at least 'Perform requests on your behalf at any time' for OAuth Scope as well as the appropriate other scopes for your application.
+4. In Salesforce, create a remote application/connected app for authorization. In Salesforce, go to Your Name > Setup > Create > Apps then create a new Connected App. Set the callback URL to: `https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin&tab=authorize` (must use SSL). Select at least Perform requests on your behalf at any time' for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select 'Access and manage your data (api)' as one of these scopes.
 5. Fill out the settings on the Settings tab of the Salesforce subpage of the Settings menu
 6. Click the Connect to Salesforce button on the Authorize tab of the Salesforce subpage of the Settings menu.
 

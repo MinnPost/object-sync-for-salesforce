@@ -2,6 +2,8 @@
 
 Implements a mapping functionality between Salesforce objects and WordPress objects. This is based on the [Drupal Salesforce Suite](https://github.com/thinkshout/salesforce) (version 7.x-3.x-dev), but strives to use WordPress conventions rather than Drupal's whenever possible.
 
+Below is summary information, but you can also access [full documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/readme.md).
+
 ## About
 
 This plugin creates a mapping functionality between Salesforce objects and WordPress content types. For any supported WordPress content types (e.g. post, page, user, or any custom content type in your installation), you can assign Salesforce objects that will be created / updated when the data in WordPress is saved. For each such assignment, you choose which WordPress and Salesforce fields should be mapped to one another.
@@ -13,9 +15,9 @@ For a more detailed description of each component class, see below.
 ## Requirements
 
 1. You need a Salesforce account. Developers can register at [http://www.developerforce.com/events/regular/registration.php](http://www.developerforce.com/events/regular/registration.php)
-2. You will need to create a remote application/connected app for authorization. In Salesforce go to Your Name > Setup > Create > Apps then create a new Connected App. Set the callback URL to: `https://<your site>/salesforce/oauth_callback` (must use SSL)
+2. You will need to create a remote application/connected app for authorization. In Salesforce go to Your Name > Setup > Create > Apps then create a new Connected App. Set the callback URL to: `https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin&tab=authorize` (**you must use SSL**)
 
-    Select at least 'Perform requests on your behalf at any time' for OAuth Scope as well as the appropriate other scopes for your application.
+    Select at least 'Perform requests on your behalf at any time' for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select 'Access and manage your data (api)' as one of these scopes.
 
     Additional information: 
     + [https://help.salesforce.com/help/doc/en/remoteaccess_about.htm](https://help.salesforce.com/help/doc/en/remoteaccess_about.htm)
@@ -23,12 +25,9 @@ For a more detailed description of each component class, see below.
     + [http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php](http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php)
     + [https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/](https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/)
 
-3. Your site needs to be SSL enabled to authorize the remote application using OAUTH.
-4. If using the SOAP API, PHP needs to be compiled with SOAP web services and
-  OpenSSL support, as per:
+## Installation and setup
 
-  - http://php.net/soap
-  - http://php.net/openssl
+You can find a detailed [initial setup instruction](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/initial-setup.md) document for this plugin.
 
 ## Classes
 
@@ -53,12 +52,14 @@ These classes create or delete the plugin's custom database tables. Tables are:
 1. `wp_salesforce_field_map`: Given WordPress and Salesforce objects, map their corresponding fields (in an array) to each other. This sets which fields the two systems sync, whether it happens asynchronously, what order to use if there are conflicts, and whether to sync WordPress drafts of the object.
 2. `wp_salesforce_object_map`: Map individual object items between WordPress and Salesforce, and save the dates and API messages when they are last imported and exported.
 
-The `deactivate` class also stops recurring tasks created by the `schedule` class, and deletes the custom post type for logging if it exists.
+The `activate` class also creates a new capability called `configure_salesforce` and assigns it to the `administrator` role in WordPress, and other roles as well if the filter is used.
+
+The `deactivate` class also stops recurring tasks created by the `schedule` class, and deletes the custom post type for logging if it exists. It also removes the `configure_salesforce` capability, and removes it from the roles used in the activate version of the filter.
 
 
 ### Logging (logging)
 
-This class extends the [WP Logging Class](https://github.com/pippinsplugins/WP-Logging) to log plugin-specific events. The main class is stored in the /vendor/wp-logging folder, which we need to somehow tie into this plugin. Our extension does a few things:
+This class extends the [WP Logging Class](https://github.com/pippinsplugins/WP-Logging) to log plugin-specific events. The main class is stored in the /vendor/wp-logging folder, which we tie into this plugin with composer. Our extension to this class does a few things:
 
 1. Force a type of 'salesforce' on all logs this plugin creates.
 2. Get logging-related options configured by the `admin` class.
@@ -178,46 +179,11 @@ The admin section is divided into tabs:
 
 Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill in functional gaps missing in the REST API. Will require the Salesforce PHP Toolkit, if/when we choose to do it.
 
-The Drupal module apparently requires SOAP to batch records on a push. On creating a fieldmap, it says this:
+## Developer hooks
 
-    Requires the "Salesforce SOAP (salesforce_soap)" module to be enabled, and the "Process asynchronously" option to be checked. Push items will be processed in a single batch to the Salesforce API rather than one at a time. This may be preferable if API limits are of concern, although changes are not reflected immediately in Salesforce.
-    
+This plugin contains many hooks to allow other WordPress plugins to extend the functionality. It aims to reproduce all hooks provided by the Drupal suite. It also includes many additional hooks that give WordPress developers additional functionality.
 
-## API
-
-This plugin will aim to reproduce at least the hooks provided by the Drupal suite, so that other WordPress plugins can build on top of them.
-
-Current hooks include:
-
-### Filters
-
-- `salesforce_rest_api_push_object_allowed`: prevent a push per-mapping.
-- `salesforce_rest_api_pull_object_allowed`: prevent a pull per-mapping.
-- `salesforce_rest_api_pull_params_modify`: change what parameters are being sent to WordPress before syncing occurs
-- `salesforce_rest_api_push_params_modify`: change what parameters are being sent to Salesforce before syncing occurs
-- `salesforce_rest_api_find_sf_object_match`: modify the $salesforce_id string here
-- `salesforce_rest_api_settings_tabs`: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
-- `salesforce_rest_api_modify_schedulable_classes`: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
-- `salesforce_rest_api_add_more_wordpress_types`: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
-- `salesforce_rest_api_remove_wordpress_types`: remove WordPress content types from the list of what can be mapped to Salesforce objects. By default, we use this for the `wp_log` type that is included with this plugin.
-- `salesforce_rest_api_create_custom_wordpress_item`: allow plugins to run their own create methods for adding new WordPress objects, if they cannot use built in methods.
-- `salesforce_rest_api_upsert_custom_wordpress_item`: allow plugins to run their own upsert methods for checking for existence of, and then adding or updating, new WordPress objects, if they cannot use built in methods.
-- `salesforce_rest_api_update_custom_wordpress_item`: allow plugins to run their own update methods for updating existing, mapped WordPress objects, if they cannot use built in methods.
-- `salesforce_rest_api_delete_custom_wordpress_item`: allow plugins to run their own delete methods for deleting existing, mapped WordPress objects, if they cannot use built in methods.
-- `salesforce_rest_api_set_more_user_data`: allow plugins to set more data on user objects when users are created or updated. This could be used for permissions, for example.
-- `salesforce_rest_api_set_more_post_data`: allow plugins to set more data on post objects when posts are created or updated.
-- `salesforce_rest_api_set_more_attachment_data`: allow plugins to set more data on attachment objects when attachments are created or updated.
-- `salesforce_rest_api_set_more_term_data`: allow plugins to set more data on term objects when terms are created or updated.
-- `salesforce_rest_api_set_more_comment_data`: allow plugins to set more data on comment objects when comments are created or updated.
-- `salesforce_rest_api_set_initial_attachment_data`: allow plugins to add filename or parent data when creating attachment objects.
-- `salesforce_rest_api_wordpress_object_fields`: when getting the fields for a WordPress object, allow plugins to add more (and also cache the array).
-- `salesforce_rest_api_wordpress_object_data`: when getting the data for a WordPress object, allow plugins to add more, change the formatting, etc.
-
-### Actions
-
-- `salesforce_rest_api_push_fail`: what to do if a push to Salesforce fails
-- `salesforce_rest_api_push_success`: what to do if a push to Salesforce is successful
-
+There is a full list of all hooks, with links to each hook's documentation, in the [developer hooks documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/all-developer-hooks.md) page.
 
 ## Notes
 

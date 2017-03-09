@@ -7,6 +7,9 @@ if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
     die();
 }
 
+/**
+ * Pull data from Salesforce into WordPress
+ */
 class Wordpress {
 
 	protected $wpdb;
@@ -16,7 +19,7 @@ class Wordpress {
     protected $logging;
 
     /**
-    * Objects, properties, and methods to get core WordPress data for the plugin
+    * Constructor which discovers objects in WordPress
     *
     * @param object $wpdb
     * @param string $version
@@ -60,7 +63,7 @@ class Wordpress {
             return $more_types;
         }
 
-        add_filter( 'salesforce_rest_api_remove_wordoress_types', 'remove_types', 10, 1 );
+        add_filter( 'salesforce_rest_api_remove_wordpress_types', 'remove_types', 10, 1 );
         function remove_types( $types_to_remove ) {
             $types_to_remove = array( 'acme_product' );
             // or $types_to_remove[] = 'acme_product';
@@ -112,7 +115,7 @@ class Wordpress {
             $object_table_structure = array(
 				'object_name' => 'user',
                 'content_methods' => array( 'create' => 'wp_insert_user', 'read' => 'get_user_by', 'update' => 'wp_update_user', 'delete' => 'wp_delete_user' ),
-                'meta_methods' => array( 'create' => 'update_user_meta', 'read' => 'get_user_meta', 'update' => 'update_user_meta', 'delete' => 'wp_delete_attachment' ),
+                'meta_methods' => array( 'create' => 'update_user_meta', 'read' => 'get_user_meta', 'update' => 'update_user_meta', 'delete' => 'delete_user_meta' ),
 				'content_table' => $this->wpdb->prefix . 'users',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'usermeta',
@@ -151,7 +154,7 @@ class Wordpress {
         } elseif ( $object_type === 'comment' ) {
         	$object_table_structure = array(
 				'object_name' => 'comment',
-                'content_methods' => array( 'create' => 'wp_insert_comment', 'read' => 'get_comments', 'update' => 'wp_update_comment', 'delete' => 'wp_delete_comment' ),
+                'content_methods' => array( 'create' => 'wp_new_comment', 'read' => 'get_comments', 'update' => 'wp_update_comment', 'delete' => 'wp_delete_comment' ),
                 'meta_methods' => array( 'create' => 'add_comment_meta', 'read' => 'get_comment_meta', 'update' => 'update_comment_meta', 'delete' => 'delete_comment_metadata' ),
 				'content_table' => $this->wpdb->prefix . 'comments',
 				'id_field' => 'comment_ID',
@@ -226,7 +229,7 @@ class Wordpress {
         // $object_fields = array( 'data' => array(), 'from_cache' => bool, 'cached' => bool );
         // this is useful for custom objects that do not use the normal metadata table structure
 
-        $object_fields = apply_filters( 'salesforce_rest_api_wordpress_object_fields', $object_fields );
+        $object_fields = apply_filters( 'salesforce_rest_api_wordpress_object_fields', $object_fields, $wordpress_object );
         
 		return $object_fields['data'];
 
@@ -494,7 +497,7 @@ class Wordpress {
     *
     * part of CRUD for WordPress objects
     */
-    public function object_upsert( $name, $key, $value, $methods = array(), $params, $ignore_drafts = TRUE ) {
+    public function object_upsert( $name, $key, $value, $methods = array(), $params, $push_drafts = FALSE ) {
 
         $structure = $this->get_wordpress_table_structure( $name );
         $id_field = $structure['id_field'];
@@ -504,12 +507,16 @@ class Wordpress {
           unset( $params[$key] );
         }
 
+        // allow developers to change both the key and value by which objects should be matched
+        $key = apply_filters( 'salesforce_rest_api_modify_upsert_key', $key );
+        $value = apply_filters( 'salesforce_rest_api_modify_upsert_value', $value );
+
         switch ( $name ) {
             case 'user':
-                $result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
+                $result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
                 break;
             case 'post':
-                $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
+                $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
                 break;
             case 'attachment':
                 $result = $this->attachment_upsert( $key, $value, $methods, $params, $id_field );
@@ -517,10 +524,10 @@ class Wordpress {
             case 'category':
             case 'tag':
             case 'post_tag':
-                $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $ignore_drafts );
+                $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $push_drafts );
                 break;
             case 'comment':
-                $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts );
+                $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
                 break;
             default:
                 
@@ -532,11 +539,11 @@ class Wordpress {
                     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
                 */
                 // use hook like: add_filter( 'salesforce_rest_api_upsert_custom_wordpress_item', add_object, 10, 1 );
-                // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'ignore_drafts' => ignoredrafts, 'methods' => methods )
+                // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
 
                 // check to see if someone is calling the filter, and apply it if so
                 if ( !has_filter( 'salesforce_rest_api_upsert_custom_wordpress_item' ) ) {
-                    $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $ignore_drafts, $name );
+                    $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name );
                 } else {
                     $result = apply_filters( 'salesforce_rest_api_upsert_custom_wordpress_item', array(
                         'key' => $key,
@@ -544,7 +551,7 @@ class Wordpress {
                         'methods' => $methods,
                         'params' => $params,
                         'id_field' => $id_field,
-                        'ignore_drafts' => $ignore_drafts,
+                        'push_drafts' => $push_drafts,
                         'name' => $name
                     ) );
                 }
@@ -610,7 +617,7 @@ class Wordpress {
                     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
                 */
                 // use hook like: add_filter( 'salesforce_rest_api_update_custom_wordpress_item', add_object, 10, 1 );
-                // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'ignore_drafts' => ignoredrafts, 'methods' => methods )
+                // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
 
                 // check to see if someone is calling the filter, and apply it if so
                 if ( !has_filter( 'salesforce_rest_api_update_custom_wordpress_item' ) ) {
@@ -724,7 +731,7 @@ class Wordpress {
         if ( NULL == username_exists( $username ) ) {
 
             // Create the user
-            // todo: by default wordpress sends a password reset link so this password doesn't get used. this is probably fine though?
+            // wordpress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email
             $params['user_pass'] = array(
                 'value' => wp_generate_password( 12, FALSE ),
                 'method_modify' => 'wp_insert_user',
@@ -756,10 +763,7 @@ class Wordpress {
                 }
 
                 // developers can use this hook to set any other user data - permissions, etc
-                apply_filters( 'salesforce_rest_api_set_more_user_data', array(
-                    'user_id' => $user_id,
-                    'params' => $params
-                ) );
+                do_action( 'salesforce_rest_api_set_more_user_data', $user_id, $params, 'create' );
 
                 // send notification of new user
                 // todo: figure out what permissions out to get notifications for this and make sure it works the right way
@@ -806,13 +810,12 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $ignore_drafts = TRUE ) {
+    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = FALSE ) {
 
         // if the key is user_email, we need to make it just email because that is how the wordpress method reads it
         $method = $methods['method_match'];
         if ( $method !== '' ) {
             // this should give us the user object
-            // todo: this is probably not robust enough for necessary options for data here
             $user = $method( str_replace( 'user_', '', $key ), $value );
             if ( isset( $user->{$id_field} ) ) {
                 // user does exist after checking the matching value. we want its id
@@ -883,7 +886,7 @@ class Wordpress {
         // create log entry for lack of a user id
         if ( isset( $this->logging ) ) {
             $logging = $this->logging;
-        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+        } elseif ( class_exists( 'Salesforce_Logging' ) ) {
             $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
         }
         $logging->setup(
@@ -938,11 +941,10 @@ class Wordpress {
                     $errors[] = array( 'key' => $key, 'value' => $value );
                 }
             }
+            
             // developers can use this hook to set any other user data - permissions, etc
-            apply_filters( 'salesforce_rest_api_set_more_user_data', array(
-                'user_id' => $user_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_user_data', $user_id, $params, 'update' );
+
         }
 
         $result = array( 'data' => array( $id_field => $user_id, 'success' => $success ), 'errors' => $errors );
@@ -1023,10 +1025,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other post data
-            apply_filters( 'salesforce_rest_api_set_more_post_data', array(
-                'post_id' => $post_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_post_data', $post_id, $params, 'create' );
 
         }
 
@@ -1057,7 +1056,7 @@ class Wordpress {
     *   array of post data params
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not ID
-    * @param bool @ignore_drafts
+    * @param bool @push_drafts
     * indicates whether we should match against draft posts
     * @param string $post_type
     *   optional string for custom post type, if applicable
@@ -1069,7 +1068,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $ignore_drafts = TRUE, $post_type = 'post' ) {
+    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = FALSE, $post_type = 'post' ) {
 
         $method = $methods['method_match'];
 
@@ -1077,7 +1076,6 @@ class Wordpress {
             // by default, posts use get_posts as the method. args can be like this
             // the args don't really make sense, and are inconsistently documented
             // this should give us the post object
-            // todo: could probably make a hook here for additional matching
             $args = array();
             if ( $key === 'post_title' ) {
                 $params['post_title'] = array(
@@ -1091,7 +1089,7 @@ class Wordpress {
             }
             $args['post_type'] = $post_type;
             $post_statuses = array( 'publish' );
-            if ( $ignore_drafts !== TRUE ) {
+            if ( $push_drafts === TRUE ) {
                 $post_statuses[] = 'draft';
             }
             $args['post_status'] = $post_statuses;
@@ -1152,7 +1150,7 @@ class Wordpress {
         // create log entry for lack of a post id
         if ( isset( $this->logging ) ) {
             $logging = $this->logging;
-        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+        } elseif ( class_exists( 'Salesforce_Logging' ) ) {
             $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
         }
         $logging->setup(
@@ -1220,11 +1218,10 @@ class Wordpress {
                     }
                 }
             }
+
             // developers can use this hook to set any other post data
-            apply_filters( 'salesforce_rest_api_set_more_post_data', array(
-                'post_id' => $post_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_post_data', $post_id, $params, 'update' );
+
         }
 
         $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
@@ -1306,11 +1303,10 @@ class Wordpress {
             if ( $parent !== 0 ) {
                 set_post_thumbnail( $parent_post_id, $attachment_id );
             }
+
             // developers can use this hook to set any other attachment data
-            apply_filters( 'salesforce_rest_api_set_more_attachment_data', array(
-                'attachment_id' => $attachment_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_attachment_data', $attachment_id, $params, 'create' );
+
         }
 
         $result = array( 'data' => array( $id_field => $attachment_id, 'success' => $success ), 'errors' => $errors );
@@ -1349,7 +1345,6 @@ class Wordpress {
             // by default, posts use get_posts as the method. args can be like this
             // the args don't really make sense, and are inconsistently documented
             // this should give us the post object
-            // todo: could probably make a hook here for additional matching
             $args = array();
             if ( $key === 'post_title' ) {
                 $params['post_title'] = array(
@@ -1420,7 +1415,7 @@ class Wordpress {
         // create log entry for lack of an attachment id
         if ( isset( $this->logging ) ) {
             $logging = $this->logging;
-        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+        } elseif ( class_exists( 'Salesforce_Logging' ) ) {
             $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
         }
         $logging->setup(
@@ -1518,10 +1513,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other attachment data
-            apply_filters( 'salesforce_rest_api_set_more_attachment_data', array(
-                'attachment_id' => $attachment_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_attachment_data', $attachment_id, $params, 'update' );
 
         }
 
@@ -1598,11 +1590,10 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
+            
             // developers can use this hook to set any other term data
-            apply_filters( 'salesforce_rest_api_set_more_term_data', array(
-                'term_id' => $term_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_term_data', $term_id, $params, 'create' );
+            
         }
 
         if ( is_wp_error( $term ) ) {
@@ -1642,14 +1633,13 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $ignore_drafts = TRUE ) {
+    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $push_drafts = FALSE ) {
         if ( $taxonomy === 'tag' ) {
             $taxonomy = 'post_tag';
         }
         $method = $methods['method_match'];
         if ( $method !== '' ) {
             // this should give us the term object
-            // todo: this is probably not robust enough for necessary options for data here
             $term = $method( $key, $value, $taxonomy ); // we need to put the taxonomy in there probably
             if ( isset( $term->{$id_field} ) ) {
                 // term does exist after checking the matching value. we want its id
@@ -1693,7 +1683,7 @@ class Wordpress {
         // create log entry for lack of a term id
         if ( isset( $this->logging ) ) {
             $logging = $this->logging;
-        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+        } elseif ( class_exists( 'Salesforce_Logging' ) ) {
             $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
         }
         $logging->setup(
@@ -1752,11 +1742,10 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
+
             // developers can use this hook to set any other term data
-            apply_filters( 'salesforce_rest_api_set_more_term_data', array(
-                'term_id' => $term_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_term_data', $term_id, $params, 'update' );
+
         }
 
         if ( is_wp_error( $term ) ) {
@@ -1810,15 +1799,30 @@ class Wordpress {
     */
     private function comment_create( $params, $id_field = 'comment_ID' ) {
         foreach ( $params as $key => $value ) {
-            // tried using wp_new_comment here but it wouldn't complete - even trying to log its result did nothing
-            // todo: maybe try to fix this. the sanitizing is nice, although maybe not essential since this stuff is already coming from salesforce
-            if ( $value['method_modify'] === 'wp_insert_comment' ) {
+            if ( $value['method_modify'] === 'wp_new_comment' ) {
                 $content[$key] = $value['value'];
                 unset( $params[$key] );
             }
         }
 
-        $comment_id = wp_insert_comment( $content );
+        // fields that are required for comments, even if they are empty values
+        if ( !isset( $content['comment_author'] ) ) {
+            $content['comment_author'] = '';
+        }
+        if ( !isset( $content['comment_author_IP'] ) ) {
+            $content['comment_author_IP'] = '';
+        }
+        if ( !isset( $content['comment_author_email'] ) ) {
+            $content['comment_author_email'] = '';
+        }
+        if ( !isset( $content['comment_author_url'] ) ) {
+            $content['comment_author_url'] = '';
+        }
+        if ( !isset( $content['comment_type'] ) ) {
+            $content['comment_type'] = '';
+        }
+
+        $comment_id = wp_new_comment( $content );
 
         if ( is_wp_error( $comment_id ) ) {
             $success = FALSE;
@@ -1834,11 +1838,10 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to add meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
+
             // developers can use this hook to set any other comment data
-            apply_filters( 'salesforce_rest_api_set_more_comment_data', array(
-                'comment_id' => $comment_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_comment_data', $comment_id, $params, 'create' );
+
         }
 
         if ( is_wp_error( $comment_id ) ) {
@@ -1876,7 +1879,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $ignore_drafts = TRUE ) {
+    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $push_drafts = FALSE ) {
         $method = $methods['method_match'];
         if ( $method === 'get_comment' ) {
             $method = 'get_comments';
@@ -1907,12 +1910,12 @@ class Wordpress {
                     'method_modify' => $method,
                     'method_read' => $methods['method_read']
                 );
-            } else if ( count( $comments ) > 1 ) {
+            } elseif ( count( $comments ) > 1 ) {
                 $status = 'notice';
                 // create log entry for multiple matches
                 if ( isset( $this->logging ) ) {
                     $logging = $this->logging;
-                } else if ( class_exists( 'Salesforce_Logging' ) ) {
+                } elseif ( class_exists( 'Salesforce_Logging' ) ) {
                     $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
                 }
                 $logging->setup(
@@ -1952,7 +1955,7 @@ class Wordpress {
         // create log entry for lack of a comment id
         if ( isset( $this->logging ) ) {
             $logging = $this->logging;
-        } else if ( class_exists( 'Salesforce_Logging' ) ) {
+        } elseif ( class_exists( 'Salesforce_Logging' ) ) {
             $logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
         }
         $logging->setup(
@@ -2009,11 +2012,10 @@ class Wordpress {
                     $errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
+            
             // developers can use this hook to set any other comment data
-            apply_filters( 'salesforce_rest_api_set_more_comment_data', array(
-                'comment_id' => $comment_id,
-                'params' => $params
-            ) );
+            do_action( 'salesforce_rest_api_set_more_comment_data', $comment_id, $params, 'update' );
+
         }
 
         if ( is_wp_error( $updated ) ) {

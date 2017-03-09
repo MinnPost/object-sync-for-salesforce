@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Wordpress_Salesforce_Deactivate | Salesforce REST API</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+		</div>
+
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
+				<li><a href="class-Salesforce.html">Salesforce</a></li>
+				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
+				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
+				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
+				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
+				<li><a href="class-Salesforce_Rest_API.html">Salesforce_Rest_API</a></li>
+				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
+				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
+				<li><a href="class-Wordpress.html">Wordpress</a></li>
+				<li><a href="class-Wordpress_Salesforce_Activate.html">Wordpress_Salesforce_Activate</a></li>
+				<li><a href="class-Wordpress_Salesforce_Admin.html">Wordpress_Salesforce_Admin</a></li>
+				<li class="active"><a href="class-Wordpress_Salesforce_Deactivate.html">Wordpress_Salesforce_Deactivate</a></li>
+				<li><a href="class-Wordpress_Salesforce_Schedule.html">Wordpress_Salesforce_Schedule</a></li>
+			</ul>
+
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-SalesforceException.html">SalesforceException</a></li>
+				<li><a href="class-SalesforcePullException.html">SalesforcePullException</a></li>
+				<li><a href="class-WordpressException.html">WordpressException</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+				<li>
+					<a href="annotation-group-todo.html" title="List of elements with todo annotation">
+						<span>Todo</span>
+					</a>
+				</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Wordpress_Salesforce_Deactivate</h1>
+
+
+	<div class="description">
+	<p>What to do when the plugin is deactivated</p>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		
+
+			<b>Located at</b> <a href="source-class-Wordpress_Salesforce_Deactivate.html#10-94" title="Go to source code">deactivate.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Wordpress_Salesforce_Deactivate.html#18-34" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+
+		<div class="description short">
+			<p>Constructor which sets up deactivate hooks</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Constructor which sets up deactivate hooks</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$wpdb</var></dt>
+					<dd></dd>
+					<dt><var>$version</var></dt>
+					<dd></dd>
+					<dt><var>$text_domain</var></dt>
+					<dd></dd>
+					<dt><var>$schedulable_classes</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="wordpress_salesforce_drop_tables" id="_wordpress_salesforce_drop_tables">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_wordpress_salesforce_drop_tables">#</a>
+		<code><a href="source-class-Wordpress_Salesforce_Deactivate.html#36-47" title="Go to source code">wordpress_salesforce_drop_tables</a>( )</code>
+
+		<div class="description short">
+			<p>Drop database tables for Salesforce
+This removes the tables for fieldmaps (between types of objects) and object maps (between indidual instances of objects)</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Drop database tables for Salesforce
+This removes the tables for fieldmaps (between types of objects) and object maps (between indidual instances of objects)</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="clear_schedule" id="_clear_schedule">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_clear_schedule">#</a>
+		<code><a href="source-class-Wordpress_Salesforce_Deactivate.html#49-58" title="Go to source code">clear_schedule</a>( )</code>
+
+		<div class="description short">
+			<p>Clear the scheduled tasks
+This removes all the scheduled tasks that are included in the plugin's $schedulable_classes array</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Clear the scheduled tasks
+This removes all the scheduled tasks that are included in the plugin's $schedulable_classes array</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="delete_log_post_type" id="_delete_log_post_type">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_delete_log_post_type">#</a>
+		<code><a href="source-class-Wordpress_Salesforce_Deactivate.html#60-67" title="Go to source code">delete_log_post_type</a>( )</code>
+
+		<div class="description short">
+			<p>Delete the log post type
+This removes the log post type</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Delete the log post type
+This removes the log post type</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="remove_roles_capabilities" id="_remove_roles_capabilities">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_remove_roles_capabilities">#</a>
+		<code><a href="source-class-Wordpress_Salesforce_Deactivate.html#69-92" title="Go to source code">remove_roles_capabilities</a>( )</code>
+
+		<div class="description short">
+			<p>Remove roles and capabilities
+This removes the configure_salesforce capability from the admin role</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Remove roles and capabilities
+This removes the configure_salesforce capability from the admin role</p>
+
+<p>It also allows other plugins to remove the capability from other roles</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="wpdb" id="$wpdb">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Wordpress_Salesforce_Deactivate.html#15" title="Go to source code"><var>$wpdb</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$wpdb" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="version" id="$version">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Wordpress_Salesforce_Deactivate.html#16" title="Go to source code"><var>$version</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$version" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Salesforce REST API API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>
