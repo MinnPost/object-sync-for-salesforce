@@ -689,7 +689,7 @@ class Salesforce {
 	*/
 	public function query( $query, $options = array(), $all = FALSE, $explain = FALSE ) {
 		$search_data = [
-			'q' => $query,
+			'q' => ( string ) $query,
 		];
 		if ( $explain === TRUE ) {
 			$search_data['explain'] = $search_data['q'];
