@@ -6,13 +6,14 @@
 
 To install the plugin in WordPress, your PHP environment needs the following:
 
-1. SSL support (this is required to connect to Salesforce). You can do this in a local development environment without purchasing a certificate. If you develop on a Mac, you can use [a guide](https://getgrav.org/blog/macos-sierra-apache-ssl) like this one.
-2. If you'll be using the SOAP API, PHP needs to be compiled with SOAP web services and
+1. At least version 5.6.
+2. SSL support (this is required to connect to Salesforce). You can do this in a local development environment without purchasing a certificate. If you develop on a Mac, you can use [a guide](https://getgrav.org/blog/macos-sierra-apache-ssl) like this one.
+3. If you'll be using the SOAP API, PHP needs to be compiled with SOAP web services and
   OpenSSL support, as per:
   - [http://php.net/soap](http://php.net/soap)
   - [http://php.net/openssl](http://php.net/openssl)
-2. [Composer](https://getcomposer.org). You'll need to have the composer executable in your path, or be able to call it in another way (one recommended way of doing this is [Homebrew](http://brew.sh/)).
-3. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
+4. [Composer](https://getcomposer.org). You'll need to have the composer executable in your path, or be able to call it in another way (one recommended way of doing this is [Homebrew](http://brew.sh/)).
+5. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
 
 ### Install for developers
 
@@ -46,6 +47,12 @@ For purposes of this documentation, we'll assume that your name, as defined in S
 2. Enable OAuth Settings
 3. Set the callback URL to: `https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin&tab=authorize` (must use HTTPS).
 4. Select at least Perform requests on your behalf at any time' for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select 'Access and manage your data (api)' as one of these scopes.
+
+#### Additional information: 
+- [https://help.salesforce.com/help/doc/en/remoteaccess_about.htm](https://help.salesforce.com/help/doc/en/remoteaccess_about.htm)
+- [https://developer.salesforce.com/page/Getting_Started_with_the_Force.com_REST_API?language=en#Setup](https://developer.salesforce.com/page/Getting_Started_with_the_Force.com_REST_API?language=en#Setup)
+- [http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php](http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php)
+- [https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/](https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/)
 
 #### Get the values for WordPress
 

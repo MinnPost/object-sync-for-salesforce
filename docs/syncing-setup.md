@@ -1,6 +1,6 @@
 # Syncing setup
 
-After you have completed the [setup process](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/setup.md), you can configure how often both WordPress and Salesforce will sync data to the other system.
+After you have completed the [setup process](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/initial-setup.md), you can configure how often both WordPress and Salesforce will sync data to the other system.
 
 In this plugin, sending data from WordPress to Salesforce is referred to as a "push." Sending data from Salesforce to WordPress is referred to as a "pull."
 
