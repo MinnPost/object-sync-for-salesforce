@@ -165,69 +165,16 @@ class Salesforce_Pull {
 		$sfapi = $this->salesforce['sfapi'];
 		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
 			$type = $salesforce_mapping['salesforce_object']; // this sets the salesfore object type for the SOQL query
-			$mapped_fields = array();
-			$mapped_record_types = array();
 
-			// Iterate over each field mapping to determine our query parameters.
-			foreach ( $this->mappings->get_fieldmaps( NULL, array('salesforce_object' => $type ) ) as $mapping ) {
-
-	  			foreach ( $mapping['fields'] as $field ) {
-	  				// skip fields that are only wordpress to salesforce
-					if ( !in_array( $field['direction'], array( $this->mappings->direction_sf_wordpress, $this->mappings->direction_sync ) ) ) {
-						continue;
-					}
-
-					// Some field map types (Relation) store a collection of SF objects.
-					if ( is_array( $field['salesforce_field'] ) && !isset( $field['salesforce_field']['label'] ) ) {
-						foreach ( $field['salesforce_field'] as $sf_field ) {
-							$mapped_fields[$sf_field['label']] = $sf_field['label'];
-						}
-					} else {
-						$mapped_fields[$field['salesforce_field']['label']] = $field['salesforce_field']['label'];
-					}
-				}
-
-				if ( !empty( $mapped_fields ) && $salesforce_mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type ) {
-					foreach ( $salesforce_mapping['salesforce_record_types_allowed'] as $record_type ) {
-						if ( $record_type ) {
-							$mapped_record_types[$record_type] = $record_type;
-						}
-					}
-					// Add the RecordTypeId field so we can use it when processing the queued SF objects.
-					$mapped_fields['RecordTypeId'] = 'RecordTypeId';
-				}
-			}
-
-			// There are no field mappings configured to pull data from Salesforce so
-			// move on to the next mapped object. Prevents querying unmapped data.
-			if ( empty( $mapped_fields ) ) {
-				continue;
-			}
-
-			$soql = new Salesforce_Select_Query( $type );
-
-			// Convert field mappings to SOQL.
-			// this is why we don't use the get_updated method on the salesforce class
-			$soql->fields = array_merge( $mapped_fields, array(
-			  'Id' => 'Id',
-			  $salesforce_mapping['pull_trigger_field'] => $salesforce_mapping['pull_trigger_field']
-			) );
-
-			if ( in_array( $this->mappings->sync_sf_create, $salesforce_mapping['sync_triggers'] ) ) {
-				$soql->fields['CreatedDate'] = 'CreatedDate';
-			}
-
-			// If no lastupdate, get all records, else get records since last pull.
-			// this should be what keeps it from getting all the records, whether or not they've ever been updated
+			// determine when this object was last synced
 			$sf_last_sync = get_option( 'salesforce_api_pull_last_sync_' . $type, NULL );
 			if ( $sf_last_sync ) {
 				$last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
-				$soql->add_condition( $salesforce_mapping['pull_trigger_field'], $last_sync, '>' );
 			}
 
-			// If Record Type is specified, restrict query.
-			if ( count( $mapped_record_types ) > 0 ) {
-				$soql->add_condition( 'RecordTypeId', $mapped_record_types, 'IN' );
+			$soql = $this->get_pull_query( $type );
+			if ( empty( $soql ) ) {
+				continue;
 			}
 
 			// Execute query
@@ -251,7 +198,7 @@ class Salesforce_Pull {
 					$data = array(
 						'object_type' => $type,
 						'object' => $result,
-						'mapping' => $mapping,
+						'mapping' => $salesforce_mapping,
 						'sf_sync_trigger' => $trigger // use the appropriate trigger based on when this was created
 					);
 
@@ -273,7 +220,7 @@ class Salesforce_Pull {
 							$data = array(
 								'object_type' => $type,
 								'object' => $result,
-								'mapping' => $mapping,
+								'mapping' => $salesforce_mapping,
 								'sf_sync_trigger' => $this->mappings->sync_sf_update // sf update trigger
 							);
 
@@ -386,6 +333,74 @@ class Salesforce_Pull {
 		$object = $sfapi->api_call( 'sobjects/' . $object_type . '/' . $salesforce_id );
 		$mapping = $this->mappings->get_fieldmaps( NULL, array( 'salesforce_object' => $object_type, 'wordpress_object' => $wordpress_object ) );
 		$this->salesforce_pull_process_records( $object_type, $object['data'], $mapping[0], $this->mappings->sync_sf_update );
+	}
+
+	/**
+	* Given a SObject type name, build an SOQL query to include all fields for all
+	* object maps mapped to that SObject.
+	*
+	* @param string $type
+	*   e.g. "Contact", "Account", etc.
+	*
+	* @return Salesforce_Select_Query or NULL if no mappings or no mapped fields
+	*   were found.
+	*
+	* @see Salesforce_Mapping::get_mapped_fields
+	* @see Salesforce_Mapping::get_mapped_record_types
+	*/
+	private function get_pull_query( $type ) {
+		$mapped_fields = array();
+		$mapped_record_types = array();
+
+		// Iterate over each fieldmap to determine our query parameters.
+		// pass a NULL for the fieldmap id because we don't just want one
+		foreach ( $this->mappings->get_fieldmaps( NULL, array('salesforce_object' => $type ) ) as $mapping ) {
+			$mapped_fields = array_merge(
+				$mapped_fields, 
+				$this->mappings->get_mapped_fields(
+					$mapping,
+					array(
+						$this->mappings->direction_sync,
+						$this->mappings->direction_wordpress_sf
+					)
+				)
+			);
+		}
+
+		// There are no field mappings configured to pull data from Salesforce so
+		// move on to the next mapped object. Prevents querying unmapped data.
+		if ( empty( $mapped_fields ) ) {
+			return NULL;
+		}
+
+		$soql = new Salesforce_Select_Query( $type );
+		// Convert field mappings to SOQL.
+		$soql->fields = array_merge(
+			$mapped_fields,
+			array(
+				'Id' => 'Id',
+				$mapping['pull_trigger_field'] => $mapping['pull_trigger_field']
+			)
+		);
+
+		if ( in_array( $this->mappings->sync_sf_create, $mapping['sync_triggers'] ) ) {
+			$soql->fields['CreatedDate'] = 'CreatedDate';
+		}
+
+		// If no lastupdate, get all records, else get records since last pull.
+		$sf_last_sync = get_option( 'salesforce_api_pull_last_sync_' . $type, NULL );
+		if ( $sf_last_sync ) {
+			$last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
+			$soql->add_condition( $mapping['pull_trigger_field'], $last_sync, '>' );
+		}
+
+		// If Record Type is specified, restrict query.
+		$mapped_record_types = $this->mappings->get_mapped_record_types();
+		if ( count( $mapped_record_types ) > 0 ) {
+			$soql->addCondition( 'RecordTypeId', $mapped_record_types, 'IN' );
+		}
+
+		return $soql;
 	}
 
 	/**

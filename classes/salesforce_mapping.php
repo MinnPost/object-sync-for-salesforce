@@ -168,7 +168,6 @@ class Salesforce_Mapping {
             return $mappings;
 
         } else { // get all of em
-
             $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table" , ARRAY_A );
             
             if ( !empty( $mappings ) ) {
@@ -513,6 +512,48 @@ class Salesforce_Mapping {
         }
 
         return $map;
+    }
+
+    /**
+    * Return an array of Salesforce Field Names included in this mapping. 
+    *
+    * @param array $mapping
+    *   This is the array mapping the WordPress and Salesforce object types together
+    * @param array $directions
+    *   If given, only include fields mapped in this or these directions.
+    *   Possible values are: 
+    *     $this->direction_sync
+    *     $this->direction_sf_wordpress 
+    *     $this->direction_wordpress_sf
+    *
+    * @return array $mapped_fields
+    *   Indexes and keys are both Salesforce Field (machine) Name
+    */
+    public function get_mapped_fields( $mapping = array(), array $directions = NULL ) {
+        $mapped_fields = array();
+        foreach ( $mapping['fields'] as $fieldmap ) {
+            if ( empty( $directions ) || in_array( $fieldmap['direction'], $directions ) ) {
+                // Some field map types (Relation) store a collection of SF objects.
+                if ( is_array( $fieldmap['salesforce_field'] ) && !isset( $fieldmap['salesforce_field']['label'] ) ) {
+                    foreach ( $fieldmap['salesforce_field'] as $salesforce_field ) {
+                        $mapped_fields[$salesforce_field['label']] = $salesforce_field['label'];
+                    }
+                } else { // The rest are just a name/value pair.
+                    $mapped_fields[$fieldmap['salesforce_field']['label']] = $fieldmap['salesforce_field']['label'];
+                }
+            }
+        }
+
+        if ( !empty( $this->get_mapped_record_types() ) ) {
+            $mapped_fields['RecordTypeId'] = 'RecordTypeId';
+        }
+
+        return $mapped_fields;
+
+    }
+
+    public function get_mapped_record_types() {
+        return $this->salesforce_default_record_type === $this->salesforce_default_record_type ? array() : array_filter( $this->salesforce_record_types_allowed );
     }
 
     /**
