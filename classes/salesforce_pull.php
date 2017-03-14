@@ -195,6 +195,8 @@ class Salesforce_Pull {
 						$trigger = $this->mappings->sync_sf_update;
 					}
 
+					$result = array( 'create_update' => $result );
+
 					$data = array(
 						'object_type' => $type,
 						'object' => $result,
@@ -419,6 +421,17 @@ class Salesforce_Pull {
 	*
 	*/
 	public function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
+
+		if ( isset( $object['delete'] ) ) {
+			error_log('delete is ' . $object['delete']);
+		} else if ( isset( $object['merge'] ) ) {
+			error_log('merge is ' . $object['merge']);
+		} else {
+			error_log('object is ' . print_r($object, true));
+			$object = $object['create_update'];
+    	}
+
+
 
 		$mapping_conditions = array(
 			'salesforce_object' => $object_type
