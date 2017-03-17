@@ -75,7 +75,7 @@ Go to the Settings tab for the plugin. It is the default URL that opens when you
 
 1. Consumer Key: (your value from above)
 2. Consumer Secret: (your value from above)
-3. Callback URL: 'https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin&tab=authorize'
+3. Callback URL: `https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin&tab=authorize`
 4. Login Base URL: For most Salesforce environments, you can use `https://test.salesforce.com` for sandbox, and `https://login.salesforce.com` for production.
 5. Authorize URL Path: The plugin starts with a default of `/services/oauth2/authorize`. You should generally not have to change this.
 6. Token URL Path: The plugin starts with a default of `/services/oauth2/token`. You should generally not have to change this.
