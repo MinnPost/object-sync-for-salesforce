@@ -24,6 +24,14 @@ class Wordpress_Salesforce_Admin {
     protected $schedulable_classes;
 
     /**
+    * @var string
+    * What version of the Salesforce API should be the default on the settings screen.
+    * Users can edit this, but they won't see a correct list of all their available versions until WordPress has
+    * been authenticated with Salesforce.
+    */
+    public $default_api_version;
+
+    /**
     * Constructor which sets up admin pages
     *
     * @param object $wpdb
@@ -52,6 +60,8 @@ class Wordpress_Salesforce_Admin {
         $this->logging = $logging;
         $this->schedulable_classes = $schedulable_classes;
 
+        // what Salesforce API version to start the settings with. This is only used in the settings form
+        $this->default_api_version = '39.0';
         $this->add_actions();
 
     }
@@ -359,7 +369,7 @@ class Wordpress_Salesforce_Admin {
                     'validate' => 'sanitize_text',
                     'desc' => '',
                     'constant' => 'SALESFORCE_API_VERSION',
-                    'default' => '38.0'
+                    'default' => $this->default_api_version
                 ),
             ),
             'object_filters' => array(
