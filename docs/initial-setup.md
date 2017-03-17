@@ -14,6 +14,7 @@ To install the plugin in WordPress, your PHP environment needs the following:
   - [http://php.net/openssl](http://php.net/openssl)
 4. [Composer](https://getcomposer.org). You'll need to have the composer executable in your path, or be able to call it in another way (one recommended way of doing this is [Homebrew](http://brew.sh/)).
 5. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
+6. If you intend to contribute interface work, for example on the admin settings design, you will need Node.js and Grunt installed as well. You can use [this guide](https://24ways.org/2013/grunt-is-not-weird-and-hard/) to set it up, and this plugin already includes a `package.json` and `Gruntfile.js`.
 
 ### Install for developers
 
@@ -24,6 +25,7 @@ Most users should install the plugin from the WordPress plugin directory (we wil
 3. Run `cd salesforce-rest-api`
 4. Run `composer install`
 5. This will take a little while as Composer installs third-party libraries the plugin needs. You can then activate the plugin as you would a normal WordPress plugin.
+6. If you are doing interface work, as defined above, run `npm install` to install the Grunt plugins. Run `grunt` when you make changes to Sass or JavaScript.
 
 ### Activate the plugin
 
