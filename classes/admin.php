@@ -25,11 +25,43 @@ class Wordpress_Salesforce_Admin {
 
     /**
     * @var string
+    * Default path for the Salesforce authorize URL
+    */
+    public $default_authorize_url_path;
+    /**
+    * @var string
+    * Default path for the Salesforce token URL
+    */
+    public $default_token_url_path;
+
+    /**
+    * @var string
     * What version of the Salesforce API should be the default on the settings screen.
     * Users can edit this, but they won't see a correct list of all their available versions until WordPress has
     * been authenticated with Salesforce.
     */
     public $default_api_version;
+
+    /**
+    * @var bool
+    * Default for whether to limit to triggerable items
+    * Users can edit this
+    */
+    public $default_triggerable;
+
+    /**
+    * @var bool
+    * Default for whether to limit to updateable items
+    * Users can edit this
+    */
+    public $default_updateable;
+
+    /**
+    * @var int
+    * Default pull throttle for how often Salesforce can pull
+    * Users can edit this
+    */
+    public $default_pull_throttle;
 
     /**
     * Constructor which sets up admin pages
@@ -60,8 +92,19 @@ class Wordpress_Salesforce_Admin {
         $this->logging = $logging;
         $this->schedulable_classes = $schedulable_classes;
 
+        // default authorize url path
+        $this->default_authorize_url_path = '/services/oauth2/authorize';
+        // default token url path
+        $this->default_token_url_path = '/services/oauth2/token';
         // what Salesforce API version to start the settings with. This is only used in the settings form
         $this->default_api_version = '39.0';
+        // default pull throttle for avoiding going over api limits
+        $this->default_pull_throttle = 5;
+        // default setting for triggerable items
+        $this->default_triggerable = TRUE;
+        // default setting for updateable items
+        $this->default_updateable = TRUE;
+
         $this->add_actions();
 
     }
@@ -343,7 +386,7 @@ class Wordpress_Salesforce_Admin {
                     'validate' => 'sanitize_text',
                     'desc' => 'For most Salesforce installs, this should not be changed.',
                     'constant' => 'SALESFORCE_AUTHORIZE_URL_PATH',
-                    'default' => '/services/oauth2/authorize'
+                    'default' => $this->default_authorize_url_path
                 ),
             ),
             'token_url_path' => array(
@@ -356,7 +399,7 @@ class Wordpress_Salesforce_Admin {
                     'validate' => 'sanitize_text',
                     'desc' => 'For most Salesforce installs, this should not be changed.',
                     'constant' => 'SALESFORCE_TOKEN_URL_PATH',
-                    'default' => '/services/oauth2/token'
+                    'default' => $this->default_token_url_path
                 ),
             ),
             'api_version' => array(
@@ -386,13 +429,13 @@ class Wordpress_Salesforce_Admin {
                             'text' => 'Only Triggerable objects',
                             'id' => 'triggerable',
                             'desc' => '',
-                            'default' => TRUE
+                            'default' => $this->default_triggerable
                         ),
                         'updateable' => array(
                             'text' => 'Only Updateable objects',
                             'id' => 'updateable',
                             'desc' => '',
-                            'default' => TRUE
+                            'default' => $this->default_updateable
                         )
                     )
                 )
@@ -407,7 +450,7 @@ class Wordpress_Salesforce_Admin {
                     'validate' => 'sanitize_text',
                     'desc' => 'Number of seconds to wait between repeated salesforce pulls.<br>Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage.',
                     'constant' => '',
-                    'default' => 5
+                    'default' => $this->default_pull_throttle
                 ),
             ),
             'debug_mode' => array(
