@@ -19,7 +19,7 @@ To install the plugin in WordPress, your PHP environment needs the following:
 
 Most users should install the plugin from the WordPress plugin directory (we will provide a link once it is there), developers will often install it from the GitHub repository.
 
-1. Run `cd` to get into the `wp-plugins` directory of a WordPress install.
+1. Run `cd` to get into the `wp-content/plugins` directory of a WordPress install.
 2. Run `git clone https://github.com/MinnPost/salesforce-rest-api.git`
 3. Run `cd salesforce-rest-api`
 4. Run `composer install`
