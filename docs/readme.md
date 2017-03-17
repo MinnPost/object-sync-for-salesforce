@@ -61,6 +61,8 @@ This is the full documentation for this plugin, extending the information in [th
 
 7. [Logging](./logging.md)
 
+    When enabled, the plugin will create log entries for various events it completes, both from the Salesforce API and from WordPress object modification.
+
 8. [All developer hooks](./all-developer-hooks.md)
 
     This is a full list of all the developer hooks in the plugin. Each hook indicates what file contains it, and where the documentation for it resides.
