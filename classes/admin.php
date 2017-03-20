@@ -1328,12 +1328,20 @@ class Wordpress_Salesforce_Admin {
 	public function show_salesforce_user_fields( $user ) {
 		if ( $this->check_wordpress_admin_permissions() === true ) {
 			$mapping = $this->mappings->load_by_wordpress( 'user', $user->ID );
+			$fieldmap = $this->mappings->get_fieldmaps(
+				null, // id field must be null for multiples
+				array(
+					'wordpress_object' => 'user',
+				),
+			);
 			if ( isset( $mapping['id'] ) && ! isset( $_GET['edit_salesforce_mapping'] ) ) {
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
-			} elseif ( isset( $_GET['edit_salesforce_mapping'] ) && 'true' === urlencode( $_GET['edit_salesforce_mapping'] ) ) {
-				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
-			} else {
-				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
+			} elseif ( ! empty( $fieldmap ) ) { // is the user mapped to something already?
+				if ( isset( $_GET['edit_salesforce_mapping'] ) && urlencode( 'true' === $_GET['edit_salesforce_mapping'] ) ) {
+					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
+				} else {
+					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
+				}
 			}
 		}
 	}
