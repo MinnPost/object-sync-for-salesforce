@@ -1210,7 +1210,7 @@ class Wordpress_Salesforce_Admin {
 				echo '<option value="' . $value . '"' . $selected . '>' . $text . '</option>';
 			}
 			echo '</select>';
-			if ( $desc != '' ) {
+			if ( '' != $desc) {
 				echo '<p class="description">' . $desc . '</p>';
 			}
 			echo '</div>';
@@ -1253,7 +1253,7 @@ class Wordpress_Salesforce_Admin {
 
 		echo '<p><a' . $class . ' href="' . $url . '">' . $label . '</a></p>';
 
-		if ( $desc != '' ) {
+		if ( '' != $desc ) {
 			echo '<p class="description">' . $desc . '</p>';
 		}
 
@@ -1274,7 +1274,7 @@ class Wordpress_Salesforce_Admin {
 		$versions_is_redo = $versions['is_redo'] === true ? '' : 'not ';
 		$versions_andorbut = $versions['from_cache'] === true ? 'and' : 'but';
 
-		$contacts = $sfapi->query('SELECT Name, Id from Contact LIMIT 100');
+		$contacts = $sfapi->query( 'SELECT Name, Id from Contact LIMIT 100' );
 
 		// format this array into html so users can see the contacts
 		$contacts_is_cached = $contacts['cached'] === true ? '' : 'not ';
@@ -1328,9 +1328,9 @@ class Wordpress_Salesforce_Admin {
 	public function show_salesforce_user_fields( $user ) {
 		if ( $this->check_wordpress_admin_permissions() === true ) {
 			$mapping = $this->mappings->load_by_wordpress( 'user', $user->ID );
-			if ( isset( $mapping['id'] ) && ! isset($_GET['edit_salesforce_mapping']) ) {
+			if ( isset( $mapping['id'] ) && ! isset( $_GET['edit_salesforce_mapping'] ) ) {
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
-			} elseif ( isset($_GET['edit_salesforce_mapping']) && urlencode( $_GET['edit_salesforce_mapping'] ) === 'true' ) {
+			} elseif ( isset( $_GET['edit_salesforce_mapping'] ) && 'true' === urlencode( $_GET['edit_salesforce_mapping'] ) ) {
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
 			} else {
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
@@ -1352,7 +1352,7 @@ class Wordpress_Salesforce_Admin {
 			// if a Salesforce ID was entered
 			if ( isset( $_POST['salesforce_id'] ) && ! empty( $_POST['salesforce_id'] ) ) {
 				$mapping_object = $this->create_object_map( $user_id, 'user', $_POST['salesforce_id'] );
-			} else if ( isset( $_POST['push_new_user_to_salesforce'] ) ) {
+			} elseif ( isset( $_POST['push_new_user_to_salesforce'] ) ) {
 				// otherwise, create a new record in Salesforce
 				$result = $this->push_to_salesforce( 'user', $user_id );
 			}
@@ -1376,7 +1376,7 @@ class Wordpress_Salesforce_Admin {
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab_key => $tab_caption ) {
 			$active = $current_tab == $tab_key ? 'nav-tab-active' : '';
-			if ( $tab_key === 'settings' || ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) ) {
+			if ( 'settings' === $tab_key || ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) ) {
 				echo '<a class="nav-tab ' . $active . '" href="?page=salesforce-api-admin&tab=' . $tab_key . '">' . $tab_caption . '</a>';
 			}
 
@@ -1411,8 +1411,8 @@ class Wordpress_Salesforce_Admin {
 		if ( isset( $input ) && is_array( $input ) ) {
 
 			foreach( $input as $key => $value ) {
-				if ( isset( $input[$key] ) ) {
-					$output[$key] = strip_tags( stripslashes( $input[ $key ] ) );
+				if ( isset( $input[ $key ] ) ) {
+					$output[ $key ] = strip_tags( stripslashes( $input[ $key ] ) );
 				}
 			}
 
@@ -1426,7 +1426,7 @@ class Wordpress_Salesforce_Admin {
 	* This clears the schedule if the user clicks the button
 	*/
 	private function clear_schedule( $schedule_name = '' ) {
-		if ( $schedule_name !== '' ) {
+		if ( '' !== $schedule_name ) {
 			$schedule = $this->schedule( $schedule_name );
 			$schedule->cancel_by_name( $schedule_name );
 			return 'You have cleared the ' . $schedule_name . ' schedule.';
@@ -1436,7 +1436,7 @@ class Wordpress_Salesforce_Admin {
 	}
 
 	private function get_schedule_count( $schedule_name = '' ) {
-		if ( $schedule_name !== '' ) {
+		if ( '' !== $schedule_name ) {
 			$schedule = $this->schedule( $schedule_name );
 			return $this->schedule->count_queue_items( $schedule_name );
 		} else {
