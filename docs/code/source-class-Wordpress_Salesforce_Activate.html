@@ -156,9 +156,9 @@
 </span></span><span id="71" class="l"><a href="#71"> 71: </a><span class="php-quote">            created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 </span></span><span id="72" class="l"><a href="#72"> 72: </a><span class="php-quote">            object_updated datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 </span></span><span id="73" class="l"><a href="#73"> 73: </a><span class="php-quote">            last_sync datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-</span></span><span id="74" class="l"><a href="#74"> 74: </a><span class="php-quote">            last_sync_action varchar(128) DEFAULT NULL,
+</span></span><span id="74" class="l"><a href="#74"> 74: </a><span class="php-quote">            last_sync_action varchar(128) DEFAULT null,
 </span></span><span id="75" class="l"><a href="#75"> 75: </a><span class="php-quote">            last_sync_status tinyint(1) NOT NULL DEFAULT '0',
-</span></span><span id="76" class="l"><a href="#76"> 76: </a><span class="php-quote">            last_sync_message varchar(255) DEFAULT NULL,
+</span></span><span id="76" class="l"><a href="#76"> 76: </a><span class="php-quote">            last_sync_message varchar(255) DEFAULT null,
 </span></span><span id="77" class="l"><a href="#77"> 77: </a><span class="php-quote">            PRIMARY KEY  (id),
 </span></span><span id="78" class="l"><a href="#78"> 78: </a><span class="php-quote">            UNIQUE KEY salesforce (salesforce_id),
 </span></span><span id="79" class="l"><a href="#79"> 79: </a><span class="php-quote">            UNIQUE KEY salesforce_wordpress (wordpress_object,wordpress_id),
@@ -199,10 +199,10 @@
 </span><span id="114" class="l"><a href="#114">114: </a>        <span class="php-var">$role</span>-&gt;add_cap( <span class="php-quote">'configure_salesforce'</span> );
 </span><span id="115" class="l"><a href="#115">115: </a>
 </span><span id="116" class="l"><a href="#116">116: </a>        <span class="php-comment">// hook that allows other roles to configure the plugin as well</span>
-</span><span id="117" class="l"><a href="#117">117: </a>        <span class="php-var">$roles</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_roles_configure_salesforce'</span>, <span class="php-keyword1">NULL</span> );
+</span><span id="117" class="l"><a href="#117">117: </a>        <span class="php-var">$roles</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_roles_configure_salesforce'</span>, <span class="php-keyword1">null</span> );
 </span><span id="118" class="l"><a href="#118">118: </a>
 </span><span id="119" class="l"><a href="#119">119: </a>        <span class="php-comment">// for each role that we have, give it the configure salesforce capability</span>
-</span><span id="120" class="l"><a href="#120">120: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">NULL</span> !== <span class="php-var">$roles</span> ) {
+</span><span id="120" class="l"><a href="#120">120: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> !== <span class="php-var">$roles</span> ) {
 </span><span id="121" class="l"><a href="#121">121: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$roles</span> <span class="php-keyword1">as</span> <span class="php-var">$role</span> ) {
 </span><span id="122" class="l"><a href="#122">122: </a>                <span class="php-var">$role</span> = get_role( <span class="php-var">$role</span> );
 </span><span id="123" class="l"><a href="#123">123: </a>                <span class="php-var">$role</span>-&gt;add_cap( <span class="php-quote">'configure_salesforce'</span> );

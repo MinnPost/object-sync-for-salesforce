@@ -129,19 +129,19 @@ class Salesforce_Mapping {
     * @return $map or $mappings
     * @throws \Exception
     */
-    public function get_fieldmaps( $id = NULL, $conditions = array(), $reset = false ) {
+    public function get_fieldmaps( $id = null, $conditions = array(), $reset = false ) {
         $table = $this->fieldmap_table;
-        if ( $id !== NULL ) { // get one fieldmap
+        if ( $id !== null ) { // get one fieldmap
             $map = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
             $map['salesforce_record_types_allowed'] = maybe_unserialize( $map['salesforce_record_types_allowed'] );
             $map['fields'] = maybe_unserialize( $map['fields'] );
             $map['sync_triggers'] = maybe_unserialize( $map['sync_triggers'] );
             return $map;
-        } elseif ( !empty( $conditions ) ) { // get multiple but with a limitation
+        } elseif ( ! empty( $conditions ) ) { // get multiple but with a limitation
             $mappings = array();
             $record_type = '';
         
-            if ( !empty( $conditions ) ) {
+            if ( ! empty( $conditions ) ) {
                 $where = ' WHERE ';
                 $i = 0;
                 foreach ( $conditions as $key => $value ) {
@@ -161,7 +161,7 @@ class Salesforce_Mapping {
 
             $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . ' ORDER BY `weight`', ARRAY_A );
 
-            if ( !empty( $mappings ) ) {
+            if ( ! empty( $mappings ) ) {
                 $mappings = $this->prepare_fieldmap_data( $mappings, $record_type );
             }
 
@@ -171,7 +171,7 @@ class Salesforce_Mapping {
 
             $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table" , ARRAY_A );
             
-            if ( !empty( $mappings ) ) {
+            if ( ! empty( $mappings ) ) {
                 $mappings = $this->prepare_fieldmap_data( $mappings );
             }
 
@@ -193,7 +193,7 @@ class Salesforce_Mapping {
     public function update_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array(), $id = '' ) {
     	$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
     	$update = $this->wpdb->update( $this->fieldmap_table, $data, array( 'id' => $id ) );
-    	if ( $update === FALSE ) {
+    	if ( $update === false ) {
     		return false;
     	} else {
     		return true;
@@ -215,16 +215,16 @@ class Salesforce_Mapping {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
                 $method_key = array_search( $value, array_column( $wordpress_fields, 'key' ) );
-				if ( !isset( $posted['direction'][$key] ) ) {
+				if ( ! isset( $posted['direction'][$key] ) ) {
 					$posted['direction'][$key] = 'sync';
 				}
-                if ( !isset( $posted['is_prematch'][$key] ) ) {
+                if ( ! isset( $posted['is_prematch'][$key] ) ) {
                     $posted['is_prematch'][$key] = false;
                 }
-				if ( !isset( $posted['is_key'][$key] ) ) {
+				if ( ! isset( $posted['is_key'][$key] ) ) {
 					$posted['is_key'][$key] = false;
 				}
-				if ( !isset( $posted['is_delete'][$key] ) ) {
+				if ( ! isset( $posted['is_delete'][$key] ) ) {
 					$posted['is_delete'][$key] = false;
 				}
 				if ( $posted['is_delete'][$key] === false ) {
@@ -327,7 +327,7 @@ class Salesforce_Mapping {
         }
         if ( $insert === 1 ) {
             return $this->wpdb->insert_id;
-        } elseif ( strpos( $this->wpdb->last_error, 'Duplicate entry' ) !== FALSE ) {
+        } elseif ( strpos( $this->wpdb->last_error, 'Duplicate entry' ) !== false ) {
             $mapping = $this->load_by_salesforce( $data['salesforce_id'] );
             $id = $mapping['id'];
             $status = 'error';
@@ -360,10 +360,10 @@ class Salesforce_Mapping {
     public function get_object_maps( $conditions = array(), $reset = false ) {
         $table = $this->object_map_table;
         $order = ' ORDER BY object_updated, created';
-        if ( !empty( $conditions ) ) { // get multiple but with a limitation
+        if ( ! empty( $conditions ) ) { // get multiple but with a limitation
             $mappings = array();
         
-            if ( !empty( $conditions ) ) {
+            if ( ! empty( $conditions ) ) {
                 $where = ' WHERE ';
                 $i = 0;
                 foreach ( $conditions as $key => $value ) {
@@ -378,13 +378,13 @@ class Salesforce_Mapping {
             }
 
             $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . $order, ARRAY_A );
-            if ( !empty( $mappings ) && $this->wpdb->num_rows === 1 ) {
+            if ( ! empty( $mappings ) && $this->wpdb->num_rows === 1 ) {
                 $mappings = $mappings[0];
             }
 
         } else { // get all of em
             $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $order, ARRAY_A );
-            if ( !empty( $mappings ) && $this->wpdb->num_rows === 1 ) {
+            if ( ! empty( $mappings ) && $this->wpdb->num_rows === 1 ) {
                 $mappings = $mappings[0];
             }
         }
@@ -403,11 +403,11 @@ class Salesforce_Mapping {
     */
     public function update_object_map( $posted = array(), $id = '' ) {
         $data = $this->setup_object_map_data( $posted );
-        if ( !isset( $data['object_updated'] ) ) {
+        if ( ! isset( $data['object_updated'] ) ) {
             $data['object_updated'] = current_time( 'mysql' );
         }
         $update = $this->wpdb->update( $this->object_map_table, $data, array( 'id' => $id ) );
-        if ( $update === FALSE ) {
+        if ( $update === false ) {
             return false;
         } else {
             return true;
@@ -452,9 +452,9 @@ class Salesforce_Mapping {
      *   Whether or not the cache should be cleared and fetch from current data.
      *
      * @return SalesforceMappingObject
-     *   The requested SalesforceMappingObject or FALSE if none was found.
+     *   The requested SalesforceMappingObject or false if none was found.
      */
-    public function load_by_wordpress( $object_type, $object_id, $reset = FALSE ) {
+    public function load_by_wordpress( $object_type, $object_id, $reset = false ) {
         $conditions = array(
             'wordpress_id' => $object_id,
             'wordpress_object' => $object_type,
@@ -473,7 +473,7 @@ class Salesforce_Mapping {
     * @return array $map
     *   The most recent fieldmap
     */
-    public function load_by_salesforce( $salesforce_id, $reset = FALSE ) {
+    public function load_by_salesforce( $salesforce_id, $reset = false ) {
         $conditions = array(
             'salesforce_id' => $salesforce_id
         );
@@ -532,7 +532,7 @@ class Salesforce_Mapping {
     * @return array
     *   Associative array of key value pairs.
     */
-    public function map_params( $mapping, $object, $trigger, $use_soap = FALSE, $is_new = TRUE ) {
+    public function map_params( $mapping, $object, $trigger, $use_soap = false, $is_new = true ) {
 
         $params = array();
 

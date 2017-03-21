@@ -147,7 +147,7 @@
 </span><span id="62" class="l"><a href="#62">  62: </a>        <span class="php-var">$this</span>-&gt;success_or_refresh_codes = <span class="php-var">$this</span>-&gt;success_codes;
 </span><span id="63" class="l"><a href="#63">  63: </a>        <span class="php-var">$this</span>-&gt;success_or_refresh_codes[] = <span class="php-var">$this</span>-&gt;refresh_code;
 </span><span id="64" class="l"><a href="#64">  64: </a>
-</span><span id="65" class="l"><a href="#65">  65: </a>        <span class="php-var">$this</span>-&gt;debug = get_option( <span class="php-quote">'salesforce_api_debug_mode'</span>, <span class="php-keyword1">FALSE</span> );
+</span><span id="65" class="l"><a href="#65">  65: </a>        <span class="php-var">$this</span>-&gt;debug = get_option( <span class="php-quote">'salesforce_api_debug_mode'</span>, <span class="php-keyword1">false</span> );
 </span><span id="66" class="l"><a href="#66">  66: </a>
 </span><span id="67" class="l"><a href="#67">  67: </a>    }
 </span><span id="68" class="l"><a href="#68">  68: </a>
@@ -186,7 +186,7 @@
 </span></span><span id="101" class="l"><a href="#101"> 101: </a><span class="php-comment">    * @param string $sf_id
 </span></span><span id="102" class="l"><a href="#102"> 102: </a><span class="php-comment">    *   15- or 18-character Salesforce ID
 </span></span><span id="103" class="l"><a href="#103"> 103: </a><span class="php-comment">    * @return string
-</span></span><span id="104" class="l"><a href="#104"> 104: </a><span class="php-comment">    *   sObject name, e.g. &quot;Account&quot;, &quot;Contact&quot;, &quot;my__Custom_Object__c&quot; or FALSE
+</span></span><span id="104" class="l"><a href="#104"> 104: </a><span class="php-comment">    *   sObject name, e.g. &quot;Account&quot;, &quot;Contact&quot;, &quot;my__Custom_Object__c&quot; or false
 </span></span><span id="105" class="l"><a href="#105"> 105: </a><span class="php-comment">    *   if no match could be found.
 </span></span><span id="106" class="l"><a href="#106"> 106: </a><span class="php-comment">    * @throws SalesforceException
 </span></span><span id="107" class="l"><a href="#107"> 107: </a><span class="php-comment">    */</span>
@@ -202,7 +202,7 @@
 </span><span id="117" class="l"><a href="#117"> 117: </a>            <span class="php-keyword1">return</span> <span class="php-var">$object</span>[<span class="php-quote">'name'</span>];
 </span><span id="118" class="l"><a href="#118"> 118: </a>        }
 </span><span id="119" class="l"><a href="#119"> 119: </a>        <span class="php-comment">// Otherwise, we did not find a match.</span>
-</span><span id="120" class="l"><a href="#120"> 120: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">FALSE</span>;
+</span><span id="120" class="l"><a href="#120"> 120: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
 </span><span id="121" class="l"><a href="#121"> 121: </a>    }
 </span><span id="122" class="l"><a href="#122"> 122: </a>
 </span><span id="123" class="l"><a href="#123"> 123: </a>    <span class="php-comment">/**
@@ -218,7 +218,7 @@
 </span></span><span id="133" class="l"><a href="#133"> 133: </a><span class="php-comment">    * This is not an authenticated call, so it would not be a helpful test
 </span></span><span id="134" class="l"><a href="#134"> 134: </a><span class="php-comment">    */</span>
 </span><span id="135" class="l"><a href="#135"> 135: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> get_api_versions() {
-</span><span id="136" class="l"><a href="#136"> 136: </a>        <span class="php-var">$options</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'authenticated'</span> =&gt; <span class="php-keyword1">FALSE</span>, <span class="php-quote">'full_url'</span> =&gt; <span class="php-keyword1">TRUE</span> );
+</span><span id="136" class="l"><a href="#136"> 136: </a>        <span class="php-var">$options</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'authenticated'</span> =&gt; <span class="php-keyword1">false</span>, <span class="php-quote">'full_url'</span> =&gt; <span class="php-keyword1">true</span> );
 </span><span id="137" class="l"><a href="#137"> 137: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;api_call( <span class="php-var">$this</span>-&gt;get_instance_url() . <span class="php-quote">'/services/data'</span>, [], <span class="php-quote">'GET'</span>, <span class="php-var">$options</span> );
 </span><span id="138" class="l"><a href="#138"> 138: </a>    }
 </span><span id="139" class="l"><a href="#139"> 139: </a>
@@ -260,7 +260,7 @@
 </span><span id="175" class="l"><a href="#175"> 175: </a>                <span class="php-comment">// Refresh token.</span>
 </span><span id="176" class="l"><a href="#176"> 176: </a>                <span class="php-var">$this</span>-&gt;refresh_token();
 </span><span id="177" class="l"><a href="#177"> 177: </a>                <span class="php-comment">// Rebuild our request and repeat request.</span>
-</span><span id="178" class="l"><a href="#178"> 178: </a>                <span class="php-var">$options</span>[<span class="php-quote">'is_redo'</span>] = <span class="php-keyword1">TRUE</span>;
+</span><span id="178" class="l"><a href="#178"> 178: </a>                <span class="php-var">$options</span>[<span class="php-quote">'is_redo'</span>] = <span class="php-keyword1">true</span>;
 </span><span id="179" class="l"><a href="#179"> 179: </a>                <span class="php-var">$this</span>-&gt;response = <span class="php-var">$this</span>-&gt;api_http_request( <span class="php-var">$path</span>, <span class="php-var">$params</span>, <span class="php-var">$method</span>, <span class="php-var">$options</span>, <span class="php-var">$type</span> );
 </span><span id="180" class="l"><a href="#180"> 180: </a>                <span class="php-comment">// Throw an error if we still have bad response.</span>
 </span><span id="181" class="l"><a href="#181"> 181: </a>                <span class="php-keyword1">if</span> ( !<span class="php-keyword2">in_array</span>( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'code'</span>], <span class="php-var">$this</span>-&gt;success_codes ) ) {
@@ -315,7 +315,7 @@
 </span><span id="230" class="l"><a href="#230"> 230: </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> api_http_request( <span class="php-var">$path</span>, <span class="php-var">$params</span>, <span class="php-var">$method</span>, <span class="php-var">$options</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$type</span> = <span class="php-quote">'rest'</span> ) {
 </span><span id="231" class="l"><a href="#231"> 231: </a>        <span class="php-var">$options</span> = <span class="php-keyword2">array_merge</span>( <span class="php-var">$this</span>-&gt;options, <span class="php-var">$options</span> ); <span class="php-comment">// this will override a value in $this-&gt;options with the one in $options if there is a matching key</span>
 </span><span id="232" class="l"><a href="#232"> 232: </a>        <span class="php-var">$url</span> = <span class="php-var">$this</span>-&gt;get_api_endpoint( <span class="php-var">$type</span> ) . <span class="php-var">$path</span>;
-</span><span id="233" class="l"><a href="#233"> 233: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$options</span>[<span class="php-quote">'full_url'</span>] ) &amp;&amp; <span class="php-var">$options</span>[<span class="php-quote">'full_url'</span>] === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="233" class="l"><a href="#233"> 233: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$options</span>[<span class="php-quote">'full_url'</span>] ) &amp;&amp; <span class="php-var">$options</span>[<span class="php-quote">'full_url'</span>] === <span class="php-keyword1">true</span> ) {
 </span><span id="234" class="l"><a href="#234"> 234: </a>            <span class="php-var">$url</span> = <span class="php-var">$path</span>;
 </span><span id="235" class="l"><a href="#235"> 235: </a>        }
 </span><span id="236" class="l"><a href="#236"> 236: </a>        <span class="php-var">$headers</span> = <span class="php-keyword1">array</span>(
@@ -325,40 +325,40 @@
 </span><span id="240" class="l"><a href="#240"> 240: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$method</span> === <span class="php-quote">'POST'</span> || <span class="php-var">$method</span> === <span class="php-quote">'PATCH'</span> ) {
 </span><span id="241" class="l"><a href="#241"> 241: </a>            <span class="php-var">$headers</span>[<span class="php-quote">'Content-Type'</span>] = <span class="php-quote">'Content-Type: application/json'</span>;
 </span><span id="242" class="l"><a href="#242"> 242: </a>        }
-</span><span id="243" class="l"><a href="#243"> 243: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$options</span>[<span class="php-quote">'authenticated'</span>] ) &amp;&amp; <span class="php-var">$options</span>[<span class="php-quote">'authenticated'</span>] === <span class="php-keyword1">TRUE</span> ) {
-</span><span id="244" class="l"><a href="#244"> 244: </a>            <span class="php-var">$headers</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="243" class="l"><a href="#243"> 243: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$options</span>[<span class="php-quote">'authenticated'</span>] ) &amp;&amp; <span class="php-var">$options</span>[<span class="php-quote">'authenticated'</span>] === <span class="php-keyword1">true</span> ) {
+</span><span id="244" class="l"><a href="#244"> 244: </a>            <span class="php-var">$headers</span> = <span class="php-keyword1">false</span>;
 </span><span id="245" class="l"><a href="#245"> 245: </a>        }
 </span><span id="246" class="l"><a href="#246"> 246: </a>        <span class="php-comment">// if this request should be cached, see if it already exists</span>
 </span><span id="247" class="l"><a href="#247"> 247: </a>        <span class="php-comment">// if it is already cached, load it. if not, load it and then cache it if it should be cached</span>
 </span><span id="248" class="l"><a href="#248"> 248: </a>        <span class="php-comment">// add parameters to the array so we can tell if it was cached or not</span>
-</span><span id="249" class="l"><a href="#249"> 249: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$options</span>[<span class="php-quote">'cache'</span>] === <span class="php-keyword1">TRUE</span> &amp;&amp; <span class="php-var">$options</span>[<span class="php-quote">'type'</span>] !== <span class="php-quote">'write'</span> ) { 
+</span><span id="249" class="l"><a href="#249"> 249: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$options</span>[<span class="php-quote">'cache'</span>] === <span class="php-keyword1">true</span> &amp;&amp; <span class="php-var">$options</span>[<span class="php-quote">'type'</span>] !== <span class="php-quote">'write'</span> ) { 
 </span><span id="250" class="l"><a href="#250"> 250: </a>            <span class="php-var">$cached</span> = <span class="php-var">$this</span>-&gt;wordpress-&gt;cache_get( <span class="php-var">$url</span>, <span class="php-var">$params</span> );
 </span><span id="251" class="l"><a href="#251"> 251: </a>            <span class="php-comment">// some api calls can send a reset option, in which case we should redo the request anyway</span>
-</span><span id="252" class="l"><a href="#252"> 252: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$cached</span> ) &amp;&amp; ( !<span class="php-keyword1">isset</span>( <span class="php-var">$options</span>[<span class="php-quote">'reset'</span>] ) || <span class="php-var">$options</span>[<span class="php-quote">'reset'</span>] !== <span class="php-keyword1">TRUE</span> ) ) {
+</span><span id="252" class="l"><a href="#252"> 252: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$cached</span> ) &amp;&amp; ( !<span class="php-keyword1">isset</span>( <span class="php-var">$options</span>[<span class="php-quote">'reset'</span>] ) || <span class="php-var">$options</span>[<span class="php-quote">'reset'</span>] !== <span class="php-keyword1">true</span> ) ) {
 </span><span id="253" class="l"><a href="#253"> 253: </a>                <span class="php-var">$result</span> = <span class="php-var">$cached</span>;
-</span><span id="254" class="l"><a href="#254"> 254: </a>                <span class="php-var">$result</span>[<span class="php-quote">'from_cache'</span>] = <span class="php-keyword1">TRUE</span>;
-</span><span id="255" class="l"><a href="#255"> 255: </a>                <span class="php-var">$result</span>[<span class="php-quote">'cached'</span>] = <span class="php-keyword1">TRUE</span>;
+</span><span id="254" class="l"><a href="#254"> 254: </a>                <span class="php-var">$result</span>[<span class="php-quote">'from_cache'</span>] = <span class="php-keyword1">true</span>;
+</span><span id="255" class="l"><a href="#255"> 255: </a>                <span class="php-var">$result</span>[<span class="php-quote">'cached'</span>] = <span class="php-keyword1">true</span>;
 </span><span id="256" class="l"><a href="#256"> 256: </a>            } <span class="php-keyword1">else</span> {
 </span><span id="257" class="l"><a href="#257"> 257: </a>                <span class="php-var">$data</span> = <span class="php-keyword2">json_encode</span>( <span class="php-var">$params</span> );
 </span><span id="258" class="l"><a href="#258"> 258: </a>                <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;<span class="php-keyword2">http_request</span>( <span class="php-var">$url</span>, <span class="php-var">$data</span>, <span class="php-var">$headers</span>, <span class="php-var">$method</span>, <span class="php-var">$options</span> );
 </span><span id="259" class="l"><a href="#259"> 259: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$result</span>[<span class="php-quote">'code'</span>], <span class="php-var">$this</span>-&gt;success_codes ) ) {
 </span><span id="260" class="l"><a href="#260"> 260: </a>                    <span class="php-var">$result</span>[<span class="php-quote">'cached'</span>] = <span class="php-var">$this</span>-&gt;wordpress-&gt;cache_set( <span class="php-var">$url</span>, <span class="php-var">$params</span>, <span class="php-var">$result</span>, <span class="php-var">$options</span>[<span class="php-quote">'cache_expiration'</span>] );
 </span><span id="261" class="l"><a href="#261"> 261: </a>                } <span class="php-keyword1">else</span> {
-</span><span id="262" class="l"><a href="#262"> 262: </a>                    <span class="php-var">$result</span>[<span class="php-quote">'cached'</span>] = <span class="php-keyword1">FALSE</span>;
+</span><span id="262" class="l"><a href="#262"> 262: </a>                    <span class="php-var">$result</span>[<span class="php-quote">'cached'</span>] = <span class="php-keyword1">false</span>;
 </span><span id="263" class="l"><a href="#263"> 263: </a>                }
-</span><span id="264" class="l"><a href="#264"> 264: </a>                <span class="php-var">$result</span>[<span class="php-quote">'from_cache'</span>] = <span class="php-keyword1">FALSE</span>;
+</span><span id="264" class="l"><a href="#264"> 264: </a>                <span class="php-var">$result</span>[<span class="php-quote">'from_cache'</span>] = <span class="php-keyword1">false</span>;
 </span><span id="265" class="l"><a href="#265"> 265: </a>            }
 </span><span id="266" class="l"><a href="#266"> 266: </a>        } <span class="php-keyword1">else</span> {
 </span><span id="267" class="l"><a href="#267"> 267: </a>            <span class="php-var">$data</span> = <span class="php-keyword2">json_encode</span>( <span class="php-var">$params</span> );
 </span><span id="268" class="l"><a href="#268"> 268: </a>            <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;<span class="php-keyword2">http_request</span>( <span class="php-var">$url</span>, <span class="php-var">$data</span>, <span class="php-var">$headers</span>, <span class="php-var">$method</span>, <span class="php-var">$options</span> );
-</span><span id="269" class="l"><a href="#269"> 269: </a>            <span class="php-var">$result</span>[<span class="php-quote">'from_cache'</span>] = <span class="php-keyword1">FALSE</span>;
-</span><span id="270" class="l"><a href="#270"> 270: </a>            <span class="php-var">$result</span>[<span class="php-quote">'cached'</span>] = <span class="php-keyword1">FALSE</span>;
+</span><span id="269" class="l"><a href="#269"> 269: </a>            <span class="php-var">$result</span>[<span class="php-quote">'from_cache'</span>] = <span class="php-keyword1">false</span>;
+</span><span id="270" class="l"><a href="#270"> 270: </a>            <span class="php-var">$result</span>[<span class="php-quote">'cached'</span>] = <span class="php-keyword1">false</span>;
 </span><span id="271" class="l"><a href="#271"> 271: </a>        }
 </span><span id="272" class="l"><a href="#272"> 272: </a>
-</span><span id="273" class="l"><a href="#273"> 273: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$options</span>[<span class="php-quote">'is_redo'</span>] ) &amp;&amp; <span class="php-var">$options</span>[<span class="php-quote">'is_redo'</span>] === <span class="php-keyword1">TRUE</span> ) {
-</span><span id="274" class="l"><a href="#274"> 274: </a>            <span class="php-var">$result</span>[<span class="php-quote">'is_redo'</span>] = <span class="php-keyword1">TRUE</span>;
+</span><span id="273" class="l"><a href="#273"> 273: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$options</span>[<span class="php-quote">'is_redo'</span>] ) &amp;&amp; <span class="php-var">$options</span>[<span class="php-quote">'is_redo'</span>] === <span class="php-keyword1">true</span> ) {
+</span><span id="274" class="l"><a href="#274"> 274: </a>            <span class="php-var">$result</span>[<span class="php-quote">'is_redo'</span>] = <span class="php-keyword1">true</span>;
 </span><span id="275" class="l"><a href="#275"> 275: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="276" class="l"><a href="#276"> 276: </a>            <span class="php-var">$result</span>[<span class="php-quote">'is_redo'</span>] = <span class="php-keyword1">FALSE</span>;
+</span><span id="276" class="l"><a href="#276"> 276: </a>            <span class="php-var">$result</span>[<span class="php-quote">'is_redo'</span>] = <span class="php-keyword1">false</span>;
 </span><span id="277" class="l"><a href="#277"> 277: </a>        }
 </span><span id="278" class="l"><a href="#278"> 278: </a>
 </span><span id="279" class="l"><a href="#279"> 279: </a>        <span class="php-comment">// it would be very unfortunate to ever have to do this in a production site</span>
@@ -405,16 +405,16 @@
 </span><span id="320" class="l"><a href="#320"> 320: </a>        <span class="php-comment">// Build the request, including path and headers. Internal use.</span>
 </span><span id="321" class="l"><a href="#321"> 321: </a>        <span class="php-var">$curl</span> = <span class="php-keyword2">curl_init</span>();
 </span><span id="322" class="l"><a href="#322"> 322: </a>        <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_URL, <span class="php-var">$url</span> );
-</span><span id="323" class="l"><a href="#323"> 323: </a>        <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_RETURNTRANSFER, <span class="php-keyword1">TRUE</span> );
-</span><span id="324" class="l"><a href="#324"> 324: </a>        <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_FOLLOWLOCATION, <span class="php-keyword1">TRUE</span> );
-</span><span id="325" class="l"><a href="#325"> 325: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$headers</span> !== <span class="php-keyword1">FALSE</span> ) {
+</span><span id="323" class="l"><a href="#323"> 323: </a>        <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_RETURNTRANSFER, <span class="php-keyword1">true</span> );
+</span><span id="324" class="l"><a href="#324"> 324: </a>        <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_FOLLOWLOCATION, <span class="php-keyword1">true</span> );
+</span><span id="325" class="l"><a href="#325"> 325: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$headers</span> !== <span class="php-keyword1">false</span> ) {
 </span><span id="326" class="l"><a href="#326"> 326: </a>            <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_HTTPHEADER, <span class="php-var">$headers</span> );
 </span><span id="327" class="l"><a href="#327"> 327: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="328" class="l"><a href="#328"> 328: </a>            <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_HEADER, <span class="php-keyword1">FALSE</span> );
+</span><span id="328" class="l"><a href="#328"> 328: </a>            <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_HEADER, <span class="php-keyword1">false</span> );
 </span><span id="329" class="l"><a href="#329"> 329: </a>        }
 </span><span id="330" class="l"><a href="#330"> 330: </a>
 </span><span id="331" class="l"><a href="#331"> 331: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$method</span> === <span class="php-quote">'POST'</span> ) {
-</span><span id="332" class="l"><a href="#332"> 332: </a>            <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_POST, <span class="php-keyword1">TRUE</span> );
+</span><span id="332" class="l"><a href="#332"> 332: </a>            <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_POST, <span class="php-keyword1">true</span> );
 </span><span id="333" class="l"><a href="#333"> 333: </a>            <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_POSTFIELDS, <span class="php-var">$data</span> );
 </span><span id="334" class="l"><a href="#334"> 334: </a>        } <span class="php-keyword1">elseif</span> ( <span class="php-var">$method</span> === <span class="php-quote">'PATCH'</span> || <span class="php-var">$method</span> === <span class="php-quote">'DELETE'</span> ) {
 </span><span id="335" class="l"><a href="#335"> 335: </a>            <span class="php-keyword2">curl_setopt</span>( <span class="php-var">$curl</span>, CURLOPT_CUSTOMREQUEST, <span class="php-var">$method</span> );
@@ -425,7 +425,7 @@
 </span><span id="340" class="l"><a href="#340"> 340: </a>
 </span><span id="341" class="l"><a href="#341"> 341: </a>        <span class="php-keyword1">if</span> ( ( <span class="php-var">$method</span> === <span class="php-quote">'PATCH'</span> || <span class="php-var">$method</span> === <span class="php-quote">'DELETE'</span> ) &amp;&amp; <span class="php-var">$json_response</span> === <span class="php-quote">''</span> &amp;&amp; <span class="php-var">$code</span> === <span class="php-num">204</span> ) {
 </span><span id="342" class="l"><a href="#342"> 342: </a>            <span class="php-comment">// delete and patch requests return a 204 with an empty body upon success for whatever reason</span>
-</span><span id="343" class="l"><a href="#343"> 343: </a>            <span class="php-var">$data</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'success'</span> =&gt; <span class="php-keyword1">TRUE</span>, <span class="php-quote">'body'</span> =&gt; <span class="php-quote">''</span> );
+</span><span id="343" class="l"><a href="#343"> 343: </a>            <span class="php-var">$data</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'success'</span> =&gt; <span class="php-keyword1">true</span>, <span class="php-quote">'body'</span> =&gt; <span class="php-quote">''</span> );
 </span><span id="344" class="l"><a href="#344"> 344: </a>            <span class="php-keyword2">curl_close</span>( <span class="php-var">$curl</span> );
 </span><span id="345" class="l"><a href="#345"> 345: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">array</span>( <span class="php-quote">'json'</span> =&gt; <span class="php-keyword2">json_encode</span>( <span class="php-var">$data</span> ), <span class="php-quote">'code'</span> =&gt; <span class="php-var">$code</span>, <span class="php-quote">'data'</span> =&gt; <span class="php-var">$data</span> );
 </span><span id="346" class="l"><a href="#346"> 346: </a>        }
@@ -435,7 +435,7 @@
 </span><span id="350" class="l"><a href="#350"> 350: </a>            <span class="php-var">$json_response</span> = <span class="php-keyword2">gzinflate</span>( <span class="php-keyword2">substr</span>( <span class="php-var">$json_response</span>, <span class="php-num">10</span> ) );
 </span><span id="351" class="l"><a href="#351"> 351: </a>        }
 </span><span id="352" class="l"><a href="#352"> 352: </a>        
-</span><span id="353" class="l"><a href="#353"> 353: </a>        <span class="php-var">$data</span> = <span class="php-keyword2">json_decode</span>( <span class="php-var">$json_response</span>, <span class="php-keyword1">TRUE</span> ); <span class="php-comment">// decode it into an array</span>
+</span><span id="353" class="l"><a href="#353"> 353: </a>        <span class="php-var">$data</span> = <span class="php-keyword2">json_decode</span>( <span class="php-var">$json_response</span>, <span class="php-keyword1">true</span> ); <span class="php-comment">// decode it into an array</span>
 </span><span id="354" class="l"><a href="#354"> 354: </a>
 </span><span id="355" class="l"><a href="#355"> 355: </a>        <span class="php-comment">// don't use the exception if the status is a success one, or if it just needs a refresh token (salesforce uses 401 for this)</span>
 </span><span id="356" class="l"><a href="#356"> 356: </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword2">in_array</span>( <span class="php-var">$code</span>, <span class="php-var">$this</span>-&gt;success_or_refresh_codes ) ) {
@@ -603,7 +603,7 @@
 </span><span id="518" class="l"><a href="#518"> 518: </a>            <span class="php-quote">'Accept-Encoding'</span> =&gt; <span class="php-quote">'Accept-Encoding: gzip, deflate'</span>,
 </span><span id="519" class="l"><a href="#519"> 519: </a>            <span class="php-quote">'Authorization'</span> =&gt; <span class="php-quote">'Authorization: OAuth '</span> . <span class="php-var">$this</span>-&gt;get_access_token(),
 </span><span id="520" class="l"><a href="#520"> 520: </a>        );
-</span><span id="521" class="l"><a href="#521"> 521: </a>        <span class="php-var">$headers</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="521" class="l"><a href="#521"> 521: </a>        <span class="php-var">$headers</span> = <span class="php-keyword1">false</span>;
 </span><span id="522" class="l"><a href="#522"> 522: </a>        <span class="php-var">$response</span> = <span class="php-var">$this</span>-&gt;<span class="php-keyword2">http_request</span>( <span class="php-var">$url</span>, <span class="php-var">$data</span>, <span class="php-var">$headers</span>, <span class="php-quote">'POST'</span> );
 </span><span id="523" class="l"><a href="#523"> 523: </a>
 </span><span id="524" class="l"><a href="#524"> 524: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$response</span>[<span class="php-quote">'code'</span>] != <span class="php-num">200</span> ) {
@@ -636,7 +636,7 @@
 </span><span id="551" class="l"><a href="#551"> 551: </a>            <span class="php-comment">//'Content-type' =&gt; 'application/json',</span>
 </span><span id="552" class="l"><a href="#552"> 552: </a>            <span class="php-quote">'Accept-Encoding'</span> =&gt; <span class="php-quote">'Accept-Encoding: gzip, deflate'</span>
 </span><span id="553" class="l"><a href="#553"> 553: </a>        );
-</span><span id="554" class="l"><a href="#554"> 554: </a>        <span class="php-var">$response</span> = <span class="php-var">$this</span>-&gt;<span class="php-keyword2">http_request</span>( <span class="php-var">$id</span>, <span class="php-keyword1">NULL</span>, <span class="php-var">$headers</span> );
+</span><span id="554" class="l"><a href="#554"> 554: </a>        <span class="php-var">$response</span> = <span class="php-var">$this</span>-&gt;<span class="php-keyword2">http_request</span>( <span class="php-var">$id</span>, <span class="php-keyword1">null</span>, <span class="php-var">$headers</span> );
 </span><span id="555" class="l"><a href="#555"> 555: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$response</span>[<span class="php-quote">'code'</span>] != <span class="php-num">200</span> ) {
 </span><span id="556" class="l"><a href="#556"> 556: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> SalesforceException( esc_html__( <span class="php-quote">'Unable to access identity service.'</span>, <span class="php-var">$this</span>-&gt;text_domain ), <span class="php-var">$response</span>[<span class="php-quote">'code'</span>] );
 </span><span id="557" class="l"><a href="#557"> 557: </a>        }
@@ -648,10 +648,10 @@
 </span></span><span id="563" class="l"><a href="#563"> 563: </a><span class="php-comment">    * Return the Salesforce identity, which is stored in a variable.
 </span></span><span id="564" class="l"><a href="#564"> 564: </a><span class="php-comment">    *
 </span></span><span id="565" class="l"><a href="#565"> 565: </a><span class="php-comment">    * @return array
-</span></span><span id="566" class="l"><a href="#566"> 566: </a><span class="php-comment">    *   Returns FALSE if no identity has been stored.
+</span></span><span id="566" class="l"><a href="#566"> 566: </a><span class="php-comment">    *   Returns false if no identity has been stored.
 </span></span><span id="567" class="l"><a href="#567"> 567: </a><span class="php-comment">    */</span>
 </span><span id="568" class="l"><a href="#568"> 568: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> get_identity() {
-</span><span id="569" class="l"><a href="#569"> 569: </a>        <span class="php-keyword1">return</span> get_option( <span class="php-quote">'salesforce_api_identity'</span>, <span class="php-keyword1">FALSE</span> );
+</span><span id="569" class="l"><a href="#569"> 569: </a>        <span class="php-keyword1">return</span> get_option( <span class="php-quote">'salesforce_api_identity'</span>, <span class="php-keyword1">false</span> );
 </span><span id="570" class="l"><a href="#570"> 570: </a>    }
 </span><span id="571" class="l"><a href="#571"> 571: </a>
 </span><span id="572" class="l"><a href="#572"> 572: </a>    <span class="php-comment">/**
@@ -704,7 +704,7 @@
 </span><span id="619" class="l"><a href="#619"> 619: </a>        <span class="php-var">$required</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'refresh_token'</span>, <span class="php-quote">'access_token'</span>, <span class="php-quote">'id'</span>, <span class="php-quote">'instance_url'</span> );
 </span><span id="620" class="l"><a href="#620"> 620: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$required</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> ) {
 </span><span id="621" class="l"><a href="#621"> 621: </a>            <span class="php-keyword1">if</span> ( !<span class="php-keyword1">isset</span>(<span class="php-var">$data</span>[<span class="php-var">$key</span>] ) ) {
-</span><span id="622" class="l"><a href="#622"> 622: </a>                <span class="php-keyword1">return</span> <span class="php-keyword1">FALSE</span>;
+</span><span id="622" class="l"><a href="#622"> 622: </a>                <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
 </span><span id="623" class="l"><a href="#623"> 623: </a>            }
 </span><span id="624" class="l"><a href="#624"> 624: </a>        }
 </span><span id="625" class="l"><a href="#625"> 625: </a>
@@ -713,7 +713,7 @@
 </span><span id="628" class="l"><a href="#628"> 628: </a>        <span class="php-var">$this</span>-&gt;set_identity( <span class="php-var">$data</span>[<span class="php-quote">'id'</span>] );
 </span><span id="629" class="l"><a href="#629"> 629: </a>        <span class="php-var">$this</span>-&gt;set_instance_url( <span class="php-var">$data</span>[<span class="php-quote">'instance_url'</span>] );
 </span><span id="630" class="l"><a href="#630"> 630: </a>
-</span><span id="631" class="l"><a href="#631"> 631: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">TRUE</span>;
+</span><span id="631" class="l"><a href="#631"> 631: </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">true</span>;
 </span><span id="632" class="l"><a href="#632"> 632: </a>    }
 </span><span id="633" class="l"><a href="#633"> 633: </a>
 </span><span id="634" class="l"><a href="#634"> 634: </a>    <span class="php-comment">/* Core API calls */</span>
@@ -735,7 +735,7 @@
 </span></span><span id="650" class="l"><a href="#650"> 650: </a><span class="php-comment">    *
 </span></span><span id="651" class="l"><a href="#651"> 651: </a><span class="php-comment">    * updateable is really how the api spells it
 </span></span><span id="652" class="l"><a href="#652"> 652: </a><span class="php-comment">    */</span>
-</span><span id="653" class="l"><a href="#653"> 653: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> objects( <span class="php-var">$conditions</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'updateable'</span> =&gt; <span class="php-keyword1">TRUE</span>, <span class="php-quote">'triggerable'</span> =&gt; <span class="php-keyword1">TRUE</span> ), <span class="php-var">$reset</span> = <span class="php-keyword1">FALSE</span> ) {
+</span><span id="653" class="l"><a href="#653"> 653: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> objects( <span class="php-var">$conditions</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'updateable'</span> =&gt; <span class="php-keyword1">true</span>, <span class="php-quote">'triggerable'</span> =&gt; <span class="php-keyword1">true</span> ), <span class="php-var">$reset</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="654" class="l"><a href="#654"> 654: </a>
 </span><span id="655" class="l"><a href="#655"> 655: </a>        <span class="php-var">$options</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'reset'</span> =&gt; <span class="php-var">$reset</span> );
 </span><span id="656" class="l"><a href="#656"> 656: </a>        <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;api_call( <span class="php-quote">'sobjects'</span>, <span class="php-keyword1">array</span>(), <span class="php-quote">'GET'</span>, <span class="php-var">$options</span> );
@@ -772,16 +772,16 @@
 </span></span><span id="687" class="l"><a href="#687"> 687: </a><span class="php-comment">    *
 </span></span><span id="688" class="l"><a href="#688"> 688: </a><span class="php-comment">    * part of core API calls
 </span></span><span id="689" class="l"><a href="#689"> 689: </a><span class="php-comment">    */</span>
-</span><span id="690" class="l"><a href="#690"> 690: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> query( <span class="php-var">$query</span>, <span class="php-var">$options</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$all</span> = <span class="php-keyword1">FALSE</span>, <span class="php-var">$explain</span> = <span class="php-keyword1">FALSE</span> ) {
+</span><span id="690" class="l"><a href="#690"> 690: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> query( <span class="php-var">$query</span>, <span class="php-var">$options</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$all</span> = <span class="php-keyword1">false</span>, <span class="php-var">$explain</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="691" class="l"><a href="#691"> 691: </a>        <span class="php-var">$search_data</span> = [
 </span><span id="692" class="l"><a href="#692"> 692: </a>            <span class="php-quote">'q'</span> =&gt; <span class="php-var">$query</span>,
 </span><span id="693" class="l"><a href="#693"> 693: </a>        ];
-</span><span id="694" class="l"><a href="#694"> 694: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$explain</span> === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="694" class="l"><a href="#694"> 694: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$explain</span> === <span class="php-keyword1">true</span> ) {
 </span><span id="695" class="l"><a href="#695"> 695: </a>            <span class="php-var">$search_data</span>[<span class="php-quote">'explain'</span>] = <span class="php-var">$search_data</span>[<span class="php-quote">'q'</span>];
 </span><span id="696" class="l"><a href="#696"> 696: </a>            <span class="php-keyword1">unset</span>( <span class="php-var">$search_data</span>[<span class="php-quote">'q'</span>] );
 </span><span id="697" class="l"><a href="#697"> 697: </a>        }
 </span><span id="698" class="l"><a href="#698"> 698: </a>        <span class="php-comment">// all is a search through deleted and merged data as well</span>
-</span><span id="699" class="l"><a href="#699"> 699: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$all</span> === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="699" class="l"><a href="#699"> 699: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$all</span> === <span class="php-keyword1">true</span> ) {
 </span><span id="700" class="l"><a href="#700"> 700: </a>            <span class="php-var">$path</span> = <span class="php-quote">'queryAll'</span>;
 </span><span id="701" class="l"><a href="#701"> 701: </a>        } <span class="php-keyword1">else</span> {
 </span><span id="702" class="l"><a href="#702"> 702: </a>            <span class="php-var">$path</span> = <span class="php-quote">'query'</span>;
@@ -804,7 +804,7 @@
 </span></span><span id="719" class="l"><a href="#719"> 719: </a><span class="php-comment">    *
 </span></span><span id="720" class="l"><a href="#720"> 720: </a><span class="php-comment">    * part of core API calls
 </span></span><span id="721" class="l"><a href="#721"> 721: </a><span class="php-comment">    */</span>
-</span><span id="722" class="l"><a href="#722"> 722: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> object_describe( <span class="php-var">$name</span>, <span class="php-var">$reset</span> = <span class="php-keyword1">FALSE</span> ) {
+</span><span id="722" class="l"><a href="#722"> 722: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> object_describe( <span class="php-var">$name</span>, <span class="php-var">$reset</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="723" class="l"><a href="#723"> 723: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$name</span> ) ) {
 </span><span id="724" class="l"><a href="#724"> 724: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">array</span>();
 </span><span id="725" class="l"><a href="#725"> 725: </a>        }
@@ -983,18 +983,18 @@
 </span></span><span id="898" class="l"><a href="#898"> 898: </a><span class="php-comment">    *
 </span></span><span id="899" class="l"><a href="#899"> 899: </a><span class="php-comment">    * part of core API calls
 </span></span><span id="900" class="l"><a href="#900"> 900: </a><span class="php-comment">    */</span>
-</span><span id="901" class="l"><a href="#901"> 901: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> run_analytics_report( <span class="php-var">$id</span>, <span class="php-var">$async</span> = <span class="php-keyword1">TRUE</span>, <span class="php-var">$clear_cache</span> = <span class="php-keyword1">False</span>, <span class="php-var">$params</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$method</span> = <span class="php-quote">'GET'</span>, <span class="php-var">$report_cache_expiration</span> = <span class="php-quote">''</span>, <span class="php-var">$cache_instance</span> = <span class="php-keyword1">TRUE</span>, <span class="php-var">$instance_cache_expiration</span> = <span class="php-quote">''</span> ) {
+</span><span id="901" class="l"><a href="#901"> 901: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> run_analytics_report( <span class="php-var">$id</span>, <span class="php-var">$async</span> = <span class="php-keyword1">true</span>, <span class="php-var">$clear_cache</span> = <span class="php-keyword1">False</span>, <span class="php-var">$params</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$method</span> = <span class="php-quote">'GET'</span>, <span class="php-var">$report_cache_expiration</span> = <span class="php-quote">''</span>, <span class="php-var">$cache_instance</span> = <span class="php-keyword1">true</span>, <span class="php-var">$instance_cache_expiration</span> = <span class="php-quote">''</span> ) {
 </span><span id="902" class="l"><a href="#902"> 902: </a>        <span class="php-var">$id</span> = <span class="php-var">$this</span>-&gt;convert_id( <span class="php-var">$id</span> );
 </span><span id="903" class="l"><a href="#903"> 903: </a>        <span class="php-var">$report_url</span> = <span class="php-quote">'analytics/reports/'</span> . <span class="php-var">$id</span> . <span class="php-quote">'/'</span> . <span class="php-quote">'instances'</span>;
 </span><span id="904" class="l"><a href="#904"> 904: </a>
-</span><span id="905" class="l"><a href="#905"> 905: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$clear_cache</span> === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="905" class="l"><a href="#905"> 905: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$clear_cache</span> === <span class="php-keyword1">true</span> ) {
 </span><span id="906" class="l"><a href="#906"> 906: </a>            delete_transient( <span class="php-var">$report_url</span> );
 </span><span id="907" class="l"><a href="#907"> 907: </a>        }
 </span><span id="908" class="l"><a href="#908"> 908: </a>
 </span><span id="909" class="l"><a href="#909"> 909: </a>        <span class="php-var">$instance_id</span> = <span class="php-var">$this</span>-&gt;wordpress-&gt;cache_get( <span class="php-var">$report_url</span>, <span class="php-quote">''</span> );
 </span><span id="910" class="l"><a href="#910"> 910: </a>
 </span><span id="911" class="l"><a href="#911"> 911: </a>        <span class="php-comment">// there is no stored instance id or this is synchronous; retrieve the results for that instance</span>
-</span><span id="912" class="l"><a href="#912"> 912: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">FALSE</span> === <span class="php-var">$async</span> || <span class="php-keyword1">FALSE</span> === <span class="php-var">$instance_id</span> ) {
+</span><span id="912" class="l"><a href="#912"> 912: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">false</span> === <span class="php-var">$async</span> || <span class="php-keyword1">false</span> === <span class="php-var">$instance_id</span> ) {
 </span><span id="913" class="l"><a href="#913"> 913: </a>
 </span><span id="914" class="l"><a href="#914"> 914: </a>            <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;analytics_api(
 </span><span id="915" class="l"><a href="#915"> 915: </a>                <span class="php-quote">'reports'</span>,
@@ -1019,7 +1019,7 @@
 </span><span id="934" class="l"><a href="#934"> 934: </a>                } <span class="php-keyword1">else</span> {
 </span><span id="935" class="l"><a href="#935"> 935: </a>                    <span class="php-comment">// run the call again if we don't have an instance id</span>
 </span><span id="936" class="l"><a href="#936"> 936: </a>                    <span class="php-keyword2">error_log</span>(<span class="php-quote">'run report again. we have no instance id.'</span>);
-</span><span id="937" class="l"><a href="#937"> 937: </a>                    <span class="php-var">$this</span>-&gt;run_analytics_report( <span class="php-var">$id</span>, <span class="php-keyword1">TRUE</span> );
+</span><span id="937" class="l"><a href="#937"> 937: </a>                    <span class="php-var">$this</span>-&gt;run_analytics_report( <span class="php-var">$id</span>, <span class="php-keyword1">true</span> );
 </span><span id="938" class="l"><a href="#938"> 938: </a>                }
 </span><span id="939" class="l"><a href="#939"> 939: </a>
 </span><span id="940" class="l"><a href="#940"> 940: </a>                <span class="php-comment">// cache the instance id so we can get the report results if they are applicable</span>
@@ -1030,7 +1030,7 @@
 </span><span id="945" class="l"><a href="#945"> 945: </a>            } <span class="php-keyword1">else</span> {
 </span><span id="946" class="l"><a href="#946"> 946: </a>                <span class="php-comment">// run the call again if we don't have a reportMetadata array</span>
 </span><span id="947" class="l"><a href="#947"> 947: </a>                <span class="php-keyword2">error_log</span>(<span class="php-quote">'run report again. we have no reportmetadata.'</span>);
-</span><span id="948" class="l"><a href="#948"> 948: </a>                <span class="php-var">$this</span>-&gt;run_analytics_report( <span class="php-var">$id</span>, <span class="php-keyword1">TRUE</span> );
+</span><span id="948" class="l"><a href="#948"> 948: </a>                <span class="php-var">$this</span>-&gt;run_analytics_report( <span class="php-var">$id</span>, <span class="php-keyword1">true</span> );
 </span><span id="949" class="l"><a href="#949"> 949: </a>            }
 </span><span id="950" class="l"><a href="#950"> 950: </a>            
 </span><span id="951" class="l"><a href="#951"> 951: </a>
@@ -1041,7 +1041,7 @@
 </span><span id="956" class="l"><a href="#956"> 956: </a>        <span class="php-comment">// the report instance is expired. rerun it.</span>
 </span><span id="957" class="l"><a href="#957"> 957: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$result</span>[<span class="php-quote">'code'</span>] === <span class="php-num">404</span> ) {
 </span><span id="958" class="l"><a href="#958"> 958: </a>            <span class="php-keyword2">error_log</span>(<span class="php-quote">'run report again. it expired.'</span>);
-</span><span id="959" class="l"><a href="#959"> 959: </a>            <span class="php-var">$this</span>-&gt;run_analytics_report( <span class="php-var">$id</span>, <span class="php-keyword1">TRUE</span>, <span class="php-keyword1">TRUE</span> );
+</span><span id="959" class="l"><a href="#959"> 959: </a>            <span class="php-var">$this</span>-&gt;run_analytics_report( <span class="php-var">$id</span>, <span class="php-keyword1">true</span>, <span class="php-keyword1">true</span> );
 </span><span id="960" class="l"><a href="#960"> 960: </a>        }
 </span><span id="961" class="l"><a href="#961"> 961: </a>
 </span><span id="962" class="l"><a href="#962"> 962: </a>        <span class="php-comment">// cache the instance results as a long fallback if the setting says so</span>
@@ -1049,7 +1049,7 @@
 </span><span id="964" class="l"><a href="#964"> 964: </a>        <span class="php-comment">// remember: the result of the above api_call is already cached (or not) according to the plugin's generic settings</span>
 </span><span id="965" class="l"><a href="#965"> 965: </a>        <span class="php-comment">// this is fine i think, although it is a bit of redundancy in this case</span>
 </span><span id="966" class="l"><a href="#966"> 966: </a>
-</span><span id="967" class="l"><a href="#967"> 967: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">TRUE</span> === <span class="php-var">$cache_instance</span> ) {
+</span><span id="967" class="l"><a href="#967"> 967: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">true</span> === <span class="php-var">$cache_instance</span> ) {
 </span><span id="968" class="l"><a href="#968"> 968: </a>            <span class="php-var">$cached</span> = <span class="php-var">$this</span>-&gt;wordpress-&gt;cache_get( <span class="php-var">$report_url</span> . <span class="php-quote">'_instance_cached'</span>, <span class="php-quote">''</span> );
 </span><span id="969" class="l"><a href="#969"> 969: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$cached</span> ) ) {
 </span><span id="970" class="l"><a href="#970"> 970: </a>                <span class="php-var">$result</span> = <span class="php-var">$cached</span>;
@@ -1117,7 +1117,7 @@
 </span></span><span id="1032" class="l"><a href="#1032">1032: </a><span class="php-comment">    * @return GetDeletedResult
 </span></span><span id="1033" class="l"><a href="#1033">1033: </a><span class="php-comment">    */</span>
 </span><span id="1034" class="l"><a href="#1034">1034: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> get_deleted( <span class="php-var">$type</span>, <span class="php-var">$start_date</span>, <span class="php-var">$end_date</span> ) {
-</span><span id="1035" class="l"><a href="#1035">1035: </a>        <span class="php-var">$options</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'cache'</span> =&gt; <span class="php-keyword1">FALSE</span> ); <span class="php-comment">// this is timestamp level specific; probably should not cache it</span>
+</span><span id="1035" class="l"><a href="#1035">1035: </a>        <span class="php-var">$options</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'cache'</span> =&gt; <span class="php-keyword1">false</span> ); <span class="php-comment">// this is timestamp level specific; probably should not cache it</span>
 </span><span id="1036" class="l"><a href="#1036">1036: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;api_call( <span class="php-quote">&quot;sobjects/</span><span class="php-var">{$type}</span><span class="php-quote">/deleted/?start=</span><span class="php-var">{$start_date}</span><span class="php-quote">&amp;end=</span><span class="php-var">{$end_date}</span><span class="php-quote">&quot;</span>, <span class="php-keyword1">array</span>(), <span class="php-quote">'GET'</span>, <span class="php-var">$options</span> );
 </span><span id="1037" class="l"><a href="#1037">1037: </a>    }
 </span><span id="1038" class="l"><a href="#1038">1038: </a>
@@ -1175,7 +1175,7 @@
 </span><span id="1090" class="l"><a href="#1090">1090: </a>        }
 </span><span id="1091" class="l"><a href="#1091">1091: </a>        <span class="php-var">$end</span> = <span class="php-keyword2">urlencode</span>( <span class="php-keyword2">gmdate</span>( DATE_ATOM, <span class="php-var">$end</span> ) );
 </span><span id="1092" class="l"><a href="#1092">1092: </a>
-</span><span id="1093" class="l"><a href="#1093">1093: </a>        <span class="php-var">$options</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'cache'</span> =&gt; <span class="php-keyword1">FALSE</span> ); <span class="php-comment">// this is timestamp level specific; probably should not cache it</span>
+</span><span id="1093" class="l"><a href="#1093">1093: </a>        <span class="php-var">$options</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'cache'</span> =&gt; <span class="php-keyword1">false</span> ); <span class="php-comment">// this is timestamp level specific; probably should not cache it</span>
 </span><span id="1094" class="l"><a href="#1094">1094: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;api_call( <span class="php-quote">&quot;sobjects/</span><span class="php-var">{$type}</span><span class="php-quote">/updated/?start=</span><span class="php-var">$start</span><span class="php-quote">&amp;end=</span><span class="php-var">$end</span><span class="php-quote">&quot;</span>, <span class="php-keyword1">array</span>(), <span class="php-quote">'GET'</span>, <span class="php-var">$options</span> );
 </span><span id="1095" class="l"><a href="#1095">1095: </a>    }
 </span><span id="1096" class="l"><a href="#1096">1096: </a>

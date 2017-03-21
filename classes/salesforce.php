@@ -62,7 +62,7 @@ class Salesforce {
 		$this->success_or_refresh_codes = $this->success_codes;
 		$this->success_or_refresh_codes[] = $this->refresh_code;
 
-		$this->debug = get_option( 'salesforce_api_debug_mode', FALSE );
+		$this->debug = get_option( 'salesforce_api_debug_mode', false );
 
 	}
 
@@ -101,7 +101,7 @@ class Salesforce {
 	* @param string $sf_id
 	*   15- or 18-character Salesforce ID
 	* @return string
-	*   sObject name, e.g. "Account", "Contact", "my__Custom_Object__c" or FALSE
+	*   sObject name, e.g. "Account", "Contact", "my__Custom_Object__c" or false
 	*   if no match could be found.
 	* @throws SalesforceException
 	*/
@@ -117,7 +117,7 @@ class Salesforce {
 			return $object['name'];
 		}
 		// Otherwise, we did not find a match.
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -125,7 +125,7 @@ class Salesforce {
 	*
 	*/
 	public function is_authorized() {
-		return !empty( $this->consumer_key ) && !empty( $this->consumer_secret ) && $this->get_refresh_token();
+		return ! empty( $this->consumer_key ) && ! empty( $this->consumer_secret ) && $this->get_refresh_token();
 	}
 
 	/**
@@ -133,7 +133,7 @@ class Salesforce {
 	* This is not an authenticated call, so it would not be a helpful test
 	*/
 	public function get_api_versions() {
-		$options = array( 'authenticated' => FALSE, 'full_url' => TRUE );
+		$options = array( 'authenticated' => false, 'full_url' => true );
 		return $this->api_call( $this->get_instance_url() . '/services/data', [], 'GET', $options );
 	}
 
@@ -175,7 +175,7 @@ class Salesforce {
 				// Refresh token.
 				$this->refresh_token();
 				// Rebuild our request and repeat request.
-				$options['is_redo'] = TRUE;
+				$options['is_redo'] = true;
 				$this->response = $this->api_http_request( $path, $params, $method, $options, $type );
 				// Throw an error if we still have bad response.
 				if ( !in_array( $this->response['code'], $this->success_codes ) ) {
@@ -192,7 +192,7 @@ class Salesforce {
 				}
 		}
 
-		if ( !empty( $this->response['data'][0] ) && count( $this->response['data'] ) == 1 ) {
+		if ( ! empty( $this->response['data'][0] ) && count( $this->response['data'] ) == 1 ) {
 			$this->response['data'] = $this->response['data'][0];
 		}
 
@@ -200,7 +200,7 @@ class Salesforce {
 			throw new SalesforceException( $this->response['data']['error_description'], $this->response['data']['error'] );
 		}
 
-		if ( !empty($this->response['data']['errorCode'] ) ) {
+		if ( ! empty($this->response['data']['errorCode'] ) ) {
 			throw new SalesforceException( $this->response['data']['message'], $this->response['code'] );
 		}
 		
@@ -230,7 +230,7 @@ class Salesforce {
 	protected function api_http_request( $path, $params, $method, $options = array(), $type = 'rest' ) {
 		$options = array_merge( $this->options, $options ); // this will override a value in $this->options with the one in $options if there is a matching key
 		$url = $this->get_api_endpoint( $type ) . $path;
-		if ( isset( $options['full_url'] ) && $options['full_url'] === TRUE ) {
+		if ( isset( $options['full_url'] ) && $options['full_url'] === true ) {
 			$url = $path;
 		}
 		$headers = array(
@@ -240,40 +240,40 @@ class Salesforce {
 		if ( $method === 'POST' || $method === 'PATCH' ) {
 			$headers['Content-Type'] = 'Content-Type: application/json';
 		}
-		if ( isset( $options['authenticated'] ) && $options['authenticated'] === TRUE ) {
-			$headers = FALSE;
+		if ( isset( $options['authenticated'] ) && $options['authenticated'] === true ) {
+			$headers = false;
 		}
 		// if this request should be cached, see if it already exists
 		// if it is already cached, load it. if not, load it and then cache it if it should be cached
 		// add parameters to the array so we can tell if it was cached or not
-		if ( $options['cache'] === TRUE && $options['type'] !== 'write' ) { 
+		if ( $options['cache'] === true && $options['type'] !== 'write' ) { 
 			$cached = $this->wordpress->cache_get( $url, $params );
 			// some api calls can send a reset option, in which case we should redo the request anyway
-			if ( is_array( $cached ) && ( !isset( $options['reset'] ) || $options['reset'] !== TRUE ) ) {
+			if ( is_array( $cached ) && ( ! isset( $options['reset'] ) || $options['reset'] !== true ) ) {
 				$result = $cached;
-				$result['from_cache'] = TRUE;
-				$result['cached'] = TRUE;
+				$result['from_cache'] = true;
+				$result['cached'] = true;
     		} else {
     			$data = json_encode( $params );
 				$result = $this->http_request( $url, $data, $headers, $method, $options );
 				if ( in_array( $result['code'], $this->success_codes ) ) {
 					$result['cached'] = $this->wordpress->cache_set( $url, $params, $result, $options['cache_expiration'] );
 				} else {
-					$result['cached'] = FALSE;
+					$result['cached'] = false;
 				}
-				$result['from_cache'] = FALSE;
+				$result['from_cache'] = false;
     		}
 		} else {
 			$data = json_encode( $params );
 			$result = $this->http_request( $url, $data, $headers, $method, $options );
-			$result['from_cache'] = FALSE;
-			$result['cached'] = FALSE;
+			$result['from_cache'] = false;
+			$result['cached'] = false;
 		}
 
-		if ( isset( $options['is_redo'] ) && $options['is_redo'] === TRUE ) {
-			$result['is_redo'] = TRUE;
+		if ( isset( $options['is_redo'] ) && $options['is_redo'] === true ) {
+			$result['is_redo'] = true;
 		} else {
-			$result['is_redo'] = FALSE;
+			$result['is_redo'] = false;
 		}
 
 		// it would be very unfortunate to ever have to do this in a production site
@@ -320,16 +320,16 @@ class Salesforce {
 		// Build the request, including path and headers. Internal use.
 		$curl = curl_init();
 		curl_setopt( $curl, CURLOPT_URL, $url );
-		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
-		curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, TRUE );
-		if ( $headers !== FALSE ) {
+		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, true );
+		if ( $headers !== false ) {
 			curl_setopt( $curl, CURLOPT_HTTPHEADER, $headers );
 		} else {
-			curl_setopt( $curl, CURLOPT_HEADER, FALSE );
+			curl_setopt( $curl, CURLOPT_HEADER, false );
 		}
 
 		if ( $method === 'POST' ) {
-			curl_setopt( $curl, CURLOPT_POST, TRUE );
+			curl_setopt( $curl, CURLOPT_POST, true );
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
 		} elseif ( $method === 'PATCH' || $method === 'DELETE' ) {
 			curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, $method );
@@ -340,7 +340,7 @@ class Salesforce {
 
 		if ( ( $method === 'PATCH' || $method === 'DELETE' ) && $json_response === '' && $code === 204 ) {
 			// delete and patch requests return a 204 with an empty body upon success for whatever reason
-			$data = array( 'success' => TRUE, 'body' => '' );
+			$data = array( 'success' => true, 'body' => '' );
 			curl_close( $curl );
 			return array( 'json' => json_encode( $data ), 'code' => $code, 'data' => $data );
 		}
@@ -350,7 +350,7 @@ class Salesforce {
             $json_response = gzinflate( substr( $json_response, 10 ) );
         }
 		
-		$data = json_decode( $json_response, TRUE ); // decode it into an array
+		$data = json_decode( $json_response, true ); // decode it into an array
 
 		// don't use the exception if the status is a success one, or if it just needs a refresh token (salesforce uses 401 for this)
 		if ( !in_array( $code, $this->success_or_refresh_codes ) ) {
@@ -518,7 +518,7 @@ class Salesforce {
 			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
 			'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
 		);
-		$headers = FALSE;
+		$headers = false;
 		$response = $this->http_request( $url, $data, $headers, 'POST' );
 
 		if ( $response['code'] != 200 ) {
@@ -551,7 +551,7 @@ class Salesforce {
 			//'Content-type' => 'application/json',
 			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate'
 		);
-		$response = $this->http_request( $id, NULL, $headers );
+		$response = $this->http_request( $id, null, $headers );
 		if ( $response['code'] != 200 ) {
 			throw new SalesforceException( esc_html__( 'Unable to access identity service.', $this->text_domain ), $response['code'] );
 		}
@@ -563,10 +563,10 @@ class Salesforce {
 	* Return the Salesforce identity, which is stored in a variable.
 	*
 	* @return array
-	*   Returns FALSE if no identity has been stored.
+	*   Returns false if no identity has been stored.
 	*/
 	public function get_identity() {
-		return get_option( 'salesforce_api_identity', FALSE );
+		return get_option( 'salesforce_api_identity', false );
 	}
 
 	/**
@@ -618,8 +618,8 @@ class Salesforce {
 		// OAUTH scope is inadequate.
 		$required = array( 'refresh_token', 'access_token', 'id', 'instance_url' );
 		foreach ( $required as $key ) {
-			if ( !isset($data[$key] ) ) {
-				return FALSE;
+			if ( ! isset($data[$key] ) ) {
+				return false;
 			}
 		}
 
@@ -628,7 +628,7 @@ class Salesforce {
 		$this->set_identity( $data['id'] );
 		$this->set_instance_url( $data['instance_url'] );
 
-		return TRUE;
+		return true;
 	}
 
 	/* Core API calls */
@@ -650,12 +650,12 @@ class Salesforce {
 	*
 	* updateable is really how the api spells it
 	*/
-	public function objects( $conditions = array( 'updateable' => TRUE, 'triggerable' => TRUE ), $reset = FALSE ) {
+	public function objects( $conditions = array( 'updateable' => true, 'triggerable' => true ), $reset = false ) {
 
 		$options = array( 'reset' => $reset );
 		$result = $this->api_call( 'sobjects', array(), 'GET', $options );
 
-		if ( !empty( $conditions ) ) {
+		if ( ! empty( $conditions ) ) {
 			foreach ( $result['data']['sobjects'] as $key => $object ) {
 				foreach ( $conditions as $condition => $value ) {
 					if ( $object[$condition] != $value ) {
@@ -687,16 +687,16 @@ class Salesforce {
 	*
 	* part of core API calls
 	*/
-	public function query( $query, $options = array(), $all = FALSE, $explain = FALSE ) {
+	public function query( $query, $options = array(), $all = false, $explain = false ) {
 		$search_data = [
 			'q' => ( string ) $query,
 		];
-		if ( $explain === TRUE ) {
+		if ( $explain === true ) {
 			$search_data['explain'] = $search_data['q'];
 			unset( $search_data['q'] );
 		}
 		// all is a search through deleted and merged data as well
-		if ( $all === TRUE ) {
+		if ( $all === true ) {
 			$path = 'queryAll';
 		} else {
 			$path = 'query';
@@ -719,7 +719,7 @@ class Salesforce {
 	*
 	* part of core API calls
 	*/
-	public function object_describe( $name, $reset = FALSE ) {
+	public function object_describe( $name, $reset = false ) {
 		if ( empty( $name ) ) {
 			return array();
 		}
@@ -731,7 +731,7 @@ class Salesforce {
 		$fields = array();
 		foreach ( $object['data']['fields'] as &$field ) {
 			ksort( $field );
-			if ( !empty( $field['picklistValues'] ) ) {
+			if ( ! empty( $field['picklistValues'] ) ) {
 				foreach ( $field['picklistValues'] as &$picklist_value ) {
 					ksort( $picklist_value );
 				}
@@ -902,18 +902,18 @@ class Salesforce {
 	*
 	* part of core API calls
 	*/
-	public function run_analytics_report( $id, $async = TRUE, $clear_cache = False, $params = array(), $method = 'GET', $report_cache_expiration = '', $cache_instance = TRUE, $instance_cache_expiration = '' ) {
+	public function run_analytics_report( $id, $async = true, $clear_cache = False, $params = array(), $method = 'GET', $report_cache_expiration = '', $cache_instance = true, $instance_cache_expiration = '' ) {
 		$id = $this->convert_id( $id );
         $report_url = 'analytics/reports/' . $id . '/' . 'instances';
 
-        if ( $clear_cache === TRUE ) {
+        if ( $clear_cache === true ) {
         	delete_transient( $report_url );
         }
 
         $instance_id = $this->wordpress->cache_get( $report_url, '' );
 
         // there is no stored instance id or this is synchronous; retrieve the results for that instance
-        if ( FALSE === $async || FALSE === $instance_id ) {
+        if ( false === $async || false === $instance_id ) {
 
         	$result = $this->analytics_api(
                 'reports',
@@ -938,7 +938,7 @@ class Salesforce {
 	            } else {
 	        		// run the call again if we don't have an instance id
 	        		error_log('run report again. we have no instance id.');
-	        		$this->run_analytics_report( $id, TRUE );
+	        		$this->run_analytics_report( $id, true );
 	        	}
 
 	            // cache the instance id so we can get the report results if they are applicable
@@ -949,7 +949,7 @@ class Salesforce {
         	} else {
         		// run the call again if we don't have a reportMetadata array
         		error_log('run report again. we have no reportmetadata.');
-        		$this->run_analytics_report( $id, TRUE );
+        		$this->run_analytics_report( $id, true );
         	}
             
 
@@ -960,7 +960,7 @@ class Salesforce {
         // the report instance is expired. rerun it.
         if ( $result['code'] === 404 ) {
         	error_log('run report again. it expired.');
-        	$this->run_analytics_report( $id, TRUE, TRUE );
+        	$this->run_analytics_report( $id, true, true );
         }
 
         // cache the instance results as a long fallback if the setting says so
@@ -968,7 +968,7 @@ class Salesforce {
         // remember: the result of the above api_call is already cached (or not) according to the plugin's generic settings
         // this is fine i think, although it is a bit of redundancy in this case
 
-        if ( TRUE === $cache_instance ) {
+        if ( true === $cache_instance ) {
         	$cached = $this->wordpress->cache_get( $report_url . '_instance_cached', '' );
         	if ( is_array( $cached ) ) {
 	            $result = $cached;
@@ -1036,7 +1036,7 @@ class Salesforce {
 	* @return GetDeletedResult
 	*/
 	public function get_deleted( $type, $start_date, $end_date ) {
-		$options = array( 'cache' => FALSE ); // this is timestamp level specific; probably should not cache it
+		$options = array( 'cache' => false ); // this is timestamp level specific; probably should not cache it
 		return $this->api_call( "sobjects/{$type}/deleted/?start={$start_date}&end={$end_date}", array(), 'GET', $options );
 	}
 
@@ -1094,7 +1094,7 @@ class Salesforce {
 		}
 		$end = urlencode( gmdate( DATE_ATOM, $end ) );
 
-		$options = array( 'cache' => FALSE ); // this is timestamp level specific; probably should not cache it
+		$options = array( 'cache' => false ); // this is timestamp level specific; probably should not cache it
 		return $this->api_call( "sobjects/{$type}/updated/?start=$start&end=$end", array(), 'GET', $options );
 	}
 
@@ -1113,13 +1113,13 @@ class Salesforce {
 	*   The Salesforce ID of the given Record Type, or null.
 	*/
 
-	public function get_record_type_id_by_developer_name( $name, $devname, $reset = FALSE ) {
+	public function get_record_type_id_by_developer_name( $name, $devname, $reset = false ) {
 
 		// example of how this runs: $this->get_record_type_id_by_developer_name( 'Account', 'HH_Account' );
 
 		$cached = $this->wordpress->cache_get( 'salesforce_record_types', '' );
-		if ( is_array( $cached ) && ( !isset( $reset ) || $reset !== TRUE ) ) {
-			return !empty( $cached[$name][$devname] ) ? $cached[$name][$devname]['Id'] : NULL;
+		if ( is_array( $cached ) && ( ! isset( $reset ) || $reset !== true ) ) {
+			return ! empty( $cached[$name][$devname] ) ? $cached[$name][$devname]['Id'] : null;
 		}
 
 		$query = new Salesforce_Select_Query( 'RecordType' );
@@ -1134,7 +1134,7 @@ class Salesforce {
 
 		$cached = $this->wordpress->cache_set( 'salesforce_record_types', '', $record_types, $this->options['cache_expiration'] );
 
-		return !empty( $record_types[$name][$devname] ) ? $record_types[$name][$devname]['Id'] : NULL;
+		return ! empty( $record_types[$name][$devname] ) ? $record_types[$name][$devname]['Id'] : null;
 
 	}
 

@@ -230,7 +230,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
         }
         // we have checked for data and it's in the queue if it exists
         // now run maybe_handle again to see if it nees to be processed
-        $this->maybe_handle( TRUE );
+        $this->maybe_handle( true );
     }
 
     /**
@@ -239,7 +239,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
      * Checks whether data exists within the queue and that
      * the process is not already running.
      */
-    public function maybe_handle( $already_checked = FALSE, $ajax = FALSE ) {
+    public function maybe_handle( $already_checked = false, $ajax = false ) {
         if ( $this->is_process_running() ) {
             // Background process already running.
             wp_die();
@@ -249,9 +249,9 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
         // it should call its corresponding class method that saves data to the queue
         // it should then run maybe_handle() again
 
-        $check_for_data_first = isset( $this->schedulable_classes[$this->schedule_name]['initializer'] ) ? TRUE : FALSE;
+        $check_for_data_first = isset( $this->schedulable_classes[$this->schedule_name]['initializer'] ) ? true : false;
 
-        if ( $already_checked === FALSE && $check_for_data_first === TRUE ) {
+        if ( $already_checked === false && $check_for_data_first === true ) {
             $this->check_for_data();
         }
 
@@ -260,7 +260,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
             wp_die();
         }
 
-        if ( $ajax === TRUE ) {
+        if ( $ajax === true ) {
             check_ajax_referer( $this->identifier, 'nonce' );
         }
 
@@ -274,7 +274,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
      * This is modeled off the cancel_process method in wp-background-process but that one doesn't seem to work when we need to specify the queue name
      */
     public function cancel_by_name( $name ) {
-        if ( !isset( $name ) ) {
+        if ( ! isset( $name ) ) {
             $name = $this->identifier . '_cron';
         }
         if ( ! $this->is_queue_empty() ) {

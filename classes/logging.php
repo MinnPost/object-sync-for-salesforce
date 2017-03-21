@@ -33,7 +33,7 @@ class Salesforce_Logging extends WP_Logging {
         $this->version = $version;
         $this->text_domain = $text_domain;
 
-        $this->enabled = get_option( 'salesforce_api_enable_logging', FALSE );
+        $this->enabled = get_option( 'salesforce_api_enable_logging', false );
         $this->statuses_to_log = get_option( 'salesforce_api_statuses_to_log', array() );
 
         $this->schedule_name = 'wp_logging_prune_routine';

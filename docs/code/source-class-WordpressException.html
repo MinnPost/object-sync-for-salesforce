@@ -582,7 +582,7 @@
 </span></span><span id="497" class="l"><a href="#497"> 497: </a><span class="php-comment">    *
 </span></span><span id="498" class="l"><a href="#498"> 498: </a><span class="php-comment">    * part of CRUD for WordPress objects
 </span></span><span id="499" class="l"><a href="#499"> 499: </a><span class="php-comment">    */</span>
-</span><span id="500" class="l"><a href="#500"> 500: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> object_upsert( <span class="php-var">$name</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$params</span>, <span class="php-var">$push_drafts</span> = <span class="php-keyword1">FALSE</span> ) {
+</span><span id="500" class="l"><a href="#500"> 500: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> object_upsert( <span class="php-var">$name</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$params</span>, <span class="php-var">$push_drafts</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="501" class="l"><a href="#501"> 501: </a>
 </span><span id="502" class="l"><a href="#502"> 502: </a>        <span class="php-var">$structure</span> = <span class="php-var">$this</span>-&gt;get_wordpress_table_structure( <span class="php-var">$name</span> );
 </span><span id="503" class="l"><a href="#503"> 503: </a>        <span class="php-var">$id_field</span> = <span class="php-var">$structure</span>[<span class="php-quote">'id_field'</span>];
@@ -761,7 +761,7 @@
 </span><span id="676" class="l"><a href="#676"> 676: </a>            <span class="php-keyword1">default</span>:
 </span><span id="677" class="l"><a href="#677"> 677: </a>
 </span><span id="678" class="l"><a href="#678"> 678: </a>                <span class="php-comment">// developers can use this hook to delete objects with their own methods</span>
-</span><span id="679" class="l"><a href="#679"> 679: </a>                <span class="php-comment">// the returned $success is an object of the correct type, or a FALSE</span>
+</span><span id="679" class="l"><a href="#679"> 679: </a>                <span class="php-comment">// the returned $success is an object of the correct type, or a false</span>
 </span><span id="680" class="l"><a href="#680"> 680: </a>                <span class="php-comment">// use hook like: add_filter( 'salesforce_rest_api_delete_custom_wordpress_item', add_object, 10, 1 );</span>
 </span><span id="681" class="l"><a href="#681"> 681: </a>                <span class="php-comment">// the one param is: array( 'id' =&gt; id, 'name' =&gt; objecttype )</span>
 </span><span id="682" class="l"><a href="#682"> 682: </a>
@@ -813,12 +813,12 @@
 </span><span id="728" class="l"><a href="#728"> 728: </a>        }
 </span><span id="729" class="l"><a href="#729"> 729: </a>
 </span><span id="730" class="l"><a href="#730"> 730: </a>        <span class="php-comment">// this is a new user</span>
-</span><span id="731" class="l"><a href="#731"> 731: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">NULL</span> == username_exists( <span class="php-var">$username</span> ) ) {
+</span><span id="731" class="l"><a href="#731"> 731: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> == username_exists( <span class="php-var">$username</span> ) ) {
 </span><span id="732" class="l"><a href="#732"> 732: </a>
 </span><span id="733" class="l"><a href="#733"> 733: </a>            <span class="php-comment">// Create the user</span>
 </span><span id="734" class="l"><a href="#734"> 734: </a>            <span class="php-comment">// wordpress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email</span>
 </span><span id="735" class="l"><a href="#735"> 735: </a>            <span class="php-var">$params</span>[<span class="php-quote">'user_pass'</span>] = <span class="php-keyword1">array</span>(
-</span><span id="736" class="l"><a href="#736"> 736: </a>                <span class="php-quote">'value'</span> =&gt; wp_generate_password( <span class="php-num">12</span>, <span class="php-keyword1">FALSE</span> ),
+</span><span id="736" class="l"><a href="#736"> 736: </a>                <span class="php-quote">'value'</span> =&gt; wp_generate_password( <span class="php-num">12</span>, <span class="php-keyword1">false</span> ),
 </span><span id="737" class="l"><a href="#737"> 737: </a>                <span class="php-quote">'method_modify'</span> =&gt; <span class="php-quote">'wp_insert_user'</span>,
 </span><span id="738" class="l"><a href="#738"> 738: </a>                <span class="php-quote">'method_read'</span> =&gt; <span class="php-quote">'get_user_by'</span>
 </span><span id="739" class="l"><a href="#739"> 739: </a>            );
@@ -833,16 +833,16 @@
 </span><span id="748" class="l"><a href="#748"> 748: </a>            <span class="php-var">$user_id</span> = wp_insert_user( <span class="php-var">$content</span> );
 </span><span id="749" class="l"><a href="#749"> 749: </a>
 </span><span id="750" class="l"><a href="#750"> 750: </a>            <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$user_id</span> ) ) {
-</span><span id="751" class="l"><a href="#751"> 751: </a>                <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="751" class="l"><a href="#751"> 751: </a>                <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="752" class="l"><a href="#752"> 752: </a>                <span class="php-var">$errors</span> = <span class="php-var">$user_id</span>;
 </span><span id="753" class="l"><a href="#753"> 753: </a>            } <span class="php-keyword1">else</span> {
-</span><span id="754" class="l"><a href="#754"> 754: </a>                <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="754" class="l"><a href="#754"> 754: </a>                <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="755" class="l"><a href="#755"> 755: </a>                <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="756" class="l"><a href="#756"> 756: </a>                <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
 </span><span id="757" class="l"><a href="#757"> 757: </a>                    <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
 </span><span id="758" class="l"><a href="#758"> 758: </a>                    <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$user_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
-</span><span id="759" class="l"><a href="#759"> 759: </a>                    <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">FALSE</span> ) {
-</span><span id="760" class="l"><a href="#760"> 760: </a>                        <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="759" class="l"><a href="#759"> 759: </a>                    <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">false</span> ) {
+</span><span id="760" class="l"><a href="#760"> 760: </a>                        <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="761" class="l"><a href="#761"> 761: </a>                        <span class="php-var">$errors</span>[] = <span class="php-keyword1">array</span>( <span class="php-quote">'message'</span> =&gt; __( <span class="php-quote">'Tried to upsert meta with method '</span> . <span class="php-var">$method</span> . <span class="php-quote">' .'</span> ), <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>, <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span> );
 </span><span id="762" class="l"><a href="#762"> 762: </a>                    }
 </span><span id="763" class="l"><a href="#763"> 763: </a>                }
@@ -852,7 +852,7 @@
 </span><span id="767" class="l"><a href="#767"> 767: </a>
 </span><span id="768" class="l"><a href="#768"> 768: </a>                <span class="php-comment">// send notification of new user</span>
 </span><span id="769" class="l"><a href="#769"> 769: </a>                <span class="php-comment">// todo: figure out what permissions out to get notifications for this and make sure it works the right way</span>
-</span><span id="770" class="l"><a href="#770"> 770: </a>                wp_new_user_notification( <span class="php-var">$user_id</span>, <span class="php-keyword1">NULL</span>, <span class="php-quote">'admin user'</span> );
+</span><span id="770" class="l"><a href="#770"> 770: </a>                wp_new_user_notification( <span class="php-var">$user_id</span>, <span class="php-keyword1">null</span>, <span class="php-quote">'admin user'</span> );
 </span><span id="771" class="l"><a href="#771"> 771: </a>
 </span><span id="772" class="l"><a href="#772"> 772: </a>            }
 </span><span id="773" class="l"><a href="#773"> 773: </a>
@@ -861,10 +861,10 @@
 </span><span id="776" class="l"><a href="#776"> 776: </a>        }
 </span><span id="777" class="l"><a href="#777"> 777: </a>
 </span><span id="778" class="l"><a href="#778"> 778: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$user_id</span> ) ) {
-</span><span id="779" class="l"><a href="#779"> 779: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="779" class="l"><a href="#779"> 779: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="780" class="l"><a href="#780"> 780: </a>            <span class="php-var">$errors</span> = <span class="php-var">$user_id</span>;
 </span><span id="781" class="l"><a href="#781"> 781: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="782" class="l"><a href="#782"> 782: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="782" class="l"><a href="#782"> 782: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="783" class="l"><a href="#783"> 783: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="784" class="l"><a href="#784"> 784: </a>        }
 </span><span id="785" class="l"><a href="#785"> 785: </a>
@@ -895,7 +895,7 @@
 </span></span><span id="810" class="l"><a href="#810"> 810: </a><span class="php-comment">    *   &quot;errors&quot; : [ ],
 </span></span><span id="811" class="l"><a href="#811"> 811: </a><span class="php-comment">    *
 </span></span><span id="812" class="l"><a href="#812"> 812: </a><span class="php-comment">    */</span>
-</span><span id="813" class="l"><a href="#813"> 813: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> user_upsert( <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$params</span>, <span class="php-var">$id_field</span> = <span class="php-quote">'ID'</span>, <span class="php-var">$push_drafts</span> = <span class="php-keyword1">FALSE</span> ) {
+</span><span id="813" class="l"><a href="#813"> 813: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> user_upsert( <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$params</span>, <span class="php-var">$id_field</span> = <span class="php-quote">'ID'</span>, <span class="php-var">$push_drafts</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="814" class="l"><a href="#814"> 814: </a>
 </span><span id="815" class="l"><a href="#815"> 815: </a>        <span class="php-comment">// if the key is user_email, we need to make it just email because that is how the wordpress method reads it</span>
 </span><span id="816" class="l"><a href="#816"> 816: </a>        <span class="php-var">$method</span> = <span class="php-var">$methods</span>[<span class="php-quote">'method_match'</span>];
@@ -951,7 +951,7 @@
 </span><span id="866" class="l"><a href="#866"> 866: </a>            }
 </span><span id="867" class="l"><a href="#867"> 867: </a>
 </span><span id="868" class="l"><a href="#868"> 868: </a>            <span class="php-comment">// user does not exist after more checking. we want to create it</span>
-</span><span id="869" class="l"><a href="#869"> 869: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">NULL</span> === username_exists( <span class="php-var">$username</span> ) ) {
+</span><span id="869" class="l"><a href="#869"> 869: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> === username_exists( <span class="php-var">$username</span> ) ) {
 </span><span id="870" class="l"><a href="#870"> 870: </a>                <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;user_create( <span class="php-var">$params</span> );
 </span><span id="871" class="l"><a href="#871"> 871: </a>                <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
 </span><span id="872" class="l"><a href="#872"> 872: </a>            } <span class="php-keyword1">else</span> {
@@ -1013,16 +1013,16 @@
 </span><span id="928" class="l"><a href="#928"> 928: </a>        <span class="php-var">$user_id</span> = wp_update_user( <span class="php-var">$content</span> );
 </span><span id="929" class="l"><a href="#929"> 929: </a>
 </span><span id="930" class="l"><a href="#930"> 930: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$user_id</span> ) ) {
-</span><span id="931" class="l"><a href="#931"> 931: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="931" class="l"><a href="#931"> 931: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="932" class="l"><a href="#932"> 932: </a>            <span class="php-var">$errors</span> = <span class="php-var">$user_id</span>;
 </span><span id="933" class="l"><a href="#933"> 933: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="934" class="l"><a href="#934"> 934: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="934" class="l"><a href="#934"> 934: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="935" class="l"><a href="#935"> 935: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="936" class="l"><a href="#936"> 936: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
 </span><span id="937" class="l"><a href="#937"> 937: </a>                <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
 </span><span id="938" class="l"><a href="#938"> 938: </a>                <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$user_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
-</span><span id="939" class="l"><a href="#939"> 939: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">FALSE</span> ) {
-</span><span id="940" class="l"><a href="#940"> 940: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="939" class="l"><a href="#939"> 939: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">false</span> ) {
+</span><span id="940" class="l"><a href="#940"> 940: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="941" class="l"><a href="#941"> 941: </a>                    <span class="php-var">$errors</span>[] = <span class="php-keyword1">array</span>( <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>, <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span> );
 </span><span id="942" class="l"><a href="#942"> 942: </a>                }
 </span><span id="943" class="l"><a href="#943"> 943: </a>            }
@@ -1043,13 +1043,13 @@
 </span></span><span id="958" class="l"><a href="#958"> 958: </a><span class="php-comment">    *   User ID
 </span></span><span id="959" class="l"><a href="#959"> 959: </a><span class="php-comment">    * @param int $reassign
 </span></span><span id="960" class="l"><a href="#960"> 960: </a><span class="php-comment">    *   If we should reassign any posts to other users
-</span></span><span id="961" class="l"><a href="#961"> 961: </a><span class="php-comment">    *   We don't change this from NULL anywhere in this plugin
+</span></span><span id="961" class="l"><a href="#961"> 961: </a><span class="php-comment">    *   We don't change this from null anywhere in this plugin
 </span></span><span id="962" class="l"><a href="#962"> 962: </a><span class="php-comment">    *
 </span></span><span id="963" class="l"><a href="#963"> 963: </a><span class="php-comment">    * @return boolean
 </span></span><span id="964" class="l"><a href="#964"> 964: </a><span class="php-comment">    *   true if successful
 </span></span><span id="965" class="l"><a href="#965"> 965: </a><span class="php-comment">    *
 </span></span><span id="966" class="l"><a href="#966"> 966: </a><span class="php-comment">    */</span>
-</span><span id="967" class="l"><a href="#967"> 967: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> user_delete( <span class="php-var">$id</span>, <span class="php-var">$reassign</span> = <span class="php-keyword1">NULL</span> ) {
+</span><span id="967" class="l"><a href="#967"> 967: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> user_delete( <span class="php-var">$id</span>, <span class="php-var">$reassign</span> = <span class="php-keyword1">null</span> ) {
 </span><span id="968" class="l"><a href="#968"> 968: </a>        <span class="php-comment">// according to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error</span>
 </span><span id="969" class="l"><a href="#969"> 969: </a>        <span class="php-keyword1">include_once</span>( <span class="php-quote">'./wp-admin/includes/user.php'</span> );
 </span><span id="970" class="l"><a href="#970"> 970: </a>        <span class="php-var">$result</span> = wp_delete_user( <span class="php-var">$id</span>, <span class="php-var">$reassign</span> );
@@ -1088,10 +1088,10 @@
 </span><span id="1003" class="l"><a href="#1003">1003: </a>        <span class="php-var">$post_id</span> = wp_insert_post( <span class="php-var">$content</span> );
 </span><span id="1004" class="l"><a href="#1004">1004: </a>
 </span><span id="1005" class="l"><a href="#1005">1005: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$post_id</span> ) ) {
-</span><span id="1006" class="l"><a href="#1006">1006: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1006" class="l"><a href="#1006">1006: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1007" class="l"><a href="#1007">1007: </a>            <span class="php-var">$errors</span> = <span class="php-var">$post_id</span>;
 </span><span id="1008" class="l"><a href="#1008">1008: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1009" class="l"><a href="#1009">1009: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1009" class="l"><a href="#1009">1009: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="1010" class="l"><a href="#1010">1010: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="1011" class="l"><a href="#1011">1011: </a>            <span class="php-comment">// if it's a custom post type, fix the methods</span>
 </span><span id="1012" class="l"><a href="#1012">1012: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'RecordTypeId'</span>][<span class="php-quote">'value'</span>] ) ) {
@@ -1102,8 +1102,8 @@
 </span><span id="1017" class="l"><a href="#1017">1017: </a>                <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
 </span><span id="1018" class="l"><a href="#1018">1018: </a>                    <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
 </span><span id="1019" class="l"><a href="#1019">1019: </a>                    <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$post_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
-</span><span id="1020" class="l"><a href="#1020">1020: </a>                    <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">FALSE</span> ) {
-</span><span id="1021" class="l"><a href="#1021">1021: </a>                        <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1020" class="l"><a href="#1020">1020: </a>                    <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">false</span> ) {
+</span><span id="1021" class="l"><a href="#1021">1021: </a>                        <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1022" class="l"><a href="#1022">1022: </a>                        <span class="php-var">$errors</span>[] = <span class="php-keyword1">array</span>( <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>, <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span> );
 </span><span id="1023" class="l"><a href="#1023">1023: </a>                    }
 </span><span id="1024" class="l"><a href="#1024">1024: </a>                }
@@ -1115,10 +1115,10 @@
 </span><span id="1030" class="l"><a href="#1030">1030: </a>        }
 </span><span id="1031" class="l"><a href="#1031">1031: </a>
 </span><span id="1032" class="l"><a href="#1032">1032: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$post_id</span> ) ) {
-</span><span id="1033" class="l"><a href="#1033">1033: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1033" class="l"><a href="#1033">1033: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1034" class="l"><a href="#1034">1034: </a>            <span class="php-var">$errors</span> = <span class="php-var">$post_id</span>;
 </span><span id="1035" class="l"><a href="#1035">1035: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1036" class="l"><a href="#1036">1036: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1036" class="l"><a href="#1036">1036: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="1037" class="l"><a href="#1037">1037: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="1038" class="l"><a href="#1038">1038: </a>        }
 </span><span id="1039" class="l"><a href="#1039">1039: </a>
@@ -1153,7 +1153,7 @@
 </span></span><span id="1068" class="l"><a href="#1068">1068: </a><span class="php-comment">    *   &quot;errors&quot; : [ ],
 </span></span><span id="1069" class="l"><a href="#1069">1069: </a><span class="php-comment">    *
 </span></span><span id="1070" class="l"><a href="#1070">1070: </a><span class="php-comment">    */</span>
-</span><span id="1071" class="l"><a href="#1071">1071: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> post_upsert( <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$params</span>, <span class="php-var">$id_field</span> = <span class="php-quote">'ID'</span>, <span class="php-var">$push_drafts</span> = <span class="php-keyword1">FALSE</span>, <span class="php-var">$post_type</span> = <span class="php-quote">'post'</span> ) {
+</span><span id="1071" class="l"><a href="#1071">1071: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> post_upsert( <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$params</span>, <span class="php-var">$id_field</span> = <span class="php-quote">'ID'</span>, <span class="php-var">$push_drafts</span> = <span class="php-keyword1">false</span>, <span class="php-var">$post_type</span> = <span class="php-quote">'post'</span> ) {
 </span><span id="1072" class="l"><a href="#1072">1072: </a>
 </span><span id="1073" class="l"><a href="#1073">1073: </a>        <span class="php-var">$method</span> = <span class="php-var">$methods</span>[<span class="php-quote">'method_match'</span>];
 </span><span id="1074" class="l"><a href="#1074">1074: </a>
@@ -1174,7 +1174,7 @@
 </span><span id="1089" class="l"><a href="#1089">1089: </a>            }
 </span><span id="1090" class="l"><a href="#1090">1090: </a>            <span class="php-var">$args</span>[<span class="php-quote">'post_type'</span>] = <span class="php-var">$post_type</span>;
 </span><span id="1091" class="l"><a href="#1091">1091: </a>            <span class="php-var">$post_statuses</span> = <span class="php-keyword1">array</span>( <span class="php-quote">'publish'</span> );
-</span><span id="1092" class="l"><a href="#1092">1092: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$push_drafts</span> === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="1092" class="l"><a href="#1092">1092: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$push_drafts</span> === <span class="php-keyword1">true</span> ) {
 </span><span id="1093" class="l"><a href="#1093">1093: </a>                <span class="php-var">$post_statuses</span>[] = <span class="php-quote">'draft'</span>;
 </span><span id="1094" class="l"><a href="#1094">1094: </a>            }
 </span><span id="1095" class="l"><a href="#1095">1095: </a>            <span class="php-var">$args</span>[<span class="php-quote">'post_status'</span>] = <span class="php-var">$post_statuses</span>;
@@ -1283,10 +1283,10 @@
 </span><span id="1198" class="l"><a href="#1198">1198: </a>        <span class="php-var">$post_id</span> = wp_update_post( <span class="php-var">$content</span> );
 </span><span id="1199" class="l"><a href="#1199">1199: </a>
 </span><span id="1200" class="l"><a href="#1200">1200: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$post_id</span> ) ) {
-</span><span id="1201" class="l"><a href="#1201">1201: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1201" class="l"><a href="#1201">1201: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1202" class="l"><a href="#1202">1202: </a>            <span class="php-var">$errors</span> = <span class="php-var">$post_id</span>;
 </span><span id="1203" class="l"><a href="#1203">1203: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1204" class="l"><a href="#1204">1204: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1204" class="l"><a href="#1204">1204: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="1205" class="l"><a href="#1205">1205: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="1206" class="l"><a href="#1206">1206: </a>            <span class="php-comment">// if it's a custom post type, fix the methods</span>
 </span><span id="1207" class="l"><a href="#1207">1207: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'RecordTypeId'</span>][<span class="php-quote">'value'</span>] ) ) {
@@ -1297,8 +1297,8 @@
 </span><span id="1212" class="l"><a href="#1212">1212: </a>                <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
 </span><span id="1213" class="l"><a href="#1213">1213: </a>                    <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
 </span><span id="1214" class="l"><a href="#1214">1214: </a>                    <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$post_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
-</span><span id="1215" class="l"><a href="#1215">1215: </a>                    <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">FALSE</span> ) {
-</span><span id="1216" class="l"><a href="#1216">1216: </a>                        <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1215" class="l"><a href="#1215">1215: </a>                    <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">false</span> ) {
+</span><span id="1216" class="l"><a href="#1216">1216: </a>                        <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1217" class="l"><a href="#1217">1217: </a>                        <span class="php-var">$errors</span>[] = <span class="php-keyword1">array</span>( <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>, <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span> );
 </span><span id="1218" class="l"><a href="#1218">1218: </a>                    }
 </span><span id="1219" class="l"><a href="#1219">1219: </a>                }
@@ -1320,13 +1320,13 @@
 </span></span><span id="1235" class="l"><a href="#1235">1235: </a><span class="php-comment">    *   Post ID
 </span></span><span id="1236" class="l"><a href="#1236">1236: </a><span class="php-comment">    * @param bool $force_delete
 </span></span><span id="1237" class="l"><a href="#1237">1237: </a><span class="php-comment">    *   If we should bypass the trash
-</span></span><span id="1238" class="l"><a href="#1238">1238: </a><span class="php-comment">    *   We don't change this from FALSE anywhere in this plugin
+</span></span><span id="1238" class="l"><a href="#1238">1238: </a><span class="php-comment">    *   We don't change this from false anywhere in this plugin
 </span></span><span id="1239" class="l"><a href="#1239">1239: </a><span class="php-comment">    *
 </span></span><span id="1240" class="l"><a href="#1240">1240: </a><span class="php-comment">    * @return mixed
 </span></span><span id="1241" class="l"><a href="#1241">1241: </a><span class="php-comment">    *   post object if successful, false if failed
 </span></span><span id="1242" class="l"><a href="#1242">1242: </a><span class="php-comment">    *
 </span></span><span id="1243" class="l"><a href="#1243">1243: </a><span class="php-comment">    */</span>
-</span><span id="1244" class="l"><a href="#1244">1244: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> post_delete( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> = <span class="php-keyword1">FALSE</span> ) {
+</span><span id="1244" class="l"><a href="#1244">1244: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> post_delete( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="1245" class="l"><a href="#1245">1245: </a>        <span class="php-var">$result</span> = wp_delete_post( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> );
 </span><span id="1246" class="l"><a href="#1246">1246: </a>        <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
 </span><span id="1247" class="l"><a href="#1247">1247: </a>    }
@@ -1359,7 +1359,7 @@
 </span><span id="1274" class="l"><a href="#1274">1274: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'filename'</span>][<span class="php-quote">'value'</span>] ) ) {
 </span><span id="1275" class="l"><a href="#1275">1275: </a>            <span class="php-var">$filename</span> = <span class="php-var">$params</span>[<span class="php-quote">'filename'</span>][<span class="php-quote">'value'</span>];
 </span><span id="1276" class="l"><a href="#1276">1276: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1277" class="l"><a href="#1277">1277: </a>            <span class="php-var">$filename</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1277" class="l"><a href="#1277">1277: </a>            <span class="php-var">$filename</span> = <span class="php-keyword1">false</span>;
 </span><span id="1278" class="l"><a href="#1278">1278: </a>        }
 </span><span id="1279" class="l"><a href="#1279">1279: </a>
 </span><span id="1280" class="l"><a href="#1280">1280: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'parent'</span>][<span class="php-quote">'value'</span>] ) ) {
@@ -1371,13 +1371,13 @@
 </span><span id="1286" class="l"><a href="#1286">1286: </a>        <span class="php-var">$attachment_id</span> = wp_insert_attachment( <span class="php-var">$content</span>, <span class="php-var">$filename</span>, <span class="php-var">$parent</span> );
 </span><span id="1287" class="l"><a href="#1287">1287: </a>
 </span><span id="1288" class="l"><a href="#1288">1288: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$attachment_id</span> ) ) {
-</span><span id="1289" class="l"><a href="#1289">1289: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1289" class="l"><a href="#1289">1289: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1290" class="l"><a href="#1290">1290: </a>            <span class="php-var">$errors</span> = <span class="php-var">$attachment_id</span>;
 </span><span id="1291" class="l"><a href="#1291">1291: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1292" class="l"><a href="#1292">1292: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1292" class="l"><a href="#1292">1292: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="1293" class="l"><a href="#1293">1293: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="1294" class="l"><a href="#1294">1294: </a>
-</span><span id="1295" class="l"><a href="#1295">1295: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$filename</span> !== <span class="php-keyword1">FALSE</span> ) {
+</span><span id="1295" class="l"><a href="#1295">1295: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$filename</span> !== <span class="php-keyword1">false</span> ) {
 </span><span id="1296" class="l"><a href="#1296">1296: </a>                <span class="php-comment">// according to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file</span>
 </span><span id="1297" class="l"><a href="#1297">1297: </a>                <span class="php-keyword1">require_once</span>( ABSPATH . <span class="php-quote">'wp-admin/includes/image.php'</span> );
 </span><span id="1298" class="l"><a href="#1298">1298: </a>                <span class="php-comment">// generate metadata for the attachment</span>
@@ -1546,7 +1546,7 @@
 </span><span id="1461" class="l"><a href="#1461">1461: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'filename'</span>][<span class="php-quote">'value'</span>] ) ) {
 </span><span id="1462" class="l"><a href="#1462">1462: </a>            <span class="php-var">$filename</span> = <span class="php-var">$params</span>[<span class="php-quote">'filename'</span>][<span class="php-quote">'value'</span>];
 </span><span id="1463" class="l"><a href="#1463">1463: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1464" class="l"><a href="#1464">1464: </a>            <span class="php-var">$filename</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1464" class="l"><a href="#1464">1464: </a>            <span class="php-var">$filename</span> = <span class="php-keyword1">false</span>;
 </span><span id="1465" class="l"><a href="#1465">1465: </a>        }
 </span><span id="1466" class="l"><a href="#1466">1466: </a>
 </span><span id="1467" class="l"><a href="#1467">1467: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'parent'</span>][<span class="php-quote">'value'</span>] ) ) {
@@ -1558,14 +1558,14 @@
 </span><span id="1473" class="l"><a href="#1473">1473: </a>        <span class="php-var">$attachment_id</span> = wp_insert_attachment( <span class="php-var">$content</span>, <span class="php-var">$filename</span>, <span class="php-var">$parent</span> );
 </span><span id="1474" class="l"><a href="#1474">1474: </a>
 </span><span id="1475" class="l"><a href="#1475">1475: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$attachment_id</span> ) ) {
-</span><span id="1476" class="l"><a href="#1476">1476: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1476" class="l"><a href="#1476">1476: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1477" class="l"><a href="#1477">1477: </a>            <span class="php-var">$errors</span> = <span class="php-var">$attachment_id</span>;
 </span><span id="1478" class="l"><a href="#1478">1478: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1479" class="l"><a href="#1479">1479: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1479" class="l"><a href="#1479">1479: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="1480" class="l"><a href="#1480">1480: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="1481" class="l"><a href="#1481">1481: </a>
 </span><span id="1482" class="l"><a href="#1482">1482: </a>            
-</span><span id="1483" class="l"><a href="#1483">1483: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$filename</span> !== <span class="php-keyword1">FALSE</span> ) {
+</span><span id="1483" class="l"><a href="#1483">1483: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$filename</span> !== <span class="php-keyword1">false</span> ) {
 </span><span id="1484" class="l"><a href="#1484">1484: </a>                <span class="php-comment">// according to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file</span>
 </span><span id="1485" class="l"><a href="#1485">1485: </a>                <span class="php-keyword1">require_once</span>( ABSPATH . <span class="php-quote">'wp-admin/includes/image.php'</span> );
 </span><span id="1486" class="l"><a href="#1486">1486: </a>                <span class="php-comment">// generate metadata for the attachment</span>
@@ -1588,8 +1588,8 @@
 </span><span id="1503" class="l"><a href="#1503">1503: </a>
 </span><span id="1504" class="l"><a href="#1504">1504: </a>            <span class="php-var">$meta_updated</span> = wp_update_attachment_metadata( <span class="php-var">$attachment_id</span>, <span class="php-var">$attach_data</span> );
 </span><span id="1505" class="l"><a href="#1505">1505: </a>
-</span><span id="1506" class="l"><a href="#1506">1506: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$meta_updated</span> === <span class="php-keyword1">FALSE</span> ) {
-</span><span id="1507" class="l"><a href="#1507">1507: </a>                <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1506" class="l"><a href="#1506">1506: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$meta_updated</span> === <span class="php-keyword1">false</span> ) {
+</span><span id="1507" class="l"><a href="#1507">1507: </a>                <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1508" class="l"><a href="#1508">1508: </a>                <span class="php-var">$errors</span>[] = <span class="php-keyword1">array</span>( <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>, <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span> );
 </span><span id="1509" class="l"><a href="#1509">1509: </a>            }
 </span><span id="1510" class="l"><a href="#1510">1510: </a>
@@ -1613,13 +1613,13 @@
 </span></span><span id="1528" class="l"><a href="#1528">1528: </a><span class="php-comment">    *   Attachment ID
 </span></span><span id="1529" class="l"><a href="#1529">1529: </a><span class="php-comment">    * @param bool $force_delete
 </span></span><span id="1530" class="l"><a href="#1530">1530: </a><span class="php-comment">    *   If we should bypass the trash
-</span></span><span id="1531" class="l"><a href="#1531">1531: </a><span class="php-comment">    *   We don't change this from FALSE anywhere in this plugin
+</span></span><span id="1531" class="l"><a href="#1531">1531: </a><span class="php-comment">    *   We don't change this from false anywhere in this plugin
 </span></span><span id="1532" class="l"><a href="#1532">1532: </a><span class="php-comment">    *
 </span></span><span id="1533" class="l"><a href="#1533">1533: </a><span class="php-comment">    * @return mixed
 </span></span><span id="1534" class="l"><a href="#1534">1534: </a><span class="php-comment">    *   attachment object if successful, false if failed
 </span></span><span id="1535" class="l"><a href="#1535">1535: </a><span class="php-comment">    *
 </span></span><span id="1536" class="l"><a href="#1536">1536: </a><span class="php-comment">    */</span>
-</span><span id="1537" class="l"><a href="#1537">1537: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> attachment_delete( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> = <span class="php-keyword1">FALSE</span> ) {
+</span><span id="1537" class="l"><a href="#1537">1537: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> attachment_delete( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="1538" class="l"><a href="#1538">1538: </a>        <span class="php-var">$result</span> = wp_delete_attachment( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> );
 </span><span id="1539" class="l"><a href="#1539">1539: </a>        <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
 </span><span id="1540" class="l"><a href="#1540">1540: </a>    }
@@ -1661,17 +1661,17 @@
 </span><span id="1576" class="l"><a href="#1576">1576: </a>        }
 </span><span id="1577" class="l"><a href="#1577">1577: </a>
 </span><span id="1578" class="l"><a href="#1578">1578: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$term</span> ) ) {
-</span><span id="1579" class="l"><a href="#1579">1579: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1579" class="l"><a href="#1579">1579: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1580" class="l"><a href="#1580">1580: </a>            <span class="php-var">$errors</span> = <span class="php-var">$term</span>;
 </span><span id="1581" class="l"><a href="#1581">1581: </a>        } <span class="php-keyword1">else</span> {
 </span><span id="1582" class="l"><a href="#1582">1582: </a>            <span class="php-var">$term_id</span> = <span class="php-var">$term</span>[<span class="php-quote">&quot;</span><span class="php-var">$id_field</span><span class="php-quote">&quot;</span>];
-</span><span id="1583" class="l"><a href="#1583">1583: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1583" class="l"><a href="#1583">1583: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="1584" class="l"><a href="#1584">1584: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="1585" class="l"><a href="#1585">1585: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
 </span><span id="1586" class="l"><a href="#1586">1586: </a>                <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
 </span><span id="1587" class="l"><a href="#1587">1587: </a>                <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$term_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
-</span><span id="1588" class="l"><a href="#1588">1588: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">FALSE</span> ) {
-</span><span id="1589" class="l"><a href="#1589">1589: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1588" class="l"><a href="#1588">1588: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">false</span> ) {
+</span><span id="1589" class="l"><a href="#1589">1589: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1590" class="l"><a href="#1590">1590: </a>                    <span class="php-var">$errors</span>[] = <span class="php-keyword1">array</span>( <span class="php-quote">'message'</span> =&gt; __( <span class="php-quote">'Tried to upsert meta with method '</span> . <span class="php-var">$method</span> . <span class="php-quote">' .'</span> ), <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>, <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span> );
 </span><span id="1591" class="l"><a href="#1591">1591: </a>                }
 </span><span id="1592" class="l"><a href="#1592">1592: </a>            }
@@ -1682,10 +1682,10 @@
 </span><span id="1597" class="l"><a href="#1597">1597: </a>        }
 </span><span id="1598" class="l"><a href="#1598">1598: </a>
 </span><span id="1599" class="l"><a href="#1599">1599: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$term</span> ) ) {
-</span><span id="1600" class="l"><a href="#1600">1600: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1600" class="l"><a href="#1600">1600: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1601" class="l"><a href="#1601">1601: </a>            <span class="php-var">$errors</span> = <span class="php-var">$term</span>;
 </span><span id="1602" class="l"><a href="#1602">1602: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1603" class="l"><a href="#1603">1603: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1603" class="l"><a href="#1603">1603: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="1604" class="l"><a href="#1604">1604: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="1605" class="l"><a href="#1605">1605: </a>        }
 </span><span id="1606" class="l"><a href="#1606">1606: </a>
@@ -1718,7 +1718,7 @@
 </span></span><span id="1633" class="l"><a href="#1633">1633: </a><span class="php-comment">    *   &quot;errors&quot; : [ ],
 </span></span><span id="1634" class="l"><a href="#1634">1634: </a><span class="php-comment">    *
 </span></span><span id="1635" class="l"><a href="#1635">1635: </a><span class="php-comment">    */</span>
-</span><span id="1636" class="l"><a href="#1636">1636: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> term_upsert( <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$params</span>, <span class="php-var">$taxonomy</span>, <span class="php-var">$id_field</span> = <span class="php-quote">'ID'</span>, <span class="php-var">$push_drafts</span> = <span class="php-keyword1">FALSE</span> ) {
+</span><span id="1636" class="l"><a href="#1636">1636: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> term_upsert( <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$params</span>, <span class="php-var">$taxonomy</span>, <span class="php-var">$id_field</span> = <span class="php-quote">'ID'</span>, <span class="php-var">$push_drafts</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="1637" class="l"><a href="#1637">1637: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$taxonomy</span> === <span class="php-quote">'tag'</span> ) {
 </span><span id="1638" class="l"><a href="#1638">1638: </a>            <span class="php-var">$taxonomy</span> = <span class="php-quote">'post_tag'</span>;
 </span><span id="1639" class="l"><a href="#1639">1639: </a>        }
@@ -1813,17 +1813,17 @@
 </span><span id="1728" class="l"><a href="#1728">1728: </a>        <span class="php-var">$term</span> = wp_update_term( <span class="php-var">$term_id</span>, <span class="php-var">$taxonomy</span>, <span class="php-var">$args</span> );
 </span><span id="1729" class="l"><a href="#1729">1729: </a>
 </span><span id="1730" class="l"><a href="#1730">1730: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$term</span> ) ) {
-</span><span id="1731" class="l"><a href="#1731">1731: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1731" class="l"><a href="#1731">1731: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1732" class="l"><a href="#1732">1732: </a>            <span class="php-var">$errors</span> = <span class="php-var">$term</span>;
 </span><span id="1733" class="l"><a href="#1733">1733: </a>        } <span class="php-keyword1">else</span> {
 </span><span id="1734" class="l"><a href="#1734">1734: </a>            <span class="php-var">$term_id</span> = <span class="php-var">$term</span>[<span class="php-quote">&quot;</span><span class="php-var">$id_field</span><span class="php-quote">&quot;</span>];
-</span><span id="1735" class="l"><a href="#1735">1735: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1735" class="l"><a href="#1735">1735: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="1736" class="l"><a href="#1736">1736: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="1737" class="l"><a href="#1737">1737: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
 </span><span id="1738" class="l"><a href="#1738">1738: </a>                <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
 </span><span id="1739" class="l"><a href="#1739">1739: </a>                <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$term_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
-</span><span id="1740" class="l"><a href="#1740">1740: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">FALSE</span> ) {
-</span><span id="1741" class="l"><a href="#1741">1741: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1740" class="l"><a href="#1740">1740: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">false</span> ) {
+</span><span id="1741" class="l"><a href="#1741">1741: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1742" class="l"><a href="#1742">1742: </a>                    <span class="php-var">$errors</span>[] = <span class="php-keyword1">array</span>( <span class="php-quote">'message'</span> =&gt; __( <span class="php-quote">'Tried to update meta with method '</span> . <span class="php-var">$method</span> . <span class="php-quote">' .'</span> ), <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>, <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span> );
 </span><span id="1743" class="l"><a href="#1743">1743: </a>                }
 </span><span id="1744" class="l"><a href="#1744">1744: </a>            }
@@ -1834,10 +1834,10 @@
 </span><span id="1749" class="l"><a href="#1749">1749: </a>        }
 </span><span id="1750" class="l"><a href="#1750">1750: </a>
 </span><span id="1751" class="l"><a href="#1751">1751: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$term</span> ) ) {
-</span><span id="1752" class="l"><a href="#1752">1752: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1752" class="l"><a href="#1752">1752: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1753" class="l"><a href="#1753">1753: </a>            <span class="php-var">$errors</span> = <span class="php-var">$term</span>;
 </span><span id="1754" class="l"><a href="#1754">1754: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1755" class="l"><a href="#1755">1755: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1755" class="l"><a href="#1755">1755: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="1756" class="l"><a href="#1756">1756: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="1757" class="l"><a href="#1757">1757: </a>        }
 </span><span id="1758" class="l"><a href="#1758">1758: </a>
@@ -1910,16 +1910,16 @@
 </span><span id="1825" class="l"><a href="#1825">1825: </a>        <span class="php-var">$comment_id</span> = wp_new_comment( <span class="php-var">$content</span> );
 </span><span id="1826" class="l"><a href="#1826">1826: </a>
 </span><span id="1827" class="l"><a href="#1827">1827: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$comment_id</span> ) ) {
-</span><span id="1828" class="l"><a href="#1828">1828: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1828" class="l"><a href="#1828">1828: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1829" class="l"><a href="#1829">1829: </a>            <span class="php-var">$errors</span> = <span class="php-var">$comment_id</span>;
 </span><span id="1830" class="l"><a href="#1830">1830: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1831" class="l"><a href="#1831">1831: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1831" class="l"><a href="#1831">1831: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="1832" class="l"><a href="#1832">1832: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="1833" class="l"><a href="#1833">1833: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
 </span><span id="1834" class="l"><a href="#1834">1834: </a>                <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
 </span><span id="1835" class="l"><a href="#1835">1835: </a>                <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$comment_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
-</span><span id="1836" class="l"><a href="#1836">1836: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">FALSE</span> ) {
-</span><span id="1837" class="l"><a href="#1837">1837: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1836" class="l"><a href="#1836">1836: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">false</span> ) {
+</span><span id="1837" class="l"><a href="#1837">1837: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1838" class="l"><a href="#1838">1838: </a>                    <span class="php-var">$errors</span>[] = <span class="php-keyword1">array</span>( <span class="php-quote">'message'</span> =&gt; __( <span class="php-quote">'Tried to add meta with method '</span> . <span class="php-var">$method</span> . <span class="php-quote">' .'</span> ), <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>, <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span> );
 </span><span id="1839" class="l"><a href="#1839">1839: </a>                }
 </span><span id="1840" class="l"><a href="#1840">1840: </a>            }
@@ -1930,10 +1930,10 @@
 </span><span id="1845" class="l"><a href="#1845">1845: </a>        }
 </span><span id="1846" class="l"><a href="#1846">1846: </a>
 </span><span id="1847" class="l"><a href="#1847">1847: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$comment_id</span> ) ) {
-</span><span id="1848" class="l"><a href="#1848">1848: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1848" class="l"><a href="#1848">1848: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="1849" class="l"><a href="#1849">1849: </a>            <span class="php-var">$errors</span> = <span class="php-var">$comment_id</span>;
 </span><span id="1850" class="l"><a href="#1850">1850: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1851" class="l"><a href="#1851">1851: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1851" class="l"><a href="#1851">1851: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="1852" class="l"><a href="#1852">1852: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="1853" class="l"><a href="#1853">1853: </a>        }
 </span><span id="1854" class="l"><a href="#1854">1854: </a>
@@ -1964,7 +1964,7 @@
 </span></span><span id="1879" class="l"><a href="#1879">1879: </a><span class="php-comment">    *   &quot;errors&quot; : [ ],
 </span></span><span id="1880" class="l"><a href="#1880">1880: </a><span class="php-comment">    *
 </span></span><span id="1881" class="l"><a href="#1881">1881: </a><span class="php-comment">    */</span>
-</span><span id="1882" class="l"><a href="#1882">1882: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> comment_upsert( <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span>, <span class="php-var">$params</span>, <span class="php-var">$id_field</span> = <span class="php-quote">'comment_ID'</span>, <span class="php-var">$push_drafts</span> = <span class="php-keyword1">FALSE</span> ) {
+</span><span id="1882" class="l"><a href="#1882">1882: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> comment_upsert( <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span>, <span class="php-var">$params</span>, <span class="php-var">$id_field</span> = <span class="php-quote">'comment_ID'</span>, <span class="php-var">$push_drafts</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="1883" class="l"><a href="#1883">1883: </a>        <span class="php-var">$method</span> = <span class="php-var">$methods</span>[<span class="php-quote">'method_match'</span>];
 </span><span id="1884" class="l"><a href="#1884">1884: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$method</span> === <span class="php-quote">'get_comment'</span> ) {
 </span><span id="1885" class="l"><a href="#1885">1885: </a>            <span class="php-var">$method</span> = <span class="php-quote">'get_comments'</span>;
@@ -2084,16 +2084,16 @@
 </span><span id="1999" class="l"><a href="#1999">1999: </a>        <span class="php-var">$updated</span> = wp_update_comment( <span class="php-var">$content</span> );
 </span><span id="2000" class="l"><a href="#2000">2000: </a>
 </span><span id="2001" class="l"><a href="#2001">2001: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$updated</span> === <span class="php-num">0</span> ) {
-</span><span id="2002" class="l"><a href="#2002">2002: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="2002" class="l"><a href="#2002">2002: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="2003" class="l"><a href="#2003">2003: </a>            <span class="php-var">$errors</span> = <span class="php-var">$updated</span>;
 </span><span id="2004" class="l"><a href="#2004">2004: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="2005" class="l"><a href="#2005">2005: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="2005" class="l"><a href="#2005">2005: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="2006" class="l"><a href="#2006">2006: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="2007" class="l"><a href="#2007">2007: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
 </span><span id="2008" class="l"><a href="#2008">2008: </a>                <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
 </span><span id="2009" class="l"><a href="#2009">2009: </a>                <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$comment_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
-</span><span id="2010" class="l"><a href="#2010">2010: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">FALSE</span> ) {
-</span><span id="2011" class="l"><a href="#2011">2011: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="2010" class="l"><a href="#2010">2010: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$meta_id</span> === <span class="php-keyword1">false</span> ) {
+</span><span id="2011" class="l"><a href="#2011">2011: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="2012" class="l"><a href="#2012">2012: </a>                    <span class="php-var">$errors</span>[] = <span class="php-keyword1">array</span>( <span class="php-quote">'message'</span> =&gt; __( <span class="php-quote">'Tried to update meta with method '</span> . <span class="php-var">$method</span> . <span class="php-quote">' .'</span> ), <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>, <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span> );
 </span><span id="2013" class="l"><a href="#2013">2013: </a>                }
 </span><span id="2014" class="l"><a href="#2014">2014: </a>            }
@@ -2104,10 +2104,10 @@
 </span><span id="2019" class="l"><a href="#2019">2019: </a>        }
 </span><span id="2020" class="l"><a href="#2020">2020: </a>
 </span><span id="2021" class="l"><a href="#2021">2021: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$updated</span> ) ) {
-</span><span id="2022" class="l"><a href="#2022">2022: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="2022" class="l"><a href="#2022">2022: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
 </span><span id="2023" class="l"><a href="#2023">2023: </a>            <span class="php-var">$errors</span> = <span class="php-var">$updated</span>;
 </span><span id="2024" class="l"><a href="#2024">2024: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="2025" class="l"><a href="#2025">2025: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="2025" class="l"><a href="#2025">2025: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
 </span><span id="2026" class="l"><a href="#2026">2026: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
 </span><span id="2027" class="l"><a href="#2027">2027: </a>        }
 </span><span id="2028" class="l"><a href="#2028">2028: </a>
@@ -2124,13 +2124,13 @@
 </span></span><span id="2039" class="l"><a href="#2039">2039: </a><span class="php-comment">    *   Comment ID
 </span></span><span id="2040" class="l"><a href="#2040">2040: </a><span class="php-comment">    * @param bool $force_delete
 </span></span><span id="2041" class="l"><a href="#2041">2041: </a><span class="php-comment">    *   If we should bypass the trash
-</span></span><span id="2042" class="l"><a href="#2042">2042: </a><span class="php-comment">    *   We don't change this from FALSE anywhere in this plugin
+</span></span><span id="2042" class="l"><a href="#2042">2042: </a><span class="php-comment">    *   We don't change this from false anywhere in this plugin
 </span></span><span id="2043" class="l"><a href="#2043">2043: </a><span class="php-comment">    *
 </span></span><span id="2044" class="l"><a href="#2044">2044: </a><span class="php-comment">    * @return boolean
 </span></span><span id="2045" class="l"><a href="#2045">2045: </a><span class="php-comment">    *   true if successful, false if failed
 </span></span><span id="2046" class="l"><a href="#2046">2046: </a><span class="php-comment">    *
 </span></span><span id="2047" class="l"><a href="#2047">2047: </a><span class="php-comment">    */</span>
-</span><span id="2048" class="l"><a href="#2048">2048: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> comment_delete( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> = <span class="php-keyword1">FALSE</span> ) {
+</span><span id="2048" class="l"><a href="#2048">2048: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> comment_delete( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="2049" class="l"><a href="#2049">2049: </a>        <span class="php-var">$result</span> = wp_delete_comment( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> );
 </span><span id="2050" class="l"><a href="#2050">2050: </a>        <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
 </span><span id="2051" class="l"><a href="#2051">2051: </a>    }

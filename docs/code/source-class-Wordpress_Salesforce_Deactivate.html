@@ -165,10 +165,10 @@
 </span><span id="80" class="l"><a href="#80">80: </a>        <span class="php-var">$role</span>-&gt;remove_cap( <span class="php-quote">'configure_salesforce'</span> );
 </span><span id="81" class="l"><a href="#81">81: </a>
 </span><span id="82" class="l"><a href="#82">82: </a>        <span class="php-comment">// hook that allows other roles to configure the plugin as well</span>
-</span><span id="83" class="l"><a href="#83">83: </a>        <span class="php-var">$roles</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_roles_configure_salesforce'</span>, <span class="php-keyword1">NULL</span> );
+</span><span id="83" class="l"><a href="#83">83: </a>        <span class="php-var">$roles</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_roles_configure_salesforce'</span>, <span class="php-keyword1">null</span> );
 </span><span id="84" class="l"><a href="#84">84: </a>
 </span><span id="85" class="l"><a href="#85">85: </a>        <span class="php-comment">// for each role that we have, remove the configure salesforce capability</span>
-</span><span id="86" class="l"><a href="#86">86: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">NULL</span> !== <span class="php-var">$roles</span> ) {
+</span><span id="86" class="l"><a href="#86">86: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> !== <span class="php-var">$roles</span> ) {
 </span><span id="87" class="l"><a href="#87">87: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$roles</span> <span class="php-keyword1">as</span> <span class="php-var">$role</span> ) {
 </span><span id="88" class="l"><a href="#88">88: </a>                <span class="php-var">$role</span>-&gt;remove_cap( <span class="php-quote">'configure_salesforce'</span> );
 </span><span id="89" class="l"><a href="#89">89: </a>            }

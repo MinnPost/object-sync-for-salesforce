@@ -184,7 +184,7 @@
 </span><span id="99" class="l"><a href="#99">  99: </a>        <span class="php-keyword1">echo</span> <span class="php-quote">'&lt;div class=&quot;wrap&quot;&gt;'</span>;
 </span><span id="100" class="l"><a href="#100"> 100: </a>            <span class="php-keyword1">echo</span> <span class="php-quote">'&lt;h1&gt;'</span> . get_admin_page_title() . <span class="php-quote">'&lt;/h1&gt;'</span>;
 </span><span id="101" class="l"><a href="#101"> 101: </a>            <span class="php-var">$allowed</span> = <span class="php-var">$this</span>-&gt;check_wordpress_admin_permissions();
-</span><span id="102" class="l"><a href="#102"> 102: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">FALSE</span> === <span class="php-var">$allowed</span> ) {
+</span><span id="102" class="l"><a href="#102"> 102: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">false</span> === <span class="php-var">$allowed</span> ) {
 </span><span id="103" class="l"><a href="#103"> 103: </a>                <span class="php-keyword1">return</span>;
 </span><span id="104" class="l"><a href="#104"> 104: </a>            }
 </span><span id="105" class="l"><a href="#105"> 105: </a>            <span class="php-var">$tabs</span> = <span class="php-keyword1">array</span>(
@@ -195,7 +195,7 @@
 </span><span id="110" class="l"><a href="#110"> 110: </a>            ); <span class="php-comment">// this creates the tabs for the admin</span>
 </span><span id="111" class="l"><a href="#111"> 111: </a>
 </span><span id="112" class="l"><a href="#112"> 112: </a>            <span class="php-comment">// optionally make tab(s) for logging and log settings</span>
-</span><span id="113" class="l"><a href="#113"> 113: </a>            <span class="php-var">$logging_enabled</span> = get_option( <span class="php-quote">'salesforce_api_enable_logging'</span>, <span class="php-keyword1">FALSE</span> );
+</span><span id="113" class="l"><a href="#113"> 113: </a>            <span class="php-var">$logging_enabled</span> = get_option( <span class="php-quote">'salesforce_api_enable_logging'</span>, <span class="php-keyword1">false</span> );
 </span><span id="114" class="l"><a href="#114"> 114: </a>            <span class="php-var">$tabs</span>[<span class="php-quote">'log_settings'</span>] = <span class="php-quote">'Log Settings'</span>;
 </span><span id="115" class="l"><a href="#115"> 115: </a>
 </span><span id="116" class="l"><a href="#116"> 116: </a>            <span class="php-comment">// filter for extending the tabs available on the page</span>
@@ -216,10 +216,10 @@
 </span><span id="131" class="l"><a href="#131"> 131: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$_GET</span>[<span class="php-quote">'code'</span>] ) )  {
 </span><span id="132" class="l"><a href="#132"> 132: </a>                            <span class="php-var">$is_authorized</span> = <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>]-&gt;request_token( esc_attr( <span class="php-var">$_GET</span>[<span class="php-quote">'code'</span>] ) );
 </span><span id="133" class="l"><a href="#133"> 133: </a>                            <span class="php-keyword1">echo</span> <span class="php-quote">&quot;&lt;script&gt;window.location = '</span><span class="php-var">$callback_url</span><span class="php-quote">';&lt;/script&gt;&quot;</span>;
-</span><span id="134" class="l"><a href="#134"> 134: </a>                        } <span class="php-keyword1">elseif</span> ( <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'is_authorized'</span>] === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="134" class="l"><a href="#134"> 134: </a>                        } <span class="php-keyword1">elseif</span> ( <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'is_authorized'</span>] === <span class="php-keyword1">true</span> ) {
 </span><span id="135" class="l"><a href="#135"> 135: </a>                            <span class="php-keyword1">require_once</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'/../templates/admin/authorized.php'</span> );
 </span><span id="136" class="l"><a href="#136"> 136: </a>                            <span class="php-var">$this</span>-&gt;demo( <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>] );
-</span><span id="137" class="l"><a href="#137"> 137: </a>                        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">is_object</span> ( <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>] ) === <span class="php-keyword1">TRUE</span> &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_key</span> ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_secret</span> ) ) {
+</span><span id="137" class="l"><a href="#137"> 137: </a>                        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">is_object</span> ( <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>] ) === <span class="php-keyword1">true</span> &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_key</span> ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_secret</span> ) ) {
 </span><span id="138" class="l"><a href="#138"> 138: </a>                            <span class="php-keyword1">echo</span> <span class="php-quote">'&lt;p&gt;&lt;a class=&quot;button button-primary&quot; href=&quot;'</span> . <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>]-&gt;get_authorization_code() . <span class="php-quote">'&quot;&gt;'</span> . esc_html__( <span class="php-quote">'Connect to Salesforce'</span>, <span class="php-var">$this</span>-&gt;text_domain ) . <span class="php-quote">'&lt;/a&gt;&lt;/p&gt;'</span>;
 </span><span id="139" class="l"><a href="#139"> 139: </a>                        } <span class="php-keyword1">else</span> {
 </span><span id="140" class="l"><a href="#140"> 140: </a>                            <span class="php-var">$message</span> = __( <span class="php-quote">'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the &lt;a href=&quot;'</span> . get_admin_url( <span class="php-keyword1">null</span>, <span class="php-quote">'options-general.php?page=salesforce-api-admin&amp;tab=settings'</span> ) . <span class="php-quote">'&quot;&gt;Settings&lt;/a&gt; tab to add them.'</span>, <span class="php-var">$this</span>-&gt;text_domain );
@@ -284,7 +284,7 @@
 </span><span id="199" class="l"><a href="#199"> 199: </a>                        <span class="php-var">$consumer_key</span> = <span class="php-var">$this</span>-&gt;login_credentials[<span class="php-quote">'consumer_key'</span>];
 </span><span id="200" class="l"><a href="#200"> 200: </a>                        <span class="php-var">$consumer_secret</span> = <span class="php-var">$this</span>-&gt;login_credentials[<span class="php-quote">'consumer_secret'</span>];
 </span><span id="201" class="l"><a href="#201"> 201: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_key</span> ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_secret</span> ) &amp;&amp; !<span class="php-keyword1">empty</span>( <span class="php-var">$consumer_key</span> ) &amp;&amp; !<span class="php-keyword1">empty</span>( <span class="php-var">$consumer_secret</span> ) ) {
-</span><span id="202" class="l"><a href="#202"> 202: </a>                            <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'is_authorized'</span>] === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="202" class="l"><a href="#202"> 202: </a>                            <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'is_authorized'</span>] === <span class="php-keyword1">true</span> ) {
 </span><span id="203" class="l"><a href="#203"> 203: </a>                                <span class="php-keyword1">require_once</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'/../templates/admin/settings.php'</span> );
 </span><span id="204" class="l"><a href="#204"> 204: </a>                            } <span class="php-keyword1">else</span> {
 </span><span id="205" class="l"><a href="#205"> 205: </a>                                <span class="php-var">$message</span> = __( <span class="php-quote">'Salesforce needs to be authorized to connect to this website. Use the &lt;a href=&quot;'</span> . <span class="php-var">$callback_url</span> . <span class="php-quote">'&quot;&gt;Authorize tab&lt;/a&gt; to connect.'</span>, <span class="php-var">$this</span>-&gt;text_domain );
@@ -296,16 +296,16 @@
 </span><span id="211" class="l"><a href="#211"> 211: </a>                        }
 </span><span id="212" class="l"><a href="#212"> 212: </a>                        <span class="php-keyword1">break</span>;
 </span><span id="213" class="l"><a href="#213"> 213: </a>                    <span class="php-keyword1">default</span>:
-</span><span id="214" class="l"><a href="#214"> 214: </a>                        <span class="php-var">$include_settings</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_settings_tab_include_settings'</span>, <span class="php-keyword1">TRUE</span>, <span class="php-var">$tab</span> );
-</span><span id="215" class="l"><a href="#215"> 215: </a>                        <span class="php-var">$content_before</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_settings_tab_content_before'</span>, <span class="php-keyword1">NULL</span>, <span class="php-var">$tab</span> );
-</span><span id="216" class="l"><a href="#216"> 216: </a>                        <span class="php-var">$content_after</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_settings_tab_content_after'</span>, <span class="php-keyword1">NULL</span>, <span class="php-var">$tab</span> );
-</span><span id="217" class="l"><a href="#217"> 217: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">NULL</span> !== <span class="php-var">$content_before</span> ) {
+</span><span id="214" class="l"><a href="#214"> 214: </a>                        <span class="php-var">$include_settings</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_settings_tab_include_settings'</span>, <span class="php-keyword1">true</span>, <span class="php-var">$tab</span> );
+</span><span id="215" class="l"><a href="#215"> 215: </a>                        <span class="php-var">$content_before</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_settings_tab_content_before'</span>, <span class="php-keyword1">null</span>, <span class="php-var">$tab</span> );
+</span><span id="216" class="l"><a href="#216"> 216: </a>                        <span class="php-var">$content_after</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_settings_tab_content_after'</span>, <span class="php-keyword1">null</span>, <span class="php-var">$tab</span> );
+</span><span id="217" class="l"><a href="#217"> 217: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> !== <span class="php-var">$content_before</span> ) {
 </span><span id="218" class="l"><a href="#218"> 218: </a>                            <span class="php-keyword1">echo</span> <span class="php-var">$content_before</span>;
 </span><span id="219" class="l"><a href="#219"> 219: </a>                        }
-</span><span id="220" class="l"><a href="#220"> 220: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">TRUE</span> === <span class="php-var">$include_settings</span> ) {
+</span><span id="220" class="l"><a href="#220"> 220: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">true</span> === <span class="php-var">$include_settings</span> ) {
 </span><span id="221" class="l"><a href="#221"> 221: </a>                            <span class="php-keyword1">require_once</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'/../templates/admin/settings.php'</span> );
 </span><span id="222" class="l"><a href="#222"> 222: </a>                        }
-</span><span id="223" class="l"><a href="#223"> 223: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">NULL</span> !== <span class="php-var">$content_after</span> ) {
+</span><span id="223" class="l"><a href="#223"> 223: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> !== <span class="php-var">$content_after</span> ) {
 </span><span id="224" class="l"><a href="#224"> 224: </a>                            <span class="php-keyword1">echo</span> <span class="php-var">$content_after</span>;
 </span><span id="225" class="l"><a href="#225"> 225: </a>                        }
 </span><span id="226" class="l"><a href="#226"> 226: </a>                        <span class="php-keyword1">break</span>;
@@ -461,13 +461,13 @@
 </span><span id="376" class="l"><a href="#376"> 376: </a>                            <span class="php-quote">'text'</span> =&gt; <span class="php-quote">'Only Triggerable objects'</span>,
 </span><span id="377" class="l"><a href="#377"> 377: </a>                            <span class="php-quote">'id'</span> =&gt; <span class="php-quote">'triggerable'</span>,
 </span><span id="378" class="l"><a href="#378"> 378: </a>                            <span class="php-quote">'desc'</span> =&gt; <span class="php-quote">''</span>,
-</span><span id="379" class="l"><a href="#379"> 379: </a>                            <span class="php-quote">'default'</span> =&gt; <span class="php-keyword1">TRUE</span>
+</span><span id="379" class="l"><a href="#379"> 379: </a>                            <span class="php-quote">'default'</span> =&gt; <span class="php-keyword1">true</span>
 </span><span id="380" class="l"><a href="#380"> 380: </a>                        ),
 </span><span id="381" class="l"><a href="#381"> 381: </a>                        <span class="php-quote">'updateable'</span> =&gt; <span class="php-keyword1">array</span>(
 </span><span id="382" class="l"><a href="#382"> 382: </a>                            <span class="php-quote">'text'</span> =&gt; <span class="php-quote">'Only Updateable objects'</span>,
 </span><span id="383" class="l"><a href="#383"> 383: </a>                            <span class="php-quote">'id'</span> =&gt; <span class="php-quote">'updateable'</span>,
 </span><span id="384" class="l"><a href="#384"> 384: </a>                            <span class="php-quote">'desc'</span> =&gt; <span class="php-quote">''</span>,
-</span><span id="385" class="l"><a href="#385"> 385: </a>                            <span class="php-quote">'default'</span> =&gt; <span class="php-keyword1">TRUE</span>
+</span><span id="385" class="l"><a href="#385"> 385: </a>                            <span class="php-quote">'default'</span> =&gt; <span class="php-keyword1">true</span>
 </span><span id="386" class="l"><a href="#386"> 386: </a>                        )
 </span><span id="387" class="l"><a href="#387"> 387: </a>                    )
 </span><span id="388" class="l"><a href="#388"> 388: </a>                )
@@ -500,7 +500,7 @@
 </span><span id="415" class="l"><a href="#415"> 415: </a>
 </span><span id="416" class="l"><a href="#416"> 416: </a>        );
 </span><span id="417" class="l"><a href="#417"> 417: </a>
-</span><span id="418" class="l"><a href="#418"> 418: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_object</span>( <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>] ) === <span class="php-keyword1">TRUE</span> &amp;&amp; <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>]-&gt;is_authorized() === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="418" class="l"><a href="#418"> 418: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_object</span>( <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>] ) === <span class="php-keyword1">true</span> &amp;&amp; <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>]-&gt;is_authorized() === <span class="php-keyword1">true</span> ) {
 </span><span id="419" class="l"><a href="#419"> 419: </a>            <span class="php-var">$salesforce_settings</span>[<span class="php-quote">'api_version'</span>] = <span class="php-keyword1">array</span>(
 </span><span id="420" class="l"><a href="#420"> 420: </a>                <span class="php-quote">'title'</span> =&gt; <span class="php-quote">'Salesforce API Version'</span>,
 </span><span id="421" class="l"><a href="#421"> 421: </a>                <span class="php-quote">'callback'</span> =&gt; <span class="php-var">$callbacks</span>[<span class="php-quote">'select'</span>],
@@ -834,16 +834,16 @@
 </span><span id="749" class="l"><a href="#749"> 749: </a>        
 </span><span id="750" class="l"><a href="#750"> 750: </a>        <span class="php-var">$notices</span> = <span class="php-keyword1">array</span>(
 </span><span id="751" class="l"><a href="#751"> 751: </a>            <span class="php-quote">'permission'</span> =&gt; <span class="php-keyword1">array</span>(
-</span><span id="752" class="l"><a href="#752"> 752: </a>                <span class="php-quote">'condition'</span> =&gt; <span class="php-var">$this</span>-&gt;check_wordpress_admin_permissions() === <span class="php-keyword1">FALSE</span>,
+</span><span id="752" class="l"><a href="#752"> 752: </a>                <span class="php-quote">'condition'</span> =&gt; <span class="php-var">$this</span>-&gt;check_wordpress_admin_permissions() === <span class="php-keyword1">false</span>,
 </span><span id="753" class="l"><a href="#753"> 753: </a>                <span class="php-quote">'message'</span> =&gt; <span class="php-quote">&quot;Your account does not have permission to edit the Salesforce REST API plugin's settings.&quot;</span>,
 </span><span id="754" class="l"><a href="#754"> 754: </a>                <span class="php-quote">'type'</span> =&gt; <span class="php-quote">'error'</span>,
-</span><span id="755" class="l"><a href="#755"> 755: </a>                <span class="php-quote">'dismissible'</span> =&gt; <span class="php-keyword1">FALSE</span>,
+</span><span id="755" class="l"><a href="#755"> 755: </a>                <span class="php-quote">'dismissible'</span> =&gt; <span class="php-keyword1">false</span>,
 </span><span id="756" class="l"><a href="#756"> 756: </a>            ),
 </span><span id="757" class="l"><a href="#757"> 757: </a>            <span class="php-quote">'fieldmap'</span> =&gt; <span class="php-keyword1">array</span>(
 </span><span id="758" class="l"><a href="#758"> 758: </a>                <span class="php-quote">'condition'</span> =&gt; <span class="php-keyword1">isset</span>( <span class="php-var">$_GET</span>[<span class="php-quote">'transient'</span>] ),
 </span><span id="759" class="l"><a href="#759"> 759: </a>                <span class="php-quote">'message'</span> =&gt; <span class="php-quote">'Errors kept this fieldmap from being saved.'</span>,
 </span><span id="760" class="l"><a href="#760"> 760: </a>                <span class="php-quote">'type'</span> =&gt; <span class="php-quote">'error'</span>,
-</span><span id="761" class="l"><a href="#761"> 761: </a>                <span class="php-quote">'dismissible'</span> =&gt; <span class="php-keyword1">TRUE</span>
+</span><span id="761" class="l"><a href="#761"> 761: </a>                <span class="php-quote">'dismissible'</span> =&gt; <span class="php-keyword1">true</span>
 </span><span id="762" class="l"><a href="#762"> 762: </a>            ),
 </span><span id="763" class="l"><a href="#763"> 763: </a>        );
 </span><span id="764" class="l"><a href="#764"> 764: </a>
@@ -857,7 +857,7 @@
 </span><span id="772" class="l"><a href="#772"> 772: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$value</span>[<span class="php-quote">'dismissible'</span>] ) ) {
 </span><span id="773" class="l"><a href="#773"> 773: </a>                <span class="php-var">$dismissible</span> = <span class="php-var">$value</span>[<span class="php-quote">'dismissible'</span>];
 </span><span id="774" class="l"><a href="#774"> 774: </a>            } <span class="php-keyword1">else</span> {
-</span><span id="775" class="l"><a href="#775"> 775: </a>                <span class="php-var">$dismissible</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="775" class="l"><a href="#775"> 775: </a>                <span class="php-var">$dismissible</span> = <span class="php-keyword1">false</span>;
 </span><span id="776" class="l"><a href="#776"> 776: </a>            }
 </span><span id="777" class="l"><a href="#777"> 777: </a>
 </span><span id="778" class="l"><a href="#778"> 778: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$value</span>[<span class="php-quote">'domain'</span>] ) ) {
@@ -891,10 +891,10 @@
 </span></span><span id="806" class="l"><a href="#806"> 806: </a><span class="php-comment">    * @return array $object_settings
 </span></span><span id="807" class="l"><a href="#807"> 807: </a><span class="php-comment">    */</span>
 </span><span id="808" class="l"><a href="#808"> 808: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> get_salesforce_object_description( <span class="php-var">$data</span> = <span class="php-keyword1">array</span>() ) {
-</span><span id="809" class="l"><a href="#809"> 809: </a>        <span class="php-var">$ajax</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="809" class="l"><a href="#809"> 809: </a>        <span class="php-var">$ajax</span> = <span class="php-keyword1">false</span>;
 </span><span id="810" class="l"><a href="#810"> 810: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$data</span> ) ) {
 </span><span id="811" class="l"><a href="#811"> 811: </a>            <span class="php-var">$data</span> = <span class="php-var">$_POST</span>;
-</span><span id="812" class="l"><a href="#812"> 812: </a>            <span class="php-var">$ajax</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="812" class="l"><a href="#812"> 812: </a>            <span class="php-var">$ajax</span> = <span class="php-keyword1">true</span>;
 </span><span id="813" class="l"><a href="#813"> 813: </a>        }
 </span><span id="814" class="l"><a href="#814"> 814: </a>
 </span><span id="815" class="l"><a href="#815"> 815: </a>        <span class="php-var">$object_description</span> = <span class="php-keyword1">array</span>();
@@ -929,7 +929,7 @@
 </span><span id="844" class="l"><a href="#844"> 844: </a>            }
 </span><span id="845" class="l"><a href="#845"> 845: </a>        }
 </span><span id="846" class="l"><a href="#846"> 846: </a>
-</span><span id="847" class="l"><a href="#847"> 847: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$ajax</span> === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="847" class="l"><a href="#847"> 847: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$ajax</span> === <span class="php-keyword1">true</span> ) {
 </span><span id="848" class="l"><a href="#848"> 848: </a>            wp_send_json_success( <span class="php-var">$object_description</span> );
 </span><span id="849" class="l"><a href="#849"> 849: </a>        } <span class="php-keyword1">else</span> {
 </span><span id="850" class="l"><a href="#850"> 850: </a>            <span class="php-keyword1">return</span> <span class="php-var">$object_description</span>;
@@ -950,13 +950,13 @@
 </span><span id="865" class="l"><a href="#865"> 865: </a>            <span class="php-var">$object</span> = <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>]-&gt;object_describe( esc_attr( <span class="php-var">$data</span>[<span class="php-quote">'salesforce_object'</span>] ) );
 </span><span id="866" class="l"><a href="#866"> 866: </a>            <span class="php-var">$object_fields</span> = <span class="php-keyword1">array</span>();
 </span><span id="867" class="l"><a href="#867"> 867: </a>            <span class="php-var">$type</span> = <span class="php-keyword1">isset</span>( <span class="php-var">$data</span>[<span class="php-quote">'type'</span>] ) ? esc_attr( <span class="php-var">$data</span>[<span class="php-quote">'type'</span>] ) : <span class="php-quote">''</span>;
-</span><span id="868" class="l"><a href="#868"> 868: </a>            <span class="php-var">$include_record_types</span> = <span class="php-keyword1">isset</span>( <span class="php-var">$data</span>[<span class="php-quote">'include_record_types'</span>] ) ? esc_attr( <span class="php-var">$data</span>[<span class="php-quote">'include_record_types'</span>] ) : <span class="php-keyword1">FALSE</span>;
+</span><span id="868" class="l"><a href="#868"> 868: </a>            <span class="php-var">$include_record_types</span> = <span class="php-keyword1">isset</span>( <span class="php-var">$data</span>[<span class="php-quote">'include_record_types'</span>] ) ? esc_attr( <span class="php-var">$data</span>[<span class="php-quote">'include_record_types'</span>] ) : <span class="php-keyword1">false</span>;
 </span><span id="869" class="l"><a href="#869"> 869: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$object</span>[<span class="php-quote">'data'</span>][<span class="php-quote">'fields'</span>] <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span>) {
 </span><span id="870" class="l"><a href="#870"> 870: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$type</span> === <span class="php-quote">''</span> || <span class="php-var">$type</span> === <span class="php-var">$value</span>[<span class="php-quote">'type'</span>] ) {
 </span><span id="871" class="l"><a href="#871"> 871: </a>                    <span class="php-var">$object_fields</span>[<span class="php-var">$key</span>] = <span class="php-var">$value</span>;
 </span><span id="872" class="l"><a href="#872"> 872: </a>                }
 </span><span id="873" class="l"><a href="#873"> 873: </a>            }
-</span><span id="874" class="l"><a href="#874"> 874: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$include_record_types</span> === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="874" class="l"><a href="#874"> 874: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$include_record_types</span> === <span class="php-keyword1">true</span> ) {
 </span><span id="875" class="l"><a href="#875"> 875: </a>                <span class="php-var">$object_record_types</span> = <span class="php-keyword1">array</span>();
 </span><span id="876" class="l"><a href="#876"> 876: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$object</span>[<span class="php-quote">'data'</span>][<span class="php-quote">'recordTypeInfos'</span>] ) &amp;&amp; <span class="php-keyword2">count</span>( <span class="php-var">$object</span>[<span class="php-quote">'data'</span>][<span class="php-quote">'recordTypeInfos'</span>] ) &gt; <span class="php-num">1</span> ) {
 </span><span id="877" class="l"><a href="#877"> 877: </a>                    <span class="php-keyword1">foreach</span> ( <span class="php-var">$object</span>[<span class="php-quote">'data'</span>][<span class="php-quote">'recordTypeInfos'</span>] <span class="php-keyword1">as</span> <span class="php-var">$type</span> ) {
@@ -978,15 +978,15 @@
 </span></span><span id="893" class="l"><a href="#893"> 893: </a><span class="php-comment">    * @return array $object_fields
 </span></span><span id="894" class="l"><a href="#894"> 894: </a><span class="php-comment">    */</span>
 </span><span id="895" class="l"><a href="#895"> 895: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> get_wordpress_object_fields( <span class="php-var">$wordpress_object</span> = <span class="php-quote">''</span> ) {
-</span><span id="896" class="l"><a href="#896"> 896: </a>        <span class="php-var">$ajax</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="896" class="l"><a href="#896"> 896: </a>        <span class="php-var">$ajax</span> = <span class="php-keyword1">false</span>;
 </span><span id="897" class="l"><a href="#897"> 897: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$wordpress_object</span> ) ) {
 </span><span id="898" class="l"><a href="#898"> 898: </a>            <span class="php-var">$wordpress_object</span> = <span class="php-var">$_POST</span>[<span class="php-quote">'wordpress_object'</span>];
-</span><span id="899" class="l"><a href="#899"> 899: </a>            <span class="php-var">$ajax</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="899" class="l"><a href="#899"> 899: </a>            <span class="php-var">$ajax</span> = <span class="php-keyword1">true</span>;
 </span><span id="900" class="l"><a href="#900"> 900: </a>        }
 </span><span id="901" class="l"><a href="#901"> 901: </a>        
 </span><span id="902" class="l"><a href="#902"> 902: </a>        <span class="php-var">$object_fields</span> = <span class="php-var">$this</span>-&gt;wordpress-&gt;get_wordpress_object_fields( <span class="php-var">$wordpress_object</span> );
 </span><span id="903" class="l"><a href="#903"> 903: </a>        
-</span><span id="904" class="l"><a href="#904"> 904: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$ajax</span> === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="904" class="l"><a href="#904"> 904: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$ajax</span> === <span class="php-keyword1">true</span> ) {
 </span><span id="905" class="l"><a href="#905"> 905: </a>            wp_send_json_success( <span class="php-var">$object_fields</span> );
 </span><span id="906" class="l"><a href="#906"> 906: </a>        } <span class="php-keyword1">else</span> {
 </span><span id="907" class="l"><a href="#907"> 907: </a>            <span class="php-keyword1">return</span> <span class="php-var">$object_fields</span>;
@@ -1091,13 +1091,13 @@
 </span></span><span id="1006" class="l"><a href="#1006">1006: </a><span class="php-comment">    *
 </span></span><span id="1007" class="l"><a href="#1007">1007: </a><span class="php-comment">    */</span>
 </span><span id="1008" class="l"><a href="#1008">1008: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> prepare_fieldmap_data() {
-</span><span id="1009" class="l"><a href="#1009">1009: </a>        <span class="php-var">$error</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="1009" class="l"><a href="#1009">1009: </a>        <span class="php-var">$error</span> = <span class="php-keyword1">false</span>;
 </span><span id="1010" class="l"><a href="#1010">1010: </a>        <span class="php-var">$cachekey</span> = <span class="php-keyword2">md5</span>( <span class="php-keyword2">json_encode</span>( <span class="php-var">$_POST</span> ) );
 </span><span id="1011" class="l"><a href="#1011">1011: </a>        
 </span><span id="1012" class="l"><a href="#1012">1012: </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword1">isset</span>( <span class="php-var">$_POST</span>[<span class="php-quote">'label'</span>] ) || !<span class="php-keyword1">isset</span>( <span class="php-var">$_POST</span>[<span class="php-quote">'salesforce_object'</span>] ) || !<span class="php-keyword1">isset</span>( <span class="php-var">$_POST</span>[<span class="php-quote">'wordpress_object'</span>] ) ) {
-</span><span id="1013" class="l"><a href="#1013">1013: </a>            <span class="php-var">$error</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="1013" class="l"><a href="#1013">1013: </a>            <span class="php-var">$error</span> = <span class="php-keyword1">true</span>;
 </span><span id="1014" class="l"><a href="#1014">1014: </a>        }
-</span><span id="1015" class="l"><a href="#1015">1015: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$error</span> === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="1015" class="l"><a href="#1015">1015: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$error</span> === <span class="php-keyword1">true</span> ) {
 </span><span id="1016" class="l"><a href="#1016">1016: </a>            set_transient( <span class="php-var">$cachekey</span>, <span class="php-var">$_POST</span>, <span class="php-num">0</span> );
 </span><span id="1017" class="l"><a href="#1017">1017: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$cachekey</span> !== <span class="php-quote">''</span> ) {
 </span><span id="1018" class="l"><a href="#1018">1018: </a>                <span class="php-var">$url</span> = esc_url_raw( <span class="php-var">$_POST</span>[<span class="php-quote">'redirect_url_error'</span>] ) . <span class="php-quote">'&amp;transient='</span> . <span class="php-var">$cachekey</span>;
@@ -1114,7 +1114,7 @@
 </span><span id="1029" class="l"><a href="#1029">1029: </a>                <span class="php-var">$id</span> = esc_attr( <span class="php-var">$_POST</span>[<span class="php-quote">'id'</span>] );
 </span><span id="1030" class="l"><a href="#1030">1030: </a>                <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;update_fieldmap( <span class="php-var">$_POST</span>, <span class="php-var">$wordpress_fields</span>, <span class="php-var">$salesforce_fields</span>, <span class="php-var">$id</span> );
 </span><span id="1031" class="l"><a href="#1031">1031: </a>            }
-</span><span id="1032" class="l"><a href="#1032">1032: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$result</span> === <span class="php-keyword1">FALSE</span> ) { <span class="php-comment">// if the database didn't save, it's still an error</span>
+</span><span id="1032" class="l"><a href="#1032">1032: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$result</span> === <span class="php-keyword1">false</span> ) { <span class="php-comment">// if the database didn't save, it's still an error</span>
 </span><span id="1033" class="l"><a href="#1033">1033: </a>                set_transient( <span class="php-var">$cachekey</span>, <span class="php-var">$_POST</span>, <span class="php-num">0</span> );
 </span><span id="1034" class="l"><a href="#1034">1034: </a>                <span class="php-keyword1">if</span> ( <span class="php-var">$cachekey</span> !== <span class="php-quote">''</span> ) {
 </span><span id="1035" class="l"><a href="#1035">1035: </a>                    <span class="php-var">$url</span> = esc_url_raw( <span class="php-var">$_POST</span>[<span class="php-quote">'redirect_url_error'</span>] ) . <span class="php-quote">'&amp;transient='</span> . <span class="php-var">$cachekey</span>;
@@ -1141,7 +1141,7 @@
 </span><span id="1056" class="l"><a href="#1056">1056: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> delete_fieldmap() {
 </span><span id="1057" class="l"><a href="#1057">1057: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$_POST</span>[<span class="php-quote">'id'</span>] ) {
 </span><span id="1058" class="l"><a href="#1058">1058: </a>            <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;delete_fieldmap( <span class="php-var">$_POST</span>[<span class="php-quote">'id'</span>] );
-</span><span id="1059" class="l"><a href="#1059">1059: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$result</span> === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="1059" class="l"><a href="#1059">1059: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$result</span> === <span class="php-keyword1">true</span> ) {
 </span><span id="1060" class="l"><a href="#1060">1060: </a>                <span class="php-var">$url</span> = esc_url_raw( <span class="php-var">$_POST</span>[<span class="php-quote">'redirect_url_success'</span>] );
 </span><span id="1061" class="l"><a href="#1061">1061: </a>            } <span class="php-keyword1">else</span> {
 </span><span id="1062" class="l"><a href="#1062">1062: </a>                <span class="php-var">$url</span> = esc_url_raw( <span class="php-var">$_POST</span>[<span class="php-quote">'redirect_url_error'</span>] ) . <span class="php-quote">'&amp;id='</span> . <span class="php-var">$_POST</span>[<span class="php-quote">'id'</span>];
@@ -1208,7 +1208,7 @@
 </span><span id="1123" class="l"><a href="#1123">1123: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$options</span> ) &amp;&amp; <span class="php-keyword2">in_array</span>( <span class="php-var">$key</span>, <span class="php-var">$options</span> ) ) {
 </span><span id="1124" class="l"><a href="#1124">1124: </a>                <span class="php-var">$checked</span> = <span class="php-quote">'checked'</span>;
 </span><span id="1125" class="l"><a href="#1125">1125: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$options</span> ) &amp;&amp; <span class="php-keyword1">empty</span>( <span class="php-var">$options</span> ) ) {
-</span><span id="1126" class="l"><a href="#1126">1126: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$value</span>[<span class="php-quote">'default'</span>] ) &amp;&amp; <span class="php-var">$value</span>[<span class="php-quote">'default'</span>] === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="1126" class="l"><a href="#1126">1126: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$value</span>[<span class="php-quote">'default'</span>] ) &amp;&amp; <span class="php-var">$value</span>[<span class="php-quote">'default'</span>] === <span class="php-keyword1">true</span> ) {
 </span><span id="1127" class="l"><a href="#1127">1127: </a>                    <span class="php-var">$checked</span> = <span class="php-quote">'checked'</span>;
 </span><span id="1128" class="l"><a href="#1128">1128: </a>                }
 </span><span id="1129" class="l"><a href="#1129">1129: </a>            }
@@ -1301,18 +1301,18 @@
 </span><span id="1216" class="l"><a href="#1216">1216: </a>        <span class="php-var">$versions</span> = <span class="php-var">$sfapi</span>-&gt;get_api_versions();
 </span><span id="1217" class="l"><a href="#1217">1217: </a>
 </span><span id="1218" class="l"><a href="#1218">1218: </a>        <span class="php-comment">// format this array into html so users can see the versions</span>
-</span><span id="1219" class="l"><a href="#1219">1219: </a>        <span class="php-var">$versions_is_cached</span> = <span class="php-var">$versions</span>[<span class="php-quote">'cached'</span>] === <span class="php-keyword1">TRUE</span> ? <span class="php-quote">''</span> : <span class="php-quote">'not '</span>;
-</span><span id="1220" class="l"><a href="#1220">1220: </a>        <span class="php-var">$versions_from_cache</span> = <span class="php-var">$versions</span>[<span class="php-quote">'from_cache'</span>] === <span class="php-keyword1">TRUE</span> ? <span class="php-quote">'were'</span> : <span class="php-quote">'were not'</span>;
-</span><span id="1221" class="l"><a href="#1221">1221: </a>        <span class="php-var">$versions_is_redo</span> = <span class="php-var">$versions</span>[<span class="php-quote">'is_redo'</span>] === <span class="php-keyword1">TRUE</span> ? <span class="php-quote">''</span> : <span class="php-quote">'not '</span>;
-</span><span id="1222" class="l"><a href="#1222">1222: </a>        <span class="php-var">$versions_andorbut</span> = <span class="php-var">$versions</span>[<span class="php-quote">'from_cache'</span>] === <span class="php-keyword1">TRUE</span> ? <span class="php-quote">'and'</span> : <span class="php-quote">'but'</span>;
+</span><span id="1219" class="l"><a href="#1219">1219: </a>        <span class="php-var">$versions_is_cached</span> = <span class="php-var">$versions</span>[<span class="php-quote">'cached'</span>] === <span class="php-keyword1">true</span> ? <span class="php-quote">''</span> : <span class="php-quote">'not '</span>;
+</span><span id="1220" class="l"><a href="#1220">1220: </a>        <span class="php-var">$versions_from_cache</span> = <span class="php-var">$versions</span>[<span class="php-quote">'from_cache'</span>] === <span class="php-keyword1">true</span> ? <span class="php-quote">'were'</span> : <span class="php-quote">'were not'</span>;
+</span><span id="1221" class="l"><a href="#1221">1221: </a>        <span class="php-var">$versions_is_redo</span> = <span class="php-var">$versions</span>[<span class="php-quote">'is_redo'</span>] === <span class="php-keyword1">true</span> ? <span class="php-quote">''</span> : <span class="php-quote">'not '</span>;
+</span><span id="1222" class="l"><a href="#1222">1222: </a>        <span class="php-var">$versions_andorbut</span> = <span class="php-var">$versions</span>[<span class="php-quote">'from_cache'</span>] === <span class="php-keyword1">true</span> ? <span class="php-quote">'and'</span> : <span class="php-quote">'but'</span>;
 </span><span id="1223" class="l"><a href="#1223">1223: </a>
 </span><span id="1224" class="l"><a href="#1224">1224: </a>        <span class="php-var">$contacts</span> = <span class="php-var">$sfapi</span>-&gt;query(<span class="php-quote">'SELECT Name, Id from Contact LIMIT 100'</span>);
 </span><span id="1225" class="l"><a href="#1225">1225: </a>
 </span><span id="1226" class="l"><a href="#1226">1226: </a>        <span class="php-comment">// format this array into html so users can see the contacts</span>
-</span><span id="1227" class="l"><a href="#1227">1227: </a>        <span class="php-var">$contacts_is_cached</span> = <span class="php-var">$contacts</span>[<span class="php-quote">'cached'</span>] === <span class="php-keyword1">TRUE</span> ? <span class="php-quote">''</span> : <span class="php-quote">'not '</span>;
-</span><span id="1228" class="l"><a href="#1228">1228: </a>        <span class="php-var">$contacts_from_cache</span> = <span class="php-var">$contacts</span>[<span class="php-quote">'from_cache'</span>] === <span class="php-keyword1">TRUE</span> ? <span class="php-quote">'were'</span> : <span class="php-quote">'were not'</span>;
-</span><span id="1229" class="l"><a href="#1229">1229: </a>        <span class="php-var">$contacts_andorbut</span> = <span class="php-var">$contacts</span>[<span class="php-quote">'from_cache'</span>] === <span class="php-keyword1">TRUE</span> ? <span class="php-quote">'and'</span> : <span class="php-quote">'but'</span>;
-</span><span id="1230" class="l"><a href="#1230">1230: </a>        <span class="php-var">$contacts_is_redo</span> = <span class="php-var">$contacts</span>[<span class="php-quote">'is_redo'</span>] === <span class="php-keyword1">TRUE</span> ? <span class="php-quote">''</span> : <span class="php-quote">'not '</span>;
+</span><span id="1227" class="l"><a href="#1227">1227: </a>        <span class="php-var">$contacts_is_cached</span> = <span class="php-var">$contacts</span>[<span class="php-quote">'cached'</span>] === <span class="php-keyword1">true</span> ? <span class="php-quote">''</span> : <span class="php-quote">'not '</span>;
+</span><span id="1228" class="l"><a href="#1228">1228: </a>        <span class="php-var">$contacts_from_cache</span> = <span class="php-var">$contacts</span>[<span class="php-quote">'from_cache'</span>] === <span class="php-keyword1">true</span> ? <span class="php-quote">'were'</span> : <span class="php-quote">'were not'</span>;
+</span><span id="1229" class="l"><a href="#1229">1229: </a>        <span class="php-var">$contacts_andorbut</span> = <span class="php-var">$contacts</span>[<span class="php-quote">'from_cache'</span>] === <span class="php-keyword1">true</span> ? <span class="php-quote">'and'</span> : <span class="php-quote">'but'</span>;
+</span><span id="1230" class="l"><a href="#1230">1230: </a>        <span class="php-var">$contacts_is_redo</span> = <span class="php-var">$contacts</span>[<span class="php-quote">'is_redo'</span>] === <span class="php-keyword1">true</span> ? <span class="php-quote">''</span> : <span class="php-quote">'not '</span>;
 </span><span id="1231" class="l"><a href="#1231">1231: </a>
 </span><span id="1232" class="l"><a href="#1232">1232: </a>        <span class="php-keyword1">require_once</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'/../templates/admin/demo.php'</span> );
 </span><span id="1233" class="l"><a href="#1233">1233: </a>
@@ -1345,9 +1345,9 @@
 </span><span id="1260" class="l"><a href="#1260">1260: </a>        <span class="php-comment">// point is: to administer this plugin, you need this capability</span>
 </span><span id="1261" class="l"><a href="#1261">1261: </a>
 </span><span id="1262" class="l"><a href="#1262">1262: </a>        <span class="php-keyword1">if</span> ( ! current_user_can( <span class="php-quote">'configure_salesforce'</span> ) ) {
-</span><span id="1263" class="l"><a href="#1263">1263: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">FALSE</span>;
+</span><span id="1263" class="l"><a href="#1263">1263: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
 </span><span id="1264" class="l"><a href="#1264">1264: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1265" class="l"><a href="#1265">1265: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">TRUE</span>;
+</span><span id="1265" class="l"><a href="#1265">1265: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">true</span>;
 </span><span id="1266" class="l"><a href="#1266">1266: </a>        }
 </span><span id="1267" class="l"><a href="#1267">1267: </a>
 </span><span id="1268" class="l"><a href="#1268">1268: </a>    }
@@ -1358,7 +1358,7 @@
 </span></span><span id="1273" class="l"><a href="#1273">1273: </a><span class="php-comment">    *
 </span></span><span id="1274" class="l"><a href="#1274">1274: </a><span class="php-comment">    */</span>
 </span><span id="1275" class="l"><a href="#1275">1275: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> show_salesforce_user_fields( <span class="php-var">$user</span> ) {
-</span><span id="1276" class="l"><a href="#1276">1276: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;check_wordpress_admin_permissions() === <span class="php-keyword1">TRUE</span> ) {
+</span><span id="1276" class="l"><a href="#1276">1276: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;check_wordpress_admin_permissions() === <span class="php-keyword1">true</span> ) {
 </span><span id="1277" class="l"><a href="#1277">1277: </a>            <span class="php-var">$mapping</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;load_by_wordpress( <span class="php-quote">'user'</span>, <span class="php-var">$user</span>-&gt;ID );
 </span><span id="1278" class="l"><a href="#1278">1278: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$mapping</span>[<span class="php-quote">'id'</span>] ) &amp;&amp; !<span class="php-keyword1">isset</span>(<span class="php-var">$_GET</span>[<span class="php-quote">'edit_salesforce_mapping'</span>]) ) {
 </span><span id="1279" class="l"><a href="#1279">1279: </a>                <span class="php-keyword1">require_once</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'/../templates/admin/user-profile-salesforce.php'</span> );

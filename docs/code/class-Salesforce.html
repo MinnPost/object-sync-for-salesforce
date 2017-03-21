@@ -240,7 +240,7 @@ case-insensitive ID. If input is not 15-characters, return input unaltered.</p>
 
 				<h4>Returns</h4>
 				<div class="list">
-					string<br><p>sObject name, e.g. "Account", "Contact", "my__Custom_Object__c" or FALSE
+					string<br><p>sObject name, e.g. "Account", "Contact", "my__Custom_Object__c" or false
   if no match could be found.</p>
 				</div>
 
@@ -805,7 +805,7 @@ but it could be a performance boost to do it at scheduleable intervals instead.<
 
 				<h4>Returns</h4>
 				<div class="list">
-					array<br>Returns FALSE if no identity has been stored.
+					array<br>Returns false if no identity has been stored.
 				</div>
 
 
@@ -891,7 +891,7 @@ but it could be a performance boost to do it at scheduleable intervals instead.<
 
 		<td class="name"><div>
 		<a class="anchor" href="#_objects">#</a>
-		<code><a href="source-class-Salesforce.html#636-671" title="Go to source code">objects</a>( <span>array <var>$conditions</var> = <span class="php-keyword1">array</span>( <span class="php-quote">'updateable'</span> =&gt; <span class="php-keyword1">TRUE</span>, <span class="php-quote">'triggerable'</span> =&gt; <span class="php-keyword1">TRUE</span> )</span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
+		<code><a href="source-class-Salesforce.html#636-671" title="Go to source code">objects</a>( <span>array <var>$conditions</var> = <span class="php-keyword1">array</span>( <span class="php-quote">'updateable'</span> =&gt; <span class="php-keyword1">true</span>, <span class="php-quote">'triggerable'</span> =&gt; <span class="php-keyword1">true</span> )</span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Available objects and their metadata for your organization's data.</p>
@@ -938,7 +938,7 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_query">#</a>
-		<code><a href="source-class-Salesforce.html#673-706" title="Go to source code">query</a>( <span>string <var>$query</var></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span>, <span>boolean <var>$all</var> = <span class="php-keyword1">FALSE</span></span>, <span>boolean <var>$explain</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
+		<code><a href="source-class-Salesforce.html#673-706" title="Go to source code">query</a>( <span>string <var>$query</var></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span>, <span>boolean <var>$all</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$explain</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Use SOQL to get objects based on query string.</p>
@@ -985,7 +985,7 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_describe">#</a>
-		<code><a href="source-class-Salesforce.html#708-740" title="Go to source code">object_describe</a>( <span>string <var>$name</var></span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
+		<code><a href="source-class-Salesforce.html#708-740" title="Go to source code">object_describe</a>( <span>string <var>$name</var></span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Retrieve all the metadata for an object.</p>
@@ -1283,7 +1283,7 @@ is_redo:</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_run_analytics_report">#</a>
-		<code><a href="source-class-Salesforce.html#884-983" title="Go to source code">run_analytics_report</a>( <span>string <var>$id</var></span>, <span>boolean <var>$async</var> = <span class="php-keyword1">TRUE</span></span>, <span>array <var>$clear_cache</var> = <span class="php-keyword1">False</span></span>, <span>string <var>$params</var> = <span class="php-keyword1">array</span>()</span>, <span> <var>$method</var> = <span class="php-quote">'GET'</span></span>, <span> <var>$report_cache_expiration</var> = <span class="php-quote">''</span></span>, <span> <var>$cache_instance</var> = <span class="php-keyword1">TRUE</span></span>, <span> <var>$instance_cache_expiration</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Salesforce.html#884-983" title="Go to source code">run_analytics_report</a>( <span>string <var>$id</var></span>, <span>boolean <var>$async</var> = <span class="php-keyword1">true</span></span>, <span>array <var>$clear_cache</var> = <span class="php-keyword1">False</span></span>, <span>string <var>$params</var> = <span class="php-keyword1">array</span>()</span>, <span> <var>$method</var> = <span class="php-quote">'GET'</span></span>, <span> <var>$report_cache_expiration</var> = <span class="php-quote">''</span></span>, <span> <var>$cache_instance</var> = <span class="php-keyword1">true</span></span>, <span> <var>$instance_cache_expiration</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Run a specific Analytics report</p>
