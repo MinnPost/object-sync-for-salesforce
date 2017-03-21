@@ -186,7 +186,7 @@ In the example above, the returned `$result` needs to be an array.
 ```
 $result = array(
     'data' => array(
-        'success' => $success // the returned $success is an object of the correct type, or a FALSE
+        'success' => $success // the returned $success is an object of the correct type, or a false
     ),
     'errors' => $errors
 );

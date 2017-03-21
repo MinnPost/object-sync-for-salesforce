@@ -71,9 +71,9 @@ class Wordpress_Salesforce_Activate {
             created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
             object_updated datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
             last_sync datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-            last_sync_action varchar(128) DEFAULT NULL,
+            last_sync_action varchar(128) DEFAULT null,
             last_sync_status tinyint(1) NOT NULL DEFAULT '0',
-            last_sync_message varchar(255) DEFAULT NULL,
+            last_sync_message varchar(255) DEFAULT null,
             PRIMARY KEY  (id),
             UNIQUE KEY salesforce (salesforce_id),
             UNIQUE KEY salesforce_wordpress (wordpress_object,wordpress_id),
@@ -114,10 +114,10 @@ class Wordpress_Salesforce_Activate {
         $role->add_cap( 'configure_salesforce' );
 
         // hook that allows other roles to configure the plugin as well
-        $roles = apply_filters( 'salesforce_rest_api_roles_configure_salesforce', NULL );
+        $roles = apply_filters( 'salesforce_rest_api_roles_configure_salesforce', null );
 
         // for each role that we have, give it the configure salesforce capability
-        if ( NULL !== $roles ) {
+        if ( null !== $roles ) {
             foreach ( $roles as $role ) {
                 $role = get_role( $role );
                 $role->add_cap( 'configure_salesforce' );

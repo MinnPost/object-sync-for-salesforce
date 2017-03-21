@@ -497,7 +497,7 @@ class Wordpress {
     *
     * part of CRUD for WordPress objects
     */
-    public function object_upsert( $name, $key, $value, $methods = array(), $params, $push_drafts = FALSE ) {
+    public function object_upsert( $name, $key, $value, $methods = array(), $params, $push_drafts = false ) {
 
         $structure = $this->get_wordpress_table_structure( $name );
         $id_field = $structure['id_field'];
@@ -676,7 +676,7 @@ class Wordpress {
             default:
 
                 // developers can use this hook to delete objects with their own methods
-                // the returned $success is an object of the correct type, or a FALSE
+                // the returned $success is an object of the correct type, or a false
                 // use hook like: add_filter( 'salesforce_rest_api_delete_custom_wordpress_item', add_object, 10, 1 );
                 // the one param is: array( 'id' => id, 'name' => objecttype )
 
@@ -728,12 +728,12 @@ class Wordpress {
         }
 
         // this is a new user
-        if ( NULL == username_exists( $username ) ) {
+        if ( null == username_exists( $username ) ) {
 
             // Create the user
             // wordpress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email
             $params['user_pass'] = array(
-                'value' => wp_generate_password( 12, FALSE ),
+                'value' => wp_generate_password( 12, false ),
                 'method_modify' => 'wp_insert_user',
                 'method_read' => 'get_user_by'
             );
@@ -748,16 +748,16 @@ class Wordpress {
             $user_id = wp_insert_user( $content );
 
             if ( is_wp_error( $user_id ) ) {
-                $success = FALSE;
+                $success = false;
                 $errors = $user_id;
             } else {
-                $success = TRUE;
+                $success = true;
                 $errors = array();
                 foreach ( $params as $key => $value ) {
                     $method = $value['method_modify'];
                     $meta_id = $method( $user_id, $key, $value['value'] );
-                    if ( $meta_id === FALSE ) {
-                        $success = FALSE;
+                    if ( $meta_id === false ) {
+                        $success = false;
                         $errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                     }
                 }
@@ -767,7 +767,7 @@ class Wordpress {
 
                 // send notification of new user
                 // todo: figure out what permissions out to get notifications for this and make sure it works the right way
-                wp_new_user_notification( $user_id, NULL, 'admin user' );
+                wp_new_user_notification( $user_id, null, 'admin user' );
 
             }
 
@@ -776,10 +776,10 @@ class Wordpress {
         }
 
         if ( is_wp_error( $user_id ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $user_id;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
         }
 
@@ -810,7 +810,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = FALSE ) {
+    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false ) {
 
         // if the key is user_email, we need to make it just email because that is how the wordpress method reads it
         $method = $methods['method_match'];
@@ -866,7 +866,7 @@ class Wordpress {
             }
 
             // user does not exist after more checking. we want to create it
-            if ( NULL === username_exists( $username ) ) {
+            if ( null === username_exists( $username ) ) {
                 $result = $this->user_create( $params );
                 return $result;
             } else {
@@ -928,16 +928,16 @@ class Wordpress {
         $user_id = wp_update_user( $content );
 
         if ( is_wp_error( $user_id ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $user_id;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
             foreach ( $params as $key => $value ) {
                 $method = $value['method_modify'];
                 $meta_id = $method( $user_id, $key, $value['value'] );
-                if ( $meta_id === FALSE ) {
-                    $success = FALSE;
+                if ( $meta_id === false ) {
+                    $success = false;
                     $errors[] = array( 'key' => $key, 'value' => $value );
                 }
             }
@@ -958,13 +958,13 @@ class Wordpress {
     *   User ID
     * @param int $reassign
     *   If we should reassign any posts to other users
-    *   We don't change this from NULL anywhere in this plugin
+    *   We don't change this from null anywhere in this plugin
     *
     * @return boolean
     *   true if successful
     *
     */
-    private function user_delete( $id, $reassign = NULL ) {
+    private function user_delete( $id, $reassign = null ) {
         // according to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error
         include_once( './wp-admin/includes/user.php' );
         $result = wp_delete_user( $id, $reassign );
@@ -1003,10 +1003,10 @@ class Wordpress {
         $post_id = wp_insert_post( $content );
 
         if ( is_wp_error( $post_id ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $post_id;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
             // if it's a custom post type, fix the methods
             if ( isset( $params['RecordTypeId']['value'] ) ) {
@@ -1017,8 +1017,8 @@ class Wordpress {
                 foreach ( $params as $key => $value ) {
                     $method = $value['method_modify'];
                     $meta_id = $method( $post_id, $key, $value['value'] );
-                    if ( $meta_id === FALSE ) {
-                        $success = FALSE;
+                    if ( $meta_id === false ) {
+                        $success = false;
                         $errors[] = array( 'key' => $key, 'value' => $value );
                     }
                 }
@@ -1030,10 +1030,10 @@ class Wordpress {
         }
 
         if ( is_wp_error( $post_id ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $post_id;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
         }
 
@@ -1068,7 +1068,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = FALSE, $post_type = 'post' ) {
+    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $post_type = 'post' ) {
 
         $method = $methods['method_match'];
 
@@ -1089,7 +1089,7 @@ class Wordpress {
             }
             $args['post_type'] = $post_type;
             $post_statuses = array( 'publish' );
-            if ( $push_drafts === TRUE ) {
+            if ( $push_drafts === true ) {
                 $post_statuses[] = 'draft';
             }
             $args['post_status'] = $post_statuses;
@@ -1198,10 +1198,10 @@ class Wordpress {
         $post_id = wp_update_post( $content );
 
         if ( is_wp_error( $post_id ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $post_id;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
             // if it's a custom post type, fix the methods
             if ( isset( $params['RecordTypeId']['value'] ) ) {
@@ -1212,8 +1212,8 @@ class Wordpress {
                 foreach ( $params as $key => $value ) {
                     $method = $value['method_modify'];
                     $meta_id = $method( $post_id, $key, $value['value'] );
-                    if ( $meta_id === FALSE ) {
-                        $success = FALSE;
+                    if ( $meta_id === false ) {
+                        $success = false;
                         $errors[] = array( 'key' => $key, 'value' => $value );
                     }
                 }
@@ -1235,13 +1235,13 @@ class Wordpress {
     *   Post ID
     * @param bool $force_delete
     *   If we should bypass the trash
-    *   We don't change this from FALSE anywhere in this plugin
+    *   We don't change this from false anywhere in this plugin
     *
     * @return mixed
     *   post object if successful, false if failed
     *
     */
-    private function post_delete( $id, $force_delete = FALSE ) {
+    private function post_delete( $id, $force_delete = false ) {
         $result = wp_delete_post( $id, $force_delete );
         return $result;
     }
@@ -1274,7 +1274,7 @@ class Wordpress {
         if ( isset( $params['filename']['value'] ) ) {
             $filename = $params['filename']['value'];
         } else {
-            $filename = FALSE;
+            $filename = false;
         }
 
         if ( isset( $params['parent']['value'] ) ) {
@@ -1286,13 +1286,13 @@ class Wordpress {
         $attachment_id = wp_insert_attachment( $content, $filename, $parent );
 
         if ( is_wp_error( $attachment_id ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $attachment_id;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
 
-            if ( $filename !== FALSE ) {
+            if ( $filename !== false ) {
                 // according to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file
                 require_once( ABSPATH . 'wp-admin/includes/image.php' );
                 // generate metadata for the attachment
@@ -1461,7 +1461,7 @@ class Wordpress {
         if ( isset( $params['filename']['value'] ) ) {
             $filename = $params['filename']['value'];
         } else {
-            $filename = FALSE;
+            $filename = false;
         }
 
         if ( isset( $params['parent']['value'] ) ) {
@@ -1473,14 +1473,14 @@ class Wordpress {
         $attachment_id = wp_insert_attachment( $content, $filename, $parent );
 
         if ( is_wp_error( $attachment_id ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $attachment_id;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
 
             
-            if ( $filename !== FALSE ) {
+            if ( $filename !== false ) {
                 // according to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file
                 require_once( ABSPATH . 'wp-admin/includes/image.php' );
                 // generate metadata for the attachment
@@ -1503,8 +1503,8 @@ class Wordpress {
 
             $meta_updated = wp_update_attachment_metadata( $attachment_id, $attach_data );
 
-            if ( $meta_updated === FALSE ) {
-                $success = FALSE;
+            if ( $meta_updated === false ) {
+                $success = false;
                 $errors[] = array( 'key' => $key, 'value' => $value );
             }
 
@@ -1528,13 +1528,13 @@ class Wordpress {
     *   Attachment ID
     * @param bool $force_delete
     *   If we should bypass the trash
-    *   We don't change this from FALSE anywhere in this plugin
+    *   We don't change this from false anywhere in this plugin
     *
     * @return mixed
     *   attachment object if successful, false if failed
     *
     */
-    private function attachment_delete( $id, $force_delete = FALSE ) {
+    private function attachment_delete( $id, $force_delete = false ) {
         $result = wp_delete_attachment( $id, $force_delete );
         return $result;
     }
@@ -1576,17 +1576,17 @@ class Wordpress {
         }
 
         if ( is_wp_error( $term ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $term;
         } else {
             $term_id = $term["$id_field"];
-            $success = TRUE;
+            $success = true;
             $errors = array();
             foreach ( $params as $key => $value ) {
                 $method = $value['method_modify'];
                 $meta_id = $method( $term_id, $key, $value['value'] );
-                if ( $meta_id === FALSE ) {
-                    $success = FALSE;
+                if ( $meta_id === false ) {
+                    $success = false;
                     $errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
@@ -1597,10 +1597,10 @@ class Wordpress {
         }
 
         if ( is_wp_error( $term ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $term;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
         }
 
@@ -1633,7 +1633,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $push_drafts = FALSE ) {
+    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $push_drafts = false ) {
         if ( $taxonomy === 'tag' ) {
             $taxonomy = 'post_tag';
         }
@@ -1728,17 +1728,17 @@ class Wordpress {
         $term = wp_update_term( $term_id, $taxonomy, $args );
 
         if ( is_wp_error( $term ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $term;
         } else {
             $term_id = $term["$id_field"];
-            $success = TRUE;
+            $success = true;
             $errors = array();
             foreach ( $params as $key => $value ) {
                 $method = $value['method_modify'];
                 $meta_id = $method( $term_id, $key, $value['value'] );
-                if ( $meta_id === FALSE ) {
-                    $success = FALSE;
+                if ( $meta_id === false ) {
+                    $success = false;
                     $errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
@@ -1749,10 +1749,10 @@ class Wordpress {
         }
 
         if ( is_wp_error( $term ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $term;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
         }
 
@@ -1825,16 +1825,16 @@ class Wordpress {
         $comment_id = wp_new_comment( $content );
 
         if ( is_wp_error( $comment_id ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $comment_id;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
             foreach ( $params as $key => $value ) {
                 $method = $value['method_modify'];
                 $meta_id = $method( $comment_id, $key, $value['value'] );
-                if ( $meta_id === FALSE ) {
-                    $success = FALSE;
+                if ( $meta_id === false ) {
+                    $success = false;
                     $errors[] = array( 'message' => __( 'Tried to add meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
@@ -1845,10 +1845,10 @@ class Wordpress {
         }
 
         if ( is_wp_error( $comment_id ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $comment_id;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
         }
 
@@ -1879,7 +1879,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $push_drafts = FALSE ) {
+    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $push_drafts = false ) {
         $method = $methods['method_match'];
         if ( $method === 'get_comment' ) {
             $method = 'get_comments';
@@ -1999,16 +1999,16 @@ class Wordpress {
         $updated = wp_update_comment( $content );
 
         if ( $updated === 0 ) {
-            $success = FALSE;
+            $success = false;
             $errors = $updated;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
             foreach ( $params as $key => $value ) {
                 $method = $value['method_modify'];
                 $meta_id = $method( $comment_id, $key, $value['value'] );
-                if ( $meta_id === FALSE ) {
-                    $success = FALSE;
+                if ( $meta_id === false ) {
+                    $success = false;
                     $errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
                 }
             }
@@ -2019,10 +2019,10 @@ class Wordpress {
         }
 
         if ( is_wp_error( $updated ) ) {
-            $success = FALSE;
+            $success = false;
             $errors = $updated;
         } else {
-            $success = TRUE;
+            $success = true;
             $errors = array();
         }
 
@@ -2039,13 +2039,13 @@ class Wordpress {
     *   Comment ID
     * @param bool $force_delete
     *   If we should bypass the trash
-    *   We don't change this from FALSE anywhere in this plugin
+    *   We don't change this from false anywhere in this plugin
     *
     * @return boolean
     *   true if successful, false if failed
     *
     */
-    private function comment_delete( $id, $force_delete = FALSE ) {
+    private function comment_delete( $id, $force_delete = false ) {
         $result = wp_delete_comment( $id, $force_delete );
         return $result;
     }

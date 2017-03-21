@@ -30,7 +30,7 @@ class Admin_Notice {
     * @param string $template
     *
     */
-    public function __construct( $condition, $message, $domain, $dismissible = FALSE, $type = '', $template = '' ) {
+    public function __construct( $condition, $message, $domain, $dismissible = false, $type = '', $template = '' ) {
         $this->condition = $condition;
         $this->message = $message;
         $this->domain = $domain;
@@ -55,7 +55,7 @@ class Admin_Notice {
         }
 
         $dismissible = '';
-        if ( TRUE === $this->dismissible ) {
+        if ( true === $this->dismissible ) {
             $dismissible = ' is-dismissible';
         }
 

@@ -50,10 +50,10 @@
                 $object_filters = maybe_unserialize( get_option( 'salesforce_api_object_filters' ), array() );
                 $conditions = array();
                 if ( in_array( 'updateable', $object_filters ) ) {
-                    $conditions['updateable'] = TRUE;
+                    $conditions['updateable'] = true;
                 }
                 if ( in_array( 'triggerable', $object_filters ) ) {
-                    $conditions['triggerable'] = TRUE;
+                    $conditions['triggerable'] = true;
                 }
                 $salesforce_objects = $sfapi->objects( $conditions );
                 foreach ( $salesforce_objects as $object ) {
@@ -143,7 +143,7 @@
             </thead>
             <tbody>
                 <?php
-                if ( isset( $fieldmap_fields ) && $fieldmap_fields !== NULL && is_array( $fieldmap_fields ) ) {
+                if ( isset( $fieldmap_fields ) && $fieldmap_fields !== null && is_array( $fieldmap_fields ) ) {
                     foreach ( $fieldmap_fields as $key => $value ) {
                 ?>
                 <tr>
@@ -285,7 +285,7 @@
         </table>
         <!--<div class="spinner"></div>-->
         <?php
-        if ( isset( $fieldmap_fields ) && $fieldmap_fields !== NULL ) {
+        if ( isset( $fieldmap_fields ) && $fieldmap_fields !== null ) {
             $add_button_label = 'Add another field mapping';
         } else {
             $add_button_label = 'Add field mapping';

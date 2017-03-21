@@ -92,7 +92,7 @@ class Salesforce_Rest_API {
 	 * Static property to hold an instance of the class; this seems to make it reusable
 	 *
 	 */
-	static $instance = NULL;
+	static $instance = null;
 
 	/**
 	* Load the static $instance property that holds the instance of the class.
@@ -103,7 +103,7 @@ class Salesforce_Rest_API {
 	*
 	*/
 	static public function get_instance() {
-		if ( self::$instance === NULL ) {
+		if ( self::$instance === null ) {
 			self::$instance = new Salesforce_Rest_API();
 		}
 		return self::$instance;

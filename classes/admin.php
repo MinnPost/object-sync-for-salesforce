@@ -101,9 +101,9 @@ class Wordpress_Salesforce_Admin {
 		// default pull throttle for avoiding going over api limits
 		$this->default_pull_throttle = 5;
 		// default setting for triggerable items
-		$this->default_triggerable = TRUE;
+		$this->default_triggerable = true;
 		// default setting for updateable items
-		$this->default_updateable = TRUE;
+		$this->default_updateable = true;
 
 		$this->add_actions();
 
@@ -152,7 +152,7 @@ class Wordpress_Salesforce_Admin {
 		echo '<div class="wrap">';
 			echo '<h1>' . get_admin_page_title() . '</h1>';
 			$allowed = $this->check_wordpress_admin_permissions();
-			if ( FALSE === $allowed ) {
+			if ( false === $allowed ) {
 				return;
 			}
 			$tabs = array(
@@ -163,7 +163,7 @@ class Wordpress_Salesforce_Admin {
 			); // this creates the tabs for the admin
 
 			// optionally make tab(s) for logging and log settings
-			$logging_enabled = get_option( 'salesforce_api_enable_logging', FALSE );
+			$logging_enabled = get_option( 'salesforce_api_enable_logging', false );
 			$tabs['log_settings'] = 'Log Settings';
 
 			// filter for extending the tabs available on the page
@@ -184,10 +184,10 @@ class Wordpress_Salesforce_Admin {
 						if ( isset( $_GET['code'] ) )  {
 							$is_authorized = $this->salesforce['sfapi']->request_token( esc_attr( $_GET['code'] ) );
 							echo "<script>window.location = '$callback_url';</script>";
-						} elseif ( $this->salesforce['is_authorized'] === TRUE ) {
+						} elseif ( $this->salesforce['is_authorized'] === true ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/authorized.php' );
 							$this->demo( $this->salesforce['sfapi'] );
-						} elseif ( is_object ( $this->salesforce['sfapi'] ) === TRUE && isset( $consumer_key ) && isset( $consumer_secret ) ) {
+						} elseif ( is_object ( $this->salesforce['sfapi'] ) === true && isset( $consumer_key ) && isset( $consumer_secret ) ) {
 							echo '<p><a class="button button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
 						} else {
 							$message = __( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=settings' ) . '">Settings</a> tab to add them.', $this->text_domain );
@@ -252,7 +252,7 @@ class Wordpress_Salesforce_Admin {
 						$consumer_key = $this->login_credentials['consumer_key'];
 						$consumer_secret = $this->login_credentials['consumer_secret'];
 						if ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) {
-							if ( $this->salesforce['is_authorized'] === TRUE ) {
+							if ( $this->salesforce['is_authorized'] === true ) {
 								require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
 							} else {
 								$message = __( 'Salesforce needs to be authorized to connect to this website. Use the <a href="' . $callback_url . '">Authorize tab</a> to connect.', $this->text_domain );
@@ -264,16 +264,16 @@ class Wordpress_Salesforce_Admin {
 						}
 						break;
 					default:
-						$include_settings = apply_filters( 'salesforce_rest_api_settings_tab_include_settings', TRUE, $tab );
-						$content_before = apply_filters( 'salesforce_rest_api_settings_tab_content_before', NULL, $tab );
-						$content_after = apply_filters( 'salesforce_rest_api_settings_tab_content_after', NULL, $tab );
-						if ( NULL !== $content_before ) {
+						$include_settings = apply_filters( 'salesforce_rest_api_settings_tab_include_settings', true, $tab );
+						$content_before = apply_filters( 'salesforce_rest_api_settings_tab_content_before', null, $tab );
+						$content_after = apply_filters( 'salesforce_rest_api_settings_tab_content_after', null, $tab );
+						if ( null !== $content_before ) {
 							echo $content_before;
 						}
-						if ( TRUE === $include_settings ) {
+						if ( true === $include_settings ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
 						}
-						if ( NULL !== $content_after ) {
+						if ( null !== $content_after ) {
 							echo $content_after;
 						}
 						break;
@@ -1059,13 +1059,13 @@ class Wordpress_Salesforce_Admin {
 	*
 	*/
 	public function prepare_fieldmap_data() {
-		$error = FALSE;
+		$error = false;
 		$cachekey = md5( json_encode( $_POST ) );
 
 		if ( !isset( $_POST['label'] ) || !isset( $_POST['salesforce_object'] ) || !isset( $_POST['wordpress_object'] ) ) {
-			$error = TRUE;
+			$error = true;
 		}
-		if ( $error === TRUE ) {
+		if ( $error === true ) {
 			set_transient( $cachekey, $_POST, 0 );
 			if ( $cachekey !== '' ) {
 				$url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
@@ -1082,7 +1082,7 @@ class Wordpress_Salesforce_Admin {
 				$id = esc_attr( $_POST['id'] );
 				$result = $this->mappings->update_fieldmap( $_POST, $wordpress_fields, $salesforce_fields, $id );
 			}
-			if ( $result === FALSE ) { // if the database didn't save, it's still an error
+			if ( $result === false ) { // if the database didn't save, it's still an error
 				set_transient( $cachekey, $_POST, 0 );
 				if ( $cachekey !== '' ) {
 					$url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
@@ -1109,7 +1109,7 @@ class Wordpress_Salesforce_Admin {
 	public function delete_fieldmap() {
 		if ( $_POST['id'] ) {
 			$result = $this->mappings->delete_fieldmap( $_POST['id'] );
-			if ( $result === TRUE ) {
+			if ( $result === true ) {
 				$url = esc_url_raw( $_POST['redirect_url_success'] );
 			} else {
 				$url = esc_url_raw( $_POST['redirect_url_error'] ) . '&id=' . $_POST['id'];
@@ -1176,7 +1176,7 @@ class Wordpress_Salesforce_Admin {
 			if ( is_array( $options ) && in_array( $key, $options ) ) {
 				$checked = 'checked';
 			} elseif ( is_array( $options ) && empty( $options ) ) {
-				if ( isset( $value['default'] ) && $value['default'] === TRUE ) {
+				if ( isset( $value['default'] ) && $value['default'] === true ) {
 					$checked = 'checked';
 				}
 			}
@@ -1269,18 +1269,18 @@ class Wordpress_Salesforce_Admin {
 		$versions = $sfapi->get_api_versions();
 
 		// format this array into html so users can see the versions
-		$versions_is_cached = $versions['cached'] === TRUE ? '' : 'not ';
-		$versions_from_cache = $versions['from_cache'] === TRUE ? 'were' : 'were not';
-		$versions_is_redo = $versions['is_redo'] === TRUE ? '' : 'not ';
-		$versions_andorbut = $versions['from_cache'] === TRUE ? 'and' : 'but';
+		$versions_is_cached = $versions['cached'] === true ? '' : 'not ';
+		$versions_from_cache = $versions['from_cache'] === true ? 'were' : 'were not';
+		$versions_is_redo = $versions['is_redo'] === true ? '' : 'not ';
+		$versions_andorbut = $versions['from_cache'] === true ? 'and' : 'but';
 
 		$contacts = $sfapi->query('SELECT Name, Id from Contact LIMIT 100');
 
 		// format this array into html so users can see the contacts
-		$contacts_is_cached = $contacts['cached'] === TRUE ? '' : 'not ';
-		$contacts_from_cache = $contacts['from_cache'] === TRUE ? 'were' : 'were not';
-		$contacts_andorbut = $contacts['from_cache'] === TRUE ? 'and' : 'but';
-		$contacts_is_redo = $contacts['is_redo'] === TRUE ? '' : 'not ';
+		$contacts_is_cached = $contacts['cached'] === true ? '' : 'not ';
+		$contacts_from_cache = $contacts['from_cache'] === true ? 'were' : 'were not';
+		$contacts_andorbut = $contacts['from_cache'] === true ? 'and' : 'but';
+		$contacts_is_redo = $contacts['is_redo'] === true ? '' : 'not ';
 
 		require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/demo.php' );
 
@@ -1313,9 +1313,9 @@ class Wordpress_Salesforce_Admin {
 		// point is: to administer this plugin, you need this capability
 
 		if ( ! current_user_can( 'configure_salesforce' ) ) {
-			return FALSE;
+			return false;
 		} else {
-			return TRUE;
+			return true;
 		}
 
 	}
@@ -1326,7 +1326,7 @@ class Wordpress_Salesforce_Admin {
 	*
 	*/
 	public function show_salesforce_user_fields( $user ) {
-		if ( $this->check_wordpress_admin_permissions() === TRUE ) {
+		if ( $this->check_wordpress_admin_permissions() === true ) {
 			$mapping = $this->mappings->load_by_wordpress( 'user', $user->ID );
 			if ( isset( $mapping['id'] ) && !isset($_GET['edit_salesforce_mapping']) ) {
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );

@@ -103,7 +103,7 @@ function push_fail( $op, $response, $synced_object ) {
     $synced_object = array(
         'wordpress_object' => $object,
         'mapping_object' => $mapping_object,
-        'queue_item' => FALSE,
+        'queue_item' => false,
         'mapping' => $mapping,
     );
     */
@@ -123,7 +123,7 @@ function push_success( $op, $response, $synced_object, $object_id ) {
     $synced_object = array(
         'wordpress_object' => $object,
         'mapping_object' => $mapping_object,
-        'queue_item' => FALSE,
+        'queue_item' => false,
         'mapping' => $mapping,
     );
     */

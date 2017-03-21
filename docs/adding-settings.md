@@ -76,16 +76,16 @@ The contents for the admin settings tabs are displayed in PHP templates. The def
 
 #### Code example
 
-This hook sets a boolean value for whether or not the plugin should use the default template. To change or disable this, use the `salesforce_rest_api_settings_tab_include_settings` hook, which receives, and returns, a `TRUE` or `FALSE` for this setting.
+This hook sets a boolean value for whether or not the plugin should use the default template. To change or disable this, use the `salesforce_rest_api_settings_tab_include_settings` hook, which receives, and returns, a `true` or `false` for this setting.
 
 The hook also receives a variable for the currently activated tab in the plugin's settings. This allows you to use `$tab` to change only the tab(s) you want to change.
 
 ```
 add_filter( 'salesforce_rest_api_settings_tab_include_settings', change_template, 10, 2 );
-function change_template( $use_default_template = TRUE, $tab ) {
+function change_template( $use_default_template = true, $tab ) {
     require_once( 'your-file.php' );
-    return FALSE;
-    // if you use return TRUE instead, the default file will be displayed after whatever you use, so you can combine with, or entirely replace, the plugin's default
+    return false;
+    // if you use return true instead, the default file will be displayed after whatever you use, so you can combine with, or entirely replace, the plugin's default
 }
 ```
 
@@ -99,7 +99,7 @@ To add content before, you can do this:
 
 ```
 add_filter( 'salesforce_rest_api_settings_tab_content_before', add_content, 10, 2 );
-function add_content( $content_before = NULL, $tab ) {
+function add_content( $content_before = null, $tab ) {
     if ( $tab === 'minnpost' ) {
         $content_before = '<p>this is an intro.</p>';
     }
@@ -111,7 +111,7 @@ And for adding content after, you can do this:
 
 ```
 add_filter( 'salesforce_rest_api_settings_tab_content_after', add_content, 10, 2 );
-function add_content( $content_after = NULL, $tab ) {
+function add_content( $content_after = null, $tab ) {
     if ( $tab === 'minnpost' ) {
         $content_after = '<p>this is an outro.</p>';
     }
