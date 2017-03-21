@@ -215,16 +215,16 @@ class Salesforce_Mapping {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
                 $method_key = array_search( $value, array_column( $wordpress_fields, 'key' ) );
-				if ( !isset( $posted['direction'][$key] ) ) {
+				if ( ! isset( $posted['direction'][$key] ) ) {
 					$posted['direction'][$key] = 'sync';
 				}
-                if ( !isset( $posted['is_prematch'][$key] ) ) {
+                if ( ! isset( $posted['is_prematch'][$key] ) ) {
                     $posted['is_prematch'][$key] = false;
                 }
-				if ( !isset( $posted['is_key'][$key] ) ) {
+				if ( ! isset( $posted['is_key'][$key] ) ) {
 					$posted['is_key'][$key] = false;
 				}
-				if ( !isset( $posted['is_delete'][$key] ) ) {
+				if ( ! isset( $posted['is_delete'][$key] ) ) {
 					$posted['is_delete'][$key] = false;
 				}
 				if ( $posted['is_delete'][$key] === false ) {
@@ -403,7 +403,7 @@ class Salesforce_Mapping {
     */
     public function update_object_map( $posted = array(), $id = '' ) {
         $data = $this->setup_object_map_data( $posted );
-        if ( !isset( $data['object_updated'] ) ) {
+        if ( ! isset( $data['object_updated'] ) ) {
             $data['object_updated'] = current_time( 'mysql' );
         }
         $update = $this->wpdb->update( $this->object_map_table, $data, array( 'id' => $id ) );

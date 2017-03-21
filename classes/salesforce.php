@@ -249,7 +249,7 @@ class Salesforce {
 		if ( $options['cache'] === true && $options['type'] !== 'write' ) { 
 			$cached = $this->wordpress->cache_get( $url, $params );
 			// some api calls can send a reset option, in which case we should redo the request anyway
-			if ( is_array( $cached ) && ( !isset( $options['reset'] ) || $options['reset'] !== true ) ) {
+			if ( is_array( $cached ) && ( ! isset( $options['reset'] ) || $options['reset'] !== true ) ) {
 				$result = $cached;
 				$result['from_cache'] = true;
 				$result['cached'] = true;
@@ -618,7 +618,7 @@ class Salesforce {
 		// OAUTH scope is inadequate.
 		$required = array( 'refresh_token', 'access_token', 'id', 'instance_url' );
 		foreach ( $required as $key ) {
-			if ( !isset($data[$key] ) ) {
+			if ( ! isset($data[$key] ) ) {
 				return false;
 			}
 		}
@@ -1118,7 +1118,7 @@ class Salesforce {
 		// example of how this runs: $this->get_record_type_id_by_developer_name( 'Account', 'HH_Account' );
 
 		$cached = $this->wordpress->cache_get( 'salesforce_record_types', '' );
-		if ( is_array( $cached ) && ( !isset( $reset ) || $reset !== true ) ) {
+		if ( is_array( $cached ) && ( ! isset( $reset ) || $reset !== true ) ) {
 			return ! empty( $cached[$name][$devname] ) ? $cached[$name][$devname]['Id'] : null;
 		}
 

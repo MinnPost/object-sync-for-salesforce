@@ -387,7 +387,7 @@ class Salesforce_Push {
 
 				// push drafts if the setting says so
 				// post status is draft, or post status is inherit and post type is not attachment
-				if ( ( !isset( $mapping['push_drafts'] ) || $mapping['push_drafts'] !== '1' ) && isset( $object['post_status'] ) && ( $object['post_status'] === 'draft'  || ( $object['post_status'] === 'inherit' && $object['post_type'] !== 'attachment' ) ) ) {
+				if ( ( ! isset( $mapping['push_drafts'] ) || $mapping['push_drafts'] !== '1' ) && isset( $object['post_status'] ) && ( $object['post_status'] === 'draft'  || ( $object['post_status'] === 'inherit' && $object['post_type'] !== 'attachment' ) ) ) {
 					// skip this object if it is a draft and the fieldmap settings told us to ignore it
 					continue;
 				}
@@ -502,7 +502,7 @@ class Salesforce_Push {
 
 					}
 
-					if ( !isset( $e ) ) {
+					if ( ! isset( $e ) ) {
 						// create log entry for successful delete if the result had no errors
 						$status = 'success';
 						if ( isset( $this->logging ) ) {
@@ -717,7 +717,7 @@ class Salesforce_Push {
 				return;
 			}
 
-			if ( !isset( $salesforce_data ) ) {
+			if ( ! isset( $salesforce_data ) ) {
 				// if we didn't set $salesforce_data already, set it now to api call result
 				$salesforce_data = $result['data'];
 			}

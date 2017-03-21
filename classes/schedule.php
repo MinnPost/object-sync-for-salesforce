@@ -274,7 +274,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
      * This is modeled off the cancel_process method in wp-background-process but that one doesn't seem to work when we need to specify the queue name
      */
     public function cancel_by_name( $name ) {
-        if ( !isset( $name ) ) {
+        if ( ! isset( $name ) ) {
             $name = $this->identifier . '_cron';
         }
         if ( ! $this->is_queue_empty() ) {

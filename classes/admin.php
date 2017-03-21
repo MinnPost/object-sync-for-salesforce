@@ -1062,7 +1062,7 @@ class Wordpress_Salesforce_Admin {
 		$error = false;
 		$cachekey = md5( json_encode( $_POST ) );
 
-		if ( !isset( $_POST['label'] ) || !isset( $_POST['salesforce_object'] ) || !isset( $_POST['wordpress_object'] ) ) {
+		if ( ! isset( $_POST['label'] ) || ! isset( $_POST['salesforce_object'] ) || ! isset( $_POST['wordpress_object'] ) ) {
 			$error = true;
 		}
 		if ( true === $error ) {
@@ -1137,7 +1137,7 @@ class Wordpress_Salesforce_Admin {
 			$class = 'checkbox';
 		}
 
-		if ( !isset( $args['constant'] ) || !defined( $args['constant'] ) ) {
+		if ( ! isset( $args['constant'] ) || !defined( $args['constant'] ) ) {
 			$value  = esc_attr( get_option( $id, '' ) );
 			if ( 'checkbox' === $type ) {
 				if ( '1' === $value) {
@@ -1197,7 +1197,7 @@ class Wordpress_Salesforce_Admin {
 		$id     = $args['label_for'];
 		$name   = $args['name'];
 		$desc   = $args['desc'];
-		if ( !isset( $args['constant'] ) || !defined( $args['constant'] ) ) {
+		if ( ! isset( $args['constant'] ) || !defined( $args['constant'] ) ) {
 			$current_value = get_option( $name );
 			echo '<div><select id="' . $id . '" name="' . $name . '"><option value="">- Select one -</option>';
 			foreach ( $args['items'] as $key => $value ) {
@@ -1328,7 +1328,7 @@ class Wordpress_Salesforce_Admin {
 	public function show_salesforce_user_fields( $user ) {
 		if ( $this->check_wordpress_admin_permissions() === true ) {
 			$mapping = $this->mappings->load_by_wordpress( 'user', $user->ID );
-			if ( isset( $mapping['id'] ) && !isset($_GET['edit_salesforce_mapping']) ) {
+			if ( isset( $mapping['id'] ) && ! isset($_GET['edit_salesforce_mapping']) ) {
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
 			} elseif ( isset($_GET['edit_salesforce_mapping']) && urlencode( $_GET['edit_salesforce_mapping'] ) === 'true' ) {
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );

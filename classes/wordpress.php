@@ -1806,19 +1806,19 @@ class Wordpress {
         }
 
         // fields that are required for comments, even if they are empty values
-        if ( !isset( $content['comment_author'] ) ) {
+        if ( ! isset( $content['comment_author'] ) ) {
             $content['comment_author'] = '';
         }
-        if ( !isset( $content['comment_author_IP'] ) ) {
+        if ( ! isset( $content['comment_author_IP'] ) ) {
             $content['comment_author_IP'] = '';
         }
-        if ( !isset( $content['comment_author_email'] ) ) {
+        if ( ! isset( $content['comment_author_email'] ) ) {
             $content['comment_author_email'] = '';
         }
-        if ( !isset( $content['comment_author_url'] ) ) {
+        if ( ! isset( $content['comment_author_url'] ) ) {
             $content['comment_author_url'] = '';
         }
-        if ( !isset( $content['comment_type'] ) ) {
+        if ( ! isset( $content['comment_type'] ) ) {
             $content['comment_type'] = '';
         }
 

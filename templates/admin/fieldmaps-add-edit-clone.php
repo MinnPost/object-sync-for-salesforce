@@ -100,7 +100,7 @@
                         } else {
                             $selected = '';
                         }
-                        if ( !isset( $salesforce_record_types_allowed ) || in_array( $key, $salesforce_record_types_allowed ) ) {
+                        if ( ! isset( $salesforce_record_types_allowed ) || in_array( $key, $salesforce_record_types_allowed ) ) {
                             echo '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
                         }
                     }

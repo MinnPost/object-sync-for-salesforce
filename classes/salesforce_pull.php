@@ -178,7 +178,7 @@ class Salesforce_Pull {
 					}
 
 					// Some field map types (Relation) store a collection of SF objects.
-					if ( is_array( $field['salesforce_field'] ) && !isset( $field['salesforce_field']['label'] ) ) {
+					if ( is_array( $field['salesforce_field'] ) && ! isset( $field['salesforce_field']['label'] ) ) {
 						foreach ( $field['salesforce_field'] as $sf_field ) {
 							$mapped_fields[$sf_field['label']] = $sf_field['label'];
 						}
@@ -237,7 +237,7 @@ class Salesforce_Pull {
 			$response = $results['data'];
 			$version_path = parse_url( $sfapi->get_api_endpoint(), PHP_URL_PATH );
 
-			if ( !isset( $response['errorCode'] ) ) {
+			if ( ! isset( $response['errorCode'] ) ) {
 				// Write items to the queue.
 				foreach ( $response['records'] as $result ) {
 
@@ -267,7 +267,7 @@ class Salesforce_Pull {
 					// shouldn't cache this either. it's going into the queue if it exists anyway.
 					$new_results = $sfapi->api_call( $next_records_url, array(), 'GET', array( 'cache' => false ) );
 					$new_response = $new_results['data'];
-					if ( !isset( $new_response['errorCode'] ) ) {
+					if ( ! isset( $new_response['errorCode'] ) ) {
 						// Write items to the queue.
 						foreach ( $new_response['records'] as $result ) {
 							$data = array(
@@ -352,7 +352,7 @@ class Salesforce_Pull {
 
 				foreach ( $deleted['data']['deletedRecords'] as $result ) {
 					// salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?
-					if ( !isset( $result['Id'] ) && isset( $result['id']) ) {
+					if ( ! isset( $result['Id'] ) && isset( $result['id']) ) {
 						$result['Id'] = $result['id'];
 					}
 					$data = array(
@@ -545,7 +545,7 @@ class Salesforce_Pull {
 
 						}
 
-						if ( !isset( $e ) ) {
+						if ( ! isset( $e ) ) {
 							// create log entry for successful delete if the result had no errors
 							$status = 'success';
 							if ( isset( $this->logging ) ) {
