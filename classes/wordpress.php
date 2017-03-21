@@ -83,7 +83,7 @@ class Wordpress {
         $wordpress_objects = get_post_types();
         $wordpress_objects = array_merge( $wordpress_objects, $wordpress_types_not_posts_include );
 
-        if ( !empty( $wordpress_types_ignore ) ) {
+        if ( ! empty( $wordpress_types_ignore ) ) {
             $wordpress_objects = array_diff( $wordpress_objects, $wordpress_types_ignore );
         }
 
@@ -211,7 +211,7 @@ class Wordpress {
 	            $object_fields['cached'] = true;
 	        } else {
 	            $object_fields['data'] = $this->object_fields( $object_name, $id_field, $content_table, $content_methods, $meta_table, $meta_methods, $where, $ignore_keys );
-	            if ( !empty( $object_fields['data'] ) ) {
+	            if ( ! empty( $object_fields['data'] ) ) {
 	                $object_fields['cached'] = $this->cache_set( $wordpress_object, array( 'data', 'meta'), $object_fields['data'], $this->options['cache_expiration'] );
 	            } else {
 	                $object_fields['cached'] = false;
@@ -1013,7 +1013,7 @@ class Wordpress {
                 $params['RecordTypeId']['method_modify'] = 'update_post_meta';
                 $params['RecordTypeId']['method_read'] = 'get_post_meta';
             }
-            if ( is_array( $params ) && !empty( $params ) ) {
+            if ( is_array( $params ) && ! empty( $params ) ) {
                 foreach ( $params as $key => $value ) {
                     $method = $value['method_modify'];
                     $meta_id = $method( $post_id, $key, $value['value'] );
@@ -1208,7 +1208,7 @@ class Wordpress {
                 $params['RecordTypeId']['method_modify'] = 'update_post_meta';
                 $params['RecordTypeId']['method_read'] = 'get_post_meta';
             }
-            if ( is_array( $params ) && !empty( $params ) ) {
+            if ( is_array( $params ) && ! empty( $params ) ) {
                 foreach ( $params as $key => $value ) {
                     $method = $value['method_modify'];
                     $meta_id = $method( $post_id, $key, $value['value'] );

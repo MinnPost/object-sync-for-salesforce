@@ -137,11 +137,11 @@ class Salesforce_Mapping {
             $map['fields'] = maybe_unserialize( $map['fields'] );
             $map['sync_triggers'] = maybe_unserialize( $map['sync_triggers'] );
             return $map;
-        } elseif ( !empty( $conditions ) ) { // get multiple but with a limitation
+        } elseif ( ! empty( $conditions ) ) { // get multiple but with a limitation
             $mappings = array();
             $record_type = '';
         
-            if ( !empty( $conditions ) ) {
+            if ( ! empty( $conditions ) ) {
                 $where = ' WHERE ';
                 $i = 0;
                 foreach ( $conditions as $key => $value ) {
@@ -161,7 +161,7 @@ class Salesforce_Mapping {
 
             $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . ' ORDER BY `weight`', ARRAY_A );
 
-            if ( !empty( $mappings ) ) {
+            if ( ! empty( $mappings ) ) {
                 $mappings = $this->prepare_fieldmap_data( $mappings, $record_type );
             }
 
@@ -171,7 +171,7 @@ class Salesforce_Mapping {
 
             $mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table" , ARRAY_A );
             
-            if ( !empty( $mappings ) ) {
+            if ( ! empty( $mappings ) ) {
                 $mappings = $this->prepare_fieldmap_data( $mappings );
             }
 
@@ -360,10 +360,10 @@ class Salesforce_Mapping {
     public function get_object_maps( $conditions = array(), $reset = false ) {
         $table = $this->object_map_table;
         $order = ' ORDER BY object_updated, created';
-        if ( !empty( $conditions ) ) { // get multiple but with a limitation
+        if ( ! empty( $conditions ) ) { // get multiple but with a limitation
             $mappings = array();
         
-            if ( !empty( $conditions ) ) {
+            if ( ! empty( $conditions ) ) {
                 $where = ' WHERE ';
                 $i = 0;
                 foreach ( $conditions as $key => $value ) {
@@ -378,13 +378,13 @@ class Salesforce_Mapping {
             }
 
             $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . $order, ARRAY_A );
-            if ( !empty( $mappings ) && $this->wpdb->num_rows === 1 ) {
+            if ( ! empty( $mappings ) && $this->wpdb->num_rows === 1 ) {
                 $mappings = $mappings[0];
             }
 
         } else { // get all of em
             $mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $order, ARRAY_A );
-            if ( !empty( $mappings ) && $this->wpdb->num_rows === 1 ) {
+            if ( ! empty( $mappings ) && $this->wpdb->num_rows === 1 ) {
                 $mappings = $mappings[0];
             }
         }

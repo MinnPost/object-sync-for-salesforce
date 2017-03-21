@@ -125,7 +125,7 @@ class Salesforce {
 	*
 	*/
 	public function is_authorized() {
-		return !empty( $this->consumer_key ) && !empty( $this->consumer_secret ) && $this->get_refresh_token();
+		return ! empty( $this->consumer_key ) && ! empty( $this->consumer_secret ) && $this->get_refresh_token();
 	}
 
 	/**
@@ -192,7 +192,7 @@ class Salesforce {
 				}
 		}
 
-		if ( !empty( $this->response['data'][0] ) && count( $this->response['data'] ) == 1 ) {
+		if ( ! empty( $this->response['data'][0] ) && count( $this->response['data'] ) == 1 ) {
 			$this->response['data'] = $this->response['data'][0];
 		}
 
@@ -200,7 +200,7 @@ class Salesforce {
 			throw new SalesforceException( $this->response['data']['error_description'], $this->response['data']['error'] );
 		}
 
-		if ( !empty($this->response['data']['errorCode'] ) ) {
+		if ( ! empty($this->response['data']['errorCode'] ) ) {
 			throw new SalesforceException( $this->response['data']['message'], $this->response['code'] );
 		}
 		
@@ -655,7 +655,7 @@ class Salesforce {
 		$options = array( 'reset' => $reset );
 		$result = $this->api_call( 'sobjects', array(), 'GET', $options );
 
-		if ( !empty( $conditions ) ) {
+		if ( ! empty( $conditions ) ) {
 			foreach ( $result['data']['sobjects'] as $key => $object ) {
 				foreach ( $conditions as $condition => $value ) {
 					if ( $object[$condition] != $value ) {
@@ -731,7 +731,7 @@ class Salesforce {
 		$fields = array();
 		foreach ( $object['data']['fields'] as &$field ) {
 			ksort( $field );
-			if ( !empty( $field['picklistValues'] ) ) {
+			if ( ! empty( $field['picklistValues'] ) ) {
 				foreach ( $field['picklistValues'] as &$picklist_value ) {
 					ksort( $picklist_value );
 				}
@@ -1119,7 +1119,7 @@ class Salesforce {
 
 		$cached = $this->wordpress->cache_get( 'salesforce_record_types', '' );
 		if ( is_array( $cached ) && ( !isset( $reset ) || $reset !== TRUE ) ) {
-			return !empty( $cached[$name][$devname] ) ? $cached[$name][$devname]['Id'] : NULL;
+			return ! empty( $cached[$name][$devname] ) ? $cached[$name][$devname]['Id'] : NULL;
 		}
 
 		$query = new Salesforce_Select_Query( 'RecordType' );
@@ -1134,7 +1134,7 @@ class Salesforce {
 
 		$cached = $this->wordpress->cache_set( 'salesforce_record_types', '', $record_types, $this->options['cache_expiration'] );
 
-		return !empty( $record_types[$name][$devname] ) ? $record_types[$name][$devname]['Id'] : NULL;
+		return ! empty( $record_types[$name][$devname] ) ? $record_types[$name][$devname]['Id'] : NULL;
 
 	}
 

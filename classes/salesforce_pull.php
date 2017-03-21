@@ -90,7 +90,7 @@ class Salesforce_Pull {
 			$code = '403';
 		}
 
-		if ( !empty( $_POST ) ) {
+		if ( ! empty( $_POST ) ) {
 			wp_send_json_success( $code );
 		} else {
 			return $code;
@@ -187,7 +187,7 @@ class Salesforce_Pull {
 					}
 				}
 
-				if ( !empty( $mapped_fields ) && $salesforce_mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type ) {
+				if ( ! empty( $mapped_fields ) && $salesforce_mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type ) {
 					foreach ( $salesforce_mapping['salesforce_record_types_allowed'] as $record_type ) {
 						if ( $record_type ) {
 							$mapped_record_types[$record_type] = $record_type;
@@ -936,7 +936,7 @@ class Salesforce_Pull {
 			delete_transient( 'salesforce_pushing_object_id' );
 		}
 	
-		if ( !empty( $exception ) ) {
+		if ( ! empty( $exception ) ) {
 			throw $exception;
 		}
 

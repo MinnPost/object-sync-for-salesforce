@@ -251,7 +251,7 @@ class Wordpress_Salesforce_Admin {
 					case 'settings':
 						$consumer_key = $this->login_credentials['consumer_key'];
 						$consumer_secret = $this->login_credentials['consumer_secret'];
-						if ( isset( $consumer_key ) && isset( $consumer_secret ) && !empty( $consumer_key ) && !empty( $consumer_secret ) ) {
+						if ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) {
 							if ( $this->salesforce['is_authorized'] === TRUE ) {
 								require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
 							} else {
@@ -867,7 +867,7 @@ class Wordpress_Salesforce_Admin {
 
 		$object_description = array();
 
-		if ( !empty( $data['salesforce_object'] ) ) {
+		if ( ! empty( $data['salesforce_object'] ) ) {
 			$object = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
 
 			$object_fields = array();
@@ -1002,7 +1002,7 @@ class Wordpress_Salesforce_Admin {
 		$data = $this->wordpress->get_wordpress_object_data( $wordpress_object, $wordpress_id );
 		$result = $this->push->manual_object_update( $data, $wordpress_object );
 
-		if ( ! empty( $_POST['wordpress_object'] ) && !empty( $_POST['wordpress_id'] ) ) {
+		if ( ! empty( $_POST['wordpress_object'] ) && ! empty( $_POST['wordpress_id'] ) ) {
 			wp_send_json_success( $result );
 		} else {
 			return $result;
@@ -1024,7 +1024,7 @@ class Wordpress_Salesforce_Admin {
 		}
 		$type = $this->salesforce['sfapi']->get_sobject_type( $salesforce_id );
 		$result = $this->pull->manual_pull( $type, $salesforce_id, $wordpress_object ); // we want the wp object to make sure we get the right fieldmap
-		if ( !empty( $_POST ) ) {
+		if ( ! empty( $_POST ) ) {
 			wp_send_json_success( $result );
 		} else {
 			return $result;
@@ -1043,7 +1043,7 @@ class Wordpress_Salesforce_Admin {
 			$mapping_id = $_POST['mapping_id'];
 		}
 		$result = $this->mappings->get_object_maps( array( 'id' => $mapping_id ) );
-		if ( !empty( $_POST ) ) {
+		if ( ! empty( $_POST ) ) {
 			wp_send_json_success( $result );
 		} else {
 			return $result;
@@ -1350,7 +1350,7 @@ class Wordpress_Salesforce_Admin {
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 		} elseif ( isset( $_POST['salesforce_create_mapped_user'] ) && urlencode( $_POST['salesforce_create_mapped_user'] === '1' ) ) {
 			// if a Salesforce ID was entered
-			if ( isset( $_POST['salesforce_id'] ) && !empty( $_POST['salesforce_id'] ) ) {
+			if ( isset( $_POST['salesforce_id'] ) && ! empty( $_POST['salesforce_id'] ) ) {
 				$mapping_object = $this->create_object_map( $user_id, 'user', $_POST['salesforce_id'] );
 			} else if ( isset( $_POST['push_new_user_to_salesforce'] ) ) {
 				// otherwise, create a new record in Salesforce
@@ -1376,7 +1376,7 @@ class Wordpress_Salesforce_Admin {
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab_key => $tab_caption ) {
 			$active = $current_tab == $tab_key ? 'nav-tab-active' : '';
-			if ( $tab_key === 'settings' || ( isset( $consumer_key ) && isset( $consumer_secret ) && !empty( $consumer_key ) && !empty( $consumer_secret ) ) ) {
+			if ( $tab_key === 'settings' || ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) ) {
 				echo '<a class="nav-tab ' . $active . '" href="?page=salesforce-api-admin&tab=' . $tab_key . '">' . $tab_caption . '</a>';
 			}
 
