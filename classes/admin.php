@@ -1065,9 +1065,9 @@ class Wordpress_Salesforce_Admin {
 		if ( !isset( $_POST['label'] ) || !isset( $_POST['salesforce_object'] ) || !isset( $_POST['wordpress_object'] ) ) {
 			$error = true;
 		}
-		if ( $error === true ) {
+		if ( true === $error ) {
 			set_transient( $cachekey, $_POST, 0 );
-			if ( $cachekey !== '' ) {
+			if ( '' !== $cachekey ) {
 				$url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
 			}
 		} else { // there are no errors
@@ -1076,15 +1076,15 @@ class Wordpress_Salesforce_Admin {
 			$method = esc_attr( $_POST['method'] );
 			$salesforce_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $_POST['salesforce_object'] ) );
 			$wordpress_fields = $this->get_wordpress_object_fields( $_POST['wordpress_object'] );
-			if ( $method === 'add' || $method === 'clone' ) {
+			if ( 'add' === $method || 'clone' === $method ) {
 				$result = $this->mappings->create_fieldmap( $_POST, $wordpress_fields, $salesforce_fields );
-			} elseif ( $method === 'edit' ) { // if it is edit, use the update method
+			} elseif ( 'edit' === $method ) { // if it is edit, use the update method
 				$id = esc_attr( $_POST['id'] );
 				$result = $this->mappings->update_fieldmap( $_POST, $wordpress_fields, $salesforce_fields, $id );
 			}
 			if ( $result === false ) { // if the database didn't save, it's still an error
 				set_transient( $cachekey, $_POST, 0 );
-				if ( $cachekey !== '' ) {
+				if ( '' !== $cachekey ) {
 					$url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
 				}
 			} else {
@@ -1133,24 +1133,24 @@ class Wordpress_Salesforce_Admin {
 
 		$class = 'regular-text';
 
-		if ( $type === 'checkbox' ) {
+		if ( 'checkbox' === $type ) {
 			$class = 'checkbox';
 		}
 
 		if ( !isset( $args['constant'] ) || !defined( $args['constant'] ) ) {
 			$value  = esc_attr( get_option( $id, '' ) );
-			if ( $type === 'checkbox' ) {
-				if ( $value === '1' ) {
+			if ( 'checkbox' === $type ) {
+				if ( '1' === $value) {
 					$checked = 'checked ';
 				}
 				$value = 1;
 			}
-			if ( $value === '' && isset( $args['default'] ) && $args['default'] !== '' ) {
+			if ( '' === $value && isset( $args['default'] ) && '' !== $args['default'] ) {
 				$value = $args['default'];
 			}
 			echo '<input type="' . $type. '" value="' . $value . '" name="' . $name . '" id="' . $id . '"
 			class="' . $class . ' code" ' . $checked . ' />';
-			if ( $desc != '' ) {
+			if ( '' != $desc ) {
 				echo '<p class="description">' . $desc . '</p>';
 			}
 		} else {
@@ -1176,12 +1176,12 @@ class Wordpress_Salesforce_Admin {
 			if ( is_array( $options ) && in_array( $key, $options ) ) {
 				$checked = 'checked';
 			} elseif ( is_array( $options ) && empty( $options ) ) {
-				if ( isset( $value['default'] ) && $value['default'] === true ) {
+				if ( isset( $value['default'] ) && true === $value['default'] ) {
 					$checked = 'checked';
 				}
 			}
-			echo '<div class="checkbox"><label><input type="' . $type. '" value="' . $key . '" name="' . $name . '[]" id="' . $id . '" ' . $checked . ' />' . $text . '</label></div>';
-			if ( $desc != '' ) {
+			echo '<div class="checkbox"><label><input type="' . $type . '" value="' . $key . '" name="' . $name . '[]" id="' . $id . '" ' . $checked . ' />' . $text . '</label></div>';
+			if ( '' != $desc ) {
 				echo '<p class="description">' . $desc . '</p>';
 			}
 		}
