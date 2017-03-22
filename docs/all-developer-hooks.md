@@ -158,5 +158,5 @@ This page lists all developer hooks available in this plugin, with links to wher
 
 There is not a hook for it, but this plugin does work with the Salesforce Analytics API.
 
-    - code: [classes/salesforce.php](../classes/salesforce.php)
-    - documentation: [using the salesforce analytics api](./using-salesforce-analytics-api.md)
+- code: [classes/salesforce.php](../classes/salesforce.php)
+- documentation: [using the salesforce analytics api](./using-salesforce-analytics-api.md)
