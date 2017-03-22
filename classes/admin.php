@@ -1332,7 +1332,7 @@ class Wordpress_Salesforce_Admin {
 				null, // id field must be null for multiples
 				array(
 					'wordpress_object' => 'user',
-				),
+				)
 			);
 			if ( isset( $mapping['id'] ) && ! isset( $_GET['edit_salesforce_mapping'] ) ) {
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
