@@ -26,6 +26,7 @@ Most users should install the plugin from the WordPress plugin directory (we wil
 4. Run `composer install`
 5. This will take a little while as Composer installs third-party libraries the plugin needs. You can then activate the plugin as you would a normal WordPress plugin.
 6. If you are doing interface work, as defined above, run `npm install` to install the Grunt plugins. Run `grunt` when you make changes to Sass or JavaScript.
+7. If you intend to contribute PHP work, you may want to install [apigen](http://www.apigen.org/) to generate code documentation. You can use [this link](http://www.apigen.org/) to set it up. Run `apigen generate` when you make relevant changes. You can check these in to the Git repository.
 
 ### Activate the plugin
 
