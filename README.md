@@ -194,6 +194,10 @@ This plugin contains many hooks to allow other WordPress plugins to extend the f
 
 There is a full list of all hooks, with links to each hook's documentation, in the [developer hooks documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/all-developer-hooks.md) page.
 
+## Development
+
+If you'd like to contribute to this project, please see our [contributing guidelines](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/contributing.md).
+
 ## Notes
 
 ## Changelog

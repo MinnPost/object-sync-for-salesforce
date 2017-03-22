@@ -168,7 +168,7 @@
 </span><span id="83" class="l"><a href="#83">  83: </a>        <span class="php-var">$wordpress_objects</span> = get_post_types();
 </span><span id="84" class="l"><a href="#84">  84: </a>        <span class="php-var">$wordpress_objects</span> = <span class="php-keyword2">array_merge</span>( <span class="php-var">$wordpress_objects</span>, <span class="php-var">$wordpress_types_not_posts_include</span> );
 </span><span id="85" class="l"><a href="#85">  85: </a>
-</span><span id="86" class="l"><a href="#86">  86: </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword1">empty</span>( <span class="php-var">$wordpress_types_ignore</span> ) ) {
+</span><span id="86" class="l"><a href="#86">  86: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$wordpress_types_ignore</span> ) ) {
 </span><span id="87" class="l"><a href="#87">  87: </a>            <span class="php-var">$wordpress_objects</span> = <span class="php-keyword2">array_diff</span>( <span class="php-var">$wordpress_objects</span>, <span class="php-var">$wordpress_types_ignore</span> );
 </span><span id="88" class="l"><a href="#88">  88: </a>        }
 </span><span id="89" class="l"><a href="#89">  89: </a>
@@ -296,7 +296,7 @@
 </span><span id="211" class="l"><a href="#211"> 211: </a>                <span class="php-var">$object_fields</span>[<span class="php-quote">'cached'</span>] = <span class="php-keyword1">true</span>;
 </span><span id="212" class="l"><a href="#212"> 212: </a>            } <span class="php-keyword1">else</span> {
 </span><span id="213" class="l"><a href="#213"> 213: </a>                <span class="php-var">$object_fields</span>[<span class="php-quote">'data'</span>] = <span class="php-var">$this</span>-&gt;object_fields( <span class="php-var">$object_name</span>, <span class="php-var">$id_field</span>, <span class="php-var">$content_table</span>, <span class="php-var">$content_methods</span>, <span class="php-var">$meta_table</span>, <span class="php-var">$meta_methods</span>, <span class="php-var">$where</span>, <span class="php-var">$ignore_keys</span> );
-</span><span id="214" class="l"><a href="#214"> 214: </a>                <span class="php-keyword1">if</span> ( !<span class="php-keyword1">empty</span>( <span class="php-var">$object_fields</span>[<span class="php-quote">'data'</span>] ) ) {
+</span><span id="214" class="l"><a href="#214"> 214: </a>                <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$object_fields</span>[<span class="php-quote">'data'</span>] ) ) {
 </span><span id="215" class="l"><a href="#215"> 215: </a>                    <span class="php-var">$object_fields</span>[<span class="php-quote">'cached'</span>] = <span class="php-var">$this</span>-&gt;cache_set( <span class="php-var">$wordpress_object</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'data'</span>, <span class="php-quote">'meta'</span>), <span class="php-var">$object_fields</span>[<span class="php-quote">'data'</span>], <span class="php-var">$this</span>-&gt;options[<span class="php-quote">'cache_expiration'</span>] );
 </span><span id="216" class="l"><a href="#216"> 216: </a>                } <span class="php-keyword1">else</span> {
 </span><span id="217" class="l"><a href="#217"> 217: </a>                    <span class="php-var">$object_fields</span>[<span class="php-quote">'cached'</span>] = <span class="php-keyword1">false</span>;
@@ -1098,7 +1098,7 @@
 </span><span id="1013" class="l"><a href="#1013">1013: </a>                <span class="php-var">$params</span>[<span class="php-quote">'RecordTypeId'</span>][<span class="php-quote">'method_modify'</span>] = <span class="php-quote">'update_post_meta'</span>;
 </span><span id="1014" class="l"><a href="#1014">1014: </a>                <span class="php-var">$params</span>[<span class="php-quote">'RecordTypeId'</span>][<span class="php-quote">'method_read'</span>] = <span class="php-quote">'get_post_meta'</span>;
 </span><span id="1015" class="l"><a href="#1015">1015: </a>            }
-</span><span id="1016" class="l"><a href="#1016">1016: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$params</span> ) &amp;&amp; !<span class="php-keyword1">empty</span>( <span class="php-var">$params</span> ) ) {
+</span><span id="1016" class="l"><a href="#1016">1016: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$params</span> ) &amp;&amp; ! <span class="php-keyword1">empty</span>( <span class="php-var">$params</span> ) ) {
 </span><span id="1017" class="l"><a href="#1017">1017: </a>                <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
 </span><span id="1018" class="l"><a href="#1018">1018: </a>                    <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
 </span><span id="1019" class="l"><a href="#1019">1019: </a>                    <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$post_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
@@ -1293,7 +1293,7 @@
 </span><span id="1208" class="l"><a href="#1208">1208: </a>                <span class="php-var">$params</span>[<span class="php-quote">'RecordTypeId'</span>][<span class="php-quote">'method_modify'</span>] = <span class="php-quote">'update_post_meta'</span>;
 </span><span id="1209" class="l"><a href="#1209">1209: </a>                <span class="php-var">$params</span>[<span class="php-quote">'RecordTypeId'</span>][<span class="php-quote">'method_read'</span>] = <span class="php-quote">'get_post_meta'</span>;
 </span><span id="1210" class="l"><a href="#1210">1210: </a>            }
-</span><span id="1211" class="l"><a href="#1211">1211: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$params</span> ) &amp;&amp; !<span class="php-keyword1">empty</span>( <span class="php-var">$params</span> ) ) {
+</span><span id="1211" class="l"><a href="#1211">1211: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$params</span> ) &amp;&amp; ! <span class="php-keyword1">empty</span>( <span class="php-var">$params</span> ) ) {
 </span><span id="1212" class="l"><a href="#1212">1212: </a>                <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
 </span><span id="1213" class="l"><a href="#1213">1213: </a>                    <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
 </span><span id="1214" class="l"><a href="#1214">1214: </a>                    <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$post_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
@@ -1891,19 +1891,19 @@
 </span><span id="1806" class="l"><a href="#1806">1806: </a>        }
 </span><span id="1807" class="l"><a href="#1807">1807: </a>
 </span><span id="1808" class="l"><a href="#1808">1808: </a>        <span class="php-comment">// fields that are required for comments, even if they are empty values</span>
-</span><span id="1809" class="l"><a href="#1809">1809: </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword1">isset</span>( <span class="php-var">$content</span>[<span class="php-quote">'comment_author'</span>] ) ) {
+</span><span id="1809" class="l"><a href="#1809">1809: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">isset</span>( <span class="php-var">$content</span>[<span class="php-quote">'comment_author'</span>] ) ) {
 </span><span id="1810" class="l"><a href="#1810">1810: </a>            <span class="php-var">$content</span>[<span class="php-quote">'comment_author'</span>] = <span class="php-quote">''</span>;
 </span><span id="1811" class="l"><a href="#1811">1811: </a>        }
-</span><span id="1812" class="l"><a href="#1812">1812: </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword1">isset</span>( <span class="php-var">$content</span>[<span class="php-quote">'comment_author_IP'</span>] ) ) {
+</span><span id="1812" class="l"><a href="#1812">1812: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">isset</span>( <span class="php-var">$content</span>[<span class="php-quote">'comment_author_IP'</span>] ) ) {
 </span><span id="1813" class="l"><a href="#1813">1813: </a>            <span class="php-var">$content</span>[<span class="php-quote">'comment_author_IP'</span>] = <span class="php-quote">''</span>;
 </span><span id="1814" class="l"><a href="#1814">1814: </a>        }
-</span><span id="1815" class="l"><a href="#1815">1815: </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword1">isset</span>( <span class="php-var">$content</span>[<span class="php-quote">'comment_author_email'</span>] ) ) {
+</span><span id="1815" class="l"><a href="#1815">1815: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">isset</span>( <span class="php-var">$content</span>[<span class="php-quote">'comment_author_email'</span>] ) ) {
 </span><span id="1816" class="l"><a href="#1816">1816: </a>            <span class="php-var">$content</span>[<span class="php-quote">'comment_author_email'</span>] = <span class="php-quote">''</span>;
 </span><span id="1817" class="l"><a href="#1817">1817: </a>        }
-</span><span id="1818" class="l"><a href="#1818">1818: </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword1">isset</span>( <span class="php-var">$content</span>[<span class="php-quote">'comment_author_url'</span>] ) ) {
+</span><span id="1818" class="l"><a href="#1818">1818: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">isset</span>( <span class="php-var">$content</span>[<span class="php-quote">'comment_author_url'</span>] ) ) {
 </span><span id="1819" class="l"><a href="#1819">1819: </a>            <span class="php-var">$content</span>[<span class="php-quote">'comment_author_url'</span>] = <span class="php-quote">''</span>;
 </span><span id="1820" class="l"><a href="#1820">1820: </a>        }
-</span><span id="1821" class="l"><a href="#1821">1821: </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword1">isset</span>( <span class="php-var">$content</span>[<span class="php-quote">'comment_type'</span>] ) ) {
+</span><span id="1821" class="l"><a href="#1821">1821: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">isset</span>( <span class="php-var">$content</span>[<span class="php-quote">'comment_type'</span>] ) ) {
 </span><span id="1822" class="l"><a href="#1822">1822: </a>            <span class="php-var">$content</span>[<span class="php-quote">'comment_type'</span>] = <span class="php-quote">''</span>;
 </span><span id="1823" class="l"><a href="#1823">1823: </a>        }
 </span><span id="1824" class="l"><a href="#1824">1824: </a>

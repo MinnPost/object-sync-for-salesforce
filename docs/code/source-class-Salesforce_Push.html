@@ -472,7 +472,7 @@
 </span><span id="387" class="l"><a href="#387">387: </a>
 </span><span id="388" class="l"><a href="#388">388: </a>                <span class="php-comment">// push drafts if the setting says so</span>
 </span><span id="389" class="l"><a href="#389">389: </a>                <span class="php-comment">// post status is draft, or post status is inherit and post type is not attachment</span>
-</span><span id="390" class="l"><a href="#390">390: </a>                <span class="php-keyword1">if</span> ( ( !<span class="php-keyword1">isset</span>( <span class="php-var">$mapping</span>[<span class="php-quote">'push_drafts'</span>] ) || <span class="php-var">$mapping</span>[<span class="php-quote">'push_drafts'</span>] !== <span class="php-quote">'1'</span> ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$object</span>[<span class="php-quote">'post_status'</span>] ) &amp;&amp; ( <span class="php-var">$object</span>[<span class="php-quote">'post_status'</span>] === <span class="php-quote">'draft'</span>  || ( <span class="php-var">$object</span>[<span class="php-quote">'post_status'</span>] === <span class="php-quote">'inherit'</span> &amp;&amp; <span class="php-var">$object</span>[<span class="php-quote">'post_type'</span>] !== <span class="php-quote">'attachment'</span> ) ) ) {
+</span><span id="390" class="l"><a href="#390">390: </a>                <span class="php-keyword1">if</span> ( ( ! <span class="php-keyword1">isset</span>( <span class="php-var">$mapping</span>[<span class="php-quote">'push_drafts'</span>] ) || <span class="php-var">$mapping</span>[<span class="php-quote">'push_drafts'</span>] !== <span class="php-quote">'1'</span> ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$object</span>[<span class="php-quote">'post_status'</span>] ) &amp;&amp; ( <span class="php-var">$object</span>[<span class="php-quote">'post_status'</span>] === <span class="php-quote">'draft'</span>  || ( <span class="php-var">$object</span>[<span class="php-quote">'post_status'</span>] === <span class="php-quote">'inherit'</span> &amp;&amp; <span class="php-var">$object</span>[<span class="php-quote">'post_type'</span>] !== <span class="php-quote">'attachment'</span> ) ) ) {
 </span><span id="391" class="l"><a href="#391">391: </a>                    <span class="php-comment">// skip this object if it is a draft and the fieldmap settings told us to ignore it</span>
 </span><span id="392" class="l"><a href="#392">392: </a>                    <span class="php-keyword1">continue</span>;
 </span><span id="393" class="l"><a href="#393">393: </a>                }
@@ -587,7 +587,7 @@
 </span><span id="502" class="l"><a href="#502">502: </a>
 </span><span id="503" class="l"><a href="#503">503: </a>                    }
 </span><span id="504" class="l"><a href="#504">504: </a>
-</span><span id="505" class="l"><a href="#505">505: </a>                    <span class="php-keyword1">if</span> ( !<span class="php-keyword1">isset</span>( <span class="php-var">$e</span> ) ) {
+</span><span id="505" class="l"><a href="#505">505: </a>                    <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">isset</span>( <span class="php-var">$e</span> ) ) {
 </span><span id="506" class="l"><a href="#506">506: </a>                        <span class="php-comment">// create log entry for successful delete if the result had no errors</span>
 </span><span id="507" class="l"><a href="#507">507: </a>                        <span class="php-var">$status</span> = <span class="php-quote">'success'</span>;
 </span><span id="508" class="l"><a href="#508">508: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
@@ -802,7 +802,7 @@
 </span><span id="717" class="l"><a href="#717">717: </a>                <span class="php-keyword1">return</span>;
 </span><span id="718" class="l"><a href="#718">718: </a>            }
 </span><span id="719" class="l"><a href="#719">719: </a>
-</span><span id="720" class="l"><a href="#720">720: </a>            <span class="php-keyword1">if</span> ( !<span class="php-keyword1">isset</span>( <span class="php-var">$salesforce_data</span> ) ) {
+</span><span id="720" class="l"><a href="#720">720: </a>            <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">isset</span>( <span class="php-var">$salesforce_data</span> ) ) {
 </span><span id="721" class="l"><a href="#721">721: </a>                <span class="php-comment">// if we didn't set $salesforce_data already, set it now to api call result</span>
 </span><span id="722" class="l"><a href="#722">722: </a>                <span class="php-var">$salesforce_data</span> = <span class="php-var">$result</span>[<span class="php-quote">'data'</span>];
 </span><span id="723" class="l"><a href="#723">723: </a>            }

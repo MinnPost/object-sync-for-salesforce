@@ -104,7 +104,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Salesforce_Rest_API.html#13-439" title="Go to source code"></a>
+			<b>Located at</b> <a href="source-class-Salesforce_Rest_API.html#13-448" title="Go to source code"></a>
 		<br>
 	</div>
 
@@ -190,7 +190,7 @@ This instance makes the class reusable by other plugins</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_logging">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#187-203" title="Go to source code">logging</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span> )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#187-204" title="Go to source code">logging</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span> )</code>
 
 		<div class="description short">
 			<p>Log events</p>
@@ -212,7 +212,7 @@ This instance makes the class reusable by other plugins</p>
 
 				<h4>Returns</h4>
 				<div class="list">
-					object
+					object<br>Instance of Salesforce_Logging
 				</div>
 
 
@@ -233,7 +233,7 @@ This instance makes the class reusable by other plugins</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_mappings">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#205-219" title="Go to source code">mappings</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$logging</var></span> )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#206-221" title="Go to source code">mappings</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$logging</var></span> )</code>
 
 		<div class="description short">
 			<p>Map the Salesforce and WordPress objects and fields to each other</p>
@@ -257,7 +257,7 @@ This instance makes the class reusable by other plugins</p>
 
 				<h4>Returns</h4>
 				<div class="list">
-					object
+					object<br>Instance of Salesforce_Mapping
 				</div>
 
 
@@ -278,7 +278,7 @@ This instance makes the class reusable by other plugins</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_wordpress">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#221-236" title="Go to source code">wordpress</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span> )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#223-239" title="Go to source code">wordpress</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span> )</code>
 
 		<div class="description short">
 			<p>Private helper to load methods for manipulating core WordPress data across the plugin</p>
@@ -304,7 +304,7 @@ This instance makes the class reusable by other plugins</p>
 
 				<h4>Returns</h4>
 				<div class="list">
-					object
+					object<br>Instance of Wordpress
 				</div>
 
 
@@ -325,7 +325,7 @@ This instance makes the class reusable by other plugins</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_get_api">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#238-269" title="Go to source code">salesforce_get_api</a>( )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#241-272" title="Go to source code">salesforce_get_api</a>( )</code>
 
 		<div class="description short">
 			<p>Public helper to load the Salesforce API and see if it is authenticated.
@@ -362,7 +362,7 @@ This is public so other plugins can access the same SF API instance</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_activate">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#271-284" title="Go to source code">activate</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span> )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#274-288" title="Go to source code">activate</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span> )</code>
 
 		<div class="description short">
 			<p>What to do upon activation of the plugin</p>
@@ -384,7 +384,7 @@ This is public so other plugins can access the same SF API instance</p>
 
 				<h4>Returns</h4>
 				<div class="list">
-					object
+					object<br>Instance of Wordpress_Salesforce_Activate
 				</div>
 
 
@@ -405,7 +405,7 @@ This is public so other plugins can access the same SF API instance</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_deactivate">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#286-299" title="Go to source code">deactivate</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#290-304" title="Go to source code">deactivate</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>What to do upon deactivation of the plugin</p>
@@ -429,7 +429,7 @@ This is public so other plugins can access the same SF API instance</p>
 
 				<h4>Returns</h4>
 				<div class="list">
-					object
+					object<br>Instance of Wordpress_Salesforce_Deactivate
 				</div>
 
 
@@ -450,7 +450,7 @@ This is public so other plugins can access the same SF API instance</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_push">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#302-321" title="Go to source code">push</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#307-327" title="Go to source code">push</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Methods to push data from WordPress to Salesforce</p>
@@ -484,7 +484,7 @@ This is public so other plugins can access the same SF API instance</p>
 
 				<h4>Returns</h4>
 				<div class="list">
-					object
+					object<br>Instance of Salesforce_Push
 				</div>
 
 
@@ -505,7 +505,7 @@ This is public so other plugins can access the same SF API instance</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_pull">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#323-341" title="Go to source code">pull</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#329-348" title="Go to source code">pull</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Methods to pull data from Salesforce to WordPress</p>
@@ -539,7 +539,7 @@ This is public so other plugins can access the same SF API instance</p>
 
 				<h4>Returns</h4>
 				<div class="list">
-					object
+					object<br>Instance of Salesforce_Pull
 				</div>
 
 
@@ -560,7 +560,7 @@ This is public so other plugins can access the same SF API instance</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_load_admin">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#343-368" title="Go to source code">load_admin</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$push</var></span>, <span>object <var>$pull</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#350-376" title="Go to source code">load_admin</a>( <span>object <var>&amp; $wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$push</var></span>, <span>object <var>$pull</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Load the admin class.
@@ -600,7 +600,8 @@ This also creates admin menu, unless the plugin that calls this library has indi
 
 				<h4>Returns</h4>
 				<div class="list">
-					object
+					object<br><p>$admin
+Instance of Wordpress_Salesforce_Admin</p>
 				</div>
 
 
@@ -621,7 +622,7 @@ This also creates admin menu, unless the plugin that calls this library has indi
 
 		<td class="name"><div>
 		<a class="anchor" href="#_plugin_action_links">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#370-384" title="Go to source code">plugin_action_links</a>( <span>array <var>$links</var></span>, <span>string <var>$file</var></span> )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#378-393" title="Go to source code">plugin_action_links</a>( <span>array <var>$links</var></span>, <span>string <var>$file</var></span> )</code>
 
 		<div class="description short">
 			<p>Display a Settings link on the main Plugins page</p>
@@ -641,7 +642,8 @@ This also creates admin menu, unless the plugin that calls this library has indi
 
 				<h4>Returns</h4>
 				<div class="list">
-					array<br>$links
+					array<br><p>$links
+These are the links that go with this plugin's entry</p>
 				</div>
 
 
@@ -662,7 +664,7 @@ This also creates admin menu, unless the plugin that calls this library has indi
 
 		<td class="name"><div>
 		<a class="anchor" href="#_admin_scripts_and_styles">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#387-395" title="Go to source code">admin_scripts_and_styles</a>( )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#396-404" title="Go to source code">admin_scripts_and_styles</a>( )</code>
 
 		<div class="description short">
 			<p>Admin styles. Load the CSS and JavaScript for the plugin's settings</p>
@@ -692,7 +694,7 @@ This also creates admin menu, unless the plugin that calls this library has indi
 
 		<td class="name"><div>
 		<a class="anchor" href="#_textdomain">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#397-404" title="Go to source code">textdomain</a>( )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#406-413" title="Go to source code">textdomain</a>( )</code>
 
 		<div class="description short">
 			<p>Load textdomain</p>
@@ -722,7 +724,7 @@ This also creates admin menu, unless the plugin that calls this library has indi
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_login_credentials">#</a>
-		<code><a href="source-class-Salesforce_Rest_API.html#406-436" title="Go to source code">get_login_credentials</a>( )</code>
+		<code><a href="source-class-Salesforce_Rest_API.html#415-445" title="Go to source code">get_login_credentials</a>( )</code>
 
 		<div class="description short">
 			<p>Get the pre-login Salesforce credentials.
