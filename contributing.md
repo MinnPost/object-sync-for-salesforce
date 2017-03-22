@@ -12,7 +12,7 @@ We welcome contributions and suggestions to help us improve this project.
 6. Pull requests should be assigned to:
     - [@jonathanstegall](http://github.com/jonathanstegall) (primary)
 
-If your changes are relevant to the [code documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/code.index.html), run `apigen generate` in the plugin's root directory to recreate it. You'll need to have [apigen](http://www.apigen.org/) installed and in your path to do this.
+If your changes are relevant to the [code documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/code/index.html), run `apigen generate` in the plugin's root directory to recreate it. You'll need to have [apigen](http://www.apigen.org/) installed and in your path to do this.
 
 Additionally, you can [create issues](https://github.com/minnpost/salesforce-rest-api/issues) on this repo to suggest changes or improvements. We actively add our own issues to the list, and comment on their progress.
 
