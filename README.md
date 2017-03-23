@@ -80,7 +80,7 @@ This class extends the [WP Logging Class](https://github.com/pippinsplugins/WP-L
 
 Map WordPress content (including users) to Salesforce fields, including field level mapping.
 
-1. This class defines important values for each triggering event (create, edit, delete from both WordPress and Salesforce), how to identify which direction an object should use (WordPress, Salesforce, or sync), and data tables in WordPress. This class is available to the `wordpress`, `salesforce`, `schedule`, `salesforce_push`, `salesforce_pull`, and `admin` classes.
+1. This class defines important values for each triggering event (create, edit, delete from both WordPress and Salesforce), how to identify which direction an object should use (WordPress, Salesforce, or sync), and data tables in WordPress. This class is available to the `wordpress`, schedule`, `salesforce_push`, `salesforce_pull`, and `admin` classes.
 2. There is a basic create/read/update/delete setup, including loading all results or a subset. Results can also be loaded by specific conditions, or by WordPress or Salesforce IDs.
 3. Each row includes an attribute for `wordpress_data_version` and `salesforce_data_version` that keep track of which system has been changed in order to keep the data synced.
 
