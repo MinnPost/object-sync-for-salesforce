@@ -73,8 +73,8 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 
         // create an option in the core schedules array for each one the plugin defines
         foreach ( $this->schedulable_classes as $key => $value ) {
-            $schedule_number = get_option( 'salesforce_api_' . $key . '_schedule_number', '', 0 );
-            $schedule_unit = get_option( 'salesforce_api_' . $key . '_schedule_unit', '', 0 );
+            $schedule_number = get_option( 'salesforce_api_' . $key . '_schedule_number', 0 );
+            $schedule_unit = get_option( 'salesforce_api_' . $key . '_schedule_unit', 0 );
 
             switch ( $schedule_unit ) {
                 case 'minutes':
