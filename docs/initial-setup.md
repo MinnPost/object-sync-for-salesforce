@@ -46,7 +46,7 @@ For purposes of this documentation, we'll assume that your name, as defined in S
 
 ### Create an App
 
-1. In Salesforce, go to Your Name > Setup > Create > Apps. In the Connected Apps section, click New to create a new app.
+1. In Salesforce, go to `Your Name > Setup`. Then on the left sidebar, under `App Setup`, click `Create > Apps`. In the **Connected Apps** section of this page, click New to create a new app.
 2. Enable OAuth Settings
 3. Set the callback URL to: `https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin&tab=authorize` (must use HTTPS).
 4. Select at least Perform requests on your behalf at any time' for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select 'Access and manage your data (api)' as one of these scopes.
