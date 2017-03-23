@@ -37,11 +37,11 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
     */
 
     public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name, $logging, $schedulable_classes ) {
-        
+
         $this->wpdb = &$wpdb;
         $this->version = $version;
         $this->login_credentials = $login_credentials;
-        $this->text_domain = $text_domain; 
+        $this->text_domain = $text_domain;
         $this->wordpress = $wordpress;
         $this->salesforce = $salesforce;
         $this->mappings = $mappings;
@@ -73,8 +73,8 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 
         // create an option in the core schedules array for each one the plugin defines
         foreach ( $this->schedulable_classes as $key => $value ) {
-            $schedule_number = get_option( 'salesforce_api_' . $key . '_schedule_number', '' );
-            $schedule_unit = get_option( 'salesforce_api_' . $key . '_schedule_unit', '' );
+            $schedule_number = get_option( 'salesforce_api_' . $key . '_schedule_number', '', 0 );
+            $schedule_unit = get_option( 'salesforce_api_' . $key . '_schedule_unit', '', 0 );
 
             switch ( $schedule_unit ) {
                 case 'minutes':
@@ -171,7 +171,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
      * @return void
      */
     public function use_schedule( $name = '' ) {
-        
+
         if ( $name !== '' ) {
             $schedule_name = $name;
         } else {
@@ -179,7 +179,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
         }
 
         $schedule_frequency = $this->get_schedule_frequency_key( $name );
-    	
+
 	    if (! wp_next_scheduled ( $schedule_name ) ) {
 			wp_schedule_event( time(), $schedule_frequency, $schedule_name );
 	    }
