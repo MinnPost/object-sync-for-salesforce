@@ -5,7 +5,7 @@
     if ( isset( $transient ) ) {
     ?>
     <input type="hidden" name="transient" value="<?php echo $transient; ?>" />
-    <?php    
+    <?php
     }
     ?>
     <input type="hidden" name="action" value="post_fieldmap" >
@@ -162,7 +162,7 @@
                             }
                             ?>
                         </select>
-                        
+
                     </td>
                     <td class="column-salesforce_field">
                         <select name="salesforce_field[<?php echo $key; ?>]" id="salesforce_field-<?php echo $key; ?>">
@@ -179,7 +179,7 @@
                             }
                             ?>
                         </select>
-                        
+
                     </td>
                     <td class="column-is_prematch">
                         <?php
@@ -222,7 +222,7 @@
                             $checked_wp_sf = '';
                             $checked_sync = ' checked'; // by default, start with Sync checked
                         }
-                        
+
                         ?>
                         <div class="radios">
                             <label><input type="radio" value="sf_wp" name="direction[<?php echo $key; ?>]" id="direction-<?php echo $key; ?>-sf-wp" <?php echo $checked_sf_wp; ?> required>  Salesforce to WordPress</label>
@@ -235,7 +235,7 @@
                     </td>
                 </tr>
                 <?php
-                    }   
+                    }
                 } elseif ( isset( $wordpress_object ) && isset( $salesforce_object ) ) {
                 ?>
                 <tr>
@@ -330,8 +330,8 @@
             }
             ?>
             <label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_create; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-create" <?php echo $wordpress_create_checked; ?>> WordPress create</label>
-            <label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_update; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-update" <?php echo $wordpress_update_checked; ?>>WordPress update</label>
-            <label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_delete; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-delete" <?php echo $wordpress_delete_checked; ?>>WordPress delete</label>
+            <label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_update; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-update" <?php echo $wordpress_update_checked; ?>> WordPress update</label>
+            <label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_delete; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-delete" <?php echo $wordpress_delete_checked; ?>> WordPress delete</label>
             <label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_create; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-create" <?php echo $salesforce_create_checked; ?>> Salesforce create</label>
             <label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_update; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-update" <?php echo $salesforce_update_checked; ?>> Salesforce update</label>
             <label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_delete; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-delete" <?php echo $salesforce_delete_checked; ?>> Salesforce delete</label>
