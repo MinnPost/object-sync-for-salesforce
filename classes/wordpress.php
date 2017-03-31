@@ -485,6 +485,8 @@ class Wordpress {
     *   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
     * @param array $params
     *   Values of the fields to set for the object.
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -497,7 +499,7 @@ class Wordpress {
     *
     * part of CRUD for WordPress objects
     */
-    public function object_upsert( $name, $key, $value, $methods = array(), $params, $push_drafts = false ) {
+    public function object_upsert( $name, $key, $value, $methods = array(), $params, $push_drafts = false, $check_only = false ) {
 
         $structure = $this->get_wordpress_table_structure( $name );
         $id_field = $structure['id_field'];
@@ -513,21 +515,21 @@ class Wordpress {
 
         switch ( $name ) {
             case 'user':
-                $result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
+                $result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
                 break;
             case 'post':
-                $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
+                $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
                 break;
             case 'attachment':
-                $result = $this->attachment_upsert( $key, $value, $methods, $params, $id_field );
+                $result = $this->attachment_upsert( $key, $value, $methods, $params, $id_field, $check_only );
                 break;
             case 'category':
             case 'tag':
             case 'post_tag':
-                $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $push_drafts );
+                $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $push_drafts, $check_only );
                 break;
             case 'comment':
-                $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
+                $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
                 break;
             default:
                 
@@ -543,7 +545,7 @@ class Wordpress {
 
                 // check to see if someone is calling the filter, and apply it if so
                 if ( !has_filter( 'salesforce_rest_api_upsert_custom_wordpress_item' ) ) {
-                    $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name );
+                    $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name, $check_only );
                 } else {
                     $result = apply_filters( 'salesforce_rest_api_upsert_custom_wordpress_item', array(
                         'key' => $key,
@@ -552,7 +554,8 @@ class Wordpress {
                         'params' => $params,
                         'id_field' => $id_field,
                         'push_drafts' => $push_drafts,
-                        'name' => $name
+                        'name' => $name,
+                        'check_only' => $check_only
                     ) );
                 }
 
@@ -802,6 +805,8 @@ class Wordpress {
     *   array of user data params
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not ID
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -810,7 +815,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false ) {
+    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $check_only = false ) {
 
         // if the key is user_email, we need to make it just email because that is how the wordpress method reads it
         $method = $methods['method_match'];
@@ -1060,6 +1065,8 @@ class Wordpress {
     * indicates whether we should match against draft posts
     * @param string $post_type
     *   optional string for custom post type, if applicable
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -1068,7 +1075,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $post_type = 'post' ) {
+    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $post_type = 'post', $check_only = false ) {
 
         $method = $methods['method_match'];
 
@@ -1328,6 +1335,8 @@ class Wordpress {
     *   array of attachment data params
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not ID
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -1336,7 +1345,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function attachment_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID' ) {
+    private function attachment_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $check_only = false ) {
 
         $method = $methods['method_match'];
 
@@ -1625,6 +1634,8 @@ class Wordpress {
     *   the taxonomy to which to add the term. this is required.
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not ID
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -1633,7 +1644,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $push_drafts = false ) {
+    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $push_drafts = false, $check_only = false ) {
         if ( $taxonomy === 'tag' ) {
             $taxonomy = 'post_tag';
         }
@@ -1871,6 +1882,8 @@ class Wordpress {
     *   array of comment data params
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not comment_ID
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -1879,7 +1892,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $push_drafts = false ) {
+    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $push_drafts = false, $check_only = false ) {
         $method = $methods['method_match'];
         if ( $method === 'get_comment' ) {
             $method = 'get_comments';
