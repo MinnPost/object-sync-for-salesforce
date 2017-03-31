@@ -823,8 +823,14 @@ class Wordpress {
             // this should give us the user object
             $user = $method( str_replace( 'user_', '', $key ), $value );
             if ( isset( $user->{$id_field} ) ) {
-                // user does exist after checking the matching value. we want its id
+                // user does exist after checking the matching value. we want its id so we can update it.
                 $user_id = $user->{$id_field};
+
+                if ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $user_id;
+                }
+
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
@@ -870,13 +876,18 @@ class Wordpress {
                 $username = $params['user_login']['value'];
             }
 
+            $existing_id = username_exists( $username ); // returns an id if there is a result
+
             // user does not exist after more checking. we want to create it
-            if ( null === username_exists( $username ) ) {
+            if ( null === $existing_id && false === $check_only ) {
                 $result = $this->user_create( $params );
                 return $result;
+            } elseif ( true === $check_only ) {
+                // we are just checking to see if there is a match
+                return $existing_id;
             } else {
-                // user does exist based on username. we want to update it.
-                $user_id = username_exists( $username );
+                // user does exist based on username, and we aren't doing a check only. we want to update the wp user here.
+                $user_id = $existing_id;
             }
 
         }
@@ -1106,6 +1117,12 @@ class Wordpress {
             if ( isset( $posts[0]->{$id_field} ) ) {
                 // post does exist after checking the matching value. we want its id
                 $post_id = $posts[0]->{$id_field};
+
+                if ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $post_id;
+                }
+
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
@@ -1141,9 +1158,33 @@ class Wordpress {
                 'method_read' => $methods['method_read']
             );
 
+            if ( isset( $params['post_title']['value'] ) ) {
+                $post_title = $params['post_title']['value'];
+            }
+            if ( isset( $params['post_content']['value'] ) ) {
+                $post_content = $params['post_content']['value'];
+            } else {
+                $post_content = '';
+            }
+            if ( isset( $params['post_date']['value'] ) ) {
+                $post_date = $params['post_date']['value'];
+            } else {
+                $post_date = '';
+            }
+
+            $existing_id = post_exists( $post_title, $post_content, $post_date ); // returns an id if there is a result
+
             // post does not exist after more checking. we want to create it
-            $result = $this->post_create( $params );
-            return $result;
+            if ( null === $existing_id && false === $check_only ) {
+                $result = $this->post_create( $params );
+                return $result;
+            } elseif ( true === $check_only ) {
+                // we are just checking to see if there is a match
+                return $existing_id;
+            } else {
+                // post does exist, and we aren't doing a check only. we want to update the wp post here.
+                $post_id = $existing_id;
+            }
 
         }
 
@@ -1372,6 +1413,12 @@ class Wordpress {
             if ( isset( $posts[0]->{$id_field} ) ) {
                 // attachment does exist after checking the matching value. we want its id
                 $attachment_id = $posts[0]->{$id_field};
+
+                if ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $attachment_id;
+                }
+
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
@@ -1407,9 +1454,13 @@ class Wordpress {
                 'method_read' => $methods['method_read']
             );
 
+            // there does not seem to be an attachment_exists method to use here
+
             // attachment does not exist after more checking. we want to create it
-            $result = $this->attachment_create( $params );
-            return $result;
+            if ( false === $check_only ) {
+                $result = $this->attachment_create( $params );
+                return $result;
+            }
 
         }
 
@@ -1655,6 +1706,12 @@ class Wordpress {
             if ( isset( $term->{$id_field} ) ) {
                 // term does exist after checking the matching value. we want its id
                 $term_id = $term->{$id_field};
+
+                if ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $term_id;
+                }
+
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
@@ -1679,8 +1736,35 @@ class Wordpress {
                     'method_modify' => $method,
                     'method_read' => $methods['method_read']
                 );
-                $result = $this->term_create( $params, $taxonomy, $id_field );
-                return $result;
+
+                if ( isset( $params['term']['value'] ) ) {
+                    $term = $params['term']['value'];
+                }
+                if ( isset( $params['taxonomy']['value'] ) ) {
+                    $taxonomy = $params['taxonomy']['value'];
+                } else {
+                    $taxonomy = '';
+                }
+                if ( isset( $params['parent']['value'] ) ) {
+                    $parent = $params['parent']['value'];
+                } else {
+                    $parent = '';
+                }
+
+                $existing_id = term_exists( $term, $taxonomy, $parent ); // returns an id if there is a result
+
+                // term does not exist after more checking. we want to create it
+                if ( null === $existing_id && false === $check_only ) {
+                    $result = $this->term_create( $params, $taxonomy, $id_field );
+                    return $result;
+                } elseif ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $existing_id;
+                } else {
+                    // term does exist, and we aren't doing a check only. we want to update the wp term here.
+                    $term_id = $existing_id;
+                }               
+
             }
         }
 
@@ -1912,6 +1996,12 @@ class Wordpress {
                 $comment = $comments[0];
                 // comment does exist after checking the matching value. we want its id
                 $comment_id = $comment->{$id_field};
+
+                if ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $comment_id;
+                }
+
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
@@ -1951,8 +2041,33 @@ class Wordpress {
                     'method_modify' => $method,
                     'method_read' => $methods['method_read']
                 );
-                $result = $this->comment_create( $params, $id_field );
-                return $result;
+
+                if ( isset( $params['comment_author']['value'] ) ) {
+                    $comment_author = $params['comment_author']['value'];
+                }
+                if ( isset( $params['comment_date']['value'] ) ) {
+                    $comment_date = $params['comment_date']['value'];
+                }
+                if ( isset( $params['timezone']['value'] ) ) {
+                    $timezone = $params['timezone']['value'];
+                } else {
+                    $timezone = '';
+                }
+
+                $existing_id = comment_exists( $comment_author, $comment_date, $timezone ); // returns an id if there is a result
+
+                // comment does not exist after more checking. we want to create it
+                if ( null === $existing_id && false === $check_only ) {
+                    $result = $this->comment_create( $params, $id_field );
+                    return $result;
+                } elseif ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $existing_id;
+                } else {
+                    // comment does exist, and we aren't doing a check only. we want to update the wp term here.
+                    $comment_id = $existing_id;
+                }
+
             }
         }
 
