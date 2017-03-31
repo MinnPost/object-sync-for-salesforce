@@ -650,15 +650,6 @@ class Salesforce_Pull {
 
 			if ( $is_new === true && ( $sf_sync_trigger == $this->mappings->sync_sf_create ) ) {
 
-				// right here we should set the pulling transient
-				// this means we have to create the mapping object here as well, and update it with the correct IDs after successful response
-				// create the mapping object between the rows
-				$mapping_object_id = $this->create_object_map( $object, 0, $mapping );
-				set_transient( 'salesforce_pulling_' . $mapping_object_id, 1, $seconds );
-				set_transient( 'salesforce_pulling_object_id', $mapping_object_id );
-				$mapping_object = $this->mappings->get_object_maps( array( 'id' => $mapping_object_id ) );
-
-
 				// setup SF record type. CampaignMember objects get their Campaign's type
 				// i am still a bit confused about this
 				// we should store this as a meta field on each object, if it meets these criteria
@@ -691,6 +682,8 @@ class Salesforce_Pull {
 
 					if ( isset( $prematch_field_salesforce ) || isset( $key_field_salesforce ) || $wordpress_id !== null ) {
 
+						$op = 'Upsert';
+
 						// if either prematch criteria exists, make the values queryable
 						if ( isset($prematch_field_salesforce ) ) {
 							$upsert_key = $prematch_field_wordpress;
@@ -708,12 +701,46 @@ class Salesforce_Pull {
 							$upsert_methods = array();
 						}
 
-						$op = 'Upsert';
+						// with the flag at the end, upsert returns a $wordpress_id only
+						// we can then check to see if it has a mapping object
+						$wordpress_id = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['push_drafts'], true );
 
-						$result = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['push_drafts'] );
+						// find out if there is a mapping object for this wordpress object already
+						$mapping_object = $this->mappings->get_object_maps(
+							array(
+								'wordpress_id' => $wordpress_id,
+								'wordpress_object' => $salesforce_mapping['wordpress_object']
+							)
+						);
+
+						// there is already a mapping object. don't change the wordpress data to match this new salesforce record, but log it
+						if ( isset( $mapping_object['id'] ) ) {
+							// set the transient so that salesforce_push doesn't start doing stuff, then return out of here
+							set_transient( 'salesforce_pulling_' . $mapping_object['id'], 1, $seconds );
+							set_transient( 'salesforce_pulling_object_id', $mapping_object['id'] );
+
+							error_log('going to create a log entry here but do nothing to wordpress data');
+							// create log entry
+							return;
+						}
+
+						// now we can create the object in wp if we've gotten to this point
+						$mapping_object_id = $this->create_object_map( $object, 0, $mapping );
+						set_transient( 'salesforce_pulling_' . $mapping_object_id, 1, $seconds );
+						set_transient( 'salesforce_pulling_object_id', $mapping_object_id );
+						$mapping_object = $this->mappings->get_object_maps( array( 'id' => $mapping_object_id ) );
+
+						$result = $this->wordpress->object_create( $salesforce_mapping['wordpress_object'], $params );
 
 					} else {
 						// No key or prematch field exists on this field map object, create a new object in WordPress.
+
+						// also create the mapping object here since we know it is not an upsert
+						$mapping_object_id = $this->create_object_map( $object, 0, $mapping );
+						set_transient( 'salesforce_pulling_' . $mapping_object_id, 1, $seconds );
+						set_transient( 'salesforce_pulling_object_id', $mapping_object_id );
+						$mapping_object = $this->mappings->get_object_maps( array( 'id' => $mapping_object_id ) );
+
 						$op = 'Create';
 						$result = $this->wordpress->object_create( $salesforce_mapping['wordpress_object'], $params );
 					}
