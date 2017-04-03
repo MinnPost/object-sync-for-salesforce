@@ -719,7 +719,34 @@ class Salesforce_Pull {
 							set_transient( 'salesforce_pulling_' . $mapping_object['id'], 1, $seconds );
 							set_transient( 'salesforce_pulling_object_id', $mapping_object['id'] );
 
-							error_log('going to create a log entry here but do nothing to wordpress data');
+							// create log entry to indicate that nothing happened
+							$status = 'notice';
+
+							$title = ucfirst( $status ) . ': Because object map ' . $mapping_object['id'] . ' already exists, WordPress ' . $salesforce_mapping['wordpress_object'] . ' ' . $wordpress_id . ' was not mapped to Salesforce Id ' . $object['Id'];
+
+							$body = 'The WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ' . $structure['id_field'] . ' of ' . $wordpress_id . ' is already mapped to the Salesforce ' . $salesforce_mapping['salesforce_object'] . ' with Id of ' . $mapping_object['salesforce_id'] . ' in the mapping object with id of ' . $mapping_object['id'] . '. The Salesforce ' . $salesforce_mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ' was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing user data without user intention.';
+
+							if ( isset( $this->logging ) ) {
+								$logging = $this->logging;
+							} elseif ( class_exists( 'Salesforce_Logging' ) ) {
+								$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+							}
+
+							// if we know the wordpress object id we can put it in there
+							if ( $wordpress_id !== null ) {
+								$parent = $wordpress_id;
+							} else {
+								$parent = 0;
+							}
+
+							$logging->setup(
+								__( $title, $this->text_domain ),
+								$body,
+								$sf_sync_trigger,
+								$parent,
+								$status
+							);
+
 							// create log entry
 							return;
 						}
