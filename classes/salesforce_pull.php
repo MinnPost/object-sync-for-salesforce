@@ -703,7 +703,10 @@ class Salesforce_Pull {
 
 						// with the flag at the end, upsert returns a $wordpress_id only
 						// we can then check to see if it has a mapping object
-						$wordpress_id = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['push_drafts'], true );
+						// we should only do this if the above hook didn't already set the $wordpress_id
+						if ( $wordpress_id === null ) {
+							$wordpress_id = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['push_drafts'], true );
+						}
 
 						// find out if there is a mapping object for this wordpress object already
 						$mapping_object = $this->mappings->get_object_maps(
