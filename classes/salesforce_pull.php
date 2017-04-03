@@ -747,7 +747,7 @@ class Salesforce_Pull {
 								$status
 							);
 
-							// create log entry
+							// exit out of here without saving any data in wordpress
 							return;
 						}
 
