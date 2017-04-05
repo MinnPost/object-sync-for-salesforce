@@ -239,9 +239,12 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
      * Checks whether data exists within the queue and that
      * the process is not already running.
      */
-    public function maybe_handle( $already_checked = false, $ajax = false ) {
+    public function maybe_handle( $already_checked = false, $api = false ) {
         if ( $this->is_process_running() ) {
             // Background process already running.
+            if ( $api === true ) {
+                return true;
+            }
             wp_die();
         }
 
@@ -255,16 +258,19 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
             $this->check_for_data();
         }
 
-        if ( $this->is_queue_empty() ) {
+        if ( $this->is_queue_empty() && $api === false ) {
             // No data to process.
             wp_die();
-        }
-
-        if ( $ajax === true ) {
-            check_ajax_referer( $this->identifier, 'nonce' );
+        } elseif ( $this->is_queue_empty() && $api === true ) {
+            return true;
         }
 
         $this->handle();
+
+        if ( $api === true ) {
+            return true;
+        }
+
         wp_die();
     }
 
