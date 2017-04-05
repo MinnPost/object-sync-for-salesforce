@@ -67,34 +67,82 @@ class Salesforce_Pull {
 
 	/**
 	* Create the action hooks based on what object maps exist from the admin settings
+	* route is http://example.com/wp-json/salesforce-rest-api/pull/ plus params we decide to accept
 	*
 	*/
 	private function add_actions() {
-		add_action( 'wp_ajax_salesforce_pull_webhook', array( $this, 'salesforce_pull_webhook' ) );
+		add_action( 'rest_api_init', function () {
+			register_rest_route( $this->text_domain . '/v1', '/pull/',
+				array(
+					'methods' => 'GET',
+					'callback' => array( $this, 'salesforce_pull_webhook' ),
+				)
+			);
+			register_rest_route( $this->text_domain . '/v1', '/pull/' . '/(?P<id>[\d]+)',
+				array(
+					'methods' => 'POST',
+					'callback' => array( $this, 'manual_pull' ),
+				)
+			);
+		}
+		);
 	}
 
 	/**
-	* Ajax callback for salesforce pull. Returns status of 200 for successful
+	* REST API callback for salesforce pull. Returns status of 200 for successful
 	* attempt or 403 for a failed pull attempt (SF not authorized, threshhold
 	* reached, etc.
-	* this is the ajax callback; not a cron run
+	*
+	* @param object $request
+	*	This is a merged object of all the arguments from the API request
+	*
 	*/
-	public function salesforce_pull_webhook() {
+	public function salesforce_pull_webhook( WP_REST_Request $request ) {
 
-		if ( $this->salesforce_pull() === true ) {
-			$code = '200';			
+		/* accessing params:
+
+		// You can access parameters via direct array access on the object:
+		$param = $request['some_param'];
+
+		// Or via the helper method:
+		$param = $request->get_param( 'some_param' );
+
+		// You can get the combined, merged set of parameters:
+		$parameters = $request->get_params();
+
+		// The individual sets of parameters are also available, if needed:
+		$parameters = $request->get_url_params();
+		$parameters = $request->get_query_params();
+		$parameters = $request->get_body_params();
+		$parameters = $request->get_json_params();
+		$parameters = $request->get_default_params();
+
+		// Uploads aren't merged in, but can be accessed separately:
+		$parameters = $request->get_file_params();
+
+		*/
+		// run a pull request and then run the schedule if anything is in there
+		$data = $this->salesforce_pull();
+
+		// salesforce_pull currently returns true if it runs successfully
+		if ( true === $data ) {
+			$code = '201';
+			error_log('run');
 			// check to see if anything is in the queue and handle it if it is
-			$this->schedule->maybe_handle();
-
+			$this->schedule->maybe_handle( false, true );
+			error_log('ran');
 		} else {
 			$code = '403';
 		}
 
-		if ( ! empty( $_POST ) ) {
-			wp_send_json_success( $code );
-		} else {
-			return $code;
-		}
+		// Create the response object
+		$response = new WP_REST_Response( $data );
+		$response->set_status( $code );
+
+		print_r($response);
+
+		// Add a custom header
+		//$response->header( 'Location', 'https://example.com/' );
 
 	}
 
