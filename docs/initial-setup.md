@@ -68,6 +68,8 @@ After you save these settings, click Continue and you'll see the values for your
 
 ![Salesforce New Connected App settings](./assets/img/screenshots/02-salesforce-app-values.png)
 
+**Note:** it can take a few minutes for the app to be fully set up in Salesforce. If you get a `error=invalid_client_id&error_description=client%20identifier%20invalid` URL when you try to authorize with WordPress in the steps below, wait a few minutes and try again.
+
 ## Connect the plugin to Salesforce
 
 ### Settings

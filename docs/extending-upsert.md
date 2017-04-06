@@ -52,5 +52,3 @@ function find_sf_object_match( $salesforce_id, $wordpress_object, $mapping = arr
 }
 ```
 
-
-salesforce_rest_api_upsert_custom_wordpress_item (should be somewhere else though)
