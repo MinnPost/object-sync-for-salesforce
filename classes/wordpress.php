@@ -485,6 +485,10 @@ class Wordpress {
     *   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
     * @param array $params
     *   Values of the fields to set for the object.
+    * @param bool $push_drafts
+    *   Whether to save WordPress drafts when pushing to Salesforce
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -497,7 +501,7 @@ class Wordpress {
     *
     * part of CRUD for WordPress objects
     */
-    public function object_upsert( $name, $key, $value, $methods = array(), $params, $push_drafts = false ) {
+    public function object_upsert( $name, $key, $value, $methods = array(), $params, $push_drafts = false, $check_only = false ) {
 
         $structure = $this->get_wordpress_table_structure( $name );
         $id_field = $structure['id_field'];
@@ -513,21 +517,21 @@ class Wordpress {
 
         switch ( $name ) {
             case 'user':
-                $result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
+                $result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
                 break;
             case 'post':
-                $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
+                $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
                 break;
             case 'attachment':
-                $result = $this->attachment_upsert( $key, $value, $methods, $params, $id_field );
+                $result = $this->attachment_upsert( $key, $value, $methods, $params, $id_field, $check_only );
                 break;
             case 'category':
             case 'tag':
             case 'post_tag':
-                $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $push_drafts );
+                $result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $push_drafts, $check_only );
                 break;
             case 'comment':
-                $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $push_drafts );
+                $result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
                 break;
             default:
                 
@@ -543,7 +547,7 @@ class Wordpress {
 
                 // check to see if someone is calling the filter, and apply it if so
                 if ( !has_filter( 'salesforce_rest_api_upsert_custom_wordpress_item' ) ) {
-                    $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name );
+                    $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name, $check_only );
                 } else {
                     $result = apply_filters( 'salesforce_rest_api_upsert_custom_wordpress_item', array(
                         'key' => $key,
@@ -552,7 +556,8 @@ class Wordpress {
                         'params' => $params,
                         'id_field' => $id_field,
                         'push_drafts' => $push_drafts,
-                        'name' => $name
+                        'name' => $name,
+                        'check_only' => $check_only
                     ) );
                 }
 
@@ -802,6 +807,10 @@ class Wordpress {
     *   array of user data params
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not ID
+    * @param bool $push_drafts
+    *   Whether to save WordPress drafts when pushing to Salesforce
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -810,7 +819,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false ) {
+    private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $check_only = false ) {
 
         // if the key is user_email, we need to make it just email because that is how the wordpress method reads it
         $method = $methods['method_match'];
@@ -818,8 +827,14 @@ class Wordpress {
             // this should give us the user object
             $user = $method( str_replace( 'user_', '', $key ), $value );
             if ( isset( $user->{$id_field} ) ) {
-                // user does exist after checking the matching value. we want its id
+                // user does exist after checking the matching value. we want its id so we can update it.
                 $user_id = $user->{$id_field};
+
+                if ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $user_id;
+                }
+
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
@@ -865,13 +880,18 @@ class Wordpress {
                 $username = $params['user_login']['value'];
             }
 
+            $existing_id = username_exists( $username ); // returns an id if there is a result
+
             // user does not exist after more checking. we want to create it
-            if ( null === username_exists( $username ) ) {
+            if ( null === $existing_id && false === $check_only ) {
                 $result = $this->user_create( $params );
                 return $result;
+            } elseif ( true === $check_only ) {
+                // we are just checking to see if there is a match
+                return $existing_id;
             } else {
-                // user does exist based on username. we want to update it.
-                $user_id = username_exists( $username );
+                // user does exist based on username, and we aren't doing a check only. we want to update the wp user here.
+                $user_id = $existing_id;
             }
 
         }
@@ -1060,6 +1080,8 @@ class Wordpress {
     * indicates whether we should match against draft posts
     * @param string $post_type
     *   optional string for custom post type, if applicable
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -1068,7 +1090,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $post_type = 'post' ) {
+    private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $post_type = 'post', $check_only = false ) {
 
         $method = $methods['method_match'];
 
@@ -1099,6 +1121,12 @@ class Wordpress {
             if ( isset( $posts[0]->{$id_field} ) ) {
                 // post does exist after checking the matching value. we want its id
                 $post_id = $posts[0]->{$id_field};
+
+                if ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $post_id;
+                }
+
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
@@ -1134,9 +1162,33 @@ class Wordpress {
                 'method_read' => $methods['method_read']
             );
 
+            if ( isset( $params['post_title']['value'] ) ) {
+                $post_title = $params['post_title']['value'];
+            }
+            if ( isset( $params['post_content']['value'] ) ) {
+                $post_content = $params['post_content']['value'];
+            } else {
+                $post_content = '';
+            }
+            if ( isset( $params['post_date']['value'] ) ) {
+                $post_date = $params['post_date']['value'];
+            } else {
+                $post_date = '';
+            }
+
+            $existing_id = post_exists( $post_title, $post_content, $post_date ); // returns an id if there is a result
+
             // post does not exist after more checking. we want to create it
-            $result = $this->post_create( $params );
-            return $result;
+            if ( null === $existing_id && false === $check_only ) {
+                $result = $this->post_create( $params );
+                return $result;
+            } elseif ( true === $check_only ) {
+                // we are just checking to see if there is a match
+                return $existing_id;
+            } else {
+                // post does exist, and we aren't doing a check only. we want to update the wp post here.
+                $post_id = $existing_id;
+            }
 
         }
 
@@ -1328,6 +1380,8 @@ class Wordpress {
     *   array of attachment data params
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not ID
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -1336,7 +1390,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function attachment_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID' ) {
+    private function attachment_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $check_only = false ) {
 
         $method = $methods['method_match'];
 
@@ -1363,6 +1417,12 @@ class Wordpress {
             if ( isset( $posts[0]->{$id_field} ) ) {
                 // attachment does exist after checking the matching value. we want its id
                 $attachment_id = $posts[0]->{$id_field};
+
+                if ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $attachment_id;
+                }
+
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
@@ -1398,9 +1458,13 @@ class Wordpress {
                 'method_read' => $methods['method_read']
             );
 
+            // there does not seem to be an attachment_exists method to use here
+
             // attachment does not exist after more checking. we want to create it
-            $result = $this->attachment_create( $params );
-            return $result;
+            if ( false === $check_only ) {
+                $result = $this->attachment_create( $params );
+                return $result;
+            }
 
         }
 
@@ -1625,6 +1689,10 @@ class Wordpress {
     *   the taxonomy to which to add the term. this is required.
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not ID
+    * @param bool $push_drafts
+    *   Whether to save WordPress drafts when pushing to Salesforce
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -1633,7 +1701,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $push_drafts = false ) {
+    private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $push_drafts = false, $check_only = false ) {
         if ( $taxonomy === 'tag' ) {
             $taxonomy = 'post_tag';
         }
@@ -1644,6 +1712,12 @@ class Wordpress {
             if ( isset( $term->{$id_field} ) ) {
                 // term does exist after checking the matching value. we want its id
                 $term_id = $term->{$id_field};
+
+                if ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $term_id;
+                }
+
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
@@ -1668,8 +1742,35 @@ class Wordpress {
                     'method_modify' => $method,
                     'method_read' => $methods['method_read']
                 );
-                $result = $this->term_create( $params, $taxonomy, $id_field );
-                return $result;
+
+                if ( isset( $params['term']['value'] ) ) {
+                    $term = $params['term']['value'];
+                }
+                if ( isset( $params['taxonomy']['value'] ) ) {
+                    $taxonomy = $params['taxonomy']['value'];
+                } else {
+                    $taxonomy = '';
+                }
+                if ( isset( $params['parent']['value'] ) ) {
+                    $parent = $params['parent']['value'];
+                } else {
+                    $parent = '';
+                }
+
+                $existing_id = term_exists( $term, $taxonomy, $parent ); // returns an id if there is a result
+
+                // term does not exist after more checking. we want to create it
+                if ( null === $existing_id && false === $check_only ) {
+                    $result = $this->term_create( $params, $taxonomy, $id_field );
+                    return $result;
+                } elseif ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $existing_id;
+                } else {
+                    // term does exist, and we aren't doing a check only. we want to update the wp term here.
+                    $term_id = $existing_id;
+                }               
+
             }
         }
 
@@ -1871,6 +1972,10 @@ class Wordpress {
     *   array of comment data params
     * @param string $id_field
     *   optional string of what the ID field is, if it is ever not comment_ID
+    * @param bool $push_drafts
+    *   Whether to save WordPress drafts when pushing to Salesforce
+    * @param bool $check_only
+    *   Allows this method to only check for matching records, instead of making any data changes
     *
     * @return array
     *   data:
@@ -1879,7 +1984,7 @@ class Wordpress {
     *   "errors" : [ ],
     *
     */
-    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $push_drafts = false ) {
+    private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $push_drafts = false, $check_only = false ) {
         $method = $methods['method_match'];
         if ( $method === 'get_comment' ) {
             $method = 'get_comments';
@@ -1899,6 +2004,12 @@ class Wordpress {
                 $comment = $comments[0];
                 // comment does exist after checking the matching value. we want its id
                 $comment_id = $comment->{$id_field};
+
+                if ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $comment_id;
+                }
+
                 // on the prematch fields, we specify the method_update param
                 if ( isset( $methods['method_update'] ) ) {
                     $method = $methods['method_update'];
@@ -1938,8 +2049,33 @@ class Wordpress {
                     'method_modify' => $method,
                     'method_read' => $methods['method_read']
                 );
-                $result = $this->comment_create( $params, $id_field );
-                return $result;
+
+                if ( isset( $params['comment_author']['value'] ) ) {
+                    $comment_author = $params['comment_author']['value'];
+                }
+                if ( isset( $params['comment_date']['value'] ) ) {
+                    $comment_date = $params['comment_date']['value'];
+                }
+                if ( isset( $params['timezone']['value'] ) ) {
+                    $timezone = $params['timezone']['value'];
+                } else {
+                    $timezone = '';
+                }
+
+                $existing_id = comment_exists( $comment_author, $comment_date, $timezone ); // returns an id if there is a result
+
+                // comment does not exist after more checking. we want to create it
+                if ( null === $existing_id && false === $check_only ) {
+                    $result = $this->comment_create( $params, $id_field );
+                    return $result;
+                } elseif ( true === $check_only ) {
+                    // we are just checking to see if there is a match
+                    return $existing_id;
+                } else {
+                    // comment does exist, and we aren't doing a check only. we want to update the wp term here.
+                    $comment_id = $existing_id;
+                }
+
             }
         }
 
