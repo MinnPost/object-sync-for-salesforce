@@ -103,7 +103,7 @@ class Salesforce_Rest_API {
 	*
 	*/
 	static public function get_instance() {
-		if ( self::$instance === null ) {
+		if ( null === self::$instance ) {
 			self::$instance = new Salesforce_Rest_API();
 		}
 		return self::$instance;
@@ -181,7 +181,7 @@ class Salesforce_Rest_API {
 		$this->pull = $this->pull( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull, $this->logging, $this->schedulable_classes );
-		
+
 	}
 
 	/**
