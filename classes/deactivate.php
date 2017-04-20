@@ -85,6 +85,7 @@ class Wordpress_Salesforce_Deactivate {
         // for each role that we have, remove the configure salesforce capability
         if ( null !== $roles ) {
             foreach ( $roles as $role ) {
+                $role = get_role( $role );
                 $role->remove_cap( 'configure_salesforce' );
             }
         }
