@@ -104,7 +104,7 @@ module.exports = function(grunt) {
         src: [
             '<%= dir.js %>/src/admin.js'
         ],
-        dest: '<%= dir.js %>/salesforce-rest-api-admin.js'
+        dest: '<%= dir.js %>/object-sync-for-salesforce-admin.js'
       },
     },
 
@@ -113,15 +113,15 @@ module.exports = function(grunt) {
             options: {
               browsers: ['last 2 versions']
             },
-            src: '<%= dir.css %>/salesforce-rest-api-admin.css',
-            dest: '<%= dir.css %>/salesforce-rest-api-admin.css'
+            src: '<%= dir.css %>/object-sync-for-salesforce-admin.css',
+            dest: '<%= dir.css %>/object-sync-for-salesforce-admin.css'
         },
         dist: {
             options: {
               browsers: ['last 2 versions']
             },
-            src: '<%= dir.css %>/salesforce-rest-api-admin.css',
-            dest: '<%= dir.css %>/salesforce-rest-api-admin.css'
+            src: '<%= dir.css %>/object-sync-for-salesforce-admin.css',
+            dest: '<%= dir.css %>/object-sync-for-salesforce-admin.css'
         }
     },
 
@@ -148,7 +148,7 @@ module.exports = function(grunt) {
       // Minify js files in js/src/
       dist: {
         src: ['<%= concat.js.dest %>'],
-        dest: '<%= dir.js %>/salesforce-rest-api-admin.min.js'
+        dest: '<%= dir.js %>/object-sync-for-salesforce-admin.min.js'
       },
     }
 
