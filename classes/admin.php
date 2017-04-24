@@ -137,8 +137,8 @@ class Wordpress_Salesforce_Admin {
 	*
 	*/
 	public function create_admin_menu() {
-		$title = __('Salesforce','salesforce-api');
-		add_options_page( $title, $title, 'configure_salesforce', 'salesforce-api-admin', array( $this, 'show_admin_page', ) );
+		$title = __('Object Sync for Salesforce', $this->text_domain);
+		add_options_page( $title, $title, 'configure_salesforce', 'object-sync-salesforce-admin', array( $this, 'show_admin_page', ) );
 	}
 
 	/**
@@ -190,7 +190,7 @@ class Wordpress_Salesforce_Admin {
 						} elseif ( is_object ( $this->salesforce['sfapi'] ) === true && isset( $consumer_key ) && isset( $consumer_secret ) ) {
 							echo '<p><a class="button button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
 						} else {
-							$message = __( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="' . get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=settings' ) . '">Settings</a> tab to add them.', $this->text_domain );
+							$message = __( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="' . get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=settings' ) . '">Settings</a> tab to add them.', $this->text_domain );
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
 						}
 						break;
@@ -198,8 +198,8 @@ class Wordpress_Salesforce_Admin {
 						if ( isset( $_GET['method'] ) ) {
 
 							$method = esc_attr( $_GET['method'] );
-							$error_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps&method=' . $method );
-							$success_url = get_admin_url( null, 'options-general.php?page=salesforce-api-admin&tab=fieldmaps' );
+							$error_url = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=' . $method );
+							$success_url = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps' );
 
 							if ( isset( $_GET['transient'] ) ) {
 								$transient = esc_html( $_GET['transient'] );
@@ -580,7 +580,7 @@ class Wordpress_Salesforce_Admin {
 					'args' => array(
 						'label' => 'Clear this queue',
 						'desc' => '',
-						'url' => '?page=salesforce-api-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key,
+						'url' => '?page=object-sync-salesforce-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key,
 						'link_class' => 'button button-secondary'
 					),
 				),
@@ -1385,7 +1385,7 @@ class Wordpress_Salesforce_Admin {
 		foreach ( $tabs as $tab_key => $tab_caption ) {
 			$active = $current_tab == $tab_key ? 'nav-tab-active' : '';
 			if ( 'settings' === $tab_key || ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) ) {
-				echo '<a class="nav-tab ' . $active . '" href="?page=salesforce-api-admin&tab=' . $tab_key . '">' . $tab_caption . '</a>';
+				echo '<a class="nav-tab ' . $active . '" href="?page=object-sync-salesforce-admin&tab=' . $tab_key . '">' . $tab_caption . '</a>';
 			}
 
 		}
