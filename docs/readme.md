@@ -1,6 +1,6 @@
-# Salesforce REST API Documentation
+# Object Sync for Salesforce Documentation
 
-This is the full documentation for this plugin, extending the information in [the readme](https://github.com/MinnPost/salesforce-rest-api/blob/master/README.md).
+This is the full documentation for this plugin, extending the information in [the readme](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/README.md).
 
 ## Table of Contents
 
@@ -71,4 +71,4 @@ This is the full documentation for this plugin, extending the information in [th
 
     This is an auto generated system that documents all of the PHP classes in the plugin. This is a good way for PHP developers to look through what the code is doing.
 
-    If you've downloaded the plugin, you can browse this code documentation at `https://<your site>/wp-content/plugins/salesforce-rest-api/docs/code`.
+    If you've downloaded the plugin, you can browse this code documentation at `https://<your site>/wp-content/plugins/object-sync-for-salesforce/docs/code`.
