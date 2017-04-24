@@ -27,7 +27,7 @@ class Wordpress_Salesforce_Activate {
     public function __construct( $wpdb, $version, $text_domain ) {
         $this->wpdb = &$wpdb;
         $this->version = $version;
-        $this->installed_version = get_option( 'salesforce_rest_api_db_version', '' );
+        $this->installed_version = get_option( 'object_sync_for_salesforce_db_version', '' );
         register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'wordpress_salesforce_tables' ) );
         register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'add_roles_capabilities' ) );
         add_action( 'plugins_loaded', array( $this, 'wordpress_salesforce_update_db_check' ) );
@@ -85,7 +85,7 @@ class Wordpress_Salesforce_Activate {
         dbDelta( $field_map_sql );
         dbDelta( $object_map_sql );
 
-        update_option( 'salesforce_rest_api_db_version', $this->version );
+        update_option( 'object_sync_for_salesforce_db_version', $this->version );
 
     }
 
@@ -95,7 +95,7 @@ class Wordpress_Salesforce_Activate {
     *
     */ 
     public function wordpress_salesforce_update_db_check() {
-        if ( get_site_option( 'salesforce_rest_api_db_version' ) != $this->version ) {
+        if ( get_site_option( 'object_sync_for_salesforce_db_version' ) != $this->version ) {
             $this->wordpress_salesforce_tables();
         }
     }

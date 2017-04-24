@@ -43,7 +43,7 @@ class Wordpress_Salesforce_Deactivate {
         $object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
         $this->wpdb->query( 'DROP TABLE IF EXISTS ' . $field_map_table );
         $this->wpdb->query( 'DROP TABLE IF EXISTS ' . $object_map_table );
-        delete_option( 'salesforce_rest_api_db_version' );
+        delete_option( 'object_sync_for_salesforce_db_version' );
     }
 
     /**
