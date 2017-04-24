@@ -3,19 +3,19 @@
  * @file
  */
 
-if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
+if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
     die();
 }
 
 /**
- * Ability to authorize and communicate with the Salesforce REST API. This class can make read and write calls to Salesforce, and also cache the responses in WordPress
+ * Ability to authorize and communicate with the Salesforce APIs. This class can make read and write calls to Salesforce, and also cache the responses in WordPress
  */
 class Salesforce {
 
 	public $response;
 
 	/**
-	* Constructor which initializes the Salesforce API.
+	* Constructor which initializes the Salesforce APIs.
 	*
 	* @param string $consumer_key
 	*   Salesforce key to connect to your Salesforce instance.
@@ -62,7 +62,7 @@ class Salesforce {
 		$this->success_or_refresh_codes = $this->success_codes;
 		$this->success_or_refresh_codes[] = $this->refresh_code;
 
-		$this->debug = get_option( 'salesforce_api_debug_mode', false );
+		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
 
 	}
 
@@ -440,7 +440,7 @@ class Salesforce {
 	* Get the SF instance URL. Useful for linking to objects.
 	*/
 	public function get_instance_url() {
-		return get_option( 'salesforce_api_instance_url', '' );
+		return get_option( 'object_sync_for_salesforce_instance_url', '' );
 	}
 
 	/**
@@ -450,14 +450,14 @@ class Salesforce {
 	*   URL to set.
 	*/
 	protected function set_instance_url( $url ) {
-		update_option( 'salesforce_api_instance_url', $url );
+		update_option( 'object_sync_for_salesforce_instance_url', $url );
 	}
 
 	/**
 	* Get the access token.
 	*/
 	public function get_access_token() {
-		return get_option( 'salesforce_api_access_token', '' );
+		return get_option( 'object_sync_for_salesforce_access_token', '' );
 	}
 
 	/**
@@ -469,14 +469,14 @@ class Salesforce {
 	*   Access token from Salesforce.
 	*/
 	protected function set_access_token( $token ) {
-		update_option( 'salesforce_api_access_token', $token );
+		update_option( 'object_sync_for_salesforce_access_token', $token );
 	}
 
 	/**
 	* Get refresh token.
 	*/
 	protected function get_refresh_token() {
-		return get_option( 'salesforce_api_refresh_token', '' );
+		return get_option( 'object_sync_for_salesforce_refresh_token', '' );
 	}
 
 	/**
@@ -486,7 +486,7 @@ class Salesforce {
 	*   Refresh token from Salesforce.
 	*/
 	protected function set_refresh_token( $token ) {
-		update_option( 'salesforce_api_refresh_token', $token );
+		update_option( 'object_sync_for_salesforce_refresh_token', $token );
 	}
 
 	/**
@@ -556,7 +556,7 @@ class Salesforce {
 			throw new SalesforceException( esc_html__( 'Unable to access identity service.', $this->text_domain ), $response['code'] );
 		}
 		$data = $response['data'];
-		update_option( 'salesforce_api_identity', $data );
+		update_option( 'object_sync_for_salesforce_identity', $data );
 	}
 
 	/**
@@ -566,7 +566,7 @@ class Salesforce {
 	*   Returns false if no identity has been stored.
 	*/
 	public function get_identity() {
-		return get_option( 'salesforce_api_identity', false );
+		return get_option( 'object_sync_for_salesforce_identity', false );
 	}
 
 	/**
@@ -1144,7 +1144,7 @@ class Salesforce {
      *
      */
 	private function cache_expiration() {
-		$cache_expiration = $this->wordpress->cache_expiration( 'salesforce_api_cache_expiration', 86400 );
+		$cache_expiration = $this->wordpress->cache_expiration( 'object_sync_for_salesforce_cache_expiration', 86400 );
 		return $cache_expiration;
 	}
 

@@ -47,7 +47,7 @@
                 <option value="">- Select object type -</option>
                 <?php
                 $sfapi = $this->salesforce['sfapi'];
-                $object_filters = maybe_unserialize( get_option( 'salesforce_api_object_filters' ), array() );
+                $object_filters = maybe_unserialize( get_option( 'object_sync_for_salesforce_object_filters' ), array() );
                 $conditions = array();
                 if ( in_array( 'updateable', $object_filters ) ) {
                     $conditions['updateable'] = true;
