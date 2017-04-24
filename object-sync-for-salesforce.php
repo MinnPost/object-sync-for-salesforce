@@ -1,19 +1,19 @@
 <?php
 /*
-Plugin Name: Salesforce REST API
-Description: Defines an API that enables WordPress to interact with the Salesforce REST API.
+Plugin Name: Object Sync for Salesforce
+Description: WordPress plugin that implements mapping and syncing between Salesforce objects and WordPress objects 
 Version: 0.0.1
 Author: Jonathan Stegall
 Author URI: http://code.minnpost.com
 License: GPL2+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: salesforce-rest-api
+Text Domain: object-sync-for-salesforce
 */
 
 /**
- * Start up the Salesforce REST API plugin; initialize parameters and classes
+ * Start up the Object Sync for Salesforce plugin; initialize parameters and classes
  */
-class Salesforce_Rest_API {
+class Object_Sync_Salesforce {
 
 	/**
 	* @var object
@@ -71,7 +71,7 @@ class Salesforce_Rest_API {
 	/**
 	* @var object
 	* Load and initialize the Salesforce class.
-	* This contains the REST API methods
+	* This contains the Salesforce API methods
 	*/
 	public $salesforce;
 
@@ -104,7 +104,7 @@ class Salesforce_Rest_API {
 	*/
 	static public function get_instance() {
 		if ( self::$instance === null ) {
-			self::$instance = new Salesforce_Rest_API();
+			self::$instance = new Object_Sync_Salesforce();
 		}
 		return self::$instance;
 	}
@@ -121,7 +121,7 @@ class Salesforce_Rest_API {
 		$this->wpdb = &$wpdb;
 		$this->version = '0.0.2';
 		$this->login_credentials = $this->get_login_credentials();
-		$this->text_domain = 'salesforce-rest-api';
+		$this->text_domain = 'object-sync-for-salesforce';
 
 		$this->schedulable_classes = array(
             'salesforce_push' => array(
@@ -385,7 +385,7 @@ class Salesforce_Rest_API {
 	*/
 	public function plugin_action_links( $links, $file ) {
 		if ( $file == plugin_basename( __FILE__ ) ) {
-			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=salesforce-api-admin">' . __('Settings', $this->text_domain ) . '</a>';
+			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=object-sync-salesforce-admin">' . __('Settings', $this->text_domain ) . '</a>';
 			// make the 'Settings' link appear first
 			array_unshift( $links, $settings );
 		}
@@ -399,8 +399,8 @@ class Salesforce_Rest_API {
 	* @return void
 	*/
 	public function admin_scripts_and_styles() {
-		wp_enqueue_script( $this->text_domain . '-admin', plugins_url( 'assets/js/salesforce-rest-api-admin.min.js', __FILE__ ), array( 'jquery' ), $this->version, true );
-		wp_enqueue_style( $this->text_domain . '-admin', plugins_url( 'assets/css/salesforce-rest-api-admin.min.css', __FILE__ ), array(), $this->version, 'all' );
+		wp_enqueue_script( $this->text_domain . '-admin', plugins_url( 'assets/js/object-sync-for-salesforce-admin.min.js', __FILE__ ), array( 'jquery' ), $this->version, true );
+		wp_enqueue_style( $this->text_domain . '-admin', plugins_url( 'assets/css/object-sync-for-salesforce-admin.min.css', __FILE__ ), array(), $this->version, 'all' );
 	}
 
 	/**
@@ -447,4 +447,4 @@ class Salesforce_Rest_API {
 /// end class
 }
 // Instantiate our class
-$Salesforce_Rest_API = Salesforce_Rest_API::get_instance();
+$Object_Sync_Salesforce = Object_Sync_Salesforce::get_instance();
