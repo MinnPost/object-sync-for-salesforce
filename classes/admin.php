@@ -137,7 +137,7 @@ class Wordpress_Salesforce_Admin {
 	*
 	*/
 	public function create_admin_menu() {
-		$title = __('Object Sync for Salesforce', $this->text_domain);
+		$title = __('Salesforce', $this->text_domain);
 		add_options_page( $title, $title, 'configure_salesforce', 'object-sync-salesforce-admin', array( $this, 'show_admin_page', ) );
 	}
 
