@@ -3,19 +3,19 @@
  * @file
  */
 
-if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
+if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
     die();
 }
 
 /**
- * Ability to authorize and communicate with the Salesforce REST API. This class can make read and write calls to Salesforce, and also cache the responses in WordPress
+ * Ability to authorize and communicate with the Salesforce APIs. This class can make read and write calls to Salesforce, and also cache the responses in WordPress
  */
 class Salesforce {
 
 	public $response;
 
 	/**
-	* Constructor which initializes the Salesforce API.
+	* Constructor which initializes the Salesforce APIs.
 	*
 	* @param string $consumer_key
 	*   Salesforce key to connect to your Salesforce instance.
