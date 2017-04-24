@@ -803,7 +803,7 @@ class Wordpress_Salesforce_Admin {
 		$notices = array(
 			'permission' => array(
 				'condition' => false === $this->check_wordpress_admin_permissions(),
-				'message' => "Your account does not have permission to edit the Salesforce REST API plugin's settings.",
+				'message' => "Your account does not have permission to edit the Object Sync for Salesforce plugin's settings.",
 				'type' => 'error',
 				'dismissible' => false,
 			),
