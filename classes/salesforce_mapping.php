@@ -3,7 +3,7 @@
  * @file
  */
 
-if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
+if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
     die();
 }
 
