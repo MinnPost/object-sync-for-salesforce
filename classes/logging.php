@@ -33,8 +33,8 @@ class Salesforce_Logging extends WP_Logging {
         $this->version = $version;
         $this->text_domain = $text_domain;
 
-        $this->enabled = get_option( 'salesforce_api_enable_logging', false );
-        $this->statuses_to_log = get_option( 'salesforce_api_statuses_to_log', array() );
+        $this->enabled = get_option( 'object_sync_for_salesforce_enable_logging', false );
+        $this->statuses_to_log = get_option( 'object_sync_for_salesforce_statuses_to_log', array() );
 
         $this->schedule_name = 'wp_logging_prune_routine';
 
@@ -55,8 +55,8 @@ class Salesforce_Logging extends WP_Logging {
             add_filter( 'wp_logging_prune_when', array( $this, 'set_prune_age' ), 10, 1 );
             add_filter( 'wp_logging_prune_query_args', array( $this, 'set_prune_args' ), 10, 1 );
 
-            $schedule_unit = get_option( 'salesforce_api_logs_how_often_unit', '' );
-            $schedule_number = get_option( 'salesforce_api_logs_how_often_number', '' );
+            $schedule_unit = get_option( 'object_sync_for_salesforce_logs_how_often_unit', '' );
+            $schedule_number = get_option( 'object_sync_for_salesforce_logs_how_often_number', '' );
             $frequency = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
             $key = $frequency['key'];
 
@@ -74,8 +74,8 @@ class Salesforce_Logging extends WP_Logging {
     */
     public function add_prune_interval( $schedules ) {
 
-        $schedule_unit = get_option( 'salesforce_api_logs_how_often_unit', '' );
-        $schedule_number = get_option( 'salesforce_api_logs_how_often_number', '' );
+        $schedule_unit = get_option( 'object_sync_for_salesforce_logs_how_often_unit', '' );
+        $schedule_number = get_option( 'object_sync_for_salesforce_logs_how_often_number', '' );
         $frequency = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
         $key = $frequency['key'];
         $seconds = $frequency['seconds'];
@@ -134,7 +134,7 @@ class Salesforce_Logging extends WP_Logging {
     * @return string $should_we_prune
     */
     public function set_prune_option( $should_we_prune ) {
-        $should_we_prune = get_option( 'salesforce_api_prune_logs', $should_we_prune );
+        $should_we_prune = get_option( 'object_sync_for_salesforce_prune_logs', $should_we_prune );
         if ( $should_we_prune === '1' ) {
             $should_we_prune = true;
         }
@@ -148,7 +148,7 @@ class Salesforce_Logging extends WP_Logging {
     * @return string $how_old
     */
     public function set_prune_age( $how_old ) {
-        $value = get_option( 'salesforce_api_logs_how_old', '' ) . ' ago';
+        $value = get_option( 'object_sync_for_salesforce_logs_how_old', '' ) . ' ago';
         if ( $value !== '' ) {
             return $value;
         } else {
@@ -182,7 +182,7 @@ class Salesforce_Logging extends WP_Logging {
 
     public function setup( $title, $message, $trigger = 0, $parent = 0, $status ) {
         if ( $this->enabled === '1' && in_array( $status, $this->statuses_to_log ) ) {
-            $triggers_to_log = get_option( 'salesforce_api_triggers_to_log', array() );
+            $triggers_to_log = get_option( 'object_sync_for_salesforce_triggers_to_log', array() );
             if ( in_array( $trigger, $triggers_to_log ) || $trigger === 0 ) {
                 $this->add( $title, $message, $parent );
             }

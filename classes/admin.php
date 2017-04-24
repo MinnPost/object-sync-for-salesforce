@@ -163,7 +163,7 @@ class Wordpress_Salesforce_Admin {
 			); // this creates the tabs for the admin
 
 			// optionally make tab(s) for logging and log settings
-			$logging_enabled = get_option( 'salesforce_api_enable_logging', false );
+			$logging_enabled = get_option( 'object_sync_for_salesforce_enable_logging', false );
 			$tabs['log_settings'] = 'Log Settings';
 
 			// filter for extending the tabs available on the page
@@ -484,8 +484,8 @@ class Wordpress_Salesforce_Admin {
 		}
 
 		foreach ( $salesforce_settings as $key => $attributes ) {
-			$id = 'salesforce_api_' . $key;
-			$name = 'salesforce_api_' . $key;
+			$id = 'object_sync_for_salesforce_' . $key;
+			$name = 'object_sync_for_salesforce_' . $key;
 			$title = $attributes['title'];
 			$callback = $attributes['callback'];
 			$validate = $attributes['args']['validate'];
@@ -586,8 +586,8 @@ class Wordpress_Salesforce_Admin {
 				),
 			);
 			foreach ( $schedule_settings as $key => $attributes ) {
-				$id = 'salesforce_api_' . $key;
-				$name = 'salesforce_api_' . $key;
+				$id = 'object_sync_for_salesforce_' . $key;
+				$name = 'object_sync_for_salesforce_' . $key;
 				$title = $attributes['title'];
 				$callback = $attributes['callback'];
 				$page = $attributes['page'];
@@ -772,8 +772,8 @@ class Wordpress_Salesforce_Admin {
 		);
 
 		foreach ( $log_settings as $key => $attributes ) {
-			$id = 'salesforce_api_' . $key;
-			$name = 'salesforce_api_' . $key;
+			$id = 'object_sync_for_salesforce_' . $key;
+			$name = 'object_sync_for_salesforce_' . $key;
 			$title = $attributes['title'];
 			$callback = $attributes['callback'];
 			$page = $attributes['page'];
@@ -1292,9 +1292,9 @@ class Wordpress_Salesforce_Admin {
 	* For this plugin at this time, that is the decision we are making: don't do any kind of authorization stuff inside Salesforce
 	*/
 	private function logout() {
-		$this->access_token = delete_option( 'salesforce_api_access_token' );
-		$this->instance_url = delete_option( 'salesforce_api_instance_url' );
-		$this->refresh_token = delete_option( 'salesforce_api_refresh_token' );
+		$this->access_token = delete_option( 'object_sync_for_salesforce_access_token' );
+		$this->instance_url = delete_option( 'object_sync_for_salesforce_instance_url' );
+		$this->refresh_token = delete_option( 'object_sync_for_salesforce_refresh_token' );
 		return 'You have been logged out. You can use use the connect button to log in again.';
 	}
 
