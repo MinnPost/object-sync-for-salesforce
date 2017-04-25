@@ -2,7 +2,7 @@
 /**
  * Class SampleTest
  *
- * @package Salesforce_Rest_Api
+ * @package Object_Sync_Salesforce
  */
 
 /**
