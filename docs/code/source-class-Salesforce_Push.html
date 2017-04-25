@@ -709,7 +709,7 @@
 </span><span id="624" class="l"><a href="#624">624: </a>                <span class="php-comment">// returns a $salesforce_id.</span>
 </span><span id="625" class="l"><a href="#625">625: </a>                <span class="php-comment">// it should keep null if there is no match</span>
 </span><span id="626" class="l"><a href="#626">626: </a>                <span class="php-comment">// the function that calls this hook needs to check the mapping to make sure the wordpress object is the right type</span>
-</span><span id="627" class="l"><a href="#627">627: </a>                <span class="php-var">$salesforce_id</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_find_sf_object_match'</span>, <span class="php-keyword1">null</span>, <span class="php-var">$object</span>, <span class="php-var">$mapping</span>, <span class="php-quote">'push'</span> );
+</span><span id="627" class="l"><a href="#627">627: </a>                <span class="php-var">$salesforce_id</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_find_sf_object_match'</span>, <span class="php-keyword1">null</span>, <span class="php-var">$object</span>, <span class="php-var">$mapping</span>, <span class="php-quote">'push'</span> );
 </span><span id="628" class="l"><a href="#628">628: </a>
 </span><span id="629" class="l"><a href="#629">629: </a>                <span class="php-comment">// hook to allow other plugins to do something right before salesforce data is saved</span>
 </span><span id="630" class="l"><a href="#630">630: </a>                <span class="php-comment">// ex: run wordpress methods on an object if it exists, or do something in preparation for it if it doesn't</span>

@@ -36,7 +36,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-push)
-- `salesforce_rest_api_find_sf_object_match`:
+- `object_sync_for_salesforce_find_sf_object_match`:
     - description: modify the $salesforce_id string here
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
