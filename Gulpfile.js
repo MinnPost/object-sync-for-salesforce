@@ -28,7 +28,7 @@ const wpPot = require( 'gulp-wp-pot' );
 
 // Set assets paths.
 const paths = {
-	'css': [ 'assets/*.css', '!*.min.css' ],
+	'css': [ 'assets/css/*.css', '!*.min.css' ],
 	'icons': 'assets/img/svg-icons/*.svg',
 	'images': [ 'assets/img/*', '!assets/img/*.svg' ],
 	'php': [ './*.php', './**/*.php' ],
@@ -56,10 +56,10 @@ function handleErrors () {
 }
 
 /**
- * Delete style.css and style.min.css before we minify and optimize
+ * Delete object-sync-for-salesforce-admin.css and object-sync-for-salesforce-admin.min.css before we minify and optimize
  */
 gulp.task( 'clean:styles', () =>
-	del( [ 'style.css', 'style.min.css' ] )
+	del( [ 'object-sync-for-salesforce-admin.css', 'object-sync-for-salesforce-admin.min.css' ] )
 );
 
 /**
@@ -104,23 +104,23 @@ gulp.task( 'postcss', [ 'clean:styles' ], () =>
 		// Create sourcemap.
 		.pipe( sourcemaps.write() )
 
-		// Create style.css.
+		// Create object-sync-for-salesforce-admin.css.
 		.pipe( gulp.dest( './' ) )
 		.pipe( browserSync.stream() )
 );
 
 /**
- * Minify and optimize style.css.
+ * Minify and optimize object-sync-for-salesforce-admin.css.
  *
  * https://www.npmjs.com/package/gulp-cssnano
  */
 gulp.task( 'cssnano', [ 'postcss' ], () =>
-	gulp.src( 'style.css' )
+	gulp.src( 'object-sync-for-salesforce-admin.css' )
 		.pipe( plumber( {'errorHandler': handleErrors} ) )
 		.pipe( cssnano( {
 			'safe': true // Use safe optimizations.
 		} ) )
-		.pipe( rename( 'style.min.css' ) )
+		.pipe( rename( 'object-sync-for-salesforce-admin.min.css' ) )
 		.pipe( gulp.dest( './' ) )
 		.pipe( browserSync.stream() )
 );
