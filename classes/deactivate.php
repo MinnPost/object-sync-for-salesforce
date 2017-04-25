@@ -80,7 +80,7 @@ class Wordpress_Salesforce_Deactivate {
         $role->remove_cap( 'configure_salesforce' );
 
         // hook that allows other roles to configure the plugin as well
-        $roles = apply_filters( 'salesforce_rest_api_roles_configure_salesforce', null );
+        $roles = apply_filters( 'object_sync_for_salesforce_roles_configure_salesforce', null );
 
         // for each role that we have, remove the configure salesforce capability
         if ( null !== $roles ) {

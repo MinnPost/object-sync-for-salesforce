@@ -1305,7 +1305,7 @@ class Wordpress_Salesforce_Admin {
 	private function check_wordpress_admin_permissions() {
 
 		// one programmatic way to give this capability to additional user roles is the
-		// salesforce_rest_api_roles_configure_salesforce hook
+		// object_sync_for_salesforce_roles_configure_salesforce hook
 		// it runs on activation of this plugin, and will assign the below capability to any role
 		// coming from the hook
 

@@ -4,7 +4,7 @@ This page lists all developer hooks available in this plugin, with links to wher
 
 ## Filters
 
-- `salesforce_rest_api_roles_configure_salesforce`:
+- `object_sync_for_salesforce_roles_configure_salesforce`:
     - description: allow other plugins to give the `configure_salesforce` capability to WordPress roles in addition to the `administrator` role.
     - code: [classes/activate.php](../classes/activate.php) and [classes/deactivate.php](../classes/deactivate.php)
     - documentation: [extending roles](./docs/extending-roles.md)
