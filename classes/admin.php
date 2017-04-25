@@ -264,9 +264,9 @@ class Wordpress_Salesforce_Admin {
 						}
 						break;
 					default:
-						$include_settings = apply_filters( 'salesforce_rest_api_settings_tab_include_settings', true, $tab );
-						$content_before = apply_filters( 'salesforce_rest_api_settings_tab_content_before', null, $tab );
-						$content_after = apply_filters( 'salesforce_rest_api_settings_tab_content_after', null, $tab );
+						$include_settings = apply_filters( 'object_sync_for_salesforce_settings_tab_include_settings', true, $tab );
+						$content_before = apply_filters( 'object_sync_for_salesforce_settings_tab_content_before', null, $tab );
+						$content_after = apply_filters( 'object_sync_for_salesforce_settings_tab_content_after', null, $tab );
 						if ( null !== $content_before ) {
 							echo $content_before;
 						}

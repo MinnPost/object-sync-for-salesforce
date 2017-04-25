@@ -76,12 +76,12 @@ The contents for the admin settings tabs are displayed in PHP templates. The def
 
 #### Code example
 
-This hook sets a boolean value for whether or not the plugin should use the default template. To change or disable this, use the `salesforce_rest_api_settings_tab_include_settings` hook, which receives, and returns, a `true` or `false` for this setting.
+This hook sets a boolean value for whether or not the plugin should use the default template. To change or disable this, use the `object_sync_for_salesforce_settings_tab_include_settings` hook, which receives, and returns, a `true` or `false` for this setting.
 
 The hook also receives a variable for the currently activated tab in the plugin's settings. This allows you to use `$tab` to change only the tab(s) you want to change.
 
 ```
-add_filter( 'salesforce_rest_api_settings_tab_include_settings', change_template, 10, 2 );
+add_filter( 'object_sync_for_salesforce_settings_tab_include_settings', change_template, 10, 2 );
 function change_template( $use_default_template = true, $tab ) {
     require_once( 'your-file.php' );
     return false;
@@ -98,7 +98,7 @@ There are two hooks that can add additional content to any/all of the plugin tab
 To add content before, you can do this:
 
 ```
-add_filter( 'salesforce_rest_api_settings_tab_content_before', add_content, 10, 2 );
+add_filter( 'object_sync_for_salesforce_settings_tab_content_before', add_content, 10, 2 );
 function add_content( $content_before = null, $tab ) {
     if ( $tab === 'minnpost' ) {
         $content_before = '<p>this is an intro.</p>';
@@ -110,7 +110,7 @@ function add_content( $content_before = null, $tab ) {
 And for adding content after, you can do this:
 
 ```
-add_filter( 'salesforce_rest_api_settings_tab_content_after', add_content, 10, 2 );
+add_filter( 'object_sync_for_salesforce_settings_tab_content_after', add_content, 10, 2 );
 function add_content( $content_after = null, $tab ) {
     if ( $tab === 'minnpost' ) {
         $content_after = '<p>this is an outro.</p>';

@@ -44,15 +44,15 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
     - code: [classes/admin.php](../classes/admin.php)
     - documentation: [add a settings tab](./docs/adding-settings.md#add-a-settings-tab)
-- `salesforce_rest_api_settings_tab_include_settings`:
+- `object_sync_for_salesforce_settings_tab_include_settings`:
     - description: when adding tabs to the Salesforce Settings screen, determine whether or not to include the default settings PHP template, which we use to render the form.
     - code: [classes/admin.php](../classes/admin.php)
     - documentation: [change the template](./docs/adding-settings.md#change-the-template)
-- `salesforce_rest_api_settings_tab_content_before`:
+- `object_sync_for_salesforce_settings_tab_content_before`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display before the settings form.
     - code: [classes/admin.php](../classes/admin.php)
     - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
-- `salesforce_rest_api_settings_tab_content_after`:
+- `object_sync_for_salesforce_settings_tab_content_after`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form.
     - code: [classes/admin.php](../classes/admin.php)
     - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
