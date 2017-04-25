@@ -368,11 +368,11 @@ class Salesforce_Push {
 			if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
 
 				// hook to allow other plugins to prevent a push per-mapping.
-				$push_allowed = apply_filters( 'salesforce_rest_api_push_object_allowed', true, $object_type, $object, $sf_sync_trigger, $mapping );
+				$push_allowed = apply_filters( 'object_sync_for_salesforce_push_object_allowed', true, $object_type, $object, $sf_sync_trigger, $mapping );
 
 				// example to keep from pushing the user with id of 1
 				/*
-				add_filter( 'salesforce_rest_api_push_object_allowed', 'check_user', 10, 5 );
+				add_filter( 'object_sync_for_salesforce_push_object_allowed', 'check_user', 10, 5 );
 				// can always reduce this number if all the arguments are not necessary
 				function check_user( $push_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
 					if ( $object_type === 'user' && $object['Id'] === 1 ) {
@@ -520,7 +520,7 @@ class Salesforce_Push {
 						);
 
 						// hook for push success
-						do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object, $object_id );
+						do_action( 'object_sync_for_salesforce_push_success', $op, $sfapi->response, $synced_object, $object_id );
 					}
 				} else {
 					$more_ids = '<p>The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are: ';
@@ -750,7 +750,7 @@ class Salesforce_Push {
 				$mapping_object = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 				// hook for push success
-				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object, $object_id );
+				do_action( 'object_sync_for_salesforce_push_success', $op, $sfapi->response, $synced_object, $object_id );
 			} else {
 
 				// create log entry for failed create or upsert
@@ -834,7 +834,7 @@ class Salesforce_Push {
 				);
 
 				// hook for push success
-				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object, $object_id );
+				do_action( 'object_sync_for_salesforce_push_success', $op, $sfapi->response, $synced_object, $object_id );
 
 			}
 			catch ( SalesforceException $e ) {
@@ -959,7 +959,7 @@ class Salesforce_Push {
 
 				watchdog( 'salesforce_push', '%op: Salesforce object %id', array( '%id' => $result->id, '%op' => $op ) );
 
-				do_action( 'salesforce_rest_api_push_success', $op, $sfapi->response, $synced_object, $object_id );
+				do_action( 'object_sync_for_salesforce_push_success', $op, $sfapi->response, $synced_object, $object_id );
 			} else {
 				// Otherwise, the item is considered failed.
 				$error_messages = array();

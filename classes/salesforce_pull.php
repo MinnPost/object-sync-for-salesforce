@@ -678,7 +678,7 @@ class Salesforce_Pull {
 
 					// hook to allow other plugins to do something right before wordpress data is saved
 					// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't
-					do_action( 'salesforce_rest_api_pre_pull', $wordpress_id, $mapping, $object, $object_id, $params );
+					do_action( 'object_sync_for_salesforce_pre_pull', $wordpress_id, $mapping, $object, $object_id, $params );
 
 					if ( isset( $prematch_field_salesforce ) || isset( $key_field_salesforce ) || $wordpress_id !== null ) {
 
@@ -905,7 +905,7 @@ class Salesforce_Pull {
 
 					// hook to allow other plugins to do something right before wordpress data is saved
 					// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't
-					do_action( 'salesforce_rest_api_pre_pull', $mapping_object['wordpress_id'], $mapping, $object, $object_id, $params );
+					do_action( 'object_sync_for_salesforce_pre_pull', $mapping_object['wordpress_id'], $mapping, $object, $object_id, $params );
 
 					$op = 'Update';
 					$result = $this->wordpress->object_update( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'], $params );

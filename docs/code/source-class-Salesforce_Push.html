@@ -453,11 +453,11 @@
 </span><span id="368" class="l"><a href="#368">368: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$map_sync_triggers</span> ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$sf_sync_trigger</span> ) &amp;&amp; <span class="php-keyword2">in_array</span>( <span class="php-var">$sf_sync_trigger</span>, <span class="php-var">$map_sync_triggers</span> ) ) { <span class="php-comment">// wp or sf crud event</span>
 </span><span id="369" class="l"><a href="#369">369: </a>
 </span><span id="370" class="l"><a href="#370">370: </a>                <span class="php-comment">// hook to allow other plugins to prevent a push per-mapping.</span>
-</span><span id="371" class="l"><a href="#371">371: </a>                <span class="php-var">$push_allowed</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_push_object_allowed'</span>, <span class="php-keyword1">true</span>, <span class="php-var">$object_type</span>, <span class="php-var">$object</span>, <span class="php-var">$sf_sync_trigger</span>, <span class="php-var">$mapping</span> );
+</span><span id="371" class="l"><a href="#371">371: </a>                <span class="php-var">$push_allowed</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_push_object_allowed'</span>, <span class="php-keyword1">true</span>, <span class="php-var">$object_type</span>, <span class="php-var">$object</span>, <span class="php-var">$sf_sync_trigger</span>, <span class="php-var">$mapping</span> );
 </span><span id="372" class="l"><a href="#372">372: </a>
 </span><span id="373" class="l"><a href="#373">373: </a>                <span class="php-comment">// example to keep from pushing the user with id of 1</span>
 </span><span id="374" class="l"><a href="#374">374: </a>                <span class="php-comment">/*
-</span></span><span id="375" class="l"><a href="#375">375: </a><span class="php-comment">                add_filter( 'salesforce_rest_api_push_object_allowed', 'check_user', 10, 5 );
+</span></span><span id="375" class="l"><a href="#375">375: </a><span class="php-comment">                add_filter( 'object_sync_for_salesforce_push_object_allowed', 'check_user', 10, 5 );
 </span></span><span id="376" class="l"><a href="#376">376: </a><span class="php-comment">                // can always reduce this number if all the arguments are not necessary
 </span></span><span id="377" class="l"><a href="#377">377: </a><span class="php-comment">                function check_user( $push_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
 </span></span><span id="378" class="l"><a href="#378">378: </a><span class="php-comment">                    if ( $object_type === 'user' &amp;&amp; $object['Id'] === 1 ) {
@@ -605,7 +605,7 @@
 </span><span id="520" class="l"><a href="#520">520: </a>                        );
 </span><span id="521" class="l"><a href="#521">521: </a>
 </span><span id="522" class="l"><a href="#522">522: </a>                        <span class="php-comment">// hook for push success</span>
-</span><span id="523" class="l"><a href="#523">523: </a>                        do_action( <span class="php-quote">'salesforce_rest_api_push_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$sfapi</span>-&gt;response, <span class="php-var">$synced_object</span>, <span class="php-var">$object_id</span> );
+</span><span id="523" class="l"><a href="#523">523: </a>                        do_action( <span class="php-quote">'object_sync_for_salesforce_push_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$sfapi</span>-&gt;response, <span class="php-var">$synced_object</span>, <span class="php-var">$object_id</span> );
 </span><span id="524" class="l"><a href="#524">524: </a>                    }
 </span><span id="525" class="l"><a href="#525">525: </a>                } <span class="php-keyword1">else</span> {
 </span><span id="526" class="l"><a href="#526">526: </a>                    <span class="php-var">$more_ids</span> = <span class="php-quote">'&lt;p&gt;The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are: '</span>;
@@ -835,7 +835,7 @@
 </span><span id="750" class="l"><a href="#750">750: </a>                <span class="php-var">$mapping_object</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;update_object_map( <span class="php-var">$mapping_object</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] );
 </span><span id="751" class="l"><a href="#751">751: </a>
 </span><span id="752" class="l"><a href="#752">752: </a>                <span class="php-comment">// hook for push success</span>
-</span><span id="753" class="l"><a href="#753">753: </a>                do_action( <span class="php-quote">'salesforce_rest_api_push_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$sfapi</span>-&gt;response, <span class="php-var">$synced_object</span>, <span class="php-var">$object_id</span> );
+</span><span id="753" class="l"><a href="#753">753: </a>                do_action( <span class="php-quote">'object_sync_for_salesforce_push_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$sfapi</span>-&gt;response, <span class="php-var">$synced_object</span>, <span class="php-var">$object_id</span> );
 </span><span id="754" class="l"><a href="#754">754: </a>            } <span class="php-keyword1">else</span> {
 </span><span id="755" class="l"><a href="#755">755: </a>
 </span><span id="756" class="l"><a href="#756">756: </a>                <span class="php-comment">// create log entry for failed create or upsert</span>
@@ -919,7 +919,7 @@
 </span><span id="834" class="l"><a href="#834">834: </a>                );
 </span><span id="835" class="l"><a href="#835">835: </a>
 </span><span id="836" class="l"><a href="#836">836: </a>                <span class="php-comment">// hook for push success</span>
-</span><span id="837" class="l"><a href="#837">837: </a>                do_action( <span class="php-quote">'salesforce_rest_api_push_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$sfapi</span>-&gt;response, <span class="php-var">$synced_object</span>, <span class="php-var">$object_id</span> );
+</span><span id="837" class="l"><a href="#837">837: </a>                do_action( <span class="php-quote">'object_sync_for_salesforce_push_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$sfapi</span>-&gt;response, <span class="php-var">$synced_object</span>, <span class="php-var">$object_id</span> );
 </span><span id="838" class="l"><a href="#838">838: </a>
 </span><span id="839" class="l"><a href="#839">839: </a>            }
 </span><span id="840" class="l"><a href="#840">840: </a>            <span class="php-keyword1">catch</span> ( SalesforceException <span class="php-var">$e</span> ) {
@@ -1044,7 +1044,7 @@
 </span><span id="959" class="l"><a href="#959">959: </a>
 </span><span id="960" class="l"><a href="#960">960: </a>                watchdog( <span class="php-quote">'salesforce_push'</span>, <span class="php-quote">'%op: Salesforce object %id'</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'%id'</span> =&gt; <span class="php-var">$result</span>-&gt;id, <span class="php-quote">'%op'</span> =&gt; <span class="php-var">$op</span> ) );
 </span><span id="961" class="l"><a href="#961">961: </a>
-</span><span id="962" class="l"><a href="#962">962: </a>                do_action( <span class="php-quote">'salesforce_rest_api_push_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$sfapi</span>-&gt;response, <span class="php-var">$synced_object</span>, <span class="php-var">$object_id</span> );
+</span><span id="962" class="l"><a href="#962">962: </a>                do_action( <span class="php-quote">'object_sync_for_salesforce_push_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$sfapi</span>-&gt;response, <span class="php-var">$synced_object</span>, <span class="php-var">$object_id</span> );
 </span><span id="963" class="l"><a href="#963">963: </a>            } <span class="php-keyword1">else</span> {
 </span><span id="964" class="l"><a href="#964">964: </a>                <span class="php-comment">// Otherwise, the item is considered failed.</span>
 </span><span id="965" class="l"><a href="#965">965: </a>                <span class="php-var">$error_messages</span> = <span class="php-keyword1">array</span>();

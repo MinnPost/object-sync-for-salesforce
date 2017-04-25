@@ -8,7 +8,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: allow other plugins to give the `configure_salesforce` capability to WordPress roles in addition to the `administrator` role.
     - code: [classes/activate.php](../classes/activate.php) and [classes/deactivate.php](../classes/deactivate.php)
     - documentation: [extending roles](./docs/extending-roles.md)
-- `salesforce_rest_api_push_object_allowed`:
+- `object_sync_for_salesforce_push_object_allowed`:
     - description: prevent a push per-mapping.
     - code: (should document with push stuff)
     - documentation: [classes/salesforce_push.php](../classes/salesforce_push.php)
@@ -107,7 +107,7 @@ This page lists all developer hooks available in this plugin, with links to wher
 
 ## Actions
 
-- `salesforce_rest_api_pre_pull`:
+- `object_sync_for_salesforce_pre_pull`:
     - description: run an action immediately before WordPress data is saved
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
@@ -127,7 +127,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: what to do if a push to Salesforce fails
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
-- `salesforce_rest_api_push_success`:
+- `object_sync_for_salesforce_push_success`:
     - description: what to do if a push to Salesforce is successful
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
