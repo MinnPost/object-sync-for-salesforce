@@ -141,14 +141,14 @@
 </span><span id="56" class="l"><a href="#56">  56: </a>
 </span><span id="57" class="l"><a href="#57">  57: </a>        <span class="php-comment">// example to add/remove types</span>
 </span><span id="58" class="l"><a href="#58">  58: </a>        <span class="php-comment">/*
-</span></span><span id="59" class="l"><a href="#59">  59: </a><span class="php-comment">        add_filter( 'salesforce_rest_api_add_more_wordpress_types', 'add_more_types', 10, 1 );
+</span></span><span id="59" class="l"><a href="#59">  59: </a><span class="php-comment">        add_filter( 'object_sync_for_salesforce_add_more_wordpress_types', 'add_more_types', 10, 1 );
 </span></span><span id="60" class="l"><a href="#60">  60: </a><span class="php-comment">        function add_more_types( $more_types ) {
 </span></span><span id="61" class="l"><a href="#61">  61: </a><span class="php-comment">            $more_types = array( 'foo' );
 </span></span><span id="62" class="l"><a href="#62">  62: </a><span class="php-comment">            // or $more_types[] = 'foo';
 </span></span><span id="63" class="l"><a href="#63">  63: </a><span class="php-comment">            return $more_types;
 </span></span><span id="64" class="l"><a href="#64">  64: </a><span class="php-comment">        }
 </span></span><span id="65" class="l"><a href="#65">  65: </a><span class="php-comment">
-</span></span><span id="66" class="l"><a href="#66">  66: </a><span class="php-comment">        add_filter( 'salesforce_rest_api_remove_wordpress_types', 'remove_types', 10, 1 );
+</span></span><span id="66" class="l"><a href="#66">  66: </a><span class="php-comment">        add_filter( 'object_sync_for_salesforce_remove_wordpress_types', 'remove_types', 10, 1 );
 </span></span><span id="67" class="l"><a href="#67">  67: </a><span class="php-comment">        function remove_types( $types_to_remove ) {
 </span></span><span id="68" class="l"><a href="#68">  68: </a><span class="php-comment">            $types_to_remove = array( 'acme_product' );
 </span></span><span id="69" class="l"><a href="#69">  69: </a><span class="php-comment">            // or $types_to_remove[] = 'acme_product';
@@ -156,8 +156,8 @@
 </span></span><span id="71" class="l"><a href="#71">  71: </a><span class="php-comment">        }
 </span></span><span id="72" class="l"><a href="#72">  72: </a><span class="php-comment">        */</span>
 </span><span id="73" class="l"><a href="#73">  73: </a>
-</span><span id="74" class="l"><a href="#74">  74: </a>        <span class="php-var">$wordpress_types_not_posts_include</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_add_more_wordpress_types'</span>, <span class="php-keyword1">array</span>() );
-</span><span id="75" class="l"><a href="#75">  75: </a>        <span class="php-var">$wordpress_types_ignore</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_remove_wordpress_types'</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'wp_log'</span>) );
+</span><span id="74" class="l"><a href="#74">  74: </a>        <span class="php-var">$wordpress_types_not_posts_include</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_add_more_wordpress_types'</span>, <span class="php-keyword1">array</span>() );
+</span><span id="75" class="l"><a href="#75">  75: </a>        <span class="php-var">$wordpress_types_ignore</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_remove_wordpress_types'</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'wp_log'</span>) );
 </span><span id="76" class="l"><a href="#76">  76: </a>
 </span><span id="77" class="l"><a href="#77">  77: </a>        <span class="php-var">$wordpress_objects</span> = <span class="php-keyword1">array</span>();
 </span><span id="78" class="l"><a href="#78">  78: </a>
@@ -314,7 +314,7 @@
 </span><span id="229" class="l"><a href="#229"> 229: </a>        <span class="php-comment">// $object_fields = array( 'data' =&gt; array(), 'from_cache' =&gt; bool, 'cached' =&gt; bool );</span>
 </span><span id="230" class="l"><a href="#230"> 230: </a>        <span class="php-comment">// this is useful for custom objects that do not use the normal metadata table structure</span>
 </span><span id="231" class="l"><a href="#231"> 231: </a>
-</span><span id="232" class="l"><a href="#232"> 232: </a>        <span class="php-var">$object_fields</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_wordpress_object_fields'</span>, <span class="php-var">$object_fields</span>, <span class="php-var">$wordpress_object</span> );
+</span><span id="232" class="l"><a href="#232"> 232: </a>        <span class="php-var">$object_fields</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_wordpress_object_fields'</span>, <span class="php-var">$object_fields</span>, <span class="php-var">$wordpress_object</span> );
 </span><span id="233" class="l"><a href="#233"> 233: </a>        
 </span><span id="234" class="l"><a href="#234"> 234: </a>        <span class="php-keyword1">return</span> <span class="php-var">$object_fields</span>[<span class="php-quote">'data'</span>];
 </span><span id="235" class="l"><a href="#235"> 235: </a>
@@ -354,7 +354,7 @@
 </span><span id="269" class="l"><a href="#269"> 269: </a>        <span class="php-comment">// the returned $wordpress_object needs to be an array like the above</span>
 </span><span id="270" class="l"><a href="#270"> 270: </a>        <span class="php-comment">// this is useful for custom objects or custom formatting</span>
 </span><span id="271" class="l"><a href="#271"> 271: </a>        
-</span><span id="272" class="l"><a href="#272"> 272: </a>        <span class="php-var">$wordpress_object</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_wordpress_object_data'</span>, <span class="php-var">$wordpress_object</span> );
+</span><span id="272" class="l"><a href="#272"> 272: </a>        <span class="php-var">$wordpress_object</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_wordpress_object_data'</span>, <span class="php-var">$wordpress_object</span> );
 </span><span id="273" class="l"><a href="#273"> 273: </a>
 </span><span id="274" class="l"><a href="#274"> 274: </a>        <span class="php-keyword1">return</span> <span class="php-var">$wordpress_object</span>;
 </span><span id="275" class="l"><a href="#275"> 275: </a>
@@ -531,14 +531,14 @@
 </span><span id="446" class="l"><a href="#446"> 446: </a>                <span class="php-comment">/*
 </span></span><span id="447" class="l"><a href="#447"> 447: </a><span class="php-comment">                    $result = array( 'data' =&gt; array( $id_field =&gt; $post_id, 'success' =&gt; $success ), 'errors' =&gt; $errors );
 </span></span><span id="448" class="l"><a href="#448"> 448: </a><span class="php-comment">                */</span>
-</span><span id="449" class="l"><a href="#449"> 449: </a>                <span class="php-comment">// use hook like: add_filter( 'salesforce_rest_api_create_custom_wordpress_item', add_object, 10, 1 );</span>
+</span><span id="449" class="l"><a href="#449"> 449: </a>                <span class="php-comment">// use hook like: add_filter( 'object_sync_for_salesforce_create_custom_wordpress_item', add_object, 10, 1 );</span>
 </span><span id="450" class="l"><a href="#450"> 450: </a>                <span class="php-comment">// the one param is: array( 'name' =&gt; objecttype, 'params' =&gt; array_of_params, 'id_field' =&gt; idfield )</span>
 </span><span id="451" class="l"><a href="#451"> 451: </a>
 </span><span id="452" class="l"><a href="#452"> 452: </a>                <span class="php-comment">// check to see if someone is calling the filter, and apply it if so</span>
-</span><span id="453" class="l"><a href="#453"> 453: </a>                <span class="php-keyword1">if</span> ( !has_filter( <span class="php-quote">'salesforce_rest_api_create_custom_wordpress_item'</span> ) ) {
+</span><span id="453" class="l"><a href="#453"> 453: </a>                <span class="php-keyword1">if</span> ( !has_filter( <span class="php-quote">'object_sync_for_salesforce_create_custom_wordpress_item'</span> ) ) {
 </span><span id="454" class="l"><a href="#454"> 454: </a>                    <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;post_create( <span class="php-var">$params</span>, <span class="php-var">$id_field</span>, <span class="php-var">$name</span> );
 </span><span id="455" class="l"><a href="#455"> 455: </a>                } <span class="php-keyword1">else</span> {
-</span><span id="456" class="l"><a href="#456"> 456: </a>                    <span class="php-var">$result</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_create_custom_wordpress_item'</span>, <span class="php-keyword1">array</span>(
+</span><span id="456" class="l"><a href="#456"> 456: </a>                    <span class="php-var">$result</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_create_custom_wordpress_item'</span>, <span class="php-keyword1">array</span>(
 </span><span id="457" class="l"><a href="#457"> 457: </a>                        <span class="php-quote">'params'</span> =&gt; <span class="php-var">$params</span>,
 </span><span id="458" class="l"><a href="#458"> 458: </a>                        <span class="php-quote">'name'</span> =&gt; <span class="php-var">$name</span>,
 </span><span id="459" class="l"><a href="#459"> 459: </a>                        <span class="php-quote">'id_field'</span> =&gt; <span class="php-var">$id_field</span>
@@ -627,14 +627,14 @@
 </span><span id="542" class="l"><a href="#542"> 542: </a>                <span class="php-comment">/*
 </span></span><span id="543" class="l"><a href="#543"> 543: </a><span class="php-comment">                    $result = array( 'data' =&gt; array( $id_field =&gt; $post_id, 'success' =&gt; $success ), 'errors' =&gt; $errors );
 </span></span><span id="544" class="l"><a href="#544"> 544: </a><span class="php-comment">                */</span>
-</span><span id="545" class="l"><a href="#545"> 545: </a>                <span class="php-comment">// use hook like: add_filter( 'salesforce_rest_api_upsert_custom_wordpress_item', add_object, 10, 1 );</span>
+</span><span id="545" class="l"><a href="#545"> 545: </a>                <span class="php-comment">// use hook like: add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', add_object, 10, 1 );</span>
 </span><span id="546" class="l"><a href="#546"> 546: </a>                <span class="php-comment">// the one param is: array( 'key' =&gt; key, 'value' =&gt; value, 'name' =&gt; objecttype, 'params' =&gt; array_of_params, 'push_drafts' =&gt; pushdrafts, 'methods' =&gt; methods )</span>
 </span><span id="547" class="l"><a href="#547"> 547: </a>
 </span><span id="548" class="l"><a href="#548"> 548: </a>                <span class="php-comment">// check to see if someone is calling the filter, and apply it if so</span>
-</span><span id="549" class="l"><a href="#549"> 549: </a>                <span class="php-keyword1">if</span> ( !has_filter( <span class="php-quote">'salesforce_rest_api_upsert_custom_wordpress_item'</span> ) ) {
+</span><span id="549" class="l"><a href="#549"> 549: </a>                <span class="php-keyword1">if</span> ( !has_filter( <span class="php-quote">'object_sync_for_salesforce_upsert_custom_wordpress_item'</span> ) ) {
 </span><span id="550" class="l"><a href="#550"> 550: </a>                    <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;post_upsert( <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span>, <span class="php-var">$params</span>, <span class="php-var">$id_field</span>, <span class="php-var">$push_drafts</span>, <span class="php-var">$name</span>, <span class="php-var">$check_only</span> );
 </span><span id="551" class="l"><a href="#551"> 551: </a>                } <span class="php-keyword1">else</span> {
-</span><span id="552" class="l"><a href="#552"> 552: </a>                    <span class="php-var">$result</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_upsert_custom_wordpress_item'</span>, <span class="php-keyword1">array</span>(
+</span><span id="552" class="l"><a href="#552"> 552: </a>                    <span class="php-var">$result</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_upsert_custom_wordpress_item'</span>, <span class="php-keyword1">array</span>(
 </span><span id="553" class="l"><a href="#553"> 553: </a>                        <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>,
 </span><span id="554" class="l"><a href="#554"> 554: </a>                        <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span>,
 </span><span id="555" class="l"><a href="#555"> 555: </a>                        <span class="php-quote">'methods'</span> =&gt; <span class="php-var">$methods</span>,
@@ -706,14 +706,14 @@
 </span><span id="621" class="l"><a href="#621"> 621: </a>                <span class="php-comment">/*
 </span></span><span id="622" class="l"><a href="#622"> 622: </a><span class="php-comment">                    $result = array( 'data' =&gt; array( $id_field =&gt; $post_id, 'success' =&gt; $success ), 'errors' =&gt; $errors );
 </span></span><span id="623" class="l"><a href="#623"> 623: </a><span class="php-comment">                */</span>
-</span><span id="624" class="l"><a href="#624"> 624: </a>                <span class="php-comment">// use hook like: add_filter( 'salesforce_rest_api_update_custom_wordpress_item', add_object, 10, 1 );</span>
+</span><span id="624" class="l"><a href="#624"> 624: </a>                <span class="php-comment">// use hook like: add_filter( 'object_sync_for_salesforce_update_custom_wordpress_item', add_object, 10, 1 );</span>
 </span><span id="625" class="l"><a href="#625"> 625: </a>                <span class="php-comment">// the one param is: array( 'key' =&gt; key, 'value' =&gt; value, 'name' =&gt; objecttype, 'params' =&gt; array_of_params, 'push_drafts' =&gt; pushdrafts, 'methods' =&gt; methods )</span>
 </span><span id="626" class="l"><a href="#626"> 626: </a>
 </span><span id="627" class="l"><a href="#627"> 627: </a>                <span class="php-comment">// check to see if someone is calling the filter, and apply it if so</span>
-</span><span id="628" class="l"><a href="#628"> 628: </a>                <span class="php-keyword1">if</span> ( !has_filter( <span class="php-quote">'salesforce_rest_api_update_custom_wordpress_item'</span> ) ) {
+</span><span id="628" class="l"><a href="#628"> 628: </a>                <span class="php-keyword1">if</span> ( !has_filter( <span class="php-quote">'object_sync_for_salesforce_update_custom_wordpress_item'</span> ) ) {
 </span><span id="629" class="l"><a href="#629"> 629: </a>                    <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;post_update( <span class="php-var">$id</span>, <span class="php-var">$params</span>, <span class="php-var">$id_field</span> );
 </span><span id="630" class="l"><a href="#630"> 630: </a>                } <span class="php-keyword1">else</span> {
-</span><span id="631" class="l"><a href="#631"> 631: </a>                    <span class="php-var">$result</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_update_custom_wordpress_item'</span>, <span class="php-keyword1">array</span>(
+</span><span id="631" class="l"><a href="#631"> 631: </a>                    <span class="php-var">$result</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_update_custom_wordpress_item'</span>, <span class="php-keyword1">array</span>(
 </span><span id="632" class="l"><a href="#632"> 632: </a>                        <span class="php-quote">'id'</span> =&gt; <span class="php-var">$id</span>,
 </span><span id="633" class="l"><a href="#633"> 633: </a>                        <span class="php-quote">'params'</span> =&gt; <span class="php-var">$params</span>,
 </span><span id="634" class="l"><a href="#634"> 634: </a>                        <span class="php-quote">'id_field'</span> =&gt; <span class="php-var">$id_field</span>
@@ -767,14 +767,14 @@
 </span><span id="682" class="l"><a href="#682"> 682: </a>
 </span><span id="683" class="l"><a href="#683"> 683: </a>                <span class="php-comment">// developers can use this hook to delete objects with their own methods</span>
 </span><span id="684" class="l"><a href="#684"> 684: </a>                <span class="php-comment">// the returned $success is an object of the correct type, or a false</span>
-</span><span id="685" class="l"><a href="#685"> 685: </a>                <span class="php-comment">// use hook like: add_filter( 'salesforce_rest_api_delete_custom_wordpress_item', add_object, 10, 1 );</span>
+</span><span id="685" class="l"><a href="#685"> 685: </a>                <span class="php-comment">// use hook like: add_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item', add_object, 10, 1 );</span>
 </span><span id="686" class="l"><a href="#686"> 686: </a>                <span class="php-comment">// the one param is: array( 'id' =&gt; id, 'name' =&gt; objecttype )</span>
 </span><span id="687" class="l"><a href="#687"> 687: </a>
 </span><span id="688" class="l"><a href="#688"> 688: </a>                <span class="php-comment">// check to see if someone is calling the filter, and apply it if so</span>
-</span><span id="689" class="l"><a href="#689"> 689: </a>                <span class="php-keyword1">if</span> ( !has_filter( <span class="php-quote">'salesforce_rest_api_delete_custom_wordpress_item'</span> ) ) {
+</span><span id="689" class="l"><a href="#689"> 689: </a>                <span class="php-keyword1">if</span> ( !has_filter( <span class="php-quote">'object_sync_for_salesforce_delete_custom_wordpress_item'</span> ) ) {
 </span><span id="690" class="l"><a href="#690"> 690: </a>                    <span class="php-var">$success</span> = <span class="php-var">$this</span>-&gt;post_delete( <span class="php-var">$id</span> );
 </span><span id="691" class="l"><a href="#691"> 691: </a>                } <span class="php-keyword1">else</span> {
-</span><span id="692" class="l"><a href="#692"> 692: </a>                    <span class="php-var">$success</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_delete_custom_wordpress_item'</span>, <span class="php-keyword1">array</span>(
+</span><span id="692" class="l"><a href="#692"> 692: </a>                    <span class="php-var">$success</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_delete_custom_wordpress_item'</span>, <span class="php-keyword1">array</span>(
 </span><span id="693" class="l"><a href="#693"> 693: </a>                        <span class="php-quote">'id'</span> =&gt; <span class="php-var">$id</span>,
 </span><span id="694" class="l"><a href="#694"> 694: </a>                        <span class="php-quote">'name'</span> =&gt; <span class="php-var">$name</span>
 </span><span id="695" class="l"><a href="#695"> 695: </a>                    ) );
@@ -853,7 +853,7 @@
 </span><span id="768" class="l"><a href="#768"> 768: </a>                }
 </span><span id="769" class="l"><a href="#769"> 769: </a>
 </span><span id="770" class="l"><a href="#770"> 770: </a>                <span class="php-comment">// developers can use this hook to set any other user data - permissions, etc</span>
-</span><span id="771" class="l"><a href="#771"> 771: </a>                do_action( <span class="php-quote">'salesforce_rest_api_set_more_user_data'</span>, <span class="php-var">$user_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'create'</span> );
+</span><span id="771" class="l"><a href="#771"> 771: </a>                do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_user_data'</span>, <span class="php-var">$user_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'create'</span> );
 </span><span id="772" class="l"><a href="#772"> 772: </a>
 </span><span id="773" class="l"><a href="#773"> 773: </a>                <span class="php-comment">// send notification of new user</span>
 </span><span id="774" class="l"><a href="#774"> 774: </a>                <span class="php-comment">// todo: figure out what permissions out to get notifications for this and make sure it works the right way</span>
@@ -1048,7 +1048,7 @@
 </span><span id="963" class="l"><a href="#963"> 963: </a>            }
 </span><span id="964" class="l"><a href="#964"> 964: </a>            
 </span><span id="965" class="l"><a href="#965"> 965: </a>            <span class="php-comment">// developers can use this hook to set any other user data - permissions, etc</span>
-</span><span id="966" class="l"><a href="#966"> 966: </a>            do_action( <span class="php-quote">'salesforce_rest_api_set_more_user_data'</span>, <span class="php-var">$user_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
+</span><span id="966" class="l"><a href="#966"> 966: </a>            do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_user_data'</span>, <span class="php-var">$user_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
 </span><span id="967" class="l"><a href="#967"> 967: </a>
 </span><span id="968" class="l"><a href="#968"> 968: </a>        }
 </span><span id="969" class="l"><a href="#969"> 969: </a>
@@ -1130,7 +1130,7 @@
 </span><span id="1045" class="l"><a href="#1045">1045: </a>            }
 </span><span id="1046" class="l"><a href="#1046">1046: </a>
 </span><span id="1047" class="l"><a href="#1047">1047: </a>            <span class="php-comment">// developers can use this hook to set any other post data</span>
-</span><span id="1048" class="l"><a href="#1048">1048: </a>            do_action( <span class="php-quote">'salesforce_rest_api_set_more_post_data'</span>, <span class="php-var">$post_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'create'</span> );
+</span><span id="1048" class="l"><a href="#1048">1048: </a>            do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_post_data'</span>, <span class="php-var">$post_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'create'</span> );
 </span><span id="1049" class="l"><a href="#1049">1049: </a>
 </span><span id="1050" class="l"><a href="#1050">1050: </a>        }
 </span><span id="1051" class="l"><a href="#1051">1051: </a>
@@ -1357,7 +1357,7 @@
 </span><span id="1272" class="l"><a href="#1272">1272: </a>            }
 </span><span id="1273" class="l"><a href="#1273">1273: </a>
 </span><span id="1274" class="l"><a href="#1274">1274: </a>            <span class="php-comment">// developers can use this hook to set any other post data</span>
-</span><span id="1275" class="l"><a href="#1275">1275: </a>            do_action( <span class="php-quote">'salesforce_rest_api_set_more_post_data'</span>, <span class="php-var">$post_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
+</span><span id="1275" class="l"><a href="#1275">1275: </a>            do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_post_data'</span>, <span class="php-var">$post_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
 </span><span id="1276" class="l"><a href="#1276">1276: </a>
 </span><span id="1277" class="l"><a href="#1277">1277: </a>        }
 </span><span id="1278" class="l"><a href="#1278">1278: </a>
@@ -1406,7 +1406,7 @@
 </span><span id="1321" class="l"><a href="#1321">1321: </a>        }
 </span><span id="1322" class="l"><a href="#1322">1322: </a>
 </span><span id="1323" class="l"><a href="#1323">1323: </a>        <span class="php-comment">// developers can use this hook to pass filename and parent data for the attachment</span>
-</span><span id="1324" class="l"><a href="#1324">1324: </a>        <span class="php-var">$params</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_set_initial_attachment_data'</span>, <span class="php-var">$params</span> );
+</span><span id="1324" class="l"><a href="#1324">1324: </a>        <span class="php-var">$params</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_set_initial_attachment_data'</span>, <span class="php-var">$params</span> );
 </span><span id="1325" class="l"><a href="#1325">1325: </a>
 </span><span id="1326" class="l"><a href="#1326">1326: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'filename'</span>][<span class="php-quote">'value'</span>] ) ) {
 </span><span id="1327" class="l"><a href="#1327">1327: </a>            <span class="php-var">$filename</span> = <span class="php-var">$params</span>[<span class="php-quote">'filename'</span>][<span class="php-quote">'value'</span>];
@@ -1442,7 +1442,7 @@
 </span><span id="1357" class="l"><a href="#1357">1357: </a>            }
 </span><span id="1358" class="l"><a href="#1358">1358: </a>
 </span><span id="1359" class="l"><a href="#1359">1359: </a>            <span class="php-comment">// developers can use this hook to set any other attachment data</span>
-</span><span id="1360" class="l"><a href="#1360">1360: </a>            do_action( <span class="php-quote">'salesforce_rest_api_set_more_attachment_data'</span>, <span class="php-var">$attachment_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'create'</span> );
+</span><span id="1360" class="l"><a href="#1360">1360: </a>            do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_attachment_data'</span>, <span class="php-var">$attachment_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'create'</span> );
 </span><span id="1361" class="l"><a href="#1361">1361: </a>
 </span><span id="1362" class="l"><a href="#1362">1362: </a>        }
 </span><span id="1363" class="l"><a href="#1363">1363: </a>
@@ -1662,7 +1662,7 @@
 </span><span id="1577" class="l"><a href="#1577">1577: </a>            }
 </span><span id="1578" class="l"><a href="#1578">1578: </a>
 </span><span id="1579" class="l"><a href="#1579">1579: </a>            <span class="php-comment">// developers can use this hook to set any other attachment data</span>
-</span><span id="1580" class="l"><a href="#1580">1580: </a>            do_action( <span class="php-quote">'salesforce_rest_api_set_more_attachment_data'</span>, <span class="php-var">$attachment_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
+</span><span id="1580" class="l"><a href="#1580">1580: </a>            do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_attachment_data'</span>, <span class="php-var">$attachment_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
 </span><span id="1581" class="l"><a href="#1581">1581: </a>
 </span><span id="1582" class="l"><a href="#1582">1582: </a>        }
 </span><span id="1583" class="l"><a href="#1583">1583: </a>
@@ -1741,7 +1741,7 @@
 </span><span id="1656" class="l"><a href="#1656">1656: </a>            }
 </span><span id="1657" class="l"><a href="#1657">1657: </a>            
 </span><span id="1658" class="l"><a href="#1658">1658: </a>            <span class="php-comment">// developers can use this hook to set any other term data</span>
-</span><span id="1659" class="l"><a href="#1659">1659: </a>            do_action( <span class="php-quote">'salesforce_rest_api_set_more_term_data'</span>, <span class="php-var">$term_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'create'</span> );
+</span><span id="1659" class="l"><a href="#1659">1659: </a>            do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_term_data'</span>, <span class="php-var">$term_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'create'</span> );
 </span><span id="1660" class="l"><a href="#1660">1660: </a>            
 </span><span id="1661" class="l"><a href="#1661">1661: </a>        }
 </span><span id="1662" class="l"><a href="#1662">1662: </a>
@@ -1930,7 +1930,7 @@
 </span><span id="1845" class="l"><a href="#1845">1845: </a>            }
 </span><span id="1846" class="l"><a href="#1846">1846: </a>
 </span><span id="1847" class="l"><a href="#1847">1847: </a>            <span class="php-comment">// developers can use this hook to set any other term data</span>
-</span><span id="1848" class="l"><a href="#1848">1848: </a>            do_action( <span class="php-quote">'salesforce_rest_api_set_more_term_data'</span>, <span class="php-var">$term_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
+</span><span id="1848" class="l"><a href="#1848">1848: </a>            do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_term_data'</span>, <span class="php-var">$term_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
 </span><span id="1849" class="l"><a href="#1849">1849: </a>
 </span><span id="1850" class="l"><a href="#1850">1850: </a>        }
 </span><span id="1851" class="l"><a href="#1851">1851: </a>
@@ -2026,7 +2026,7 @@
 </span><span id="1941" class="l"><a href="#1941">1941: </a>            }
 </span><span id="1942" class="l"><a href="#1942">1942: </a>
 </span><span id="1943" class="l"><a href="#1943">1943: </a>            <span class="php-comment">// developers can use this hook to set any other comment data</span>
-</span><span id="1944" class="l"><a href="#1944">1944: </a>            do_action( <span class="php-quote">'salesforce_rest_api_set_more_comment_data'</span>, <span class="php-var">$comment_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'create'</span> );
+</span><span id="1944" class="l"><a href="#1944">1944: </a>            do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_comment_data'</span>, <span class="php-var">$comment_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'create'</span> );
 </span><span id="1945" class="l"><a href="#1945">1945: </a>
 </span><span id="1946" class="l"><a href="#1946">1946: </a>        }
 </span><span id="1947" class="l"><a href="#1947">1947: </a>
@@ -2235,7 +2235,7 @@
 </span><span id="2150" class="l"><a href="#2150">2150: </a>            }
 </span><span id="2151" class="l"><a href="#2151">2151: </a>            
 </span><span id="2152" class="l"><a href="#2152">2152: </a>            <span class="php-comment">// developers can use this hook to set any other comment data</span>
-</span><span id="2153" class="l"><a href="#2153">2153: </a>            do_action( <span class="php-quote">'salesforce_rest_api_set_more_comment_data'</span>, <span class="php-var">$comment_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
+</span><span id="2153" class="l"><a href="#2153">2153: </a>            do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_comment_data'</span>, <span class="php-var">$comment_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
 </span><span id="2154" class="l"><a href="#2154">2154: </a>
 </span><span id="2155" class="l"><a href="#2155">2155: </a>        }
 </span><span id="2156" class="l"><a href="#2156">2156: </a>

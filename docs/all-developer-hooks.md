@@ -60,39 +60,39 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
     - code: [salesforce-rest-api.php](../../salesforce-rest-api.php)
     - documentation: [extending scheduling](./extending-scheduling.md)
-- `salesforce_rest_api_add_more_wordpress_types`:
+- `object_sync_for_salesforce_add_more_wordpress_types`:
     - description: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-objects)
-- `salesforce_rest_api_remove_wordpress_types`:
+- `object_sync_for_salesforce_remove_wordpress_types`:
     - description: remove WordPress content types from the list of what can be mapped to Salesforce objects. By default, we use this for the `wp_log` type that is included with this plugin.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-objects)
-- `salesforce_rest_api_create_custom_wordpress_item`:
+- `object_sync_for_salesforce_create_custom_wordpress_item`:
     - description: allow plugins to run their own create methods for adding new WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
-- `salesforce_rest_api_upsert_custom_wordpress_item`:
+- `object_sync_for_salesforce_upsert_custom_wordpress_item`:
     - description: allow plugins to run their own upsert methods for checking for existence of, and then adding or updating, new WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
-- `salesforce_rest_api_update_custom_wordpress_item`:
+- `object_sync_for_salesforce_update_custom_wordpress_item`:
     - description: allow plugins to run their own update methods for updating existing, mapped WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
-- `salesforce_rest_api_delete_custom_wordpress_item`:
+- `object_sync_for_salesforce_delete_custom_wordpress_item`:
     - description: allow plugins to run their own delete methods for deleting existing, mapped WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
-- `salesforce_rest_api_set_initial_attachment_data`:
+- `object_sync_for_salesforce_set_initial_attachment_data`:
     - description: allow plugins to add filename or parent data when creating attachment objects.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#for-attachments)
-- `salesforce_rest_api_wordpress_object_fields`:
+- `object_sync_for_salesforce_wordpress_object_fields`:
     - description: when getting the fields for a WordPress object, allow plugins to add more (and also cache the array).
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-fields)
-- `salesforce_rest_api_wordpress_object_data`:
+- `object_sync_for_salesforce_wordpress_object_data`:
     - description: when getting the data for a WordPress object, allow plugins to add more, change the formatting, etc.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#wordpress-object-data)
@@ -131,23 +131,23 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: what to do if a push to Salesforce is successful
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
-- `salesforce_rest_api_set_more_user_data`:
+- `object_sync_for_salesforce_set_more_user_data`:
     - description: allow plugins to set more data on user objects when users are created or updated. This could be used for permissions, for example.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
-- `salesforce_rest_api_set_more_post_data`:
+- `object_sync_for_salesforce_set_more_post_data`:
     - description: allow plugins to set more data on post objects when posts are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
-- `salesforce_rest_api_set_more_comment_data`:
+- `object_sync_for_salesforce_set_more_comment_data`:
     - description: allow plugins to set more data on comment objects when comments are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
-- `salesforce_rest_api_set_more_attachment_data`:
+- `object_sync_for_salesforce_set_more_attachment_data`:
     - description: allow plugins to set more data on attachment objects when attachments are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
-- `salesforce_rest_api_set_more_term_data`:
+- `object_sync_for_salesforce_set_more_term_data`:
     - description: allow plugins to set more data on term objects when terms are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)

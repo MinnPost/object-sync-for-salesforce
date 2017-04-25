@@ -56,14 +56,14 @@ class Wordpress {
 
         // example to add/remove types
         /*
-        add_filter( 'salesforce_rest_api_add_more_wordpress_types', 'add_more_types', 10, 1 );
+        add_filter( 'object_sync_for_salesforce_add_more_wordpress_types', 'add_more_types', 10, 1 );
         function add_more_types( $more_types ) {
             $more_types = array( 'foo' );
             // or $more_types[] = 'foo';
             return $more_types;
         }
 
-        add_filter( 'salesforce_rest_api_remove_wordpress_types', 'remove_types', 10, 1 );
+        add_filter( 'object_sync_for_salesforce_remove_wordpress_types', 'remove_types', 10, 1 );
         function remove_types( $types_to_remove ) {
             $types_to_remove = array( 'acme_product' );
             // or $types_to_remove[] = 'acme_product';
@@ -71,8 +71,8 @@ class Wordpress {
         }
         */
 
-        $wordpress_types_not_posts_include = apply_filters( 'salesforce_rest_api_add_more_wordpress_types', array() );
-        $wordpress_types_ignore = apply_filters( 'salesforce_rest_api_remove_wordpress_types', array( 'wp_log') );
+        $wordpress_types_not_posts_include = apply_filters( 'object_sync_for_salesforce_add_more_wordpress_types', array() );
+        $wordpress_types_ignore = apply_filters( 'object_sync_for_salesforce_remove_wordpress_types', array( 'wp_log') );
 
 		$wordpress_objects = array();
 
@@ -229,7 +229,7 @@ class Wordpress {
         // $object_fields = array( 'data' => array(), 'from_cache' => bool, 'cached' => bool );
         // this is useful for custom objects that do not use the normal metadata table structure
 
-        $object_fields = apply_filters( 'salesforce_rest_api_wordpress_object_fields', $object_fields, $wordpress_object );
+        $object_fields = apply_filters( 'object_sync_for_salesforce_wordpress_object_fields', $object_fields, $wordpress_object );
         
 		return $object_fields['data'];
 
@@ -269,7 +269,7 @@ class Wordpress {
         // the returned $wordpress_object needs to be an array like the above
         // this is useful for custom objects or custom formatting
         
-        $wordpress_object = apply_filters( 'salesforce_rest_api_wordpress_object_data', $wordpress_object );
+        $wordpress_object = apply_filters( 'object_sync_for_salesforce_wordpress_object_data', $wordpress_object );
 
     	return $wordpress_object;
 
@@ -446,14 +446,14 @@ class Wordpress {
                 /*
                     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
                 */
-                // use hook like: add_filter( 'salesforce_rest_api_create_custom_wordpress_item', add_object, 10, 1 );
+                // use hook like: add_filter( 'object_sync_for_salesforce_create_custom_wordpress_item', add_object, 10, 1 );
                 // the one param is: array( 'name' => objecttype, 'params' => array_of_params, 'id_field' => idfield )
 
                 // check to see if someone is calling the filter, and apply it if so
-                if ( !has_filter( 'salesforce_rest_api_create_custom_wordpress_item' ) ) {
+                if ( !has_filter( 'object_sync_for_salesforce_create_custom_wordpress_item' ) ) {
                     $result = $this->post_create( $params, $id_field, $name );
                 } else {
-                    $result = apply_filters( 'salesforce_rest_api_create_custom_wordpress_item', array(
+                    $result = apply_filters( 'object_sync_for_salesforce_create_custom_wordpress_item', array(
                         'params' => $params,
                         'name' => $name,
                         'id_field' => $id_field
@@ -542,14 +542,14 @@ class Wordpress {
                 /*
                     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
                 */
-                // use hook like: add_filter( 'salesforce_rest_api_upsert_custom_wordpress_item', add_object, 10, 1 );
+                // use hook like: add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', add_object, 10, 1 );
                 // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
 
                 // check to see if someone is calling the filter, and apply it if so
-                if ( !has_filter( 'salesforce_rest_api_upsert_custom_wordpress_item' ) ) {
+                if ( !has_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item' ) ) {
                     $result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name, $check_only );
                 } else {
-                    $result = apply_filters( 'salesforce_rest_api_upsert_custom_wordpress_item', array(
+                    $result = apply_filters( 'object_sync_for_salesforce_upsert_custom_wordpress_item', array(
                         'key' => $key,
                         'value' => $value,
                         'methods' => $methods,
@@ -621,14 +621,14 @@ class Wordpress {
                 /*
                     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
                 */
-                // use hook like: add_filter( 'salesforce_rest_api_update_custom_wordpress_item', add_object, 10, 1 );
+                // use hook like: add_filter( 'object_sync_for_salesforce_update_custom_wordpress_item', add_object, 10, 1 );
                 // the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
 
                 // check to see if someone is calling the filter, and apply it if so
-                if ( !has_filter( 'salesforce_rest_api_update_custom_wordpress_item' ) ) {
+                if ( !has_filter( 'object_sync_for_salesforce_update_custom_wordpress_item' ) ) {
                     $result = $this->post_update( $id, $params, $id_field );
                 } else {
-                    $result = apply_filters( 'salesforce_rest_api_update_custom_wordpress_item', array(
+                    $result = apply_filters( 'object_sync_for_salesforce_update_custom_wordpress_item', array(
                         'id' => $id,
                         'params' => $params,
                         'id_field' => $id_field
@@ -682,14 +682,14 @@ class Wordpress {
 
                 // developers can use this hook to delete objects with their own methods
                 // the returned $success is an object of the correct type, or a false
-                // use hook like: add_filter( 'salesforce_rest_api_delete_custom_wordpress_item', add_object, 10, 1 );
+                // use hook like: add_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item', add_object, 10, 1 );
                 // the one param is: array( 'id' => id, 'name' => objecttype )
 
                 // check to see if someone is calling the filter, and apply it if so
-                if ( !has_filter( 'salesforce_rest_api_delete_custom_wordpress_item' ) ) {
+                if ( !has_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item' ) ) {
                     $success = $this->post_delete( $id );
                 } else {
-                    $success = apply_filters( 'salesforce_rest_api_delete_custom_wordpress_item', array(
+                    $success = apply_filters( 'object_sync_for_salesforce_delete_custom_wordpress_item', array(
                         'id' => $id,
                         'name' => $name
                     ) );
@@ -768,7 +768,7 @@ class Wordpress {
                 }
 
                 // developers can use this hook to set any other user data - permissions, etc
-                do_action( 'salesforce_rest_api_set_more_user_data', $user_id, $params, 'create' );
+                do_action( 'object_sync_for_salesforce_set_more_user_data', $user_id, $params, 'create' );
 
                 // send notification of new user
                 // todo: figure out what permissions out to get notifications for this and make sure it works the right way
@@ -963,7 +963,7 @@ class Wordpress {
             }
             
             // developers can use this hook to set any other user data - permissions, etc
-            do_action( 'salesforce_rest_api_set_more_user_data', $user_id, $params, 'update' );
+            do_action( 'object_sync_for_salesforce_set_more_user_data', $user_id, $params, 'update' );
 
         }
 
@@ -1045,7 +1045,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other post data
-            do_action( 'salesforce_rest_api_set_more_post_data', $post_id, $params, 'create' );
+            do_action( 'object_sync_for_salesforce_set_more_post_data', $post_id, $params, 'create' );
 
         }
 
@@ -1272,7 +1272,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other post data
-            do_action( 'salesforce_rest_api_set_more_post_data', $post_id, $params, 'update' );
+            do_action( 'object_sync_for_salesforce_set_more_post_data', $post_id, $params, 'update' );
 
         }
 
@@ -1321,7 +1321,7 @@ class Wordpress {
         }
 
         // developers can use this hook to pass filename and parent data for the attachment
-        $params = apply_filters( 'salesforce_rest_api_set_initial_attachment_data', $params );
+        $params = apply_filters( 'object_sync_for_salesforce_set_initial_attachment_data', $params );
 
         if ( isset( $params['filename']['value'] ) ) {
             $filename = $params['filename']['value'];
@@ -1357,7 +1357,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other attachment data
-            do_action( 'salesforce_rest_api_set_more_attachment_data', $attachment_id, $params, 'create' );
+            do_action( 'object_sync_for_salesforce_set_more_attachment_data', $attachment_id, $params, 'create' );
 
         }
 
@@ -1577,7 +1577,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other attachment data
-            do_action( 'salesforce_rest_api_set_more_attachment_data', $attachment_id, $params, 'update' );
+            do_action( 'object_sync_for_salesforce_set_more_attachment_data', $attachment_id, $params, 'update' );
 
         }
 
@@ -1656,7 +1656,7 @@ class Wordpress {
             }
             
             // developers can use this hook to set any other term data
-            do_action( 'salesforce_rest_api_set_more_term_data', $term_id, $params, 'create' );
+            do_action( 'object_sync_for_salesforce_set_more_term_data', $term_id, $params, 'create' );
             
         }
 
@@ -1845,7 +1845,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other term data
-            do_action( 'salesforce_rest_api_set_more_term_data', $term_id, $params, 'update' );
+            do_action( 'object_sync_for_salesforce_set_more_term_data', $term_id, $params, 'update' );
 
         }
 
@@ -1941,7 +1941,7 @@ class Wordpress {
             }
 
             // developers can use this hook to set any other comment data
-            do_action( 'salesforce_rest_api_set_more_comment_data', $comment_id, $params, 'create' );
+            do_action( 'object_sync_for_salesforce_set_more_comment_data', $comment_id, $params, 'create' );
 
         }
 
@@ -2150,7 +2150,7 @@ class Wordpress {
             }
             
             // developers can use this hook to set any other comment data
-            do_action( 'salesforce_rest_api_set_more_comment_data', $comment_id, $params, 'update' );
+            do_action( 'object_sync_for_salesforce_set_more_comment_data', $comment_id, $params, 'update' );
 
         }
 

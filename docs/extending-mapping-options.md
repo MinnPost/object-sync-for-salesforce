@@ -8,10 +8,10 @@ There are many ways of adding custom WordPress objects, and there are also somet
 
 ### Add more objects
 
-The `salesforce_rest_api_add_more_wordpress_types` hook populates an array which is then added to the list in the dropdown.
+The `object_sync_for_salesforce_add_more_wordpress_types` hook populates an array which is then added to the list in the dropdown.
 
 ```
-add_filter( 'salesforce_rest_api_add_more_wordpress_types', 'add_more_types', 10, 1 );
+add_filter( 'object_sync_for_salesforce_add_more_wordpress_types', 'add_more_types', 10, 1 );
 function add_more_types( $more_types ) {
     $more_types = array( 'foo' );
     // or $more_types[] = 'foo';
@@ -19,10 +19,10 @@ function add_more_types( $more_types ) {
 }
 ```
 
-The `salesforce_rest_api_remove_wordpress_types` hook populates an array which is used to remove objects from the list in the dropdown.
+The `object_sync_for_salesforce_remove_wordpress_types` hook populates an array which is used to remove objects from the list in the dropdown.
 
 ```
-add_filter( 'salesforce_rest_api_remove_wordpress_types', 'remove_types', 10, 1 );
+add_filter( 'object_sync_for_salesforce_remove_wordpress_types', 'remove_types', 10, 1 );
 function remove_types( $types_to_remove ) {
     $types_to_remove = array( 'acme_product' );
     // or $types_to_remove[] = 'acme_product';
@@ -34,7 +34,7 @@ In the above examples, an object called `foo` would be added to the dropdown, an
 
 ## Available WordPress fields
 
-The `salesforce_rest_api_wordpress_object_fields` hook populates an array of fields for a given object, which is then added to the list in the dropdown. This array is also used in several other parts of the plugin, so its structure is more complex.
+The `object_sync_for_salesforce_wordpress_object_fields` hook populates an array of fields for a given object, which is then added to the list in the dropdown. This array is also used in several other parts of the plugin, so its structure is more complex.
 
 Example of `$object_fields` array:
 
@@ -117,12 +117,12 @@ $object_fields = array(
 );
 ```
 
-To modify the array, you can use the `salesforce_rest_api_wordpress_object_fields` hook.
+To modify the array, you can use the `object_sync_for_salesforce_wordpress_object_fields` hook.
 
 Code example:
 
 ```
-add_filter( 'salesforce_rest_api_wordpress_object_fields', 'add_field', 10, 2 );
+add_filter( 'object_sync_for_salesforce_wordpress_object_fields', 'add_field', 10, 2 );
 function add_field( $object_fields, $wordpress_object ) {
     $object_fields[] = array(
         'key' => 'field_foo',
@@ -140,4 +140,4 @@ function add_field( $object_fields, $wordpress_object ) {
 
 ## WordPress object data
 
-`salesforce_rest_api_wordpress_object_data`
+`object_sync_for_salesforce_wordpress_object_data`
