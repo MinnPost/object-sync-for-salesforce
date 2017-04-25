@@ -4,7 +4,7 @@ Developers can extend the settings interface for this plugin in a couple of ways
 
 ## Add a settings tab
 
-Use the `salesforce_rest_api_settings_tabs` hook to add a tab to the Salesforce settings.
+Use the `object_sync_for_salesforce_settings_tabs` hook to add a tab to the Salesforce settings.
 
 ### Visual example
 
@@ -23,7 +23,7 @@ The code takes two steps: one to add the tab, and one to populate it. The hook r
 #### Hook
 
 ```
-add_filter( 'salesforce_rest_api_settings_tabs', minnpost_tabs', 10, 1 );
+add_filter( 'object_sync_for_salesforce_settings_tabs', minnpost_tabs', 10, 1 );
 function minnpost_tabs( $tabs ) {
     $tabs['minnpost'] = 'MinnPost';
     return $tabs;

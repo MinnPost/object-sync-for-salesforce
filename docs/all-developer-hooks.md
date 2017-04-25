@@ -40,7 +40,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: modify the $salesforce_id string here
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
-- `salesforce_rest_api_settings_tabs`:
+- `object_sync_for_salesforce_settings_tabs`:
     - description: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
     - code: [classes/admin.php](../classes/admin.php)
     - documentation: [add a settings tab](./docs/adding-settings.md#add-a-settings-tab)

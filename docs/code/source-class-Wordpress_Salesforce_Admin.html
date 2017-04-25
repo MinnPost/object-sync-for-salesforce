@@ -253,7 +253,7 @@
 </span><span id="168" class="l"><a href="#168"> 168: </a>
 </span><span id="169" class="l"><a href="#169"> 169: </a>            <span class="php-comment">// filter for extending the tabs available on the page</span>
 </span><span id="170" class="l"><a href="#170"> 170: </a>            <span class="php-comment">// currently it will go into the default switch case for $tab</span>
-</span><span id="171" class="l"><a href="#171"> 171: </a>            <span class="php-var">$tabs</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_settings_tabs'</span>, <span class="php-var">$tabs</span> );
+</span><span id="171" class="l"><a href="#171"> 171: </a>            <span class="php-var">$tabs</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_settings_tabs'</span>, <span class="php-var">$tabs</span> );
 </span><span id="172" class="l"><a href="#172"> 172: </a>
 </span><span id="173" class="l"><a href="#173"> 173: </a>            <span class="php-var">$tab</span> = <span class="php-keyword1">isset</span>( <span class="php-var">$_GET</span>[<span class="php-quote">'tab'</span>] ) ? <span class="php-var">$_GET</span>[<span class="php-quote">'tab'</span>] : <span class="php-quote">'settings'</span>;
 </span><span id="174" class="l"><a href="#174"> 174: </a>            <span class="php-var">$this</span>-&gt;tabs( <span class="php-var">$tabs</span>, <span class="php-var">$tab</span> );

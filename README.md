@@ -180,7 +180,7 @@ The admin section is divided into tabs:
 6. Log Settings
     - This tab allows admin users to tell the plugin whether or not it should log any events. If it is enabled, it will use the `logging` class. If it is not, nothing will happen.
     - Users can set what statuses to log (error, success, and/or notice), if and how often entries should be deleted, and which events between WordPress and Salesforce should be logged.
-7. Other tabs added by the `salesforce_rest_api_settings_tabs` filter will appear after the Log Settings tab.
+7. Other tabs added by the `object_sync_for_salesforce_settings_tabs` filter will appear after the Log Settings tab.
 
 ### Classes Todo
 

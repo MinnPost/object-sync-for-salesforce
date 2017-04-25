@@ -168,7 +168,7 @@ class Wordpress_Salesforce_Admin {
 
 			// filter for extending the tabs available on the page
 			// currently it will go into the default switch case for $tab
-			$tabs = apply_filters( 'salesforce_rest_api_settings_tabs', $tabs );
+			$tabs = apply_filters( 'object_sync_for_salesforce_settings_tabs', $tabs );
 
 			$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
 			$this->tabs( $tabs, $tab );
