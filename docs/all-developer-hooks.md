@@ -56,7 +56,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form.
     - code: [classes/admin.php](../classes/admin.php)
     - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
-- `salesforce_rest_api_modify_schedulable_classes`:
+- `object_sync_for_salesforce_modify_schedulable_classes`:
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
     - code: [salesforce-rest-api.php](../../salesforce-rest-api.php)
     - documentation: [extending scheduling](./extending-scheduling.md)

@@ -142,11 +142,11 @@ class Object_Sync_Salesforce {
         );
 
         // users can modify the list of schedulable classes
-        $this->schedulable_classes = apply_filters( 'salesforce_rest_api_modify_schedulable_classes', $this->schedulable_classes );
+        $this->schedulable_classes = apply_filters( 'object_sync_for_salesforce_modify_schedulable_classes', $this->schedulable_classes );
 
         // example to modify the array of classes by adding one and removing one
 		/*
-		add_filter( 'salesforce_rest_api_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
+		add_filter( 'object_sync_for_salesforce_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
 		function modify_schedulable_classes( $schedulable_classes ) {
 			$schedulable_classes = array(
 	            array(

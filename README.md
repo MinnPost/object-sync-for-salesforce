@@ -133,7 +133,7 @@ Our extension does a few things:
 2. Create schedules using `wp_schedule_event` when the class is called.
 3. Call other plugin classes and pass data to them for processing when a scheduled event occurs.
 
-For this class, multiple queues can run. Each class in the `schedulable_classes` array (which can be modified by the `salesforce_rest_api_modify_schedulable_classes` filter) can have its own running queue with its own scheduled tasks.
+For this class, multiple queues can run. Each class in the `schedulable_classes` array (which can be modified by the `object_sync_for_salesforce_modify_schedulable_classes` filter) can have its own running queue with its own scheduled tasks.
 
 
 ### Salesforce Push (salesforce_push)
