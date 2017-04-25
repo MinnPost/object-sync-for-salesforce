@@ -1274,7 +1274,7 @@ class Wordpress_Salesforce_Admin {
 		$versions_is_redo = $versions['is_redo'] === true ? '' : 'not ';
 		$versions_andorbut = $versions['from_cache'] === true ? 'and' : 'but';
 
-		$contacts = $sfapi->query( 'SELECT Name, Id from Contact LIMIT 100' );
+		$contacts = $sfapi->query( 'SELECT Name, Id from Contact LIMIT 25' );
 
 		// format this array into html so users can see the contacts
 		$contacts_is_cached = $contacts['cached'] === true ? '' : 'not ';
