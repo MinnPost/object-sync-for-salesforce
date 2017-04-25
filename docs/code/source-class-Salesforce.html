@@ -892,8 +892,8 @@
 </span><span id="807" class="l"><a href="#807"> 807: </a>        }
 </span><span id="808" class="l"><a href="#808"> 808: </a>
 </span><span id="809" class="l"><a href="#809"> 809: </a>        <span class="php-comment">// allow developers to change both the key and value by which objects should be matched</span>
-</span><span id="810" class="l"><a href="#810"> 810: </a>        <span class="php-var">$key</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_modify_upsert_key'</span>, <span class="php-var">$key</span> );
-</span><span id="811" class="l"><a href="#811"> 811: </a>        <span class="php-var">$value</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_modify_upsert_value'</span>, <span class="php-var">$value</span> );
+</span><span id="810" class="l"><a href="#810"> 810: </a>        <span class="php-var">$key</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_modify_upsert_key'</span>, <span class="php-var">$key</span> );
+</span><span id="811" class="l"><a href="#811"> 811: </a>        <span class="php-var">$value</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_modify_upsert_value'</span>, <span class="php-var">$value</span> );
 </span><span id="812" class="l"><a href="#812"> 812: </a>
 </span><span id="813" class="l"><a href="#813"> 813: </a>        <span class="php-var">$data</span> = <span class="php-var">$this</span>-&gt;api_call( <span class="php-quote">&quot;sobjects/</span><span class="php-var">{$name}</span><span class="php-quote">/</span><span class="php-var">{$key}</span><span class="php-quote">/</span><span class="php-var">{$value}</span><span class="php-quote">&quot;</span>, <span class="php-var">$params</span>, <span class="php-quote">'PATCH'</span>, <span class="php-var">$options</span> );
 </span><span id="814" class="l"><a href="#814"> 814: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'code'</span>] == <span class="php-num">300</span> ) {

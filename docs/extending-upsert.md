@@ -10,9 +10,9 @@ Several hooks in the plugin expand how upsert works. They can be used with `push
 
 ### Change the key or value for the upsert match
 
-Use the `salesforce_rest_api_modify_upsert_key` hook to change an upsert key, or what the field is, by which an object should be matched. This only runs when an upsert operation is already running.
+Use the `object_sync_for_salesforce_modify_upsert_key` hook to change an upsert key, or what the field is, by which an object should be matched. This only runs when an upsert operation is already running.
 
-Use the `salesforce_rest_api_modify_upsert_value` hook to change an upsert value, or what the field value is, by which an object should be matched. This only runs when an upsert operation is already running.
+Use the `object_sync_for_salesforce_modify_upsert_value` hook to change an upsert value, or what the field value is, by which an object should be matched. This only runs when an upsert operation is already running.
 
 ### Make a custom function for matching items
 

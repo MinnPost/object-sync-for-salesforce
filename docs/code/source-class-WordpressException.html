@@ -597,8 +597,8 @@
 </span><span id="512" class="l"><a href="#512"> 512: </a>        }
 </span><span id="513" class="l"><a href="#513"> 513: </a>
 </span><span id="514" class="l"><a href="#514"> 514: </a>        <span class="php-comment">// allow developers to change both the key and value by which objects should be matched</span>
-</span><span id="515" class="l"><a href="#515"> 515: </a>        <span class="php-var">$key</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_modify_upsert_key'</span>, <span class="php-var">$key</span> );
-</span><span id="516" class="l"><a href="#516"> 516: </a>        <span class="php-var">$value</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_modify_upsert_value'</span>, <span class="php-var">$value</span> );
+</span><span id="515" class="l"><a href="#515"> 515: </a>        <span class="php-var">$key</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_modify_upsert_key'</span>, <span class="php-var">$key</span> );
+</span><span id="516" class="l"><a href="#516"> 516: </a>        <span class="php-var">$value</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_modify_upsert_value'</span>, <span class="php-var">$value</span> );
 </span><span id="517" class="l"><a href="#517"> 517: </a>
 </span><span id="518" class="l"><a href="#518"> 518: </a>        <span class="php-keyword1">switch</span> ( <span class="php-var">$name</span> ) {
 </span><span id="519" class="l"><a href="#519"> 519: </a>            <span class="php-keyword1">case</span> <span class="php-quote">'user'</span>:

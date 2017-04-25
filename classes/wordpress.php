@@ -512,8 +512,8 @@ class Wordpress {
         }
 
         // allow developers to change both the key and value by which objects should be matched
-        $key = apply_filters( 'salesforce_rest_api_modify_upsert_key', $key );
-        $value = apply_filters( 'salesforce_rest_api_modify_upsert_value', $value );
+        $key = apply_filters( 'object_sync_for_salesforce_modify_upsert_key', $key );
+        $value = apply_filters( 'object_sync_for_salesforce_modify_upsert_value', $value );
 
         switch ( $name ) {
             case 'user':
