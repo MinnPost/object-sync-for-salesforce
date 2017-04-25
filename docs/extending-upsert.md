@@ -16,7 +16,7 @@ Use the `object_sync_for_salesforce_modify_upsert_value` hook to change an upser
 
 ### Make a custom function for matching items
 
-This allows you to run entirely different functions to change what happens on an upsert. The `salesforce_rest_api_find_wp_object_match` runs on a `pull`, when the change happens in Salesforce. The `object_sync_for_salesforce_find_sf_object_match` runs on a `push`, when the change happens in WordPress.
+This allows you to run entirely different functions to change what happens on an upsert. The `object_sync_for_salesforce_find_wp_object_match` runs on a `pull`, when the change happens in Salesforce. The `object_sync_for_salesforce_find_sf_object_match` runs on a `push`, when the change happens in WordPress.
 
 #### Example
 

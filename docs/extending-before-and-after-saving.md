@@ -9,8 +9,8 @@ Each event has an action that runs right before data is saved, and then right af
 The action hooks that run on around the save on a `pull` event are:
 
 - `object_sync_for_salesforce_pre_pull`
-- `salesforce_rest_api_pull_fail`
-- `salesforce_rest_api_pull_success`
+- `object_sync_for_salesforce_pull_fail`
+- `object_sync_for_salesforce_pull_success`
 
 ### Code examples
 
@@ -31,7 +31,7 @@ function before_pull( $wordpress_id, $mapping, $object, $object_id, $params ) {
 #### After fail
 
 ```
-add_action( 'salesforce_rest_api_pull_fail', 'pull_fail', 10, 5 );
+add_action( 'object_sync_for_salesforce_pull_fail', 'pull_fail', 10, 5 );
 function pull_fail( $op, $result, $synced_object ) {
     // do things if the save failed
     // $op is what the plugin tried to do - create, update, upsert, delete
@@ -50,7 +50,7 @@ function pull_fail( $op, $result, $synced_object ) {
 #### After success
 
 ```
-add_action( 'salesforce_rest_api_pull_success', 'pull_success', 10, 3 );
+add_action( 'object_sync_for_salesforce_pull_success', 'pull_success', 10, 3 );
 function pull_success( $op, $result, $synced_object ) {
     // do things if the save succeeded
     // $op is what the plugin did - create, update, upsert, delete

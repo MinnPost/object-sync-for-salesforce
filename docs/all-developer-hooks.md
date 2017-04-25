@@ -12,11 +12,11 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: prevent a push per-mapping.
     - code: (should document with push stuff)
     - documentation: [classes/salesforce_push.php](../classes/salesforce_push.php)
-- `salesforce_rest_api_pull_object_allowed`:
+- `object_sync_for_salesforce_pull_object_allowed`:
     - description: prevent a pull per-mapping.
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: (should document with pull stuff)
-- `salesforce_rest_api_pull_params_modify`:
+- `object_sync_for_salesforce_pull_params_modify`:
     - description: change what parameters are being sent to WordPress before syncing occurs
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extend parameters](extending-parameters.md#salesforce-push)
@@ -24,7 +24,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-pull)
-- `salesforce_rest_api_find_wp_object_match`:
+- `object_sync_for_salesforce_find_wp_object_match`:
     - description: modify the $wordpress_id string here
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
@@ -111,11 +111,11 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: run an action immediately before WordPress data is saved
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
-- `salesforce_rest_api_pull_fail`:
+- `object_sync_for_salesforce_pull_fail`:
     - description: what to do if a pull from Salesforce fails
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
-- `salesforce_rest_api_pull_success`:
+- `object_sync_for_salesforce_pull_success`:
     - description: what to do if a pull from Salesforce is successful
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
