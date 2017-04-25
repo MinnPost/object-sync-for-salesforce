@@ -457,7 +457,7 @@ class Salesforce_Push {
 		$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object["$object_id"] );
 
 		// hook to allow other plugins to define or alter the mapping object
-		$mapping_object = apply_filters( 'salesforce_rest_api_push_mapping_object', $mapping_object, $object, $mapping );
+		$mapping_object = apply_filters( 'object_sync_for_salesforce_push_mapping_object', $mapping_object, $object, $mapping );
 
 		// we already have the data from wordpress at this point; we just need to work with it in salesforce
 		$synced_object = array(
@@ -498,7 +498,7 @@ class Salesforce_Push {
 						);
 
 						// hook for push fail
-						do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object, $object_id );
+						do_action( 'object_sync_for_salesforce_push_fail', $op, $sfapi->response, $synced_object, $object_id );
 
 					}
 
@@ -575,7 +575,7 @@ class Salesforce_Push {
 		// hook to allow other plugins to modify the $params array
 		// use hook to map fields between the wordpress and salesforce objects
 		// returns $params.
-		$params = apply_filters( 'salesforce_rest_api_push_params_modify', $params, $mapping, $object, $sf_sync_trigger, false, $is_new );
+		$params = apply_filters( 'object_sync_for_salesforce_push_params_modify', $params, $mapping, $object, $sf_sync_trigger, false, $is_new );
 
 		// if we don't get any params, there are no fields that should be sent to salesforce
 		if ( empty( $params ) ) {
@@ -628,7 +628,7 @@ class Salesforce_Push {
 
 				// hook to allow other plugins to do something right before salesforce data is saved
 				// ex: run wordpress methods on an object if it exists, or do something in preparation for it if it doesn't
-				do_action( 'salesforce_rest_api_pre_push', $salesforce_id, $mapping, $object, $object_id, $params );
+				do_action( 'object_sync_for_salesforce_pre_push', $salesforce_id, $mapping, $object, $object_id, $params );
 
 				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || $salesforce_id !== null ) {
 					
@@ -712,7 +712,7 @@ class Salesforce_Push {
 				);
 
 				// hook for push fail
-				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
+				do_action( 'object_sync_for_salesforce_push_fail', $op, $sfapi->response, $synced_object );
 
 				return;
 			}
@@ -772,7 +772,7 @@ class Salesforce_Push {
 				);
 
 				// hook for push fail
-				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
+				do_action( 'object_sync_for_salesforce_push_fail', $op, $sfapi->response, $synced_object );
 
 				return;
 			}
@@ -810,7 +810,7 @@ class Salesforce_Push {
 
 				// hook to allow other plugins to do something right before salesforce data is saved
 				// ex: run wordpress methods on an object if it exists, or do something in preparation for it if it doesn't
-				do_action( 'salesforce_rest_api_pre_push', $mapping_object['salesforce_id'], $mapping, $object, $object_id, $params );
+				do_action( 'object_sync_for_salesforce_pre_push', $mapping_object['salesforce_id'], $mapping, $object, $object_id, $params );
 
 				$op = 'Update';
 				$result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );
@@ -858,7 +858,7 @@ class Salesforce_Push {
 				$mapping_object['last_sync_message'] = $e->getMessage();
 
 				// hook for push fail
-				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object );
+				do_action( 'object_sync_for_salesforce_push_fail', $op, $sfapi->response, $synced_object );
 
 			}
 
@@ -984,7 +984,7 @@ class Salesforce_Push {
 					);
 					$mapping_object->save();
 				}
-				do_action( 'salesforce_rest_api_push_fail', $op, $sfapi->response, $synced_object, $object_id );
+				do_action( 'object_sync_for_salesforce_push_fail', $op, $sfapi->response, $synced_object, $object_id );
 			}
 		}
 	}

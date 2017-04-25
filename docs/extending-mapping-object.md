@@ -29,7 +29,7 @@ $mapping_object = array(
 
 ### Hook
 
-`salesforce_rest_api_push_mapping_object` allows you to change any of the items in the `$mapping_object` array. Make sure to pay attention to the note above, as the items may be overwritten as the plugin progresses.
+`object_sync_for_salesforce_push_mapping_object` allows you to change any of the items in the `$mapping_object` array. Make sure to pay attention to the note above, as the items may be overwritten as the plugin progresses.
 
 ## Salesforce Push
 

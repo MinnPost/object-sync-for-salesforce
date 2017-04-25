@@ -28,7 +28,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: modify the $wordpress_id string here
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
-- `salesforce_rest_api_push_params_modify`:
+- `object_sync_for_salesforce_push_params_modify`:
     - description: change what parameters are being sent to Salesforce before syncing occurs
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extend parameters](extending-parameters.md#salesforce-push)
@@ -119,11 +119,11 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: what to do if a pull from Salesforce is successful
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
-- `salesforce_rest_api_pre_push`:
+- `object_sync_for_salesforce_pre_push`:
     - description: run an action immediately before Salesforce data is saved
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
-- `salesforce_rest_api_push_fail`:
+- `object_sync_for_salesforce_push_fail`:
     - description: what to do if a push to Salesforce fails
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
