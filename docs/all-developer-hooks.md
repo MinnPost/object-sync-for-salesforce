@@ -58,7 +58,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
 - `object_sync_for_salesforce_modify_schedulable_classes`:
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
-    - code: [salesforce-rest-api.php](../../salesforce-rest-api.php)
+    - code: [object-sync-for-salesforce.php](../../object-sync-for-salesforce.php)
     - documentation: [extending scheduling](./extending-scheduling.md)
 - `object_sync_for_salesforce_add_more_wordpress_types`:
     - description: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
