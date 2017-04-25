@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex">
 
-	<title>File  | Salesforce REST API</title>
+	<title>File  | Object Sync for Salesforce</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -25,12 +25,12 @@
 			<h3>Classes</h3>
 			<ul>
 				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
+				<li><a href="class-Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
 				<li><a href="class-Salesforce.html">Salesforce</a></li>
 				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
 				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
 				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
 				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
-				<li><a href="class-Salesforce_Rest_API.html">Salesforce_Rest_API</a></li>
 				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
 				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
 				<li><a href="class-Wordpress.html">Wordpress</a></li>
@@ -85,20 +85,20 @@
 
 <pre><code><span id="1" class="l"><a href="#1">  1: </a><span class="xlang">&lt;?php</span>
 </span><span id="2" class="l"><a href="#2">  2: </a><span class="php-comment">/*
-</span></span><span id="3" class="l"><a href="#3">  3: </a><span class="php-comment">Plugin Name: Salesforce REST API
-</span></span><span id="4" class="l"><a href="#4">  4: </a><span class="php-comment">Description: Defines an API that enables WordPress to interact with the Salesforce REST API.
+</span></span><span id="3" class="l"><a href="#3">  3: </a><span class="php-comment">Plugin Name: Object Sync for Salesforce
+</span></span><span id="4" class="l"><a href="#4">  4: </a><span class="php-comment">Description: WordPress plugin that implements mapping and syncing between Salesforce objects and WordPress objects 
 </span></span><span id="5" class="l"><a href="#5">  5: </a><span class="php-comment">Version: 0.0.1
 </span></span><span id="6" class="l"><a href="#6">  6: </a><span class="php-comment">Author: Jonathan Stegall
 </span></span><span id="7" class="l"><a href="#7">  7: </a><span class="php-comment">Author URI: http://code.minnpost.com
 </span></span><span id="8" class="l"><a href="#8">  8: </a><span class="php-comment">License: GPL2+
 </span></span><span id="9" class="l"><a href="#9">  9: </a><span class="php-comment">License URI: https://www.gnu.org/licenses/gpl-2.0.html
-</span></span><span id="10" class="l"><a href="#10"> 10: </a><span class="php-comment">Text Domain: salesforce-rest-api
+</span></span><span id="10" class="l"><a href="#10"> 10: </a><span class="php-comment">Text Domain: object-sync-for-salesforce
 </span></span><span id="11" class="l"><a href="#11"> 11: </a><span class="php-comment">*/</span>
 </span><span id="12" class="l"><a href="#12"> 12: </a>
 </span><span id="13" class="l"><a href="#13"> 13: </a><span class="php-comment">/**
-</span></span><span id="14" class="l"><a href="#14"> 14: </a><span class="php-comment"> * Start up the Salesforce REST API plugin; initialize parameters and classes
+</span></span><span id="14" class="l"><a href="#14"> 14: </a><span class="php-comment"> * Start up the Object Sync for Salesforce plugin; initialize parameters and classes
 </span></span><span id="15" class="l"><a href="#15"> 15: </a><span class="php-comment"> */</span>
-</span><span id="16" class="l"><a href="#16"> 16: </a><span class="php-keyword1">class</span> Salesforce_Rest_API {
+</span><span id="16" class="l"><a href="#16"> 16: </a><span class="php-keyword1">class</span> Object_Sync_Salesforce {
 </span><span id="17" class="l"><a href="#17"> 17: </a>
 </span><span id="18" class="l"><a href="#18"> 18: </a>    <span class="php-comment">/**
 </span></span><span id="19" class="l"><a href="#19"> 19: </a><span class="php-comment">    * @var object
@@ -156,7 +156,7 @@
 </span><span id="71" class="l"><a href="#71"> 71: </a>    <span class="php-comment">/**
 </span></span><span id="72" class="l"><a href="#72"> 72: </a><span class="php-comment">    * @var object
 </span></span><span id="73" class="l"><a href="#73"> 73: </a><span class="php-comment">    * Load and initialize the Salesforce class.
-</span></span><span id="74" class="l"><a href="#74"> 74: </a><span class="php-comment">    * This contains the REST API methods
+</span></span><span id="74" class="l"><a href="#74"> 74: </a><span class="php-comment">    * This contains the Salesforce API methods
 </span></span><span id="75" class="l"><a href="#75"> 75: </a><span class="php-comment">    */</span>
 </span><span id="76" class="l"><a href="#76"> 76: </a>    <span class="php-keyword1">public</span> <span class="php-var">$salesforce</span>;
 </span><span id="77" class="l"><a href="#77"> 77: </a>
@@ -189,7 +189,7 @@
 </span></span><span id="104" class="l"><a href="#104">104: </a><span class="php-comment">    */</span>
 </span><span id="105" class="l"><a href="#105">105: </a>    <span class="php-keyword1">static</span> <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> get_instance() {
 </span><span id="106" class="l"><a href="#106">106: </a>        <span class="php-keyword1">if</span> ( self::<span class="php-var">$instance</span> === <span class="php-keyword1">null</span> ) {
-</span><span id="107" class="l"><a href="#107">107: </a>            self::<span class="php-var">$instance</span> = <span class="php-keyword1">new</span> Salesforce_Rest_API();
+</span><span id="107" class="l"><a href="#107">107: </a>            self::<span class="php-var">$instance</span> = <span class="php-keyword1">new</span> Object_Sync_Salesforce();
 </span><span id="108" class="l"><a href="#108">108: </a>        }
 </span><span id="109" class="l"><a href="#109">109: </a>        <span class="php-keyword1">return</span> self::<span class="php-var">$instance</span>;
 </span><span id="110" class="l"><a href="#110">110: </a>    }
@@ -206,7 +206,7 @@
 </span><span id="121" class="l"><a href="#121">121: </a>        <span class="php-var">$this</span>-&gt;wpdb = &amp;<span class="php-var">$wpdb</span>;
 </span><span id="122" class="l"><a href="#122">122: </a>        <span class="php-var">$this</span>-&gt;version = <span class="php-quote">'0.0.2'</span>;
 </span><span id="123" class="l"><a href="#123">123: </a>        <span class="php-var">$this</span>-&gt;login_credentials = <span class="php-var">$this</span>-&gt;get_login_credentials();
-</span><span id="124" class="l"><a href="#124">124: </a>        <span class="php-var">$this</span>-&gt;text_domain = <span class="php-quote">'salesforce-rest-api'</span>;
+</span><span id="124" class="l"><a href="#124">124: </a>        <span class="php-var">$this</span>-&gt;text_domain = <span class="php-quote">'object-sync-for-salesforce'</span>;
 </span><span id="125" class="l"><a href="#125">125: </a>
 </span><span id="126" class="l"><a href="#126">126: </a>        <span class="php-var">$this</span>-&gt;schedulable_classes = <span class="php-keyword1">array</span>(
 </span><span id="127" class="l"><a href="#127">127: </a>            <span class="php-quote">'salesforce_push'</span> =&gt; <span class="php-keyword1">array</span>(
@@ -470,7 +470,7 @@
 </span></span><span id="385" class="l"><a href="#385">385: </a><span class="php-comment">    */</span>
 </span><span id="386" class="l"><a href="#386">386: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> plugin_action_links( <span class="php-var">$links</span>, <span class="php-var">$file</span> ) {
 </span><span id="387" class="l"><a href="#387">387: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$file</span> == plugin_basename( __FILE__ ) ) {
-</span><span id="388" class="l"><a href="#388">388: </a>            <span class="php-var">$settings</span> = <span class="php-quote">'&lt;a href=&quot;'</span> . get_admin_url() . <span class="php-quote">'options-general.php?page=salesforce-api-admin&quot;&gt;'</span> . __(<span class="php-quote">'Settings'</span>, <span class="php-var">$this</span>-&gt;text_domain ) . <span class="php-quote">'&lt;/a&gt;'</span>;
+</span><span id="388" class="l"><a href="#388">388: </a>            <span class="php-var">$settings</span> = <span class="php-quote">'&lt;a href=&quot;'</span> . get_admin_url() . <span class="php-quote">'options-general.php?page=object-sync-salesforce-admin&quot;&gt;'</span> . __(<span class="php-quote">'Settings'</span>, <span class="php-var">$this</span>-&gt;text_domain ) . <span class="php-quote">'&lt;/a&gt;'</span>;
 </span><span id="389" class="l"><a href="#389">389: </a>            <span class="php-comment">// make the 'Settings' link appear first</span>
 </span><span id="390" class="l"><a href="#390">390: </a>            <span class="php-keyword2">array_unshift</span>( <span class="php-var">$links</span>, <span class="php-var">$settings</span> );
 </span><span id="391" class="l"><a href="#391">391: </a>        }
@@ -484,8 +484,8 @@
 </span></span><span id="399" class="l"><a href="#399">399: </a><span class="php-comment">    * @return void
 </span></span><span id="400" class="l"><a href="#400">400: </a><span class="php-comment">    */</span>
 </span><span id="401" class="l"><a href="#401">401: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> admin_scripts_and_styles() {
-</span><span id="402" class="l"><a href="#402">402: </a>        wp_enqueue_script( <span class="php-var">$this</span>-&gt;text_domain . <span class="php-quote">'-admin'</span>, plugins_url( <span class="php-quote">'assets/js/salesforce-rest-api-admin.min.js'</span>, __FILE__ ), <span class="php-keyword1">array</span>( <span class="php-quote">'jquery'</span> ), <span class="php-var">$this</span>-&gt;version, <span class="php-keyword1">true</span> );
-</span><span id="403" class="l"><a href="#403">403: </a>        wp_enqueue_style( <span class="php-var">$this</span>-&gt;text_domain . <span class="php-quote">'-admin'</span>, plugins_url( <span class="php-quote">'assets/css/salesforce-rest-api-admin.min.css'</span>, __FILE__ ), <span class="php-keyword1">array</span>(), <span class="php-var">$this</span>-&gt;version, <span class="php-quote">'all'</span> );
+</span><span id="402" class="l"><a href="#402">402: </a>        wp_enqueue_script( <span class="php-var">$this</span>-&gt;text_domain . <span class="php-quote">'-admin'</span>, plugins_url( <span class="php-quote">'assets/js/object-sync-for-salesforce-admin.min.js'</span>, __FILE__ ), <span class="php-keyword1">array</span>( <span class="php-quote">'jquery'</span> ), <span class="php-var">$this</span>-&gt;version, <span class="php-keyword1">true</span> );
+</span><span id="403" class="l"><a href="#403">403: </a>        wp_enqueue_style( <span class="php-var">$this</span>-&gt;text_domain . <span class="php-quote">'-admin'</span>, plugins_url( <span class="php-quote">'assets/css/object-sync-for-salesforce-admin.min.css'</span>, __FILE__ ), <span class="php-keyword1">array</span>(), <span class="php-var">$this</span>-&gt;version, <span class="php-quote">'all'</span> );
 </span><span id="404" class="l"><a href="#404">404: </a>    }
 </span><span id="405" class="l"><a href="#405">405: </a>
 </span><span id="406" class="l"><a href="#406">406: </a>    <span class="php-comment">/**
@@ -507,13 +507,13 @@
 </span></span><span id="422" class="l"><a href="#422">422: </a><span class="php-comment">    */</span>
 </span><span id="423" class="l"><a href="#423">423: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> get_login_credentials() {
 </span><span id="424" class="l"><a href="#424">424: </a>
-</span><span id="425" class="l"><a href="#425">425: </a>        <span class="php-var">$consumer_key</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_CONSUMER_KEY'</span>) ? SALESFORCE_CONSUMER_KEY : get_option( <span class="php-quote">'salesforce_api_consumer_key'</span>, <span class="php-quote">''</span> );
-</span><span id="426" class="l"><a href="#426">426: </a>        <span class="php-var">$consumer_secret</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_CONSUMER_SECRET'</span>) ? SALESFORCE_CONSUMER_SECRET : get_option( <span class="php-quote">'salesforce_api_consumer_secret'</span>, <span class="php-quote">''</span> );
-</span><span id="427" class="l"><a href="#427">427: </a>        <span class="php-var">$callback_url</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_CALLBACK_URL'</span>) ? SALESFORCE_CALLBACK_URL : get_option( <span class="php-quote">'salesforce_api_callback_url'</span>, <span class="php-quote">''</span> );
-</span><span id="428" class="l"><a href="#428">428: </a>        <span class="php-var">$login_base_url</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_LOGIN_BASE_URL'</span>) ? SALESFORCE_LOGIN_BASE_URL : get_option( <span class="php-quote">'salesforce_api_login_base_url'</span>, <span class="php-quote">''</span> );
-</span><span id="429" class="l"><a href="#429">429: </a>        <span class="php-var">$authorize_url_path</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_AUTHORIZE_URL_PATH'</span>) ? SALESFORCE_AUTHORIZE_URL_PATH : get_option( <span class="php-quote">'salesforce_api_authorize_url_path'</span>, <span class="php-quote">''</span> );
-</span><span id="430" class="l"><a href="#430">430: </a>        <span class="php-var">$token_url_path</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_TOKEN_URL_PATH'</span>) ? SALESFORCE_TOKEN_URL_PATH : get_option( <span class="php-quote">'salesforce_api_token_url_path'</span>, <span class="php-quote">''</span> );
-</span><span id="431" class="l"><a href="#431">431: </a>        <span class="php-var">$api_version</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_API_VERSION'</span>) ? SALESFORCE_API_VERSION : get_option( <span class="php-quote">'salesforce_api_api_version'</span>, <span class="php-quote">''</span> );
+</span><span id="425" class="l"><a href="#425">425: </a>        <span class="php-var">$consumer_key</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_CONSUMER_KEY'</span>) ? SALESFORCE_CONSUMER_KEY : get_option( <span class="php-quote">'object_sync_for_salesforce_consumer_key'</span>, <span class="php-quote">''</span> );
+</span><span id="426" class="l"><a href="#426">426: </a>        <span class="php-var">$consumer_secret</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_CONSUMER_SECRET'</span>) ? SALESFORCE_CONSUMER_SECRET : get_option( <span class="php-quote">'object_sync_for_salesforce_consumer_secret'</span>, <span class="php-quote">''</span> );
+</span><span id="427" class="l"><a href="#427">427: </a>        <span class="php-var">$callback_url</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_CALLBACK_URL'</span>) ? SALESFORCE_CALLBACK_URL : get_option( <span class="php-quote">'object_sync_for_salesforce_callback_url'</span>, <span class="php-quote">''</span> );
+</span><span id="428" class="l"><a href="#428">428: </a>        <span class="php-var">$login_base_url</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_LOGIN_BASE_URL'</span>) ? SALESFORCE_LOGIN_BASE_URL : get_option( <span class="php-quote">'object_sync_for_salesforce_login_base_url'</span>, <span class="php-quote">''</span> );
+</span><span id="429" class="l"><a href="#429">429: </a>        <span class="php-var">$authorize_url_path</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_AUTHORIZE_URL_PATH'</span>) ? SALESFORCE_AUTHORIZE_URL_PATH : get_option( <span class="php-quote">'object_sync_for_salesforce_authorize_url_path'</span>, <span class="php-quote">''</span> );
+</span><span id="430" class="l"><a href="#430">430: </a>        <span class="php-var">$token_url_path</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_TOKEN_URL_PATH'</span>) ? SALESFORCE_TOKEN_URL_PATH : get_option( <span class="php-quote">'object_sync_for_salesforce_token_url_path'</span>, <span class="php-quote">''</span> );
+</span><span id="431" class="l"><a href="#431">431: </a>        <span class="php-var">$api_version</span> = <span class="php-keyword2">defined</span>(<span class="php-quote">'SALESFORCE_API_VERSION'</span>) ? SALESFORCE_API_VERSION : get_option( <span class="php-quote">'object_sync_for_salesforce_api_version'</span>, <span class="php-quote">''</span> );
 </span><span id="432" class="l"><a href="#432">432: </a>
 </span><span id="433" class="l"><a href="#433">433: </a>        <span class="php-var">$login_credentials</span> = <span class="php-keyword1">array</span>(
 </span><span id="434" class="l"><a href="#434">434: </a>            <span class="php-quote">'consumer_key'</span> =&gt; <span class="php-var">$consumer_key</span>,
@@ -532,14 +532,14 @@
 </span><span id="447" class="l"><a href="#447">447: </a><span class="php-comment">/// end class</span>
 </span><span id="448" class="l"><a href="#448">448: </a>}
 </span><span id="449" class="l"><a href="#449">449: </a><span class="php-comment">// Instantiate our class</span>
-</span><span id="450" class="l"><a href="#450">450: </a><span class="php-var">$Salesforce_Rest_API</span> = Salesforce_Rest_API::get_instance();</span></code></pre>
+</span><span id="450" class="l"><a href="#450">450: </a><span class="php-var">$Object_Sync_Salesforce</span> = Object_Sync_Salesforce::get_instance();</span></code></pre>
 
 	<div id="footer">
-		Salesforce REST API API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?1444b2a5de3e16013f33abf92f72818e637c9fa1"></script>
+<script src="elementlist.js?e025fad4c1553a0f094faf53f85cd94c02040af7"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex">
 
-	<title>File admin.php | Salesforce REST API</title>
+	<title>File admin.php | Object Sync for Salesforce</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -25,12 +25,12 @@
 			<h3>Classes</h3>
 			<ul>
 				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
+				<li><a href="class-Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
 				<li><a href="class-Salesforce.html">Salesforce</a></li>
 				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
 				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
 				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
 				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
-				<li><a href="class-Salesforce_Rest_API.html">Salesforce_Rest_API</a></li>
 				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
 				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
 				<li><a href="class-Wordpress.html">Wordpress</a></li>
@@ -88,7 +88,7 @@
 </span></span><span id="3" class="l"><a href="#3">   3: </a><span class="php-comment"> * @file
 </span></span><span id="4" class="l"><a href="#4">   4: </a><span class="php-comment"> */</span>
 </span><span id="5" class="l"><a href="#5">   5: </a>
-</span><span id="6" class="l"><a href="#6">   6: </a><span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Rest_API'</span> ) ) {
+</span><span id="6" class="l"><a href="#6">   6: </a><span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Salesforce'</span> ) ) {
 </span><span id="7" class="l"><a href="#7">   7: </a>    <span class="php-keyword1">die</span>();
 </span><span id="8" class="l"><a href="#8">   8: </a>}
 </span><span id="9" class="l"><a href="#9">   9: </a>
@@ -222,8 +222,8 @@
 </span></span><span id="137" class="l"><a href="#137"> 137: </a><span class="php-comment">    *
 </span></span><span id="138" class="l"><a href="#138"> 138: </a><span class="php-comment">    */</span>
 </span><span id="139" class="l"><a href="#139"> 139: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> create_admin_menu() {
-</span><span id="140" class="l"><a href="#140"> 140: </a>        <span class="php-var">$title</span> = __(<span class="php-quote">'Salesforce'</span>,<span class="php-quote">'salesforce-api'</span>);
-</span><span id="141" class="l"><a href="#141"> 141: </a>        add_options_page( <span class="php-var">$title</span>, <span class="php-var">$title</span>, <span class="php-quote">'configure_salesforce'</span>, <span class="php-quote">'salesforce-api-admin'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'show_admin_page'</span>, ) );
+</span><span id="140" class="l"><a href="#140"> 140: </a>        <span class="php-var">$title</span> = __(<span class="php-quote">'Salesforce'</span>, <span class="php-var">$this</span>-&gt;text_domain);
+</span><span id="141" class="l"><a href="#141"> 141: </a>        add_options_page( <span class="php-var">$title</span>, <span class="php-var">$title</span>, <span class="php-quote">'configure_salesforce'</span>, <span class="php-quote">'object-sync-salesforce-admin'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'show_admin_page'</span>, ) );
 </span><span id="142" class="l"><a href="#142"> 142: </a>    }
 </span><span id="143" class="l"><a href="#143"> 143: </a>
 </span><span id="144" class="l"><a href="#144"> 144: </a>    <span class="php-comment">/**
@@ -248,7 +248,7 @@
 </span><span id="163" class="l"><a href="#163"> 163: </a>            ); <span class="php-comment">// this creates the tabs for the admin</span>
 </span><span id="164" class="l"><a href="#164"> 164: </a>
 </span><span id="165" class="l"><a href="#165"> 165: </a>            <span class="php-comment">// optionally make tab(s) for logging and log settings</span>
-</span><span id="166" class="l"><a href="#166"> 166: </a>            <span class="php-var">$logging_enabled</span> = get_option( <span class="php-quote">'salesforce_api_enable_logging'</span>, <span class="php-keyword1">false</span> );
+</span><span id="166" class="l"><a href="#166"> 166: </a>            <span class="php-var">$logging_enabled</span> = get_option( <span class="php-quote">'object_sync_for_salesforce_enable_logging'</span>, <span class="php-keyword1">false</span> );
 </span><span id="167" class="l"><a href="#167"> 167: </a>            <span class="php-var">$tabs</span>[<span class="php-quote">'log_settings'</span>] = <span class="php-quote">'Log Settings'</span>;
 </span><span id="168" class="l"><a href="#168"> 168: </a>
 </span><span id="169" class="l"><a href="#169"> 169: </a>            <span class="php-comment">// filter for extending the tabs available on the page</span>
@@ -275,7 +275,7 @@
 </span><span id="190" class="l"><a href="#190"> 190: </a>                        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">is_object</span> ( <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>] ) === <span class="php-keyword1">true</span> &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_key</span> ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_secret</span> ) ) {
 </span><span id="191" class="l"><a href="#191"> 191: </a>                            <span class="php-keyword1">echo</span> <span class="php-quote">'&lt;p&gt;&lt;a class=&quot;button button-primary&quot; href=&quot;'</span> . <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>]-&gt;get_authorization_code() . <span class="php-quote">'&quot;&gt;'</span> . esc_html__( <span class="php-quote">'Connect to Salesforce'</span>, <span class="php-var">$this</span>-&gt;text_domain ) . <span class="php-quote">'&lt;/a&gt;&lt;/p&gt;'</span>;
 </span><span id="192" class="l"><a href="#192"> 192: </a>                        } <span class="php-keyword1">else</span> {
-</span><span id="193" class="l"><a href="#193"> 193: </a>                            <span class="php-var">$message</span> = __( <span class="php-quote">'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the &lt;a href=&quot;'</span> . get_admin_url( <span class="php-keyword1">null</span>, <span class="php-quote">'options-general.php?page=salesforce-api-admin&amp;tab=settings'</span> ) . <span class="php-quote">'&quot;&gt;Settings&lt;/a&gt; tab to add them.'</span>, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="193" class="l"><a href="#193"> 193: </a>                            <span class="php-var">$message</span> = __( <span class="php-quote">'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the &lt;a href=&quot;'</span> . get_admin_url( <span class="php-keyword1">null</span>, <span class="php-quote">'options-general.php?page=object-sync-salesforce-admin&amp;tab=settings'</span> ) . <span class="php-quote">'&quot;&gt;Settings&lt;/a&gt; tab to add them.'</span>, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="194" class="l"><a href="#194"> 194: </a>                            <span class="php-keyword1">require_once</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'/../templates/admin/error.php'</span> );
 </span><span id="195" class="l"><a href="#195"> 195: </a>                        }
 </span><span id="196" class="l"><a href="#196"> 196: </a>                        <span class="php-keyword1">break</span>;
@@ -283,8 +283,8 @@
 </span><span id="198" class="l"><a href="#198"> 198: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$_GET</span>[<span class="php-quote">'method'</span>] ) ) {
 </span><span id="199" class="l"><a href="#199"> 199: </a>
 </span><span id="200" class="l"><a href="#200"> 200: </a>                            <span class="php-var">$method</span> = esc_attr( <span class="php-var">$_GET</span>[<span class="php-quote">'method'</span>] );
-</span><span id="201" class="l"><a href="#201"> 201: </a>                            <span class="php-var">$error_url</span> = get_admin_url( <span class="php-keyword1">null</span>, <span class="php-quote">'options-general.php?page=salesforce-api-admin&amp;tab=fieldmaps&amp;method='</span> . <span class="php-var">$method</span> );
-</span><span id="202" class="l"><a href="#202"> 202: </a>                            <span class="php-var">$success_url</span> = get_admin_url( <span class="php-keyword1">null</span>, <span class="php-quote">'options-general.php?page=salesforce-api-admin&amp;tab=fieldmaps'</span> );
+</span><span id="201" class="l"><a href="#201"> 201: </a>                            <span class="php-var">$error_url</span> = get_admin_url( <span class="php-keyword1">null</span>, <span class="php-quote">'options-general.php?page=object-sync-salesforce-admin&amp;tab=fieldmaps&amp;method='</span> . <span class="php-var">$method</span> );
+</span><span id="202" class="l"><a href="#202"> 202: </a>                            <span class="php-var">$success_url</span> = get_admin_url( <span class="php-keyword1">null</span>, <span class="php-quote">'options-general.php?page=object-sync-salesforce-admin&amp;tab=fieldmaps'</span> );
 </span><span id="203" class="l"><a href="#203"> 203: </a>
 </span><span id="204" class="l"><a href="#204"> 204: </a>                            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$_GET</span>[<span class="php-quote">'transient'</span>] ) ) {
 </span><span id="205" class="l"><a href="#205"> 205: </a>                                <span class="php-var">$transient</span> = esc_html( <span class="php-var">$_GET</span>[<span class="php-quote">'transient'</span>] );
@@ -569,8 +569,8 @@
 </span><span id="484" class="l"><a href="#484"> 484: </a>        }
 </span><span id="485" class="l"><a href="#485"> 485: </a>
 </span><span id="486" class="l"><a href="#486"> 486: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$salesforce_settings</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$attributes</span> ) {
-</span><span id="487" class="l"><a href="#487"> 487: </a>            <span class="php-var">$id</span> = <span class="php-quote">'salesforce_api_'</span> . <span class="php-var">$key</span>;
-</span><span id="488" class="l"><a href="#488"> 488: </a>            <span class="php-var">$name</span> = <span class="php-quote">'salesforce_api_'</span> . <span class="php-var">$key</span>;
+</span><span id="487" class="l"><a href="#487"> 487: </a>            <span class="php-var">$id</span> = <span class="php-quote">'object_sync_for_salesforce_'</span> . <span class="php-var">$key</span>;
+</span><span id="488" class="l"><a href="#488"> 488: </a>            <span class="php-var">$name</span> = <span class="php-quote">'object_sync_for_salesforce_'</span> . <span class="php-var">$key</span>;
 </span><span id="489" class="l"><a href="#489"> 489: </a>            <span class="php-var">$title</span> = <span class="php-var">$attributes</span>[<span class="php-quote">'title'</span>];
 </span><span id="490" class="l"><a href="#490"> 490: </a>            <span class="php-var">$callback</span> = <span class="php-var">$attributes</span>[<span class="php-quote">'callback'</span>];
 </span><span id="491" class="l"><a href="#491"> 491: </a>            <span class="php-var">$validate</span> = <span class="php-var">$attributes</span>[<span class="php-quote">'args'</span>][<span class="php-quote">'validate'</span>];
@@ -665,14 +665,14 @@
 </span><span id="580" class="l"><a href="#580"> 580: </a>                    <span class="php-quote">'args'</span> =&gt; <span class="php-keyword1">array</span>(
 </span><span id="581" class="l"><a href="#581"> 581: </a>                        <span class="php-quote">'label'</span> =&gt; <span class="php-quote">'Clear this queue'</span>,
 </span><span id="582" class="l"><a href="#582"> 582: </a>                        <span class="php-quote">'desc'</span> =&gt; <span class="php-quote">''</span>,
-</span><span id="583" class="l"><a href="#583"> 583: </a>                        <span class="php-quote">'url'</span> =&gt; <span class="php-quote">'?page=salesforce-api-admin&amp;amp;tab=clear_schedule&amp;amp;schedule_name='</span> . <span class="php-var">$key</span>,
+</span><span id="583" class="l"><a href="#583"> 583: </a>                        <span class="php-quote">'url'</span> =&gt; <span class="php-quote">'?page=object-sync-salesforce-admin&amp;amp;tab=clear_schedule&amp;amp;schedule_name='</span> . <span class="php-var">$key</span>,
 </span><span id="584" class="l"><a href="#584"> 584: </a>                        <span class="php-quote">'link_class'</span> =&gt; <span class="php-quote">'button button-secondary'</span>
 </span><span id="585" class="l"><a href="#585"> 585: </a>                    ),
 </span><span id="586" class="l"><a href="#586"> 586: </a>                ),
 </span><span id="587" class="l"><a href="#587"> 587: </a>            );
 </span><span id="588" class="l"><a href="#588"> 588: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$schedule_settings</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$attributes</span> ) {
-</span><span id="589" class="l"><a href="#589"> 589: </a>                <span class="php-var">$id</span> = <span class="php-quote">'salesforce_api_'</span> . <span class="php-var">$key</span>;
-</span><span id="590" class="l"><a href="#590"> 590: </a>                <span class="php-var">$name</span> = <span class="php-quote">'salesforce_api_'</span> . <span class="php-var">$key</span>;
+</span><span id="589" class="l"><a href="#589"> 589: </a>                <span class="php-var">$id</span> = <span class="php-quote">'object_sync_for_salesforce_'</span> . <span class="php-var">$key</span>;
+</span><span id="590" class="l"><a href="#590"> 590: </a>                <span class="php-var">$name</span> = <span class="php-quote">'object_sync_for_salesforce_'</span> . <span class="php-var">$key</span>;
 </span><span id="591" class="l"><a href="#591"> 591: </a>                <span class="php-var">$title</span> = <span class="php-var">$attributes</span>[<span class="php-quote">'title'</span>];
 </span><span id="592" class="l"><a href="#592"> 592: </a>                <span class="php-var">$callback</span> = <span class="php-var">$attributes</span>[<span class="php-quote">'callback'</span>];
 </span><span id="593" class="l"><a href="#593"> 593: </a>                <span class="php-var">$page</span> = <span class="php-var">$attributes</span>[<span class="php-quote">'page'</span>];
@@ -857,8 +857,8 @@
 </span><span id="772" class="l"><a href="#772"> 772: </a>        );
 </span><span id="773" class="l"><a href="#773"> 773: </a>
 </span><span id="774" class="l"><a href="#774"> 774: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$log_settings</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$attributes</span> ) {
-</span><span id="775" class="l"><a href="#775"> 775: </a>            <span class="php-var">$id</span> = <span class="php-quote">'salesforce_api_'</span> . <span class="php-var">$key</span>;
-</span><span id="776" class="l"><a href="#776"> 776: </a>            <span class="php-var">$name</span> = <span class="php-quote">'salesforce_api_'</span> . <span class="php-var">$key</span>;
+</span><span id="775" class="l"><a href="#775"> 775: </a>            <span class="php-var">$id</span> = <span class="php-quote">'object_sync_for_salesforce_'</span> . <span class="php-var">$key</span>;
+</span><span id="776" class="l"><a href="#776"> 776: </a>            <span class="php-var">$name</span> = <span class="php-quote">'object_sync_for_salesforce_'</span> . <span class="php-var">$key</span>;
 </span><span id="777" class="l"><a href="#777"> 777: </a>            <span class="php-var">$title</span> = <span class="php-var">$attributes</span>[<span class="php-quote">'title'</span>];
 </span><span id="778" class="l"><a href="#778"> 778: </a>            <span class="php-var">$callback</span> = <span class="php-var">$attributes</span>[<span class="php-quote">'callback'</span>];
 </span><span id="779" class="l"><a href="#779"> 779: </a>            <span class="php-var">$page</span> = <span class="php-var">$attributes</span>[<span class="php-quote">'page'</span>];
@@ -888,7 +888,7 @@
 </span><span id="803" class="l"><a href="#803"> 803: </a>        <span class="php-var">$notices</span> = <span class="php-keyword1">array</span>(
 </span><span id="804" class="l"><a href="#804"> 804: </a>            <span class="php-quote">'permission'</span> =&gt; <span class="php-keyword1">array</span>(
 </span><span id="805" class="l"><a href="#805"> 805: </a>                <span class="php-quote">'condition'</span> =&gt; <span class="php-keyword1">false</span> === <span class="php-var">$this</span>-&gt;check_wordpress_admin_permissions(),
-</span><span id="806" class="l"><a href="#806"> 806: </a>                <span class="php-quote">'message'</span> =&gt; <span class="php-quote">&quot;Your account does not have permission to edit the Salesforce REST API plugin's settings.&quot;</span>,
+</span><span id="806" class="l"><a href="#806"> 806: </a>                <span class="php-quote">'message'</span> =&gt; <span class="php-quote">&quot;Your account does not have permission to edit the Object Sync for Salesforce plugin's settings.&quot;</span>,
 </span><span id="807" class="l"><a href="#807"> 807: </a>                <span class="php-quote">'type'</span> =&gt; <span class="php-quote">'error'</span>,
 </span><span id="808" class="l"><a href="#808"> 808: </a>                <span class="php-quote">'dismissible'</span> =&gt; <span class="php-keyword1">false</span>,
 </span><span id="809" class="l"><a href="#809"> 809: </a>            ),
@@ -1377,9 +1377,9 @@
 </span></span><span id="1292" class="l"><a href="#1292">1292: </a><span class="php-comment">    * For this plugin at this time, that is the decision we are making: don't do any kind of authorization stuff inside Salesforce
 </span></span><span id="1293" class="l"><a href="#1293">1293: </a><span class="php-comment">    */</span>
 </span><span id="1294" class="l"><a href="#1294">1294: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> logout() {
-</span><span id="1295" class="l"><a href="#1295">1295: </a>        <span class="php-var">$this</span>-&gt;access_token = delete_option( <span class="php-quote">'salesforce_api_access_token'</span> );
-</span><span id="1296" class="l"><a href="#1296">1296: </a>        <span class="php-var">$this</span>-&gt;instance_url = delete_option( <span class="php-quote">'salesforce_api_instance_url'</span> );
-</span><span id="1297" class="l"><a href="#1297">1297: </a>        <span class="php-var">$this</span>-&gt;refresh_token = delete_option( <span class="php-quote">'salesforce_api_refresh_token'</span> );
+</span><span id="1295" class="l"><a href="#1295">1295: </a>        <span class="php-var">$this</span>-&gt;access_token = delete_option( <span class="php-quote">'object_sync_for_salesforce_access_token'</span> );
+</span><span id="1296" class="l"><a href="#1296">1296: </a>        <span class="php-var">$this</span>-&gt;instance_url = delete_option( <span class="php-quote">'object_sync_for_salesforce_instance_url'</span> );
+</span><span id="1297" class="l"><a href="#1297">1297: </a>        <span class="php-var">$this</span>-&gt;refresh_token = delete_option( <span class="php-quote">'object_sync_for_salesforce_refresh_token'</span> );
 </span><span id="1298" class="l"><a href="#1298">1298: </a>        <span class="php-keyword1">return</span> <span class="php-quote">'You have been logged out. You can use use the connect button to log in again.'</span>;
 </span><span id="1299" class="l"><a href="#1299">1299: </a>    }
 </span><span id="1300" class="l"><a href="#1300">1300: </a>
@@ -1470,7 +1470,7 @@
 </span><span id="1385" class="l"><a href="#1385">1385: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$tabs</span> <span class="php-keyword1">as</span> <span class="php-var">$tab_key</span> =&gt; <span class="php-var">$tab_caption</span> ) {
 </span><span id="1386" class="l"><a href="#1386">1386: </a>            <span class="php-var">$active</span> = <span class="php-var">$current_tab</span> == <span class="php-var">$tab_key</span> ? <span class="php-quote">'nav-tab-active'</span> : <span class="php-quote">''</span>;
 </span><span id="1387" class="l"><a href="#1387">1387: </a>            <span class="php-keyword1">if</span> ( <span class="php-quote">'settings'</span> === <span class="php-var">$tab_key</span> || ( <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_key</span> ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_secret</span> ) &amp;&amp; ! <span class="php-keyword1">empty</span>( <span class="php-var">$consumer_key</span> ) &amp;&amp; ! <span class="php-keyword1">empty</span>( <span class="php-var">$consumer_secret</span> ) ) ) {
-</span><span id="1388" class="l"><a href="#1388">1388: </a>                <span class="php-keyword1">echo</span> <span class="php-quote">'&lt;a class=&quot;nav-tab '</span> . <span class="php-var">$active</span> . <span class="php-quote">'&quot; href=&quot;?page=salesforce-api-admin&amp;tab='</span> . <span class="php-var">$tab_key</span> . <span class="php-quote">'&quot;&gt;'</span> . <span class="php-var">$tab_caption</span> . <span class="php-quote">'&lt;/a&gt;'</span>;
+</span><span id="1388" class="l"><a href="#1388">1388: </a>                <span class="php-keyword1">echo</span> <span class="php-quote">'&lt;a class=&quot;nav-tab '</span> . <span class="php-var">$active</span> . <span class="php-quote">'&quot; href=&quot;?page=object-sync-salesforce-admin&amp;tab='</span> . <span class="php-var">$tab_key</span> . <span class="php-quote">'&quot;&gt;'</span> . <span class="php-var">$tab_caption</span> . <span class="php-quote">'&lt;/a&gt;'</span>;
 </span><span id="1389" class="l"><a href="#1389">1389: </a>            }
 </span><span id="1390" class="l"><a href="#1390">1390: </a>
 </span><span id="1391" class="l"><a href="#1391">1391: </a>        }
@@ -1587,11 +1587,11 @@
 </span><span id="1502" class="l"><a href="#1502">1502: </a>}</span></code></pre>
 
 	<div id="footer">
-		Salesforce REST API API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?1444b2a5de3e16013f33abf92f72818e637c9fa1"></script>
+<script src="elementlist.js?e025fad4c1553a0f094faf53f85cd94c02040af7"></script>
 </body>
 </html>
