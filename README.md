@@ -1,8 +1,8 @@
-# Salesforce REST API
+# Object Sync for Salesforce
 
-Implements a mapping functionality between Salesforce objects and WordPress objects. This is based on the [Drupal Salesforce Suite](https://github.com/thinkshout/salesforce) (version 7.x-3.x-dev), but strives to use WordPress conventions rather than Drupal's whenever possible.
+This is a WordPress plugin that implements mapping and syncing between Salesforce objects and WordPress objects. It is based on the [Drupal Salesforce Suite](https://github.com/thinkshout/salesforce) (version 7.x-3.x-dev), but strives to use WordPress conventions rather than Drupal's whenever possible.
 
-Below is summary information, but you can also access [full documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/readme.md).
+Below is summary information, but you can also access [full documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
 
 ## About
 
@@ -36,11 +36,11 @@ Some other options:
 
 ## Installation and setup
 
-You can find a detailed [initial setup instruction](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/initial-setup.md) document for this plugin.
+You can find a detailed [initial setup instruction](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md) document for this plugin.
 
 ## Classes
 
-### Salesforce REST API
+### Object Sync for Salesforce
 
 This is the plugin's main class. It does a few things:
 
@@ -111,7 +111,7 @@ This class handles getting and setting WordPress core data.
 
 ### Salesforce (salesforce)
 
-OAUTH2 authorization and wrapper around the Salesforce REST API. Methods support:
+OAUTH2 authorization and wrapper around the supported Salesforce APIs. Methods support:
 
 1. Setup required parameters for all API calls
 2. Retrieving data from the Salesforce organization: versions available, objects and resources available and their metadata, identity of the logged in Salesforce user.
@@ -133,7 +133,7 @@ Our extension does a few things:
 2. Create schedules using `wp_schedule_event` when the class is called.
 3. Call other plugin classes and pass data to them for processing when a scheduled event occurs.
 
-For this class, multiple queues can run. Each class in the `schedulable_classes` array (which can be modified by the `salesforce_rest_api_modify_schedulable_classes` filter) can have its own running queue with its own scheduled tasks.
+For this class, multiple queues can run. Each class in the `schedulable_classes` array (which can be modified by the `object_sync_for_salesforce_modify_schedulable_classes` filter) can have its own running queue with its own scheduled tasks.
 
 
 ### Salesforce Push (salesforce_push)
@@ -180,7 +180,7 @@ The admin section is divided into tabs:
 6. Log Settings
     - This tab allows admin users to tell the plugin whether or not it should log any events. If it is enabled, it will use the `logging` class. If it is not, nothing will happen.
     - Users can set what statuses to log (error, success, and/or notice), if and how often entries should be deleted, and which events between WordPress and Salesforce should be logged.
-7. Other tabs added by the `salesforce_rest_api_settings_tabs` filter will appear after the Log Settings tab.
+7. Other tabs added by the `object_sync_for_salesforce_settings_tabs` filter will appear after the Log Settings tab.
 
 ### Classes Todo
 
@@ -192,11 +192,11 @@ Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill i
 
 This plugin contains many hooks to allow other WordPress plugins to extend the functionality. It aims to reproduce all hooks provided by the Drupal suite. It also includes many additional hooks that give WordPress developers additional functionality.
 
-There is a full list of all hooks, with links to each hook's documentation, in the [developer hooks documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/all-developer-hooks.md) page.
+There is a full list of all hooks, with links to each hook's documentation, in the [developer hooks documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/all-developer-hooks.md) page.
 
 ## Development
 
-If you'd like to contribute to this project, please see our [contributing guidelines](https://github.com/MinnPost/salesforce-rest-api/blob/master/contributing.md).
+If you'd like to contribute to this project, please see our [contributing guidelines](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md).
 
 ## Notes
 

@@ -1,7 +1,7 @@
 {
-  "name": "salesforce-rest-api",
-  "title": "Salesforce REST API",
-  "description": "WordPress plugin that defines an API enabling WordPress to interact with the Salesforce REST API.",
+  "name": "object-sync-for-salesforce",
+  "title": "Object Sync for Salesforce",
+  "description": " WordPress plugin that implements mapping and syncing between Salesforce objects and WordPress objects ",
   "version": "0.0.1",
   "homepage": "https://www.minnpost.com",
   "author": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/MinnPost/salesforce-rest-api.git"
+    "url": "https://github.com/MinnPost/object-sync-for-salesforce.git"
   },
   "license": "GPL-2.0",
   "engines": {
@@ -20,10 +20,10 @@
     "grunt": "~1.0.0",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-cssmin": "^2.0.0",
+    "grunt-contrib-cssmin": "^2.1.0",
     "grunt-contrib-imagemin": "^1.0.1",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-uglify": "^2.2.0"
+    "grunt-contrib-uglify": "^2.3.0"
   }
 }

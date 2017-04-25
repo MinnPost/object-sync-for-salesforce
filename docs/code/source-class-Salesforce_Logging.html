@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex">
 
-	<title>File logging.php | Salesforce REST API</title>
+	<title>File logging.php | Object Sync for Salesforce</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -25,12 +25,12 @@
 			<h3>Classes</h3>
 			<ul>
 				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
+				<li><a href="class-Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
 				<li><a href="class-Salesforce.html">Salesforce</a></li>
 				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
 				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
 				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
 				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
-				<li><a href="class-Salesforce_Rest_API.html">Salesforce_Rest_API</a></li>
 				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
 				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
 				<li><a href="class-Wordpress.html">Wordpress</a></li>
@@ -88,7 +88,7 @@
 </span></span><span id="3" class="l"><a href="#3">  3: </a><span class="php-comment"> * @file
 </span></span><span id="4" class="l"><a href="#4">  4: </a><span class="php-comment"> */</span>
 </span><span id="5" class="l"><a href="#5">  5: </a>
-</span><span id="6" class="l"><a href="#6">  6: </a><span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Rest_API'</span> ) ) {
+</span><span id="6" class="l"><a href="#6">  6: </a><span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Salesforce'</span> ) ) {
 </span><span id="7" class="l"><a href="#7">  7: </a>    <span class="php-keyword1">die</span>();
 </span><span id="8" class="l"><a href="#8">  8: </a>}
 </span><span id="9" class="l"><a href="#9">  9: </a>
@@ -118,8 +118,8 @@
 </span><span id="33" class="l"><a href="#33"> 33: </a>        <span class="php-var">$this</span>-&gt;version = <span class="php-var">$version</span>;
 </span><span id="34" class="l"><a href="#34"> 34: </a>        <span class="php-var">$this</span>-&gt;text_domain = <span class="php-var">$text_domain</span>;
 </span><span id="35" class="l"><a href="#35"> 35: </a>
-</span><span id="36" class="l"><a href="#36"> 36: </a>        <span class="php-var">$this</span>-&gt;enabled = get_option( <span class="php-quote">'salesforce_api_enable_logging'</span>, <span class="php-keyword1">false</span> );
-</span><span id="37" class="l"><a href="#37"> 37: </a>        <span class="php-var">$this</span>-&gt;statuses_to_log = get_option( <span class="php-quote">'salesforce_api_statuses_to_log'</span>, <span class="php-keyword1">array</span>() );
+</span><span id="36" class="l"><a href="#36"> 36: </a>        <span class="php-var">$this</span>-&gt;enabled = get_option( <span class="php-quote">'object_sync_for_salesforce_enable_logging'</span>, <span class="php-keyword1">false</span> );
+</span><span id="37" class="l"><a href="#37"> 37: </a>        <span class="php-var">$this</span>-&gt;statuses_to_log = get_option( <span class="php-quote">'object_sync_for_salesforce_statuses_to_log'</span>, <span class="php-keyword1">array</span>() );
 </span><span id="38" class="l"><a href="#38"> 38: </a>
 </span><span id="39" class="l"><a href="#39"> 39: </a>        <span class="php-var">$this</span>-&gt;schedule_name = <span class="php-quote">'wp_logging_prune_routine'</span>;
 </span><span id="40" class="l"><a href="#40"> 40: </a>
@@ -140,8 +140,8 @@
 </span><span id="55" class="l"><a href="#55"> 55: </a>            add_filter( <span class="php-quote">'wp_logging_prune_when'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'set_prune_age'</span> ), <span class="php-num">10</span>, <span class="php-num">1</span> );
 </span><span id="56" class="l"><a href="#56"> 56: </a>            add_filter( <span class="php-quote">'wp_logging_prune_query_args'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'set_prune_args'</span> ), <span class="php-num">10</span>, <span class="php-num">1</span> );
 </span><span id="57" class="l"><a href="#57"> 57: </a>
-</span><span id="58" class="l"><a href="#58"> 58: </a>            <span class="php-var">$schedule_unit</span> = get_option( <span class="php-quote">'salesforce_api_logs_how_often_unit'</span>, <span class="php-quote">''</span> );
-</span><span id="59" class="l"><a href="#59"> 59: </a>            <span class="php-var">$schedule_number</span> = get_option( <span class="php-quote">'salesforce_api_logs_how_often_number'</span>, <span class="php-quote">''</span> );
+</span><span id="58" class="l"><a href="#58"> 58: </a>            <span class="php-var">$schedule_unit</span> = get_option( <span class="php-quote">'object_sync_for_salesforce_logs_how_often_unit'</span>, <span class="php-quote">''</span> );
+</span><span id="59" class="l"><a href="#59"> 59: </a>            <span class="php-var">$schedule_number</span> = get_option( <span class="php-quote">'object_sync_for_salesforce_logs_how_often_number'</span>, <span class="php-quote">''</span> );
 </span><span id="60" class="l"><a href="#60"> 60: </a>            <span class="php-var">$frequency</span> = <span class="php-var">$this</span>-&gt;get_schedule_frequency( <span class="php-var">$schedule_unit</span>, <span class="php-var">$schedule_number</span> );
 </span><span id="61" class="l"><a href="#61"> 61: </a>            <span class="php-var">$key</span> = <span class="php-var">$frequency</span>[<span class="php-quote">'key'</span>];
 </span><span id="62" class="l"><a href="#62"> 62: </a>
@@ -159,8 +159,8 @@
 </span></span><span id="74" class="l"><a href="#74"> 74: </a><span class="php-comment">    */</span>
 </span><span id="75" class="l"><a href="#75"> 75: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> add_prune_interval( <span class="php-var">$schedules</span> ) {
 </span><span id="76" class="l"><a href="#76"> 76: </a>
-</span><span id="77" class="l"><a href="#77"> 77: </a>        <span class="php-var">$schedule_unit</span> = get_option( <span class="php-quote">'salesforce_api_logs_how_often_unit'</span>, <span class="php-quote">''</span> );
-</span><span id="78" class="l"><a href="#78"> 78: </a>        <span class="php-var">$schedule_number</span> = get_option( <span class="php-quote">'salesforce_api_logs_how_often_number'</span>, <span class="php-quote">''</span> );
+</span><span id="77" class="l"><a href="#77"> 77: </a>        <span class="php-var">$schedule_unit</span> = get_option( <span class="php-quote">'object_sync_for_salesforce_logs_how_often_unit'</span>, <span class="php-quote">''</span> );
+</span><span id="78" class="l"><a href="#78"> 78: </a>        <span class="php-var">$schedule_number</span> = get_option( <span class="php-quote">'object_sync_for_salesforce_logs_how_often_number'</span>, <span class="php-quote">''</span> );
 </span><span id="79" class="l"><a href="#79"> 79: </a>        <span class="php-var">$frequency</span> = <span class="php-var">$this</span>-&gt;get_schedule_frequency( <span class="php-var">$schedule_unit</span>, <span class="php-var">$schedule_number</span> );
 </span><span id="80" class="l"><a href="#80"> 80: </a>        <span class="php-var">$key</span> = <span class="php-var">$frequency</span>[<span class="php-quote">'key'</span>];
 </span><span id="81" class="l"><a href="#81"> 81: </a>        <span class="php-var">$seconds</span> = <span class="php-var">$frequency</span>[<span class="php-quote">'seconds'</span>];
@@ -219,7 +219,7 @@
 </span></span><span id="134" class="l"><a href="#134">134: </a><span class="php-comment">    * @return string $should_we_prune
 </span></span><span id="135" class="l"><a href="#135">135: </a><span class="php-comment">    */</span>
 </span><span id="136" class="l"><a href="#136">136: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> set_prune_option( <span class="php-var">$should_we_prune</span> ) {
-</span><span id="137" class="l"><a href="#137">137: </a>        <span class="php-var">$should_we_prune</span> = get_option( <span class="php-quote">'salesforce_api_prune_logs'</span>, <span class="php-var">$should_we_prune</span> );
+</span><span id="137" class="l"><a href="#137">137: </a>        <span class="php-var">$should_we_prune</span> = get_option( <span class="php-quote">'object_sync_for_salesforce_prune_logs'</span>, <span class="php-var">$should_we_prune</span> );
 </span><span id="138" class="l"><a href="#138">138: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$should_we_prune</span> === <span class="php-quote">'1'</span> ) {
 </span><span id="139" class="l"><a href="#139">139: </a>            <span class="php-var">$should_we_prune</span> = <span class="php-keyword1">true</span>;
 </span><span id="140" class="l"><a href="#140">140: </a>        }
@@ -233,7 +233,7 @@
 </span></span><span id="148" class="l"><a href="#148">148: </a><span class="php-comment">    * @return string $how_old
 </span></span><span id="149" class="l"><a href="#149">149: </a><span class="php-comment">    */</span>
 </span><span id="150" class="l"><a href="#150">150: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> set_prune_age( <span class="php-var">$how_old</span> ) {
-</span><span id="151" class="l"><a href="#151">151: </a>        <span class="php-var">$value</span> = get_option( <span class="php-quote">'salesforce_api_logs_how_old'</span>, <span class="php-quote">''</span> ) . <span class="php-quote">' ago'</span>;
+</span><span id="151" class="l"><a href="#151">151: </a>        <span class="php-var">$value</span> = get_option( <span class="php-quote">'object_sync_for_salesforce_logs_how_old'</span>, <span class="php-quote">''</span> ) . <span class="php-quote">' ago'</span>;
 </span><span id="152" class="l"><a href="#152">152: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$value</span> !== <span class="php-quote">''</span> ) {
 </span><span id="153" class="l"><a href="#153">153: </a>            <span class="php-keyword1">return</span> <span class="php-var">$value</span>;
 </span><span id="154" class="l"><a href="#154">154: </a>        } <span class="php-keyword1">else</span> {
@@ -267,7 +267,7 @@
 </span><span id="182" class="l"><a href="#182">182: </a>
 </span><span id="183" class="l"><a href="#183">183: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> setup( <span class="php-var">$title</span>, <span class="php-var">$message</span>, <span class="php-var">$trigger</span> = <span class="php-num">0</span>, <span class="php-var">$parent</span> = <span class="php-num">0</span>, <span class="php-var">$status</span> ) {
 </span><span id="184" class="l"><a href="#184">184: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;enabled === <span class="php-quote">'1'</span> &amp;&amp; <span class="php-keyword2">in_array</span>( <span class="php-var">$status</span>, <span class="php-var">$this</span>-&gt;statuses_to_log ) ) {
-</span><span id="185" class="l"><a href="#185">185: </a>            <span class="php-var">$triggers_to_log</span> = get_option( <span class="php-quote">'salesforce_api_triggers_to_log'</span>, <span class="php-keyword1">array</span>() );
+</span><span id="185" class="l"><a href="#185">185: </a>            <span class="php-var">$triggers_to_log</span> = get_option( <span class="php-quote">'object_sync_for_salesforce_triggers_to_log'</span>, <span class="php-keyword1">array</span>() );
 </span><span id="186" class="l"><a href="#186">186: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-var">$triggers_to_log</span> ) || <span class="php-var">$trigger</span> === <span class="php-num">0</span> ) {
 </span><span id="187" class="l"><a href="#187">187: </a>                <span class="php-var">$this</span>-&gt;add( <span class="php-var">$title</span>, <span class="php-var">$message</span>, <span class="php-var">$parent</span> );
 </span><span id="188" class="l"><a href="#188">188: </a>            }
@@ -418,11 +418,11 @@
 </span><span id="333" class="l"><a href="#333">333: </a>}</span></code></pre>
 
 	<div id="footer">
-		Salesforce REST API API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?1444b2a5de3e16013f33abf92f72818e637c9fa1"></script>
+<script src="elementlist.js?e025fad4c1553a0f094faf53f85cd94c02040af7"></script>
 </body>
 </html>

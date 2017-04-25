@@ -21,8 +21,8 @@ To install the plugin in WordPress, your PHP environment needs the following:
 Most users should install the plugin from the WordPress plugin directory (we will provide a link once it is there), developers will often install it from the GitHub repository.
 
 1. Run `cd` to get into the `wp-content/plugins` directory of a WordPress install.
-2. Run `git clone https://github.com/MinnPost/salesforce-rest-api.git`
-3. Run `cd salesforce-rest-api`
+2. Run `git clone https://github.com/MinnPost/object-sync-for-salesforce.git`
+3. Run `cd object-sync-for-salesforce`
 4. Run `composer install`
 5. This will take a little while as Composer installs third-party libraries the plugin needs. You can then activate the plugin as you would a normal WordPress plugin.
 6. If you are doing interface work, as defined above, run `npm install` to install the Grunt plugins. Run `grunt` when you make changes to Sass or JavaScript.
@@ -30,9 +30,9 @@ Most users should install the plugin from the WordPress plugin directory (we wil
 
 ### Activate the plugin
 
-Once the plugin is installed, whether from a direct upload of the folder, or from the WordPress plugin directory, you will have a `salesforce-rest-api` folder in your `/wp-content/plugins` directory. In the Plugins list in WordPress, you can activate it and find the settings link (you can also find this plugin's settings in the main Settings list in WordPress, under the Salesforce menu item).
+Once the plugin is installed, whether from a direct upload of the folder, or from the WordPress plugin directory, you will have a `object-sync-for-salesforce` folder in your `/wp-content/plugins` directory. In the Plugins list in WordPress, you can activate it and find the settings link (you can also find this plugin's settings in the main Settings list in WordPress, under the Salesforce menu item).
 
-By default, the plugin's settings URL is `https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin`.
+By default, the plugin's settings URL is `https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin`.
 
 ## Salesforce
 
@@ -48,14 +48,14 @@ For purposes of this documentation, we'll assume that your name, as defined in S
 
 1. In Salesforce, go to `Your Name > Setup`. Then on the left sidebar, under `App Setup`, click `Create > Apps`. In the **Connected Apps** section of this page, click New to create a new app.
 2. Enable OAuth Settings
-3. Set the callback URL to: `https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin&tab=authorize` (must use HTTPS).
+3. Set the callback URL to: `https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize` (must use HTTPS).
 4. Select at least Perform requests on your behalf at any time' for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select 'Access and manage your data (api)' as one of these scopes.
 
 #### Additional information: 
 - [https://help.salesforce.com/help/doc/en/remoteaccess_about.htm](https://help.salesforce.com/help/doc/en/remoteaccess_about.htm)
 - [https://developer.salesforce.com/page/Getting_Started_with_the_Force.com_REST_API?language=en#Setup](https://developer.salesforce.com/page/Getting_Started_with_the_Force.com_REST_API?language=en#Setup)
 - [http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php](http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php)
-- [https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/](https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/)
+- [https://petewarden.com/2010/10/29/how-to-use-the-new-object-sync-for-salesforce-from-php/](https://petewarden.com/2010/10/29/how-to-use-the-new-object-sync-for-salesforce-from-php/)
 
 #### Get the values for WordPress
 
@@ -78,7 +78,7 @@ Go to the Settings tab for the plugin. It is the default URL that opens when you
 
 1. Consumer Key: (your value from above)
 2. Consumer Secret: (your value from above)
-3. Callback URL: `https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin&tab=authorize`
+3. Callback URL: `https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize`
 4. Login Base URL: For most Salesforce environments, you can use `https://test.salesforce.com` for sandbox, and `https://login.salesforce.com` for production.
 5. Authorize URL Path: The plugin starts with a default of `/services/oauth2/authorize`. You should generally not have to change this.
 6. Token URL Path: The plugin starts with a default of `/services/oauth2/token`. You should generally not have to change this.
@@ -108,7 +108,7 @@ Set them in `wp-config.php` like this:
 ```
 define('SALESFORCE_CONSUMER_KEY', 'valuefromsalesforce');
 define('SALESFORCE_CONSUMER_SECRET', 'valuefromsalesforce');
-define('SALESFORCE_CALLBACK_URL', 'https://<your site>/wp-admin/options-general.php?page=salesforce-api-admin&tab=authorize');
+define('SALESFORCE_CALLBACK_URL', 'https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize');
 define('SALESFORCE_LOGIN_BASE_URL', 'https://test.salesforce.com');
 define('SALESFORCE_API_VERSION', '38.0');
 define('SALESFORCE_AUTHORIZE_URL_PATH', '/services/oauth2/authorize');

@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex">
 
-	<title>File salesforce_pull.php | Salesforce REST API</title>
+	<title>File salesforce_pull.php | Object Sync for Salesforce</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -25,12 +25,12 @@
 			<h3>Classes</h3>
 			<ul>
 				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
+				<li><a href="class-Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
 				<li><a href="class-Salesforce.html">Salesforce</a></li>
 				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
 				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
 				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
 				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
-				<li><a href="class-Salesforce_Rest_API.html">Salesforce_Rest_API</a></li>
 				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
 				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
 				<li><a href="class-Wordpress.html">Wordpress</a></li>
@@ -88,7 +88,7 @@
 </span></span><span id="3" class="l"><a href="#3">   3: </a><span class="php-comment"> * @file
 </span></span><span id="4" class="l"><a href="#4">   4: </a><span class="php-comment"> */</span>
 </span><span id="5" class="l"><a href="#5">   5: </a>
-</span><span id="6" class="l"><a href="#6">   6: </a><span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Rest_API'</span> ) ) {
+</span><span id="6" class="l"><a href="#6">   6: </a><span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Salesforce'</span> ) ) {
 </span><span id="7" class="l"><a href="#7">   7: </a>    <span class="php-keyword1">die</span>();
 </span><span id="8" class="l"><a href="#8">   8: </a>}
 </span><span id="9" class="l"><a href="#9">   9: </a>
@@ -532,11 +532,11 @@
 </span><span id="447" class="l"><a href="#447"> 447: </a>            }
 </span><span id="448" class="l"><a href="#448"> 448: </a>
 </span><span id="449" class="l"><a href="#449"> 449: </a>            <span class="php-comment">// hook to allow other plugins to prevent a pull per-mapping.</span>
-</span><span id="450" class="l"><a href="#450"> 450: </a>            <span class="php-var">$pull_allowed</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_pull_object_allowed'</span>, <span class="php-keyword1">true</span>, <span class="php-var">$object_type</span>, <span class="php-var">$object</span>, <span class="php-var">$sf_sync_trigger</span>, <span class="php-var">$salesforce_mapping</span> );
+</span><span id="450" class="l"><a href="#450"> 450: </a>            <span class="php-var">$pull_allowed</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_pull_object_allowed'</span>, <span class="php-keyword1">true</span>, <span class="php-var">$object_type</span>, <span class="php-var">$object</span>, <span class="php-var">$sf_sync_trigger</span>, <span class="php-var">$salesforce_mapping</span> );
 </span><span id="451" class="l"><a href="#451"> 451: </a>
 </span><span id="452" class="l"><a href="#452"> 452: </a>            <span class="php-comment">// example to keep from pulling the Contact with id of abcdef</span>
 </span><span id="453" class="l"><a href="#453"> 453: </a>            <span class="php-comment">/*
-</span></span><span id="454" class="l"><a href="#454"> 454: </a><span class="php-comment">            add_filter( 'salesforce_rest_api_pull_object_allowed', 'check_user', 10, 5 );
+</span></span><span id="454" class="l"><a href="#454"> 454: </a><span class="php-comment">            add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
 </span></span><span id="455" class="l"><a href="#455"> 455: </a><span class="php-comment">            // can always reduce this number if all the arguments are not necessary
 </span></span><span id="456" class="l"><a href="#456"> 456: </a><span class="php-comment">            function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
 </span></span><span id="457" class="l"><a href="#457"> 457: </a><span class="php-comment">                if ( $object_type === 'Contact' &amp;&amp; $object['Id'] === 'abcdef' ) {
@@ -553,7 +553,7 @@
 </span><span id="468" class="l"><a href="#468"> 468: </a>            <span class="php-comment">// if it's not already connected (ie on create), the array will be empty</span>
 </span><span id="469" class="l"><a href="#469"> 469: </a>
 </span><span id="470" class="l"><a href="#470"> 470: </a>            <span class="php-comment">// hook to allow other plugins to define or alter the mapping object</span>
-</span><span id="471" class="l"><a href="#471"> 471: </a>            <span class="php-var">$mapping_object</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_pull_mapping_object'</span>, <span class="php-var">$mapping_object</span>, <span class="php-var">$object</span>, <span class="php-var">$mapping</span> );
+</span><span id="471" class="l"><a href="#471"> 471: </a>            <span class="php-var">$mapping_object</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_pull_mapping_object'</span>, <span class="php-var">$mapping_object</span>, <span class="php-var">$object</span>, <span class="php-var">$mapping</span> );
 </span><span id="472" class="l"><a href="#472"> 472: </a>
 </span><span id="473" class="l"><a href="#473"> 473: </a>            <span class="php-comment">// we already have the data from salesforce at this point; we just need to work with it in wordpress</span>
 </span><span id="474" class="l"><a href="#474"> 474: </a>            <span class="php-var">$synced_object</span> = <span class="php-keyword1">array</span>(
@@ -626,7 +626,7 @@
 </span><span id="541" class="l"><a href="#541"> 541: </a>                            }
 </span><span id="542" class="l"><a href="#542"> 542: </a>
 </span><span id="543" class="l"><a href="#543"> 543: </a>                            <span class="php-comment">// hook for pull fail</span>
-</span><span id="544" class="l"><a href="#544"> 544: </a>                            do_action( <span class="php-quote">'salesforce_rest_api_pull_fail'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
+</span><span id="544" class="l"><a href="#544"> 544: </a>                            do_action( <span class="php-quote">'object_sync_for_salesforce_pull_fail'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
 </span><span id="545" class="l"><a href="#545"> 545: </a>
 </span><span id="546" class="l"><a href="#546"> 546: </a>                        }
 </span><span id="547" class="l"><a href="#547"> 547: </a>
@@ -648,7 +648,7 @@
 </span><span id="563" class="l"><a href="#563"> 563: </a>                            );
 </span><span id="564" class="l"><a href="#564"> 564: </a>
 </span><span id="565" class="l"><a href="#565"> 565: </a>                            <span class="php-comment">// hook for pull success</span>
-</span><span id="566" class="l"><a href="#566"> 566: </a>                            do_action( <span class="php-quote">'salesforce_rest_api_pull_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
+</span><span id="566" class="l"><a href="#566"> 566: </a>                            do_action( <span class="php-quote">'object_sync_for_salesforce_pull_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
 </span><span id="567" class="l"><a href="#567"> 567: </a>                        }
 </span><span id="568" class="l"><a href="#568"> 568: </a>                    } <span class="php-keyword1">else</span> {
 </span><span id="569" class="l"><a href="#569"> 569: </a>                        <span class="php-var">$more_ids</span> = <span class="php-quote">'&lt;p&gt;The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress ID. They are: '</span>;
@@ -696,7 +696,7 @@
 </span><span id="611" class="l"><a href="#611"> 611: </a>            <span class="php-comment">// hook to allow other plugins to modify the $params array</span>
 </span><span id="612" class="l"><a href="#612"> 612: </a>            <span class="php-comment">// use hook to map fields between the wordpress and salesforce objects</span>
 </span><span id="613" class="l"><a href="#613"> 613: </a>            <span class="php-comment">// returns $params.</span>
-</span><span id="614" class="l"><a href="#614"> 614: </a>            <span class="php-var">$params</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_pull_params_modify'</span>, <span class="php-var">$params</span>, <span class="php-var">$mapping</span>, <span class="php-var">$object</span>, <span class="php-var">$sf_sync_trigger</span>, <span class="php-keyword1">false</span>, <span class="php-var">$is_new</span> );
+</span><span id="614" class="l"><a href="#614"> 614: </a>            <span class="php-var">$params</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_pull_params_modify'</span>, <span class="php-var">$params</span>, <span class="php-var">$mapping</span>, <span class="php-var">$object</span>, <span class="php-var">$sf_sync_trigger</span>, <span class="php-keyword1">false</span>, <span class="php-var">$is_new</span> );
 </span><span id="615" class="l"><a href="#615"> 615: </a>
 </span><span id="616" class="l"><a href="#616"> 616: </a>            <span class="php-comment">// if we don't get any params, there are no fields that should be sent to wordpress</span>
 </span><span id="617" class="l"><a href="#617"> 617: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$params</span> ) ) {
@@ -759,11 +759,11 @@
 </span><span id="674" class="l"><a href="#674"> 674: </a>                    <span class="php-comment">// returns a $salesforce_id.</span>
 </span><span id="675" class="l"><a href="#675"> 675: </a>                    <span class="php-comment">// it should keep null if there is no match</span>
 </span><span id="676" class="l"><a href="#676"> 676: </a>                    <span class="php-comment">// the function that calls this hook needs to check the mapping to make sure the wordpress object is the right type</span>
-</span><span id="677" class="l"><a href="#677"> 677: </a>                    <span class="php-var">$wordpress_id</span> = apply_filters( <span class="php-quote">'salesforce_rest_api_find_wp_object_match'</span>, <span class="php-keyword1">null</span>, <span class="php-var">$object</span>, <span class="php-var">$mapping</span>, <span class="php-quote">'pull'</span> );
+</span><span id="677" class="l"><a href="#677"> 677: </a>                    <span class="php-var">$wordpress_id</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_find_wp_object_match'</span>, <span class="php-keyword1">null</span>, <span class="php-var">$object</span>, <span class="php-var">$mapping</span>, <span class="php-quote">'pull'</span> );
 </span><span id="678" class="l"><a href="#678"> 678: </a>
 </span><span id="679" class="l"><a href="#679"> 679: </a>                    <span class="php-comment">// hook to allow other plugins to do something right before wordpress data is saved</span>
 </span><span id="680" class="l"><a href="#680"> 680: </a>                    <span class="php-comment">// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't</span>
-</span><span id="681" class="l"><a href="#681"> 681: </a>                    do_action( <span class="php-quote">'salesforce_rest_api_pre_pull'</span>, <span class="php-var">$wordpress_id</span>, <span class="php-var">$mapping</span>, <span class="php-var">$object</span>, <span class="php-var">$object_id</span>, <span class="php-var">$params</span> );
+</span><span id="681" class="l"><a href="#681"> 681: </a>                    do_action( <span class="php-quote">'object_sync_for_salesforce_pre_pull'</span>, <span class="php-var">$wordpress_id</span>, <span class="php-var">$mapping</span>, <span class="php-var">$object</span>, <span class="php-var">$object_id</span>, <span class="php-var">$params</span> );
 </span><span id="682" class="l"><a href="#682"> 682: </a>
 </span><span id="683" class="l"><a href="#683"> 683: </a>                    <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$prematch_field_salesforce</span> ) || <span class="php-keyword1">isset</span>( <span class="php-var">$key_field_salesforce</span> ) || <span class="php-var">$wordpress_id</span> !== <span class="php-keyword1">null</span> ) {
 </span><span id="684" class="l"><a href="#684"> 684: </a>
@@ -901,7 +901,7 @@
 </span><span id="816" class="l"><a href="#816"> 816: </a>                    }
 </span><span id="817" class="l"><a href="#817"> 817: </a>
 </span><span id="818" class="l"><a href="#818"> 818: </a>                    <span class="php-comment">// hook for pull fail</span>
-</span><span id="819" class="l"><a href="#819"> 819: </a>                    do_action( <span class="php-quote">'salesforce_rest_api_pull_fail'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
+</span><span id="819" class="l"><a href="#819"> 819: </a>                    do_action( <span class="php-quote">'object_sync_for_salesforce_pull_fail'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
 </span><span id="820" class="l"><a href="#820"> 820: </a>
 </span><span id="821" class="l"><a href="#821"> 821: </a>                    <span class="php-keyword1">return</span>;
 </span><span id="822" class="l"><a href="#822"> 822: </a>                }
@@ -940,7 +940,7 @@
 </span><span id="855" class="l"><a href="#855"> 855: </a>                    <span class="php-var">$mapping_object</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;update_object_map( <span class="php-var">$mapping_object</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] );
 </span><span id="856" class="l"><a href="#856"> 856: </a>
 </span><span id="857" class="l"><a href="#857"> 857: </a>                    <span class="php-comment">// hook for pull success</span>
-</span><span id="858" class="l"><a href="#858"> 858: </a>                    do_action( <span class="php-quote">'salesforce_rest_api_pull_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
+</span><span id="858" class="l"><a href="#858"> 858: </a>                    do_action( <span class="php-quote">'object_sync_for_salesforce_pull_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
 </span><span id="859" class="l"><a href="#859"> 859: </a>                } <span class="php-keyword1">else</span> {
 </span><span id="860" class="l"><a href="#860"> 860: </a>
 </span><span id="861" class="l"><a href="#861"> 861: </a>                    <span class="php-comment">// create log entry for failed create or upsert</span>
@@ -966,7 +966,7 @@
 </span><span id="881" class="l"><a href="#881"> 881: </a>                    );
 </span><span id="882" class="l"><a href="#882"> 882: </a>
 </span><span id="883" class="l"><a href="#883"> 883: </a>                    <span class="php-comment">// hook for pull fail</span>
-</span><span id="884" class="l"><a href="#884"> 884: </a>                    do_action( <span class="php-quote">'salesforce_rest_api_pull_fail'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
+</span><span id="884" class="l"><a href="#884"> 884: </a>                    do_action( <span class="php-quote">'object_sync_for_salesforce_pull_fail'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
 </span><span id="885" class="l"><a href="#885"> 885: </a>
 </span><span id="886" class="l"><a href="#886"> 886: </a>                    <span class="php-keyword1">return</span>;
 </span><span id="887" class="l"><a href="#887"> 887: </a>                }
@@ -990,7 +990,7 @@
 </span><span id="905" class="l"><a href="#905"> 905: </a>
 </span><span id="906" class="l"><a href="#906"> 906: </a>                    <span class="php-comment">// hook to allow other plugins to do something right before wordpress data is saved</span>
 </span><span id="907" class="l"><a href="#907"> 907: </a>                    <span class="php-comment">// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't</span>
-</span><span id="908" class="l"><a href="#908"> 908: </a>                    do_action( <span class="php-quote">'salesforce_rest_api_pre_pull'</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'wordpress_id'</span>], <span class="php-var">$mapping</span>, <span class="php-var">$object</span>, <span class="php-var">$object_id</span>, <span class="php-var">$params</span> );
+</span><span id="908" class="l"><a href="#908"> 908: </a>                    do_action( <span class="php-quote">'object_sync_for_salesforce_pre_pull'</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'wordpress_id'</span>], <span class="php-var">$mapping</span>, <span class="php-var">$object</span>, <span class="php-var">$object_id</span>, <span class="php-var">$params</span> );
 </span><span id="909" class="l"><a href="#909"> 909: </a>
 </span><span id="910" class="l"><a href="#910"> 910: </a>                    <span class="php-var">$op</span> = <span class="php-quote">'Update'</span>;
 </span><span id="911" class="l"><a href="#911"> 911: </a>                    <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;wordpress-&gt;object_update( <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'wordpress_object'</span>], <span class="php-var">$mapping_object</span>[<span class="php-quote">'wordpress_id'</span>], <span class="php-var">$params</span> );
@@ -1014,7 +1014,7 @@
 </span><span id="929" class="l"><a href="#929"> 929: </a>                    );
 </span><span id="930" class="l"><a href="#930"> 930: </a>
 </span><span id="931" class="l"><a href="#931"> 931: </a>                    <span class="php-comment">// hook for pull success</span>
-</span><span id="932" class="l"><a href="#932"> 932: </a>                    do_action( <span class="php-quote">'salesforce_rest_api_pull_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
+</span><span id="932" class="l"><a href="#932"> 932: </a>                    do_action( <span class="php-quote">'object_sync_for_salesforce_pull_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
 </span><span id="933" class="l"><a href="#933"> 933: </a>
 </span><span id="934" class="l"><a href="#934"> 934: </a>                }
 </span><span id="935" class="l"><a href="#935"> 935: </a>                <span class="php-keyword1">catch</span> ( WordpressException <span class="php-var">$e</span> ) {
@@ -1048,7 +1048,7 @@
 </span><span id="963" class="l"><a href="#963"> 963: </a>                    }
 </span><span id="964" class="l"><a href="#964"> 964: </a>
 </span><span id="965" class="l"><a href="#965"> 965: </a>                    <span class="php-comment">// hook for pull fail</span>
-</span><span id="966" class="l"><a href="#966"> 966: </a>                    do_action( <span class="php-quote">'salesforce_rest_api_pull_fail'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
+</span><span id="966" class="l"><a href="#966"> 966: </a>                    do_action( <span class="php-quote">'object_sync_for_salesforce_pull_fail'</span>, <span class="php-var">$op</span>, <span class="php-var">$result</span>, <span class="php-var">$synced_object</span> );
 </span><span id="967" class="l"><a href="#967"> 967: </a>
 </span><span id="968" class="l"><a href="#968"> 968: </a>                }
 </span><span id="969" class="l"><a href="#969"> 969: </a>
@@ -1120,11 +1120,11 @@
 </span><span id="1035" class="l"><a href="#1035">1035: </a>}</span></code></pre>
 
 	<div id="footer">
-		Salesforce REST API API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?1444b2a5de3e16013f33abf92f72818e637c9fa1"></script>
+<script src="elementlist.js?e025fad4c1553a0f094faf53f85cd94c02040af7"></script>
 </body>
 </html>
