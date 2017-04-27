@@ -167,7 +167,7 @@
 </span><span id="82" class="l"><a href="#82">  82: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> salesforce_pull_webhook() {
 </span><span id="83" class="l"><a href="#83">  83: </a>
 </span><span id="84" class="l"><a href="#84">  84: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;salesforce_pull() === <span class="php-keyword1">true</span> ) {
-</span><span id="85" class="l"><a href="#85">  85: </a>            <span class="php-var">$code</span> = <span class="php-quote">'200'</span>;          
+</span><span id="85" class="l"><a href="#85">  85: </a>            <span class="php-var">$code</span> = <span class="php-quote">'200'</span>;
 </span><span id="86" class="l"><a href="#86">  86: </a>            <span class="php-comment">// check to see if anything is in the queue and handle it if it is</span>
 </span><span id="87" class="l"><a href="#87">  87: </a>            <span class="php-var">$this</span>-&gt;schedule-&gt;maybe_handle();
 </span><span id="88" class="l"><a href="#88">  88: </a>
@@ -189,7 +189,7 @@
 </span><span id="104" class="l"><a href="#104"> 104: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> salesforce_pull() {
 </span><span id="105" class="l"><a href="#105"> 105: </a>        <span class="php-var">$sfapi</span> = <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'sfapi'</span>];
 </span><span id="106" class="l"><a href="#106"> 106: </a>
-</span><span id="107" class="l"><a href="#107"> 107: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'is_authorized'</span>] === <span class="php-keyword1">true</span> &amp;&amp; <span class="php-var">$this</span>-&gt;check_throttle() === <span class="php-keyword1">true</span> ) {
+</span><span id="107" class="l"><a href="#107"> 107: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">true</span> === <span class="php-var">$this</span>-&gt;salesforce[<span class="php-quote">'is_authorized'</span>] &amp;&amp; <span class="php-keyword1">true</span> === <span class="php-var">$this</span>-&gt;check_throttle() ) {
 </span><span id="108" class="l"><a href="#108"> 108: </a>
 </span><span id="109" class="l"><a href="#109"> 109: </a>            <span class="php-var">$this</span>-&gt;get_updated_records();
 </span><span id="110" class="l"><a href="#110"> 110: </a>            <span class="php-var">$this</span>-&gt;get_deleted_records();
@@ -207,7 +207,7 @@
 </span><span id="122" class="l"><a href="#122"> 122: </a>    <span class="php-comment">/**
 </span></span><span id="123" class="l"><a href="#123"> 123: </a><span class="php-comment">    * Load schedule
 </span></span><span id="124" class="l"><a href="#124"> 124: </a><span class="php-comment">    * This loads the schedule class
-</span></span><span id="125" class="l"><a href="#125"> 125: </a><span class="php-comment">    */</span> 
+</span></span><span id="125" class="l"><a href="#125"> 125: </a><span class="php-comment">    */</span>
 </span><span id="126" class="l"><a href="#126"> 126: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> schedule() {
 </span><span id="127" class="l"><a href="#127"> 127: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Wordpress_Salesforce_Schedule'</span> ) &amp;&amp; <span class="php-keyword2">file_exists</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span> ) ) {
 </span><span id="128" class="l"><a href="#128"> 128: </a>            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span>;
@@ -254,7 +254,7 @@
 </span><span id="169" class="l"><a href="#169"> 169: </a>            <span class="php-var">$mapped_record_types</span> = <span class="php-keyword1">array</span>();
 </span><span id="170" class="l"><a href="#170"> 170: </a>
 </span><span id="171" class="l"><a href="#171"> 171: </a>            <span class="php-comment">// Iterate over each field mapping to determine our query parameters.</span>
-</span><span id="172" class="l"><a href="#172"> 172: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;mappings-&gt;get_fieldmaps( <span class="php-keyword1">null</span>, <span class="php-keyword1">array</span>(<span class="php-quote">'salesforce_object'</span> =&gt; <span class="php-var">$type</span> ) ) <span class="php-keyword1">as</span> <span class="php-var">$mapping</span> ) {
+</span><span id="172" class="l"><a href="#172"> 172: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;mappings-&gt;get_fieldmaps( <span class="php-keyword1">null</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'salesforce_object'</span> =&gt; <span class="php-var">$type</span> ) ) <span class="php-keyword1">as</span> <span class="php-var">$mapping</span> ) {
 </span><span id="173" class="l"><a href="#173"> 173: </a>
 </span><span id="174" class="l"><a href="#174"> 174: </a>                <span class="php-keyword1">foreach</span> ( <span class="php-var">$mapping</span>[<span class="php-quote">'fields'</span>] <span class="php-keyword1">as</span> <span class="php-var">$field</span> ) {
 </span><span id="175" class="l"><a href="#175"> 175: </a>                    <span class="php-comment">// skip fields that are only wordpress to salesforce</span>
@@ -265,17 +265,17 @@
 </span><span id="180" class="l"><a href="#180"> 180: </a>                    <span class="php-comment">// Some field map types (Relation) store a collection of SF objects.</span>
 </span><span id="181" class="l"><a href="#181"> 181: </a>                    <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$field</span>[<span class="php-quote">'salesforce_field'</span>] ) &amp;&amp; ! <span class="php-keyword1">isset</span>( <span class="php-var">$field</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>] ) ) {
 </span><span id="182" class="l"><a href="#182"> 182: </a>                        <span class="php-keyword1">foreach</span> ( <span class="php-var">$field</span>[<span class="php-quote">'salesforce_field'</span>] <span class="php-keyword1">as</span> <span class="php-var">$sf_field</span> ) {
-</span><span id="183" class="l"><a href="#183"> 183: </a>                            <span class="php-var">$mapped_fields</span>[<span class="php-var">$sf_field</span>[<span class="php-quote">'label'</span>]] = <span class="php-var">$sf_field</span>[<span class="php-quote">'label'</span>];
+</span><span id="183" class="l"><a href="#183"> 183: </a>                            <span class="php-var">$mapped_fields</span>[ <span class="php-var">$sf_field</span>[<span class="php-quote">'label'</span>] ] = <span class="php-var">$sf_field</span>[<span class="php-quote">'label'</span>];
 </span><span id="184" class="l"><a href="#184"> 184: </a>                        }
 </span><span id="185" class="l"><a href="#185"> 185: </a>                    } <span class="php-keyword1">else</span> {
-</span><span id="186" class="l"><a href="#186"> 186: </a>                        <span class="php-var">$mapped_fields</span>[<span class="php-var">$field</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>]] = <span class="php-var">$field</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>];
+</span><span id="186" class="l"><a href="#186"> 186: </a>                        <span class="php-var">$mapped_fields</span>[ <span class="php-var">$field</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>] ] = <span class="php-var">$field</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>];
 </span><span id="187" class="l"><a href="#187"> 187: </a>                    }
 </span><span id="188" class="l"><a href="#188"> 188: </a>                }
 </span><span id="189" class="l"><a href="#189"> 189: </a>
 </span><span id="190" class="l"><a href="#190"> 190: </a>                <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$mapped_fields</span> ) &amp;&amp; <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'salesforce_record_type_default'</span>] !== <span class="php-var">$this</span>-&gt;mappings-&gt;salesforce_default_record_type ) {
 </span><span id="191" class="l"><a href="#191"> 191: </a>                    <span class="php-keyword1">foreach</span> ( <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'salesforce_record_types_allowed'</span>] <span class="php-keyword1">as</span> <span class="php-var">$record_type</span> ) {
 </span><span id="192" class="l"><a href="#192"> 192: </a>                        <span class="php-keyword1">if</span> ( <span class="php-var">$record_type</span> ) {
-</span><span id="193" class="l"><a href="#193"> 193: </a>                            <span class="php-var">$mapped_record_types</span>[<span class="php-var">$record_type</span>] = <span class="php-var">$record_type</span>;
+</span><span id="193" class="l"><a href="#193"> 193: </a>                            <span class="php-var">$mapped_record_types</span>[ <span class="php-var">$record_type</span> ] = <span class="php-var">$record_type</span>;
 </span><span id="194" class="l"><a href="#194"> 194: </a>                        }
 </span><span id="195" class="l"><a href="#195"> 195: </a>                    }
 </span><span id="196" class="l"><a href="#196"> 196: </a>                    <span class="php-comment">// Add the RecordTypeId field so we can use it when processing the queued SF objects.</span>
@@ -294,8 +294,8 @@
 </span><span id="209" class="l"><a href="#209"> 209: </a>            <span class="php-comment">// Convert field mappings to SOQL.</span>
 </span><span id="210" class="l"><a href="#210"> 210: </a>            <span class="php-comment">// this is why we don't use the get_updated method on the salesforce class</span>
 </span><span id="211" class="l"><a href="#211"> 211: </a>            <span class="php-var">$soql</span>-&gt;fields = <span class="php-keyword2">array_merge</span>( <span class="php-var">$mapped_fields</span>, <span class="php-keyword1">array</span>(
-</span><span id="212" class="l"><a href="#212"> 212: </a>              <span class="php-quote">'Id'</span> =&gt; <span class="php-quote">'Id'</span>,
-</span><span id="213" class="l"><a href="#213"> 213: </a>              <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'pull_trigger_field'</span>] =&gt; <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'pull_trigger_field'</span>]
+</span><span id="212" class="l"><a href="#212"> 212: </a>                <span class="php-quote">'Id'</span> =&gt; <span class="php-quote">'Id'</span>,
+</span><span id="213" class="l"><a href="#213"> 213: </a>                <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'pull_trigger_field'</span>] =&gt; <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'pull_trigger_field'</span>],
 </span><span id="214" class="l"><a href="#214"> 214: </a>            ) );
 </span><span id="215" class="l"><a href="#215"> 215: </a>
 </span><span id="216" class="l"><a href="#216"> 216: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$this</span>-&gt;mappings-&gt;sync_sf_create, <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'sync_triggers'</span>] ) ) {
@@ -337,7 +337,7 @@
 </span><span id="252" class="l"><a href="#252"> 252: </a>                        <span class="php-quote">'object_type'</span> =&gt; <span class="php-var">$type</span>,
 </span><span id="253" class="l"><a href="#253"> 253: </a>                        <span class="php-quote">'object'</span> =&gt; <span class="php-var">$result</span>,
 </span><span id="254" class="l"><a href="#254"> 254: </a>                        <span class="php-quote">'mapping'</span> =&gt; <span class="php-var">$mapping</span>,
-</span><span id="255" class="l"><a href="#255"> 255: </a>                        <span class="php-quote">'sf_sync_trigger'</span> =&gt; <span class="php-var">$trigger</span> <span class="php-comment">// use the appropriate trigger based on when this was created</span>
+</span><span id="255" class="l"><a href="#255"> 255: </a>                        <span class="php-quote">'sf_sync_trigger'</span> =&gt; <span class="php-var">$trigger</span>, <span class="php-comment">// use the appropriate trigger based on when this was created</span>
 </span><span id="256" class="l"><a href="#256"> 256: </a>                    );
 </span><span id="257" class="l"><a href="#257"> 257: </a>
 </span><span id="258" class="l"><a href="#258"> 258: </a>                    <span class="php-var">$this</span>-&gt;schedule-&gt;push_to_queue( <span class="php-var">$data</span> );
@@ -359,7 +359,7 @@
 </span><span id="274" class="l"><a href="#274"> 274: </a>                                <span class="php-quote">'object_type'</span> =&gt; <span class="php-var">$type</span>,
 </span><span id="275" class="l"><a href="#275"> 275: </a>                                <span class="php-quote">'object'</span> =&gt; <span class="php-var">$result</span>,
 </span><span id="276" class="l"><a href="#276"> 276: </a>                                <span class="php-quote">'mapping'</span> =&gt; <span class="php-var">$mapping</span>,
-</span><span id="277" class="l"><a href="#277"> 277: </a>                                <span class="php-quote">'sf_sync_trigger'</span> =&gt; <span class="php-var">$this</span>-&gt;mappings-&gt;sync_sf_update <span class="php-comment">// sf update trigger</span>
+</span><span id="277" class="l"><a href="#277"> 277: </a>                                <span class="php-quote">'sf_sync_trigger'</span> =&gt; <span class="php-var">$this</span>-&gt;mappings-&gt;sync_sf_update, <span class="php-comment">// sf update trigger</span>
 </span><span id="278" class="l"><a href="#278"> 278: </a>                            );
 </span><span id="279" class="l"><a href="#279"> 279: </a>
 </span><span id="280" class="l"><a href="#280"> 280: </a>                            <span class="php-var">$this</span>-&gt;schedule-&gt;push_to_queue( <span class="php-var">$data</span> );
@@ -411,7 +411,7 @@
 </span><span id="326" class="l"><a href="#326"> 326: </a>            <span class="php-var">$type</span> = <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'salesforce_object'</span>];
 </span><span id="327" class="l"><a href="#327"> 327: </a>
 </span><span id="328" class="l"><a href="#328"> 328: </a>            <span class="php-comment">// Iterate over each field mapping to determine our parameters.</span>
-</span><span id="329" class="l"><a href="#329"> 329: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;mappings-&gt;get_fieldmaps( <span class="php-keyword1">null</span>, <span class="php-keyword1">array</span>(<span class="php-quote">'salesforce_object'</span> =&gt; <span class="php-var">$type</span> ) ) <span class="php-keyword1">as</span> <span class="php-var">$mapping</span> ) {
+</span><span id="329" class="l"><a href="#329"> 329: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;mappings-&gt;get_fieldmaps( <span class="php-keyword1">null</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'salesforce_object'</span> =&gt; <span class="php-var">$type</span> ) ) <span class="php-keyword1">as</span> <span class="php-var">$mapping</span> ) {
 </span><span id="330" class="l"><a href="#330"> 330: </a>
 </span><span id="331" class="l"><a href="#331"> 331: </a>                <span class="php-var">$last_delete_sync</span> = get_option( <span class="php-quote">'salesforce_api_pull_delete_last_'</span> . <span class="php-var">$type</span>, current_time( <span class="php-quote">'timestamp'</span>, <span class="php-keyword1">true</span> ) );
 </span><span id="332" class="l"><a href="#332"> 332: </a>                <span class="php-var">$now</span> = current_time( <span class="php-quote">'timestamp'</span>, <span class="php-keyword1">true</span> );
@@ -437,7 +437,7 @@
 </span><span id="352" class="l"><a href="#352"> 352: </a>
 </span><span id="353" class="l"><a href="#353"> 353: </a>                <span class="php-keyword1">foreach</span> ( <span class="php-var">$deleted</span>[<span class="php-quote">'data'</span>][<span class="php-quote">'deletedRecords'</span>] <span class="php-keyword1">as</span> <span class="php-var">$result</span> ) {
 </span><span id="354" class="l"><a href="#354"> 354: </a>                    <span class="php-comment">// salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?</span>
-</span><span id="355" class="l"><a href="#355"> 355: </a>                    <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">isset</span>( <span class="php-var">$result</span>[<span class="php-quote">'Id'</span>] ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$result</span>[<span class="php-quote">'id'</span>]) ) {
+</span><span id="355" class="l"><a href="#355"> 355: </a>                    <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">isset</span>( <span class="php-var">$result</span>[<span class="php-quote">'Id'</span>] ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$result</span>[<span class="php-quote">'id'</span>] ) ) {
 </span><span id="356" class="l"><a href="#356"> 356: </a>                        <span class="php-var">$result</span>[<span class="php-quote">'Id'</span>] = <span class="php-var">$result</span>[<span class="php-quote">'id'</span>];
 </span><span id="357" class="l"><a href="#357"> 357: </a>                    }
 </span><span id="358" class="l"><a href="#358"> 358: </a>                    <span class="php-var">$data</span> = <span class="php-keyword1">array</span>(
@@ -491,7 +491,7 @@
 </span><span id="406" class="l"><a href="#406"> 406: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> salesforce_pull_process_records( <span class="php-var">$object_type</span>, <span class="php-var">$object</span>, <span class="php-var">$mapping</span>, <span class="php-var">$sf_sync_trigger</span> ) {
 </span><span id="407" class="l"><a href="#407"> 407: </a>
 </span><span id="408" class="l"><a href="#408"> 408: </a>        <span class="php-var">$mapping_conditions</span> = <span class="php-keyword1">array</span>(
-</span><span id="409" class="l"><a href="#409"> 409: </a>            <span class="php-quote">'salesforce_object'</span> =&gt; <span class="php-var">$object_type</span>
+</span><span id="409" class="l"><a href="#409"> 409: </a>            <span class="php-quote">'salesforce_object'</span> =&gt; <span class="php-var">$object_type</span>,
 </span><span id="410" class="l"><a href="#410"> 410: </a>        );
 </span><span id="411" class="l"><a href="#411"> 411: </a>
 </span><span id="412" class="l"><a href="#412"> 412: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$object</span>[<span class="php-quote">'RecordTypeId'</span>] ) &amp;&amp; <span class="php-var">$object</span>[<span class="php-quote">'RecordTypeId'</span>] !== <span class="php-var">$this</span>-&gt;mappings-&gt;salesforce_default_record_type ) {
@@ -545,7 +545,7 @@
 </span></span><span id="460" class="l"><a href="#460"> 460: </a><span class="php-comment">            }
 </span></span><span id="461" class="l"><a href="#461"> 461: </a><span class="php-comment">            */</span>
 </span><span id="462" class="l"><a href="#462"> 462: </a>
-</span><span id="463" class="l"><a href="#463"> 463: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$pull_allowed</span> === <span class="php-keyword1">false</span> ) {
+</span><span id="463" class="l"><a href="#463"> 463: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">false</span> === <span class="php-var">$pull_allowed</span> ) {
 </span><span id="464" class="l"><a href="#464"> 464: </a>                <span class="php-keyword1">continue</span>;
 </span><span id="465" class="l"><a href="#465"> 465: </a>            }
 </span><span id="466" class="l"><a href="#466"> 466: </a>
@@ -580,7 +580,7 @@
 </span><span id="495" class="l"><a href="#495"> 495: </a>
 </span><span id="496" class="l"><a href="#496"> 496: </a>            <span class="php-comment">// drupal only does a salesforce_pull flag, but we might as well do push and pull because wordpress</span>
 </span><span id="497" class="l"><a href="#497"> 497: </a>            <span class="php-var">$salesforce_pushing</span> = (int) get_transient( <span class="php-quote">'salesforce_pushing_'</span> . <span class="php-var">$mapping_object_id_transient</span> );
-</span><span id="498" class="l"><a href="#498"> 498: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$salesforce_pushing</span> === <span class="php-num">1</span> ) {
+</span><span id="498" class="l"><a href="#498"> 498: </a>            <span class="php-keyword1">if</span> ( <span class="php-num">1</span> === <span class="php-var">$salesforce_pushing</span> ) {
 </span><span id="499" class="l"><a href="#499"> 499: </a>                <span class="php-var">$transients_to_delete</span>[] = <span class="php-var">$mapping_object_id_transient</span>;
 </span><span id="500" class="l"><a href="#500"> 500: </a>                <span class="php-keyword1">continue</span>;
 </span><span id="501" class="l"><a href="#501"> 501: </a>            }
@@ -588,7 +588,7 @@
 </span><span id="503" class="l"><a href="#503"> 503: </a>            <span class="php-comment">// deleting mapped objects</span>
 </span><span id="504" class="l"><a href="#504"> 504: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$sf_sync_trigger</span> == <span class="php-var">$this</span>-&gt;mappings-&gt;sync_sf_delete ) {
 </span><span id="505" class="l"><a href="#505"> 505: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] ) ) {
-</span><span id="506" class="l"><a href="#506"> 506: </a>                    
+</span><span id="506" class="l"><a href="#506"> 506: </a>
 </span><span id="507" class="l"><a href="#507"> 507: </a>                    set_transient( <span class="php-quote">'salesforce_pulling_'</span> . <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>], <span class="php-num">1</span>, <span class="php-var">$seconds</span> );
 </span><span id="508" class="l"><a href="#508"> 508: </a>                    set_transient( <span class="php-quote">'salesforce_pulling_object_id'</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] );
 </span><span id="509" class="l"><a href="#509"> 509: </a>
@@ -1077,7 +1077,7 @@
 </span><span id="992" class="l"><a href="#992"> 992: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$pushing_id</span>, <span class="php-var">$transients_to_delete</span> ) ) {
 </span><span id="993" class="l"><a href="#993"> 993: </a>            delete_transient( <span class="php-quote">'salesforce_pushing_object_id'</span> );
 </span><span id="994" class="l"><a href="#994"> 994: </a>        }
-</span><span id="995" class="l"><a href="#995"> 995: </a>    
+</span><span id="995" class="l"><a href="#995"> 995: </a>
 </span><span id="996" class="l"><a href="#996"> 996: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$exception</span> ) ) {
 </span><span id="997" class="l"><a href="#997"> 997: </a>            <span class="php-keyword1">throw</span> <span class="php-var">$exception</span>;
 </span><span id="998" class="l"><a href="#998"> 998: </a>        }
@@ -1117,7 +1117,8 @@
 </span><span id="1032" class="l"><a href="#1032">1032: </a>
 </span><span id="1033" class="l"><a href="#1033">1033: </a>    }
 </span><span id="1034" class="l"><a href="#1034">1034: </a>
-</span><span id="1035" class="l"><a href="#1035">1035: </a>}</span></code></pre>
+</span><span id="1035" class="l"><a href="#1035">1035: </a>}
+</span><span id="1036" class="l"><a href="#1036">1036: </a></span></code></pre>
 
 	<div id="footer">
 		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>

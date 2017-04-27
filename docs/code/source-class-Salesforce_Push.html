@@ -636,12 +636,12 @@
 </span><span id="551" class="l"><a href="#551">551: </a>                        <span class="php-var">$object</span>[<span class="php-quote">&quot;</span><span class="php-var">$object_id</span><span class="php-quote">&quot;</span>],
 </span><span id="552" class="l"><a href="#552">552: </a>                        <span class="php-var">$status</span>
 </span><span id="553" class="l"><a href="#553">553: </a>                    );
-</span><span id="554" class="l"><a href="#554">554: </a>                }               
+</span><span id="554" class="l"><a href="#554">554: </a>                }
 </span><span id="555" class="l"><a href="#555">555: </a>
 </span><span id="556" class="l"><a href="#556">556: </a>                <span class="php-comment">// delete the map row from wordpress after the salesforce row has been deleted</span>
 </span><span id="557" class="l"><a href="#557">557: </a>                <span class="php-comment">// we delete the map row even if the salesforce delete failed, because the wp object is gone</span>
 </span><span id="558" class="l"><a href="#558">558: </a>                <span class="php-var">$this</span>-&gt;mappings-&gt;delete_object_map( <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] );
-</span><span id="559" class="l"><a href="#559">559: </a>                
+</span><span id="559" class="l"><a href="#559">559: </a>
 </span><span id="560" class="l"><a href="#560">560: </a>            } <span class="php-comment">// there is no map row</span>
 </span><span id="561" class="l"><a href="#561">561: </a>
 </span><span id="562" class="l"><a href="#562">562: </a>            <span class="php-keyword1">return</span>;
@@ -716,7 +716,7 @@
 </span><span id="631" class="l"><a href="#631">631: </a>                do_action( <span class="php-quote">'object_sync_for_salesforce_pre_push'</span>, <span class="php-var">$salesforce_id</span>, <span class="php-var">$mapping</span>, <span class="php-var">$object</span>, <span class="php-var">$object_id</span>, <span class="php-var">$params</span> );
 </span><span id="632" class="l"><a href="#632">632: </a>
 </span><span id="633" class="l"><a href="#633">633: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$prematch_field_wordpress</span> ) || <span class="php-keyword1">isset</span>( <span class="php-var">$key_field_wordpress</span> ) || <span class="php-var">$salesforce_id</span> !== <span class="php-keyword1">null</span> ) {
-</span><span id="634" class="l"><a href="#634">634: </a>                    
+</span><span id="634" class="l"><a href="#634">634: </a>
 </span><span id="635" class="l"><a href="#635">635: </a>                    <span class="php-comment">// if either prematch criteria exists, make the values queryable</span>
 </span><span id="636" class="l"><a href="#636">636: </a>
 </span><span id="637" class="l"><a href="#637">637: </a>                    <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$prematch_field_wordpress</span> ) ) {
@@ -1015,7 +1015,7 @@
 </span></span><span id="930" class="l"><a href="#930">930: </a><span class="php-comment">     */</span>
 </span><span id="931" class="l"><a href="#931">931: </a>    <span class="php-keyword1">function</span> salesforce_push_process_soap_results(<span class="php-var">$op</span>, <span class="php-var">$results</span>, <span class="php-var">$synced_entities</span>) {
 </span><span id="932" class="l"><a href="#932">932: </a>        <span class="php-keyword1">foreach</span> (<span class="php-var">$results</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$result</span>) {
-</span><span id="933" class="l"><a href="#933">933: </a>            <span class="php-var">$synced_entity</span> = <span class="php-var">$synced_entities</span>[<span class="php-var">$key</span>];
+</span><span id="933" class="l"><a href="#933">933: </a>            <span class="php-var">$synced_entity</span> = <span class="php-var">$synced_entities</span>[ <span class="php-var">$key</span> ];
 </span><span id="934" class="l"><a href="#934">934: </a>            <span class="php-var">$mapping_object</span> = <span class="php-keyword1">empty</span>( <span class="php-var">$synced_entity</span>[<span class="php-quote">'mapping_object'</span>] ) ? <span class="php-keyword1">false</span> : <span class="php-var">$synced_entity</span>[<span class="php-quote">'mapping_object'</span>];
 </span><span id="935" class="l"><a href="#935">935: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$result</span>-&gt;success ) {
 </span><span id="936" class="l"><a href="#936">936: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword2">mb_strtolower</span>( <span class="php-var">$op</span> ) == <span class="php-quote">'delete'</span> &amp;&amp; <span class="php-var">$mapping_object</span> ) {
@@ -1073,8 +1073,9 @@
 </span><span id="988" class="l"><a href="#988">988: </a>            }
 </span><span id="989" class="l"><a href="#989">989: </a>        }
 </span><span id="990" class="l"><a href="#990">990: </a>    }
-</span><span id="991" class="l"><a href="#991">991: </a>    
-</span><span id="992" class="l"><a href="#992">992: </a>}</span></code></pre>
+</span><span id="991" class="l"><a href="#991">991: </a>
+</span><span id="992" class="l"><a href="#992">992: </a>}
+</span><span id="993" class="l"><a href="#993">993: </a></span></code></pre>
 
 	<div id="footer">
 		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>

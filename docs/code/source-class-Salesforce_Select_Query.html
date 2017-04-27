@@ -128,10 +128,10 @@
 </span></span><span id="43" class="l"><a href="#43"> 43: </a><span class="php-comment">    */</span>
 </span><span id="44" class="l"><a href="#44"> 44: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> add_condition( <span class="php-var">$field</span>, <span class="php-var">$value</span>, <span class="php-var">$operator</span> = <span class="php-quote">'='</span> ) {
 </span><span id="45" class="l"><a href="#45"> 45: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$value</span> ) ) {
-</span><span id="46" class="l"><a href="#46"> 46: </a>            <span class="php-var">$value</span> = <span class="php-quote">&quot;('&quot;</span> . <span class="php-keyword2">implode</span>(<span class="php-quote">&quot;','&quot;</span>, <span class="php-var">$value</span>) . <span class="php-quote">&quot;')&quot;</span>;
+</span><span id="46" class="l"><a href="#46"> 46: </a>            <span class="php-var">$value</span> = <span class="php-quote">&quot;('&quot;</span> . <span class="php-keyword2">implode</span>( <span class="php-quote">&quot;','&quot;</span>, <span class="php-var">$value</span> ) . <span class="php-quote">&quot;')&quot;</span>;
 </span><span id="47" class="l"><a href="#47"> 47: </a>
 </span><span id="48" class="l"><a href="#48"> 48: </a>            <span class="php-comment">// Set operator to IN if wasn't already changed from the default.</span>
-</span><span id="49" class="l"><a href="#49"> 49: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$operator</span> == <span class="php-quote">'='</span> ) {
+</span><span id="49" class="l"><a href="#49"> 49: </a>            <span class="php-keyword1">if</span> ( <span class="php-quote">'='</span> === <span class="php-var">$operator</span> ) {
 </span><span id="50" class="l"><a href="#50"> 50: </a>                <span class="php-var">$operator</span> = <span class="php-quote">'IN'</span>;
 </span><span id="51" class="l"><a href="#51"> 51: </a>            }
 </span><span id="52" class="l"><a href="#52"> 52: </a>        }
@@ -139,7 +139,7 @@
 </span><span id="54" class="l"><a href="#54"> 54: </a>            <span class="php-quote">'field'</span> =&gt; <span class="php-var">$field</span>,
 </span><span id="55" class="l"><a href="#55"> 55: </a>            <span class="php-quote">'operator'</span> =&gt; <span class="php-var">$operator</span>,
 </span><span id="56" class="l"><a href="#56"> 56: </a>            <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span>,
-</span><span id="57" class="l"><a href="#57"> 57: </a>        );  
+</span><span id="57" class="l"><a href="#57"> 57: </a>        );
 </span><span id="58" class="l"><a href="#58"> 58: </a>    }
 </span><span id="59" class="l"><a href="#59"> 59: </a>
 </span><span id="60" class="l"><a href="#60"> 60: </a>    <span class="php-comment">/**
@@ -156,7 +156,7 @@
 </span><span id="71" class="l"><a href="#71"> 71: </a>        <span class="php-var">$query</span> .= <span class="php-keyword2">implode</span>( <span class="php-quote">', '</span>, <span class="php-var">$this</span>-&gt;fields );
 </span><span id="72" class="l"><a href="#72"> 72: </a>        <span class="php-var">$query</span> .= <span class="php-quote">' FROM '</span> . <span class="php-var">$this</span>-&gt;object_type;
 </span><span id="73" class="l"><a href="#73"> 73: </a>
-</span><span id="74" class="l"><a href="#74"> 74: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">count</span>( <span class="php-var">$this</span>-&gt;conditions ) &gt; <span class="php-num">0</span>) {
+</span><span id="74" class="l"><a href="#74"> 74: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">count</span>( <span class="php-var">$this</span>-&gt;conditions ) &gt; <span class="php-num">0</span> ) {
 </span><span id="75" class="l"><a href="#75"> 75: </a>            <span class="php-var">$where</span> = <span class="php-keyword1">array</span>();
 </span><span id="76" class="l"><a href="#76"> 76: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;conditions <span class="php-keyword1">as</span> <span class="php-var">$condition</span> ) {
 </span><span id="77" class="l"><a href="#77"> 77: </a>                <span class="php-var">$where</span>[] = <span class="php-keyword2">implode</span>( <span class="php-quote">' '</span>, <span class="php-var">$condition</span> );
@@ -184,7 +184,8 @@
 </span><span id="99" class="l"><a href="#99"> 99: </a>        <span class="php-keyword1">return</span> <span class="php-var">$query</span>;
 </span><span id="100" class="l"><a href="#100">100: </a>    }
 </span><span id="101" class="l"><a href="#101">101: </a>
-</span><span id="102" class="l"><a href="#102">102: </a>}</span></code></pre>
+</span><span id="102" class="l"><a href="#102">102: </a>}
+</span><span id="103" class="l"><a href="#103">103: </a></span></code></pre>
 
 	<div id="footer">
 		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>
