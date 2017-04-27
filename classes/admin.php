@@ -186,7 +186,7 @@ class Wordpress_Salesforce_Admin {
 							echo "<script>window.location = '$callback_url';</script>";
 						} elseif ( $this->salesforce['is_authorized'] === true ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/authorized.php' );
-							$this->demo( $this->salesforce['sfapi'] );
+							$this->status( $this->salesforce['sfapi'] );
 						} elseif ( is_object ( $this->salesforce['sfapi'] ) === true && isset( $consumer_key ) && isset( $consumer_secret ) ) {
 							echo '<p><a class="button button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html__( 'Connect to Salesforce', $this->text_domain ) . '</a></p>';
 						} else {
@@ -1260,11 +1260,12 @@ class Wordpress_Salesforce_Admin {
 	}
 
 	/**
-	* Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it
+	* Show the status of our connection with the Salesforce API on the authenticate tab after WordPress has authenticated with it. 
+	* Makes some small API calls to show data, cache status, whether it is an authenticated request.
 	*
 	* @param object $sfapi
 	*/
-	private function demo( $sfapi ) {
+	private function status( $sfapi ) {
 
 		$versions = $sfapi->get_api_versions();
 
@@ -1282,7 +1283,7 @@ class Wordpress_Salesforce_Admin {
 		$contacts_andorbut = true === $contacts['from_cache'] ? 'and' : 'but';
 		$contacts_is_redo = true === $contacts['is_redo'] ? '' : 'not ';
 
-		require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/demo.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/status.php' );
 
 	}
 
