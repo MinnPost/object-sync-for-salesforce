@@ -82,7 +82,7 @@ class Salesforce_Pull {
 	public function salesforce_pull_webhook() {
 
 		if ( $this->salesforce_pull() === true ) {
-			$code = '200';			
+			$code = '200';
 			// check to see if anything is in the queue and handle it if it is
 			$this->schedule->maybe_handle();
 
@@ -104,7 +104,7 @@ class Salesforce_Pull {
 	public function salesforce_pull() {
 		$sfapi = $this->salesforce['sfapi'];
 
-		if ( $this->salesforce['is_authorized'] === true && $this->check_throttle() === true ) {
+		if ( true === $this->salesforce['is_authorized'] && true === $this->check_throttle() ) {
 
 			$this->get_updated_records();
 			$this->get_deleted_records();
@@ -120,9 +120,9 @@ class Salesforce_Pull {
 	}
 
 	/**
-    * Load schedule
-    * This loads the schedule class
-    */ 
+	* Load schedule
+	* This loads the schedule class
+	*/
 	private function schedule() {
 		if ( ! class_exists( 'Wordpress_Salesforce_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
 			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
@@ -169,7 +169,7 @@ class Salesforce_Pull {
 			$mapped_record_types = array();
 
 			// Iterate over each field mapping to determine our query parameters.
-			foreach ( $this->mappings->get_fieldmaps( null, array('salesforce_object' => $type ) ) as $mapping ) {
+			foreach ( $this->mappings->get_fieldmaps( null, array( 'salesforce_object' => $type ) ) as $mapping ) {
 
 	  			foreach ( $mapping['fields'] as $field ) {
 	  				// skip fields that are only wordpress to salesforce
@@ -180,17 +180,17 @@ class Salesforce_Pull {
 					// Some field map types (Relation) store a collection of SF objects.
 					if ( is_array( $field['salesforce_field'] ) && ! isset( $field['salesforce_field']['label'] ) ) {
 						foreach ( $field['salesforce_field'] as $sf_field ) {
-							$mapped_fields[$sf_field['label']] = $sf_field['label'];
+							$mapped_fields[ $sf_field['label'] ] = $sf_field['label'];
 						}
 					} else {
-						$mapped_fields[$field['salesforce_field']['label']] = $field['salesforce_field']['label'];
+						$mapped_fields[ $field['salesforce_field']['label'] ] = $field['salesforce_field']['label'];
 					}
 				}
 
 				if ( ! empty( $mapped_fields ) && $salesforce_mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type ) {
 					foreach ( $salesforce_mapping['salesforce_record_types_allowed'] as $record_type ) {
 						if ( $record_type ) {
-							$mapped_record_types[$record_type] = $record_type;
+							$mapped_record_types[ $record_type ] = $record_type;
 						}
 					}
 					// Add the RecordTypeId field so we can use it when processing the queued SF objects.
@@ -209,8 +209,8 @@ class Salesforce_Pull {
 			// Convert field mappings to SOQL.
 			// this is why we don't use the get_updated method on the salesforce class
 			$soql->fields = array_merge( $mapped_fields, array(
-			  'Id' => 'Id',
-			  $salesforce_mapping['pull_trigger_field'] => $salesforce_mapping['pull_trigger_field']
+				'Id' => 'Id',
+				$salesforce_mapping['pull_trigger_field'] => $salesforce_mapping['pull_trigger_field'],
 			) );
 
 			if ( in_array( $this->mappings->sync_sf_create, $salesforce_mapping['sync_triggers'] ) ) {
@@ -252,7 +252,7 @@ class Salesforce_Pull {
 						'object_type' => $type,
 						'object' => $result,
 						'mapping' => $mapping,
-						'sf_sync_trigger' => $trigger // use the appropriate trigger based on when this was created
+						'sf_sync_trigger' => $trigger, // use the appropriate trigger based on when this was created
 					);
 
 					$this->schedule->push_to_queue( $data );
@@ -274,7 +274,7 @@ class Salesforce_Pull {
 								'object_type' => $type,
 								'object' => $result,
 								'mapping' => $mapping,
-								'sf_sync_trigger' => $this->mappings->sync_sf_update // sf update trigger
+								'sf_sync_trigger' => $this->mappings->sync_sf_update, // sf update trigger
 							);
 
 							$this->schedule->push_to_queue( $data );
@@ -304,7 +304,7 @@ class Salesforce_Pull {
 					$response['message'],
 					$sf_mapping['sync_triggers'],
 					'',
-					$status
+					$status,
 				);
 
 			}
@@ -326,7 +326,7 @@ class Salesforce_Pull {
 			$type = $salesforce_mapping['salesforce_object'];
 
 			// Iterate over each field mapping to determine our parameters.
-			foreach ( $this->mappings->get_fieldmaps( null, array('salesforce_object' => $type ) ) as $mapping ) {
+			foreach ( $this->mappings->get_fieldmaps( null, array( 'salesforce_object' => $type ) ) as $mapping ) {
 
 				$last_delete_sync = get_option( 'salesforce_api_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 				$now = current_time( 'timestamp', true );
@@ -352,7 +352,7 @@ class Salesforce_Pull {
 
 				foreach ( $deleted['data']['deletedRecords'] as $result ) {
 					// salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?
-					if ( ! isset( $result['Id'] ) && isset( $result['id']) ) {
+					if ( ! isset( $result['Id'] ) && isset( $result['id'] ) ) {
 						$result['Id'] = $result['id'];
 					}
 					$data = array(
@@ -406,7 +406,7 @@ class Salesforce_Pull {
 	public function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
 		$mapping_conditions = array(
-			'salesforce_object' => $object_type
+			'salesforce_object' => $object_type,
 		);
 
 		if ( isset( $object['RecordTypeId'] ) && $object['RecordTypeId'] !== $this->mappings->salesforce_default_record_type ) {
@@ -441,7 +441,7 @@ class Salesforce_Pull {
 					__( ucfirst( $status ) . ': Salesforce Pull: unable to process queue item because it has no Salesforce Id.', $this->text_domain ),
 					print_r( $object, true ),
 					$sf_sync_trigger,
-					$status
+					$status,
 				);
 				return;
 			}
@@ -460,7 +460,7 @@ class Salesforce_Pull {
 			}
 			*/
 
-			if ( $pull_allowed === false ) {
+			if ( false === $pull_allowed ) {
 				continue;
 			}
 
@@ -495,7 +495,7 @@ class Salesforce_Pull {
 
 			// drupal only does a salesforce_pull flag, but we might as well do push and pull because wordpress
 			$salesforce_pushing = (int) get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
-			if ( $salesforce_pushing === 1 ) {
+			if ( 1 === $salesforce_pushing ) {
 				$transients_to_delete[] = $mapping_object_id_transient;
 				continue;
 			}
@@ -503,7 +503,7 @@ class Salesforce_Pull {
 			// deleting mapped objects
 			if ( $sf_sync_trigger == $this->mappings->sync_sf_delete ) {
 				if ( isset( $mapping_object['id'] ) ) {
-					
+
 					set_transient( 'salesforce_pulling_' . $mapping_object['id'], 1, $seconds );
 					set_transient( 'salesforce_pulling_object_id', $mapping_object['id'] );
 
@@ -992,7 +992,7 @@ class Salesforce_Pull {
 		if ( in_array( $pushing_id, $transients_to_delete ) ) {
 			delete_transient( 'salesforce_pushing_object_id' );
 		}
-	
+
 		if ( ! empty( $exception ) ) {
 			throw $exception;
 		}

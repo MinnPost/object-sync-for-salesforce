@@ -37,7 +37,7 @@ class Wordpress_Salesforce_Deactivate {
     * Drop database tables for Salesforce
     * This removes the tables for fieldmaps (between types of objects) and object maps (between indidual instances of objects)
     *
-    */ 
+    */
     public function wordpress_salesforce_drop_tables() {
         $field_map_table = $this->wpdb->prefix . 'salesforce_field_map';
         $object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
@@ -50,7 +50,7 @@ class Wordpress_Salesforce_Deactivate {
     * Clear the scheduled tasks
     * This removes all the scheduled tasks that are included in the plugin's $schedulable_classes array
     *
-    */ 
+    */
     public function clear_schedule() {
         foreach ( $this->schedulable_classes as $key => $value ) {
             wp_clear_scheduled_hook( $key );
@@ -61,7 +61,7 @@ class Wordpress_Salesforce_Deactivate {
     * Delete the log post type
     * This removes the log post type
     *
-    */ 
+    */
     public function delete_log_post_type() {
         unregister_post_type( 'wp_log' );
     }
@@ -72,7 +72,7 @@ class Wordpress_Salesforce_Deactivate {
     *
     * It also allows other plugins to remove the capability from other roles
     *
-    */ 
+    */
     public function remove_roles_capabilities() {
 
         // by default, only administrators can configure the plugin
@@ -89,7 +89,7 @@ class Wordpress_Salesforce_Deactivate {
                 $role->remove_cap( 'configure_salesforce' );
             }
         }
-        
+
     }
 
 }

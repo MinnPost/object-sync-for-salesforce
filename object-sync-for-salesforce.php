@@ -103,7 +103,7 @@ class Object_Sync_Salesforce {
 	*
 	*/
 	static public function get_instance() {
-		if ( self::$instance === null ) {
+		if ( null === self::$instance ) {
 			self::$instance = new Object_Sync_Salesforce();
 		}
 		return self::$instance;
@@ -124,44 +124,44 @@ class Object_Sync_Salesforce {
 		$this->text_domain = 'object-sync-for-salesforce';
 
 		$this->schedulable_classes = array(
-            'salesforce_push' => array(
-                'label' => 'Push to Salesforce',
-                'class' => 'Salesforce_Push',
-                'callback' => 'salesforce_push_sync_rest',
-            ),
-            'salesforce_pull' => array(
-                'label' => 'Pull from Salesforce',
-                'class' => 'Salesforce_Pull',
-                'initializer' => 'salesforce_pull',
-                'callback' => 'salesforce_pull_process_records'
-            ),
-            'salesforce' => array(
-                'label' => 'Salesforce Authorization',
-                'class' => 'Salesforce'
-            )
-        );
+			'salesforce_push' => array(
+				'label' => 'Push to Salesforce',
+				'class' => 'Salesforce_Push',
+				'callback' => 'salesforce_push_sync_rest',
+			),
+			'salesforce_pull' => array(
+				'label' => 'Pull from Salesforce',
+				'class' => 'Salesforce_Pull',
+				'initializer' => 'salesforce_pull',
+				'callback' => 'salesforce_pull_process_records',
+			),
+			'salesforce' => array(
+				'label' => 'Salesforce Authorization',
+				'class' => 'Salesforce',
+			),
+		);
 
-        // users can modify the list of schedulable classes
-        $this->schedulable_classes = apply_filters( 'object_sync_for_salesforce_modify_schedulable_classes', $this->schedulable_classes );
+		// users can modify the list of schedulable classes
+		$this->schedulable_classes = apply_filters( 'object_sync_for_salesforce_modify_schedulable_classes', $this->schedulable_classes );
 
-        // example to modify the array of classes by adding one and removing one
+		// example to modify the array of classes by adding one and removing one
 		/*
 		add_filter( 'object_sync_for_salesforce_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
 		function modify_schedulable_classes( $schedulable_classes ) {
 			$schedulable_classes = array(
-	            array(
-	                'name' => 'salesforce_push',
-	                'label' => 'Push to Salesforce'
-	            ),
-	            array(
-	                'name' => 'salesforce',
-	                'label' => 'Salesforce Authorization'
-	            ),
-	            array(
-	                'name' => 'wordpress',
-	                'label' => 'WordPress'
-	            )
-	        );
+				array(
+					'name' => 'salesforce_push',
+					'label' => 'Push to Salesforce'
+				),
+				array(
+					'name' => 'salesforce',
+					'label' => 'Salesforce Authorization'
+				),
+				array(
+					'name' => 'wordpress',
+					'label' => 'WordPress'
+				)
+			);
 			return $schedulable_classes;
 		}
 		*/
@@ -262,7 +262,7 @@ class Object_Sync_Salesforce {
 		$schedulable_classes = $this->schedulable_classes;
 		$is_authorized = false;
 		$sfapi = '';
-		if ($consumer_key && $consumer_secret) {
+		if ( $consumer_key && $consumer_secret ) {
 			$sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging, $schedulable_classes );
 			if ( $sfapi->is_authorized() === true ) {
 				$is_authorized = true;
@@ -384,8 +384,8 @@ class Object_Sync_Salesforce {
 	*	These are the links that go with this plugin's entry
 	*/
 	public function plugin_action_links( $links, $file ) {
-		if ( $file == plugin_basename( __FILE__ ) ) {
-			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=object-sync-salesforce-admin">' . __('Settings', $this->text_domain ) . '</a>';
+		if ( plugin_basename( __FILE__ ) === $file ) {
+			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=object-sync-salesforce-admin">' . __( 'Settings', $this->text_domain ) . '</a>';
 			// make the 'Settings' link appear first
 			array_unshift( $links, $settings );
 		}
@@ -422,13 +422,13 @@ class Object_Sync_Salesforce {
 	*/
 	private function get_login_credentials() {
 
-		$consumer_key = defined('SALESFORCE_CONSUMER_KEY') ? SALESFORCE_CONSUMER_KEY : get_option( 'object_sync_for_salesforce_consumer_key', '' );
-		$consumer_secret = defined('SALESFORCE_CONSUMER_SECRET') ? SALESFORCE_CONSUMER_SECRET : get_option( 'object_sync_for_salesforce_consumer_secret', '' );
-		$callback_url = defined('SALESFORCE_CALLBACK_URL') ? SALESFORCE_CALLBACK_URL : get_option( 'object_sync_for_salesforce_callback_url', '' );
-		$login_base_url = defined('SALESFORCE_LOGIN_BASE_URL') ? SALESFORCE_LOGIN_BASE_URL : get_option( 'object_sync_for_salesforce_login_base_url', '' );
-		$authorize_url_path = defined('SALESFORCE_AUTHORIZE_URL_PATH') ? SALESFORCE_AUTHORIZE_URL_PATH : get_option( 'object_sync_for_salesforce_authorize_url_path', '' );
-		$token_url_path = defined('SALESFORCE_TOKEN_URL_PATH') ? SALESFORCE_TOKEN_URL_PATH : get_option( 'object_sync_for_salesforce_token_url_path', '' );
-		$api_version = defined('SALESFORCE_API_VERSION') ? SALESFORCE_API_VERSION : get_option( 'object_sync_for_salesforce_api_version', '' );
+		$consumer_key = defined( 'SALESFORCE_CONSUMER_KEY' ) ? SALESFORCE_CONSUMER_KEY : get_option( 'object_sync_for_salesforce_consumer_key', '' );
+		$consumer_secret = defined( 'SALESFORCE_CONSUMER_SECRET' ) ? SALESFORCE_CONSUMER_SECRET : get_option( 'object_sync_for_salesforce_consumer_secret', '' );
+		$callback_url = defined( 'SALESFORCE_CALLBACK_URL' ) ? SALESFORCE_CALLBACK_URL : get_option( 'object_sync_for_salesforce_callback_url', '' );
+		$login_base_url = defined( 'SALESFORCE_LOGIN_BASE_URL' ) ? SALESFORCE_LOGIN_BASE_URL : get_option( 'object_sync_for_salesforce_login_base_url', '' );
+		$authorize_url_path = defined( 'SALESFORCE_AUTHORIZE_URL_PATH' ) ? SALESFORCE_AUTHORIZE_URL_PATH : get_option( 'object_sync_for_salesforce_authorize_url_path', '' );
+		$token_url_path = defined( 'SALESFORCE_TOKEN_URL_PATH' ) ? SALESFORCE_TOKEN_URL_PATH : get_option( 'object_sync_for_salesforce_token_url_path', '' );
+		$api_version = defined( 'SALESFORCE_API_VERSION' ) ? SALESFORCE_API_VERSION : get_option( 'object_sync_for_salesforce_api_version', '' );
 
 		$login_credentials = array(
 			'consumer_key' => $consumer_key,
@@ -437,14 +437,13 @@ class Object_Sync_Salesforce {
 			'login_url' => $login_base_url,
 			'authorize_path' => $authorize_url_path,
 			'token_path' => $token_url_path,
-			'rest_api_version' => $api_version
+			'rest_api_version' => $api_version,
 		);
 
 		return $login_credentials;
 
 	}
 
-/// end class
-}
+} // end class
 // Instantiate our class
-$Object_Sync_Salesforce = Object_Sync_Salesforce::get_instance();
+$object_sync_salesforce = Object_Sync_Salesforce::get_instance();
