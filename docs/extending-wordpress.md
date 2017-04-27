@@ -207,7 +207,7 @@ function set_attachment( $params ) {
     // set up the parameters available for an attachment
     // the parameters will be stored based on the methods they use
     // ex:
-    $params[$key] = array(
+    $params[ $key ] = array(
         'value' => $value,
         'method_modify' => $method_modify,
         'method_create' => $method_create,

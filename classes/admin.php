@@ -137,8 +137,8 @@ class Wordpress_Salesforce_Admin {
 	*
 	*/
 	public function create_admin_menu() {
-		$title = __('Salesforce', $this->text_domain);
-		add_options_page( $title, $title, 'configure_salesforce', 'object-sync-salesforce-admin', array( $this, 'show_admin_page', ) );
+		$title = __( 'Salesforce', $this->text_domain );
+		add_options_page( $title, $title, 'configure_salesforce', 'object-sync-salesforce-admin', array( $this, 'show_admin_page' ) );
 	}
 
 	/**
@@ -281,10 +281,10 @@ class Wordpress_Salesforce_Admin {
 
 			}
 			catch( SalesforceApiException $Ex ) {
-				echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
+				echo 'Error ' . $Ex->getCode() . ', ' . $Ex->getMessage();
 			}
 			catch( Exception $Ex ) {
-				echo 'Error '.$Ex->getCode().', '.$Ex->getMessage();
+				echo 'Error ' . $Ex->getCode() . ', ' . $Ex->getMessage();
 			}
 		echo '</div>';
 	}
@@ -307,7 +307,7 @@ class Wordpress_Salesforce_Admin {
 			'text' => $input_callback_default,
 			'checkboxes' => $input_checkboxes_default,
 			'select' => $input_select_default,
-			'link' => $link_default
+			'link' => $link_default,
 		);
 
 		$this->fields_settings( 'settings', 'settings', $all_field_callbacks );
@@ -581,7 +581,7 @@ class Wordpress_Salesforce_Admin {
 						'label' => 'Clear this queue',
 						'desc' => '',
 						'url' => '?page=object-sync-salesforce-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key,
-						'link_class' => 'button button-secondary'
+						'link_class' => 'button button-secondary',
 					),
 				),
 			);
@@ -811,7 +811,7 @@ class Wordpress_Salesforce_Admin {
 				'condition' => isset( $_GET['transient'] ),
 				'message' => 'Errors kept this fieldmap from being saved.',
 				'type' => 'error',
-				'dismissible' => true
+				'dismissible' => true,
 			),
 		);
 
@@ -1074,7 +1074,7 @@ class Wordpress_Salesforce_Admin {
 			// send the row to the fieldmap class
 			// if it is add or clone, use the create method
 			$method = esc_attr( $_POST['method'] );
-			$salesforce_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $_POST['salesforce_object'] ) );
+			$salesforce_fields = $this->get_salesforce_object_fields( array( 'salesforce_object' => $_POST['salesforce_object'] ) );
 			$wordpress_fields = $this->get_wordpress_object_fields( $_POST['wordpress_object'] );
 			if ( 'add' === $method || 'clone' === $method ) {
 				$result = $this->mappings->create_fieldmap( $_POST, $wordpress_fields, $salesforce_fields );
@@ -1082,7 +1082,7 @@ class Wordpress_Salesforce_Admin {
 				$id = esc_attr( $_POST['id'] );
 				$result = $this->mappings->update_fieldmap( $_POST, $wordpress_fields, $salesforce_fields, $id );
 			}
-			if ( $result === false ) { // if the database didn't save, it's still an error
+			if ( false === $result ) { // if the database didn't save, it's still an error
 				set_transient( $cachekey, $_POST, 0 );
 				if ( '' !== $cachekey ) {
 					$url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
@@ -1095,7 +1095,7 @@ class Wordpress_Salesforce_Admin {
 				$url = esc_url_raw( $_POST['redirect_url_success'] );
 			}
 		}
-		wp_redirect( $url );
+		wp_safe_redirect( $url );
 		exit();
 	}
 
@@ -1109,12 +1109,12 @@ class Wordpress_Salesforce_Admin {
 	public function delete_fieldmap() {
 		if ( $_POST['id'] ) {
 			$result = $this->mappings->delete_fieldmap( $_POST['id'] );
-			if ( $result === true ) {
+			if ( true === $result ) {
 				$url = esc_url_raw( $_POST['redirect_url_success'] );
 			} else {
 				$url = esc_url_raw( $_POST['redirect_url_error'] ) . '&id=' . $_POST['id'];
 			}
-			wp_redirect( $url );
+			wp_safe_redirect( $url );
 			exit();
 		}
 	}
@@ -1148,9 +1148,9 @@ class Wordpress_Salesforce_Admin {
 			if ( '' === $value && isset( $args['default'] ) && '' !== $args['default'] ) {
 				$value = $args['default'];
 			}
-			echo '<input type="' . $type. '" value="' . $value . '" name="' . $name . '" id="' . $id . '"
+			echo '<input type="' . $type . '" value="' . $value . '" name="' . $name . '" id="' . $id . '"
 			class="' . $class . ' code" ' . $checked . ' />';
-			if ( '' != $desc ) {
+			if ( '' !== $desc ) {
 				echo '<p class="description">' . $desc . '</p>';
 			}
 		} else {
@@ -1181,7 +1181,7 @@ class Wordpress_Salesforce_Admin {
 				}
 			}
 			echo '<div class="checkbox"><label><input type="' . $type . '" value="' . $key . '" name="' . $name . '[]" id="' . $id . '" ' . $checked . ' />' . $text . '</label></div>';
-			if ( '' != $desc ) {
+			if ( '' !== $desc ) {
 				echo '<p class="description">' . $desc . '</p>';
 			}
 		}
@@ -1197,7 +1197,7 @@ class Wordpress_Salesforce_Admin {
 		$id     = $args['label_for'];
 		$name   = $args['name'];
 		$desc   = $args['desc'];
-		if ( ! isset( $args['constant'] ) || !defined( $args['constant'] ) ) {
+		if ( ! isset( $args['constant'] ) || ! defined( $args['constant'] ) ) {
 			$current_value = get_option( $name );
 			echo '<div><select id="' . $id . '" name="' . $name . '"><option value="">- Select one -</option>';
 			foreach ( $args['items'] as $key => $value ) {
@@ -1210,7 +1210,7 @@ class Wordpress_Salesforce_Admin {
 				echo '<option value="' . $value . '"' . $selected . '>' . $text . '</option>';
 			}
 			echo '</select>';
-			if ( '' != $desc) {
+			if ( '' !== $desc) {
 				echo '<p class="description">' . $desc . '</p>';
 			}
 			echo '</div>';
@@ -1253,7 +1253,7 @@ class Wordpress_Salesforce_Admin {
 
 		echo '<p><a' . $class . ' href="' . $url . '">' . $label . '</a></p>';
 
-		if ( '' != $desc ) {
+		if ( '' !== $desc ) {
 			echo '<p class="description">' . $desc . '</p>';
 		}
 
@@ -1270,18 +1270,18 @@ class Wordpress_Salesforce_Admin {
 		$versions = $sfapi->get_api_versions();
 
 		// format this array into html so users can see the versions
-		$versions_is_cached = $versions['cached'] === true ? '' : 'not ';
-		$versions_from_cache = $versions['from_cache'] === true ? 'were' : 'were not';
-		$versions_is_redo = $versions['is_redo'] === true ? '' : 'not ';
-		$versions_andorbut = $versions['from_cache'] === true ? 'and' : 'but';
+		$versions_is_cached = true === $versions['cached'] ? '' : 'not ';
+		$versions_from_cache = true === $versions['from_cache'] ? 'were' : 'were not';
+		$versions_is_redo = true === $versions['is_redo'] ? '' : 'not ';
+		$versions_andorbut = true === $versions['from_cache'] ? 'and' : 'but';
 
 		$contacts = $sfapi->query( 'SELECT Name, Id from Contact LIMIT 25' );
 
 		// format this array into html so users can see the contacts
-		$contacts_is_cached = $contacts['cached'] === true ? '' : 'not ';
-		$contacts_from_cache = $contacts['from_cache'] === true ? 'were' : 'were not';
-		$contacts_andorbut = $contacts['from_cache'] === true ? 'and' : 'but';
-		$contacts_is_redo = $contacts['is_redo'] === true ? '' : 'not ';
+		$contacts_is_cached = true === $contacts['cached'] ? '' : 'not ';
+		$contacts_from_cache = true === $contacts['from_cache'] ? 'were' : 'were not';
+		$contacts_andorbut = true === $contacts['from_cache'] ? 'and' : 'but';
+		$contacts_is_redo = true === $contacts['is_redo'] ? '' : 'not ';
 
 		require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/status.php' );
 
@@ -1353,11 +1353,11 @@ class Wordpress_Salesforce_Admin {
 	*
 	*/
 	public function save_salesforce_user_fields( $user_id ) {
-		if ( isset( $_POST['salesforce_update_mapped_user'] ) && urlencode( $_POST['salesforce_update_mapped_user'] === '1' ) ) {
+		if ( isset( $_POST['salesforce_update_mapped_user'] ) && urlencode( '1' === $_POST['salesforce_update_mapped_user'] ) ) {
 			$mapping_object = $this->mappings->get_object_maps( array( 'wordpress_id' => $user_id, 'wordpress_object' => 'user' ) );
 			$mapping_object['salesforce_id'] = $_POST['salesforce_id'];
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
-		} elseif ( isset( $_POST['salesforce_create_mapped_user'] ) && urlencode( $_POST['salesforce_create_mapped_user'] === '1' ) ) {
+		} elseif ( isset( $_POST['salesforce_create_mapped_user'] ) && urlencode( '1' === $_POST['salesforce_create_mapped_user'] ) ) {
 			// if a Salesforce ID was entered
 			if ( isset( $_POST['salesforce_id'] ) && ! empty( $_POST['salesforce_id'] ) ) {
 				$mapping_object = $this->create_object_map( $user_id, 'user', $_POST['salesforce_id'] );
@@ -1413,13 +1413,13 @@ class Wordpress_Salesforce_Admin {
 
 		$output = '';
 
-		if ( isset( $input ) && !is_array( $input ) ) {
+		if ( isset( $input ) && ! is_array( $input ) ) {
 			$output = strip_tags( stripslashes( $input ) );
 		}
 
 		if ( isset( $input ) && is_array( $input ) ) {
 
-			foreach( $input as $key => $value ) {
+			foreach ( $input as $key => $value ) {
 				if ( isset( $input[ $key ] ) ) {
 					$output[ $key ] = strip_tags( stripslashes( $input[ $key ] ) );
 				}
@@ -1492,7 +1492,7 @@ class Wordpress_Salesforce_Admin {
 				'last_sync' => current_time( 'mysql' ),
 				'last_sync_action' => $action,
 				'last_sync_status' => $this->mappings->status_success,
-				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain )
+				'last_sync_message' => __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain ),
 			)
 		);
 

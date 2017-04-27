@@ -551,12 +551,12 @@ class Salesforce_Push {
 						$object["$object_id"],
 						$status
 					);
-				}				
+				}
 
 				// delete the map row from wordpress after the salesforce row has been deleted
 				// we delete the map row even if the salesforce delete failed, because the wp object is gone
 				$this->mappings->delete_object_map( $mapping_object['id'] );
-				
+
 		  	} // there is no map row
 
 		  	return;
@@ -631,7 +631,7 @@ class Salesforce_Push {
 				do_action( 'object_sync_for_salesforce_pre_push', $salesforce_id, $mapping, $object, $object_id, $params );
 
 				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || $salesforce_id !== null ) {
-					
+
 					// if either prematch criteria exists, make the values queryable
 
 					if ( isset( $prematch_field_wordpress ) ) {
@@ -930,7 +930,7 @@ class Salesforce_Push {
 	 */
 	function salesforce_push_process_soap_results($op, $results, $synced_entities) {
 		foreach ($results as $key => $result) {
-			$synced_entity = $synced_entities[$key];
+			$synced_entity = $synced_entities[ $key ];
 			$mapping_object = empty( $synced_entity['mapping_object'] ) ? false : $synced_entity['mapping_object'];
 			if ( $result->success ) {
 				if ( mb_strtolower( $op ) == 'delete' && $mapping_object ) {
@@ -988,5 +988,5 @@ class Salesforce_Push {
 			}
 		}
 	}
-	
+
 }
