@@ -304,7 +304,7 @@ class Salesforce_Pull {
 					$response['message'],
 					$sf_mapping['sync_triggers'],
 					'',
-					$status,
+					$status
 				);
 
 			}
@@ -441,7 +441,7 @@ class Salesforce_Pull {
 					__( ucfirst( $status ) . ': Salesforce Pull: unable to process queue item because it has no Salesforce Id.', $this->text_domain ),
 					print_r( $object, true ),
 					$sf_sync_trigger,
-					$status,
+					$status
 				);
 				return;
 			}

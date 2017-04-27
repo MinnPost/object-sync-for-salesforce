@@ -331,7 +331,7 @@ class Salesforce {
 		if ( 'POST' === $method ) {
 			curl_setopt( $curl, CURLOPT_POST, true );
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
-		} elseif ( 'PATCH === '$method || 'DELETE' === $method ) {
+		} elseif ( 'PATCH' === $method || 'DELETE' === $method ) {
 			curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, $method );
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
 		}

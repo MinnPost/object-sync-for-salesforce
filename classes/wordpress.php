@@ -1241,7 +1241,7 @@ class Wordpress {
 			}
 		}
 
-		if ( '' !=== $post_type ) {
+		if ( '' !== $post_type ) {
 			$content['post_type'] = $post_type;
 		}
 
