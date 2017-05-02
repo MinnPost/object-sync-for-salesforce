@@ -1,24 +1,17 @@
-<form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>" class="fieldmap">
-	<input type="hidden" name="redirect_url_error" value="<?php echo $error_url; ?>" />
-	<input type="hidden" name="redirect_url_success" value="<?php echo $success_url; ?>" />
-	<?php
-	if ( isset( $transient ) ) {
-	?>
-	<input type="hidden" name="transient" value="<?php echo $transient; ?>" />
-	<?php
-	}
-	?>
+<form method="post" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>" class="fieldmap">
+	<input type="hidden" name="redirect_url_error" value="<?php echo esc_attr( $error_url ); ?>" />
+	<input type="hidden" name="redirect_url_success" value="<?php echo esc_attr( $success_url ); ?>" />
+	<?php if ( isset( $transient ) ) : ?>
+		<input type="hidden" name="transient" value="<?php echo esc_attr( $transient ); ?>" />
+	<?php endif; ?>
 	<input type="hidden" name="action" value="post_fieldmap" >
-	<input type="hidden" name="method" value="<?php echo $method; ?>" />
-	<?php if ( $method === 'edit' ) {
-	?>
-	<input type="hidden" name="id" value="<?php echo $map['id']; ?>" />
-	<?php
-	}
-	?>
+	<input type="hidden" name="method" value="<?php echo esc_attr( $method ); ?>" />
+	<?php if ( 'edit' === $method ) : ?>
+		<input type="hidden" name="id" value="<?php echo esc_attr( $map['id'] ); ?>" />
+	<?php endif; ?>
 	<div class="fieldmap_label">
 		<label for="label">Label: </label>
-		<input type="text" id="label" name="label" required value="<?php echo isset( $label ) ? $label : ''; ?>" />
+		<input type="text" id="label" name="label" required value="<?php echo isset( $label ) ? esc_attr( $label ) : ''; ?>" />
 	</div>
 	<fieldset class="wordpress_side">
 		<div class="wordpress_object">
@@ -33,7 +26,7 @@
 					} else {
 						$selected = '';
 					}
-					echo '<option value="' . $object . '"' . $selected . '>' . $object . '</option>';
+					echo '<option value="' . esc_attr( $object ) . '"' . esc_html( $selected ) . '>' . esc_html( $object ) . '</option>';
 				}
 				?>
 			</select>
@@ -62,7 +55,7 @@
 					} else {
 						$selected = '';
 					}
-					echo '<option value="' . $object['name'] . '"' . $selected . '>' . $object['label'] . '</option>';
+					echo '<option value="' . esc_attr( $object['name'] ) . '"' . esc_html( $selected ) . '>' . esc_html( $object['label'] ) . '</option>';
 				}
 				?>
 			</select>
@@ -80,7 +73,7 @@
 						} else {
 							$checked = '';
 						}
-						echo '<label><input type="checkbox" class="form-checkbox" value="' . $key . '" name="salesforce_record_types_allowed[' . $key . ']" id="salesforce_record_types_allowed-' . $key . '" ' . $checked . '> ' . $value . '</label>';
+						echo '<label><input type="checkbox" class="form-checkbox" value="' . esc_attr( $key ) . '" name="salesforce_record_types_allowed[' . esc_attr( $key ) . ']" id="salesforce_record_types_allowed-' . esc_attr( $key ) . '" ' . esc_html( $checked ) . '> ' . esc_html( $value ) . '</label>';
 					}
 					echo '</div>';
 				}
@@ -101,7 +94,7 @@
 							$selected = '';
 						}
 						if ( ! isset( $salesforce_record_types_allowed ) || in_array( $key, $salesforce_record_types_allowed ) ) {
-							echo '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
+							echo '<option value="' . esc_attr( $key ) . '"' . esc_html( $selected ) . '>' . esc_html( $value ) . '</option>';
 						}
 					}
 					echo '</select>';
@@ -113,15 +106,15 @@
 			<?php
 			if ( isset( $pull_trigger_field ) ) {
 				echo '<label for="pull_trigger_field">Date field to trigger pull:</label>';
-				$object_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object, 'type' => 'datetime' ) );
+				$object_fields = $this->get_salesforce_object_fields( array( 'salesforce_object' => $salesforce_object, 'type' => 'datetime' ) );
 				echo '<select name="pull_trigger_field" id="pull_trigger_field">';
-				foreach( $object_fields as $key => $value ) {
+				foreach ( $object_fields as $key => $value ) {
 					if ( $pull_trigger_field === $value['name'] ) {
 						$selected = ' selected';
 					} else {
 						$selected = '';
 					}
-					echo '<option value="' . $value['name'] . '" ' . $selected . '>' . $value['label'] . '</option>';
+					echo '<option value="' . esc_attr( $value['name'] ) . '" ' . esc_html( $selected ) . '>' . esc_html( $value['label'] ) . '</option>';
 				}
 				echo '</select>';
 			}
@@ -143,99 +136,98 @@
 			</thead>
 			<tbody>
 				<?php
-				if ( isset( $fieldmap_fields ) && $fieldmap_fields !== null && is_array( $fieldmap_fields ) ) {
+				if ( isset( $fieldmap_fields ) && null !== $fieldmap_fields  && is_array( $fieldmap_fields ) ) {
 					foreach ( $fieldmap_fields as $key => $value ) {
-				?>
-				<tr>
-					<td class="column-wordpress_field">
-						<select name="wordpress_field[<?php echo $key; ?>]" id="wordpress_field-<?php echo $key; ?>">
-							<option value="">- Select WordPress field -</option>
-							<?php
-							$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
-							foreach ( $wordpress_fields as $wordpress_field ) {
-								if ( isset( $value['wordpress_field']['label'] ) && $value['wordpress_field']['label'] === $wordpress_field['key'] ) {
-									$selected = ' selected';
-								} else {
-									$selected = '';
+					?>
+					<tr>
+						<td class="column-wordpress_field">
+							<select name="wordpress_field[<?php echo esc_attr( $key ); ?>]" id="wordpress_field-<?php echo esc_attr( $key ); ?>">
+								<option value="">- Select WordPress field -</option>
+								<?php
+								$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
+								foreach ( $wordpress_fields as $wordpress_field ) {
+									if ( isset( $value['wordpress_field']['label'] ) && $value['wordpress_field']['label'] === $wordpress_field['key'] ) {
+										$selected = ' selected';
+									} else {
+										$selected = '';
+									}
+									echo '<option value="' . esc_attr( $wordpress_field['key'] ) . '"' . esc_html( $selected ) . '> ' . esc_html( $wordpress_field['key'] ) . '</option>';
 								}
-								echo '<option value="' . $wordpress_field['key'] . '"' . $selected . '> ' . $wordpress_field['key'] . '</option>';
+								?>
+							</select>
+
+						</td>
+						<td class="column-salesforce_field">
+							<select name="salesforce_field[<?php echo esc_attr( $key ); ?>]" id="salesforce_field-<?php echo esc_attr( $key ); ?>">
+								<option value="">- Select Salesforce field -</option>
+								<?php
+								$salesforce_fields = $this->get_salesforce_object_fields( array( 'salesforce_object' => $salesforce_object ) );
+								foreach ( $salesforce_fields as $salesforce_field ) {
+									if ( isset( $value['salesforce_field']['label'] ) && $value['salesforce_field']['label'] === $salesforce_field['name'] ) {
+										$selected = ' selected';
+									} else {
+										$selected = '';
+									}
+									echo '<option value="' . esc_attr( $salesforce_field['name'] ) . '"' . esc_html( $selected ) . '> ' . esc_html( $salesforce_field['label'] ) . '</option>';
+								}
+								?>
+							</select>
+
+						</td>
+						<td class="column-is_prematch">
+							<?php
+							if ( isset( $value['is_prematch'] ) && '1' === $value['is_prematch'] ) {
+								$checked = ' checked';
+							} else {
+								$checked = '';
 							}
 							?>
-						</select>
-
-					</td>
-					<td class="column-salesforce_field">
-						<select name="salesforce_field[<?php echo $key; ?>]" id="salesforce_field-<?php echo $key; ?>">
-							<option value="">- Select Salesforce field -</option>
+							<input type="checkbox" name="is_prematch[<?php echo esc_attr( $key ); ?>]" id="is_prematch-<?php echo esc_attr( $key ); ?>" value="1" <?php echo esc_html( $checked ); ?> title="This pair should be checked for existing matches in Salesforce before adding" />
+						</td>
+						<td class="column-is_key">
 							<?php
-							$salesforce_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object ) );
-							foreach ( $salesforce_fields as $salesforce_field ) {
-								if ( isset( $value['salesforce_field']['label'] ) && $value['salesforce_field']['label'] === $salesforce_field['name'] ) {
-									$selected = ' selected';
-								} else {
-									$selected = '';
-								}
-								echo '<option value="' . $salesforce_field['name'] . '"' . $selected . '> ' . $salesforce_field['label'] . '</option>';
+							if ( isset( $value['is_key'] ) && '1' === $value['is_key'] ) {
+								$checked = ' checked';
+							} else {
+								$checked = '';
 							}
 							?>
-						</select>
-
-					</td>
-					<td class="column-is_prematch">
-						<?php
-						if ( isset( $value['is_prematch'] ) && $value['is_prematch'] === '1' ) {
-							$checked = ' checked';
-						} else {
-							$checked = '';
-						}
-						?>
-						<input type="checkbox" name="is_prematch[<?php echo $key; ?>]" id="is_prematch-<?php echo $key; ?>" value="1" <?php echo $checked; ?> title="This pair should be checked for existing matches in Salesforce before adding" />
-					</td>
-					<td class="column-is_key">
-						<?php
-						if ( isset( $value['is_key'] ) && $value['is_key'] === '1' ) {
-							$checked = ' checked';
-						} else {
-							$checked = '';
-						}
-						?>
-						<input type="checkbox" name="is_key[<?php echo $key; ?>]" id="is_key-<?php echo $key; ?>" value="1" <?php echo $checked; ?> title="This Salesforce field is an External ID in Salesforce" />
-					</td>
-					<td class="column-direction">
-						<?php
-						if ( isset( $value['direction'] ) ) {
-							if ( $value['direction'] === 'sf_wp' ) {
-								$checked_sf_wp = ' checked';
-								$checked_wp_sf = '';
-								$checked_sync = '';
-							} elseif ( $value['direction'] === 'wp_sf' ) {
-								$checked_sf_wp = '';
-								$checked_wp_sf = ' checked';
-								$checked_sync = '';
+							<input type="checkbox" name="is_key[<?php echo esc_attr( $key ); ?>]" id="is_key-<?php echo esc_attr( $key ); ?>" value="1" <?php echo esc_html( $checked ); ?> title="This Salesforce field is an External ID in Salesforce" />
+						</td>
+						<td class="column-direction">
+							<?php
+							if ( isset( $value['direction'] ) ) {
+								if ( 'sf_wp' === $value['direction'] ) {
+									$checked_sf_wp = ' checked';
+									$checked_wp_sf = '';
+									$checked_sync = '';
+								} elseif ( 'wp_sf' === $value['direction'] ) {
+									$checked_sf_wp = '';
+									$checked_wp_sf = ' checked';
+									$checked_sync = '';
+								} else {
+									$checked_sf_wp = '';
+									$checked_wp_sf = '';
+									$checked_sync = ' checked';
+								}
 							} else {
 								$checked_sf_wp = '';
 								$checked_wp_sf = '';
-								$checked_sync = ' checked';
+								$checked_sync = ' checked'; // by default, start with Sync checked
 							}
-						} else {
-							$checked_sf_wp = '';
-							$checked_wp_sf = '';
-							$checked_sync = ' checked'; // by default, start with Sync checked
-						}
 
-						?>
-						<div class="radios">
-							<label><input type="radio" value="sf_wp" name="direction[<?php echo $key; ?>]" id="direction-<?php echo $key; ?>-sf-wp" <?php echo $checked_sf_wp; ?> required>  Salesforce to WordPress</label>
-							<label><input type="radio" value="wp_sf" name="direction[<?php echo $key; ?>]" id="direction-<?php echo $key; ?>-wp-sf" <?php echo $checked_wp_sf; ?> required>  WordPress to Salesforce</label>
-							<label><input type="radio" value="sync" name="direction[<?php echo $key; ?>]" id="direction-<?php echo $key; ?>-sync" <?php echo $checked_sync; ?> required>  Sync</label>
-						</div>
-					</td>
-					<td class="column-is_delete">
-						<input type="checkbox" name="is_delete[<?php echo $key; ?>]" id="is_delete-<?php echo $key; ?>" value="1" />
-					</td>
-				</tr>
-				<?php
-					}
+							?>
+							<div class="radios">
+								<label><input type="radio" value="sf_wp" name="direction[<?php echo esc_attr( $key ); ?>]" id="direction-<?php echo esc_attr( $key ); ?>-sf-wp" <?php echo esc_html( $checked_sf_wp ); ?> required>  Salesforce to WordPress</label>
+								<label><input type="radio" value="wp_sf" name="direction[<?php echo esc_attr( $key ); ?>]" id="direction-<?php echo esc_attr( $key ); ?>-wp-sf" <?php echo esc_html( $checked_wp_sf ); ?> required>  WordPress to Salesforce</label>
+								<label><input type="radio" value="sync" name="direction[<?php echo esc_attr( $key ); ?>]" id="direction-<?php echo esc_attr( $key ); ?>-sync" <?php echo esc_html( $checked_sync ); ?> required>  Sync</label>
+							</div>
+						</td>
+						<td class="column-is_delete">
+							<input type="checkbox" name="is_delete[<?php echo esc_attr( $key ); ?>]" id="is_delete-<?php echo esc_attr( $key ); ?>" value="1" />
+						</td>
+					</tr>
+					<?php } // End foreach().
 				} elseif ( isset( $wordpress_object ) && isset( $salesforce_object ) ) {
 				?>
 				<tr>
@@ -245,7 +237,7 @@
 							<?php
 							$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
 							foreach ( $wordpress_fields as $wordpress_field ) {
-								echo '<option value="' . $wordpress_field['key'] . '"> ' . $wordpress_field['key'] . '</option>';
+								echo '<option value="' . esc_attr( $wordpress_field['key'] ) . '"> ' . esc_html( $wordpress_field['key'] ) . '</option>';
 							}
 							?>
 						</select>
@@ -254,9 +246,9 @@
 						<select name="salesforce_field[0]" id="salesforce_field-0">
 							<option value="">- Select Salesforce field -</option>
 							<?php
-							$salesforce_fields = $this->get_salesforce_object_fields( array('salesforce_object' => $salesforce_object ) );
+							$salesforce_fields = $this->get_salesforce_object_fields( array( 'salesforce_object' => $salesforce_object ) );
 							foreach ( $salesforce_fields as $salesforce_field ) {
-								echo '<option value="' . $salesforce_field['name'] . '"> ' . $salesforce_field['label'] . '</option>';
+								echo '<option value="' . esc_attr( $salesforce_field['name'] ) . '"> ' . esc_html( $salesforce_field['label'] ) . '</option>';
 							}
 							?>
 						</select>
@@ -278,20 +270,18 @@
 						<input type="checkbox" name="is_delete[0]" id="is_delete-0" value="1" />
 					</td>
 				</tr>
-				<?php
-				}
-				?>
+				<?php } // End if() ?>
 			</tbody>
 		</table>
 		<!--<div class="spinner"></div>-->
 		<?php
-		if ( isset( $fieldmap_fields ) && $fieldmap_fields !== null ) {
+		if ( isset( $fieldmap_fields ) && null !== $fieldmap_fields ) {
 			$add_button_label = 'Add another field mapping';
 		} else {
 			$add_button_label = 'Add field mapping';
 		}
 		?>
-		<p><button type="button" id="add-field-mapping" class="button button-secondary"><?php echo $add_button_label; ?></button></p>
+		<p><button type="button" id="add-field-mapping" class="button button-secondary"><?php echo esc_html( $add_button_label ); ?></button></p>
 		<p class="description">Prematch tells the plugin to match records that have the same value before sending data to Salesforce. Salesforce Key indicates the Salesforce field is an External ID. If either of these is checked, the plugin will do an UPSERT to avoid duplicate data when possible.</p>
 	</fieldset>
 	<fieldset class="sync_triggers">
@@ -306,7 +296,7 @@
 			$salesforce_delete_checked = '';
 			if ( isset( $sync_triggers ) && is_array( $sync_triggers ) ) {
 				foreach ( $sync_triggers as $trigger ) {
-					switch ($trigger) {
+					switch ( $trigger ) {
 						case $this->mappings->sync_wordpress_create:
 							$wordpress_create_checked = ' checked';
 							break;
@@ -329,28 +319,28 @@
 				}
 			}
 			?>
-			<label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_create; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-create" <?php echo $wordpress_create_checked; ?>> WordPress create</label>
-			<label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_update; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-update" <?php echo $wordpress_update_checked; ?>> WordPress update</label>
-			<label><input type="checkbox" value="<?php echo $this->mappings->sync_wordpress_delete; ?>" name="sync_triggers[]" id="sync_triggers-wordpress-delete" <?php echo $wordpress_delete_checked; ?>> WordPress delete</label>
-			<label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_create; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-create" <?php echo $salesforce_create_checked; ?>> Salesforce create</label>
-			<label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_update; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-update" <?php echo $salesforce_update_checked; ?>> Salesforce update</label>
-			<label><input type="checkbox" value="<?php echo $this->mappings->sync_sf_delete; ?>" name="sync_triggers[]" id="sync_triggers-salesforce-delete" <?php echo $salesforce_delete_checked; ?>> Salesforce delete</label>
+			<label><input type="checkbox" value="<?php echo esc_attr( $this->mappings->sync_wordpress_create ); ?>" name="sync_triggers[]" id="sync_triggers-wordpress-create" <?php echo esc_html( $wordpress_create_checked ); ?>> WordPress create</label>
+			<label><input type="checkbox" value="<?php echo esc_attr( $this->mappings->sync_wordpress_update ); ?>" name="sync_triggers[]" id="sync_triggers-wordpress-update" <?php echo esc_html( $wordpress_update_checked ); ?>> WordPress update</label>
+			<label><input type="checkbox" value="<?php echo esc_attr( $this->mappings->sync_wordpress_delete ); ?>" name="sync_triggers[]" id="sync_triggers-wordpress-delete" <?php echo esc_html( $wordpress_delete_checked ); ?>> WordPress delete</label>
+			<label><input type="checkbox" value="<?php echo esc_attr( $this->mappings->sync_sf_create ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-create" <?php echo esc_html( $salesforce_create_checked ); ?>> Salesforce create</label>
+			<label><input type="checkbox" value="<?php echo esc_attr( $this->mappings->sync_sf_update ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-update" <?php echo esc_html( $salesforce_update_checked ); ?>> Salesforce update</label>
+			<label><input type="checkbox" value="<?php echo esc_attr( $this->mappings->sync_sf_delete ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-delete" <?php echo esc_html( $salesforce_delete_checked ); ?>> Salesforce delete</label>
 			<p class="description">Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. These settings are used by the <code>salesforce_push</code> and <code>salesforce_pull</code> modules respectively.</p>
 		</div>
 		<div class="checkboxes">
-			<label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo isset( $push_async ) && $push_async === '1' ? ' checked' : ''; ?>> Process asynchronously</label>
+			<label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo isset( $push_async ) && '1' === $push_async ? ' checked' : ''; ?>> Process asynchronously</label>
 			<p class="description">If selected, push data will be queued for processing and synchronized when <code>wp_cron</code> is run. This may increase site performance, but changes will not be reflected in real time.</p>
 		</div>
 		<div class="checkboxes">
-			<label><input type="checkbox" name="push_drafts" id="push-drafts" value="1" <?php echo isset( $push_drafts ) && $push_drafts === '1' ? ' checked' : ''; ?>> Push drafts</label>
+			<label><input type="checkbox" name="push_drafts" id="push-drafts" value="1" <?php echo isset( $push_drafts ) && '1' === $push_drafts ? ' checked' : ''; ?>> Push drafts</label>
 			<p class="description">If selected, WordPress will send drafts of this object type (if it creates drafts for it) to Salesforce.</p>
 		</div>
 		<div class="fieldmap_label">
 			<label for="label">Weight: </label>
-			<input type="number" id="weight" name="weight" value="<?php echo isset( $weight ) ? $weight : ''; ?>" />
+			<input type="number" id="weight" name="weight" value="<?php echo isset( $weight ) ? esc_attr( $weight ) : ''; ?>" />
 			<p class="description">Weight is intended for use when you have multiple fieldmaps for the same object, either in WordPress or Salesforce.</p>
 			<p class="description">For example, if you map WordPress users to Salesforce Contacts, and then map the users to Salesforce Leads as well, you could assign a numeric weight to indicate which one gets processed first. Otherwise, you can safely leave it blank. If present, sorting occurs in ascending order.</p>
 		</div>
 	</fieldset>
-	<?php echo submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
+	<?php echo submit_button( ucfirst( esc_attr( $method ) ) . ' fieldmap' ); ?>
 </form>

@@ -1260,7 +1260,7 @@ class Wordpress_Salesforce_Admin {
 	}
 
 	/**
-	* Show the status of our connection with the Salesforce API on the authenticate tab after WordPress has authenticated with it. 
+	* Show the status of our connection with the Salesforce API on the authenticate tab after WordPress has authenticated with it.
 	* Makes some small API calls to show data, cache status, whether it is an authenticated request.
 	*
 	* @param object $sfapi
