@@ -113,7 +113,7 @@ class Salesforce_Mapping {
 	public function create_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array() ) {
 		$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
 		$insert = $this->wpdb->insert( $this->fieldmap_table, $data );
-		if ( $insert === 1 ) {
+		if ( 1 === $insert ) {
 			return $this->wpdb->insert_id;
 		} else {
 			return false;
@@ -210,7 +210,7 @@ class Salesforce_Mapping {
 	* @return $data
 	*/
 	private function setup_fieldmap_data( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array() ) {
-		$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
+		$data = array( 'label' => sanitize_title( $posted['label'] ), 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
 		if (
 			isset( $posted['wordpress_field'] )
 			&& is_array( $posted['wordpress_field'] )
@@ -259,12 +259,12 @@ class Salesforce_Mapping {
 			$data['salesforce_record_types_allowed'] = maybe_serialize( array( $this->salesforce_default_record_type => $this->salesforce_default_record_type ) );
 		}
 		if ( isset( $posted['salesforce_record_type_default'] ) ) {
-			$data['salesforce_record_type_default'] = $posted['salesforce_record_type_default'];
+			$data['salesforce_record_type_default'] = sanitize_text_field( $posted['salesforce_record_type_default'] );
 		} else {
 			$data['salesforce_record_type_default'] = maybe_serialize( $this->salesforce_default_record_type );
 		}
 		if ( isset( $posted['pull_trigger_field'] ) ) {
-			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
+			$data['pull_trigger_field'] = sanitize_text_field( $posted['pull_trigger_field'] );
 		}
 		if ( isset( $posted['sync_triggers'] ) && is_array( $posted['sync_triggers'] ) ) {
 			$setup['sync_triggers'] = array();
@@ -276,11 +276,11 @@ class Salesforce_Mapping {
 		}
 		$data['sync_triggers'] = maybe_serialize( $setup['sync_triggers'] );
 		if ( isset( $posted['pull_trigger_field'] ) ) {
-			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
+			$data['pull_trigger_field'] = sanitize_text_field( $posted['pull_trigger_field'] );
 		}
-		$data['push_async'] = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
-		$data['push_drafts'] = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
-		$data['weight'] = isset( $posted['weight'] ) ? $posted['weight'] : '';
+		$data['push_async'] = isset( $posted['push_async'] ) ? absint( $posted['push_async'] ) : '';
+		$data['push_drafts'] = isset( $posted['push_drafts'] ) ? absint( $posted['push_drafts'] ) : '';
+		$data['weight'] = isset( $posted['weight'] ) ? floatval( $posted['weight'] ) : '';
 		return $data;
 	}
 
