@@ -113,7 +113,7 @@ class Salesforce_Mapping {
 	public function create_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array() ) {
 		$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
 		$insert = $this->wpdb->insert( $this->fieldmap_table, $data );
-		if ( $insert === 1 ) {
+		if ( 1 === $insert ) {
 			return $this->wpdb->insert_id;
 		} else {
 			return false;
@@ -210,7 +210,7 @@ class Salesforce_Mapping {
 	* @return $data
 	*/
 	private function setup_fieldmap_data( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array() ) {
-		$data = array( 'label' => $posted['label'], 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
+		$data = array( 'label' => sanitize_title( $posted['label'] ), 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
 		if (
 			isset( $posted['wordpress_field'] )
 			&& is_array( $posted['wordpress_field'] )

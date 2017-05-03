@@ -1076,6 +1076,7 @@ class Wordpress_Salesforce_Admin {
 			$method = esc_attr( $_POST['method'] );
 			$salesforce_fields = $this->get_salesforce_object_fields( array( 'salesforce_object' => $_POST['salesforce_object'] ) );
 			$wordpress_fields = $this->get_wordpress_object_fields( $_POST['wordpress_object'] );
+
 			if ( 'add' === $method || 'clone' === $method ) {
 				$result = $this->mappings->create_fieldmap( $_POST, $wordpress_fields, $salesforce_fields );
 			} elseif ( 'edit' === $method ) { // if it is edit, use the update method
