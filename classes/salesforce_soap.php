@@ -3,8 +3,8 @@
  * @file
  */
 
-if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
-    die();
+if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
+	die();
 }
 
 /**
@@ -15,9 +15,9 @@ class Salesforce_Soap {
 	/**
 	* Constructor which
 	*
-	* 
+	*
 	*/
-	public function __construct( ) {
+	public function __construct() {
 
 	}
 
