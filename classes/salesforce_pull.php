@@ -110,7 +110,7 @@ class Salesforce_Pull {
 			$this->get_deleted_records();
 
 			// Store this request time for the throttle check.
-			update_option( 'salesforce_api_pull_last_sync', current_time( 'timestamp', true ) );
+			update_option( 'object_sync_for_salesforce_pull_last_sync', current_time( 'timestamp', true ) );
 			return true;
 
 		} else {
@@ -142,8 +142,8 @@ class Salesforce_Pull {
 	*    Returns false if the time elapsed between recent pulls is too short.
 	*/
 	private function check_throttle() {
-		$pull_throttle = get_option( 'salesforce_api_pull_throttle', 5 );
-		$last_sync = get_option( 'salesforce_api_pull_last_sync', 0 );
+		$pull_throttle = get_option( 'object_sync_for_salesforce_pull_throttle', 5 );
+		$last_sync = get_option( 'object_sync_for_salesforce_pull_last_sync', 0 );
 
 		if ( current_time( 'timestamp', true ) > ( $last_sync + $pull_throttle ) ) {
 			return true;
@@ -286,7 +286,7 @@ class Salesforce_Pull {
 					$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : false;
 				}
 
-				update_option( 'salesforce_api_pull_last_sync_' . $type, current_time( 'timestamp', true ) );
+				update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, current_time( 'timestamp', true ) );
 
 			} else {
 
@@ -328,7 +328,7 @@ class Salesforce_Pull {
 			// Iterate over each field mapping to determine our parameters.
 			foreach ( $this->mappings->get_fieldmaps( null, array( 'salesforce_object' => $type ) ) as $mapping ) {
 
-				$last_delete_sync = get_option( 'salesforce_api_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
+				$last_delete_sync = get_option( 'object_sync_for_salesforce_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 				$now = current_time( 'timestamp', true );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
@@ -367,7 +367,7 @@ class Salesforce_Pull {
 
 				}
 
-				update_option( 'salesforce_api_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
+				update_option( 'object_sync_for_salesforce_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 
 			}
 		}
