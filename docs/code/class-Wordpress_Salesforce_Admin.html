@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class Wordpress_Salesforce_Admin | Salesforce REST API</title>
+	<title>Class Wordpress_Salesforce_Admin | Object Sync for Salesforce</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -24,12 +24,12 @@
 			<h3>Classes</h3>
 			<ul>
 				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
+				<li><a href="class-Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
 				<li><a href="class-Salesforce.html">Salesforce</a></li>
 				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
 				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
 				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
 				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
-				<li><a href="class-Salesforce_Rest_API.html">Salesforce_Rest_API</a></li>
 				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
 				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
 				<li><a href="class-Wordpress.html">Wordpress</a></li>
@@ -104,7 +104,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Wordpress_Salesforce_Admin.html#10-1441" title="Go to source code">admin.php</a>
+			<b>Located at</b> <a href="source-class-Wordpress_Salesforce_Admin.html#10-1503" title="Go to source code">admin.php</a>
 		<br>
 	</div>
 
@@ -124,7 +124,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#26-57" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$push</var></span>, <span>object <var>$pull</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#66-110" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$push</var></span>, <span>object <var>$pull</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Constructor which sets up admin pages</p>
@@ -183,7 +183,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add_actions">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#59-80" title="Go to source code">add_actions</a>( )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#112-133" title="Go to source code">add_actions</a>( )</code>
 
 		<div class="description short">
 			<p>Create the action hooks to create the admin page(s)</p>
@@ -213,7 +213,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_admin_menu">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#82-89" title="Go to source code">create_admin_menu</a>( )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#135-142" title="Go to source code">create_admin_menu</a>( )</code>
 
 		<div class="description short">
 			<p>Create WordPress admin options page</p>
@@ -243,7 +243,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_show_admin_page">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#91-237" title="Go to source code">show_admin_page</a>( )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#144-290" title="Go to source code">show_admin_page</a>( )</code>
 
 		<div class="description short">
 			<p>Render full admin pages in WordPress
@@ -277,7 +277,7 @@ This allows other plugins to add tabs to the Salesforce settings screen</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_settings_forms">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#239-264" title="Go to source code">salesforce_settings_forms</a>( )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#292-317" title="Go to source code">salesforce_settings_forms</a>( )</code>
 
 		<div class="description short">
 			<p>Create default WordPress admin settings form for salesforce
@@ -309,7 +309,7 @@ This is for the Settings page/tab</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_fields_settings">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#266-460" title="Go to source code">fields_settings</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$callbacks</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#319-512" title="Go to source code">fields_settings</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$callbacks</var></span> )</code>
 
 		<div class="description short">
 			<p>Fields for the Settings tab
@@ -350,7 +350,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
 		<td class="name"><div>
 		<a class="anchor" href="#_fields_fieldmaps">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#462-472" title="Go to source code">fields_fieldmaps</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$input_callback</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#514-524" title="Go to source code">fields_fieldmaps</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$input_callback</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Fields for the Fieldmaps tab
@@ -391,7 +391,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
 		<td class="name"><div>
 		<a class="anchor" href="#_fields_scheduling">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#474-556" title="Go to source code">fields_scheduling</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$callbacks</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#526-608" title="Go to source code">fields_scheduling</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$callbacks</var></span> )</code>
 
 		<div class="description short">
 			<p>Fields for the Scheduling tab
@@ -432,7 +432,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
 		<td class="name"><div>
 		<a class="anchor" href="#_fields_log_settings">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#558-740" title="Go to source code">fields_log_settings</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>array <var>$callbacks</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#610-793" title="Go to source code">fields_log_settings</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>array <var>$callbacks</var></span> )</code>
 
 		<div class="description short">
 			<p>Fields for the Log Settings tab
@@ -473,7 +473,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
 		<td class="name"><div>
 		<a class="anchor" href="#_notices">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#742-797" title="Go to source code">notices</a>( )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#795-850" title="Go to source code">notices</a>( )</code>
 
 		<div class="description short">
 			<p>Create the notices, settings, and conditions by which admin notices should appear</p>
@@ -503,7 +503,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_salesforce_object_description">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#799-852" title="Go to source code">get_salesforce_object_description</a>( <span>array <var>$data</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#852-905" title="Go to source code">get_salesforce_object_description</a>( <span>array <var>$data</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Get all the Salesforce object settings for fieldmapping
@@ -545,7 +545,7 @@ can optionally contain a type</p></dd>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_salesforce_object_fields">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#854-886" title="Go to source code">get_salesforce_object_fields</a>( <span>array <var>$data</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#907-939" title="Go to source code">get_salesforce_object_fields</a>( <span>array <var>$data</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Get Salesforce object fields for fieldmapping</p>
@@ -585,7 +585,7 @@ can optionally contain a type for the field</p></dd>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_wordpress_object_fields">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#888-909" title="Go to source code">get_wordpress_object_fields</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#941-962" title="Go to source code">get_wordpress_object_fields</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Get WordPress object fields for fieldmapping
@@ -626,7 +626,7 @@ This takes either the $_POST array via ajax, or can be directly called with a $w
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_wp_sf_object_fields">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#911-935" title="Go to source code">get_wp_sf_object_fields</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span></span>, <span>string <var>$salesforce</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#964-988" title="Go to source code">get_wp_sf_object_fields</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span></span>, <span>string <var>$salesforce</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Get WordPress and Salesforce object fields together for fieldmapping
@@ -669,7 +669,7 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
 
 		<td class="name"><div>
 		<a class="anchor" href="#_push_to_salesforce">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#937-958" title="Go to source code">push_to_salesforce</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span></span>, <span>integer <var>$wordpress_id</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#990-1011" title="Go to source code">push_to_salesforce</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span></span>, <span>integer <var>$wordpress_id</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Manually push the WordPress object to Salesforce
@@ -708,7 +708,7 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
 
 		<td class="name"><div>
 		<a class="anchor" href="#_pull_from_salesforce">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#960-979" title="Go to source code">pull_from_salesforce</a>( <span>string <var>$salesforce_id</var> = <span class="php-quote">''</span></span>, <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1013-1032" title="Go to source code">pull_from_salesforce</a>( <span>string <var>$salesforce_id</var> = <span class="php-quote">''</span></span>, <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Manually pull the Salesforce object into WordPress
@@ -747,7 +747,7 @@ This takes either the $_POST array via ajax, or can be directly called with $sal
 
 		<td class="name"><div>
 		<a class="anchor" href="#_refresh_mapped_data">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#981-998" title="Go to source code">refresh_mapped_data</a>( <span>string <var>$mapping_id</var> = <span class="php-quote">''</span> </span>, <span>string <var>$wordpress_object</var>,…</span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1034-1051" title="Go to source code">refresh_mapped_data</a>( <span>string <var>$mapping_id</var> = <span class="php-quote">''</span> </span>, <span>string <var>$wordpress_object</var>,…</span> )</code>
 
 		<div class="description short">
 			<p>Manually pull the Salesforce object into WordPress
@@ -786,7 +786,7 @@ This takes either the $_POST array via ajax, or can be directly called with $sal
 
 		<td class="name"><div>
 		<a class="anchor" href="#_prepare_fieldmap_data">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1000-1047" title="Go to source code">prepare_fieldmap_data</a>( )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1053-1100" title="Go to source code">prepare_fieldmap_data</a>( )</code>
 
 		<div class="description short">
 			<p>Prepare fieldmap data and redirect after processing
@@ -824,7 +824,7 @@ This method does include error handling, by loading the submission in a transien
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_fieldmap">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1049-1067" title="Go to source code">delete_fieldmap</a>( )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1102-1120" title="Go to source code">delete_fieldmap</a>( )</code>
 
 		<div class="description short">
 			<p>Delete fieldmap data and redirect after processing
@@ -860,7 +860,7 @@ It then calls the salesforce_mapping class and the delete method</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_display_input_field">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1069-1106" title="Go to source code">display_input_field</a>( <span>array <var>$args</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1122-1159" title="Go to source code">display_input_field</a>( <span>array <var>$args</var></span> )</code>
 
 		<div class="description short">
 			<p>Default display for <input> fields</p>
@@ -895,7 +895,7 @@ It then calls the salesforce_mapping class and the delete method</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_display_checkboxes">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1108-1135" title="Go to source code">display_checkboxes</a>( <span>array <var>$args</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1161-1188" title="Go to source code">display_checkboxes</a>( <span>array <var>$args</var></span> )</code>
 
 		<div class="description short">
 			<p>Display for multiple checkboxes
@@ -932,7 +932,7 @@ Above method can handle a single checkbox as it is</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_display_select">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1137-1167" title="Go to source code">display_select</a>( <span>array <var>$args</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1190-1220" title="Go to source code">display_select</a>( <span>array <var>$args</var></span> )</code>
 
 		<div class="description short">
 			<p>Display for a dropdown</p>
@@ -967,7 +967,7 @@ Above method can handle a single checkbox as it is</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_version_options">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1169-1184" title="Go to source code">version_options</a>( )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1222-1237" title="Go to source code">version_options</a>( )</code>
 
 		<div class="description short">
 			<p>Dropdown formatted list of Salesforce API versions</p>
@@ -1001,7 +1001,7 @@ Above method can handle a single checkbox as it is</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_display_link">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1186-1207" title="Go to source code">display_link</a>( <span>array <var>$args</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1239-1260" title="Go to source code">display_link</a>( <span>array <var>$args</var></span> )</code>
 
 		<div class="description short">
 			<p>Default display for <a href> links</p>
@@ -1024,7 +1024,7 @@ Above method can handle a single checkbox as it is</p>
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="demo" id="_demo">
+	<tr data-order="status" id="_status">
 
 		<td class="attributes"><code>
 			 private 
@@ -1035,15 +1035,17 @@ Above method can handle a single checkbox as it is</p>
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_demo">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1209-1234" title="Go to source code">demo</a>( <span>object <var>$sfapi</var></span> )</code>
+		<a class="anchor" href="#_status">#</a>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1262-1288" title="Go to source code">status</a>( <span>object <var>$sfapi</var></span> )</code>
 
 		<div class="description short">
-			<p>Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it</p>
+			<p>Show the status of our connection with the Salesforce API on the authenticate tab after WordPress has authenticated with it.
+Makes some small API calls to show data, cache status, whether it is an authenticated request.</p>
 		</div>
 
 		<div class="description detailed hidden">
-			<p>Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it</p>
+			<p>Show the status of our connection with the Salesforce API on the authenticate tab after WordPress has authenticated with it.
+Makes some small API calls to show data, cache status, whether it is an authenticated request.</p>
 
 
 				<h4>Parameters</h4>
@@ -1071,7 +1073,7 @@ Above method can handle a single checkbox as it is</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_logout">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1236-1246" title="Go to source code">logout</a>( )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1290-1300" title="Go to source code">logout</a>( )</code>
 
 		<div class="description short">
 			<p>Deauthorize WordPress from Salesforce.
@@ -1105,7 +1107,7 @@ For this plugin at this time, that is the decision we are making: don't do any k
 
 		<td class="name"><div>
 		<a class="anchor" href="#_check_wordpress_admin_permissions">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1248-1268" title="Go to source code">check_wordpress_admin_permissions</a>( )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1302-1322" title="Go to source code">check_wordpress_admin_permissions</a>( )</code>
 
 		<div class="description short">
 			<p>Check Wordpress Admin permissions
@@ -1137,7 +1139,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_show_salesforce_user_fields">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1270-1286" title="Go to source code">show_salesforce_user_fields</a>( <span>object <var>$user</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1324-1348" title="Go to source code">show_salesforce_user_fields</a>( <span>object <var>$user</var></span> )</code>
 
 		<div class="description short">
 			<p>Show what we know about this user's relationship to a Salesforce object, if any</p>
@@ -1172,7 +1174,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save_salesforce_user_fields">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1288-1307" title="Go to source code">save_salesforce_user_fields</a>( <span>integer <var>$user_id</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1350-1369" title="Go to source code">save_salesforce_user_fields</a>( <span>integer <var>$user_id</var></span> )</code>
 
 		<div class="description short">
 			<p>If the user profile has been mapped to Salesforce, do it</p>
@@ -1207,7 +1209,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_tabs">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1309-1338" title="Go to source code">tabs</a>( <span>array <var>$tabs</var></span>, <span>string <var>$tab</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1371-1400" title="Go to source code">tabs</a>( <span>array <var>$tabs</var></span>, <span>string <var>$tab</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Render tabs for settings pages in admin</p>
@@ -1244,7 +1246,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_sanitize_text">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1350-1369" title="Go to source code">sanitize_text</a>( <span> <var>$input</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1412-1431" title="Go to source code">sanitize_text</a>( <span> <var>$input</var></span> )</code>
 
 		<div class="description short">
 			
@@ -1274,7 +1276,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_clear_schedule">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1371-1383" title="Go to source code">clear_schedule</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1433-1445" title="Go to source code">clear_schedule</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Clear schedule
@@ -1306,7 +1308,7 @@ This clears the schedule if the user clicks the button</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_schedule_count">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1385-1392" title="Go to source code">get_schedule_count</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1447-1454" title="Go to source code">get_schedule_count</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			
@@ -1336,7 +1338,7 @@ This clears the schedule if the user clicks the button</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_schedule">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1394-1405" title="Go to source code">schedule</a>( <span> <var>$schedule_name</var></span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1456-1467" title="Go to source code">schedule</a>( <span> <var>$schedule_name</var></span> )</code>
 
 		<div class="description short">
 			<p>Load the schedule class</p>
@@ -1366,7 +1368,7 @@ This clears the schedule if the user clicks the button</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_object_map">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1407-1439" title="Go to source code">create_object_map</a>( <span>integer <var>$wordpress_id</var></span>, <span>string <var>$wordpress_object</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$action</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Wordpress_Salesforce_Admin.html#1469-1501" title="Go to source code">create_object_map</a>( <span>integer <var>$wordpress_id</var></span>, <span>string <var>$wordpress_object</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$action</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create an object map between a WordPress object and a Salesforce object</p>
@@ -1665,6 +1667,166 @@ This clears the schedule if the user clicks the button</p>
 			</div>
 		</td>
 	</tr>
+	<tr data-order="default_authorize_url_path" id="$default_authorize_url_path">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Wordpress_Salesforce_Admin.html#26-30" title="Go to source code"><var>$default_authorize_url_path</var></a>
+
+			<div class="description short">
+				<p>Default path for the Salesforce authorize URL</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Default path for the Salesforce authorize URL</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$default_authorize_url_path" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="default_token_url_path" id="$default_token_url_path">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Wordpress_Salesforce_Admin.html#31-35" title="Go to source code"><var>$default_token_url_path</var></a>
+
+			<div class="description short">
+				<p>Default path for the Salesforce token URL</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Default path for the Salesforce token URL</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$default_token_url_path" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="default_api_version" id="$default_api_version">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Wordpress_Salesforce_Admin.html#37-43" title="Go to source code"><var>$default_api_version</var></a>
+
+			<div class="description short">
+				<p>What version of the Salesforce API should be the default on the settings screen.
+Users can edit this, but they won't see a correct list of all their available versions until WordPress has
+been authenticated with Salesforce.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>What version of the Salesforce API should be the default on the settings screen.
+Users can edit this, but they won't see a correct list of all their available versions until WordPress has
+been authenticated with Salesforce.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$default_api_version" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="default_triggerable" id="$default_triggerable">
+		<td class="attributes"><code>
+			public  
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Wordpress_Salesforce_Admin.html#45-50" title="Go to source code"><var>$default_triggerable</var></a>
+
+			<div class="description short">
+				<p>Default for whether to limit to triggerable items
+Users can edit this</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Default for whether to limit to triggerable items
+Users can edit this</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$default_triggerable" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="default_updateable" id="$default_updateable">
+		<td class="attributes"><code>
+			public  
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Wordpress_Salesforce_Admin.html#52-57" title="Go to source code"><var>$default_updateable</var></a>
+
+			<div class="description short">
+				<p>Default for whether to limit to updateable items
+Users can edit this</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Default for whether to limit to updateable items
+Users can edit this</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$default_updateable" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="default_pull_throttle" id="$default_pull_throttle">
+		<td class="attributes"><code>
+			public  
+			integer
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Wordpress_Salesforce_Admin.html#59-64" title="Go to source code"><var>$default_pull_throttle</var></a>
+
+			<div class="description short">
+				<p>Default pull throttle for how often Salesforce can pull
+Users can edit this</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Default pull throttle for how often Salesforce can pull
+Users can edit this</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$default_pull_throttle" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
 	</table>
 
 
@@ -1675,7 +1837,7 @@ This clears the schedule if the user clicks the button</p>
 </div>
 
 	<div id="footer">
-		Salesforce REST API API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>

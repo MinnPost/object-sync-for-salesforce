@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file
  *
- * @package Salesforce_Rest_Api
+ * @package Object_Sync_Salesforce
  */
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
@@ -17,7 +17,7 @@ require_once $_tests_dir . '/includes/functions.php';
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
-	require dirname( dirname( __FILE__ ) ) . '/salesforce-rest-api.php';
+	require dirname( dirname( __FILE__ ) ) . '/object-sync-for-salesforce.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 

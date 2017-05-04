@@ -4,19 +4,19 @@ This page lists all developer hooks available in this plugin, with links to wher
 
 ## Filters
 
-- `salesforce_rest_api_roles_configure_salesforce`:
+- `object_sync_for_salesforce_roles_configure_salesforce`:
     - description: allow other plugins to give the `configure_salesforce` capability to WordPress roles in addition to the `administrator` role.
     - code: [classes/activate.php](../classes/activate.php) and [classes/deactivate.php](../classes/deactivate.php)
     - documentation: [extending roles](./docs/extending-roles.md)
-- `salesforce_rest_api_push_object_allowed`:
+- `object_sync_for_salesforce_push_object_allowed`:
     - description: prevent a push per-mapping.
     - code: (should document with push stuff)
     - documentation: [classes/salesforce_push.php](../classes/salesforce_push.php)
-- `salesforce_rest_api_pull_object_allowed`:
+- `object_sync_for_salesforce_pull_object_allowed`:
     - description: prevent a pull per-mapping.
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: (should document with pull stuff)
-- `salesforce_rest_api_pull_params_modify`:
+- `object_sync_for_salesforce_pull_params_modify`:
     - description: change what parameters are being sent to WordPress before syncing occurs
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extend parameters](extending-parameters.md#salesforce-push)
@@ -24,11 +24,11 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-pull)
-- `salesforce_rest_api_find_wp_object_match`:
+- `object_sync_for_salesforce_find_wp_object_match`:
     - description: modify the $wordpress_id string here
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
-- `salesforce_rest_api_push_params_modify`:
+- `object_sync_for_salesforce_push_params_modify`:
     - description: change what parameters are being sent to Salesforce before syncing occurs
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extend parameters](extending-parameters.md#salesforce-push)
@@ -36,118 +36,118 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-push)
-- `salesforce_rest_api_find_sf_object_match`:
+- `object_sync_for_salesforce_find_sf_object_match`:
     - description: modify the $salesforce_id string here
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
-- `salesforce_rest_api_settings_tabs`:
+- `object_sync_for_salesforce_settings_tabs`:
     - description: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
     - code: [classes/admin.php](../classes/admin.php)
     - documentation: [add a settings tab](./docs/adding-settings.md#add-a-settings-tab)
-- `salesforce_rest_api_settings_tab_include_settings`:
+- `object_sync_for_salesforce_settings_tab_include_settings`:
     - description: when adding tabs to the Salesforce Settings screen, determine whether or not to include the default settings PHP template, which we use to render the form.
     - code: [classes/admin.php](../classes/admin.php)
     - documentation: [change the template](./docs/adding-settings.md#change-the-template)
-- `salesforce_rest_api_settings_tab_content_before`:
+- `object_sync_for_salesforce_settings_tab_content_before`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display before the settings form.
     - code: [classes/admin.php](../classes/admin.php)
     - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
-- `salesforce_rest_api_settings_tab_content_after`:
+- `object_sync_for_salesforce_settings_tab_content_after`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form.
     - code: [classes/admin.php](../classes/admin.php)
     - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
-- `salesforce_rest_api_modify_schedulable_classes`:
+- `object_sync_for_salesforce_modify_schedulable_classes`:
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
-    - code: [salesforce-rest-api.php](../../salesforce-rest-api.php)
+    - code: [object-sync-for-salesforce.php](../../object-sync-for-salesforce.php)
     - documentation: [extending scheduling](./extending-scheduling.md)
-- `salesforce_rest_api_add_more_wordpress_types`:
+- `object_sync_for_salesforce_add_more_wordpress_types`:
     - description: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-objects)
-- `salesforce_rest_api_remove_wordpress_types`:
+- `object_sync_for_salesforce_remove_wordpress_types`:
     - description: remove WordPress content types from the list of what can be mapped to Salesforce objects. By default, we use this for the `wp_log` type that is included with this plugin.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-objects)
-- `salesforce_rest_api_create_custom_wordpress_item`:
+- `object_sync_for_salesforce_create_custom_wordpress_item`:
     - description: allow plugins to run their own create methods for adding new WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
-- `salesforce_rest_api_upsert_custom_wordpress_item`:
+- `object_sync_for_salesforce_upsert_custom_wordpress_item`:
     - description: allow plugins to run their own upsert methods for checking for existence of, and then adding or updating, new WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
-- `salesforce_rest_api_update_custom_wordpress_item`:
+- `object_sync_for_salesforce_update_custom_wordpress_item`:
     - description: allow plugins to run their own update methods for updating existing, mapped WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
-- `salesforce_rest_api_delete_custom_wordpress_item`:
+- `object_sync_for_salesforce_delete_custom_wordpress_item`:
     - description: allow plugins to run their own delete methods for deleting existing, mapped WordPress objects, if they cannot use built in methods.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
-- `salesforce_rest_api_set_initial_attachment_data`:
+- `object_sync_for_salesforce_set_initial_attachment_data`:
     - description: allow plugins to add filename or parent data when creating attachment objects.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#for-attachments)
-- `salesforce_rest_api_wordpress_object_fields`:
+- `object_sync_for_salesforce_wordpress_object_fields`:
     - description: when getting the fields for a WordPress object, allow plugins to add more (and also cache the array).
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-fields)
-- `salesforce_rest_api_wordpress_object_data`:
+- `object_sync_for_salesforce_wordpress_object_data`:
     - description: when getting the data for a WordPress object, allow plugins to add more, change the formatting, etc.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#wordpress-object-data)
-- `salesforce_rest_api_modify_upsert_key`:
+- `object_sync_for_salesforce_modify_upsert_key`:
     - description: allow developers to change the key by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
     - code: [classes/salesforce.php](../classes/salesforce.php) and [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending upsert](./extending-upsert.md#change-the-key-or-value-for-the-upsert-match)
-- `salesforce_rest_api_modify_upsert_value`:
+- `object_sync_for_salesforce_modify_upsert_value`:
     - description: allow developers to change the value by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
     - code: [classes/salesforce.php](../classes/salesforce.php) and [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending upsert](./extending-upsert.md#change-the-key-or-value-for-the-upsert-match)
 
 ## Actions
 
-- `salesforce_rest_api_pre_pull`:
+- `object_sync_for_salesforce_pre_pull`:
     - description: run an action immediately before WordPress data is saved
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
-- `salesforce_rest_api_pull_fail`:
+- `object_sync_for_salesforce_pull_fail`:
     - description: what to do if a pull from Salesforce fails
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
-- `salesforce_rest_api_pull_success`:
+- `object_sync_for_salesforce_pull_success`:
     - description: what to do if a pull from Salesforce is successful
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
-- `salesforce_rest_api_pre_push`:
+- `object_sync_for_salesforce_pre_push`:
     - description: run an action immediately before Salesforce data is saved
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
-- `salesforce_rest_api_push_fail`:
+- `object_sync_for_salesforce_push_fail`:
     - description: what to do if a push to Salesforce fails
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
-- `salesforce_rest_api_push_success`:
+- `object_sync_for_salesforce_push_success`:
     - description: what to do if a push to Salesforce is successful
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
-- `salesforce_rest_api_set_more_user_data`:
+- `object_sync_for_salesforce_set_more_user_data`:
     - description: allow plugins to set more data on user objects when users are created or updated. This could be used for permissions, for example.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
-- `salesforce_rest_api_set_more_post_data`:
+- `object_sync_for_salesforce_set_more_post_data`:
     - description: allow plugins to set more data on post objects when posts are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
-- `salesforce_rest_api_set_more_comment_data`:
+- `object_sync_for_salesforce_set_more_comment_data`:
     - description: allow plugins to set more data on comment objects when comments are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
-- `salesforce_rest_api_set_more_attachment_data`:
+- `object_sync_for_salesforce_set_more_attachment_data`:
     - description: allow plugins to set more data on attachment objects when attachments are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
-- `salesforce_rest_api_set_more_term_data`:
+- `object_sync_for_salesforce_set_more_term_data`:
     - description: allow plugins to set more data on term objects when terms are created or updated.
     - code: [classes/wordpress.php](../classes/wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
@@ -158,5 +158,5 @@ This page lists all developer hooks available in this plugin, with links to wher
 
 There is not a hook for it, but this plugin does work with the Salesforce Analytics API.
 
-    - code: [classes/salesforce.php](../classes/salesforce.php)
-    - documentation: [using the salesforce analytics api](./using-salesforce-analytics-api.md)
+- code: [classes/salesforce.php](../classes/salesforce.php)
+- documentation: [using the salesforce analytics api](./using-salesforce-analytics-api.md)

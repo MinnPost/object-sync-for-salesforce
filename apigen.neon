@@ -1,8 +1,8 @@
 source: [
-	classes/, salesforce-rest-api.php
+	classes/, object-sync-for-salesforce.php
 ]
 destination: docs/code
-title: Salesforce REST API
+title: Object Sync for Salesforce
 php: no
 debug: yes
 todo: yes

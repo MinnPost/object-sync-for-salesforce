@@ -10,13 +10,13 @@ Several hooks in the plugin expand how upsert works. They can be used with `push
 
 ### Change the key or value for the upsert match
 
-Use the `salesforce_rest_api_modify_upsert_key` hook to change an upsert key, or what the field is, by which an object should be matched. This only runs when an upsert operation is already running.
+Use the `object_sync_for_salesforce_modify_upsert_key` hook to change an upsert key, or what the field is, by which an object should be matched. This only runs when an upsert operation is already running.
 
-Use the `salesforce_rest_api_modify_upsert_value` hook to change an upsert value, or what the field value is, by which an object should be matched. This only runs when an upsert operation is already running.
+Use the `object_sync_for_salesforce_modify_upsert_value` hook to change an upsert value, or what the field value is, by which an object should be matched. This only runs when an upsert operation is already running.
 
 ### Make a custom function for matching items
 
-This allows you to run entirely different functions to change what happens on an upsert. The `salesforce_rest_api_find_wp_object_match` runs on a `pull`, when the change happens in Salesforce. The `salesforce_rest_api_find_sf_object_match` runs on a `push`, when the change happens in WordPress.
+This allows you to run entirely different functions to change what happens on an upsert. The `object_sync_for_salesforce_find_wp_object_match` runs on a `pull`, when the change happens in Salesforce. The `object_sync_for_salesforce_find_sf_object_match` runs on a `push`, when the change happens in WordPress.
 
 #### Example
 
@@ -25,7 +25,7 @@ This is an example where email fields are mapped between Salesforce Contacts and
 The hook use expands the matching to check any of the email addresses associated with that Contact, and return the Contact ID for the object map if a match is found.
 
 ```
-add_filter( 'salesforce_rest_api_find_sf_object_match', find_sf_object_match', 10, 4 );
+add_filter( 'object_sync_for_salesforce_find_sf_object_match', find_sf_object_match', 10, 4 );
 function find_sf_object_match( $salesforce_id, $wordpress_object, $mapping = array(), $action ) {
     if ( $action === 'push' && $mapping['wordpress_object'] === 'user' ) {
         if ( is_object( $this->salesforce ) ) {
@@ -52,5 +52,3 @@ function find_sf_object_match( $salesforce_id, $wordpress_object, $mapping = arr
 }
 ```
 
-
-salesforce_rest_api_upsert_custom_wordpress_item (should be somewhere else though)

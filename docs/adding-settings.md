@@ -4,7 +4,7 @@ Developers can extend the settings interface for this plugin in a couple of ways
 
 ## Add a settings tab
 
-Use the `salesforce_rest_api_settings_tabs` hook to add a tab to the Salesforce settings.
+Use the `object_sync_for_salesforce_settings_tabs` hook to add a tab to the Salesforce settings.
 
 ### Visual example
 
@@ -23,7 +23,7 @@ The code takes two steps: one to add the tab, and one to populate it. The hook r
 #### Hook
 
 ```
-add_filter( 'salesforce_rest_api_settings_tabs', minnpost_tabs', 10, 1 );
+add_filter( 'object_sync_for_salesforce_settings_tabs', minnpost_tabs', 10, 1 );
 function minnpost_tabs( $tabs ) {
     $tabs['minnpost'] = 'MinnPost';
     return $tabs;
@@ -76,16 +76,16 @@ The contents for the admin settings tabs are displayed in PHP templates. The def
 
 #### Code example
 
-This hook sets a boolean value for whether or not the plugin should use the default template. To change or disable this, use the `salesforce_rest_api_settings_tab_include_settings` hook, which receives, and returns, a `TRUE` or `FALSE` for this setting.
+This hook sets a boolean value for whether or not the plugin should use the default template. To change or disable this, use the `object_sync_for_salesforce_settings_tab_include_settings` hook, which receives, and returns, a `true` or `false` for this setting.
 
 The hook also receives a variable for the currently activated tab in the plugin's settings. This allows you to use `$tab` to change only the tab(s) you want to change.
 
 ```
-add_filter( 'salesforce_rest_api_settings_tab_include_settings', change_template, 10, 2 );
-function change_template( $use_default_template = TRUE, $tab ) {
+add_filter( 'object_sync_for_salesforce_settings_tab_include_settings', change_template, 10, 2 );
+function change_template( $use_default_template = true, $tab ) {
     require_once( 'your-file.php' );
-    return FALSE;
-    // if you use return TRUE instead, the default file will be displayed after whatever you use, so you can combine with, or entirely replace, the plugin's default
+    return false;
+    // if you use return true instead, the default file will be displayed after whatever you use, so you can combine with, or entirely replace, the plugin's default
 }
 ```
 
@@ -98,8 +98,8 @@ There are two hooks that can add additional content to any/all of the plugin tab
 To add content before, you can do this:
 
 ```
-add_filter( 'salesforce_rest_api_settings_tab_content_before', add_content, 10, 2 );
-function add_content( $content_before = NULL, $tab ) {
+add_filter( 'object_sync_for_salesforce_settings_tab_content_before', add_content, 10, 2 );
+function add_content( $content_before = null, $tab ) {
     if ( $tab === 'minnpost' ) {
         $content_before = '<p>this is an intro.</p>';
     }
@@ -110,8 +110,8 @@ function add_content( $content_before = NULL, $tab ) {
 And for adding content after, you can do this:
 
 ```
-add_filter( 'salesforce_rest_api_settings_tab_content_after', add_content, 10, 2 );
-function add_content( $content_after = NULL, $tab ) {
+add_filter( 'object_sync_for_salesforce_settings_tab_content_after', add_content, 10, 2 );
+function add_content( $content_after = null, $tab ) {
     if ( $tab === 'minnpost' ) {
         $content_after = '<p>this is an outro.</p>';
     }

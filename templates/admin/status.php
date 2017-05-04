@@ -1,4 +1,4 @@
-<h3>Salesforce Demo</h3>
+<h3>Salesforce Status</h3>
 <p>Currently, we are using version <?php echo $this->login_credentials['rest_api_version']; ?> of the Salesforce REST API. Available versions are displayed below.</p>
 <table class="widefat striped">
 	<thead>

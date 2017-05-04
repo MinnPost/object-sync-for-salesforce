@@ -1,6 +1,6 @@
 {
-    "name": "minnpost/salesforce-rest-api",
-    "description": "Defines an API that enables WordPress to interact with the Salesforce REST API.",
+    "name": "minnpost/object-sync-for-salesforce",
+    "description": " WordPress plugin that implements mapping and syncing between Salesforce objects and WordPress objects ",
     "type": "wordpress-plugin",
     "license": "GPL-2.0",
     "minimum-stability": "dev",

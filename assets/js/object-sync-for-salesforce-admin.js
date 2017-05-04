@@ -90,7 +90,7 @@ function add_field_mapping_row() {
 		var salesforce_object = $('#salesforce_object').val();
 		var wordpress_object = $('#wordpress_object').val();
 		if (wordpress_object !== '' && salesforce_object !== '') {
-			var row_count = $('table.fields tbody tr').length;				
+			var row_count = $('table.fields tbody tr').length;
 			fieldmap_fields(wordpress_object, salesforce_object, row_count);
 			$(this).parent().find('.missing-object').remove();
 		} else {
@@ -192,11 +192,11 @@ function update_salesforce_user_summary() {
 
 // as the drupal plugin does, we only allow one field to be a prematch or key
 $(document).on('click', '.column-is_prematch input', function() {
-	$('.column-is_prematch input').not(this).prop('checked', false);  
+	$('.column-is_prematch input').not(this).prop('checked', false);
 });
 
 $(document).on('click', '.column-is_key input', function() {
-	$('.column-is_key input').not(this).prop('checked', false);  
+	$('.column-is_key input').not(this).prop('checked', false);
 });
 
 $(document).ready(function() {

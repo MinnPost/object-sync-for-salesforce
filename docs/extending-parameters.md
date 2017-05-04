@@ -23,7 +23,7 @@ $params = array(
 
 ### Hook
 
-The `push` method doesn't need to keep track of what methods are used to modify the data, since it is all being sent to the Salesforce API itself. The `salesforce_rest_api_push_params_modify` can modify the array as needed.
+The `push` method doesn't need to keep track of what methods are used to modify the data, since it is all being sent to the Salesforce API itself. The `object_sync_for_salesforce_push_params_modify` can modify the array as needed.
 
 #### Code example
 
@@ -39,7 +39,7 @@ The `push` method doesn't need to keep track of what methods are used to modify 
 +   Flag to enforce use of the SOAP API.
 + @param bool $is_new
 +   Indicates whether a mapping object for this entity already exists.
-add_filter( 'salesforce_rest_api_push_params_modify', change_push_params', 10, 6 );
+add_filter( 'object_sync_for_salesforce_push_params_modify', change_push_params', 10, 6 );
 function change_push_params( $params, $mapping, $object, $sf_sync_trigger, $use_soap, $is_new ) {
     $params = array(
         'email' => 'test@test.com',
@@ -89,7 +89,7 @@ $params = array(
 
 ### Hook
 
-The `pull` direction needs a method to read and modify the data in WordPress, and will call those methods. If you change them, they need to be methods the plugin can call. The `salesforce_rest_api_pull_params_modify` can modify the array as needed.
+The `pull` direction needs a method to read and modify the data in WordPress, and will call those methods. If you change them, they need to be methods the plugin can call. The `object_sync_for_salesforce_pull_params_modify` can modify the array as needed.
 
 #### Code example
 
@@ -105,7 +105,7 @@ The `pull` direction needs a method to read and modify the data in WordPress, an
 +   Flag to enforce use of the SOAP API.
 + @param bool $is_new
 +   Indicates whether a mapping object for this entity already exists.
-add_filter( 'salesforce_rest_api_pull_params_modify', change_pull_params', 10, 6 );
+add_filter( 'object_sync_for_salesforce_pull_params_modify', change_pull_params', 10, 6 );
 function change_pull_params( $params, $mapping, $object, $sf_sync_trigger, $use_soap, $is_new ) {
     $params = array(
         'first_name' => array ( // wordpress field name
