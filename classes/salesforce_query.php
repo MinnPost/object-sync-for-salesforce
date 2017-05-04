@@ -3,8 +3,8 @@
  * @file
  */
 
-if ( ! class_exists( 'Salesforce_Rest_API' ) ) {
-    die();
+if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
+	die();
 }
 
 /**
@@ -43,10 +43,10 @@ class Salesforce_Select_Query {
 	*/
 	public function add_condition( $field, $value, $operator = '=' ) {
 		if ( is_array( $value ) ) {
-			$value = "('" . implode("','", $value) . "')";
+			$value = "('" . implode( "','", $value ) . "')";
 
 			// Set operator to IN if wasn't already changed from the default.
-			if ( $operator == '=' ) {
+			if ( '=' === $operator ) {
 				$operator = 'IN';
 			}
 		}
@@ -54,7 +54,7 @@ class Salesforce_Select_Query {
 			'field' => $field,
 			'operator' => $operator,
 			'value' => $value,
-		);	
+		);
 	}
 
 	/**
@@ -71,7 +71,7 @@ class Salesforce_Select_Query {
 		$query .= implode( ', ', $this->fields );
 		$query .= ' FROM ' . $this->object_type;
 
-		if ( count( $this->conditions ) > 0) {
+		if ( count( $this->conditions ) > 0 ) {
 			$where = array();
 			foreach ( $this->conditions as $condition ) {
 				$where[] = implode( ' ', $condition );
