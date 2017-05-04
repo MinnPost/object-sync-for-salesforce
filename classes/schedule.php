@@ -73,8 +73,8 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 
 		// create an option in the core schedules array for each one the plugin defines
 		foreach ( $this->schedulable_classes as $key => $value ) {
-			$schedule_number = get_option( 'salesforce_api_' . $key . '_schedule_number', 0 );
-			$schedule_unit = get_option( 'salesforce_api_' . $key . '_schedule_unit', 0 );
+			$schedule_number = get_option( 'object_sync_for_salesforce_' . $key . '_schedule_number', 0 );
+			$schedule_unit = get_option( 'object_sync_for_salesforce_' . $key . '_schedule_unit', 0 );
 
 			switch ( $schedule_unit ) {
 				case 'minutes':
@@ -112,8 +112,8 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 	*/
 	public function get_schedule_frequency_key( $name = '' ) {
 
-		$schedule_number = get_option( 'salesforce_api_' . $name . '_schedule_number', '' );
-		$schedule_unit = get_option( 'salesforce_api_' . $name . '_schedule_unit', '' );
+		$schedule_number = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' );
+		$schedule_unit = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
 
 		switch ( $schedule_unit ) {
 			case 'minutes':
@@ -141,8 +141,8 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 	*/
 	public function get_schedule_frequency_seconds( $name = '' ) {
 
-		$schedule_number = get_option( 'salesforce_api_' . $name . '_schedule_number', '' );
-		$schedule_unit = get_option( 'salesforce_api_' . $name . '_schedule_unit', '' );
+		$schedule_number = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' );
+		$schedule_unit = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
 
 		switch ( $schedule_unit ) {
 			case 'minutes':
