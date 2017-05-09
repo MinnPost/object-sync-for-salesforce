@@ -104,7 +104,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Salesforce.html#10-1149" title="Go to source code">salesforce.php</a>
+			<b>Located at</b> <a href="source-class-Salesforce.html#10-1151" title="Go to source code">salesforce.php</a>
 		<br>
 	</div>
 
@@ -240,7 +240,7 @@ case-insensitive ID. If input is not 15-characters, return input unaltered.</p>
 
 				<h4>Returns</h4>
 				<div class="list">
-					string<br><p>sObject name, e.g. "Account", "Contact", "my__Custom_Object__c" or false
+					string<br><p>sObject name, e.g. "Account", "Contact", "my__Custom_Object__c" or FALSE
   if no match could be found.</p>
 				</div>
 
@@ -805,7 +805,7 @@ but it could be a performance boost to do it at scheduleable intervals instead.<
 
 				<h4>Returns</h4>
 				<div class="list">
-					array<br>Returns false if no identity has been stored.
+					array<br>Returns FALSE if no identity has been stored.
 				</div>
 
 
@@ -891,7 +891,7 @@ but it could be a performance boost to do it at scheduleable intervals instead.<
 
 		<td class="name"><div>
 		<a class="anchor" href="#_objects">#</a>
-		<code><a href="source-class-Salesforce.html#636-671" title="Go to source code">objects</a>( <span>array <var>$conditions</var> = <span class="php-keyword1">array</span>( <span class="php-quote">'updateable'</span> =&gt; <span class="php-keyword1">true</span>, <span class="php-quote">'triggerable'</span> =&gt; <span class="php-keyword1">true</span> )</span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Salesforce.html#636-671" title="Go to source code">objects</a>( <span>array <var>$conditions</var> = <span class="php-keyword1">array</span>( <span class="php-quote">'updateable'</span> =&gt; <span class="php-keyword1">TRUE</span>, <span class="php-quote">'triggerable'</span> =&gt; <span class="php-keyword1">TRUE</span> )</span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
 
 		<div class="description short">
 			<p>Available objects and their metadata for your organization's data.</p>
@@ -938,7 +938,7 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_query">#</a>
-		<code><a href="source-class-Salesforce.html#673-706" title="Go to source code">query</a>( <span>string <var>$query</var></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span>, <span>boolean <var>$all</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$explain</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Salesforce.html#673-706" title="Go to source code">query</a>( <span>string <var>$query</var></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span>, <span>boolean <var>$all</var> = <span class="php-keyword1">FALSE</span></span>, <span>boolean <var>$explain</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
 
 		<div class="description short">
 			<p>Use SOQL to get objects based on query string.</p>
@@ -985,7 +985,7 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_describe">#</a>
-		<code><a href="source-class-Salesforce.html#708-744" title="Go to source code">object_describe</a>( <span>string <var>$name</var></span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Salesforce.html#708-744" title="Go to source code">object_describe</a>( <span>string <var>$name</var></span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
 
 		<div class="description short">
 			<p>Retrieve all the metadata for an object.</p>
@@ -1166,8 +1166,8 @@ code: 201
 					array<br><p>json: {"success":true,"body":""}
 code: 204
 data:
-     success: 1
-     body:
+success: 1
+body:
 from_cache:
 cached:
 is_redo:</p>
@@ -1283,7 +1283,7 @@ is_redo:</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_run_analytics_report">#</a>
-		<code><a href="source-class-Salesforce.html#888-985" title="Go to source code">run_analytics_report</a>( <span>string <var>$id</var></span>, <span>boolean <var>$async</var> = <span class="php-keyword1">true</span></span>, <span>array <var>$clear_cache</var> = <span class="php-keyword1">false</span></span>, <span>string <var>$params</var> = <span class="php-keyword1">array</span>()</span>, <span> <var>$method</var> = <span class="php-quote">'GET'</span></span>, <span> <var>$report_cache_expiration</var> = <span class="php-quote">''</span></span>, <span> <var>$cache_instance</var> = <span class="php-keyword1">true</span></span>, <span> <var>$instance_cache_expiration</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Salesforce.html#888-987" title="Go to source code">run_analytics_report</a>( <span>string <var>$id</var></span>, <span>boolean <var>$async</var> = <span class="php-keyword1">TRUE</span></span>, <span>array <var>$clear_cache</var> = <span class="php-keyword1">False</span></span>, <span>string <var>$params</var> = <span class="php-keyword1">array</span>()</span>, <span> <var>$method</var> = <span class="php-quote">'GET'</span></span>, <span> <var>$report_cache_expiration</var> = <span class="php-quote">''</span></span>, <span> <var>$cache_instance</var> = <span class="php-keyword1">TRUE</span></span>, <span> <var>$instance_cache_expiration</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Run a specific Analytics report</p>
@@ -1340,7 +1340,7 @@ is_redo:</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_readby_external_id">#</a>
-		<code><a href="source-class-Salesforce.html#987-1004" title="Go to source code">object_readby_external_id</a>( <span>string <var>$name</var></span>, <span>string <var>$field</var></span>, <span>string <var>$value</var></span> )</code>
+		<code><a href="source-class-Salesforce.html#989-1006" title="Go to source code">object_readby_external_id</a>( <span>string <var>$name</var></span>, <span>string <var>$field</var></span>, <span>string <var>$value</var></span> )</code>
 
 		<div class="description short">
 			<p>Return a full loaded Salesforce object from External ID.</p>
@@ -1385,7 +1385,7 @@ is_redo:</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_delete">#</a>
-		<code><a href="source-class-Salesforce.html#1006-1022" title="Go to source code">object_delete</a>( <span>string <var>$name</var></span>, <span>string <var>$id</var></span> )</code>
+		<code><a href="source-class-Salesforce.html#1008-1024" title="Go to source code">object_delete</a>( <span>string <var>$name</var></span>, <span>string <var>$id</var></span> )</code>
 
 		<div class="description short">
 			<p>Delete a Salesforce object.</p>
@@ -1426,7 +1426,7 @@ is_redo:</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_deleted">#</a>
-		<code><a href="source-class-Salesforce.html#1024-1039" title="Go to source code">get_deleted</a>( <span>string <var>$type</var></span>, <span>string <var>$start_date</var></span>, <span>string <var>$end_date</var></span> )</code>
+		<code><a href="source-class-Salesforce.html#1026-1041" title="Go to source code">get_deleted</a>( <span>string <var>$type</var></span>, <span>string <var>$start_date</var></span>, <span>string <var>$end_date</var></span> )</code>
 
 		<div class="description short">
 			<p>Retrieves the list of individual objects that have been deleted within the
@@ -1473,7 +1473,7 @@ given timespan for a specified object type.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_list_resources">#</a>
-		<code><a href="source-class-Salesforce.html#1042-1056" title="Go to source code">list_resources</a>( )</code>
+		<code><a href="source-class-Salesforce.html#1044-1058" title="Go to source code">list_resources</a>( )</code>
 
 		<div class="description short">
 			<p>Return a list of available resources for the configured API version.</p>
@@ -1509,7 +1509,7 @@ given timespan for a specified object type.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_updated">#</a>
-		<code><a href="source-class-Salesforce.html#1058-1097" title="Go to source code">get_updated</a>( <span>string <var>$type</var></span>, <span>integer <var>$start</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$end</var> = <span class="php-keyword1">null</span> </span> )</code>
+		<code><a href="source-class-Salesforce.html#1060-1099" title="Go to source code">get_updated</a>( <span>string <var>$type</var></span>, <span>integer <var>$start</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$end</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 		<div class="description short">
 			<p>Return a list of SFIDs for the given object, which have been created or
@@ -1566,7 +1566,7 @@ updated in the given timeframe.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_record_type_id_by_developer_name">#</a>
-		<code><a href="source-class-Salesforce.html#1100-1137" title="Go to source code">get_record_type_id_by_developer_name</a>( <span>string <var>$name</var></span>, <span>string <var>$devname</var></span>, <span> <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Salesforce.html#1102-1139" title="Go to source code">get_record_type_id_by_developer_name</a>( <span>string <var>$name</var></span>, <span>string <var>$devname</var></span>, <span> <var>$reset</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
 
 		<div class="description short">
 			<p>Given a DeveloperName and SObject Name, return the SFID of the
@@ -1614,7 +1614,7 @@ environments, so it's safer to rely on compared to SFID.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cache_expiration">#</a>
-		<code><a href="source-class-Salesforce.html#1139-1147" title="Go to source code">cache_expiration</a>( )</code>
+		<code><a href="source-class-Salesforce.html#1141-1149" title="Go to source code">cache_expiration</a>( )</code>
 
 		<div class="description short">
 			<p>If there is a WordPress setting for how long to keep the cache, return it and set the object property

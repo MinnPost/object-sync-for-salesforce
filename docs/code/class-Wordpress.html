@@ -104,7 +104,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Wordpress.html#10-2182" title="Go to source code">wordpress.php</a>
+			<b>Located at</b> <a href="source-class-Wordpress.html#10-2053" title="Go to source code">wordpress.php</a>
 		<br>
 	</div>
 
@@ -559,7 +559,7 @@ we just need to make sure we get all applicable fields for the object itself, as
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#471-569" title="Go to source code">object_upsert</a>( <span>string <var>$name</var></span>, <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#471-564" title="Go to source code">object_upsert</a>( <span>string <var>$name</var></span>, <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span> <var>$push_drafts</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create new records or update existing records.</p>
@@ -586,9 +586,7 @@ the list of matching records.</p>
 					<dt><var>$params</var></dt>
 					<dd>Values of the fields to set for the object.</dd>
 					<dt><var>$push_drafts</var></dt>
-					<dd>Whether to save WordPress drafts when pushing to Salesforce</dd>
-					<dt><var>$check_only</var></dt>
-					<dd>Allows this method to only check for matching records, instead of making any data changes</dd>
+					<dd></dd>
 				</dl></div>
 
 				<h4>Returns</h4>
@@ -622,7 +620,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_update">#</a>
-		<code><a href="source-class-Wordpress.html#571-642" title="Go to source code">object_update</a>( <span>string <var>$name</var></span>, <span>string <var>$id</var></span>, <span>array <var>$params</var></span> )</code>
+		<code><a href="source-class-Wordpress.html#566-637" title="Go to source code">object_update</a>( <span>string <var>$name</var></span>, <span>string <var>$id</var></span>, <span>array <var>$params</var></span> )</code>
 
 		<div class="description short">
 			<p>Update an existing object.</p>
@@ -647,7 +645,7 @@ the list of matching records.</p>
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
-  success: 1
+success: 1
   "errors" : [ ],
   from_cache:
   cached:
@@ -672,7 +670,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_delete">#</a>
-		<code><a href="source-class-Wordpress.html#644-704" title="Go to source code">object_delete</a>( <span>string <var>$name</var></span>, <span>string <var>$id</var></span> )</code>
+		<code><a href="source-class-Wordpress.html#639-699" title="Go to source code">object_delete</a>( <span>string <var>$name</var></span>, <span>string <var>$id</var></span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress object.</p>
@@ -693,7 +691,7 @@ the list of matching records.</p>
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
-  success: 1
+success: 1
   "errors" : [ ],</p>
 
 <p>part of CRUD for WordPress objects</p>
@@ -717,7 +715,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_user_create">#</a>
-		<code><a href="source-class-Wordpress.html#706-795" title="Go to source code">user_create</a>( <span>array <var>$params</var></span>, <span> <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#701-790" title="Go to source code">user_create</a>( <span>array <var>$params</var></span>, <span> <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress user.</p>
@@ -739,7 +737,7 @@ the list of matching records.</p>
 				<div class="list">
 					array<br><p>data:
     ID : 123,
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -761,7 +759,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_user_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#797-919" title="Go to source code">user_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#792-900" title="Go to source code">user_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span> <var>$push_drafts</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress user or update it if a match is found.</p>
@@ -784,16 +782,14 @@ the list of matching records.</p>
 					<dt><var>$id_field</var></dt>
 					<dd>optional string of what the ID field is, if it is ever not ID</dd>
 					<dt><var>$push_drafts</var></dt>
-					<dd>Whether to save WordPress drafts when pushing to Salesforce</dd>
-					<dt><var>$check_only</var></dt>
-					<dd>Allows this method to only check for matching records, instead of making any data changes</dd>
+					<dd></dd>
 				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
     ID : 123,
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -815,7 +811,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_user_update">#</a>
-		<code><a href="source-class-Wordpress.html#921-971" title="Go to source code">user_update</a>( <span>string <var>$user_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#902-952" title="Go to source code">user_update</a>( <span>string <var>$user_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Update a WordPress user.</p>
@@ -838,7 +834,7 @@ the list of matching records.</p>
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -860,7 +856,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_user_delete">#</a>
-		<code><a href="source-class-Wordpress.html#973-991" title="Go to source code">user_delete</a>( <span>integer <var>$id</var></span>, <span>integer <var>$reassign</var> = <span class="php-keyword1">null</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#954-972" title="Go to source code">user_delete</a>( <span>integer <var>$id</var></span>, <span>integer <var>$reassign</var> = <span class="php-keyword1">NULL</span> </span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress user.</p>
@@ -876,7 +872,7 @@ the list of matching records.</p>
 					<dd>User ID</dd>
 					<dt><var>$reassign</var></dt>
 					<dd><p>If we should reassign any posts to other users
-  We don't change this from null anywhere in this plugin</p></dd>
+  We don't change this from NULL anywhere in this plugin</p></dd>
 				</dl></div>
 
 				<h4>Returns</h4>
@@ -902,7 +898,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_post_create">#</a>
-		<code><a href="source-class-Wordpress.html#993-1063" title="Go to source code">post_create</a>( <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#974-1044" title="Go to source code">post_create</a>( <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress post.</p>
@@ -926,7 +922,7 @@ the list of matching records.</p>
 				<div class="list">
 					array<br><p>data:
     ID : 123,
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -948,7 +944,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_post_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#1065-1214" title="Go to source code">post_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">'post'</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1046-1164" title="Go to source code">post_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">FALSE</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">'post'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress post or update it if a match is found.</p>
@@ -974,15 +970,13 @@ the list of matching records.</p>
 					<dd>indicates whether we should match against draft posts</dd>
 					<dt><var>$post_type</var></dt>
 					<dd>optional string for custom post type, if applicable</dd>
-					<dt><var>$check_only</var></dt>
-					<dd>Allows this method to only check for matching records, instead of making any data changes</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
     ID : 123,
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -1004,7 +998,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_post_update">#</a>
-		<code><a href="source-class-Wordpress.html#1216-1279" title="Go to source code">post_update</a>( <span>string <var>$post_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1166-1229" title="Go to source code">post_update</a>( <span>string <var>$post_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Update a WordPress post.</p>
@@ -1029,7 +1023,7 @@ the list of matching records.</p>
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -1051,7 +1045,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_post_delete">#</a>
-		<code><a href="source-class-Wordpress.html#1281-1297" title="Go to source code">post_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1231-1247" title="Go to source code">post_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress post.</p>
@@ -1067,7 +1061,7 @@ the list of matching records.</p>
 					<dd>Post ID</dd>
 					<dt><var>$force_delete</var></dt>
 					<dd><p>If we should bypass the trash
-  We don't change this from false anywhere in this plugin</p></dd>
+  We don't change this from FALSE anywhere in this plugin</p></dd>
 				</dl></div>
 
 				<h4>Returns</h4>
@@ -1093,7 +1087,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachment_create">#</a>
-		<code><a href="source-class-Wordpress.html#1299-1366" title="Go to source code">attachment_create</a>( <span>array <var>$params</var></span>, <span> <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1249-1316" title="Go to source code">attachment_create</a>( <span>array <var>$params</var></span>, <span> <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress attachment.</p>
@@ -1115,7 +1109,7 @@ the list of matching records.</p>
 				<div class="list">
 					array<br><p>data:
     ID : 123,
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -1137,7 +1131,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachment_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#1368-1490" title="Go to source code">attachment_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1318-1429" title="Go to source code">attachment_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress attachment or update it if a match is found.</p>
@@ -1159,15 +1153,13 @@ the list of matching records.</p>
 					<dd>array of attachment data params</dd>
 					<dt><var>$id_field</var></dt>
 					<dd>optional string of what the ID field is, if it is ever not ID</dd>
-					<dt><var>$check_only</var></dt>
-					<dd>Allows this method to only check for matching records, instead of making any data changes</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
     ID : 123,
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -1189,7 +1181,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachment_update">#</a>
-		<code><a href="source-class-Wordpress.html#1492-1582" title="Go to source code">attachment_update</a>( <span>string <var>$attachment_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1431-1522" title="Go to source code">attachment_update</a>( <span>string <var>$attachment_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Update a WordPress attachment.</p>
@@ -1212,7 +1204,7 @@ the list of matching records.</p>
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
-  success: 1
+success: 1
   "errors" : [ ],</p>
 
 <p>Note: this method uses wp_insert_attachment for core content fields as there isn't a corresponding method for updating these rows
@@ -1238,7 +1230,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachment_delete">#</a>
-		<code><a href="source-class-Wordpress.html#1584-1600" title="Go to source code">attachment_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1524-1540" title="Go to source code">attachment_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress attachment.</p>
@@ -1254,7 +1246,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 					<dd>Attachment ID</dd>
 					<dt><var>$force_delete</var></dt>
 					<dd><p>If we should bypass the trash
-  We don't change this from false anywhere in this plugin</p></dd>
+  We don't change this from FALSE anywhere in this plugin</p></dd>
 				</dl></div>
 
 				<h4>Returns</h4>
@@ -1280,7 +1272,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_term_create">#</a>
-		<code><a href="source-class-Wordpress.html#1602-1671" title="Go to source code">term_create</a>( <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1542-1611" title="Go to source code">term_create</a>( <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress term.</p>
@@ -1304,7 +1296,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 				<div class="list">
 					array<br><p>data:
     ID : 123,
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -1326,7 +1318,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_term_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#1673-1793" title="Go to source code">term_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1613-1697" title="Go to source code">term_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span> <var>$push_drafts</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress term or update it if a match is found.</p>
@@ -1351,16 +1343,14 @@ developers should use hooks to change this, if it does not meet their needs</p>
 					<dt><var>$id_field</var></dt>
 					<dd>optional string of what the ID field is, if it is ever not ID</dd>
 					<dt><var>$push_drafts</var></dt>
-					<dd>Whether to save WordPress drafts when pushing to Salesforce</dd>
-					<dt><var>$check_only</var></dt>
-					<dd>Allows this method to only check for matching records, instead of making any data changes</dd>
+					<dd></dd>
 				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
     ID : 123,
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -1382,7 +1372,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_term_update">#</a>
-		<code><a href="source-class-Wordpress.html#1795-1859" title="Go to source code">term_update</a>( <span>string <var>$term_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1699-1763" title="Go to source code">term_update</a>( <span>string <var>$term_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Update a WordPress term.</p>
@@ -1407,7 +1397,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -1429,7 +1419,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_term_delete">#</a>
-		<code><a href="source-class-Wordpress.html#1861-1879" title="Go to source code">term_delete</a>( <span>string <var>$term_id</var></span>, <span>string <var>$taxonomy</var></span> )</code>
+		<code><a href="source-class-Wordpress.html#1765-1783" title="Go to source code">term_delete</a>( <span>string <var>$term_id</var></span>, <span>string <var>$taxonomy</var></span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress term.</p>
@@ -1470,7 +1460,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_comment_create">#</a>
-		<code><a href="source-class-Wordpress.html#1881-1955" title="Go to source code">comment_create</a>( <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1785-1859" title="Go to source code">comment_create</a>( <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress comment.</p>
@@ -1492,7 +1482,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 				<div class="list">
 					array<br><p>data:
     ID : 123,
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -1514,7 +1504,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_comment_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#1957-2098" title="Go to source code">comment_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#1861-1969" title="Go to source code">comment_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span></span>, <span> <var>$push_drafts</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress comment or update it if a match is found.</p>
@@ -1537,16 +1527,14 @@ developers should use hooks to change this, if it does not meet their needs</p>
 					<dt><var>$id_field</var></dt>
 					<dd>optional string of what the ID field is, if it is ever not comment_ID</dd>
 					<dt><var>$push_drafts</var></dt>
-					<dd>Whether to save WordPress drafts when pushing to Salesforce</dd>
-					<dt><var>$check_only</var></dt>
-					<dd>Allows this method to only check for matching records, instead of making any data changes</dd>
+					<dd></dd>
 				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
     ID : 123,
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -1568,7 +1556,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_comment_update">#</a>
-		<code><a href="source-class-Wordpress.html#2100-2162" title="Go to source code">comment_update</a>( <span>string <var>$comment_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span> </span>, <span>string <var>$id_field</var>,…</span> )</code>
+		<code><a href="source-class-Wordpress.html#1971-2033" title="Go to source code">comment_update</a>( <span>string <var>$comment_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span> </span>, <span>string <var>$id_field</var>,…</span> )</code>
 
 		<div class="description short">
 			<p>Update a WordPress comment.</p>
@@ -1594,7 +1582,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>data:
-  success: 1
+success: 1
   "errors" : [ ],</p>
 				</div>
 
@@ -1616,7 +1604,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_comment_delete">#</a>
-		<code><a href="source-class-Wordpress.html#2164-2180" title="Go to source code">comment_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Wordpress.html#2035-2051" title="Go to source code">comment_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">FALSE</span> </span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress comment.</p>
@@ -1632,7 +1620,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 					<dd>Comment ID</dd>
 					<dt><var>$force_delete</var></dt>
 					<dd><p>If we should bypass the trash
-  We don't change this from false anywhere in this plugin</p></dd>
+  We don't change this from FALSE anywhere in this plugin</p></dd>
 				</dl></div>
 
 				<h4>Returns</h4>
