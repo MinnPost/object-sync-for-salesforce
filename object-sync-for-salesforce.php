@@ -92,7 +92,7 @@ class Object_Sync_Salesforce {
 	 * Static property to hold an instance of the class; this seems to make it reusable
 	 *
 	 */
-	static $instance = NULL;
+	static $instance = null;
 
 	/**
 	* Load the static $instance property that holds the instance of the class.
@@ -103,7 +103,7 @@ class Object_Sync_Salesforce {
 	*
 	*/
 	static public function get_instance() {
-		if ( self::$instance === NULL ) {
+		if ( null === self::$instance ) {
 			self::$instance = new Object_Sync_Salesforce();
 		}
 		return self::$instance;
@@ -124,27 +124,27 @@ class Object_Sync_Salesforce {
 		$this->text_domain = 'object-sync-for-salesforce';
 
 		$this->schedulable_classes = array(
-            'salesforce_push' => array(
-                'label' => 'Push to Salesforce',
-                'class' => 'Salesforce_Push',
-                'callback' => 'salesforce_push_sync_rest',
-            ),
-            'salesforce_pull' => array(
-                'label' => 'Pull from Salesforce',
-                'class' => 'Salesforce_Pull',
-                'initializer' => 'salesforce_pull',
-                'callback' => 'salesforce_pull_process_records'
-            ),
-            'salesforce' => array(
-                'label' => 'Salesforce Authorization',
-                'class' => 'Salesforce'
-            )
-        );
+			'salesforce_push' => array(
+			    'label' => 'Push to Salesforce',
+			    'class' => 'Salesforce_Push',
+			    'callback' => 'salesforce_push_sync_rest',
+			),
+			'salesforce_pull' => array(
+			    'label' => 'Pull from Salesforce',
+			    'class' => 'Salesforce_Pull',
+			    'initializer' => 'salesforce_pull',
+			    'callback' => 'salesforce_pull_process_records',
+			),
+			'salesforce' => array(
+			    'label' => 'Salesforce Authorization',
+			    'class' => 'Salesforce',
+			)
+		);
 
-        // users can modify the list of schedulable classes
-        $this->schedulable_classes = apply_filters( 'object_sync_for_salesforce_modify_schedulable_classes', $this->schedulable_classes );
+		// users can modify the list of schedulable classes
+		$this->schedulable_classes = apply_filters( 'object_sync_for_salesforce_modify_schedulable_classes', $this->schedulable_classes );
 
-        // example to modify the array of classes by adding one and removing one
+		// example to modify the array of classes by adding one and removing one
 		/*
 		add_filter( 'object_sync_for_salesforce_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
 		function modify_schedulable_classes( $schedulable_classes ) {
@@ -268,7 +268,10 @@ class Object_Sync_Salesforce {
 				$is_authorized = true;
 			}
 		}
-		return array( 'is_authorized' => $is_authorized, 'sfapi' => $sfapi );
+		return array(
+			'is_authorized' => $is_authorized,
+			'sfapi' => $sfapi,
+		);
 	}
 
 	/**
@@ -422,12 +425,12 @@ class Object_Sync_Salesforce {
 	*/
 	private function get_login_credentials() {
 
-		$consumer_key = defined('SALESFORCE_CONSUMER_KEY') ? SALESFORCE_CONSUMER_KEY : get_option( 'object_sync_for_salesforce_consumer_key', '' );
-		$consumer_secret = defined('SALESFORCE_CONSUMER_SECRET') ? SALESFORCE_CONSUMER_SECRET : get_option( 'object_sync_for_salesforce_consumer_secret', '' );
-		$callback_url = defined('SALESFORCE_CALLBACK_URL') ? SALESFORCE_CALLBACK_URL : get_option( 'object_sync_for_salesforce_callback_url', '' );
-		$login_base_url = defined('SALESFORCE_LOGIN_BASE_URL') ? SALESFORCE_LOGIN_BASE_URL : get_option( 'object_sync_for_salesforce_login_base_url', '' );
-		$authorize_url_path = defined('SALESFORCE_AUTHORIZE_URL_PATH') ? SALESFORCE_AUTHORIZE_URL_PATH : get_option( 'object_sync_for_salesforce_authorize_url_path', '' );
-		$token_url_path = defined('SALESFORCE_TOKEN_URL_PATH') ? SALESFORCE_TOKEN_URL_PATH : get_option( 'object_sync_for_salesforce_token_url_path', '' );
+		$consumer_key = defined( 'SALESFORCE_CONSUMER_KEY' ) ? SALESFORCE_CONSUMER_KEY : get_option( 'object_sync_for_salesforce_consumer_key', '' );
+		$consumer_secret = defined( 'SALESFORCE_CONSUMER_SECRET' ) ? SALESFORCE_CONSUMER_SECRET : get_option( 'object_sync_for_salesforce_consumer_secret', '' );
+		$callback_url = defined( 'SALESFORCE_CALLBACK_URL' ) ? SALESFORCE_CALLBACK_URL : get_option( 'object_sync_for_salesforce_callback_url', '' );
+		$login_base_url = defined( 'SALESFORCE_LOGIN_BASE_URL' ) ? SALESFORCE_LOGIN_BASE_URL : get_option( 'object_sync_for_salesforce_login_base_url', '' );
+		$authorize_url_path = defined( 'SALESFORCE_AUTHORIZE_URL_PATH' ) ? SALESFORCE_AUTHORIZE_URL_PATH : get_option( 'object_sync_for_salesforce_authorize_url_path', '' );
+		$token_url_path = defined( 'SALESFORCE_TOKEN_URL_PATH' ) ? SALESFORCE_TOKEN_URL_PATH : get_option( 'object_sync_for_salesforce_token_url_path', '' );
 		$api_version = defined( 'SALESFORCE_API_VERSION' ) ? SALESFORCE_API_VERSION : get_option( 'object_sync_for_salesforce_api_version', '' );
 
 		$login_credentials = array(
