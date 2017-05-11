@@ -539,7 +539,7 @@ class Wordpress_Salesforce_Admin {
 					'section' => $key,
 					'args' => array(
 						'type' => 'number',
-						'validate' => 'sanitize_text_field',
+						'validate' => 'absint',
 						'desc' => '',
 						'constant' => '',
 					),
@@ -622,7 +622,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'checkbox',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'absint',
 					'desc' => '',
 					'constant' => '',
 				),
@@ -667,7 +667,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'checkbox',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'absint',
 					'desc' => '',
 					'constant' => '',
 				),
@@ -692,7 +692,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'number',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'absint',
 					'desc' => '',
 					'default' => '1',
 					'constant' => '',
