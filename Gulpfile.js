@@ -71,7 +71,7 @@ gulp.task( 'clean:styles', () =>
  * https://www.npmjs.com/package/css-mqpacker
  */
 gulp.task( 'postcss', [ 'clean:styles' ], () =>
-	gulp.src( 'sass/*.scss', paths.css )
+	gulp.src( 'assets/sass/*.scss', paths.css )
 
 		// Deal with errors.
 		.pipe( plumber( {'errorHandler': handleErrors} ) )
@@ -263,7 +263,7 @@ gulp.task( 'wp-pot', [ 'clean:pot' ], () =>
  */
 gulp.task( 'sass:lint', () =>
 	gulp.src( [
-		'sass/**/*.scss',
+		'assets/sass/**/*.scss',
 		'!node_modules/**'
 	] )
 		.pipe( sassLint() )
