@@ -122,7 +122,7 @@
 </span></span><span id="37" class="l"><a href="#37"> 37: </a><span class="php-comment">    * Create database tables for Salesforce
 </span></span><span id="38" class="l"><a href="#38"> 38: </a><span class="php-comment">    * This creates tables for fieldmaps (between types of objects) and object maps (between indidual instances of objects)
 </span></span><span id="39" class="l"><a href="#39"> 39: </a><span class="php-comment">    *
-</span></span><span id="40" class="l"><a href="#40"> 40: </a><span class="php-comment">    */</span> 
+</span></span><span id="40" class="l"><a href="#40"> 40: </a><span class="php-comment">    */</span>
 </span><span id="41" class="l"><a href="#41"> 41: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> wordpress_salesforce_tables() {
 </span><span id="42" class="l"><a href="#42"> 42: </a>
 </span><span id="43" class="l"><a href="#43"> 43: </a>        <span class="php-var">$charset_collate</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;get_charset_collate();
@@ -181,9 +181,9 @@
 </span></span><span id="96" class="l"><a href="#96"> 96: </a><span class="php-comment">    * Check for database version on plugin upgrade
 </span></span><span id="97" class="l"><a href="#97"> 97: </a><span class="php-comment">    * When the plugin is upgraded, if the database version does not match the current version, perform these methods
 </span></span><span id="98" class="l"><a href="#98"> 98: </a><span class="php-comment">    *
-</span></span><span id="99" class="l"><a href="#99"> 99: </a><span class="php-comment">    */</span> 
+</span></span><span id="99" class="l"><a href="#99"> 99: </a><span class="php-comment">    */</span>
 </span><span id="100" class="l"><a href="#100">100: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> wordpress_salesforce_update_db_check() {
-</span><span id="101" class="l"><a href="#101">101: </a>        <span class="php-keyword1">if</span> ( get_site_option( <span class="php-quote">'object_sync_for_salesforce_db_version'</span> ) != <span class="php-var">$this</span>-&gt;version ) {
+</span><span id="101" class="l"><a href="#101">101: </a>        <span class="php-keyword1">if</span> ( get_site_option( <span class="php-quote">'object_sync_for_salesforce_db_version'</span> ) !== <span class="php-var">$this</span>-&gt;version ) {
 </span><span id="102" class="l"><a href="#102">102: </a>            <span class="php-var">$this</span>-&gt;wordpress_salesforce_tables();
 </span><span id="103" class="l"><a href="#103">103: </a>        }
 </span><span id="104" class="l"><a href="#104">104: </a>    }
@@ -194,7 +194,7 @@
 </span></span><span id="109" class="l"><a href="#109">109: </a><span class="php-comment">    *
 </span></span><span id="110" class="l"><a href="#110">110: </a><span class="php-comment">    * It also allows other plugins to add the capability to other roles
 </span></span><span id="111" class="l"><a href="#111">111: </a><span class="php-comment">    *
-</span></span><span id="112" class="l"><a href="#112">112: </a><span class="php-comment">    */</span> 
+</span></span><span id="112" class="l"><a href="#112">112: </a><span class="php-comment">    */</span>
 </span><span id="113" class="l"><a href="#113">113: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> add_roles_capabilities() {
 </span><span id="114" class="l"><a href="#114">114: </a>
 </span><span id="115" class="l"><a href="#115">115: </a>        <span class="php-comment">// by default, only administrators can configure the plugin</span>
@@ -202,20 +202,20 @@
 </span><span id="117" class="l"><a href="#117">117: </a>        <span class="php-var">$role</span>-&gt;add_cap( <span class="php-quote">'configure_salesforce'</span> );
 </span><span id="118" class="l"><a href="#118">118: </a>
 </span><span id="119" class="l"><a href="#119">119: </a>        <span class="php-comment">// hook that allows other roles to configure the plugin as well</span>
-</span><span id="120" class="l"><a href="#120">120: </a>        <span class="php-var">$roles</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_roles_configure_salesforce'</span>, <span class="php-keyword1">NULL</span> );
+</span><span id="120" class="l"><a href="#120">120: </a>        <span class="php-var">$roles</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_roles_configure_salesforce'</span>, <span class="php-keyword1">null</span> );
 </span><span id="121" class="l"><a href="#121">121: </a>
 </span><span id="122" class="l"><a href="#122">122: </a>        <span class="php-comment">// for each role that we have, give it the configure salesforce capability</span>
-</span><span id="123" class="l"><a href="#123">123: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">NULL</span> !== <span class="php-var">$roles</span> ) {
+</span><span id="123" class="l"><a href="#123">123: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> !== <span class="php-var">$roles</span> ) {
 </span><span id="124" class="l"><a href="#124">124: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$roles</span> <span class="php-keyword1">as</span> <span class="php-var">$role</span> ) {
-</span><span id="125" class="l"><a href="#125">125: </a>                <span class="php-keyword2">error_log</span>(<span class="php-quote">'add configure salesforce to role '</span> . <span class="php-var">$role</span>);
-</span><span id="126" class="l"><a href="#126">126: </a>                <span class="php-var">$role</span> = get_role( <span class="php-var">$role</span> );
-</span><span id="127" class="l"><a href="#127">127: </a>                <span class="php-var">$role</span>-&gt;add_cap( <span class="php-quote">'configure_salesforce'</span> );
-</span><span id="128" class="l"><a href="#128">128: </a>            }
-</span><span id="129" class="l"><a href="#129">129: </a>        }
-</span><span id="130" class="l"><a href="#130">130: </a>        
-</span><span id="131" class="l"><a href="#131">131: </a>    }
-</span><span id="132" class="l"><a href="#132">132: </a>
-</span><span id="133" class="l"><a href="#133">133: </a>}</span></code></pre>
+</span><span id="125" class="l"><a href="#125">125: </a>                <span class="php-var">$role</span> = get_role( <span class="php-var">$role</span> );
+</span><span id="126" class="l"><a href="#126">126: </a>                <span class="php-var">$role</span>-&gt;add_cap( <span class="php-quote">'configure_salesforce'</span> );
+</span><span id="127" class="l"><a href="#127">127: </a>            }
+</span><span id="128" class="l"><a href="#128">128: </a>        }
+</span><span id="129" class="l"><a href="#129">129: </a>
+</span><span id="130" class="l"><a href="#130">130: </a>    }
+</span><span id="131" class="l"><a href="#131">131: </a>
+</span><span id="132" class="l"><a href="#132">132: </a>}
+</span><span id="133" class="l"><a href="#133">133: </a></span></code></pre>
 
 	<div id="footer">
 		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>
