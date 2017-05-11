@@ -238,7 +238,7 @@ class Salesforce_Mapping {
 					$posted['is_delete'][ $key ] = false;
 				}
 				if ( false === $posted['is_delete'][ $key ] ) {
-					$updateable_key = array_search( $posted['salesforce_field'][$key], array_column( $salesforce_fields, 'name' ) );
+					$updateable_key = array_search( $posted['salesforce_field'][ $key ], array_column( $salesforce_fields, 'name' ) );
 					$setup['fields'][ $key ] = array(
 						'wordpress_field' => array(
 							'label' => sanitize_text_field( $posted['wordpress_field'][ $key ] ),
@@ -586,7 +586,7 @@ class Salesforce_Mapping {
 				if ( 1 !== (int) $fieldmap['salesforce_field']['updateable'] ) {
 					continue;
 				}
-				
+
 				$params[ $fieldmap['salesforce_field']['label'] ] = $object[ $fieldmap['wordpress_field']['label'] ];
 
 				// if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
@@ -598,7 +598,7 @@ class Salesforce_Mapping {
 					$params['key'] = array(
 						'salesforce_field' => $salesforce_field,
 						'wordpress_field' => $wordpress_field,
-						'value' => $object[ $fieldmap['wordpress_field']['label'] ]
+						'value' => $object[ $fieldmap['wordpress_field']['label'] ],
 					);
 				}
 
@@ -607,7 +607,7 @@ class Salesforce_Mapping {
 					$params['prematch'] = array(
 						'salesforce_field' => $salesforce_field,
 						'wordpress_field' => $wordpress_field,
-						'value' => $object[ $fieldmap['wordpress_field']['label'] ]
+						'value' => $object[ $fieldmap['wordpress_field']['label'] ],
 					);
 				}
 			} elseif ( in_array( $trigger, $salesforce_haystack ) ) {
