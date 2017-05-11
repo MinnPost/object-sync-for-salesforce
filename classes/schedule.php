@@ -73,7 +73,7 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 
 		// create an option in the core schedules array for each one the plugin defines
 		foreach ( $this->schedulable_classes as $key => $value ) {
-			$schedule_number = get_option( 'object_sync_for_salesforce_' . $key . '_schedule_number', '' );
+			$schedule_number = absint( get_option( 'object_sync_for_salesforce_' . $key . '_schedule_number', '' ) );
 			$schedule_unit = get_option( 'object_sync_for_salesforce_' . $key . '_schedule_unit', '' );
 
 			switch ( $schedule_unit ) {
