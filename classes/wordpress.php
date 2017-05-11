@@ -1545,6 +1545,12 @@ class Wordpress {
 			if ( isset( $posts[0]->{$id_field} ) ) {
 				// attachment does exist after checking the matching value. we want its id
 				$attachment_id = $posts[0]->{$id_field};
+
+				if ( true === $check_only ) {
+					// we are just checking to see if there is a match
+					return $attachment_id;
+				}
+
 				// on the prematch fields, we specify the method_update param
 				if ( isset( $methods['method_update'] ) ) {
 					$method = $methods['method_update'];
@@ -1556,7 +1562,7 @@ class Wordpress {
 					'method_modify' => $method,
 					'method_read' => $methods['method_read'],
 				);
-			} else {
+			} elseif ( false === $check_only ) {
 				// attachment does not exist after checking the matching value. create it.
 				// on the prematch fields, we specify the method_create param
 				if ( isset( $methods['method_create'] ) ) {
@@ -1571,17 +1577,51 @@ class Wordpress {
 				);
 				$result = $this->attachment_create( $params );
 				return $result;
-			}
+			} else {
+				// check only is true but there's not an attachment yet
+				return null;
+			} // End if().
 		} else {
-			// there is no method by which to check the attachment. we can check other ways here.
+			// there is no method by which to check the post. we can check other ways here.
 			$params[ $key ] = array(
 				'value' => $value,
 				'method_modify' => $methods['method_modify'],
 				'method_read' => $methods['method_read'],
 			);
 
-			// attachment does not exist after more checking. we want to create it
-			$result = $this->attachment_create( $params );
+			// if we have a title, use it to check for existing post
+			if ( isset( $params['post_title']['value'] ) ) {
+				$title = $params['post_title']['value'];
+			}
+
+			// if we have content, use it to check for existing post
+			if ( isset( $params['post_content']['value'] ) ) {
+				$content = $params['post_content']['value'];
+			} else {
+				$content = '';
+			}
+
+			// if we have a date, use it to check for existing post
+			if ( isset( $params['post_date']['value'] ) ) {
+				$date = $params['post_date']['value'];
+			} else {
+				$date = '';
+			}
+
+			$existing_id = post_exists( $title, $content, $date ); // returns an id if there is a result
+
+			// attachment does not exist after more checking. maybe we want to create it
+			if ( null === $existing_id && false === $check_only ) {
+				$result = $this->attachment_create( $params );
+				return $result;
+			} elseif ( true === $check_only ) {
+				// we are just checking to see if there is a match
+				return $existing_id;
+			} else {
+				// attachment does exist based on fields, and we aren't doing a check only. we want to update the wp attachment here.
+				$attachment_id = $existing_id;
+			}
+
 			return $result;
 
 		} // End if().
