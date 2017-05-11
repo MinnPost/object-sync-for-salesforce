@@ -2194,6 +2194,12 @@ class Wordpress {
 				$comment = $comments[0];
 				// comment does exist after checking the matching value. we want its id
 				$comment_id = $comment->{$id_field};
+
+				if ( true === $check_only ) {
+					// we are just checking to see if there is a match
+					return $comment_id;
+				}
+
 				// on the prematch fields, we specify the method_update param
 				if ( isset( $methods['method_update'] ) ) {
 					$method = $methods['method_update'];
@@ -2220,7 +2226,7 @@ class Wordpress {
 					0,
 					$status
 				);
-			} else {
+			} elseif ( false === $check_only ) {
 				// comment does not exist after checking the matching value. create it.
 				// on the prematch fields, we specify the method_create param
 				if ( isset( $methods['method_create'] ) ) {
@@ -2235,7 +2241,45 @@ class Wordpress {
 				);
 				$result = $this->comment_create( $params, $id_field );
 				return $result;
+			} else {
+				// check only is true but there's not a comment yet
+				return null;
 			} // End if().
+		} else {
+			// there is no method by which to check the comment. we can check other ways here.
+			$params[ $key ] = array(
+				'value' => $value,
+				'method_modify' => $methods['method_modify'],
+				'method_read' => $methods['method_read'],
+			);
+
+			if ( isset( $params['comment_author']['value'] ) ) {
+				$comment_author = $params['comment_author']['value'];
+			}
+
+			if ( isset( $params['comment_date']['value'] ) ) {
+				$comment_date = $params['comment_date']['value'];
+			}
+
+			if ( isset( $params['timezone']['value'] ) ) {
+				$timezone = $params['timezone']['value'];
+			} else {
+				$timezone = 'blog';
+			}
+
+			$existing_id = comment_exists( $comment_author, $comment_date, $timezone ); // returns an id if there is a result
+
+			// comment does not exist after more checking. we want to create it
+			if ( null === $existing_id && false === $check_only ) {
+				$result = $this->comment_create( $params, $id_field );
+				return $result;
+			} elseif ( true === $check_only ) {
+				// we are just checking to see if there is a match
+				return $existing_id;
+			} else {
+				// comment does exist based on username, and we aren't doing a check only. we want to update the wp user here.
+				$comment_id = $existing_id;
+			}
 		} // End if().
 
 		if ( isset( $comment_id ) ) {

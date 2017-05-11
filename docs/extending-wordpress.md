@@ -117,7 +117,7 @@ function upsert_object( $create_data ) {
         'id_field' => $id_field,
         'push_drafts' => $push_drafts,
         'name' => $name,
-        'check_only' => $check_only
+        'check_only' => $check_only,
     );
     */
     // run methods here to upsert record in the database
