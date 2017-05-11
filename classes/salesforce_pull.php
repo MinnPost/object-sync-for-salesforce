@@ -81,7 +81,7 @@ class Salesforce_Pull {
 	*/
 	public function salesforce_pull_webhook() {
 
-		if ( $this->salesforce_pull() === true ) {
+		if ( true === $this->salesforce_pull() ) {
 			$code = '200';
 			// check to see if anything is in the queue and handle it if it is
 			$this->schedule->maybe_handle();
@@ -168,7 +168,8 @@ class Salesforce_Pull {
 
 			$soql = $this->get_pull_query( $type, $salesforce_mapping );
 
-			if ( empty( $soql ) ) {
+			// get_pull_query returns null if it has no matching fields
+			if ( null === $soql ) {
 				continue;
 			}
 
