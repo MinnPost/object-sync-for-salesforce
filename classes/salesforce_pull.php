@@ -368,8 +368,13 @@ class Salesforce_Pull {
 			$type = $salesforce_mapping['salesforce_object'];
 
 			// Iterate over each field mapping to determine our parameters.
-			foreach ( $this->mappings->get_fieldmaps( null, array( 'salesforce_object' => $type ) ) as $mapping ) {
-
+			foreach (
+				$this->mappings->get_fieldmaps(
+					null,
+					array(
+						'salesforce_object' => $type,
+					)
+				) as $mapping ) {
 				$last_delete_sync = get_option( 'object_sync_for_salesforce_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 				$now = current_time( 'timestamp', true );
 
@@ -393,6 +398,7 @@ class Salesforce_Pull {
 				}
 
 				foreach ( $deleted['data']['deletedRecords'] as $result ) {
+
 					// salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?
 					if ( ! isset( $result['Id'] ) && isset( $result['id'] ) ) {
 						$result['Id'] = $result['id'];
@@ -401,9 +407,8 @@ class Salesforce_Pull {
 						'object_type' => $type,
 						'object' => $result,
 						'mapping' => $mapping,
-						'sf_sync_trigger' => $this->mappings->sync_sf_delete // sf delete trigger
+						'sf_sync_trigger' => $this->mappings->sync_sf_delete, // sf delete trigger
 					);
-					error_log('push to queue deletion now');
 					$this->schedule->push_to_queue( $data );
 					$this->schedule->save()->dispatch();
 
@@ -411,8 +416,8 @@ class Salesforce_Pull {
 
 				update_option( 'object_sync_for_salesforce_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 
-			}
-		}
+			} // End foreach().
+		} // End foreach().
 	}
 
 	/**
@@ -426,7 +431,13 @@ class Salesforce_Pull {
 	public function manual_pull( $object_type, $salesforce_id, $wordpress_object ) {
 		$sfapi = $this->salesforce['sfapi'];
 		$object = $sfapi->api_call( 'sobjects/' . $object_type . '/' . $salesforce_id );
-		$mapping = $this->mappings->get_fieldmaps( null, array( 'salesforce_object' => $object_type, 'wordpress_object' => $wordpress_object ) );
+		$mapping = $this->mappings->get_fieldmaps(
+			null,
+			array(
+				'salesforce_object' => $object_type,
+				'wordpress_object' => $wordpress_object,
+			)
+		);
 		$this->salesforce_pull_process_records( $object_type, $object['data'], $mapping[0], $this->mappings->sync_sf_update );
 	}
 
@@ -553,8 +564,7 @@ class Salesforce_Pull {
 					if ( count( $wordpress_check ) == count( $wordpress_check, COUNT_RECURSIVE ) ) {
 						try {
 							$result = $this->wordpress->object_delete( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'] );
-						}
-						catch ( WordpressException $e ) {
+						} catch ( WordpressException $e ) {
 							$status = 'error';
 							// create log entry for failed delete
 							if ( isset( $this->logging ) ) {
@@ -571,7 +581,7 @@ class Salesforce_Pull {
 								$status
 							);
 
-							if ( $hold_exceptions === false ) {
+							if ( false === $hold_exceptions ) {
 								throw $e;
 							}
 							if ( empty( $exception ) ) {
@@ -635,16 +645,16 @@ class Salesforce_Pull {
 							$mapping_object['wordpress_id'],
 							$status
 						);
-					}
+					} // End if().
 
 					// delete the map row from wordpress after the wordpress row has been deleted
 					// we delete the map row even if the wordpress delete failed, because the salesforce object is gone
 					$this->mappings->delete_object_map( $mapping_object['id'] );
 
-				} // there is no map row
+				} // End if(). there is no map row
 
 			  	return;
-			}
+			} // End if().
 
 			// map the salesforce values to wordpress fields
 			$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, false, $is_new );
@@ -668,7 +678,7 @@ class Salesforce_Pull {
 					'method_match' => $params['prematch']['method_read'],
 					'method_create' => $params['prematch']['method_create'],
 					'method_update' => $params['prematch']['method_update'],
-					'method_read' => $params['prematch']['method_read']
+					'method_read' => $params['prematch']['method_read'],
 				);
 				unset( $params['prematch'] );
 			}
@@ -682,7 +692,7 @@ class Salesforce_Pull {
 					'method_match' => $params['prematch']['method_read'],
 					'method_create' => $params['prematch']['method_create'],
 					'method_update' => $params['prematch']['method_update'],
-					'method_read' => $params['key']['method_read']
+					'method_read' => $params['key']['method_read'],
 				);
 				unset( $params['key'] );
 			}
@@ -721,7 +731,7 @@ class Salesforce_Pull {
 					// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't
 					do_action( 'object_sync_for_salesforce_pre_pull', $wordpress_id, $mapping, $object, $object_id, $params );
 
-					if ( isset( $prematch_field_salesforce ) || isset( $key_field_salesforce ) || $wordpress_id !== null ) {
+					if ( isset( $prematch_field_salesforce ) || isset( $key_field_salesforce ) || null !== $wordpress_id ) {
 
 						$op = 'Upsert';
 
