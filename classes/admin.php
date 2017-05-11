@@ -331,7 +331,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'text',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => '',
 					'constant' => 'SALESFORCE_CONSUMER_KEY',
 				),
@@ -344,7 +344,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'text',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => '',
 					'constant' => 'SALESFORCE_CONSUMER_SECRET',
 				),
@@ -356,7 +356,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'url',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => '',
 					'constant' => 'SALESFORCE_CALLBACK_URL',
 				),
@@ -368,7 +368,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'url',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => '',
 					'constant' => 'SALESFORCE_LOGIN_BASE_URL',
 				),
@@ -380,7 +380,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'text',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => 'For most Salesforce installs, this should not be changed.',
 					'constant' => 'SALESFORCE_AUTHORIZE_URL_PATH',
 					'default' => $this->default_authorize_url_path,
@@ -393,7 +393,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'text',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => 'For most Salesforce installs, this should not be changed.',
 					'constant' => 'SALESFORCE_TOKEN_URL_PATH',
 					'default' => $this->default_token_url_path,
@@ -406,7 +406,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'text',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => '',
 					'constant' => 'SALESFORCE_API_VERSION',
 					'default' => $this->default_api_version,
@@ -419,7 +419,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'checkboxes',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => 'Allows you to limit which Salesforce objects can be mapped',
 					'items' => array(
 						'triggerable' => array(
@@ -444,7 +444,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'number',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => 'Number of seconds to wait between repeated salesforce pulls.<br>Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage.',
 					'constant' => '',
 					'default' => $this->default_pull_throttle,
@@ -457,7 +457,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'checkbox',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create <strong>a lot</strong> of entries if enabled; it is not recommended to use it in a production environment.',
 					'constant' => '',
 				),
@@ -472,7 +472,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'select',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => '',
 					'constant' => 'SALESFORCE_API_VERSION',
 					'items' => $this->version_options(),
@@ -539,7 +539,7 @@ class Wordpress_Salesforce_Admin {
 					'section' => $key,
 					'args' => array(
 						'type' => 'number',
-						'validate' => 'sanitize_text',
+						'validate' => 'sanitize_text_field',
 						'desc' => '',
 						'constant' => '',
 					),
@@ -551,7 +551,7 @@ class Wordpress_Salesforce_Admin {
 					'section' => $key,
 					'args' => array(
 						'type' => 'select',
-						'validate' => 'sanitize_text',
+						'validate' => 'sanitize_text_field',
 						'desc' => '',
 						'items' => array(
 							'minutes' => array(
@@ -622,7 +622,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'checkbox',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => '',
 					'constant' => '',
 				),
@@ -634,7 +634,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'checkboxes',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => 'these are the statuses to log',
 					'items' => array(
 						'error' => array(
@@ -667,7 +667,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'checkbox',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => '',
 					'constant' => '',
 				),
@@ -679,7 +679,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'text',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => 'If automatic deleting is enabled, it will affect logs this old.',
 					'default' => '2 weeks',
 					'constant' => '',
@@ -692,7 +692,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'number',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => '',
 					'default' => '1',
 					'constant' => '',
@@ -705,7 +705,7 @@ class Wordpress_Salesforce_Admin {
 					'section' => $section,
 					'args' => array(
 						'type' => 'select',
-						'validate' => 'sanitize_text',
+						'validate' => 'sanitize_text_field',
 						'desc' => 'These two fields are how often the site will check for logs to delete.',
 						'items' => array(
 							'minutes' => array(
@@ -730,7 +730,7 @@ class Wordpress_Salesforce_Admin {
 				'section' => $section,
 				'args' => array(
 					'type' => 'checkboxes',
-					'validate' => 'sanitize_text',
+					'validate' => 'sanitize_text_field',
 					'desc' => 'these are the triggers to log',
 					'items' => array(
 						$this->mappings->sync_wordpress_create => array(
@@ -1408,36 +1408,6 @@ class Wordpress_Salesforce_Admin {
 		} else {
 			$tab = '';
 		}
-	}
-
-	/**
-	* Basic sanitize method for text
-	* This makes the field's input safe enough to use. It does not differentiate based on what type of field we are dealing with, so if we need to validate input the field should use a different method
-	* This method does not fire an error if it is private, but also doesn't work
-	*
-	* @param mixed $input
-	*
-	* @return mixed $output
-	*/
-	//
-	public function sanitize_text( $input ) {
-
-		$output = '';
-
-		if ( isset( $input ) && ! is_array( $input ) ) {
-			$output = strip_tags( stripslashes( $input ) );
-		}
-
-		if ( isset( $input ) && is_array( $input ) ) {
-
-			foreach ( $input as $key => $value ) {
-				if ( isset( $input[ $key ] ) ) {
-					$output[ $key ] = strip_tags( stripslashes( $input[ $key ] ) );
-				}
-			}
-		}
-
-		return $output;
 	}
 
 	/**
