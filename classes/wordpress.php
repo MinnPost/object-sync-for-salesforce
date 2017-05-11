@@ -1883,6 +1883,12 @@ class Wordpress {
 			if ( isset( $term->{$id_field} ) ) {
 				// term does exist after checking the matching value. we want its id
 				$term_id = $term->{$id_field};
+
+				if ( true === $check_only ) {
+					// we are just checking to see if there is a match
+					return $term_id;
+				}
+
 				// on the prematch fields, we specify the method_update param
 				if ( isset( $methods['method_update'] ) ) {
 					$method = $methods['method_update'];
@@ -1894,7 +1900,7 @@ class Wordpress {
 					'method_modify' => $method,
 					'method_read' => $methods['method_read'],
 				);
-			} else {
+			} elseif ( false === $check_only ) {
 				// term does not exist after checking the matching value. create it.
 				// on the prematch fields, we specify the method_create param
 				if ( isset( $methods['method_create'] ) ) {
@@ -1909,8 +1915,42 @@ class Wordpress {
 				);
 				$result = $this->term_create( $params, $taxonomy, $id_field );
 				return $result;
+			} else {
+				// check only is true but there's not a term yet
+				return null;
+			} // End if().
+		} else {
+			// there is no method by which to check the term. we can check other ways here.
+			$params[ $key ] = array(
+				'value' => $value,
+				'method_modify' => $methods['method_modify'],
+				'method_read' => $methods['method_read'],
+			);
+
+			if ( isset( $params['name']['value'] ) ) {
+				$term = $params['name']['value'];
 			}
-		}
+
+			if ( isset( $params['parent']['value'] ) ) {
+				$parent = $params['parent']['value'];
+			} else {
+				$parent = 0;
+			}
+
+			$existing_id = term_exists( $term, $taxonomy, $parent ); // returns an id if there is a result
+
+			// term does not exist after more checking. maybe we want to create it
+			if ( null === $existing_id && false === $check_only ) {
+				$result = $this->term_create( $params, $taxonomy, $id_field );
+				return $result;
+			} elseif ( true === $check_only ) {
+				// we are just checking to see if there is a match
+				return $existing_id;
+			} else {
+				// term does exist based on criteria, and we aren't doing a check only. we want to update the wp term here.
+				$term_id = $existing_id;
+			}
+		} // End if().
 
 		if ( isset( $term_id ) ) {
 			foreach ( $params as $key => $value ) {
