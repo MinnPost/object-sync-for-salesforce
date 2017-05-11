@@ -362,6 +362,8 @@ class Salesforce_Pull {
 
 		$sfapi = $this->salesforce['sfapi'];
 
+		// the drupal module runs a check_merged_records call right here. but it seems to be an invalid SOQL query.
+
 		// Load all unique SF record types that we have mappings for.
 		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
 
