@@ -1,16 +1,31 @@
-# Salesforce REST API
+# Object Sync for Salesforce
 
-Implements a mapping functionality between Salesforce objects and WordPress objects. This is based on the [Drupal Salesforce Suite](https://github.com/thinkshout/salesforce) (version 7.x-3.x-dev), but strives to use WordPress conventions rather than Drupal's whenever possible.
+This is a WordPress plugin that implements mapping and syncing between Salesforce objects and WordPress objects. It is based on the [Drupal Salesforce Suite](https://github.com/thinkshout/salesforce) (version 7.x-3.x-dev), but strives to use WordPress conventions rather than Drupal's whenever possible.
 
-Below is summary information, but you can also access [full documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/readme.md).
+Below is summary information, but you can also access [full documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
 
 ## About
 
 This plugin creates a mapping functionality between Salesforce objects and WordPress content types. For any supported WordPress content types (e.g. post, page, user, or any custom content type in your installation), you can assign Salesforce objects that will be created / updated when the data in WordPress is saved. For each such assignment, you choose which WordPress and Salesforce fields should be mapped to one another.
 
 This plugin also includes API hooks that allow for additional plugins to modify what data the plugin is working with, or what happens upon specific events.
-  
+
 For a more detailed description of each component class, see below.
+
+## Why use this plugin
+
+This plugin is useful in a different way than other options for connecting WordPress and Salesforce because it is capable of syncing the full structure of both systems, using the capabilities of both the **WordPress database object** and the **Salesforce REST API** to create, read, update, and delete data in either system and keep it in sync with the other.
+
+But there are other sync options as well, depending on what features you need and what capabilities you have. Always use what fits your need.
+
+Some other options:
+
+- [WordPress-to-Lead for Salesforce CRM](https://appexchange.salesforce.com/listingDetail?listingId=a0N30000003GxgkEAC) can be installed through the Salesforce AppExchange. It allows you to run a contact form which users on your WordPress site can submit, and the results are added to Salesforce as a Lead object.
+- [Brilliant Web-to-Lead for Salesforce](https://wordpress.org/plugins/salesforce-wordpress-to-lead/) can be installed through the WordPress plugin directory. This is rather similar to the first option, but is a bit more customizable. By customizable, you can select the fields in WordPress and theme it in your WordPress theme.
+- [Gravity Forms Salesforce Add-on](https://wordpress.org/plugins/gravity-forms-salesforce/) can be installed through the WordPress plugin directory. It is quite powerful, as it can send form submissions from your WordPress site to Salesforce as whatever object you need. It's important to mention that this works for any form created with the [Gravity Forms](http://www.gravityforms.com/) plugin. It's also important to mention that this does not sync data back from Salesforce into Wordpress.
+- **Third party integration apps** such as [Zapier](https://zapier.com/) are subscription-based, paid ways to integrate different systems, and they offer differing amounts of customizability. They will usually sync in both directions, so in this case from WordPress to Salesforce and vice versa. The only limitations of something like this are the cost over time, and the possible vulnerability of basing an integration on a third party that could, at some point, go away.
+- [Visualforce](https://developer.salesforce.com/page/An_Introduction_to_Visualforce) If you are or have a Salesforce developer, you can build MVC based applications that integrate with Salesforce. It would be possible to build a system that uses, for example, the [WordPress REST API](http://wp-api.org) to send and receive data to and from WordPress. This could be, in many ways, the flip side of what our plugin here does, but the complexity would be the same if the scope was the same.
+- **Build other integrations in WordPress** this plugin focuses on the Salesforce REST API, as it covers the integration needs we have. Salesforce also has many other developer options: the SOAP API (we hope to incorporate this at some point), the Bulk API, and the Metadata API. You could possibly extend what we use in this plugin to integrate with one of these. Feel free to submit a pull request if you do!
 
 ## Requirements
 
@@ -21,11 +36,11 @@ For a more detailed description of each component class, see below.
 
 ## Installation and setup
 
-You can find a detailed [initial setup instruction](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/initial-setup.md) document for this plugin.
+You can find a detailed [initial setup instruction](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md) document for this plugin.
 
 ## Classes
 
-### Salesforce REST API
+### Object Sync for Salesforce
 
 This is the plugin's main class. It does a few things:
 
@@ -65,7 +80,7 @@ This class extends the [WP Logging Class](https://github.com/pippinsplugins/WP-L
 
 Map WordPress content (including users) to Salesforce fields, including field level mapping.
 
-1. This class defines important values for each triggering event (create, edit, delete from both WordPress and Salesforce), how to identify which direction an object should use (WordPress, Salesforce, or sync), and data tables in WordPress. This class is available to the `wordpress`, `salesforce`, `schedule`, `salesforce_push`, `salesforce_pull`, and `admin` classes.
+1. This class defines important values for each triggering event (create, edit, delete from both WordPress and Salesforce), how to identify which direction an object should use (WordPress, Salesforce, or sync), and data tables in WordPress. This class is available to the `wordpress`, schedule`, `salesforce_push`, `salesforce_pull`, and `admin` classes.
 2. There is a basic create/read/update/delete setup, including loading all results or a subset. Results can also be loaded by specific conditions, or by WordPress or Salesforce IDs.
 3. Each row includes an attribute for `wordpress_data_version` and `salesforce_data_version` that keep track of which system has been changed in order to keep the data synced.
 
@@ -96,7 +111,7 @@ This class handles getting and setting WordPress core data.
 
 ### Salesforce (salesforce)
 
-OAUTH2 authorization and wrapper around the Salesforce REST API. Methods support:
+OAUTH2 authorization and wrapper around the supported Salesforce APIs. Methods support:
 
 1. Setup required parameters for all API calls
 2. Retrieving data from the Salesforce organization: versions available, objects and resources available and their metadata, identity of the logged in Salesforce user.
@@ -108,7 +123,7 @@ OAUTH2 authorization and wrapper around the Salesforce REST API. Methods support
 
 ### Schedule (schedule)
 
-This class extends the [WP Background Processing](https://github.com/A5hleyRich/wp-background-processing) class to schedule recurring tasks with more options than the `wp_cron` provided by WordPress Core. The main class is stored in the /vendor/wp-background-processing folder, which we need to somehow tie into this plugin. 
+This class extends the [WP Background Processing](https://github.com/A5hleyRich/wp-background-processing) class to schedule recurring tasks with more options than the `wp_cron` provided by WordPress Core. The main class is stored in the /vendor/wp-background-processing folder, which we need to somehow tie into this plugin.
 
 This class is called by the individual classes that use it. Example: `salesforce_push` calls it when it pushes data to Salesforce.
 
@@ -118,7 +133,7 @@ Our extension does a few things:
 2. Create schedules using `wp_schedule_event` when the class is called.
 3. Call other plugin classes and pass data to them for processing when a scheduled event occurs.
 
-For this class, multiple queues can run. Each class in the `schedulable_classes` array (which can be modified by the `salesforce_rest_api_modify_schedulable_classes` filter) can have its own running queue with its own scheduled tasks.
+For this class, multiple queues can run. Each class in the `schedulable_classes` array (which can be modified by the `object_sync_for_salesforce_modify_schedulable_classes` filter) can have its own running queue with its own scheduled tasks.
 
 
 ### Salesforce Push (salesforce_push)
@@ -165,7 +180,7 @@ The admin section is divided into tabs:
 6. Log Settings
     - This tab allows admin users to tell the plugin whether or not it should log any events. If it is enabled, it will use the `logging` class. If it is not, nothing will happen.
     - Users can set what statuses to log (error, success, and/or notice), if and how often entries should be deleted, and which events between WordPress and Salesforce should be logged.
-7. Other tabs added by the `salesforce_rest_api_settings_tabs` filter will appear after the Log Settings tab.
+7. Other tabs added by the `object_sync_for_salesforce_settings_tabs` filter will appear after the Log Settings tab.
 
 ### Classes Todo
 
@@ -177,7 +192,11 @@ Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill i
 
 This plugin contains many hooks to allow other WordPress plugins to extend the functionality. It aims to reproduce all hooks provided by the Drupal suite. It also includes many additional hooks that give WordPress developers additional functionality.
 
-There is a full list of all hooks, with links to each hook's documentation, in the [developer hooks documentation](https://github.com/MinnPost/salesforce-rest-api/blob/master/docs/all-developer-hooks.md) page.
+There is a full list of all hooks, with links to each hook's documentation, in the [developer hooks documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/all-developer-hooks.md) page.
+
+## Development
+
+If you'd like to contribute to this project, please see our [contributing guidelines](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md).
 
 ## Notes
 
