@@ -264,7 +264,7 @@ class Salesforce_Mapping {
 					$posted['is_delete'][ $key ] = false;
 				}
 				if ( false === $posted['is_delete'][ $key ] ) {
-					$updateable_key = array_search( $posted['salesforce_field'][$key], array_column( $salesforce_fields, 'name' ) );
+					$updateable_key = array_search( $posted['salesforce_field'][ $key ], array_column( $salesforce_fields, 'name' ) );
 					$setup['fields'][ $key ] = array(
 						'wordpress_field' => array(
 							'label' => sanitize_text_field( $posted['wordpress_field'][ $key ] ),
