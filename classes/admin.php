@@ -408,7 +408,7 @@ class Wordpress_Salesforce_Admin {
 					'type' => 'text',
 					'validate' => 'sanitize_text',
 					'desc' => '',
-					'constant' => 'object_sync_for_salesforce_VERSION',
+					'constant' => 'SALESFORCE_API_VERSION',
 					'default' => $this->default_api_version,
 				),
 			),
@@ -474,7 +474,7 @@ class Wordpress_Salesforce_Admin {
 					'type' => 'select',
 					'validate' => 'sanitize_text',
 					'desc' => '',
-					'constant' => 'object_sync_for_salesforce_VERSION',
+					'constant' => 'SALESFORCE_API_VERSION',
 					'items' => $this->version_options(),
 				),
 			);
