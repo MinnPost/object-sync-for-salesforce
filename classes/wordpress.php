@@ -912,6 +912,12 @@ class Wordpress {
 			if ( isset( $user->{$id_field} ) ) {
 				// user does exist after checking the matching value. we want its id
 				$user_id = $user->{$id_field};
+
+				if ( true === $check_only ) {
+					// we are just checking to see if there is a match
+					return $user_id;
+				}
+
 				// on the prematch fields, we specify the method_update param
 				if ( isset( $methods['method_update'] ) ) {
 					$method = $methods['method_update'];
@@ -923,7 +929,7 @@ class Wordpress {
 					'method_modify' => $method,
 					'method_read' => $methods['method_read'],
 				);
-			} else {
+			} elseif ( false === $check_only ) {
 				// user does not exist after checking the matching value. create it.
 				// on the prematch fields, we specify the method_create param
 				if ( isset( $methods['method_create'] ) ) {
@@ -938,7 +944,10 @@ class Wordpress {
 				);
 				$result = $this->user_create( $params );
 				return $result;
-			}
+			} else {
+				// check only is true but there's not a user yet
+				return null;
+			} // End if().
 		} else {
 			// there is no method by which to check the user. we can check other ways here.
 			$params[ $key ] = array(
@@ -957,13 +966,18 @@ class Wordpress {
 				$username = $params['user_login']['value'];
 			}
 
+			$existing_id = username_exists( $username ); // returns an id if there is a result
+
 			// user does not exist after more checking. we want to create it
-			if ( null === username_exists( $username ) ) {
+			if ( null === $existing_id && false === $check_only ) {
 				$result = $this->user_create( $params );
 				return $result;
+			} elseif ( true === $check_only ) {
+				// we are just checking to see if there is a match
+				return $existing_id;
 			} else {
-				// user does exist based on username. we want to update it.
-				$user_id = username_exists( $username );
+				// user does exist based on username, and we aren't doing a check only. we want to update the wp user here.
+				$user_id = $existing_id;
 			}
 		} // End if().
 
