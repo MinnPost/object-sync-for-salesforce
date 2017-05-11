@@ -563,7 +563,7 @@ class Salesforce_Pull {
 
 					$op = 'Delete';
 					$wordpress_check = $this->mappings->load_by_wordpress( $mapping_object['wordpress_object'], $mapping_object['wordpress_id'] );
-					if ( count( $wordpress_check ) == count( $wordpress_check, COUNT_RECURSIVE ) ) { // need to test this
+					if ( count( $wordpress_check ) === count( $wordpress_check, COUNT_RECURSIVE ) ) {
 						try {
 							$result = $this->wordpress->object_delete( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'] );
 						} catch ( WordpressException $e ) {
