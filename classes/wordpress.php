@@ -558,6 +558,8 @@ class Wordpress {
 	*   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
 	* @param array $params
 	*   Values of the fields to set for the object.
+	* @param bool $push_drafts
+	*	Whether to save WordPress drafts when pushing to Salesforce
 	*
 	* @return array
 	*   data:
@@ -885,6 +887,8 @@ class Wordpress {
 	*   array of user data params
 	* @param string $id_field
 	*   optional string of what the ID field is, if it is ever not ID
+	* @param bool $push_drafts
+	*	Whether to save WordPress drafts when pushing to Salesforce
 	*
 	* @return array
 	*   data:
@@ -1753,6 +1757,8 @@ class Wordpress {
 	*   the taxonomy to which to add the term. this is required.
 	* @param string $id_field
 	*   optional string of what the ID field is, if it is ever not ID
+	* @param bool $push_drafts
+	*	Whether to save WordPress drafts when pushing to Salesforce
 	*
 	* @return array
 	*   data:
@@ -2011,6 +2017,8 @@ class Wordpress {
 	*   array of comment data params
 	* @param string $id_field
 	*   optional string of what the ID field is, if it is ever not comment_ID
+	* @param bool $push_drafts
+	*	Whether to save WordPress drafts when pushing to Salesforce
 	*
 	* @return array
 	*   data:
