@@ -125,20 +125,20 @@ class Object_Sync_Salesforce {
 
 		$this->schedulable_classes = array(
 			'salesforce_push' => array(
-				'label' => 'Push to Salesforce',
-				'class' => 'Salesforce_Push',
-				'callback' => 'salesforce_push_sync_rest',
+			    'label' => 'Push to Salesforce',
+			    'class' => 'Salesforce_Push',
+			    'callback' => 'salesforce_push_sync_rest',
 			),
 			'salesforce_pull' => array(
-				'label' => 'Pull from Salesforce',
-				'class' => 'Salesforce_Pull',
-				'initializer' => 'salesforce_pull',
-				'callback' => 'salesforce_pull_process_records',
+			    'label' => 'Pull from Salesforce',
+			    'class' => 'Salesforce_Pull',
+			    'initializer' => 'salesforce_pull',
+			    'callback' => 'salesforce_pull_process_records',
 			),
 			'salesforce' => array(
-				'label' => 'Salesforce Authorization',
-				'class' => 'Salesforce',
-			),
+			    'label' => 'Salesforce Authorization',
+			    'class' => 'Salesforce',
+			)
 		);
 
 		// users can modify the list of schedulable classes
@@ -149,19 +149,19 @@ class Object_Sync_Salesforce {
 		add_filter( 'object_sync_for_salesforce_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
 		function modify_schedulable_classes( $schedulable_classes ) {
 			$schedulable_classes = array(
-				array(
-					'name' => 'salesforce_push',
-					'label' => 'Push to Salesforce'
-				),
-				array(
-					'name' => 'salesforce',
-					'label' => 'Salesforce Authorization'
-				),
-				array(
-					'name' => 'wordpress',
-					'label' => 'WordPress'
-				)
-			);
+	            array(
+	                'name' => 'salesforce_push',
+	                'label' => 'Push to Salesforce'
+	            ),
+	            array(
+	                'name' => 'salesforce',
+	                'label' => 'Salesforce Authorization'
+	            ),
+	            array(
+	                'name' => 'wordpress',
+	                'label' => 'WordPress'
+	            )
+	        );
 			return $schedulable_classes;
 		}
 		*/
@@ -268,7 +268,10 @@ class Object_Sync_Salesforce {
 				$is_authorized = true;
 			}
 		}
-		return array( 'is_authorized' => $is_authorized, 'sfapi' => $sfapi );
+		return array(
+			'is_authorized' => $is_authorized,
+			'sfapi' => $sfapi,
+		);
 	}
 
 	/**

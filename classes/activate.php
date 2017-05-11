@@ -71,9 +71,9 @@ class Wordpress_Salesforce_Activate {
 			created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 			object_updated datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 			last_sync datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			last_sync_action varchar(128) DEFAULT null,
+			last_sync_action varchar(128) DEFAULT NULL,
 			last_sync_status tinyint(1) NOT NULL DEFAULT '0',
-			last_sync_message varchar(255) DEFAULT null,
+			last_sync_message varchar(255) DEFAULT NULL,
 			PRIMARY KEY  (id),
 			UNIQUE KEY salesforce (salesforce_id),
 			UNIQUE KEY salesforce_wordpress (wordpress_object,wordpress_id),
@@ -86,6 +86,9 @@ class Wordpress_Salesforce_Activate {
 		dbDelta( $object_map_sql );
 
 		update_option( 'object_sync_for_salesforce_db_version', $this->version );
+
+		// store right now as the time for the plugin's activation
+		update_option( 'object_sync_for_salesforce_activate_time', current_time( 'timestamp', true ) );
 
 	}
 

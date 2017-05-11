@@ -73,8 +73,8 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 
 		// create an option in the core schedules array for each one the plugin defines
 		foreach ( $this->schedulable_classes as $key => $value ) {
-			$schedule_number = get_option( 'salesforce_api_' . $key . '_schedule_number', 0 );
-			$schedule_unit = get_option( 'salesforce_api_' . $key . '_schedule_unit', 0 );
+			$schedule_number = get_option( 'object_sync_for_salesforce_' . $key . '_schedule_number', '' );
+			$schedule_unit = get_option( 'object_sync_for_salesforce_' . $key . '_schedule_unit', '' );
 
 			switch ( $schedule_unit ) {
 				case 'minutes':
@@ -112,8 +112,8 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 	*/
 	public function get_schedule_frequency_key( $name = '' ) {
 
-		$schedule_number = get_option( 'salesforce_api_' . $name . '_schedule_number', '' );
-		$schedule_unit = get_option( 'salesforce_api_' . $name . '_schedule_unit', '' );
+		$schedule_number = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' );
+		$schedule_unit = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
 
 		switch ( $schedule_unit ) {
 			case 'minutes':
@@ -141,8 +141,8 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 	*/
 	public function get_schedule_frequency_seconds( $name = '' ) {
 
-		$schedule_number = get_option( 'salesforce_api_' . $name . '_schedule_number', '' );
-		$schedule_unit = get_option( 'salesforce_api_' . $name . '_schedule_unit', '' );
+		$schedule_number = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' );
+		$schedule_unit = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
 
 		switch ( $schedule_unit ) {
 			case 'minutes':
@@ -228,7 +228,6 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 				$task = $class->$method();
 			}
 		}
-		error_log('there is data here');
 		// we have checked for data and it's in the queue if it exists
 		// now run maybe_handle again to see if it nees to be processed
 		$this->maybe_handle( true );
@@ -252,8 +251,6 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 
 		$check_for_data_first = isset( $this->schedulable_classes[ $this->schedule_name ]['initializer'] ) ? true : false;
 
-		error_log('check');
-
 		if ( false === $already_checked && true === $check_for_data_first ) {
 			$this->check_for_data();
 		}
@@ -263,13 +260,9 @@ class Wordpress_Salesforce_Schedule extends WP_Background_Process {
 			wp_die();
 		}
 
-		error_log('queue is not empty');
-
 		if ( true === $ajax ) {
 			check_ajax_referer( $this->identifier, 'nonce' );
 		}
-
-		error_log('handle now');
 
 		$this->handle();
 		wp_die();

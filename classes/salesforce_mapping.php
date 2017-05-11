@@ -176,8 +176,7 @@ class Salesforce_Mapping {
 			}
 
 			return $mappings;
-		}
-
+		} // End if().
 	}
 
 	public function get_mapped_fields( $mapping, $directions = array() ) {
@@ -187,10 +186,10 @@ class Salesforce_Mapping {
 				// Some field map types (Relation) store a collection of SF objects.
 				if ( is_array( $fields['salesforce_field'] ) && ! isset( $fields['salesforce_field']['label'] ) ) {
 					foreach ( $fields['salesforce_field'] as $sf_field ) {
-						$mapped_fields[$sf_field['label']] = $sf_field['label'];
+						$mapped_fields[ $sf_field['label'] ] = $sf_field['label'];
 					}
 				} else { // The rest are just a name/value pair.
-					$mapped_fields[$fields['salesforce_field']['label']] = $fields['salesforce_field']['label'];
+					$mapped_fields[ $fields['salesforce_field']['label'] ] = $fields['salesforce_field']['label'];
 				}
 			}
 		}
@@ -218,7 +217,13 @@ class Salesforce_Mapping {
 	*/
 	public function update_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array(), $id = '' ) {
 		$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
-		$update = $this->wpdb->update( $this->fieldmap_table, $data, array( 'id' => $id ) );
+		$update = $this->wpdb->update(
+			$this->fieldmap_table,
+			$data,
+			array(
+				'id' => $id,
+			)
+		);
 		if ( false === $update ) {
 			return false;
 		} else {
@@ -236,13 +241,13 @@ class Salesforce_Mapping {
 	* @return $data
 	*/
 	private function setup_fieldmap_data( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array() ) {
-		$data = array( 'label' => sanitize_title( $posted['label'] ), 'name' => sanitize_title( $posted['label'] ), 'salesforce_object' => $posted['salesforce_object'], 'wordpress_object' => $posted['wordpress_object'] );
-		if (
-			isset( $posted['wordpress_field'] )
-			&& is_array( $posted['wordpress_field'] )
-			&& isset( $posted['salesforce_field'] )
-			&& is_array( $posted['salesforce_field'] )
-		) {
+		$data = array(
+			'label' => $posted['label'],
+			'name' => sanitize_title( $posted['label'] ),
+			'salesforce_object' => $posted['salesforce_object'],
+			'wordpress_object' => $posted['wordpress_object'],
+		);
+		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
 				$method_key = array_search( $value, array_column( $wordpress_fields, 'key' ) );
@@ -259,7 +264,7 @@ class Salesforce_Mapping {
 					$posted['is_delete'][ $key ] = false;
 				}
 				if ( false === $posted['is_delete'][ $key ] ) {
-					$updateable_key = array_search( $posted['salesforce_field'][ $key ], array_column( $salesforce_fields, 'name' ) );
+					$updateable_key = array_search( $posted['salesforce_field'][$key], array_column( $salesforce_fields, 'name' ) );
 					$setup['fields'][ $key ] = array(
 						'wordpress_field' => array(
 							'label' => sanitize_text_field( $posted['wordpress_field'][ $key ] ),
@@ -277,20 +282,24 @@ class Salesforce_Mapping {
 				}
 			}
 			$data['fields'] = maybe_serialize( $setup['fields'] );
-		}
+		} // End if().
 
 		if ( isset( $posted['salesforce_record_types_allowed'] ) ) {
 			$data['salesforce_record_types_allowed'] = maybe_serialize( $posted['salesforce_record_types_allowed'] );
 		} else {
-			$data['salesforce_record_types_allowed'] = maybe_serialize( array( $this->salesforce_default_record_type => $this->salesforce_default_record_type ) );
+			$data['salesforce_record_types_allowed'] = maybe_serialize(
+				array(
+					$this->salesforce_default_record_type => $this->salesforce_default_record_type,
+				)
+			);
 		}
 		if ( isset( $posted['salesforce_record_type_default'] ) ) {
-			$data['salesforce_record_type_default'] = sanitize_text_field( $posted['salesforce_record_type_default'] );
+			$data['salesforce_record_type_default'] = $posted['salesforce_record_type_default'];
 		} else {
 			$data['salesforce_record_type_default'] = maybe_serialize( $this->salesforce_default_record_type );
 		}
 		if ( isset( $posted['pull_trigger_field'] ) ) {
-			$data['pull_trigger_field'] = sanitize_text_field( $posted['pull_trigger_field'] );
+			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
 		}
 		if ( isset( $posted['sync_triggers'] ) && is_array( $posted['sync_triggers'] ) ) {
 			$setup['sync_triggers'] = array();
@@ -302,11 +311,11 @@ class Salesforce_Mapping {
 		}
 		$data['sync_triggers'] = maybe_serialize( $setup['sync_triggers'] );
 		if ( isset( $posted['pull_trigger_field'] ) ) {
-			$data['pull_trigger_field'] = sanitize_text_field( $posted['pull_trigger_field'] );
+			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
 		}
-		$data['push_async'] = isset( $posted['push_async'] ) ? absint( $posted['push_async'] ) : '';
-		$data['push_drafts'] = isset( $posted['push_drafts'] ) ? absint( $posted['push_drafts'] ) : '';
-		$data['weight'] = isset( $posted['weight'] ) ? floatval( $posted['weight'] ) : '';
+		$data['push_async'] = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
+		$data['push_drafts'] = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
+		$data['weight'] = isset( $posted['weight'] ) ? $posted['weight'] : '';
 		return $data;
 	}
 
@@ -317,7 +326,9 @@ class Salesforce_Mapping {
 	* @throws \Exception
 	*/
 	public function delete_fieldmap( $id = '' ) {
-		$data = array( 'id' => $id );
+		$data = array(
+			'id' => $id,
+		);
 		$delete = $this->wpdb->delete( $this->fieldmap_table, $data );
 		if ( 1 === $delete ) {
 			return true;
@@ -412,7 +423,6 @@ class Salesforce_Mapping {
 			if ( ! empty( $mappings ) && 1 === $this->wpdb->num_rows ) {
 				$mappings = $mappings[0];
 			}
-
 		} else { // get all of em
 			$mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $order, ARRAY_A );
 			if ( ! empty( $mappings ) && 1 === $this->wpdb->num_rows ) {
@@ -437,7 +447,13 @@ class Salesforce_Mapping {
 		if ( ! isset( $data['object_updated'] ) ) {
 			$data['object_updated'] = current_time( 'mysql' );
 		}
-		$update = $this->wpdb->update( $this->object_map_table, $data, array( 'id' => $id ) );
+		$update = $this->wpdb->update(
+			$this->object_map_table,
+			$data,
+			array(
+				'id' => $id,
+			)
+		);
 		if ( false === $update ) {
 			return false;
 		} else {
@@ -463,7 +479,9 @@ class Salesforce_Mapping {
 	* @throws \Exception
 	*/
 	public function delete_object_map( $id = '' ) {
-		$data = array( 'id' => $id );
+		$data = array(
+			'id' => $id,
+		);
 		$delete = $this->wpdb->delete( $this->object_map_table, $data );
 		if ( 1 === $delete ) {
 			return true;
@@ -483,7 +501,7 @@ class Salesforce_Mapping {
 	 *   Whether or not the cache should be cleared and fetch from current data.
 	 *
 	 * @return SalesforceMappingObject
-	 *   The requested SalesforceMappingObject or false if none was found.
+	 *   The requested SalesforceMappingObject or FALSE if none was found.
 	 */
 	public function load_by_wordpress( $object_type, $object_id, $reset = false ) {
 		$conditions = array(
@@ -506,7 +524,7 @@ class Salesforce_Mapping {
 	*/
 	public function load_by_salesforce( $salesforce_id, $reset = false ) {
 		$conditions = array(
-			'salesforce_id' => $salesforce_id
+			'salesforce_id' => $salesforce_id,
 		);
 
 		$map = $this->get_object_maps( $conditions, $reset );
@@ -573,13 +591,13 @@ class Salesforce_Mapping {
 			$salesforce_haystack = array_values( $this->salesforce_events );
 
 			// skip fields that aren't being pushed to Salesforce.
-			if ( in_array( $trigger, $wordpress_haystack ) && !in_array( $fieldmap['direction'], array_values( $this->direction_wordpress ) ) ) {
+			if ( in_array( $trigger, $wordpress_haystack ) && ! in_array( $fieldmap['direction'], array_values( $this->direction_wordpress ) ) ) {
 				// the trigger is a wordpress trigger, but the fieldmap direction is not a wordpress direction
 				continue;
 			}
 
 			// skip fields that aren't being pulled from Salesforce.
-			if ( in_array( $trigger, $salesforce_haystack ) && !in_array( $fieldmap['direction'], array_values( $this->direction_salesforce ) ) ) {
+			if ( in_array( $trigger, $salesforce_haystack ) && ! in_array( $fieldmap['direction'], array_values( $this->direction_salesforce ) ) ) {
 				// the trigger is a salesforce trigger, but the fieldmap direction is not a salesforce direction
 				continue;
 			}
@@ -623,7 +641,7 @@ class Salesforce_Mapping {
 				// a salesforce event caused this
 				// make an array because we need to store the methods for each field as well
 				$params[ $fieldmap['wordpress_field']['label'] ] = array();
-				$params[ $wordpress_field]['value'] = $object[ $fieldmap['salesforce_field']['label'] ];
+				$params[ $wordpress_field ]['value'] = $object[ $fieldmap['salesforce_field']['label'] ];
 
 				// if the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce
 				// but still put its name in the params array so we can check for it later
@@ -667,9 +685,8 @@ class Salesforce_Mapping {
 
 				$params[ $wordpress_field ]['method_read'] = $fieldmap['wordpress_field']['methods']['read'];
 
-			}
-
-		}
+			} // End if().
+		} // End foreach().
 
 		return $params;
 

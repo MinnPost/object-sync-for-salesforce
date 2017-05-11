@@ -60,10 +60,9 @@ class Salesforce_Logging extends WP_Logging {
 			$frequency = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
 			$key = $frequency['key'];
 
-			if ( !wp_next_scheduled( $this->schedule_name ) ) {
+			if ( ! wp_next_scheduled( $this->schedule_name ) ) {
 				wp_schedule_event( time(), $key, $this->schedule_name );
 			}
-
 		}
 	}
 
@@ -82,7 +81,7 @@ class Salesforce_Logging extends WP_Logging {
 
 		$schedules[ $key ] = array(
 			'interval' => $seconds * $schedule_number,
-			'display' => 'Every ' . $schedule_number . ' ' . $schedule_unit
+			'display' => 'Every ' . $schedule_number . ' ' . $schedule_unit,
 		);
 
 		return $schedules;
@@ -112,7 +111,10 @@ class Salesforce_Logging extends WP_Logging {
 
 		$key = $unit . '_' . $number;
 
-		return array( 'key' => $key, 'seconds' => $seconds );
+		return array(
+			'key' => $key,
+			'seconds' => $seconds,
+		);
 
 	}
 
@@ -229,8 +231,13 @@ class Salesforce_Logging extends WP_Logging {
 	*/
 
 	public static function get_logs( $object_id = 0, $type = 'salesforce', $paged = null ) {
-		return self::get_connected_logs( array( 'post_parent' => $object_id, 'paged' => $paged, 'log_type' => $type ) );
-
+		return self::get_connected_logs(
+			array(
+				'post_parent' => $object_id,
+				'paged' => $paged,
+				'log_type' => $type,
+			)
+		);
 	}
 
 
@@ -277,8 +284,9 @@ class Salesforce_Logging extends WP_Logging {
 
 		$logs = get_posts( $query_args );
 
-		if ( $logs )
+		if ( $logs ) {
 			return $logs;
+		}
 
 		// no logs found
 		return false;
@@ -303,7 +311,7 @@ class Salesforce_Logging extends WP_Logging {
 		$query_args = array(
 			'post_parent'    => $object_id,
 			'post_type'      => 'wp_log',
-			'posts_per_page' => -1,
+			'posts_per_page' => 100,
 			'post_status'    => 'publish',
 		);
 
@@ -314,12 +322,12 @@ class Salesforce_Logging extends WP_Logging {
 					'taxonomy' => 'wp_log_type',
 					'field'    => 'slug',
 					'terms'    => $type,
-				)
+				),
 			);
 
 		}
 
-		if( ! empty( $meta_query ) ) {
+		if ( ! empty( $meta_query ) ) {
 			$query_args['meta_query'] = $meta_query;
 		}
 
@@ -328,6 +336,5 @@ class Salesforce_Logging extends WP_Logging {
 		return (int) $logs->post_count;
 
 	}
-
 
 }

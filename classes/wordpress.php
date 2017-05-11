@@ -101,8 +101,18 @@ class Wordpress {
 		if ( 'attachment' === $object_type ) {
 			$object_table_structure = array(
 				'object_name' => 'post',
-				'content_methods' => array( 'create' => 'wp_insert_attachment', 'read' => 'get_posts', 'update' => 'wp_insert_attachment', 'delete' => 'wp_delete_attachment' ),
-				'meta_methods' => array( 'create' => 'wp_generate_attachment_metadata', 'read' => 'wp_get_attachment_metadata', 'update' => 'wp_update_attachment_metadata', 'delete' => '' ),
+				'content_methods' => array(
+					'create' => 'wp_insert_attachment',
+					'read' => 'get_posts',
+					'update' => 'wp_insert_attachment',
+					'delete' => 'wp_delete_attachment',
+				),
+				'meta_methods' => array(
+					'create' => 'wp_generate_attachment_metadata',
+					'read' => 'wp_get_attachment_metadata',
+					'update' => 'wp_update_attachment_metadata',
+					'delete' => '',
+				),
 				'content_table' => $this->wpdb->prefix . 'posts',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'postmeta',
@@ -114,8 +124,18 @@ class Wordpress {
 			// user meta fields need to use update_user_meta for create as well, otherwise it'll just get created twice because apparently when the post is created it's already there
 			$object_table_structure = array(
 				'object_name' => 'user',
-				'content_methods' => array( 'create' => 'wp_insert_user', 'read' => 'get_user_by', 'update' => 'wp_update_user', 'delete' => 'wp_delete_user' ),
-				'meta_methods' => array( 'create' => 'update_user_meta', 'read' => 'get_user_meta', 'update' => 'update_user_meta', 'delete' => 'delete_user_meta' ),
+				'content_methods' => array(
+					'create' => 'wp_insert_user',
+					'read' => 'get_user_by',
+					'update' => 'wp_update_user',
+					'delete' => 'wp_delete_user',
+				),
+				'meta_methods' => array(
+					'create' => 'update_user_meta',
+					'read' => 'get_user_meta',
+					'update' => 'update_user_meta',
+					'delete' => 'delete_user_meta',
+				),
 				'content_table' => $this->wpdb->prefix . 'users',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'usermeta',
@@ -130,8 +150,18 @@ class Wordpress {
 		} elseif ( 'post' === $object_type ) {
 			$object_table_structure = array(
 				'object_name' => 'post',
-				'content_methods' => array( 'create' => 'wp_insert_post', 'read' => 'get_posts', 'update' => 'wp_update_post', 'delete' => 'wp_delete_post' ),
-				'meta_methods' => array( 'create' => 'add_post_meta', 'read' => 'get_post_meta', 'update' => 'update_post_meta', 'delete' => 'delete_post_meta' ),
+				'content_methods' => array(
+					'create' => 'wp_insert_post',
+					'read' => 'get_posts',
+					'update' => 'wp_update_post',
+					'delete' => 'wp_delete_post',
+				),
+				'meta_methods' => array(
+					'create' => 'add_post_meta',
+					'read' => 'get_post_meta',
+					'update' => 'update_post_meta',
+					'delete' => 'delete_post_meta',
+				),
 				'content_table' => $this->wpdb->prefix . 'posts',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'postmeta',
@@ -139,23 +169,44 @@ class Wordpress {
 				'where' => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
 				'ignore_keys' => array(),
 			);
-		} elseif ( 'category' === $object_type || 'tag' === $object_type ) {
+		} elseif ( 'category' === $object_type || 'tag' === $object_type || 'post_tag' === $object_type ) {
+			// i am unsure why post_tag wasn't here for so long, but i figure it probably needs to be there
 			$object_table_structure = array(
 				'object_name' => 'term',
-				'content_methods' => array( 'create' => 'wp_insert_term', 'read' => 'get_term_by', 'update' => 'wp_update_term', 'delete' => 'wp_delete_term' ),
-				'meta_methods' => array( 'create' => 'add_term_meta', 'read' => 'get_term_meta', 'update' => 'update_term_meta', 'delete' => 'delete_metadata' ),
+				'content_methods' => array(
+					'create' => 'wp_insert_term',
+					'read' => 'get_term_by',
+					'update' => 'wp_update_term',
+					'delete' => 'wp_delete_term',
+				),
+				'meta_methods' => array(
+					'create' => 'add_term_meta',
+					'read' => 'get_term_meta',
+					'update' => 'update_term_meta',
+					'delete' => 'delete_metadata',
+				),
 				'content_table' => $this->wpdb->prefix . 'terms',
 				'id_field' => 'term_id',
 				'meta_table' => array( $this->wpdb->prefix . 'termmeta', $this->wpdb->prefix . 'term_taxonomy' ),
 				'meta_join_field' => 'term_id',
 				'where' => '',
-				'ignore_keys' => array()
+				'ignore_keys' => array(),
 			);
 		} elseif ( 'comment' === $object_type ) {
 			$object_table_structure = array(
 				'object_name' => 'comment',
-				'content_methods' => array( 'create' => 'wp_new_comment', 'read' => 'get_comments', 'update' => 'wp_update_comment', 'delete' => 'wp_delete_comment' ),
-				'meta_methods' => array( 'create' => 'add_comment_meta', 'read' => 'get_comment_meta', 'update' => 'update_comment_meta', 'delete' => 'delete_comment_metadata' ),
+				'content_methods' => array(
+					'create' => 'wp_new_comment',
+					'read' => 'get_comments',
+					'update' => 'wp_update_comment',
+					'delete' => 'wp_delete_comment'
+				),
+				'meta_methods' => array(
+					'create' => 'add_comment_meta',
+					'read' => 'get_comment_meta',
+					'update' => 'update_comment_meta',
+					'delete' => 'delete_comment_metadata',
+				),
 				'content_table' => $this->wpdb->prefix . 'comments',
 				'id_field' => 'comment_ID',
 				'meta_table' => $this->wpdb->prefix . 'commentmeta',
@@ -166,8 +217,18 @@ class Wordpress {
 		} else { // this is for custom post types
 			$object_table_structure = array(
 				'object_name' => 'post',
-				'content_methods' => array( 'create' => 'wp_insert_post', 'read' => 'get_posts', 'update' => 'wp_update_post', 'delete' => 'wp_delete_post' ),
-				'meta_methods' => array( 'create' => 'add_post_meta', 'read' => 'get_post_meta', 'update' => 'update_post_meta', 'delete' => 'delete_post_meta' ),
+				'content_methods' => array(
+					'create' => 'wp_insert_post',
+					'read' => 'get_posts',
+					'update' => 'wp_update_post',
+					'delete' => 'wp_delete_post',
+				),
+				'meta_methods' => array(
+					'create' => 'add_post_meta',
+					'read' => 'get_post_meta',
+					'update' => 'update_post_meta',
+					'delete' => 'delete_post_meta',
+				),
 				'content_table' => $this->wpdb->prefix . 'posts',
 				'id_field' => 'ID',
 				'meta_table' => $this->wpdb->prefix . 'postmeta',
@@ -175,7 +236,7 @@ class Wordpress {
 				'where' => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
 				'ignore_keys' => array(),
 			);
-		}
+		} // End if().
 
 		return $object_table_structure;
 	}
@@ -204,7 +265,7 @@ class Wordpress {
 
 		// should cache that array
 		if ( true === $this->options['cache'] && 'write' !== $this->options['cache'] ) {
-			$cached = $this->cache_get( $wordpress_object, array( 'data', 'meta') );
+			$cached = $this->cache_get( $wordpress_object, array( 'data', 'meta' ) );
 			if ( is_array( $cached ) ) {
 				$object_fields['data'] = $cached;
 				$object_fields['from_cache'] = true;
@@ -290,7 +351,7 @@ class Wordpress {
 		} else {
 			$args .= $url;
 		}
-		$cachekey = md5( json_encode( $args ) );
+		$cachekey = md5( wp_json_encode( $args ) );
 		return get_transient( $cachekey );
 	}
 
@@ -308,7 +369,7 @@ class Wordpress {
 		} else {
 			$args .= $url;
 		}
-		$cachekey = md5( json_encode( $args ) );
+		$cachekey = md5( wp_json_encode( $args ) );
 		// cache_expiration is how long it should be stored in the cache
 		// if we didn't give a custom one, use the default
 		if ( '' === $cache_expiration ) {
@@ -370,14 +431,22 @@ class Wordpress {
 		$all_fields = array();
 
 		foreach ( $data_fields as $key => $value ) {
-			if ( !in_array( $value, $ignore_keys ) ) {
-				$all_fields[] = array( 'key' => $value, 'table' => $content_table, 'methods' => $content_methods );
+			if ( ! in_array( $value, $ignore_keys ) ) {
+				$all_fields[] = array(
+					'key' => $value,
+					'table' => $content_table,
+					'methods' => $content_methods,
+				);
 			}
 		}
 
 		foreach ( $meta_fields as $key => $value ) {
-			if ( !in_array( $value->meta_key, $ignore_keys ) ) {
-				$all_fields[] = array( 'key' => $value->meta_key, 'table' => $meta_table, 'methods' => $meta_methods );
+			if ( ! in_array( $value->meta_key, $ignore_keys ) ) {
+				$all_fields[] = array(
+					'key' => $value->meta_key,
+					'table' => $meta_table,
+					'methods' => $meta_methods,
+				);
 			}
 		}
 
@@ -386,7 +455,11 @@ class Wordpress {
 			foreach ( $taxonomy as $key => $value ) {
 				$exists = array_search( $value, array_column( $all_fields, 'key' ) );
 				if ( 0 !== $exists ) {
-					$all_fields[] = array( 'key' => $value, 'table' => $tax_table, 'methods' => $content_methods );
+					$all_fields[] = array(
+						'key' => $value,
+						'table' => $tax_table,
+						'methods' => $content_methods,
+					);
 				}
 			}
 		}
@@ -461,7 +534,7 @@ class Wordpress {
 				}
 
 				break;
-		}
+		} // End switch().
 
 		return $result;
 
@@ -486,9 +559,9 @@ class Wordpress {
 	* @param array $params
 	*   Values of the fields to set for the object.
 	* @param bool $push_drafts
-	*   Whether to save WordPress drafts when pushing to Salesforce
+	*	Whether to save WordPress drafts when pushing to Salesforce
 	* @param bool $check_only
-	*   Allows this method to only check for matching records, instead of making any data changes
+	*	Allows this method to only check for matching records, instead of making any data changes
 	*
 	* @return array
 	*   data:
@@ -508,7 +581,7 @@ class Wordpress {
 
 		// If key is set, remove from $params to avoid SQL errors.
 		if ( isset( $params[ $key ] ) ) {
-		  unset( $params[ $key ] );
+			unset( $params[ $key ] );
 		}
 
 		// allow developers to change both the key and value by which objects should be matched
@@ -520,7 +593,7 @@ class Wordpress {
 				$result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
 				break;
 			case 'post':
-				$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
+				$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name, $check_only );
 				break;
 			case 'attachment':
 				$result = $this->attachment_upsert( $key, $value, $methods, $params, $id_field, $check_only );
@@ -543,7 +616,7 @@ class Wordpress {
 					$result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
 				*/
 				// use hook like: add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', add_object, 10, 1 );
-				// the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
+				// the one param is: array( 'key' => key, 'value' => value, 'methods' => methods, 'params' => array_of_params, 'id_field' => idfield, 'push_drafts' => pushdrafts, 'name' => name, 'check_only' => $check_only )
 
 				// check to see if someone is calling the filter, and apply it if so
 				if ( ! has_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item' ) ) {
@@ -562,7 +635,7 @@ class Wordpress {
 				}
 
 				break;
-		}
+		} // End switch().
 
 		return $result;
 
@@ -582,7 +655,7 @@ class Wordpress {
 	*
 	* @return array
 	*   data:
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*   from_cache:
 	*   cached:
@@ -636,7 +709,7 @@ class Wordpress {
 				}
 
 				break;
-		}
+		} // End switch().
 
 		return $result;
 	}
@@ -651,7 +724,7 @@ class Wordpress {
 	*
 	* @return array
 	*   data:
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	* part of CRUD for WordPress objects
@@ -681,7 +754,7 @@ class Wordpress {
 			default:
 
 				// developers can use this hook to delete objects with their own methods
-				// the returned $success is an object of the correct type, or a false
+				// the returned $success is an object of the correct type, or a FALSE
 				// use hook like: add_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item', add_object, 10, 1 );
 				// the one param is: array( 'id' => id, 'name' => objecttype )
 
@@ -697,9 +770,14 @@ class Wordpress {
 
 				$success = $this->post_delete( $id );
 				break;
-		}
+		} // End switch().
 
-		$result = array( 'data' => array( 'success' => $success ), 'errors' => array() );
+		$result = array(
+			'data' => array(
+				'success' => $success,
+			),
+			'errors' => array(),
+		);
 		return $result;
 	}
 
@@ -712,7 +790,7 @@ class Wordpress {
 	* @return array
 	*   data:
 	*     ID : 123,
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -728,12 +806,12 @@ class Wordpress {
 			$params['user_login'] = array(
 				'value' => $username,
 				'method_modify' => 'wp_insert_user',
-				'method_read' => 'get_user_by'
+				'method_read' => 'get_user_by',
 			);
 		}
 
 		// this is a new user
-		if ( null === username_exists( $username ) ) {
+		if ( null == username_exists( $username ) ) {
 
 			// Create the user
 			// wordpress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email
@@ -761,7 +839,7 @@ class Wordpress {
 				foreach ( $params as $key => $value ) {
 					$method = $value['method_modify'];
 					$meta_id = $method( $user_id, $key, $value['value'] );
-					if ( fales === $meta_id ) {
+					if ( false === $meta_id ) {
 						$success = false;
 						$errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
 					}
@@ -775,10 +853,9 @@ class Wordpress {
 				wp_new_user_notification( $user_id, null, 'admin user' );
 
 			}
-
 		} else {
 			$user_id = username_exists( $username );
-		}
+		} // End if().
 
 		if ( is_wp_error( $user_id ) ) {
 			$success = false;
@@ -788,7 +865,13 @@ class Wordpress {
 			$errors = array();
 		}
 
-		$result = array( 'data' => array( $id_field => $user_id, 'success' => $success ), 'errors' => $errors );
+		$result = array(
+			'data' => array(
+				$id_field => $user_id,
+				'success' => $success,
+			),
+			'errors' => $errors,
+		);
 
 		return $result;
 
@@ -808,14 +891,14 @@ class Wordpress {
 	* @param string $id_field
 	*   optional string of what the ID field is, if it is ever not ID
 	* @param bool $push_drafts
-	*   Whether to save WordPress drafts when pushing to Salesforce
+	*	Whether to save WordPress drafts when pushing to Salesforce
 	* @param bool $check_only
-	*   Allows this method to only check for matching records, instead of making any data changes
+	*	Allows this method to only check for matching records, instead of making any data changes
 	*
 	* @return array
 	*   data:
 	*     ID : 123,
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -827,7 +910,7 @@ class Wordpress {
 			// this should give us the user object
 			$user = $method( str_replace( 'user_', '', $key ), $value );
 			if ( isset( $user->{$id_field} ) ) {
-				// user does exist after checking the matching value. we want its id so we can update it.
+				// user does exist after checking the matching value. we want its id
 				$user_id = $user->{$id_field};
 
 				if ( true === $check_only ) {
@@ -846,7 +929,7 @@ class Wordpress {
 					'method_modify' => $method,
 					'method_read' => $methods['method_read'],
 				);
-			} else {
+			} elseif ( false === $check_only ) {
 				// user does not exist after checking the matching value. create it.
 				// on the prematch fields, we specify the method_create param
 				if ( isset( $methods['method_create'] ) ) {
@@ -857,11 +940,14 @@ class Wordpress {
 				$params[ $key ] = array(
 					'value' => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read']
+					'method_read' => $methods['method_read'],
 				);
 				$result = $this->user_create( $params );
 				return $result;
-			}
+			} else {
+				// check only is true but there's not a user yet
+				return null;
+			} // End if().
 		} else {
 			// there is no method by which to check the user. we can check other ways here.
 			$params[ $key ] = array(
@@ -893,7 +979,7 @@ class Wordpress {
 				// user does exist based on username, and we aren't doing a check only. we want to update the wp user here.
 				$user_id = $existing_id;
 			}
-		}
+		} // End if().
 
 		if ( isset( $user_id ) ) {
 			foreach ( $params as $key => $value ) {
@@ -930,7 +1016,7 @@ class Wordpress {
 	*
 	* @return array
 	*   data:
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -955,9 +1041,12 @@ class Wordpress {
 			foreach ( $params as $key => $value ) {
 				$method = $value['method_modify'];
 				$meta_id = $method( $user_id, $key, $value['value'] );
-				if ( fales === $meta_id ) {
+				if ( false === $meta_id ) {
 					$success = false;
-					$errors[] = array( 'key' => $key, 'value' => $value );
+					$errors[] = array(
+						'key' => $key,
+						'value' => $value,
+					);
 				}
 			}
 
@@ -966,7 +1055,13 @@ class Wordpress {
 
 		}
 
-		$result = array( 'data' => array( $id_field => $user_id, 'success' => $success ), 'errors' => $errors );
+		$result = array(
+			'data' => array(
+				$id_field => $user_id,
+				'success' => $success,
+			),
+			'errors' => $errors,
+		);
 		return $result;
 	}
 
@@ -977,7 +1072,7 @@ class Wordpress {
 	*   User ID
 	* @param int $reassign
 	*   If we should reassign any posts to other users
-	*   We don't change this from null anywhere in this plugin
+	*   We don't change this from NULL anywhere in this plugin
 	*
 	* @return boolean
 	*   true if successful
@@ -1003,7 +1098,7 @@ class Wordpress {
 	* @return array
 	*   data:
 	*     ID : 123,
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -1015,7 +1110,7 @@ class Wordpress {
 			}
 		}
 
-		if ( '' !== $post_type ) {
+		if ( $post_type !== '' ) {
 			$content['post_type'] = $post_type;
 		}
 
@@ -1038,7 +1133,10 @@ class Wordpress {
 					$meta_id = $method( $post_id, $key, $value['value'] );
 					if ( false === $meta_id ) {
 						$success = false;
-						$errors[] = array( 'key' => $key, 'value' => $value );
+						$errors[] = array(
+							'key' => $key,
+							'value' => $value,
+						);
 					}
 				}
 			}
@@ -1056,7 +1154,13 @@ class Wordpress {
 			$errors = array();
 		}
 
-		$result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
+		$result = array(
+			'data' => array(
+				$id_field => $post_id,
+				'success' => $success,
+			),
+			'errors' => $errors,
+		);
 
 		return $result;
 
@@ -1080,12 +1184,12 @@ class Wordpress {
 	* @param string $post_type
 	*   optional string for custom post type, if applicable
 	* @param bool $check_only
-	*   Allows this method to only check for matching records, instead of making any data changes
+	*	Allows this method to only check for matching records, instead of making any data changes
 	*
 	* @return array
 	*   data:
 	*     ID : 123,
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -1137,7 +1241,7 @@ class Wordpress {
 					'method_modify' => $method,
 					'method_read' => $methods['method_read'],
 				);
-			} else {
+			} elseif ( false === $check_only ) {
 				// post does not exist after checking the matching value. create it.
 				// on the prematch fields, we specify the method_create param
 				if ( isset( $methods['method_create'] ) ) {
@@ -1152,7 +1256,10 @@ class Wordpress {
 				);
 				$result = $this->post_create( $params );
 				return $result;
-			}
+			} else {
+				// check only is true but there's not a post yet
+				return null;
+			} // End if().
 		} else {
 			// there is no method by which to check the post. we can check other ways here.
 			$params[ $key ] = array(
@@ -1161,23 +1268,28 @@ class Wordpress {
 				'method_read' => $methods['method_read'],
 			);
 
+			// if we have a title, use it to check for existing post
 			if ( isset( $params['post_title']['value'] ) ) {
-				$post_title = $params['post_title']['value'];
+				$title = $params['post_title']['value'];
 			}
+
+			// if we have content, use it to check for existing post
 			if ( isset( $params['post_content']['value'] ) ) {
-				$post_content = $params['post_content']['value'];
+				$content = $params['post_content']['value'];
 			} else {
-				$post_content = '';
+				$content = '';
 			}
+
+			// if we have a date, use it to check for existing post
 			if ( isset( $params['post_date']['value'] ) ) {
-				$post_date = $params['post_date']['value'];
+				$date = $params['post_date']['value'];
 			} else {
-				$post_date = '';
+				$date = '';
 			}
 
-			$existing_id = post_exists( $post_title, $post_content, $post_date ); // returns an id if there is a result
+			$existing_id = post_exists( $title, $content, $date ); // returns an id if there is a result
 
-			// post does not exist after more checking. we want to create it
+			// post does not exist after more checking. maybe we want to create it
 			if ( null === $existing_id && false === $check_only ) {
 				$result = $this->post_create( $params );
 				return $result;
@@ -1185,10 +1297,13 @@ class Wordpress {
 				// we are just checking to see if there is a match
 				return $existing_id;
 			} else {
-				// post does exist, and we aren't doing a check only. we want to update the wp post here.
+				// post does exist based on fields, and we aren't doing a check only. we want to update the wp post here.
 				$post_id = $existing_id;
 			}
-		}
+
+			return $result;
+
+		} // End if().
 
 		if ( isset( $post_id ) ) {
 			foreach ( $params as $key => $value ) {
@@ -1227,7 +1342,7 @@ class Wordpress {
 	*
 	* @return array
 	*   data:
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -1264,7 +1379,10 @@ class Wordpress {
 					$meta_id = $method( $post_id, $key, $value['value'] );
 					if ( false === $meta_id ) {
 						$success = false;
-						$errors[] = array( 'key' => $key, 'value' => $value );
+						$errors[] = array(
+							'key' => $key,
+							'value' => $value,
+						);
 					}
 				}
 			}
@@ -1274,7 +1392,13 @@ class Wordpress {
 
 		}
 
-		$result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
+		$result = array(
+			'data' => array(
+				$id_field => $post_id,
+				'success' => $success,
+			),
+			'errors' => $errors,
+		);
 		return $result;
 	}
 
@@ -1285,7 +1409,7 @@ class Wordpress {
 	*   Post ID
 	* @param bool $force_delete
 	*   If we should bypass the trash
-	*   We don't change this from false anywhere in this plugin
+	*   We don't change this from FALSE anywhere in this plugin
 	*
 	* @return mixed
 	*   post object if successful, false if failed
@@ -1305,7 +1429,7 @@ class Wordpress {
 	* @return array
 	*   data:
 	*     ID : 123,
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -1359,7 +1483,13 @@ class Wordpress {
 
 		}
 
-		$result = array( 'data' => array( $id_field => $attachment_id, 'success' => $success ), 'errors' => $errors );
+		$result = array(
+			'data' => array(
+				$id_field => $attachment_id,
+				'success' => $success,
+			),
+			'errors' => $errors,
+		);
 
 		return $result;
 
@@ -1379,12 +1509,12 @@ class Wordpress {
 	* @param string $id_field
 	*   optional string of what the ID field is, if it is ever not ID
 	* @param bool $check_only
-	*   Allows this method to only check for matching records, instead of making any data changes
+	*	Allows this method to only check for matching records, instead of making any data changes
 	*
 	* @return array
 	*   data:
 	*     ID : 123,
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -1432,7 +1562,7 @@ class Wordpress {
 					'method_modify' => $method,
 					'method_read' => $methods['method_read'],
 				);
-			} else {
+			} elseif ( false === $check_only ) {
 				// attachment does not exist after checking the matching value. create it.
 				// on the prematch fields, we specify the method_create param
 				if ( isset( $methods['method_create'] ) ) {
@@ -1447,23 +1577,54 @@ class Wordpress {
 				);
 				$result = $this->attachment_create( $params );
 				return $result;
-			}
+			} else {
+				// check only is true but there's not an attachment yet
+				return null;
+			} // End if().
 		} else {
-			// there is no method by which to check the attachment. we can check other ways here.
+			// there is no method by which to check the post. we can check other ways here.
 			$params[ $key ] = array(
 				'value' => $value,
 				'method_modify' => $methods['method_modify'],
 				'method_read' => $methods['method_read'],
 			);
 
-			// there does not seem to be an attachment_exists method to use here
+			// if we have a title, use it to check for existing post
+			if ( isset( $params['post_title']['value'] ) ) {
+				$title = $params['post_title']['value'];
+			}
 
-			// attachment does not exist after more checking. we want to create it
-			if ( false === $check_only ) {
+			// if we have content, use it to check for existing post
+			if ( isset( $params['post_content']['value'] ) ) {
+				$content = $params['post_content']['value'];
+			} else {
+				$content = '';
+			}
+
+			// if we have a date, use it to check for existing post
+			if ( isset( $params['post_date']['value'] ) ) {
+				$date = $params['post_date']['value'];
+			} else {
+				$date = '';
+			}
+
+			$existing_id = post_exists( $title, $content, $date ); // returns an id if there is a result
+
+			// attachment does not exist after more checking. maybe we want to create it
+			if ( null === $existing_id && false === $check_only ) {
 				$result = $this->attachment_create( $params );
 				return $result;
+			} elseif ( true === $check_only ) {
+				// we are just checking to see if there is a match
+				return $existing_id;
+			} else {
+				// attachment does exist based on fields, and we aren't doing a check only. we want to update the wp attachment here.
+				$attachment_id = $existing_id;
 			}
-		}
+
+			return $result;
+
+		} // End if().
 
 		if ( isset( $attachment_id ) ) {
 			foreach ( $params as $key => $value ) {
@@ -1501,7 +1662,7 @@ class Wordpress {
 	*
 	* @return array
 	*   data:
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	* Note: this method uses wp_insert_attachment for core content fields as there isn't a corresponding method for updating these rows
@@ -1551,7 +1712,6 @@ class Wordpress {
 			$attach_new_data = array();
 			foreach ( $params as $key => $value ) {
 				$method = $value['method_modify'];
-				//$meta_updated = $method( $attachment_id, $key, $value['value'] );
 				$attach_new_data[ $key ] = $value['value'];
 			}
 
@@ -1565,7 +1725,10 @@ class Wordpress {
 
 			if ( false === $meta_updated ) {
 				$success = false;
-				$errors[] = array( 'key' => $key, 'value' => $value );
+				$errors[] = array(
+					'key' => $key,
+					'value' => $value,
+				);
 			}
 
 			if ( 0 !== $parent ) {
@@ -1575,9 +1738,15 @@ class Wordpress {
 			// developers can use this hook to set any other attachment data
 			do_action( 'object_sync_for_salesforce_set_more_attachment_data', $attachment_id, $params, 'update' );
 
-		}
+		} // End if().
 
-		$result = array( 'data' => array( $id_field => $attachment_id, 'success' => $success ), 'errors' => $errors );
+		$result = array(
+			'data' => array(
+				$id_field => $attachment_id,
+				'success' => $success,
+			),
+			'errors' => $errors,
+		);
 		return $result;
 	}
 
@@ -1588,7 +1757,7 @@ class Wordpress {
 	*   Attachment ID
 	* @param bool $force_delete
 	*   If we should bypass the trash
-	*   We don't change this from false anywhere in this plugin
+	*   We don't change this from FALSE anywhere in this plugin
 	*
 	* @return mixed
 	*   attachment object if successful, false if failed
@@ -1612,7 +1781,7 @@ class Wordpress {
 	* @return array
 	*   data:
 	*     ID : 123,
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -1639,7 +1808,7 @@ class Wordpress {
 			$success = false;
 			$errors = $term;
 		} else {
-			$term_id = $term["$id_field"];
+			$term_id = $term[ "$id_field" ];
 			$success = true;
 			$errors = array();
 			foreach ( $params as $key => $value ) {
@@ -1664,7 +1833,13 @@ class Wordpress {
 			$errors = array();
 		}
 
-		$result = array( 'data' => array( $id_field => $term_id, 'success' => $success ), 'errors' => $errors );
+		$result = array(
+			'data' => array(
+				$id_field => $term_id,
+				'success' => $success,
+			),
+			'errors' => $errors,
+		);
 
 		return $result;
 
@@ -1686,14 +1861,14 @@ class Wordpress {
 	* @param string $id_field
 	*   optional string of what the ID field is, if it is ever not ID
 	* @param bool $push_drafts
-	*   Whether to save WordPress drafts when pushing to Salesforce
+	*	Whether to save WordPress drafts when pushing to Salesforce
 	* @param bool $check_only
-	*   Allows this method to only check for matching records, instead of making any data changes
+	*	Allows this method to only check for matching records, instead of making any data changes
 	*
 	* @return array
 	*   data:
 	*     ID : 123,
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -1725,7 +1900,7 @@ class Wordpress {
 					'method_modify' => $method,
 					'method_read' => $methods['method_read'],
 				);
-			} else {
+			} elseif ( false === $check_only ) {
 				// term does not exist after checking the matching value. create it.
 				// on the prematch fields, we specify the method_create param
 				if ( isset( $methods['method_create'] ) ) {
@@ -1738,36 +1913,44 @@ class Wordpress {
 					'method_modify' => $method,
 					'method_read' => $methods['method_read'],
 				);
+				$result = $this->term_create( $params, $taxonomy, $id_field );
+				return $result;
+			} else {
+				// check only is true but there's not a term yet
+				return null;
+			} // End if().
+		} else {
+			// there is no method by which to check the term. we can check other ways here.
+			$params[ $key ] = array(
+				'value' => $value,
+				'method_modify' => $methods['method_modify'],
+				'method_read' => $methods['method_read'],
+			);
 
-				if ( isset( $params['term']['value'] ) ) {
-					$term = $params['term']['value'];
-				}
-				if ( isset( $params['taxonomy']['value'] ) ) {
-					$taxonomy = $params['taxonomy']['value'];
-				} else {
-					$taxonomy = '';
-				}
-				if ( isset( $params['parent']['value'] ) ) {
-					$parent = $params['parent']['value'];
-				} else {
-					$parent = '';
-				}
-
-				$existing_id = term_exists( $term, $taxonomy, $parent ); // returns an id if there is a result
-
-				// term does not exist after more checking. we want to create it
-				if ( null === $existing_id && false === $check_only ) {
-					$result = $this->term_create( $params, $taxonomy, $id_field );
-					return $result;
-				} elseif ( true === $check_only ) {
-					// we are just checking to see if there is a match
-					return $existing_id;
-				} else {
-					// term does exist, and we aren't doing a check only. we want to update the wp term here.
-					$term_id = $existing_id;
-				}
+			if ( isset( $params['name']['value'] ) ) {
+				$term = $params['name']['value'];
 			}
-		}
+
+			if ( isset( $params['parent']['value'] ) ) {
+				$parent = $params['parent']['value'];
+			} else {
+				$parent = 0;
+			}
+
+			$existing_id = term_exists( $term, $taxonomy, $parent ); // returns an id if there is a result
+
+			// term does not exist after more checking. maybe we want to create it
+			if ( null === $existing_id && false === $check_only ) {
+				$result = $this->term_create( $params, $taxonomy, $id_field );
+				return $result;
+			} elseif ( true === $check_only ) {
+				// we are just checking to see if there is a match
+				return $existing_id;
+			} else {
+				// term does exist based on criteria, and we aren't doing a check only. we want to update the wp term here.
+				$term_id = $existing_id;
+			}
+		} // End if().
 
 		if ( isset( $term_id ) ) {
 			foreach ( $params as $key => $value ) {
@@ -1806,7 +1989,7 @@ class Wordpress {
 	*
 	* @return array
 	*   data:
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -1827,7 +2010,7 @@ class Wordpress {
 			$success = false;
 			$errors = $term;
 		} else {
-			$term_id = $term["$id_field"];
+			$term_id = $term[ "$id_field" ];
 			$success = true;
 			$errors = array();
 			foreach ( $params as $key => $value ) {
@@ -1852,7 +2035,13 @@ class Wordpress {
 			$errors = array();
 		}
 
-		$result = array( 'data' => array( $id_field => $term_id, 'success' => $success ), 'errors' => $errors );
+		$result = array(
+			'data' => array(
+				$id_field => $term_id,
+				'success' => $success,
+			),
+			'errors' => $errors,
+		);
 
 		return $result;
 
@@ -1889,7 +2078,7 @@ class Wordpress {
 	* @return array
 	*   data:
 	*     ID : 123,
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -1948,7 +2137,13 @@ class Wordpress {
 			$errors = array();
 		}
 
-		$result = array( 'data' => array( $id_field => $comment_id, 'success' => $success ), 'errors' => $errors );
+		$result = array(
+			'data' => array(
+				$id_field => $comment_id,
+				'success' => $success,
+			),
+			'errors' => $errors,
+		);
 
 		return $result;
 
@@ -1968,14 +2163,14 @@ class Wordpress {
 	* @param string $id_field
 	*   optional string of what the ID field is, if it is ever not comment_ID
 	* @param bool $push_drafts
-	*   Whether to save WordPress drafts when pushing to Salesforce
+	*	Whether to save WordPress drafts when pushing to Salesforce
 	* @param bool $check_only
-	*   Allows this method to only check for matching records, instead of making any data changes
+	*	Allows this method to only check for matching records, instead of making any data changes
 	*
 	* @return array
 	*   data:
 	*     ID : 123,
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -1995,7 +2190,7 @@ class Wordpress {
 			}
 			$comments = $method( $match );
 
-			if ( count( $comments ) === 1 ) {
+			if ( 1 === count( $comments ) ) {
 				$comment = $comments[0];
 				// comment does exist after checking the matching value. we want its id
 				$comment_id = $comment->{$id_field};
@@ -2031,7 +2226,7 @@ class Wordpress {
 					0,
 					$status
 				);
-			} else {
+			} elseif ( false === $check_only ) {
 				// comment does not exist after checking the matching value. create it.
 				// on the prematch fields, we specify the method_create param
 				if ( isset( $methods['method_create'] ) ) {
@@ -2044,34 +2239,48 @@ class Wordpress {
 					'method_modify' => $method,
 					'method_read' => $methods['method_read'],
 				);
+				$result = $this->comment_create( $params, $id_field );
+				return $result;
+			} else {
+				// check only is true but there's not a comment yet
+				return null;
+			} // End if().
+		} else {
+			// there is no method by which to check the comment. we can check other ways here.
+			$params[ $key ] = array(
+				'value' => $value,
+				'method_modify' => $methods['method_modify'],
+				'method_read' => $methods['method_read'],
+			);
 
-				if ( isset( $params['comment_author']['value'] ) ) {
-					$comment_author = $params['comment_author']['value'];
-				}
-				if ( isset( $params['comment_date']['value'] ) ) {
-					$comment_date = $params['comment_date']['value'];
-				}
-				if ( isset( $params['timezone']['value'] ) ) {
-					$timezone = $params['timezone']['value'];
-				} else {
-					$timezone = '';
-				}
-
-				$existing_id = comment_exists( $comment_author, $comment_date, $timezone ); // returns an id if there is a result
-
-				// comment does not exist after more checking. we want to create it
-				if ( null === $existing_id && false === $check_only ) {
-					$result = $this->comment_create( $params, $id_field );
-					return $result;
-				} elseif ( true === $check_only ) {
-					// we are just checking to see if there is a match
-					return $existing_id;
-				} else {
-					// comment does exist, and we aren't doing a check only. we want to update the wp term here.
-					$comment_id = $existing_id;
-				}
+			if ( isset( $params['comment_author']['value'] ) ) {
+				$comment_author = $params['comment_author']['value'];
 			}
-		}
+
+			if ( isset( $params['comment_date']['value'] ) ) {
+				$comment_date = $params['comment_date']['value'];
+			}
+
+			if ( isset( $params['timezone']['value'] ) ) {
+				$timezone = $params['timezone']['value'];
+			} else {
+				$timezone = 'blog';
+			}
+
+			$existing_id = comment_exists( $comment_author, $comment_date, $timezone ); // returns an id if there is a result
+
+			// comment does not exist after more checking. we want to create it
+			if ( null === $existing_id && false === $check_only ) {
+				$result = $this->comment_create( $params, $id_field );
+				return $result;
+			} elseif ( true === $check_only ) {
+				// we are just checking to see if there is a match
+				return $existing_id;
+			} else {
+				// comment does exist based on username, and we aren't doing a check only. we want to update the wp user here.
+				$comment_id = $existing_id;
+			}
+		} // End if().
 
 		if ( isset( $comment_id ) ) {
 			foreach ( $params as $key => $value ) {
@@ -2111,7 +2320,7 @@ class Wordpress {
 	*
 	* @return array
 	*   data:
-	*	  success: 1
+	*		success: 1
 	*   "errors" : [ ],
 	*
 	*/
@@ -2155,7 +2364,13 @@ class Wordpress {
 			$errors = array();
 		}
 
-		$result = array( 'data' => array( $id_field => $comment_id, 'success' => $success ), 'errors' => $errors );
+		$result = array(
+			'data' => array(
+				$id_field => $comment_id,
+				'success' => $success,
+			),
+			'errors' => $errors,
+		);
 
 		return $result;
 
@@ -2168,7 +2383,7 @@ class Wordpress {
 	*   Comment ID
 	* @param bool $force_delete
 	*   If we should bypass the trash
-	*   We don't change this from false anywhere in this plugin
+	*   We don't change this from FALSE anywhere in this plugin
 	*
 	* @return boolean
 	*   true if successful, false if failed

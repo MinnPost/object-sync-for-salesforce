@@ -46,7 +46,7 @@ class Salesforce_Select_Query {
 			$value = "('" . implode( "','", $value ) . "')";
 
 			// Set operator to IN if wasn't already changed from the default.
-			if ( '=' === $operator ) {
+			if ( '=' == $operator ) {
 				$operator = 'IN';
 			}
 		}
