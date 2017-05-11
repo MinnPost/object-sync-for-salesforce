@@ -85,7 +85,6 @@ class Salesforce_Pull {
 			$code = '200';
 			// check to see if anything is in the queue and handle it if it is
 			$this->schedule->maybe_handle();
-
 		} else {
 			$code = '403';
 		}
