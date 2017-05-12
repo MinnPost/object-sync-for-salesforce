@@ -182,6 +182,7 @@ class Object_Sync_Salesforce {
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull, $this->logging, $this->schedulable_classes );
 
+		$this->wp_cli( $this->wpdb, $this->version, $this->text_domain );
 	}
 
 	/**
@@ -348,6 +349,14 @@ class Object_Sync_Salesforce {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_pull.php';
 		$pull = new Salesforce_Pull( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
 		return $pull;
+	}
+
+	/**
+	*
+	*/
+	private function wp_cli( &$wpdb, $version, $text_domain ) {
+		require_once plugin_dir_path( __FILE__ ) . 'classes/cli.php';
+		$cli = new Salesforce_Cli( $wpdb, $version, $text_domain );
 	}
 
 	/**
