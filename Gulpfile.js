@@ -30,7 +30,7 @@ const wpPot = require( 'gulp-wp-pot' );
 const paths = {
 	'css': [ 'assets/css/*.css', '!*.min.css' ],
 	'icons': 'assets/img/svg-icons/*.svg',
-	'images': [ 'assets/img/*', '!assets/img/*.svg' ],
+	'images': [ 'assets/img/*', '!assets/img/*.svg', 'docs/assets/img/**/*' ],
 	'php': [ './*.php', './**/*.php' ],
 	'sass': 'assets/sass/**/*.scss',
 	'concat_scripts': 'assets/js/src/*.js',
@@ -175,14 +175,14 @@ gulp.task( 'svg', [ 'clean:icons' ], () =>
  * https://www.npmjs.com/package/gulp-imagemin
  */
 gulp.task( 'imagemin', () =>
-	gulp.src( paths.images )
+	gulp.src( paths.images, {base: "./"} )
 		.pipe( plumber( {'errorHandler': handleErrors} ) )
 		.pipe( imagemin( {
 			'optimizationLevel': 5,
 			'progressive': true,
 			'interlaced': true
 		} ) )
-		.pipe( gulp.dest( 'assets/img' ) )
+		.pipe( gulp.dest("./") )
 );
 
 /**
