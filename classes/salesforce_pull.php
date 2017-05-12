@@ -285,13 +285,15 @@ class Salesforce_Pull {
 		$mapped_fields = array();
 		$mapped_record_types = array();
 
+		$mappings = $this->mappings->get_fieldmaps(
+		    null,
+		    array(
+		        'salesforce_object' => $type,
+		    )
+		);
+
 		// Iterate over each field mapping to determine our query parameters.
-		foreach ( $this->mappings->get_fieldmaps(
-			null,
-			array(
-				'salesforce_object' => $type,
-			)
-		) as $mapping ) {
+		foreach ( $mappings as $mapping ) {
 
 			// only use fields that come from salesforce to wordpress, or that sync
 			$mapped_fields = array_merge(
@@ -370,14 +372,16 @@ class Salesforce_Pull {
 
 			$type = $salesforce_mapping['salesforce_object'];
 
-			// Iterate over each field mapping to determine our parameters.
-			foreach (
-				$this->mappings->get_fieldmaps(
-					null,
-					array(
-						'salesforce_object' => $type,
-					)
-				) as $mapping ) {
+			$mappings = $this->mappings->get_fieldmaps(
+			    null,
+			    array(
+			        'salesforce_object' => $type,
+			    )
+			);
+
+			// Iterate over each field mapping to determine our query parameters.
+			foreach ( $mappings as $mapping ) {
+
 				$last_delete_sync = get_option( 'object_sync_for_salesforce_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 				$now = current_time( 'timestamp', true );
 
