@@ -450,6 +450,30 @@ class Wordpress_Salesforce_Admin {
 					'default' => $this->default_pull_throttle,
 				),
 			),
+			'use_soap' => array(
+				'title' => 'Use the Salesforce SOAP API?',
+				'callback' => $callbacks['text'],
+				'page' => $page,
+				'section' => $section,
+				'args' => array(
+					'type' => 'checkbox',
+					'validate' => 'sanitize_text_field',
+					'desc' => 'Check this to use the SOAP API instead of the REST API to connect to Salesforce. Consult <a href="https://developer.salesforce.com/blogs/tech-pubs/2011/10/salesforce-apis-what-they-are-when-to-use-them.html">this article</a> to compare the two.',
+					'constant' => '',
+				),
+			),
+			'soap_wsdl_path' => array(
+				'title' => 'Path to SOAP WSDL file',
+				'callback' => $callbacks['text'],
+				'page' => $page,
+				'section' => $section,
+				'args' => array(
+					'type' => 'text',
+					'validate' => 'sanitize_text_field',
+					'desc' => 'Add the path to the WSDL file',
+					'constant' => '',
+				),
+			),
 			'debug_mode' => array(
 				'title' => 'Debug mode?',
 				'callback' => $callbacks['text'],

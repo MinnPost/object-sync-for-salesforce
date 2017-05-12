@@ -448,6 +448,13 @@ class Salesforce_Push {
 
 		$sfapi = $this->salesforce['sfapi'];
 
+		$use_soap = get_option( 'object_sync_for_salesforce_use_soap', false );
+		if ( '1' === $use_soap ) {
+			$wsdl = get_option( 'object_sync_for_salesforce_soap_wsdl_path', plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml' );
+			$client = new Salesforce_Soap_Partner( $sfapi, $wsdl );
+			$use_soap = true;
+		}
+
 		// we need to get the wordpress id here so we can check to see if the object already has a map
 		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
 		$object_id = $structure['id_field'];

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fcc12bcf5851e7ea8d1eadff0488536",
+    "content-hash": "d8eae0649674fe8b91dcbfa22a3aaed7",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
@@ -34,6 +34,38 @@
             ],
             "description": "WP Background Processing can be used to fire off non-blocking asynchronous requests or as a background processing tool, allowing you to queue tasks.",
             "time": "2016-09-13 12:24:02"
+        },
+        {
+            "name": "developerforce/force.com-toolkit-for-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/developerforce/Force.com-Toolkit-for-PHP.git",
+                "reference": "a131708a0fbc488da039668115f9a0bd7f779e55"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/developerforce/Force.com-Toolkit-for-PHP/zipball/a131708a0fbc488da039668115f9a0bd7f779e55",
+                "reference": "a131708a0fbc488da039668115f9a0bd7f779e55",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "soapclient"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A wrapper for the Force.com Web Services SOAP API",
+            "time": "2017-03-16 15:11:46"
         },
         {
             "name": "pippinsplugins/wp-logging",
@@ -768,7 +800,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-03-07T10:34:43+00:00"
+            "time": "2017-03-07 10:34:43"
         },
         {
             "name": "sebastian/diff",
@@ -1041,7 +1073,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2016-10-03T07:41:43+00:00"
+            "time": "2016-10-03 07:41:43"
         },
         {
             "name": "sebastian/version",
@@ -1188,7 +1220,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "pippinsplugins/wp-logging": 20,
-        "a5hleyrich/wp-background-processing": 20
+        "a5hleyrich/wp-background-processing": 20,
+        "developerforce/force.com-toolkit-for-php": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
