@@ -59,7 +59,7 @@ function handleErrors () {
  * Delete object-sync-for-salesforce-admin.css and object-sync-for-salesforce-admin.min.css before we minify and optimize
  */
 gulp.task( 'clean:styles', () =>
-	del( [ 'object-sync-for-salesforce-admin.css', 'object-sync-for-salesforce-admin.min.css' ] )
+	del( [ 'assets/css/object-sync-for-salesforce-admin.css', 'assets/css/object-sync-for-salesforce-admin.min.css' ] )
 );
 
 /**
@@ -105,7 +105,7 @@ gulp.task( 'postcss', [ 'clean:styles' ], () =>
 		.pipe( sourcemaps.write() )
 
 		// Create object-sync-for-salesforce-admin.css.
-		.pipe( gulp.dest( './' ) )
+		.pipe( gulp.dest( 'assets/css/' ) )
 		.pipe( browserSync.stream() )
 );
 
@@ -115,13 +115,13 @@ gulp.task( 'postcss', [ 'clean:styles' ], () =>
  * https://www.npmjs.com/package/gulp-cssnano
  */
 gulp.task( 'cssnano', [ 'postcss' ], () =>
-	gulp.src( 'object-sync-for-salesforce-admin.css' )
+	gulp.src( 'assets/css/object-sync-for-salesforce-admin.css' )
 		.pipe( plumber( {'errorHandler': handleErrors} ) )
 		.pipe( cssnano( {
 			'safe': true // Use safe optimizations.
 		} ) )
 		.pipe( rename( 'object-sync-for-salesforce-admin.min.css' ) )
-		.pipe( gulp.dest( './' ) )
+		.pipe( gulp.dest( 'assets/css' ) )
 		.pipe( browserSync.stream() )
 );
 
@@ -241,7 +241,7 @@ gulp.task( 'clean:pot', () =>
 );
 
 /**
- * Scan the theme and create a POT file.
+ * Scan the plugin and create a POT file.
  *
  * https://www.npmjs.com/package/gulp-wp-pot
  */
