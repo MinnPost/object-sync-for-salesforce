@@ -145,7 +145,7 @@ class Object_Sync_Salesforce {
 			'salesforce' => array(
 			    'label' => 'Salesforce Authorization',
 			    'class' => 'Salesforce',
-			)
+			),
 		);
 
 		// users can modify the list of schedulable classes

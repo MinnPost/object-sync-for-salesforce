@@ -14,7 +14,7 @@ To install the plugin in WordPress, your PHP environment needs the following:
   - [http://php.net/openssl](http://php.net/openssl)
 4. [Composer](https://getcomposer.org). You'll need to have the composer executable in your path, or be able to call it in another way (one recommended way of doing this is [Homebrew](http://brew.sh/)).
 5. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
-6. If you intend to contribute interface work, for example on the admin settings design, you will need Node.js and Grunt installed as well. You can use [this guide](https://24ways.org/2013/grunt-is-not-weird-and-hard/) to set it up, and this plugin already includes a `package.json` and `Gruntfile.js`.
+6. If you intend to contribute interface work, for example on the admin settings design, you will need Node.js and Gulp installed as well. You can use [this guide](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md) to set it up, and this plugin already includes a `package.json` and `Gulpfile.js`.
 
 ### Install for developers
 
@@ -25,7 +25,7 @@ Most users should install the plugin from the WordPress plugin directory (we wil
 3. Run `cd object-sync-for-salesforce`
 4. Run `composer install`
 5. This will take a little while as Composer installs third-party libraries the plugin needs. You can then activate the plugin as you would a normal WordPress plugin.
-6. If you are doing interface work, as defined above, run `npm install` to install the Grunt plugins. Run `grunt` when you make changes to Sass or JavaScript.
+6. If you are doing interface work, as defined above, run `npm install` to install the Gulp plugins. Run `gulp` when you make changes to Sass or JavaScript.
 7. If you intend to contribute PHP work, you may want to install [apigen](http://www.apigen.org/) to generate code documentation. You can use [this link](http://www.apigen.org/) to set it up. Run `apigen generate` when you make relevant changes. You can check these in to the Git repository.
 
 ### Activate the plugin
@@ -51,7 +51,7 @@ For purposes of this documentation, we'll assume that your name, as defined in S
 3. Set the callback URL to: `https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize` (must use HTTPS).
 4. Select at least "Perform requests on your behalf at any time" for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select "Access and manage your data (api)" as one of these scopes.
 
-#### Additional information: 
+#### Additional information:
 - [https://help.salesforce.com/help/doc/en/remoteaccess_about.htm](https://help.salesforce.com/help/doc/en/remoteaccess_about.htm)
 - [https://developer.salesforce.com/page/Getting_Started_with_the_Force.com_REST_API?language=en#Setup](https://developer.salesforce.com/page/Getting_Started_with_the_Force.com_REST_API?language=en#Setup)
 - [http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php](http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php)

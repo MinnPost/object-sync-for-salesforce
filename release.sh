@@ -12,7 +12,7 @@ composer.lock
 composer.json
 package.json
 bower.json
-Gruntfile.js
+Gulpfile.js
 release/\*
 tests/\*
 node_modules/\*

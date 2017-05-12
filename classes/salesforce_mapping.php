@@ -179,6 +179,32 @@ class Salesforce_Mapping {
 		} // End if().
 	}
 
+	public function get_mapped_fields( $mapping, $directions = array() ) {
+		$mapped_fields = array();
+		foreach ( $mapping['fields'] as $fields ) {
+			if ( empty( $directions ) || in_array( $fields['direction'], $directions ) ) {
+				// Some field map types (Relation) store a collection of SF objects.
+				if ( is_array( $fields['salesforce_field'] ) && ! isset( $fields['salesforce_field']['label'] ) ) {
+					foreach ( $fields['salesforce_field'] as $sf_field ) {
+						$mapped_fields[ $sf_field['label'] ] = $sf_field['label'];
+					}
+				} else { // The rest are just a name/value pair.
+					$mapped_fields[ $fields['salesforce_field']['label'] ] = $fields['salesforce_field']['label'];
+				}
+			}
+		}
+
+		if ( ! empty( $this->get_mapped_record_types ) ) {
+			$mapped_fields['RecordTypeId'] = 'RecordTypeId';
+		}
+
+		return $mapped_fields;
+	}
+
+	public function get_mapped_record_types( $mapping ) {
+		return $mapping['salesforce_record_type_default'] === $this->salesforce_default_record_type ? array() : array_filter( maybe_unserialize( $mapping['salesforce_record_types_allowed'] ) );
+	}
+
 	/**
 	* Update a fieldmap row between a WordPress and Salesforce object
 	*
