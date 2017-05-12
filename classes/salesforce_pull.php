@@ -164,81 +164,12 @@ class Salesforce_Pull {
 		$sfapi = $this->salesforce['sfapi'];
 		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
 			$type = $salesforce_mapping['salesforce_object']; // this sets the salesfore object type for the SOQL query
-			$mapped_fields = array();
-			$mapped_record_types = array();
 
-			// Iterate over each field mapping to determine our query parameters.
-			foreach ( $this->mappings->get_fieldmaps(
-				null,
-				array(
-					'salesforce_object' => $type,
-				)
-			) as $mapping ) {
+			$soql = $this->get_pull_query( $type, $salesforce_mapping );
 
-	  			foreach ( $mapping['fields'] as $field ) {
-	  				// skip fields that are only wordpress to salesforce
-					if ( ! in_array( $field['direction'], array( $this->mappings->direction_sf_wordpress, $this->mappings->direction_sync ) ) ) {
-						continue;
-					}
-
-					// Some field map types (Relation) store a collection of SF objects.
-					if ( is_array( $field['salesforce_field'] ) && ! isset( $field['salesforce_field']['label'] ) ) {
-						foreach ( $field['salesforce_field'] as $sf_field ) {
-							$mapped_fields[ $sf_field['label'] ] = $sf_field['label'];
-						}
-					} else {
-						$mapped_fields[ $field['salesforce_field']['label'] ] = $field['salesforce_field']['label'];
-					}
-				}
-
-				if ( ! empty( $mapped_fields ) && $salesforce_mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type ) {
-					foreach ( $salesforce_mapping['salesforce_record_types_allowed'] as $record_type ) {
-						if ( $record_type ) {
-							$mapped_record_types[ $record_type ] = $record_type;
-						}
-					}
-					// Add the RecordTypeId field so we can use it when processing the queued SF objects.
-					$mapped_fields['RecordTypeId'] = 'RecordTypeId';
-				}
-			}
-
-			// There are no field mappings configured to pull data from Salesforce so
-			// move on to the next mapped object. Prevents querying unmapped data.
-			if ( empty( $mapped_fields ) ) {
+			// get_pull_query returns null if it has no matching fields
+			if ( null === $soql ) {
 				continue;
-			}
-
-			$soql = new Salesforce_Select_Query( $type );
-
-			// Convert field mappings to SOQL.
-			// this is why we don't use the get_updated method on the salesforce class
-			$soql->fields = array_merge( $mapped_fields, array(
-				'Id' => 'Id',
-				$salesforce_mapping['pull_trigger_field'] => $salesforce_mapping['pull_trigger_field'],
-			) );
-
-			if ( in_array( $this->mappings->sync_sf_create, $salesforce_mapping['sync_triggers'] ) ) {
-				$soql->fields['CreatedDate'] = 'CreatedDate';
-			}
-
-			// If no lastupdate, get all records, else get records since last pull.
-			// this should be what keeps it from getting all the records, whether or not they've ever been updated
-			// we also use the option for when the plugin was installed, and don't go back further than that by default
-
-			$sf_activate_time = get_option( 'object_sync_for_salesforce_activate_time', '' );
-			$sf_last_sync = get_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, null );
-			if ( $sf_last_sync ) {
-				$last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
-				$soql->add_condition( $salesforce_mapping['pull_trigger_field'], $last_sync, '>' );
-			} else {
-				$activated = gmdate( 'Y-m-d\TH:i:s\Z', $sf_activate_time );
-				$soql->add_condition( $salesforce_mapping['pull_trigger_field'], $activated, '>' );
-				// put a hook in here to let devs go retroactive if they want, and sync data from before plugin was activated
-			}
-
-			// If Record Type is specified, restrict query.
-			if ( count( $mapped_record_types ) > 0 ) {
-				$soql->add_condition( 'RecordTypeId', $mapped_record_types, 'IN' );
 			}
 
 			// Execute query
@@ -250,8 +181,12 @@ class Salesforce_Pull {
 					'cache' => false,
 				)
 			);
+
 			$response = $results['data'];
 			$version_path = wp_parse_url( $sfapi->get_api_endpoint(), PHP_URL_PATH );
+
+			$sf_last_sync = get_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, null );
+			$last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
 
 			if ( ! isset( $response['errorCode'] ) ) {
 				// Write items to the queue.
@@ -267,7 +202,7 @@ class Salesforce_Pull {
 					$data = array(
 						'object_type' => $type,
 						'object' => $result,
-						'mapping' => $mapping,
+						'mapping' => $salesforce_mapping,
 						'sf_sync_trigger' => $trigger, // use the appropriate trigger based on when this was created
 					);
 
@@ -299,7 +234,6 @@ class Salesforce_Pull {
 								'mapping' => $mapping,
 								'sf_sync_trigger' => $this->mappings->sync_sf_update, // sf update trigger
 							);
-
 							$this->schedule->push_to_queue( $data );
 							$this->schedule->save();
 
@@ -335,6 +269,93 @@ class Salesforce_Pull {
 	}
 
 	/**
+	* Given a SObject type name, build an SOQL query to include all fields for all
+	* SalesforceMappings mapped to that SObject.
+	*
+	* @param string $type
+	*   e.g. "Contact", "Account", etc.
+	*
+	* @return Salesforce_Select_Query or null if no mappings or no mapped fields
+	*   were found.
+	*
+	* @see Salesforce_Mapping::get_mapped_fields
+	* @see Salesforce_Mapping::get_mapped_record_types
+	*/
+	private function get_pull_query( $type, $salesforce_mapping = array() ) {
+		$mapped_fields = array();
+		$mapped_record_types = array();
+
+		$mappings = $this->mappings->get_fieldmaps(
+		    null,
+		    array(
+		        'salesforce_object' => $type,
+		    )
+		);
+
+		// Iterate over each field mapping to determine our query parameters.
+		foreach ( $mappings as $mapping ) {
+
+			// only use fields that come from salesforce to wordpress, or that sync
+			$mapped_fields = array_merge(
+				$mapped_fields,
+				$this->mappings->get_mapped_fields(
+					$mapping,
+					array( $this->mappings->direction_sync, $this->mappings->direction_sf_wordpress )
+				)
+			);
+
+			// If Record Type is specified, restrict query.
+			$mapping_record_types = $this->mappings->get_mapped_record_types( $mapping );
+
+			// If Record Type is not specified for a given mapping, ensure query is unrestricted.
+			if ( empty( $mapping_record_types ) ) {
+	  			$mapped_record_types = false;
+			} elseif ( is_array( $mapped_record_types ) ) {
+	  			$mapped_record_types = array_merge( $mapped_record_types, $mapping_record_types );
+	  		}
+	  	} // End foreach().
+
+		// There are no field mappings configured to pull data from Salesforce so
+		// move on to the next mapped object. Prevents querying unmapped data.
+		if ( empty( $mapped_fields ) ) {
+			return null;
+		}
+
+		$soql = new Salesforce_Select_Query( $type );
+
+		// Convert field mappings to SOQL.
+		$soql->fields = array_merge(
+			$mapped_fields,
+			array(
+				'Id' => 'Id',
+				$salesforce_mapping['pull_trigger_field'] => $salesforce_mapping['pull_trigger_field'],
+			)
+		);
+
+		if ( in_array( $this->mappings->sync_sf_create, $salesforce_mapping['sync_triggers'] ) ) {
+			$soql->fields['CreatedDate'] = 'CreatedDate';
+		}
+
+		// If no lastupdate, get all records, else get records since last pull.
+		// this should be what keeps it from getting all the records, whether or not they've ever been updated
+		// we also use the option for when the plugin was installed, and don't go back further than that by default
+
+		$sf_activate_time = get_option( 'object_sync_for_salesforce_activate_time', '' );
+		$sf_last_sync = get_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, null );
+		if ( $sf_last_sync ) {
+			$last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
+			$soql->add_condition( $salesforce_mapping['pull_trigger_field'], $last_sync, '>' );
+		} else {
+			$activated = gmdate( 'Y-m-d\TH:i:s\Z', $sf_activate_time );
+			$soql->add_condition( $salesforce_mapping['pull_trigger_field'], $activated, '>' );
+			// put a hook in here to let devs go retroactive if they want, and sync data from before plugin was activated
+		}
+
+		return $soql;
+
+	}
+
+	/**
 	* Get deleted records from salesforce.
 	* Note that deletions can only be queried via REST with an API version >= 29.0.
 	*
@@ -343,19 +364,23 @@ class Salesforce_Pull {
 
 		$sfapi = $this->salesforce['sfapi'];
 
+		// the drupal module runs a check_merged_records call right here. but it seems to be an invalid SOQL query.
+		// we are not incorporating that part of this branch at this time
+
 		// Load all unique SF record types that we have mappings for.
 		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
 
 			$type = $salesforce_mapping['salesforce_object'];
 
-			// Iterate over each field mapping to determine our parameters.
-			foreach (
-				$this->mappings->get_fieldmaps(
-					null,
-					array(
-						'salesforce_object' => $type,
-					)
-				) as $mapping ) {
+			$mappings = $this->mappings->get_fieldmaps(
+			    null,
+			    array(
+			        'salesforce_object' => $type,
+			    )
+			);
+
+			// Iterate over each field mapping to determine our query parameters.
+			foreach ( $mappings as $mapping ) {
 
 				$last_delete_sync = get_option( 'object_sync_for_salesforce_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 				$now = current_time( 'timestamp', true );
@@ -380,6 +405,7 @@ class Salesforce_Pull {
 				}
 
 				foreach ( $deleted['data']['deletedRecords'] as $result ) {
+
 					// salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?
 					if ( ! isset( $result['Id'] ) && isset( $result['id'] ) ) {
 						$result['Id'] = $result['id'];
@@ -390,7 +416,6 @@ class Salesforce_Pull {
 						'mapping' => $mapping,
 						'sf_sync_trigger' => $this->mappings->sync_sf_delete, // sf delete trigger
 					);
-
 					$this->schedule->push_to_queue( $data );
 					$this->schedule->save()->dispatch();
 
@@ -439,7 +464,6 @@ class Salesforce_Pull {
 	*
 	*/
 	public function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
-
 		$mapping_conditions = array(
 			'salesforce_object' => $object_type,
 		);
@@ -490,7 +514,7 @@ class Salesforce_Pull {
 			// can always reduce this number if all the arguments are not necessary
 			function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
 				if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
-					return FALSE;
+					return false;
 				}
 			}
 			*/
@@ -634,7 +658,7 @@ class Salesforce_Pull {
 					// we delete the map row even if the wordpress delete failed, because the salesforce object is gone
 					$this->mappings->delete_object_map( $mapping_object['id'] );
 
-				} // End if() - there is no map row.
+				} // End if(). there is no map row
 
 			  	return;
 			} // End if().
@@ -801,6 +825,7 @@ class Salesforce_Pull {
 						$op = 'Create';
 						$result = $this->wordpress->object_create( $salesforce_mapping['wordpress_object'], $params );
 					} // End if().
+
 				} catch ( WordpressException $e ) {
 					// create log entry for failed create or upsert
 					$status = 'error';
@@ -999,6 +1024,7 @@ class Salesforce_Pull {
 
 				// update that mapping object. the salesforce data version will be set here as well because we set it earlier
 				$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+
 			} // End if().
 			// end of the if statement for is_new & update or create trigger
 			// this keeps stuff from running too many times, and also keeps it from using the wrong methods. we don't need a generic } else { here at this time.
