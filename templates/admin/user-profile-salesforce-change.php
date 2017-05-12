@@ -5,8 +5,8 @@
     <tr>
         <th><label for="salesforce_id">Salesforce ID</label></th>
         <td>
-            <input type="text" name="salesforce_id" id="salesforce_id" value="<?php if ( isset( $mapping['id'] ) ) { echo $mapping['salesforce_id']; } ?>" class="regular-text" /><br />
-            <span class="description">Enter a Salesforce object ID.</span>
-        </td>
-    </tr>
+			<input type="text" name="salesforce_id" id="salesforce_id" value="<?php if ( isset( $mapping['id'] ) ) { echo $mapping['salesforce_id']; } ?>" class="regular-text" /><br />
+			<span class="description">Enter a Salesforce object ID.</span>
+		</td>
+	</tr>
 </table>

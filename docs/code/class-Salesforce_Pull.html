@@ -104,7 +104,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Salesforce_Pull.html#10-1035" title="Go to source code">salesforce_pull.php</a>
+			<b>Located at</b> <a href="source-class-Salesforce_Pull.html#10-1056" title="Go to source code">salesforce_pull.php</a>
 		<br>
 	</div>
 
@@ -209,7 +209,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_pull_webhook">#</a>
-		<code><a href="source-class-Salesforce_Pull.html#76-99" title="Go to source code">salesforce_pull_webhook</a>( )</code>
+		<code><a href="source-class-Salesforce_Pull.html#76-98" title="Go to source code">salesforce_pull_webhook</a>( )</code>
 
 		<div class="description short">
 			<p>Ajax callback for salesforce pull. Returns status of 200 for successful
@@ -245,7 +245,7 @@ this is the ajax callback; not a cron run</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_pull">#</a>
-		<code><a href="source-class-Salesforce_Pull.html#101-120" title="Go to source code">salesforce_pull</a>( )</code>
+		<code><a href="source-class-Salesforce_Pull.html#100-119" title="Go to source code">salesforce_pull</a>( )</code>
 
 		<div class="description short">
 			<p>Callback for the standard pull process used by webhooks and cron.</p>
@@ -275,7 +275,7 @@ this is the ajax callback; not a cron run</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_schedule">#</a>
-		<code><a href="source-class-Salesforce_Pull.html#122-134" title="Go to source code">schedule</a>( )</code>
+		<code><a href="source-class-Salesforce_Pull.html#121-133" title="Go to source code">schedule</a>( )</code>
 
 		<div class="description short">
 			<p>Load schedule
@@ -307,7 +307,7 @@ This loads the schedule class</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_check_throttle">#</a>
-		<code><a href="source-class-Salesforce_Pull.html#136-153" title="Go to source code">check_throttle</a>( )</code>
+		<code><a href="source-class-Salesforce_Pull.html#135-152" title="Go to source code">check_throttle</a>( )</code>
 
 		<div class="description short">
 			<p>Determines if the Salesforce pull should be allowed, or throttled.</p>
@@ -343,7 +343,7 @@ This loads the schedule class</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_updated_records">#</a>
-		<code><a href="source-class-Salesforce_Pull.html#155-312" title="Go to source code">get_updated_records</a>( )</code>
+		<code><a href="source-class-Salesforce_Pull.html#154-335" title="Go to source code">get_updated_records</a>( )</code>
 
 		<div class="description short">
 			<p>Pull updated records from Salesforce and place them in the queue.</p>
@@ -378,7 +378,7 @@ and places each updated SF object into the queue for later processing.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_deleted_records">#</a>
-		<code><a href="source-class-Salesforce_Pull.html#314-374" title="Go to source code">get_deleted_records</a>( )</code>
+		<code><a href="source-class-Salesforce_Pull.html#337-403" title="Go to source code">get_deleted_records</a>( )</code>
 
 		<div class="description short">
 			<p>Get deleted records from salesforce.
@@ -410,7 +410,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_manual_pull">#</a>
-		<code><a href="source-class-Salesforce_Pull.html#376-389" title="Go to source code">manual_pull</a>( <span>string <var>$object_type</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$wordpress_object</var></span> )</code>
+		<code><a href="source-class-Salesforce_Pull.html#405-424" title="Go to source code">manual_pull</a>( <span>string <var>$object_type</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$wordpress_object</var></span> )</code>
 
 		<div class="description short">
 			<p>Method for ajax hooks to call for pulling manually</p>
@@ -449,7 +449,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_pull_process_records">#</a>
-		<code><a href="source-class-Salesforce_Pull.html#391-1000" title="Go to source code">salesforce_pull_process_records</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
+		<code><a href="source-class-Salesforce_Pull.html#426-1021" title="Go to source code">salesforce_pull_process_records</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
 
 		<div class="description short">
 			<p>Sync WordPress objects and Salesforce objects from the queue using the REST API.</p>
@@ -494,7 +494,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_object_map">#</a>
-		<code><a href="source-class-Salesforce_Pull.html#1002-1033" title="Go to source code">create_object_map</a>( <span>array <var>$salesforce_object</var></span>, <span>string <var>$wordpress_id</var></span>, <span>array <var>$field_mapping</var></span> )</code>
+		<code><a href="source-class-Salesforce_Pull.html#1023-1054" title="Go to source code">create_object_map</a>( <span>array <var>$salesforce_object</var></span>, <span>string <var>$wordpress_id</var></span>, <span>array <var>$field_mapping</var></span> )</code>
 
 		<div class="description short">
 			<p>Create an object map between a Salesforce object and a WordPress object</p>

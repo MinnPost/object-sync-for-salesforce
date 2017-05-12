@@ -104,7 +104,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Salesforce_Push.html#10-992" title="Go to source code">salesforce_push.php</a>
+			<b>Located at</b> <a href="source-class-Salesforce_Push.html#10-915" title="Go to source code">salesforce_push.php</a>
 		<br>
 	</div>
 
@@ -821,7 +821,7 @@ This calls the overall push crud method, which controls queuing and sending data
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_push_object_crud">#</a>
-		<code><a href="source-class-Salesforce_Push.html#298-415" title="Go to source code">salesforce_push_object_crud</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>integer <var>$sf_sync_trigger</var></span>, <span>boolean <var>$manual</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Salesforce_Push.html#298-414" title="Go to source code">salesforce_push_object_crud</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>integer <var>$sf_sync_trigger</var></span>, <span>boolean <var>$manual</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Push objects to Salesforce.
@@ -864,7 +864,7 @@ This method decides whether to do the processing immediately or queue it to the 
 
 		<td class="name"><div>
 		<a class="anchor" href="#_schedule">#</a>
-		<code><a href="source-class-Salesforce_Push.html#417-425" title="Go to source code">schedule</a>( )</code>
+		<code><a href="source-class-Salesforce_Push.html#416-424" title="Go to source code">schedule</a>( )</code>
 
 		<div class="description short">
 			
@@ -894,7 +894,7 @@ This method decides whether to do the processing immediately or queue it to the 
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_push_sync_rest">#</a>
-		<code><a href="source-class-Salesforce_Push.html#427-874" title="Go to source code">salesforce_push_sync_rest</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
+		<code><a href="source-class-Salesforce_Push.html#426-871" title="Go to source code">salesforce_push_sync_rest</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
 
 		<div class="description short">
 			<p>Sync WordPress objects and Salesforce objects using the REST API.</p>
@@ -939,7 +939,7 @@ This method decides whether to do the processing immediately or queue it to the 
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_object_map">#</a>
-		<code><a href="source-class-Salesforce_Push.html#876-916" title="Go to source code">create_object_map</a>( <span>array <var>$wordpress_object</var></span>, <span>string <var>$id_field_name</var></span>, <span>string <var>$salesforce_id</var></span>, <span>array <var>$field_mapping</var></span>, <span> <var>$pending</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Salesforce_Push.html#873-913" title="Go to source code">create_object_map</a>( <span>array <var>$wordpress_object</var></span>, <span>string <var>$id_field_name</var></span>, <span>string <var>$salesforce_id</var></span>, <span>array <var>$field_mapping</var></span>, <span> <var>$pending</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create an object map between a WordPress object and a Salesforce object</p>
@@ -968,48 +968,6 @@ This method decides whether to do the processing immediately or queue it to the 
 					integer<br><p>$wpdb->insert_id
 This is the database row for the map object</p>
 				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="salesforce_push_process_soap_results" id="_salesforce_push_process_soap_results">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_salesforce_push_process_soap_results">#</a>
-		<code><a href="source-class-Salesforce_Push.html#918-990" title="Go to source code">salesforce_push_process_soap_results</a>( <span>string <var>$op</var></span>, <span>array <var>$results</var></span>, <span>array <var>$synced_entities</var></span> )</code>
-
-		<div class="description short">
-			<p>Process SOAP API batch results.</p>
-		</div>
-
-		<div class="description detailed hidden">
-			<p>Process SOAP API batch results.</p>
-
-<p>Create or update mapped object entities and log results.
-todo: fix this for wordpress if we decide to support soap</p>
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$op</var></dt>
-					<dd>Operation performed.</dd>
-					<dt><var>$results</var></dt>
-					<dd>Array of result objects provided by Salesforce.</dd>
-					<dt><var>$synced_entities</var></dt>
-					<dd>Entities that were synced with Salesforce.</dd>
-				</dl></div>
-
 
 
 

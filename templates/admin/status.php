@@ -13,18 +13,18 @@
 	</thead>
 	<tbody>
 		<?php foreach ( $versions['data'] as $version ) { ?>
-            <?php
-            $class = '';
-            if ( $version['version'] === $this->login_credentials['rest_api_version'] ) {
-                $class = ' class="current"';
-            }
-            ?>
-            <tr<?php echo $class; ?>>
-            	<td><?php echo $version['label']; ?></td>
-            	<td><?php echo $version['url']; ?></td>
-            	<td><?php echo $version['version']; ?></td>
-            </tr>
-       <?php } ?>
+			<?php
+			$class = '';
+			if ( $version['version'] === $this->login_credentials['rest_api_version'] ) {
+				$class = ' class="current"';
+			}
+			?>
+			<tr<?php echo $class; ?>>
+				<td><?php echo $version['label']; ?></td>
+				<td><?php echo $version['url']; ?></td>
+				<td><?php echo $version['version']; ?></td>
+			</tr>
+		<?php } ?>
 	</tbody>
 </table>
 
@@ -40,10 +40,10 @@
 	</thead>
 	<tbody>
 		<?php foreach ( $contacts['data']['records'] as $contact ) { ?>
-            <tr>
-            	<td><?php echo $contact['Id']; ?></td>
-            	<td><?php echo $contact['Name']; ?></td>
-            </tr>
-        <?php } ?>
+			<tr>
+				<td><?php echo $contact['Id']; ?></td>
+				<td><?php echo $contact['Name']; ?></td>
+			</tr>
+		<?php } ?>
 	</tbody>
 </table>
