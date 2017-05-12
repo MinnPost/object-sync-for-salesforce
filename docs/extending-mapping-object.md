@@ -46,7 +46,7 @@ $mapping_object = array(
     'last_sync' => '2017-03-06 11:58:31',
     'last_sync_action' => 'push',
     'last_sync_status' => 1,
-    'last_sync_message' => 'Mapping object created via function: salesforce_push_sync_rest'
+    'last_sync_message' => 'Mapping object created via function: salesforce_push_sync'
 );
 ```
 

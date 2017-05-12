@@ -407,7 +407,7 @@ class Salesforce_Push {
 
 				} else {
 					// this one is not async. do it immediately.
-					$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
+					$push = $this->salesforce_push_sync( $object_type, $object, $mapping, $sf_sync_trigger );
 		  		}
 			} // End if(). if the trigger does not match our requirements, skip it
 		} // End foreach().
@@ -438,7 +438,7 @@ class Salesforce_Push {
 	* @return true or exit the method
 	*
 	*/
-	public function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
+	public function salesforce_push_sync( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
 		// if salesforce is not authorized, don't do anything.
 		// it's unclear to me if we need to do something else here or if this is sufficient. this is all drupal does.

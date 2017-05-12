@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class Wordpress_Salesforce_Activate | Object Sync for Salesforce</title>
+	<title>Class Salesforce_Soap_Partner | Object Sync for Salesforce</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -31,9 +31,9 @@
 				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
 				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
 				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
-				<li><a href="class-Salesforce_Soap_Partner.html">Salesforce_Soap_Partner</a></li>
+				<li class="active"><a href="class-Salesforce_Soap_Partner.html">Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Wordpress.html">Wordpress</a></li>
-				<li class="active"><a href="class-Wordpress_Salesforce_Activate.html">Wordpress_Salesforce_Activate</a></li>
+				<li><a href="class-Wordpress_Salesforce_Activate.html">Wordpress_Salesforce_Activate</a></li>
 				<li><a href="class-Wordpress_Salesforce_Admin.html">Wordpress_Salesforce_Admin</a></li>
 				<li><a href="class-Wordpress_Salesforce_Deactivate.html">Wordpress_Salesforce_Deactivate</a></li>
 				<li><a href="class-Wordpress_Salesforce_Schedule.html">Wordpress_Salesforce_Schedule</a></li>
@@ -83,13 +83,27 @@
 	</div>
 
 <div id="content" class="class">
-	<h1>Class Wordpress_Salesforce_Activate</h1>
+	<h1>Class Salesforce_Soap_Partner</h1>
 
 
 	<div class="description">
-	<p>What to do when the plugin is activated</p>
+	<p>Expose the partner SOAP API by extending SforcePartnerClient and configuring
+it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
 	</div>
 
+	<dl class="tree">
+		<dd style="padding-left:0px">
+SforcePartnerClient
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by">
+<b><span>Salesforce_Soap_Partner</span></b>			
+			
+			
+		</dd>
+	</dl>
 
 
 
@@ -104,7 +118,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Wordpress_Salesforce_Activate.html#10-132" title="Go to source code">activate.php</a>
+			<b>Located at</b> <a href="source-class-Salesforce_Soap_Partner.html#10-93" title="Go to source code">salesforce_soap_partner.php</a>
 		<br>
 	</div>
 
@@ -124,55 +138,14 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Activate.html#19-34" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span> )</code>
+		<code><a href="source-class-Salesforce_Soap_Partner.html#20-48" title="Go to source code">__construct</a>( <span><code><a href="class-Salesforce.html">Salesforce</a></code> <var>$sfapi</var></span>, <span> <var>$wsdl</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 		<div class="description short">
-			<p>Constructor which sets up activate hooks</p>
+			<p>Constructor which loads the SOAP client</p>
 		</div>
 
 		<div class="description detailed hidden">
-			<p>Constructor which sets up activate hooks</p>
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$wpdb</var></dt>
-					<dd></dd>
-					<dt><var>$version</var></dt>
-					<dd></dd>
-					<dt><var>$text_domain</var></dt>
-					<dd></dd>
-				</dl></div>
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="wordpress_salesforce_tables" id="_wordpress_salesforce_tables">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_wordpress_salesforce_tables">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Activate.html#36-93" title="Go to source code">wordpress_salesforce_tables</a>( )</code>
-
-		<div class="description short">
-			<p>Create database tables for Salesforce
-This creates tables for fieldmaps (between types of objects) and object maps (between indidual instances of objects)</p>
-		</div>
-
-		<div class="description detailed hidden">
-			<p>Create database tables for Salesforce
-This creates tables for fieldmaps (between types of objects) and object maps (between indidual instances of objects)</p>
+			<p>Constructor which loads the SOAP client</p>
 
 
 
@@ -183,10 +156,10 @@ This creates tables for fieldmaps (between types of objects) and object maps (be
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="wordpress_salesforce_update_db_check" id="_wordpress_salesforce_update_db_check">
+	<tr data-order="set_authorized" id="_set_authorized">
 
 		<td class="attributes"><code>
-			 public 
+			 protected 
 
 			
 			
@@ -194,17 +167,15 @@ This creates tables for fieldmaps (between types of objects) and object maps (be
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_wordpress_salesforce_update_db_check">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Activate.html#95-104" title="Go to source code">wordpress_salesforce_update_db_check</a>( )</code>
+		<a class="anchor" href="#_set_authorized">#</a>
+		<code><a href="source-class-Salesforce_Soap_Partner.html#50-52" title="Go to source code">set_authorized</a>( <span> <var>$is_authorized</var></span> )</code>
 
 		<div class="description short">
-			<p>Check for database version on plugin upgrade
-When the plugin is upgraded, if the database version does not match the current version, perform these methods</p>
+			
 		</div>
 
 		<div class="description detailed hidden">
-			<p>Check for database version on plugin upgrade
-When the plugin is upgraded, if the database version does not match the current version, perform these methods</p>
+			
 
 
 
@@ -215,7 +186,7 @@ When the plugin is upgraded, if the database version does not match the current 
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="add_roles_capabilities" id="_add_roles_capabilities">
+	<tr data-order="is_authorized" id="_is_authorized">
 
 		<td class="attributes"><code>
 			 public 
@@ -226,19 +197,45 @@ When the plugin is upgraded, if the database version does not match the current 
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_add_roles_capabilities">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Activate.html#106-130" title="Go to source code">add_roles_capabilities</a>( )</code>
+		<a class="anchor" href="#_is_authorized">#</a>
+		<code><a href="source-class-Salesforce_Soap_Partner.html#54-56" title="Go to source code">is_authorized</a>( )</code>
 
 		<div class="description short">
-			<p>Add roles and capabilities
-This adds the configure_salesforce capability to the admin role</p>
+			
 		</div>
 
 		<div class="description detailed hidden">
-			<p>Add roles and capabilities
-This adds the configure_salesforce capability to the admin role</p>
+			
 
-<p>It also allows other plugins to add the capability to other roles</p>
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="try_soap" id="_try_soap">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_try_soap">#</a>
+		<code><a href="source-class-Salesforce_Soap_Partner.html#58-91" title="Go to source code">try_soap</a>( <span> <var>$function</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
 
 
 
@@ -264,14 +261,14 @@ This adds the configure_salesforce capability to the admin role</p>
 
 	<table class="summary properties" id="properties">
 	<caption>Properties summary</caption>
-	<tr data-order="wpdb" id="$wpdb">
+	<tr data-order="sf_api" id="$sf_api">
 		<td class="attributes"><code>
 			protected  
 			
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Activate.html#15" title="Go to source code"><var>$wpdb</var></a>
+				<a href="source-class-Salesforce_Soap_Partner.html#16" title="Go to source code"><var>$sf_api</var></a>
 
 			<div class="description short">
 				
@@ -284,19 +281,19 @@ This adds the configure_salesforce capability to the admin role</p>
 		</td>
 		<td class="value">
 			<div>
-				<a href="#$wpdb" class="anchor">#</a>
+				<a href="#$sf_api" class="anchor">#</a>
 				<code></code>
 			</div>
 		</td>
 	</tr>
-	<tr data-order="version" id="$version">
+	<tr data-order="is_authorized" id="$is_authorized">
 		<td class="attributes"><code>
 			protected  
 			
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Activate.html#16" title="Go to source code"><var>$version</var></a>
+				<a href="source-class-Salesforce_Soap_Partner.html#17" title="Go to source code"><var>$is_authorized</var></a>
 
 			<div class="description short">
 				
@@ -309,19 +306,19 @@ This adds the configure_salesforce capability to the admin role</p>
 		</td>
 		<td class="value">
 			<div>
-				<a href="#$version" class="anchor">#</a>
+				<a href="#$is_authorized" class="anchor">#</a>
 				<code></code>
 			</div>
 		</td>
 	</tr>
-	<tr data-order="installed_version" id="$installed_version">
+	<tr data-order="refreshed" id="$refreshed">
 		<td class="attributes"><code>
-			protected  
+			private  
 			
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Activate.html#17" title="Go to source code"><var>$installed_version</var></a>
+				<a href="source-class-Salesforce_Soap_Partner.html#18" title="Go to source code"><var>$refreshed</var></a>
 
 			<div class="description short">
 				
@@ -334,7 +331,7 @@ This adds the configure_salesforce capability to the admin role</p>
 		</td>
 		<td class="value">
 			<div>
-				<a href="#$installed_version" class="anchor">#</a>
+				<a href="#$refreshed" class="anchor">#</a>
 				<code></code>
 			</div>
 		</td>

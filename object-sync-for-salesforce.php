@@ -134,7 +134,7 @@ class Object_Sync_Salesforce {
 			'salesforce_push' => array(
 			    'label' => 'Push to Salesforce',
 			    'class' => 'Salesforce_Push',
-			    'callback' => 'salesforce_push_sync_rest',
+			    'callback' => 'salesforce_push_sync',
 			),
 			'salesforce_pull' => array(
 			    'label' => 'Pull from Salesforce',

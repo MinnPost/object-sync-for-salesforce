@@ -9,7 +9,7 @@ $this->schedulable_classes = array(
     'salesforce_push' => array(
         'label' => 'Push to Salesforce',
         'class' => 'Salesforce_Push',
-        'callback' => 'salesforce_push_sync_rest',
+        'callback' => 'salesforce_push_sync',
     ),
     'salesforce_pull' => array(
         'label' => 'Pull from Salesforce',
@@ -20,7 +20,7 @@ $this->schedulable_classes = array(
 );
 ```
 
-This defines the `push` and `pull` classes as schedulable items, and sets the methods (`salesforce_push_sync_rest` and `salesforce_pull_process_records`) that run when the schedule events happen. This is how the plugin sends data between the two systems at regular intervals, as documented in the [syncing setup](./syncing-setup.md) documentation.
+This defines the `push` and `pull` classes as schedulable items, and sets the methods (`salesforce_push_sync` and `salesforce_pull_process_records`) that run when the schedule events happen. This is how the plugin sends data between the two systems at regular intervals, as documented in the [syncing setup](./syncing-setup.md) documentation.
 
 ## Hook
 
