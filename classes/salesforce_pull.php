@@ -823,9 +823,17 @@ class Salesforce_Pull {
 					} else {
 						// No key or prematch field exists on this field map object, create a new object in WordPress.
 						$op = 'Create';
+						$mapping_object_id = $this->create_object_map( $object, 0, $mapping );
+						set_transient( 'salesforce_pulling_' . $mapping_object_id, 1, $seconds );
+						set_transient( 'salesforce_pulling_object_id', $mapping_object_id );
+						$mapping_object = $this->mappings->get_object_maps(
+							array(
+								'id' => $mapping_object_id,
+							)
+						);
+
 						$result = $this->wordpress->object_create( $salesforce_mapping['wordpress_object'], $params );
 					} // End if().
-
 				} catch ( WordpressException $e ) {
 					// create log entry for failed create or upsert
 					$status = 'error';
