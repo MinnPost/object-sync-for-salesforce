@@ -28,9 +28,20 @@ class Wordpress_Salesforce_Activate {
 		$this->wpdb = &$wpdb;
 		$this->version = $version;
 		$this->installed_version = get_option( 'object_sync_for_salesforce_db_version', '' );
+		register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'php_requirements' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'wordpress_salesforce_tables' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'add_roles_capabilities' ) );
 		add_action( 'plugins_loaded', array( $this, 'wordpress_salesforce_update_db_check' ) );
+	}
+
+	/**
+	* Check for the minimum required version of php
+	*/
+	public function php_requirements() {
+		if ( version_compare( PHP_VERSION, '5.5', '<' ) ) {
+			deactivate_plugins( plugin_basename( __FILE__ ) );
+			wp_die( '<strong>This plugin requires PHP Version 5.5</strong> <br />Please contact your host to upgrade PHP on your server, and then retry activating the plugin.' );
+		}
 	}
 
 	/**
