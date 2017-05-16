@@ -6,7 +6,7 @@
 
 To install the plugin in WordPress, your PHP environment needs the following:
 
-1. At least version 5.6.
+1. At least version 5.5.
 2. SSL support (this is required to connect to Salesforce). You can do this in a local development environment without purchasing a certificate. If you develop on a Mac, you can use [a guide](https://getgrav.org/blog/macos-sierra-apache-ssl) like this one.
 3. If you'll be using the SOAP API, PHP needs to be compiled with SOAP web services and
   OpenSSL support, as per:
