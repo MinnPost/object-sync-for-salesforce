@@ -118,7 +118,7 @@ class Object_Sync_Salesforce {
 
 		global $wpdb;
 
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = '0.0.2';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->text_domain = 'object-sync-for-salesforce';
@@ -194,7 +194,7 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *	Instance of Salesforce_Logging
 	 */
-	private function logging( &$wpdb, $version, $text_domain ) {
+	private function logging( $wpdb, $version, $text_domain ) {
 		if ( ! class_exists( 'WP_Logging' ) && file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
 			require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 			require_once plugin_dir_path( __FILE__ ) . 'classes/logging.php';
@@ -214,7 +214,7 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *	Instance of Salesforce_Mapping
 	 */
-	private function mappings( &$wpdb, $version, $text_domain, $logging ) {
+	private function mappings( $wpdb, $version, $text_domain, $logging ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
 		$mappings = new Salesforce_Mapping( $wpdb, $version, $text_domain, $logging );
 		return $mappings;
@@ -284,7 +284,7 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *	Instance of Wordpress_Salesforce_Activate
 	 */
-	private function activate( &$wpdb, $version, $text_domain ) {
+	private function activate( $wpdb, $version, $text_domain ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
 		$activate = new Wordpress_Salesforce_Activate( $wpdb, $version, $text_domain );
 		return $activate;
@@ -301,7 +301,7 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *	Instance of Wordpress_Salesforce_Deactivate
 	 */
-	private function deactivate( &$wpdb, $version, $text_domain, $schedulable_classes ) {
+	private function deactivate( $wpdb, $version, $text_domain, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
 		$deactivate = new Wordpress_Salesforce_Deactivate( $wpdb, $version, $text_domain, $schedulable_classes );
 	}
@@ -323,7 +323,7 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *	Instance of Salesforce_Push
 	 */
-	private function push( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
+	private function push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
 		$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
 		return $push;
@@ -344,7 +344,7 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *	Instance of Salesforce_Pull
 	 */
-	private function pull( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
+	private function pull( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_pull.php';
 		$pull = new Salesforce_Pull( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
 		return $pull;
@@ -369,7 +369,7 @@ class Object_Sync_Salesforce {
 	*	Instance of Wordpress_Salesforce_Admin
 	*
 	*/
-	private function load_admin( &$wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
+	private function load_admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
 		$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes );
 		add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );

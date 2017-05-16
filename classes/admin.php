@@ -81,7 +81,7 @@ class Wordpress_Salesforce_Admin {
 	* @throws \Exception
 	*/
 	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->login_credentials = $login_credentials;
 		$this->text_domain = $text_domain;

@@ -41,7 +41,7 @@ class Salesforce_Push {
 	* @throws \Exception
 	*/
 	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->login_credentials = $login_credentials;
 		$this->text_domain = $text_domain;
@@ -68,25 +68,25 @@ class Salesforce_Push {
 			foreach ( $this->mappings->get_fieldmaps() as $mapping ) {
 				$object_type = $mapping['wordpress_object'];
 				if ( 'user' === $object_type ) {
-		    		add_action( 'user_register', array( &$this, 'add_user' ) );
-		    		add_action( 'profile_update', array( &$this, 'edit_user' ), 10, 2 );
-		    		add_action( 'delete_user', array( &$this, 'delete_user' ) );
+		    		add_action( 'user_register', array( $this, 'add_user' ) );
+		    		add_action( 'profile_update', array( $this, 'edit_user' ), 10, 2 );
+		    		add_action( 'delete_user', array( $this, 'delete_user' ) );
 		    	} elseif ( 'post' === $object_type ) {
-		    		add_action( 'save_post', array( &$this, 'post_actions' ), 10, 2 );
+		    		add_action( 'save_post', array( $this, 'post_actions' ), 10, 2 );
 		    	} elseif ( 'attachment' === $object_type ) {
-		    		add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
-		    		add_action( 'edit_attachment', array( &$this, 'edit_attachment' ) );
-		    		add_action( 'delete_attachment', array( &$this, 'delete_attachment' ) );
+		    		add_action( 'add_attachment', array( $this, 'add_attachment' ) );
+		    		add_action( 'edit_attachment', array( $this, 'edit_attachment' ) );
+		    		add_action( 'delete_attachment', array( $this, 'delete_attachment' ) );
 		    	} elseif ( 'category' === $object_type || 'tag' === $object_type || 'post_tag' === $object_type ) {
-					add_action( 'create_term', array( &$this, 'add_term' ), 10, 3 );
-					add_action( 'edit_terms', array( &$this, 'edit_term' ), 10, 2 );
-					add_action( 'delete_term', array( &$this, 'delete_term' ), 10, 4 );
+					add_action( 'create_term', array( $this, 'add_term' ), 10, 3 );
+					add_action( 'edit_terms', array( $this, 'edit_term' ), 10, 2 );
+					add_action( 'delete_term', array( $this, 'delete_term' ), 10, 4 );
 				} elseif ( 'comment' === $object_type ) {
-					add_action( 'comment_post', array( &$this, 'add_comment' ), 10, 3 );
-					add_action( 'edit_comment', array( &$this, 'edit_comment' ) );
-					add_action( 'delete_comment', array( &$this, 'delete_comment' ) ); // to be clear: this only runs when the comment gets deleted from the trash, either manually or automatically
+					add_action( 'comment_post', array( $this, 'add_comment' ), 10, 3 );
+					add_action( 'edit_comment', array( $this, 'edit_comment' ) );
+					add_action( 'delete_comment', array( $this, 'delete_comment' ) ); // to be clear: this only runs when the comment gets deleted from the trash, either manually or automatically
 				} else { // this is for custom post types
-					add_action( 'save_post_' . $object_type, array( &$this, 'post_actions' ), 10, 2 );
+					add_action( 'save_post_' . $object_type, array( $this, 'post_actions' ), 10, 2 );
 				}
 			}
 		}
