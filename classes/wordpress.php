@@ -28,7 +28,7 @@ class Wordpress {
 	* @throws \Exception
 	*/
 	public function __construct( $wpdb, $version, $text_domain, $mappings, $logging ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->text_domain = $text_domain;
 		$this->mappings = $mappings;

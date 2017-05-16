@@ -29,7 +29,7 @@ class Salesforce_Logging extends WP_Logging {
 	* @throws \Exception
 	*/
 	public function __construct( $wpdb, $version, $text_domain ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->text_domain = $text_domain;
 

@@ -25,7 +25,7 @@ class Wordpress_Salesforce_Activate {
 	*
 	*/
 	public function __construct( $wpdb, $version, $text_domain ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->installed_version = get_option( 'object_sync_for_salesforce_db_version', '' );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'php_requirements' ) );

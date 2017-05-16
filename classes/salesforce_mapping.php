@@ -56,7 +56,7 @@ class Salesforce_Mapping {
 	* @throws \Exception
 	*/
 	public function __construct( $wpdb, $version, $text_domain, $logging ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->text_domain = $text_domain;
 		$this->logging = $logging;

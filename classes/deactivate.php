@@ -24,7 +24,7 @@ class Wordpress_Salesforce_Deactivate {
 	*
 	*/
 	public function __construct( $wpdb, $version, $text_domain, $schedulable_classes ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->schedulable_classes = $schedulable_classes;
 		register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
