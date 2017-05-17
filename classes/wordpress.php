@@ -43,6 +43,9 @@ class Wordpress {
 			'cache_expiration' => $this->cache_expiration( 'wordpress_data_cache', 86400 ),
 			'type' => 'read',
 		);
+
+		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
+
 	}
 
 	/**
