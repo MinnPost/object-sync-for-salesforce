@@ -55,6 +55,8 @@ class Salesforce_Push {
 		$this->schedule = $this->schedule();
 		$this->add_actions();
 
+		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
+
 	}
 
 	/**

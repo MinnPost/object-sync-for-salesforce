@@ -63,6 +63,8 @@ class Salesforce_Pull {
 
 		$this->add_actions();
 
+		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
+
 	}
 
 	/**
