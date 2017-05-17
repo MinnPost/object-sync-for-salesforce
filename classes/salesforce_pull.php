@@ -787,7 +787,7 @@ class Salesforce_Pull {
 
 							if ( array() !== $mapping_object_debug ) {
 								// create log entry to warn about at least one id of 0
-								$status = 'notice';
+								$status = 'error';
 								$title = ucfirst( $status ) . ': There is at least one object map with a WordPress ID of 0.';
 
 								if ( 1 === count( $mapping_object_debug ) ) {
