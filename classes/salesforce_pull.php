@@ -777,8 +777,44 @@ class Salesforce_Pull {
 									'wordpress_object' => $salesforce_mapping['wordpress_object'],
 								)
 							);
+						} else {
+							// if the wp object is 0, check to see if there are any object maps that have an id of 0. if there are any, log them.
+							$mapping_object_debug = $this->mappings->get_object_maps(
+								array(
+									'wordpress_id' => $wordpress_id,
+								)
+							);
+
+							if ( array() !== $mapping_object_debug ) {
+								// create log entry to warn about at least one id of 0
+								$status = 'notice';
+								$title = ucfirst( $status ) . ': There is at least one object map with a WordPress ID of 0.';
+
+								if ( 1 === count( $mapping_object_debug ) ) {
+									$body = 'There is an object map with ID of ' . $mapping_object_debug['id'] . ' , and it is mapped to the WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ID of 0 and the Salesforce object with ID of ' . $mapping_object_debug['salesforce_id'];
+								} else {
+									$body = 'There are multiple object maps with WordPress ID of 0. Their IDs are: <ul>';
+									foreach ( $mapping_object_debug as $mapping_object ) {
+										$body .= '<li>Mapping object id: ' . $mapping_object['id'] . '. Salesforce Id: ' . $mapping_object['salesforce_id'] . '. WordPress object type: ' . $salesforce_mapping['wordpress_object'] . '</li>';
+									}
+									$body .= '</ul>';
+								}
+
+								if ( isset( $this->logging ) ) {
+									$logging = $this->logging;
+								} elseif ( class_exists( 'Salesforce_Logging' ) ) {
+									$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+								}
+								$parent = 0;
+								$logging->setup(
+									__( $title, $this->text_domain ),
+									$body,
+									$sf_sync_trigger,
+									$parent,
+									$status
+								);
+							}
 						} // End if().
-						// we might want to log something here, but i'm not sure
 
 						// there is already a mapping object. don't change the wordpress data to match this new salesforce record, but log it
 						if ( isset( $mapping_object['id'] ) ) {
