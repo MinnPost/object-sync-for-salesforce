@@ -767,12 +767,16 @@ class Salesforce_Pull {
 						}
 
 						// find out if there is a mapping object for this wordpress object already
-						$mapping_object = $this->mappings->get_object_maps(
-							array(
-								'wordpress_id' => $wordpress_id,
-								'wordpress_object' => $salesforce_mapping['wordpress_object'],
-							)
-						);
+						// don't do it if the wordpress id is 0.
+						if ( 0 !== $wordpress_id ) {
+							$mapping_object = $this->mappings->get_object_maps(
+								array(
+									'wordpress_id' => $wordpress_id,
+									'wordpress_object' => $salesforce_mapping['wordpress_object'],
+								)
+							);
+						} // End if().
+						// we might want to log something here, but i'm not sure
 
 						// there is already a mapping object. don't change the wordpress data to match this new salesforce record, but log it
 						if ( isset( $mapping_object['id'] ) ) {
