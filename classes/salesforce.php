@@ -535,7 +535,15 @@ class Salesforce {
 
 		if ( 200 !== $response['code'] ) {
 			// @TODO: Deal with error better.
-			throw new SalesforceException( esc_html__( 'Unable to get a Salesforce access token.', $this->text_domain ), $response['code'] );
+			throw new SalesforceException(
+				esc_html(
+					sprintf(
+						__( 'Unable to get a Salesforce access token. Salesforce returned the following errorCode: ', $this->text_domain ).
+						$response['code']
+					)
+				),
+				$response['code']
+			);
 		}
 
 		$data = $response['data'];
