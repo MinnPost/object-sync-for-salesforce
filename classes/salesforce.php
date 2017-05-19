@@ -534,12 +534,10 @@ class Salesforce {
 		$response = $this->http_request( $url, $data, $headers, 'POST' );
 
 		if ( 200 !== $response['code'] ) {
-			// @TODO: Deal with error better.
 			throw new SalesforceException(
 				esc_html(
 					sprintf(
-						__( 'Unable to get a Salesforce access token. Salesforce returned the following errorCode: ', $this->text_domain ).
-						$response['code']
+						__( 'Unable to get a Salesforce access token. Salesforce returned the following errorCode: ', $this->text_domain ) . $response['code']
 					)
 				),
 				$response['code']
