@@ -279,6 +279,16 @@ class Salesforce_Mapping {
 						'direction' => sanitize_text_field( $posted['direction'][ $key ] ),
 						'is_delete' => sanitize_text_field( $posted['is_delete'][ $key ] ),
 					);
+
+					// if the wordpress key or the salesforce key are blank, remove this incomplete mapping
+					// this prevents https://github.com/MinnPost/object-sync-for-salesforce/issues/82
+					if (
+						empty( $setup['fields'][ $key ][ 'wordpress_field' ][ 'label' ] )
+						||
+						empty( $setup['fields'][ $key ][ 'salesforce_field' ][ 'label' ] )
+					) {
+						unset( $setup['fields'][ $key ] );
+					}
 				}
 			}
 			$data['fields'] = maybe_serialize( $setup['fields'] );
