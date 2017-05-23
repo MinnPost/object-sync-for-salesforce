@@ -2215,7 +2215,6 @@ class Wordpress {
 					'method_read' => $methods['method_read'],
 				);
 			} elseif ( count( $comments ) > 1 ) {
-				$status = 'notice';
 				// create log entry for multiple matches
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
@@ -2223,11 +2222,18 @@ class Wordpress {
 					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 				$logging->setup(
-					__( ucfirst( $status ) . ': Comments: there are ' . $count . ' comment matches for the Salesforce key ' . $key . ' with the value of ' . $value, $this->text_domain ),
+					sprintf (
+						__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', $this->text_domain ),
+						ucfirst( $status ),
+						$count,
+						$key,
+						$value,
+						var_export( $comments )
+					),
 					'',
 					0,
 					0,
-					$status
+					'error'
 				);
 			} elseif ( false === $check_only ) {
 				// comment does not exist after checking the matching value. create it.
@@ -2283,7 +2289,7 @@ class Wordpress {
 				// comment does exist based on username, and we aren't doing a check only. we want to update the wp user here.
 				$comment_id = $existing_id;
 			}
-		} // End if().
+		} // End if() that sets up the parameters in the $params array.
 
 		if ( isset( $comment_id ) ) {
 			foreach ( $params as $key => $value ) {
