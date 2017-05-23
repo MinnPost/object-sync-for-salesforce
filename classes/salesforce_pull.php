@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Pull data from Salesforce into WordPress
  */
-class Salesforce_Pull {
+class Object_Sync_Sf_Salesforce_Pull {
 
 	protected $wpdb;
 	protected $version;

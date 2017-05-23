@@ -77,13 +77,13 @@ class Object_Sync_Salesforce {
 
 	/**
 	* @var object
-	* Load and initialize the Salesforce_Push class
+	* Load and initialize the Object_Sync_Sf_Salesforce_Push class
 	*/
 	private $push;
 
 	/**
 	* @var object
-	* Load and initialize the Salesforce_Pull class
+	* Load and initialize the Object_Sync_Sf_Salesforce_Pull class
 	*/
 	private $pull;
 
@@ -126,12 +126,12 @@ class Object_Sync_Salesforce {
 		$this->schedulable_classes = array(
 			'salesforce_push' => array(
 			    'label' => 'Push to Salesforce',
-			    'class' => 'Salesforce_Push',
+			    'class' => 'Object_Sync_Sf_Salesforce_Push',
 			    'callback' => 'salesforce_push_sync_rest',
 			),
 			'salesforce_pull' => array(
 			    'label' => 'Pull from Salesforce',
-			    'class' => 'Salesforce_Pull',
+			    'class' => 'Object_Sync_Sf_Salesforce_Pull',
 			    'initializer' => 'salesforce_pull',
 			    'callback' => 'salesforce_pull_process_records',
 			),
@@ -151,7 +151,7 @@ class Object_Sync_Salesforce {
 			$schedulable_classes = array(
 				'salesforce_push' => array(
 				    'label' => 'Push to Salesforce',
-				    'class' => 'Salesforce_Push',
+				    'class' => 'Object_Sync_Sf_Salesforce_Push',
 				    'callback' => 'salesforce_push_sync_rest',
 				),
 				'wordpress' => array(
@@ -322,11 +322,11 @@ class Object_Sync_Salesforce {
 	 * @param array $schedulable_classes
 	 *
 	 * @return object
-	 *	Instance of Salesforce_Push
+	 *	Instance of Object_Sync_Sf_Salesforce_Push
 	 */
 	private function push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
-		$push = new Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
+		$push = new Object_Sync_Sf_Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
 		return $push;
 	}
 
@@ -343,11 +343,11 @@ class Object_Sync_Salesforce {
 	 * @param object $logging
 	 * @param array $schedulable_classes
 	 * @return object
-	 *	Instance of Salesforce_Pull
+	 *	Instance of Object_Sync_Sf_Salesforce_Pull
 	 */
 	private function pull( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_pull.php';
-		$pull = new Salesforce_Pull( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
+		$pull = new Object_Sync_Sf_Salesforce_Pull( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
 		return $pull;
 	}
 
