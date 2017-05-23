@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Ability to authorize and communicate with the Salesforce APIs. This class can make read and write calls to Salesforce, and also cache the responses in WordPress
  */
-class Salesforce {
+class Object_Sync_Sf_Salesforce {
 
 	public $response;
 
@@ -1155,7 +1155,7 @@ class Salesforce {
 			return ! empty( $cached[ $name ][ $devname ] ) ? $cached[ $name ][ $devname ]['Id'] : null;
 		}
 
-		$query = new Salesforce_Select_Query( 'RecordType' );
+		$query = new Object_Sync_Sf_Salesforce_Select_Query( 'RecordType' );
 		$query->fields = array( 'Id', 'Name', 'DeveloperName', 'SobjectType' );
 
 		$result = $this->query( $query );

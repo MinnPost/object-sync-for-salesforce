@@ -234,7 +234,7 @@ class Object_Sync_Salesforce {
 	*/
 	private function wordpress( $wpdb, $version, $text_domain, $mappings, $logging ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
-		$wordpress = new Wordpress( $wpdb, $version, $text_domain, $mappings, $logging );
+		$wordpress = new Object_Sync_Sf_Wordpress( $wpdb, $version, $text_domain, $mappings, $logging );
 		return $wordpress;
 	}
 
@@ -263,7 +263,7 @@ class Object_Sync_Salesforce {
 		$is_authorized = false;
 		$sfapi = '';
 		if ( $consumer_key && $consumer_secret ) {
-			$sfapi = new Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging, $schedulable_classes );
+			$sfapi = new Object_Sync_Sf_Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging, $schedulable_classes );
 			if ( $sfapi->is_authorized() === true ) {
 				$is_authorized = true;
 			}

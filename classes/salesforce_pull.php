@@ -277,7 +277,7 @@ class Salesforce_Pull {
 	* @param string $type
 	*   e.g. "Contact", "Account", etc.
 	*
-	* @return Salesforce_Select_Query or null if no mappings or no mapped fields
+	* @return Object_Sync_Sf_Salesforce_Select_Query or null if no mappings or no mapped fields
 	*   were found.
 	*
 	* @see Salesforce_Mapping::get_mapped_fields
@@ -323,7 +323,7 @@ class Salesforce_Pull {
 			return null;
 		}
 
-		$soql = new Salesforce_Select_Query( $type );
+		$soql = new Object_Sync_Sf_Salesforce_Select_Query( $type );
 
 		// Convert field mappings to SOQL.
 		$soql->fields = array_merge(
