@@ -58,8 +58,8 @@ Additional classes are listed in the order that they are loaded by the plugin.
 
 These classes create or delete the plugin's custom database tables. Tables are:
 
-1. `wp_salesforce_field_map`: Given WordPress and Salesforce objects, map their corresponding fields (in an array) to each other. This sets which fields the two systems sync, whether it happens asynchronously, what order to use if there are conflicts, and whether to sync WordPress drafts of the object.
-2. `wp_salesforce_object_map`: Map individual object items between WordPress and Salesforce, and save the dates and API messages when they are last imported and exported.
+1. `wp_object_sync_sf_field_map`: Given WordPress and Salesforce objects, map their corresponding fields (in an array) to each other. This sets which fields the two systems sync, whether it happens asynchronously, what order to use if there are conflicts, and whether to sync WordPress drafts of the object.
+2. `wp_object_sync_sf_object_map`: Map individual object items between WordPress and Salesforce, and save the dates and API messages when they are last imported and exported.
 
 The `activate` class also creates a new capability called `configure_salesforce` and assigns it to the `administrator` role in WordPress, and other roles as well if the filter is used.
 
