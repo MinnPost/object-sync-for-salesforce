@@ -123,7 +123,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce.html#17-67" title="Go to source code">__construct</a>( <span>string <var>$consumer_key</var></span>, <span>string <var>$consumer_secret</var></span>, <span>string <var>$login_url</var></span>, <span>string <var>$callback_url</var></span>, <span>string <var>$authorize_path</var></span>, <span>string <var>$token_path</var></span>, <span>string <var>$rest_api_version</var></span>, <span>object <var>$wordpress</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce.html#17-67" title="Go to source code">__construct</a>( <span>string <var>$consumer_key</var></span>, <span>string <var>$consumer_secret</var></span>, <span>string <var>$login_url</var></span>, <span>string <var>$callback_url</var></span>, <span>string <var>$authorize_path</var></span>, <span>string <var>$token_path</var></span>, <span>string <var>$rest_api_version</var></span>, <span>object <var>$wordpress</var></span>, <span>string <var>$slug</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Constructor which initializes the Salesforce APIs.</p>
@@ -151,8 +151,8 @@
 					<dd>What version of the Salesforce REST API to use</dd>
 					<dt><var>$wordpress</var></dt>
 					<dd>Object for doing things to WordPress - retrieving data, cache, etc.</dd>
-					<dt><var>$text_domain</var></dt>
-					<dd>Text domain for this plugin. Would be used in any future translations.</dd>
+					<dt><var>$slug</var></dt>
+					<dd>Slug for this plugin. Can be used for file including, especially</dd>
 					<dt><var>$logging</var></dt>
 					<dd>Logging object for this plugin.</dd>
 					<dt><var>$schedulable_classes</var></dt>

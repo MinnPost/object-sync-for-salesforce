@@ -13,3 +13,77 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: object-sync-for-salesforce.php:393
+msgid "Settings"
+msgstr ""
+
+#: classes/admin.php:141
+msgid "Salesforce"
+msgstr ""
+
+#: classes/admin.php:193, classes/admin.php:257, classes/admin.php:572, classes/salesforce.php:395, classes/salesforce_mapping.php:372, classes/salesforce_mapping.php:392, classes/salesforce_mapping.php:566, classes/salesforce_pull.php:502, classes/salesforce_pull.php:618, classes/salesforce_pull.php:651, classes/salesforce_pull.php:946, classes/salesforce_pull.php:976, classes/salesforce_pull.php:1023, classes/salesforce_push.php:350, classes/salesforce_push.php:515, classes/salesforce_push.php:548, classes/salesforce_push.php:741, classes/salesforce_push.php:768, classes/salesforce_push.php:799, classes/salesforce_push.php:829, classes/salesforce_push.php:908
+msgstr ""
+
+#: classes/admin.php:535
+msgid "Run schedule every"
+msgstr ""
+
+#: classes/admin.php:547, classes/admin.php:701
+msgid "Time unit"
+msgstr ""
+
+#: classes/admin.php:688
+msgid "Check for old logs every"
+msgstr ""
+
+#: classes/admin.php:1467, classes/salesforce_pull.php:1013, classes/salesforce_push.php:819
+msgid "Mapping object updated via function: "
+msgstr ""
+
+#: classes/salesforce.php:293, classes/salesforce.php:377, classes/salesforce.php:394, classes/salesforce.php:410, classes/salesforce_pull.php:262, classes/salesforce_pull.php:810, classes/salesforce_pull.php:840
+msgid "$title"
+msgstr ""
+
+#: classes/salesforce.php:516
+msgid "There is no refresh token."
+msgstr ""
+
+#: classes/salesforce.php:540
+msgid "Unable to get a Salesforce access token. Salesforce returned the following errorCode: "
+msgstr ""
+
+#: classes/salesforce.php:574
+msgid "Unable to access identity service."
+msgstr ""
+
+#: classes/salesforce_pull.php:1123, classes/salesforce_push.php:750
+msgid "Mapping object created via function: "
+msgstr ""
+
+#: classes/wordpress.php:1001
+msgid "Error: Users: Tried to run user_upsert, and ended up without a user id"
+msgstr ""
+
+#: classes/wordpress.php:1325
+msgid "Error: Posts: Tried to run post_upsert, and ended up without a post id"
+msgstr ""
+
+#: classes/wordpress.php:1647
+msgid "Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id"
+msgstr ""
+
+#: classes/wordpress.php:1972
+msgid "Error: Terms: Tried to run term_upsert, and ended up without a term id"
+msgstr ""
+
+#: classes/wordpress.php:2227
+msgid "%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s"
+msgstr ""
+
+#: classes/wordpress.php:2310
+msgid "Error: Comments: Tried to run comment_upsert, and ended up without a comment id"
+msgstr ""
+
+#: templates/admin/notice.php:2
+msgid "$message"
+msgstr ""

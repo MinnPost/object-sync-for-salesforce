@@ -116,7 +116,7 @@ WP_Logging
 		
 		
 
-			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Logging.html#10-340" title="Go to source code">logging.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Logging.html#10-337" title="Go to source code">logging.php</a>
 		<br>
 	</div>
 
@@ -136,7 +136,7 @@ WP_Logging
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#23-43" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#22-40" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span> )</code>
 
 		<div class="description short">
 			<p>Constructor which sets content type and pruning</p>
@@ -151,8 +151,6 @@ WP_Logging
 					<dt><var>$wpdb</var></dt>
 					<dd></dd>
 					<dt><var>$version</var></dt>
-					<dd></dd>
-					<dt><var>$text_domain</var></dt>
 					<dd></dd>
 				</dl></div>
 
@@ -179,7 +177,7 @@ WP_Logging
 
 		<td class="name"><div>
 		<a class="anchor" href="#_init">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#45-67" title="Go to source code">init</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#42-64" title="Go to source code">init</a>( )</code>
 
 		<div class="description short">
 			<p>Start. This creates a schedule for pruning logs, and also the custom content type</p>
@@ -213,7 +211,7 @@ WP_Logging
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add_prune_interval">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#69-89" title="Go to source code">add_prune_interval</a>( <span> <var>$schedules</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#66-86" title="Go to source code">add_prune_interval</a>( <span> <var>$schedules</var></span> )</code>
 
 		<div class="description short">
 			<p>add interval to wp schedules based on admin settings</p>
@@ -247,7 +245,7 @@ WP_Logging
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_schedule_frequency">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#91-119" title="Go to source code">get_schedule_frequency</a>( <span> <var>$unit</var></span>, <span> <var>$number</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#88-116" title="Go to source code">get_schedule_frequency</a>( <span> <var>$unit</var></span>, <span> <var>$number</var></span> )</code>
 
 		<div class="description short">
 			<p>Convert the schedule frequency from the admin settings into an array
@@ -279,7 +277,7 @@ interval must be in seconds for the class to use it</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_set_log_types">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#121-130" title="Go to source code">set_log_types</a>( <span>array <var>$terms</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#118-127" title="Go to source code">set_log_types</a>( <span>array <var>$terms</var></span> )</code>
 
 		<div class="description short">
 			<p>Set terms for Salesforce logs</p>
@@ -318,7 +316,7 @@ interval must be in seconds for the class to use it</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_set_prune_option">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#132-144" title="Go to source code">set_prune_option</a>( <span>string <var>$should_we_prune</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#129-141" title="Go to source code">set_prune_option</a>( <span>string <var>$should_we_prune</var></span> )</code>
 
 		<div class="description short">
 			<p>Should logs be pruned at all?</p>
@@ -357,7 +355,7 @@ interval must be in seconds for the class to use it</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_set_prune_age">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#146-159" title="Go to source code">set_prune_age</a>( <span>string <var>$how_old</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#143-156" title="Go to source code">set_prune_age</a>( <span>string <var>$how_old</var></span> )</code>
 
 		<div class="description short">
 			<p>Set how often to prune the Salesforce logs</p>
@@ -396,7 +394,7 @@ interval must be in seconds for the class to use it</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_set_prune_args">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#161-170" title="Go to source code">set_prune_args</a>( <span>array <var>$args</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#158-167" title="Go to source code">set_prune_args</a>( <span>array <var>$args</var></span> )</code>
 
 		<div class="description short">
 			<p>Set arguments for only getting the Salesforce logs</p>
@@ -435,7 +433,7 @@ interval must be in seconds for the class to use it</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setup">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#173-192" title="Go to source code">setup</a>( <span> <var>$title</var></span>, <span> <var>$message</var></span>, <span> <var>$trigger</var></span>, <span> <var>$parent</var></span>, <span> <var>$status</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#170-189" title="Go to source code">setup</a>( <span> <var>$title</var></span>, <span> <var>$message</var></span>, <span> <var>$trigger</var></span>, <span> <var>$parent</var></span>, <span> <var>$status</var></span> )</code>
 
 		<div class="description short">
 			<p>Setup new log entry</p>
@@ -479,7 +477,7 @@ interval must be in seconds for the class to use it</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#195-219" title="Go to source code">add</a>( <span> <var>$title</var> = <span class="php-quote">''</span></span>, <span> <var>$message</var> = <span class="php-quote">''</span></span>, <span> <var>$parent</var> = <span class="php-num">0</span></span>, <span> <var>$type</var> = <span class="php-quote">'salesforce'</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#192-216" title="Go to source code">add</a>( <span> <var>$title</var> = <span class="php-quote">''</span></span>, <span> <var>$message</var> = <span class="php-quote">''</span></span>, <span> <var>$parent</var> = <span class="php-num">0</span></span>, <span> <var>$type</var> = <span class="php-quote">'salesforce'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create new log entry</p>
@@ -528,7 +526,7 @@ if you need to store custom meta data</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_logs">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#223-241" title="Go to source code">get_logs</a>( <span> <var>$object_id</var> = <span class="php-num">0</span></span>, <span> <var>$type</var> = <span class="php-quote">'salesforce'</span></span>, <span> <var>$paged</var> = <span class="php-keyword1">null</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#220-238" title="Go to source code">get_logs</a>( <span> <var>$object_id</var> = <span class="php-num">0</span></span>, <span> <var>$type</var> = <span class="php-quote">'salesforce'</span></span>, <span> <var>$paged</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 		<div class="description short">
 			<p>Easily retrieves log items for a particular object ID</p>
@@ -570,7 +568,7 @@ if you need to store custom meta data</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_connected_logs">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#245-294" title="Go to source code">get_connected_logs</a>( <span> <var>$args</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#242-291" title="Go to source code">get_connected_logs</a>( <span> <var>$args</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Retrieve all connected logs</p>
@@ -621,7 +619,7 @@ if you need to store custom meta data</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_log_count">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Logging.html#298-338" title="Go to source code">get_log_count</a>( <span> <var>$object_id</var> = <span class="php-num">0</span></span>, <span> <var>$type</var> = <span class="php-quote">'salesforce'</span></span>, <span> <var>$meta_query</var> = <span class="php-keyword1">null</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Logging.html#295-335" title="Go to source code">get_log_count</a>( <span> <var>$object_id</var> = <span class="php-num">0</span></span>, <span> <var>$type</var> = <span class="php-quote">'salesforce'</span></span>, <span> <var>$meta_query</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 		<div class="description short">
 			<p>Retrieves number of log entries connected to particular object ID</p>
@@ -717,31 +715,6 @@ if you need to store custom meta data</p>
 			</div>
 		</td>
 	</tr>
-	<tr data-order="text_domain" id="$text_domain">
-		<td class="attributes"><code>
-			protected  
-			
-		</code></td>
-
-		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Logging.html#17" title="Go to source code"><var>$text_domain</var></a>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-			</div>
-		</td>
-		<td class="value">
-			<div>
-				<a href="#$text_domain" class="anchor">#</a>
-				<code></code>
-			</div>
-		</td>
-	</tr>
 	<tr data-order="enabled" id="$enabled">
 		<td class="attributes"><code>
 			public  
@@ -749,7 +722,7 @@ if you need to store custom meta data</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Logging.html#19" title="Go to source code"><var>$enabled</var></a>
+				<a href="source-class-Object_Sync_Sf_Logging.html#18" title="Go to source code"><var>$enabled</var></a>
 
 			<div class="description short">
 				
@@ -774,7 +747,7 @@ if you need to store custom meta data</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Logging.html#20" title="Go to source code"><var>$statuses_to_log</var></a>
+				<a href="source-class-Object_Sync_Sf_Logging.html#19" title="Go to source code"><var>$statuses_to_log</var></a>
 
 			<div class="description short">
 				

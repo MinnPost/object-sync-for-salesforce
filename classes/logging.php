@@ -14,7 +14,6 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 
 	protected $wpdb;
 	protected $version;
-	protected $text_domain;
 
 	public $enabled;
 	public $statuses_to_log;
@@ -25,13 +24,11 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	*
 	* @param object $wpdb
 	* @param string $version
-	* @param string $text_domain
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $text_domain ) {
+	public function __construct( $wpdb, $version ) {
 		$this->wpdb = $wpdb;
 		$this->version = $version;
-		$this->text_domain = $text_domain;
 
 		$this->enabled = get_option( 'object_sync_for_salesforce_enable_logging', false );
 		$this->statuses_to_log = get_option( 'object_sync_for_salesforce_statuses_to_log', array() );

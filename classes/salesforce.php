@@ -33,14 +33,14 @@ class Object_Sync_Sf_Salesforce {
 	*   What version of the Salesforce REST API to use
 	* @param object $wordpress
 	*   Object for doing things to WordPress - retrieving data, cache, etc.
-	* @param string $text_domain
-	*   Text domain for this plugin. Would be used in any future translations.
+	* @param string $slug
+	*   Slug for this plugin. Can be used for file including, especially
 	* @param object $logging
 	*	Logging object for this plugin.
 	* @param array $schedulable_classes
 	*	array of classes that can have scheduled tasks specific to them
 	*/
-	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging, $schedulable_classes ) {
+	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes ) {
 		$this->consumer_key = $consumer_key;
 		$this->consumer_secret = $consumer_secret;
 		$this->login_url = $login_url;
@@ -49,7 +49,7 @@ class Object_Sync_Sf_Salesforce {
 		$this->token_path = $token_path;
 		$this->rest_api_version = $rest_api_version;
 		$this->wordpress = $wordpress;
-		$this->text_domain = $text_domain;
+		$this->slug = $slug;
 		$this->logging = $logging;
 		$this->schedulable_classes = $schedulable_classes;
 		$this->options = array(
@@ -286,11 +286,11 @@ class Object_Sync_Sf_Salesforce {
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
 			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 			}
 
 			$logging->setup(
-				__( $title, $this->text_domain ),
+				__( $title, 'object-sync-for-salesforce' ),
 				print_r( $result, true ),
 				0,
 				0,
@@ -370,11 +370,11 @@ class Object_Sync_Sf_Salesforce {
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 
 				$logging->setup(
-					__( $title, $this->text_domain ),
+					__( $title, 'object-sync-for-salesforce' ),
 					$curl_error,
 					0,
 					0,
@@ -387,12 +387,12 @@ class Object_Sync_Sf_Salesforce {
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 
 				$logging->setup(
-					__( $title, $this->text_domain ),
-					esc_html__( 'URL: ' . $url . ' Message: ' . $data[0]['message'] . '  Code: ' . $code, $this->text_domain ),
+					__( $title, 'object-sync-for-salesforce' ),
+					esc_html__( 'URL: ' . $url . ' Message: ' . $data[0]['message'] . '  Code: ' . $code, 'object-sync-for-salesforce' ),
 					0,
 					0,
 					$status
@@ -404,10 +404,10 @@ class Object_Sync_Sf_Salesforce {
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 				$logging->setup(
-					__( $title, $this->text_domain ),
+					__( $title, 'object-sync-for-salesforce' ),
 					print_r( $data, true ),
 					0,
 					0,
@@ -513,7 +513,7 @@ class Object_Sync_Sf_Salesforce {
 	protected function refresh_token() {
 		$refresh_token = $this->get_refresh_token();
 		if ( empty( $refresh_token ) ) {
-			throw new Object_Sync_Sf_Exception( esc_html__( 'There is no refresh token.', $this->text_domain ) );
+			throw new Object_Sync_Sf_Exception( esc_html__( 'There is no refresh token.', 'object-sync-for-salesforce' ) );
 		}
 
 		$data = array(
@@ -537,7 +537,7 @@ class Object_Sync_Sf_Salesforce {
 			throw new Object_Sync_Sf_Exception(
 				esc_html(
 					sprintf(
-						__( 'Unable to get a Salesforce access token. Salesforce returned the following errorCode: ', $this->text_domain ) . $response['code']
+						__( 'Unable to get a Salesforce access token. Salesforce returned the following errorCode: ', 'object-sync-for-salesforce' ) . $response['code']
 					)
 				),
 				$response['code']
@@ -571,7 +571,7 @@ class Object_Sync_Sf_Salesforce {
 		);
 		$response = $this->http_request( $id, null, $headers );
 		if ( 200 !== $response['code'] ) {
-			throw new Object_Sync_Sf_Exception( esc_html__( 'Unable to access identity service.', $this->text_domain ), $response['code'] );
+			throw new Object_Sync_Sf_Exception( esc_html__( 'Unable to access identity service.', 'object-sync-for-salesforce' ), $response['code'] );
 		}
 		$data = $response['data'];
 		update_option( 'object_sync_for_salesforce_identity', $data );
