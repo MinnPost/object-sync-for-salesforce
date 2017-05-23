@@ -39,8 +39,8 @@ class Object_Sync_Sf_Deactivate {
 	*
 	*/
 	public function wordpress_salesforce_drop_tables() {
-		$field_map_table = $this->wpdb->prefix . 'salesforce_field_map';
-		$object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
+		$field_map_table = $this->wpdb->prefix . 'object_sync_sf_field_map';
+		$object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 		$this->wpdb->query( 'DROP TABLE IF EXISTS ' . $field_map_table );
 		$this->wpdb->query( 'DROP TABLE IF EXISTS ' . $object_map_table );
 		delete_option( 'object_sync_for_salesforce_db_version' );

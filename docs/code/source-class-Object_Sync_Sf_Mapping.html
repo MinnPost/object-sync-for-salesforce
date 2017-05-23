@@ -145,8 +145,8 @@
 </span><span id="61" class="l"><a href="#61"> 61: </a>        <span class="php-var">$this</span>-&gt;text_domain = <span class="php-var">$text_domain</span>;
 </span><span id="62" class="l"><a href="#62"> 62: </a>        <span class="php-var">$this</span>-&gt;logging = <span class="php-var">$logging</span>;
 </span><span id="63" class="l"><a href="#63"> 63: </a>
-</span><span id="64" class="l"><a href="#64"> 64: </a>        <span class="php-var">$this</span>-&gt;fieldmap_table = <span class="php-var">$this</span>-&gt;wpdb-&gt;prefix . <span class="php-quote">'salesforce_field_map'</span>;
-</span><span id="65" class="l"><a href="#65"> 65: </a>        <span class="php-var">$this</span>-&gt;object_map_table = <span class="php-var">$this</span>-&gt;wpdb-&gt;prefix . <span class="php-quote">'salesforce_object_map'</span>;
+</span><span id="64" class="l"><a href="#64"> 64: </a>        <span class="php-var">$this</span>-&gt;fieldmap_table = <span class="php-var">$this</span>-&gt;wpdb-&gt;prefix . <span class="php-quote">'object_sync_sf_field_map'</span>;
+</span><span id="65" class="l"><a href="#65"> 65: </a>        <span class="php-var">$this</span>-&gt;object_map_table = <span class="php-var">$this</span>-&gt;wpdb-&gt;prefix . <span class="php-quote">'object_sync_sf_object_map'</span>;
 </span><span id="66" class="l"><a href="#66"> 66: </a>
 </span><span id="67" class="l"><a href="#67"> 67: </a>        <span class="php-comment">// this is how we define when syncing should occur on each field map</span>
 </span><span id="68" class="l"><a href="#68"> 68: </a>        <span class="php-comment">// it gets used in the admin settings, as well as the push/pull methods to see if something should happen</span>
