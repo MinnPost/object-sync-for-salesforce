@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Create default WordPress admin functionality for Salesforce to configure the plugin.
  */
-class Wordpress_Salesforce_Admin {
+class Object_Sync_Sf_Admin {
 
 	protected $wpdb;
 	protected $version;
@@ -98,7 +98,7 @@ class Wordpress_Salesforce_Admin {
 		// default token url path
 		$this->default_token_url_path = '/services/oauth2/token';
 		// what Salesforce API version to start the settings with. This is only used in the settings form
-		$this->default_api_version = '39.0';
+		$this->default_api_version = '40.0';
 		// default pull throttle for avoiding going over api limits
 		$this->default_pull_throttle = 5;
 		// default setting for triggerable items
@@ -333,7 +333,7 @@ class Wordpress_Salesforce_Admin {
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_CONSUMER_KEY',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY',
 				),
 
 			),
@@ -346,7 +346,7 @@ class Wordpress_Salesforce_Admin {
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_CONSUMER_SECRET',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET',
 				),
 			),
 			'callback_url' => array(
@@ -358,7 +358,7 @@ class Wordpress_Salesforce_Admin {
 					'type' => 'url',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_CALLBACK_URL',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL',
 				),
 			),
 			'login_base_url' => array(
@@ -370,7 +370,7 @@ class Wordpress_Salesforce_Admin {
 					'type' => 'url',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_LOGIN_BASE_URL',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL',
 				),
 			),
 			'authorize_url_path' => array(
@@ -382,7 +382,7 @@ class Wordpress_Salesforce_Admin {
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc' => 'For most Salesforce installs, this should not be changed.',
-					'constant' => 'SALESFORCE_AUTHORIZE_URL_PATH',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH',
 					'default' => $this->default_authorize_url_path,
 				),
 			),
@@ -395,7 +395,7 @@ class Wordpress_Salesforce_Admin {
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc' => 'For most Salesforce installs, this should not be changed.',
-					'constant' => 'SALESFORCE_TOKEN_URL_PATH',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH',
 					'default' => $this->default_token_url_path,
 				),
 			),
@@ -408,7 +408,7 @@ class Wordpress_Salesforce_Admin {
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_API_VERSION',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION',
 					'default' => $this->default_api_version,
 				),
 			),
@@ -474,7 +474,7 @@ class Wordpress_Salesforce_Admin {
 					'type' => 'select',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_API_VERSION',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION',
 					'items' => $this->version_options(),
 				),
 			);
@@ -839,7 +839,7 @@ class Wordpress_Salesforce_Admin {
 			}
 
 			if ( $condition ) {
-				new Admin_Notice( $condition, $message, $domain, $dismissible, $type, $template );
+				new Object_Sync_Sf_Admin_Notice( $condition, $message, $domain, $dismissible, $type, $template );
 			}
 		}
 
@@ -1058,7 +1058,7 @@ class Wordpress_Salesforce_Admin {
 	* Prepare fieldmap data and redirect after processing
 	* This runs when the create or update forms are submitted
 	* It is public because it depends on an admin hook
-	* It then calls the salesforce_mapping class and sends prepared data over to it, then redirects to the correct page
+	* It then calls the Object_Sync_Sf_Mapping class and sends prepared data over to it, then redirects to the correct page
 	* This method does include error handling, by loading the submission in a transient if there is an error, and then deleting it upon success
 	*
 	*/
@@ -1111,7 +1111,7 @@ class Wordpress_Salesforce_Admin {
 	* Delete fieldmap data and redirect after processing
 	* This runs when the delete link is clicked, after the user confirms
 	* It is public because it depends on an admin hook
-	* It then calls the salesforce_mapping class and the delete method
+	* It then calls the Object_Sync_Sf_Mapping class and the delete method
 	*
 	*/
 	public function delete_fieldmap() {
@@ -1437,11 +1437,11 @@ class Wordpress_Salesforce_Admin {
 	* Load the schedule class
 	*/
 	private function schedule( $schedule_name ) {
-		if ( ! class_exists( 'Wordpress_Salesforce_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
+		if ( ! class_exists( 'Object_Sync_Sf_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
 			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
 			require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
 		}
-		$schedule = new Wordpress_Salesforce_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $schedule_name, $this->logging, $this->schedulable_classes );
+		$schedule = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $schedule_name, $this->logging, $this->schedulable_classes );
 		$this->schedule = $schedule;
 		return $schedule;
 	}

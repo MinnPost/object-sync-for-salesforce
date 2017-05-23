@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class Salesforce_Mapping | Object Sync for Salesforce</title>
+	<title>Class Object_Sync_Sf_Mapping | Object Sync for Salesforce</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -23,28 +23,27 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
 				<li><a href="class-Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
-				<li><a href="class-Salesforce.html">Salesforce</a></li>
-				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
-				<li class="active"><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
-				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
-				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
-				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
-				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
-				<li><a href="class-Wordpress.html">Wordpress</a></li>
-				<li><a href="class-Wordpress_Salesforce_Activate.html">Wordpress_Salesforce_Activate</a></li>
-				<li><a href="class-Wordpress_Salesforce_Admin.html">Wordpress_Salesforce_Admin</a></li>
-				<li><a href="class-Wordpress_Salesforce_Deactivate.html">Wordpress_Salesforce_Deactivate</a></li>
-				<li><a href="class-Wordpress_Salesforce_Schedule.html">Wordpress_Salesforce_Schedule</a></li>
+				<li><a href="class-Object_Sync_Sf_Activate.html">Object_Sync_Sf_Activate</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin.html">Object_Sync_Sf_Admin</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin_Notice.html">Object_Sync_Sf_Admin_Notice</a></li>
+				<li><a href="class-Object_Sync_Sf_Deactivate.html">Object_Sync_Sf_Deactivate</a></li>
+				<li><a href="class-Object_Sync_Sf_Logging.html">Object_Sync_Sf_Logging</a></li>
+				<li class="active"><a href="class-Object_Sync_Sf_Mapping.html">Object_Sync_Sf_Mapping</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce.html">Object_Sync_Sf_Salesforce</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Soap.html">Object_Sync_Sf_Salesforce_Soap</a></li>
+				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
+				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
 			</ul>
 
 
 
 			<h3>Exceptions</h3>
 			<ul>
-				<li><a href="class-SalesforceException.html">SalesforceException</a></li>
-				<li><a href="class-SalesforcePullException.html">SalesforcePullException</a></li>
+				<li><a href="class-Object_Sync_Sf_Exception.html">Object_Sync_Sf_Exception</a></li>
 				<li><a href="class-WordpressException.html">WordpressException</a></li>
 			</ul>
 
@@ -83,7 +82,7 @@
 	</div>
 
 <div id="content" class="class">
-	<h1>Class Salesforce_Mapping</h1>
+	<h1>Class Object_Sync_Sf_Mapping</h1>
 
 
 	<div class="description">
@@ -104,7 +103,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Salesforce_Mapping.html#10-731" title="Go to source code">salesforce_mapping.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Mapping.html#10-731" title="Go to source code">salesforce_mapping.php</a>
 		<br>
 	</div>
 
@@ -124,7 +123,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#49-103" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$logging</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#49-103" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$logging</var></span> )</code>
 
 		<div class="description short">
 			<p>Constructor which sets up links between the systems</p>
@@ -169,7 +168,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_fieldmap">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#105-121" title="Go to source code">create_fieldmap</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$wordpress_fields</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$salesforce_fields</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#105-121" title="Go to source code">create_fieldmap</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$wordpress_fields</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$salesforce_fields</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Create a fieldmap row between a WordPress and Salesforce object</p>
@@ -212,7 +211,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_fieldmaps">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#123-180" title="Go to source code">get_fieldmaps</a>( <span>integer <var>$id</var> = <span class="php-keyword1">null</span></span>, <span>array <var>$conditions</var> = <span class="php-keyword1">array</span>()</span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#123-180" title="Go to source code">get_fieldmaps</a>( <span>integer <var>$id</var> = <span class="php-keyword1">null</span></span>, <span>array <var>$conditions</var> = <span class="php-keyword1">array</span>()</span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Get one or more fieldmap rows between a WordPress and Salesforce object</p>
@@ -259,7 +258,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_mapped_fields">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#182-202" title="Go to source code">get_mapped_fields</a>( <span> <var>$mapping</var></span>, <span> <var>$directions</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#182-202" title="Go to source code">get_mapped_fields</a>( <span> <var>$mapping</var></span>, <span> <var>$directions</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			
@@ -289,7 +288,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_mapped_record_types">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#204-206" title="Go to source code">get_mapped_record_types</a>( <span> <var>$mapping</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#204-206" title="Go to source code">get_mapped_record_types</a>( <span> <var>$mapping</var></span> )</code>
 
 		<div class="description short">
 			
@@ -319,7 +318,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_update_fieldmap">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#208-232" title="Go to source code">update_fieldmap</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$wordpress_fields</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$salesforce_fields</var> = <span class="php-keyword1">array</span>()</span>, <span>integer <var>$id</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#208-232" title="Go to source code">update_fieldmap</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$wordpress_fields</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$salesforce_fields</var> = <span class="php-keyword1">array</span>()</span>, <span>integer <var>$id</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Update a fieldmap row between a WordPress and Salesforce object</p>
@@ -368,7 +367,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setup_fieldmap_data">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#234-330" title="Go to source code">setup_fieldmap_data</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$wordpress_fields</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$salesforce_fields</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#234-330" title="Go to source code">setup_fieldmap_data</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$wordpress_fields</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$salesforce_fields</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Setup fieldmap data
@@ -413,7 +412,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_fieldmap">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#332-348" title="Go to source code">delete_fieldmap</a>( <span>array <var>$id</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#332-348" title="Go to source code">delete_fieldmap</a>( <span>array <var>$id</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Delete a fieldmap row between a WordPress and Salesforce object</p>
@@ -452,7 +451,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_object_map">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#350-402" title="Go to source code">create_object_map</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#350-402" title="Go to source code">create_object_map</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Create an object map row between a WordPress and Salesforce object</p>
@@ -491,7 +490,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_object_maps">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#404-445" title="Go to source code">get_object_maps</a>( <span>array <var>$conditions</var> = <span class="php-keyword1">array</span>()</span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#404-445" title="Go to source code">get_object_maps</a>( <span>array <var>$conditions</var> = <span class="php-keyword1">array</span>()</span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Get one or more object map rows between WordPress and Salesforce objects</p>
@@ -536,7 +535,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
 		<td class="name"><div>
 		<a class="anchor" href="#_update_object_map">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#447-472" title="Go to source code">update_object_map</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$id</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#447-472" title="Go to source code">update_object_map</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$id</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Update an object map row between a WordPress and Salesforce object</p>
@@ -581,7 +580,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setup_object_map_data">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#474-483" title="Go to source code">setup_object_map_data</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#474-483" title="Go to source code">setup_object_map_data</a>( <span>array <var>$posted</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Setup the data for the object map</p>
@@ -620,7 +619,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_object_map">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#485-501" title="Go to source code">delete_object_map</a>( <span>array <var>$id</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#485-501" title="Go to source code">delete_object_map</a>( <span>array <var>$id</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Delete an object map row between a WordPress and Salesforce object</p>
@@ -659,7 +658,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
 		<td class="name"><div>
 		<a class="anchor" href="#_load_by_wordpress">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#503-522" title="Go to source code">load_by_wordpress</a>( <span>string <var>$object_type</var></span>, <span>integer <var>$object_id</var></span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#503-522" title="Go to source code">load_by_wordpress</a>( <span>string <var>$object_type</var></span>, <span>integer <var>$object_id</var></span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Returns Salesforce object mappings for a given WordPress object.</p>
@@ -702,7 +701,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
 		<td class="name"><div>
 		<a class="anchor" href="#_load_by_salesforce">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#524-575" title="Go to source code">load_by_salesforce</a>( <span>string <var>$salesforce_id</var></span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#524-575" title="Go to source code">load_by_salesforce</a>( <span>string <var>$salesforce_id</var></span>, <span>boolean <var>$reset</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Returns Salesforce object mappings for a given Salesforce object.</p>
@@ -744,7 +743,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
 		<td class="name"><div>
 		<a class="anchor" href="#_map_params">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#577-703" title="Go to source code">map_params</a>( <span>array <var>$mapping</var></span>, <span>array <var>$object</var></span>, <span>array <var>$trigger</var></span>, <span>boolean <var>$use_soap</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$is_new</var> = <span class="php-keyword1">true</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#577-703" title="Go to source code">map_params</a>( <span>array <var>$mapping</var></span>, <span>array <var>$object</var></span>, <span>array <var>$trigger</var></span>, <span>boolean <var>$use_soap</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$is_new</var> = <span class="php-keyword1">true</span> </span> )</code>
 
 		<div class="description short">
 			<p>Map values between WordPress and Salesforce objects.</p>
@@ -791,7 +790,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
 		<td class="name"><div>
 		<a class="anchor" href="#_prepare_fieldmap_data">#</a>
-		<code><a href="source-class-Salesforce_Mapping.html#705-729" title="Go to source code">prepare_fieldmap_data</a>( <span>array <var>$mappings</var></span>, <span>string <var>$record_type</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Mapping.html#705-729" title="Go to source code">prepare_fieldmap_data</a>( <span>array <var>$mappings</var></span>, <span>string <var>$record_type</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Prepare field map data for use</p>
@@ -843,7 +842,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#15" title="Go to source code"><var>$wpdb</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#15" title="Go to source code"><var>$wpdb</var></a>
 
 			<div class="description short">
 				
@@ -868,7 +867,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#16" title="Go to source code"><var>$version</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#16" title="Go to source code"><var>$version</var></a>
 
 			<div class="description short">
 				
@@ -893,7 +892,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#17" title="Go to source code"><var>$text_domain</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#17" title="Go to source code"><var>$text_domain</var></a>
 
 			<div class="description short">
 				
@@ -918,7 +917,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#18" title="Go to source code"><var>$logging</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#18" title="Go to source code"><var>$logging</var></a>
 
 			<div class="description short">
 				
@@ -943,7 +942,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#20" title="Go to source code"><var>$fieldmap_table</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#20" title="Go to source code"><var>$fieldmap_table</var></a>
 
 			<div class="description short">
 				
@@ -968,7 +967,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#21" title="Go to source code"><var>$object_map_table</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#21" title="Go to source code"><var>$object_map_table</var></a>
 
 			<div class="description short">
 				
@@ -993,7 +992,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#23" title="Go to source code"><var>$sync_off</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#23" title="Go to source code"><var>$sync_off</var></a>
 
 			<div class="description short">
 				
@@ -1018,7 +1017,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#24" title="Go to source code"><var>$sync_wordpress_create</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#24" title="Go to source code"><var>$sync_wordpress_create</var></a>
 
 			<div class="description short">
 				
@@ -1043,7 +1042,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#25" title="Go to source code"><var>$sync_wordpress_update</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#25" title="Go to source code"><var>$sync_wordpress_update</var></a>
 
 			<div class="description short">
 				
@@ -1068,7 +1067,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#26" title="Go to source code"><var>$sync_wordpress_delete</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#26" title="Go to source code"><var>$sync_wordpress_delete</var></a>
 
 			<div class="description short">
 				
@@ -1093,7 +1092,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#27" title="Go to source code"><var>$sync_sf_create</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#27" title="Go to source code"><var>$sync_sf_create</var></a>
 
 			<div class="description short">
 				
@@ -1118,7 +1117,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#28" title="Go to source code"><var>$sync_sf_update</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#28" title="Go to source code"><var>$sync_sf_update</var></a>
 
 			<div class="description short">
 				
@@ -1143,7 +1142,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#29" title="Go to source code"><var>$sync_sf_delete</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#29" title="Go to source code"><var>$sync_sf_delete</var></a>
 
 			<div class="description short">
 				
@@ -1168,7 +1167,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#30" title="Go to source code"><var>$wordpress_events</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#30" title="Go to source code"><var>$wordpress_events</var></a>
 
 			<div class="description short">
 				
@@ -1193,7 +1192,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#31" title="Go to source code"><var>$salesforce_events</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#31" title="Go to source code"><var>$salesforce_events</var></a>
 
 			<div class="description short">
 				
@@ -1218,7 +1217,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#33" title="Go to source code"><var>$direction_wordpress_sf</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#33" title="Go to source code"><var>$direction_wordpress_sf</var></a>
 
 			<div class="description short">
 				
@@ -1243,7 +1242,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#34" title="Go to source code"><var>$direction_sf_wordpress</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#34" title="Go to source code"><var>$direction_sf_wordpress</var></a>
 
 			<div class="description short">
 				
@@ -1268,7 +1267,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#35" title="Go to source code"><var>$direction_sync</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#35" title="Go to source code"><var>$direction_sync</var></a>
 
 			<div class="description short">
 				
@@ -1293,7 +1292,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#37" title="Go to source code"><var>$direction_wordpress</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#37" title="Go to source code"><var>$direction_wordpress</var></a>
 
 			<div class="description short">
 				
@@ -1318,7 +1317,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#38" title="Go to source code"><var>$direction_salesforce</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#38" title="Go to source code"><var>$direction_salesforce</var></a>
 
 			<div class="description short">
 				
@@ -1343,7 +1342,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#40" title="Go to source code"><var>$salesforce_default_record_type</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#40" title="Go to source code"><var>$salesforce_default_record_type</var></a>
 
 			<div class="description short">
 				
@@ -1368,7 +1367,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#42" title="Go to source code"><var>$array_delimiter</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#42" title="Go to source code"><var>$array_delimiter</var></a>
 
 			<div class="description short">
 				
@@ -1393,7 +1392,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#44" title="Go to source code"><var>$name_length</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#44" title="Go to source code"><var>$name_length</var></a>
 
 			<div class="description short">
 				
@@ -1418,7 +1417,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#46" title="Go to source code"><var>$status_success</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#46" title="Go to source code"><var>$status_success</var></a>
 
 			<div class="description short">
 				
@@ -1443,7 +1442,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Salesforce_Mapping.html#47" title="Go to source code"><var>$status_error</var></a>
+				<a href="source-class-Object_Sync_Sf_Mapping.html#47" title="Go to source code"><var>$status_error</var></a>
 
 			<div class="description short">
 				

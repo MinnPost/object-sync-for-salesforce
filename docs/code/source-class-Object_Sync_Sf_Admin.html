@@ -24,28 +24,27 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
 				<li><a href="class-Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
-				<li><a href="class-Salesforce.html">Salesforce</a></li>
-				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
-				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
-				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
-				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
-				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
-				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
-				<li><a href="class-Wordpress.html">Wordpress</a></li>
-				<li><a href="class-Wordpress_Salesforce_Activate.html">Wordpress_Salesforce_Activate</a></li>
-				<li><a href="class-Wordpress_Salesforce_Admin.html">Wordpress_Salesforce_Admin</a></li>
-				<li><a href="class-Wordpress_Salesforce_Deactivate.html">Wordpress_Salesforce_Deactivate</a></li>
-				<li><a href="class-Wordpress_Salesforce_Schedule.html">Wordpress_Salesforce_Schedule</a></li>
+				<li><a href="class-Object_Sync_Sf_Activate.html">Object_Sync_Sf_Activate</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin.html">Object_Sync_Sf_Admin</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin_Notice.html">Object_Sync_Sf_Admin_Notice</a></li>
+				<li><a href="class-Object_Sync_Sf_Deactivate.html">Object_Sync_Sf_Deactivate</a></li>
+				<li><a href="class-Object_Sync_Sf_Logging.html">Object_Sync_Sf_Logging</a></li>
+				<li><a href="class-Object_Sync_Sf_Mapping.html">Object_Sync_Sf_Mapping</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce.html">Object_Sync_Sf_Salesforce</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Soap.html">Object_Sync_Sf_Salesforce_Soap</a></li>
+				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
+				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
 			</ul>
 
 
 
 			<h3>Exceptions</h3>
 			<ul>
-				<li><a href="class-SalesforceException.html">SalesforceException</a></li>
-				<li><a href="class-SalesforcePullException.html">SalesforcePullException</a></li>
+				<li><a href="class-Object_Sync_Sf_Exception.html">Object_Sync_Sf_Exception</a></li>
 				<li><a href="class-WordpressException.html">WordpressException</a></li>
 			</ul>
 
@@ -95,7 +94,7 @@
 </span><span id="10" class="l"><a href="#10">  10: </a><span class="php-comment">/**
 </span></span><span id="11" class="l"><a href="#11">  11: </a><span class="php-comment"> * Create default WordPress admin functionality for Salesforce to configure the plugin.
 </span></span><span id="12" class="l"><a href="#12">  12: </a><span class="php-comment"> */</span>
-</span><span id="13" class="l"><a href="#13">  13: </a><span class="php-keyword1">class</span> Wordpress_Salesforce_Admin {
+</span><span id="13" class="l"><a href="#13">  13: </a><span class="php-keyword1">class</span> Object_Sync_Sf_Admin {
 </span><span id="14" class="l"><a href="#14">  14: </a>
 </span><span id="15" class="l"><a href="#15">  15: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$wpdb</span>;
 </span><span id="16" class="l"><a href="#16">  16: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$version</span>;
@@ -183,7 +182,7 @@
 </span><span id="98" class="l"><a href="#98">  98: </a>        <span class="php-comment">// default token url path</span>
 </span><span id="99" class="l"><a href="#99">  99: </a>        <span class="php-var">$this</span>-&gt;default_token_url_path = <span class="php-quote">'/services/oauth2/token'</span>;
 </span><span id="100" class="l"><a href="#100"> 100: </a>        <span class="php-comment">// what Salesforce API version to start the settings with. This is only used in the settings form</span>
-</span><span id="101" class="l"><a href="#101"> 101: </a>        <span class="php-var">$this</span>-&gt;default_api_version = <span class="php-quote">'39.0'</span>;
+</span><span id="101" class="l"><a href="#101"> 101: </a>        <span class="php-var">$this</span>-&gt;default_api_version = <span class="php-quote">'40.0'</span>;
 </span><span id="102" class="l"><a href="#102"> 102: </a>        <span class="php-comment">// default pull throttle for avoiding going over api limits</span>
 </span><span id="103" class="l"><a href="#103"> 103: </a>        <span class="php-var">$this</span>-&gt;default_pull_throttle = <span class="php-num">5</span>;
 </span><span id="104" class="l"><a href="#104"> 104: </a>        <span class="php-comment">// default setting for triggerable items</span>
@@ -418,7 +417,7 @@
 </span><span id="333" class="l"><a href="#333"> 333: </a>                    <span class="php-quote">'type'</span> =&gt; <span class="php-quote">'text'</span>,
 </span><span id="334" class="l"><a href="#334"> 334: </a>                    <span class="php-quote">'validate'</span> =&gt; <span class="php-quote">'sanitize_text_field'</span>,
 </span><span id="335" class="l"><a href="#335"> 335: </a>                    <span class="php-quote">'desc'</span> =&gt; <span class="php-quote">''</span>,
-</span><span id="336" class="l"><a href="#336"> 336: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'SALESFORCE_CONSUMER_KEY'</span>,
+</span><span id="336" class="l"><a href="#336"> 336: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY'</span>,
 </span><span id="337" class="l"><a href="#337"> 337: </a>                ),
 </span><span id="338" class="l"><a href="#338"> 338: </a>
 </span><span id="339" class="l"><a href="#339"> 339: </a>            ),
@@ -431,7 +430,7 @@
 </span><span id="346" class="l"><a href="#346"> 346: </a>                    <span class="php-quote">'type'</span> =&gt; <span class="php-quote">'text'</span>,
 </span><span id="347" class="l"><a href="#347"> 347: </a>                    <span class="php-quote">'validate'</span> =&gt; <span class="php-quote">'sanitize_text_field'</span>,
 </span><span id="348" class="l"><a href="#348"> 348: </a>                    <span class="php-quote">'desc'</span> =&gt; <span class="php-quote">''</span>,
-</span><span id="349" class="l"><a href="#349"> 349: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'SALESFORCE_CONSUMER_SECRET'</span>,
+</span><span id="349" class="l"><a href="#349"> 349: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET'</span>,
 </span><span id="350" class="l"><a href="#350"> 350: </a>                ),
 </span><span id="351" class="l"><a href="#351"> 351: </a>            ),
 </span><span id="352" class="l"><a href="#352"> 352: </a>            <span class="php-quote">'callback_url'</span> =&gt; <span class="php-keyword1">array</span>(
@@ -443,7 +442,7 @@
 </span><span id="358" class="l"><a href="#358"> 358: </a>                    <span class="php-quote">'type'</span> =&gt; <span class="php-quote">'url'</span>,
 </span><span id="359" class="l"><a href="#359"> 359: </a>                    <span class="php-quote">'validate'</span> =&gt; <span class="php-quote">'sanitize_text_field'</span>,
 </span><span id="360" class="l"><a href="#360"> 360: </a>                    <span class="php-quote">'desc'</span> =&gt; <span class="php-quote">''</span>,
-</span><span id="361" class="l"><a href="#361"> 361: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'SALESFORCE_CALLBACK_URL'</span>,
+</span><span id="361" class="l"><a href="#361"> 361: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL'</span>,
 </span><span id="362" class="l"><a href="#362"> 362: </a>                ),
 </span><span id="363" class="l"><a href="#363"> 363: </a>            ),
 </span><span id="364" class="l"><a href="#364"> 364: </a>            <span class="php-quote">'login_base_url'</span> =&gt; <span class="php-keyword1">array</span>(
@@ -455,7 +454,7 @@
 </span><span id="370" class="l"><a href="#370"> 370: </a>                    <span class="php-quote">'type'</span> =&gt; <span class="php-quote">'url'</span>,
 </span><span id="371" class="l"><a href="#371"> 371: </a>                    <span class="php-quote">'validate'</span> =&gt; <span class="php-quote">'sanitize_text_field'</span>,
 </span><span id="372" class="l"><a href="#372"> 372: </a>                    <span class="php-quote">'desc'</span> =&gt; <span class="php-quote">''</span>,
-</span><span id="373" class="l"><a href="#373"> 373: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'SALESFORCE_LOGIN_BASE_URL'</span>,
+</span><span id="373" class="l"><a href="#373"> 373: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL'</span>,
 </span><span id="374" class="l"><a href="#374"> 374: </a>                ),
 </span><span id="375" class="l"><a href="#375"> 375: </a>            ),
 </span><span id="376" class="l"><a href="#376"> 376: </a>            <span class="php-quote">'authorize_url_path'</span> =&gt; <span class="php-keyword1">array</span>(
@@ -467,7 +466,7 @@
 </span><span id="382" class="l"><a href="#382"> 382: </a>                    <span class="php-quote">'type'</span> =&gt; <span class="php-quote">'text'</span>,
 </span><span id="383" class="l"><a href="#383"> 383: </a>                    <span class="php-quote">'validate'</span> =&gt; <span class="php-quote">'sanitize_text_field'</span>,
 </span><span id="384" class="l"><a href="#384"> 384: </a>                    <span class="php-quote">'desc'</span> =&gt; <span class="php-quote">'For most Salesforce installs, this should not be changed.'</span>,
-</span><span id="385" class="l"><a href="#385"> 385: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'SALESFORCE_AUTHORIZE_URL_PATH'</span>,
+</span><span id="385" class="l"><a href="#385"> 385: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH'</span>,
 </span><span id="386" class="l"><a href="#386"> 386: </a>                    <span class="php-quote">'default'</span> =&gt; <span class="php-var">$this</span>-&gt;default_authorize_url_path,
 </span><span id="387" class="l"><a href="#387"> 387: </a>                ),
 </span><span id="388" class="l"><a href="#388"> 388: </a>            ),
@@ -480,7 +479,7 @@
 </span><span id="395" class="l"><a href="#395"> 395: </a>                    <span class="php-quote">'type'</span> =&gt; <span class="php-quote">'text'</span>,
 </span><span id="396" class="l"><a href="#396"> 396: </a>                    <span class="php-quote">'validate'</span> =&gt; <span class="php-quote">'sanitize_text_field'</span>,
 </span><span id="397" class="l"><a href="#397"> 397: </a>                    <span class="php-quote">'desc'</span> =&gt; <span class="php-quote">'For most Salesforce installs, this should not be changed.'</span>,
-</span><span id="398" class="l"><a href="#398"> 398: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'SALESFORCE_TOKEN_URL_PATH'</span>,
+</span><span id="398" class="l"><a href="#398"> 398: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH'</span>,
 </span><span id="399" class="l"><a href="#399"> 399: </a>                    <span class="php-quote">'default'</span> =&gt; <span class="php-var">$this</span>-&gt;default_token_url_path,
 </span><span id="400" class="l"><a href="#400"> 400: </a>                ),
 </span><span id="401" class="l"><a href="#401"> 401: </a>            ),
@@ -493,7 +492,7 @@
 </span><span id="408" class="l"><a href="#408"> 408: </a>                    <span class="php-quote">'type'</span> =&gt; <span class="php-quote">'text'</span>,
 </span><span id="409" class="l"><a href="#409"> 409: </a>                    <span class="php-quote">'validate'</span> =&gt; <span class="php-quote">'sanitize_text_field'</span>,
 </span><span id="410" class="l"><a href="#410"> 410: </a>                    <span class="php-quote">'desc'</span> =&gt; <span class="php-quote">''</span>,
-</span><span id="411" class="l"><a href="#411"> 411: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'SALESFORCE_API_VERSION'</span>,
+</span><span id="411" class="l"><a href="#411"> 411: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_API_VERSION'</span>,
 </span><span id="412" class="l"><a href="#412"> 412: </a>                    <span class="php-quote">'default'</span> =&gt; <span class="php-var">$this</span>-&gt;default_api_version,
 </span><span id="413" class="l"><a href="#413"> 413: </a>                ),
 </span><span id="414" class="l"><a href="#414"> 414: </a>            ),
@@ -559,7 +558,7 @@
 </span><span id="474" class="l"><a href="#474"> 474: </a>                    <span class="php-quote">'type'</span> =&gt; <span class="php-quote">'select'</span>,
 </span><span id="475" class="l"><a href="#475"> 475: </a>                    <span class="php-quote">'validate'</span> =&gt; <span class="php-quote">'sanitize_text_field'</span>,
 </span><span id="476" class="l"><a href="#476"> 476: </a>                    <span class="php-quote">'desc'</span> =&gt; <span class="php-quote">''</span>,
-</span><span id="477" class="l"><a href="#477"> 477: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'SALESFORCE_API_VERSION'</span>,
+</span><span id="477" class="l"><a href="#477"> 477: </a>                    <span class="php-quote">'constant'</span> =&gt; <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_API_VERSION'</span>,
 </span><span id="478" class="l"><a href="#478"> 478: </a>                    <span class="php-quote">'items'</span> =&gt; <span class="php-var">$this</span>-&gt;version_options(),
 </span><span id="479" class="l"><a href="#479"> 479: </a>                ),
 </span><span id="480" class="l"><a href="#480"> 480: </a>            );
@@ -924,7 +923,7 @@
 </span><span id="839" class="l"><a href="#839"> 839: </a>            }
 </span><span id="840" class="l"><a href="#840"> 840: </a>
 </span><span id="841" class="l"><a href="#841"> 841: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$condition</span> ) {
-</span><span id="842" class="l"><a href="#842"> 842: </a>                <span class="php-keyword1">new</span> Admin_Notice( <span class="php-var">$condition</span>, <span class="php-var">$message</span>, <span class="php-var">$domain</span>, <span class="php-var">$dismissible</span>, <span class="php-var">$type</span>, <span class="php-var">$template</span> );
+</span><span id="842" class="l"><a href="#842"> 842: </a>                <span class="php-keyword1">new</span> Object_Sync_Sf_Admin_Notice( <span class="php-var">$condition</span>, <span class="php-var">$message</span>, <span class="php-var">$domain</span>, <span class="php-var">$dismissible</span>, <span class="php-var">$type</span>, <span class="php-var">$template</span> );
 </span><span id="843" class="l"><a href="#843"> 843: </a>            }
 </span><span id="844" class="l"><a href="#844"> 844: </a>        }
 </span><span id="845" class="l"><a href="#845"> 845: </a>
@@ -1143,7 +1142,7 @@
 </span></span><span id="1058" class="l"><a href="#1058">1058: </a><span class="php-comment">    * Prepare fieldmap data and redirect after processing
 </span></span><span id="1059" class="l"><a href="#1059">1059: </a><span class="php-comment">    * This runs when the create or update forms are submitted
 </span></span><span id="1060" class="l"><a href="#1060">1060: </a><span class="php-comment">    * It is public because it depends on an admin hook
-</span></span><span id="1061" class="l"><a href="#1061">1061: </a><span class="php-comment">    * It then calls the salesforce_mapping class and sends prepared data over to it, then redirects to the correct page
+</span></span><span id="1061" class="l"><a href="#1061">1061: </a><span class="php-comment">    * It then calls the Object_Sync_Sf_Mapping class and sends prepared data over to it, then redirects to the correct page
 </span></span><span id="1062" class="l"><a href="#1062">1062: </a><span class="php-comment">    * This method does include error handling, by loading the submission in a transient if there is an error, and then deleting it upon success
 </span></span><span id="1063" class="l"><a href="#1063">1063: </a><span class="php-comment">    *
 </span></span><span id="1064" class="l"><a href="#1064">1064: </a><span class="php-comment">    */</span>
@@ -1196,7 +1195,7 @@
 </span></span><span id="1111" class="l"><a href="#1111">1111: </a><span class="php-comment">    * Delete fieldmap data and redirect after processing
 </span></span><span id="1112" class="l"><a href="#1112">1112: </a><span class="php-comment">    * This runs when the delete link is clicked, after the user confirms
 </span></span><span id="1113" class="l"><a href="#1113">1113: </a><span class="php-comment">    * It is public because it depends on an admin hook
-</span></span><span id="1114" class="l"><a href="#1114">1114: </a><span class="php-comment">    * It then calls the salesforce_mapping class and the delete method
+</span></span><span id="1114" class="l"><a href="#1114">1114: </a><span class="php-comment">    * It then calls the Object_Sync_Sf_Mapping class and the delete method
 </span></span><span id="1115" class="l"><a href="#1115">1115: </a><span class="php-comment">    *
 </span></span><span id="1116" class="l"><a href="#1116">1116: </a><span class="php-comment">    */</span>
 </span><span id="1117" class="l"><a href="#1117">1117: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> delete_fieldmap() {
@@ -1522,11 +1521,11 @@
 </span></span><span id="1437" class="l"><a href="#1437">1437: </a><span class="php-comment">    * Load the schedule class
 </span></span><span id="1438" class="l"><a href="#1438">1438: </a><span class="php-comment">    */</span>
 </span><span id="1439" class="l"><a href="#1439">1439: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> schedule( <span class="php-var">$schedule_name</span> ) {
-</span><span id="1440" class="l"><a href="#1440">1440: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Wordpress_Salesforce_Schedule'</span> ) &amp;&amp; <span class="php-keyword2">file_exists</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span> ) ) {
+</span><span id="1440" class="l"><a href="#1440">1440: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Schedule'</span> ) &amp;&amp; <span class="php-keyword2">file_exists</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span> ) ) {
 </span><span id="1441" class="l"><a href="#1441">1441: </a>            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span>;
 </span><span id="1442" class="l"><a href="#1442">1442: </a>            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'../classes/schedule.php'</span>;
 </span><span id="1443" class="l"><a href="#1443">1443: </a>        }
-</span><span id="1444" class="l"><a href="#1444">1444: </a>        <span class="php-var">$schedule</span> = <span class="php-keyword1">new</span> Wordpress_Salesforce_Schedule( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;text_domain, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$schedule_name</span>, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
+</span><span id="1444" class="l"><a href="#1444">1444: </a>        <span class="php-var">$schedule</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Schedule( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;text_domain, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$schedule_name</span>, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
 </span><span id="1445" class="l"><a href="#1445">1445: </a>        <span class="php-var">$this</span>-&gt;schedule = <span class="php-var">$schedule</span>;
 </span><span id="1446" class="l"><a href="#1446">1446: </a>        <span class="php-keyword1">return</span> <span class="php-var">$schedule</span>;
 </span><span id="1447" class="l"><a href="#1447">1447: </a>    }
@@ -1574,6 +1573,6 @@
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?e025fad4c1553a0f094faf53f85cd94c02040af7"></script>
+<script src="elementlist.js?073b305b935ed6d0264c33e7073e310cd6cccb4f"></script>
 </body>
 </html>

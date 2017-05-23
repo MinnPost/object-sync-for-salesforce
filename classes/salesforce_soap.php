@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Use SOAP instead of the REST API, when necessary
  */
-class Salesforce_Soap {
+class Object_Sync_Sf_Salesforce_Soap {
 
 	/**
 	* Constructor which

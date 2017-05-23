@@ -95,24 +95,24 @@ You can set several of the above values as constants in your `wp-config.php` fil
 
 Supported constant names are:
 
-1. SALESFORCE_CONSUMER_KEY
-2. SALESFORCE_CONSUMER_SECRET
-3. SALESFORCE_CALLBACK_URL
-4. SALESFORCE_LOGIN_BASE_URL
-5. SALESFORCE_AUTHORIZE_URL_PATH
-6. SALESFORCE_TOKEN_URL_PATH
-7. SALESFORCE_API_VERSION
+1. OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY
+2. OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET
+3. OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL
+4. OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL
+5. OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH
+6. OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH
+7. OBJECT_SYNC_SF_SALESFORCE_API_VERSION
 
 Set them in `wp-config.php` like this:
 
 ```
-define('SALESFORCE_CONSUMER_KEY', 'valuefromsalesforce');
-define('SALESFORCE_CONSUMER_SECRET', 'valuefromsalesforce');
-define('SALESFORCE_CALLBACK_URL', 'https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize');
-define('SALESFORCE_LOGIN_BASE_URL', 'https://test.salesforce.com');
-define('SALESFORCE_API_VERSION', '38.0');
-define('SALESFORCE_AUTHORIZE_URL_PATH', '/services/oauth2/authorize');
-define('SALESFORCE_TOKEN_URL_PATH', '/services/oauth2/token');
+define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY', 'valuefromsalesforce');
+define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET', 'valuefromsalesforce');
+define('OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL', 'https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize');
+define('OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL', 'https://test.salesforce.com');
+define('OBJECT_SYNC_SF_SALESFORCE_API_VERSION', '38.0');
+define('OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH', '/services/oauth2/authorize');
+define('OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH', '/services/oauth2/token');
 ```
 
 For any value that is already defined in `wp-config.php`, the Settings screen will display "Defined in wp-config.php" in place of the text field.

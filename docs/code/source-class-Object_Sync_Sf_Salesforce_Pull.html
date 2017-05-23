@@ -24,28 +24,27 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
 				<li><a href="class-Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
-				<li><a href="class-Salesforce.html">Salesforce</a></li>
-				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
-				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
-				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
-				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
-				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
-				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
-				<li><a href="class-Wordpress.html">Wordpress</a></li>
-				<li><a href="class-Wordpress_Salesforce_Activate.html">Wordpress_Salesforce_Activate</a></li>
-				<li><a href="class-Wordpress_Salesforce_Admin.html">Wordpress_Salesforce_Admin</a></li>
-				<li><a href="class-Wordpress_Salesforce_Deactivate.html">Wordpress_Salesforce_Deactivate</a></li>
-				<li><a href="class-Wordpress_Salesforce_Schedule.html">Wordpress_Salesforce_Schedule</a></li>
+				<li><a href="class-Object_Sync_Sf_Activate.html">Object_Sync_Sf_Activate</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin.html">Object_Sync_Sf_Admin</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin_Notice.html">Object_Sync_Sf_Admin_Notice</a></li>
+				<li><a href="class-Object_Sync_Sf_Deactivate.html">Object_Sync_Sf_Deactivate</a></li>
+				<li><a href="class-Object_Sync_Sf_Logging.html">Object_Sync_Sf_Logging</a></li>
+				<li><a href="class-Object_Sync_Sf_Mapping.html">Object_Sync_Sf_Mapping</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce.html">Object_Sync_Sf_Salesforce</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Soap.html">Object_Sync_Sf_Salesforce_Soap</a></li>
+				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
+				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
 			</ul>
 
 
 
 			<h3>Exceptions</h3>
 			<ul>
-				<li><a href="class-SalesforceException.html">SalesforceException</a></li>
-				<li><a href="class-SalesforcePullException.html">SalesforcePullException</a></li>
+				<li><a href="class-Object_Sync_Sf_Exception.html">Object_Sync_Sf_Exception</a></li>
 				<li><a href="class-WordpressException.html">WordpressException</a></li>
 			</ul>
 
@@ -95,7 +94,7 @@
 </span><span id="10" class="l"><a href="#10">  10: </a><span class="php-comment">/**
 </span></span><span id="11" class="l"><a href="#11">  11: </a><span class="php-comment"> * Pull data from Salesforce into WordPress
 </span></span><span id="12" class="l"><a href="#12">  12: </a><span class="php-comment"> */</span>
-</span><span id="13" class="l"><a href="#13">  13: </a><span class="php-keyword1">class</span> Salesforce_Pull {
+</span><span id="13" class="l"><a href="#13">  13: </a><span class="php-keyword1">class</span> Object_Sync_Sf_Salesforce_Pull {
 </span><span id="14" class="l"><a href="#14">  14: </a>
 </span><span id="15" class="l"><a href="#15">  15: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$wpdb</span>;
 </span><span id="16" class="l"><a href="#16">  16: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$version</span>;
@@ -210,11 +209,11 @@
 </span></span><span id="125" class="l"><a href="#125"> 125: </a><span class="php-comment">    * This loads the schedule class
 </span></span><span id="126" class="l"><a href="#126"> 126: </a><span class="php-comment">    */</span>
 </span><span id="127" class="l"><a href="#127"> 127: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> schedule() {
-</span><span id="128" class="l"><a href="#128"> 128: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Wordpress_Salesforce_Schedule'</span> ) &amp;&amp; <span class="php-keyword2">file_exists</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span> ) ) {
+</span><span id="128" class="l"><a href="#128"> 128: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Schedule'</span> ) &amp;&amp; <span class="php-keyword2">file_exists</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span> ) ) {
 </span><span id="129" class="l"><a href="#129"> 129: </a>            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span>;
 </span><span id="130" class="l"><a href="#130"> 130: </a>            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'../classes/schedule.php'</span>;
 </span><span id="131" class="l"><a href="#131"> 131: </a>        }
-</span><span id="132" class="l"><a href="#132"> 132: </a>        <span class="php-var">$schedule</span> = <span class="php-keyword1">new</span> Wordpress_Salesforce_Schedule( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;text_domain, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;schedule_name, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
+</span><span id="132" class="l"><a href="#132"> 132: </a>        <span class="php-var">$schedule</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Schedule( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;text_domain, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;schedule_name, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
 </span><span id="133" class="l"><a href="#133"> 133: </a>        <span class="php-var">$this</span>-&gt;schedule = <span class="php-var">$schedule</span>;
 </span><span id="134" class="l"><a href="#134"> 134: </a>        <span class="php-keyword1">return</span> <span class="php-var">$schedule</span>;
 </span><span id="135" class="l"><a href="#135"> 135: </a>    }
@@ -339,8 +338,8 @@
 </span><span id="254" class="l"><a href="#254"> 254: </a>                <span class="php-var">$title</span> = <span class="php-keyword2">ucfirst</span>( <span class="php-var">$status</span> ) . <span class="php-quote">': '</span> . <span class="php-var">$response</span>[<span class="php-quote">'errorCode'</span>] . <span class="php-quote">' '</span> . <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'salesforce_object'</span>];
 </span><span id="255" class="l"><a href="#255"> 255: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="256" class="l"><a href="#256"> 256: </a>                    <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="257" class="l"><a href="#257"> 257: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="258" class="l"><a href="#258"> 258: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="257" class="l"><a href="#257"> 257: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="258" class="l"><a href="#258"> 258: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="259" class="l"><a href="#259"> 259: </a>                }
 </span><span id="260" class="l"><a href="#260"> 260: </a>
 </span><span id="261" class="l"><a href="#261"> 261: </a>                <span class="php-var">$logging</span>-&gt;setup(
@@ -362,11 +361,11 @@
 </span></span><span id="277" class="l"><a href="#277"> 277: </a><span class="php-comment">    * @param string $type
 </span></span><span id="278" class="l"><a href="#278"> 278: </a><span class="php-comment">    *   e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.
 </span></span><span id="279" class="l"><a href="#279"> 279: </a><span class="php-comment">    *
-</span></span><span id="280" class="l"><a href="#280"> 280: </a><span class="php-comment">    * @return Salesforce_Select_Query or null if no mappings or no mapped fields
+</span></span><span id="280" class="l"><a href="#280"> 280: </a><span class="php-comment">    * @return Object_Sync_Sf_Salesforce_Select_Query or null if no mappings or no mapped fields
 </span></span><span id="281" class="l"><a href="#281"> 281: </a><span class="php-comment">    *   were found.
 </span></span><span id="282" class="l"><a href="#282"> 282: </a><span class="php-comment">    *
-</span></span><span id="283" class="l"><a href="#283"> 283: </a><span class="php-comment">    * @see Salesforce_Mapping::get_mapped_fields
-</span></span><span id="284" class="l"><a href="#284"> 284: </a><span class="php-comment">    * @see Salesforce_Mapping::get_mapped_record_types
+</span></span><span id="283" class="l"><a href="#283"> 283: </a><span class="php-comment">    * @see Object_Sync_Sf_Mapping::get_mapped_fields
+</span></span><span id="284" class="l"><a href="#284"> 284: </a><span class="php-comment">    * @see Object_Sync_Sf_Mapping::get_mapped_record_types
 </span></span><span id="285" class="l"><a href="#285"> 285: </a><span class="php-comment">    */</span>
 </span><span id="286" class="l"><a href="#286"> 286: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> get_pull_query( <span class="php-var">$type</span>, <span class="php-var">$salesforce_mapping</span> = <span class="php-keyword1">array</span>() ) {
 </span><span id="287" class="l"><a href="#287"> 287: </a>        <span class="php-var">$mapped_fields</span> = <span class="php-keyword1">array</span>();
@@ -408,7 +407,7 @@
 </span><span id="323" class="l"><a href="#323"> 323: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">null</span>;
 </span><span id="324" class="l"><a href="#324"> 324: </a>        }
 </span><span id="325" class="l"><a href="#325"> 325: </a>
-</span><span id="326" class="l"><a href="#326"> 326: </a>        <span class="php-var">$soql</span> = <span class="php-keyword1">new</span> Salesforce_Select_Query( <span class="php-var">$type</span> );
+</span><span id="326" class="l"><a href="#326"> 326: </a>        <span class="php-var">$soql</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Salesforce_Select_Query( <span class="php-var">$type</span> );
 </span><span id="327" class="l"><a href="#327"> 327: </a>
 </span><span id="328" class="l"><a href="#328"> 328: </a>        <span class="php-comment">// Convert field mappings to SOQL.</span>
 </span><span id="329" class="l"><a href="#329"> 329: </a>        <span class="php-var">$soql</span>-&gt;fields = <span class="php-keyword2">array_merge</span>(
@@ -580,8 +579,8 @@
 </span><span id="495" class="l"><a href="#495"> 495: </a>                <span class="php-var">$status</span> = <span class="php-quote">'error'</span>;
 </span><span id="496" class="l"><a href="#496"> 496: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="497" class="l"><a href="#497"> 497: </a>                    <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="498" class="l"><a href="#498"> 498: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="499" class="l"><a href="#499"> 499: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="498" class="l"><a href="#498"> 498: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="499" class="l"><a href="#499"> 499: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="500" class="l"><a href="#500"> 500: </a>                }
 </span><span id="501" class="l"><a href="#501"> 501: </a>                <span class="php-var">$logging</span>-&gt;setup(
 </span><span id="502" class="l"><a href="#502"> 502: </a>                    __( <span class="php-keyword2">ucfirst</span>( <span class="php-var">$status</span> ) . <span class="php-quote">': Salesforce Pull: unable to process queue item because it has no Salesforce Id.'</span>, <span class="php-var">$this</span>-&gt;text_domain ),
@@ -663,8 +662,8 @@
 </span><span id="578" class="l"><a href="#578"> 578: </a>                            <span class="php-comment">// create log entry for failed delete</span>
 </span><span id="579" class="l"><a href="#579"> 579: </a>                            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="580" class="l"><a href="#580"> 580: </a>                                <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="581" class="l"><a href="#581"> 581: </a>                            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="582" class="l"><a href="#582"> 582: </a>                                <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="581" class="l"><a href="#581"> 581: </a>                            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="582" class="l"><a href="#582"> 582: </a>                                <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="583" class="l"><a href="#583"> 583: </a>                            }
 </span><span id="584" class="l"><a href="#584"> 584: </a>
 </span><span id="585" class="l"><a href="#585"> 585: </a>                            <span class="php-var">$logging</span>-&gt;setup(
@@ -695,8 +694,8 @@
 </span><span id="610" class="l"><a href="#610"> 610: </a>                            <span class="php-var">$status</span> = <span class="php-quote">'success'</span>;
 </span><span id="611" class="l"><a href="#611"> 611: </a>                            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="612" class="l"><a href="#612"> 612: </a>                                <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="613" class="l"><a href="#613"> 613: </a>                            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="614" class="l"><a href="#614"> 614: </a>                                <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="613" class="l"><a href="#613"> 613: </a>                            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="614" class="l"><a href="#614"> 614: </a>                                <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="615" class="l"><a href="#615"> 615: </a>                            }
 </span><span id="616" class="l"><a href="#616"> 616: </a>
 </span><span id="617" class="l"><a href="#617"> 617: </a>                            <span class="php-var">$logging</span>-&gt;setup(
@@ -728,8 +727,8 @@
 </span><span id="643" class="l"><a href="#643"> 643: </a>                        <span class="php-var">$status</span> = <span class="php-quote">'notice'</span>;
 </span><span id="644" class="l"><a href="#644"> 644: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="645" class="l"><a href="#645"> 645: </a>                            <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="646" class="l"><a href="#646"> 646: </a>                        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="647" class="l"><a href="#647"> 647: </a>                            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="646" class="l"><a href="#646"> 646: </a>                        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="647" class="l"><a href="#647"> 647: </a>                            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="648" class="l"><a href="#648"> 648: </a>                        }
 </span><span id="649" class="l"><a href="#649"> 649: </a>
 </span><span id="650" class="l"><a href="#650"> 650: </a>                        <span class="php-var">$logging</span>-&gt;setup(
@@ -887,8 +886,8 @@
 </span><span id="802" class="l"><a href="#802"> 802: </a>
 </span><span id="803" class="l"><a href="#803"> 803: </a>                                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="804" class="l"><a href="#804"> 804: </a>                                    <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="805" class="l"><a href="#805"> 805: </a>                                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="806" class="l"><a href="#806"> 806: </a>                                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="805" class="l"><a href="#805"> 805: </a>                                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="806" class="l"><a href="#806"> 806: </a>                                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="807" class="l"><a href="#807"> 807: </a>                                }
 </span><span id="808" class="l"><a href="#808"> 808: </a>                                <span class="php-var">$parent</span> = <span class="php-num">0</span>;
 </span><span id="809" class="l"><a href="#809"> 809: </a>                                <span class="php-var">$logging</span>-&gt;setup(
@@ -912,8 +911,8 @@
 </span><span id="827" class="l"><a href="#827"> 827: </a>                            <span class="php-var">$body</span> = <span class="php-quote">'The WordPress '</span> . <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'wordpress_object'</span>] . <span class="php-quote">' with '</span> . <span class="php-var">$structure</span>[<span class="php-quote">'id_field'</span>] . <span class="php-quote">' of '</span> . <span class="php-var">$wordpress_id</span> . <span class="php-quote">' is already mapped to the Salesforce '</span> . <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'salesforce_object'</span>] . <span class="php-quote">' with Id of '</span> . <span class="php-var">$mapping_object</span>[<span class="php-quote">'salesforce_id'</span>] . <span class="php-quote">' in the mapping object with id of '</span> . <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] . <span class="php-quote">'. The Salesforce '</span> . <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'salesforce_object'</span>] . <span class="php-quote">' with Id of '</span> . <span class="php-var">$object</span>[<span class="php-quote">'Id'</span>] . <span class="php-quote">' was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing user data without user intention.'</span>;
 </span><span id="828" class="l"><a href="#828"> 828: </a>                            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="829" class="l"><a href="#829"> 829: </a>                                <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="830" class="l"><a href="#830"> 830: </a>                            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="831" class="l"><a href="#831"> 831: </a>                                <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="830" class="l"><a href="#830"> 830: </a>                            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="831" class="l"><a href="#831"> 831: </a>                                <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="832" class="l"><a href="#832"> 832: </a>                            }
 </span><span id="833" class="l"><a href="#833"> 833: </a>                            <span class="php-comment">// if we know the wordpress object id we can put it in there</span>
 </span><span id="834" class="l"><a href="#834"> 834: </a>                            <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> !== <span class="php-var">$wordpress_id</span> ) {
@@ -971,8 +970,8 @@
 </span><span id="886" class="l"><a href="#886"> 886: </a>                    <span class="php-var">$title</span> .= <span class="php-quote">' (Salesforce '</span> . <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'salesforce_object'</span>] . <span class="php-quote">' with Id '</span> . <span class="php-quote">' of '</span> . <span class="php-var">$object</span>[<span class="php-quote">'Id'</span>] . <span class="php-quote">')'</span>;
 </span><span id="887" class="l"><a href="#887"> 887: </a>                    <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="888" class="l"><a href="#888"> 888: </a>                        <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="889" class="l"><a href="#889"> 889: </a>                    } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="890" class="l"><a href="#890"> 890: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="889" class="l"><a href="#889"> 889: </a>                    } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="890" class="l"><a href="#890"> 890: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="891" class="l"><a href="#891"> 891: </a>                    }
 </span><span id="892" class="l"><a href="#892"> 892: </a>
 </span><span id="893" class="l"><a href="#893"> 893: </a>                    <span class="php-comment">// if we know the wordpress object id we can put it in there</span>
@@ -1023,8 +1022,8 @@
 </span><span id="938" class="l"><a href="#938"> 938: </a>
 </span><span id="939" class="l"><a href="#939"> 939: </a>                    <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="940" class="l"><a href="#940"> 940: </a>                        <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="941" class="l"><a href="#941"> 941: </a>                    } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="942" class="l"><a href="#942"> 942: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="941" class="l"><a href="#941"> 941: </a>                    } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="942" class="l"><a href="#942"> 942: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="943" class="l"><a href="#943"> 943: </a>                    }
 </span><span id="944" class="l"><a href="#944"> 944: </a>
 </span><span id="945" class="l"><a href="#945"> 945: </a>                    <span class="php-var">$logging</span>-&gt;setup(
@@ -1049,8 +1048,8 @@
 </span><span id="964" class="l"><a href="#964"> 964: </a>                    <span class="php-var">$status</span> = <span class="php-quote">'error'</span>;
 </span><span id="965" class="l"><a href="#965"> 965: </a>                    <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="966" class="l"><a href="#966"> 966: </a>                        <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="967" class="l"><a href="#967"> 967: </a>                    } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="968" class="l"><a href="#968"> 968: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="967" class="l"><a href="#967"> 967: </a>                    } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="968" class="l"><a href="#968"> 968: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="969" class="l"><a href="#969"> 969: </a>                    }
 </span><span id="970" class="l"><a href="#970"> 970: </a>
 </span><span id="971" class="l"><a href="#971"> 971: </a>                    <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_object</span>( <span class="php-var">$wordpress_id</span> ) ) {
@@ -1100,8 +1099,8 @@
 </span><span id="1015" class="l"><a href="#1015">1015: </a>                    <span class="php-var">$status</span> = <span class="php-quote">'success'</span>;
 </span><span id="1016" class="l"><a href="#1016">1016: </a>                    <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="1017" class="l"><a href="#1017">1017: </a>                        <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="1018" class="l"><a href="#1018">1018: </a>                    } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="1019" class="l"><a href="#1019">1019: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="1018" class="l"><a href="#1018">1018: </a>                    } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="1019" class="l"><a href="#1019">1019: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="1020" class="l"><a href="#1020">1020: </a>                    }
 </span><span id="1021" class="l"><a href="#1021">1021: </a>
 </span><span id="1022" class="l"><a href="#1022">1022: </a>                    <span class="php-var">$logging</span>-&gt;setup(
@@ -1120,8 +1119,8 @@
 </span><span id="1035" class="l"><a href="#1035">1035: </a>                    <span class="php-var">$status</span> = <span class="php-quote">'error'</span>;
 </span><span id="1036" class="l"><a href="#1036">1036: </a>                    <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="1037" class="l"><a href="#1037">1037: </a>                        <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="1038" class="l"><a href="#1038">1038: </a>                    } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="1039" class="l"><a href="#1039">1039: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="1038" class="l"><a href="#1038">1038: </a>                    } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="1039" class="l"><a href="#1039">1039: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="1040" class="l"><a href="#1040">1040: </a>                    }
 </span><span id="1041" class="l"><a href="#1041">1041: </a>
 </span><span id="1042" class="l"><a href="#1042">1042: </a>                    <span class="php-var">$logging</span>-&gt;setup(
@@ -1223,6 +1222,6 @@
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?e025fad4c1553a0f094faf53f85cd94c02040af7"></script>
+<script src="elementlist.js?073b305b935ed6d0264c33e7073e310cd6cccb4f"></script>
 </body>
 </html>

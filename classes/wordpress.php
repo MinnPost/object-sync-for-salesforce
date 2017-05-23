@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Pull data from Salesforce into WordPress
  */
-class Wordpress {
+class Object_Sync_Sf_Wordpress {
 
 	protected $wpdb;
 	protected $version;
@@ -994,8 +994,8 @@ class Wordpress {
 		// create log entry for lack of a user id
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
-		} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-			$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 		}
 		$logging->setup(
 			__( 'Error: Users: Tried to run user_upsert, and ended up without a user id', $this->text_domain ),
@@ -1318,8 +1318,8 @@ class Wordpress {
 		// create log entry for lack of a post id
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
-		} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-			$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 		}
 		$logging->setup(
 			__( 'Error: Posts: Tried to run post_upsert, and ended up without a post id', $this->text_domain ),
@@ -1640,8 +1640,8 @@ class Wordpress {
 		// create log entry for lack of an attachment id
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
-		} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-			$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 		}
 		$logging->setup(
 			__( 'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id', $this->text_domain ),
@@ -1965,8 +1965,8 @@ class Wordpress {
 		// create log entry for lack of a term id
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
-		} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-			$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 		}
 		$logging->setup(
 			__( 'Error: Terms: Tried to run term_upsert, and ended up without a term id', $this->text_domain ),
@@ -2219,8 +2219,8 @@ class Wordpress {
 				// create log entry for multiple matches
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 				$logging->setup(
 					sprintf (
@@ -2303,8 +2303,8 @@ class Wordpress {
 		// create log entry for lack of a comment id
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
-		} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-			$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 		}
 		$logging->setup(
 			__( 'Error: Comments: Tried to run comment_upsert, and ended up without a comment id', $this->text_domain ),

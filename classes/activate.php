@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * What to do when the plugin is activated
  */
-class Wordpress_Salesforce_Activate {
+class Object_Sync_Sf_Activate {
 
 	protected $wpdb;
 	protected $version;
@@ -53,7 +53,7 @@ class Wordpress_Salesforce_Activate {
 
 		$charset_collate = $this->wpdb->get_charset_collate();
 
-		$field_map_table = $this->wpdb->prefix . 'salesforce_field_map';
+		$field_map_table = $this->wpdb->prefix . 'object_sync_sf_field_map';
 		$field_map_sql = "CREATE TABLE $field_map_table (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			label varchar(64) NOT NULL DEFAULT '',
@@ -73,7 +73,7 @@ class Wordpress_Salesforce_Activate {
 			KEY name_sf_type_wordpress_type (wordpress_object,salesforce_object)
 		) $charset_collate";
 
-		$object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
+		$object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 		$object_map_sql = "CREATE TABLE $object_map_table (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			wordpress_id bigint(20) NOT NULL,

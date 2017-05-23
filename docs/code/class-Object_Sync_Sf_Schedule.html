@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class Wordpress_Salesforce_Schedule | Object Sync for Salesforce</title>
+	<title>Class Object_Sync_Sf_Schedule | Object Sync for Salesforce</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -23,28 +23,27 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
 				<li><a href="class-Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
-				<li><a href="class-Salesforce.html">Salesforce</a></li>
-				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
-				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
-				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
-				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
-				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
-				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
-				<li><a href="class-Wordpress.html">Wordpress</a></li>
-				<li><a href="class-Wordpress_Salesforce_Activate.html">Wordpress_Salesforce_Activate</a></li>
-				<li><a href="class-Wordpress_Salesforce_Admin.html">Wordpress_Salesforce_Admin</a></li>
-				<li><a href="class-Wordpress_Salesforce_Deactivate.html">Wordpress_Salesforce_Deactivate</a></li>
-				<li class="active"><a href="class-Wordpress_Salesforce_Schedule.html">Wordpress_Salesforce_Schedule</a></li>
+				<li><a href="class-Object_Sync_Sf_Activate.html">Object_Sync_Sf_Activate</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin.html">Object_Sync_Sf_Admin</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin_Notice.html">Object_Sync_Sf_Admin_Notice</a></li>
+				<li><a href="class-Object_Sync_Sf_Deactivate.html">Object_Sync_Sf_Deactivate</a></li>
+				<li><a href="class-Object_Sync_Sf_Logging.html">Object_Sync_Sf_Logging</a></li>
+				<li><a href="class-Object_Sync_Sf_Mapping.html">Object_Sync_Sf_Mapping</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce.html">Object_Sync_Sf_Salesforce</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Soap.html">Object_Sync_Sf_Salesforce_Soap</a></li>
+				<li class="active"><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
+				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
 			</ul>
 
 
 
 			<h3>Exceptions</h3>
 			<ul>
-				<li><a href="class-SalesforceException.html">SalesforceException</a></li>
-				<li><a href="class-SalesforcePullException.html">SalesforcePullException</a></li>
+				<li><a href="class-Object_Sync_Sf_Exception.html">Object_Sync_Sf_Exception</a></li>
 				<li><a href="class-WordpressException.html">WordpressException</a></li>
 			</ul>
 
@@ -83,7 +82,7 @@
 	</div>
 
 <div id="content" class="class">
-	<h1>Class Wordpress_Salesforce_Schedule</h1>
+	<h1>Class Object_Sync_Sf_Schedule</h1>
 
 
 	<div class="description">
@@ -98,7 +97,7 @@ WP_Background_Process
 		</dd>
 		<dd style="padding-left:30px">
 			<img src="resources/inherit.png" alt="Extended by">
-<b><span>Wordpress_Salesforce_Schedule</span></b>			
+<b><span>Object_Sync_Sf_Schedule</span></b>			
 			
 			
 		</dd>
@@ -117,7 +116,7 @@ WP_Background_Process
 		
 		
 
-			<b>Located at</b> <a href="source-class-Wordpress_Salesforce_Schedule.html#10-332" title="Go to source code">schedule.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Schedule.html#10-332" title="Go to source code">schedule.php</a>
 		<br>
 	</div>
 
@@ -137,7 +136,7 @@ WP_Background_Process
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#26-57" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>string <var>$schedule_name</var></span>, <span> <var>$logging</var></span>, <span> <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#26-57" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>string <var>$schedule_name</var></span>, <span> <var>$logging</var></span>, <span> <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Constructor which sets up schedule and handler for when schedule runs</p>
@@ -194,7 +193,7 @@ WP_Background_Process
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add_filters">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#59-65" title="Go to source code">add_filters</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#59-65" title="Go to source code">add_filters</a>( )</code>
 
 		<div class="description short">
 			<p>Create the filters we need to run</p>
@@ -224,7 +223,7 @@ WP_Background_Process
 
 		<td class="name"><div>
 		<a class="anchor" href="#_set_schedule_frequency">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#67-106" title="Go to source code">set_schedule_frequency</a>( <span> <var>$schedules</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#67-106" title="Go to source code">set_schedule_frequency</a>( <span> <var>$schedules</var></span> )</code>
 
 		<div class="description short">
 			<p>Convert the schedule frequency from the admin settings into an array
@@ -256,7 +255,7 @@ interval must be in seconds for the class to use it</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_schedule_frequency_key">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#108-136" title="Go to source code">get_schedule_frequency_key</a>( <span> <var>$name</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#108-136" title="Go to source code">get_schedule_frequency_key</a>( <span> <var>$name</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Convert the schedule frequency from the admin settings into an array
@@ -288,7 +287,7 @@ interval must be in seconds for the class to use it</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_schedule_frequency_seconds">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#138-165" title="Go to source code">get_schedule_frequency_seconds</a>( <span> <var>$name</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#138-165" title="Go to source code">get_schedule_frequency_seconds</a>( <span> <var>$name</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Convert the schedule frequency from the admin settings into seconds</p>
@@ -318,7 +317,7 @@ interval must be in seconds for the class to use it</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_use_schedule">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#167-187" title="Go to source code">use_schedule</a>( <span> <var>$name</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#167-187" title="Go to source code">use_schedule</a>( <span> <var>$name</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Schedule function
@@ -350,7 +349,7 @@ This creates and manages the scheduling of the task</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_task">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#189-211" title="Go to source code">task</a>( <span>mixed <var>$data</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#189-211" title="Go to source code">task</a>( <span>mixed <var>$data</var></span> )</code>
 
 		<div class="description short">
 			<p>Task</p>
@@ -394,7 +393,7 @@ data from the queue.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_check_for_data">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#213-234" title="Go to source code">check_for_data</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#213-234" title="Go to source code">check_for_data</a>( )</code>
 
 		<div class="description short">
 			<p>Check for data</p>
@@ -432,7 +431,7 @@ This is useful for running the salesforce_pull event to check for updates in Sal
 
 		<td class="name"><div>
 		<a class="anchor" href="#_maybe_handle">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#236-269" title="Go to source code">maybe_handle</a>( <span> <var>$already_checked</var> = <span class="php-keyword1">false</span></span>, <span> <var>$ajax</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#236-269" title="Go to source code">maybe_handle</a>( <span> <var>$already_checked</var> = <span class="php-keyword1">false</span></span>, <span> <var>$ajax</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Maybe process queue</p>
@@ -465,7 +464,7 @@ the process is not already running.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cancel_by_name">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#271-287" title="Go to source code">cancel_by_name</a>( <span> <var>$name</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#271-287" title="Go to source code">cancel_by_name</a>( <span> <var>$name</var></span> )</code>
 
 		<div class="description short">
 			<p>Method to cancel a specific queue by its name</p>
@@ -497,7 +496,7 @@ the process is not already running.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_count_queue_items">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#289-319" title="Go to source code">count_queue_items</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#289-319" title="Go to source code">count_queue_items</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>How many items are in this queue?
@@ -533,7 +532,7 @@ Based on is_queue_empty from base library</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_complete">#</a>
-		<code><a href="source-class-Wordpress_Salesforce_Schedule.html#321-330" title="Go to source code">complete</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Schedule.html#321-330" title="Go to source code">complete</a>( )</code>
 
 		<div class="description short">
 			<p>Complete</p>
@@ -576,7 +575,7 @@ performed, or, call parent::complete().</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Schedule.html#15" title="Go to source code"><var>$wpdb</var></a>
+				<a href="source-class-Object_Sync_Sf_Schedule.html#15" title="Go to source code"><var>$wpdb</var></a>
 
 			<div class="description short">
 				
@@ -601,7 +600,7 @@ performed, or, call parent::complete().</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Schedule.html#16" title="Go to source code"><var>$version</var></a>
+				<a href="source-class-Object_Sync_Sf_Schedule.html#16" title="Go to source code"><var>$version</var></a>
 
 			<div class="description short">
 				
@@ -626,7 +625,7 @@ performed, or, call parent::complete().</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Schedule.html#17" title="Go to source code"><var>$login_credentials</var></a>
+				<a href="source-class-Object_Sync_Sf_Schedule.html#17" title="Go to source code"><var>$login_credentials</var></a>
 
 			<div class="description short">
 				
@@ -651,7 +650,7 @@ performed, or, call parent::complete().</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Schedule.html#18" title="Go to source code"><var>$text_domain</var></a>
+				<a href="source-class-Object_Sync_Sf_Schedule.html#18" title="Go to source code"><var>$text_domain</var></a>
 
 			<div class="description short">
 				
@@ -676,7 +675,7 @@ performed, or, call parent::complete().</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Schedule.html#19" title="Go to source code"><var>$wordpress</var></a>
+				<a href="source-class-Object_Sync_Sf_Schedule.html#19" title="Go to source code"><var>$wordpress</var></a>
 
 			<div class="description short">
 				
@@ -701,7 +700,7 @@ performed, or, call parent::complete().</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Schedule.html#20" title="Go to source code"><var>$salesforce</var></a>
+				<a href="source-class-Object_Sync_Sf_Schedule.html#20" title="Go to source code"><var>$salesforce</var></a>
 
 			<div class="description short">
 				
@@ -726,7 +725,7 @@ performed, or, call parent::complete().</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Schedule.html#21" title="Go to source code"><var>$mappings</var></a>
+				<a href="source-class-Object_Sync_Sf_Schedule.html#21" title="Go to source code"><var>$mappings</var></a>
 
 			<div class="description short">
 				
@@ -751,7 +750,7 @@ performed, or, call parent::complete().</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Schedule.html#22" title="Go to source code"><var>$schedule_name</var></a>
+				<a href="source-class-Object_Sync_Sf_Schedule.html#22" title="Go to source code"><var>$schedule_name</var></a>
 
 			<div class="description short">
 				
@@ -776,7 +775,7 @@ performed, or, call parent::complete().</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress_Salesforce_Schedule.html#23" title="Go to source code"><var>$logging</var></a>
+				<a href="source-class-Object_Sync_Sf_Schedule.html#23" title="Go to source code"><var>$logging</var></a>
 
 			<div class="description short">
 				

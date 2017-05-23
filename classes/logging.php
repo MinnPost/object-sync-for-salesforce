@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Log events based on plugin settings
  */
-class Salesforce_Logging extends WP_Logging {
+class Object_Sync_Sf_Logging extends WP_Logging {
 
 	protected $wpdb;
 	protected $version;

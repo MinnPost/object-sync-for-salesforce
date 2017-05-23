@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Class representing a Salesforce SELECT SOQL query.
  */
-class Salesforce_Select_Query {
+class Object_Sync_Sf_Salesforce_Select_Query {
 
 	public $fields = array();
 	public $order = array();
