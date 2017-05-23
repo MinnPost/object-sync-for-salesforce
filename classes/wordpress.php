@@ -2215,6 +2215,7 @@ class Wordpress {
 					'method_read' => $methods['method_read'],
 				);
 			} elseif ( count( $comments ) > 1 ) {
+				$status = 'error';
 				// create log entry for multiple matches
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
@@ -2233,7 +2234,7 @@ class Wordpress {
 					'',
 					0,
 					0,
-					'error'
+					$status
 				);
 			} elseif ( false === $check_only ) {
 				// comment does not exist after checking the matching value. create it.
