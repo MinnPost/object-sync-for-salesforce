@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Schedule events in a queue in WordPress
  */
-class Wordpress_Salesforce_Schedule extends WP_Background_Process {
+class Object_Sync_Sf_Schedule extends WP_Background_Process {
 
 	protected $wpdb;
 	protected $version;

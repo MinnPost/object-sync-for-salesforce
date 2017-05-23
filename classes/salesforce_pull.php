@@ -125,11 +125,11 @@ class Salesforce_Pull {
 	* This loads the schedule class
 	*/
 	private function schedule() {
-		if ( ! class_exists( 'Wordpress_Salesforce_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
+		if ( ! class_exists( 'Object_Sync_Sf_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
 			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
 			require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
 		}
-		$schedule = new Wordpress_Salesforce_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging, $this->schedulable_classes );
+		$schedule = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging, $this->schedulable_classes );
 		$this->schedule = $schedule;
 		return $schedule;
 	}
