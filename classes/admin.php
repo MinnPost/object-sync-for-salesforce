@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Create default WordPress admin functionality for Salesforce to configure the plugin.
  */
-class Wordpress_Salesforce_Admin {
+class Object_Sync_Sf_Admin {
 
 	protected $wpdb;
 	protected $version;
