@@ -839,7 +839,7 @@ class Wordpress_Salesforce_Admin {
 			}
 
 			if ( $condition ) {
-				new Admin_Notice( $condition, $message, $domain, $dismissible, $type, $template );
+				new Wordpress_Salesforce_Admin_Notice( $condition, $message, $domain, $dismissible, $type, $template );
 			}
 		}
 
