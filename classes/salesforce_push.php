@@ -38,7 +38,7 @@ class Salesforce_Push {
 	* @param object $mappings
 	* @param object $logging
 	* @param array $schedulable_classes
-	* @throws \Exception
+	* @throws \Object_Sync_Sf_Exception
 	*/
 	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		$this->wpdb = $wpdb;
@@ -480,7 +480,7 @@ class Salesforce_Push {
 				if ( count( $salesforce_check ) === count( $salesforce_check, COUNT_RECURSIVE ) ) {
 					try {
 						$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
-					} catch ( SalesforceException $e ) {
+					} catch ( Object_Sync_Sf_Exception $e ) {
 						$status = 'error';
 						// create log entry for failed delete
 						if ( isset( $this->logging ) ) {
@@ -690,7 +690,7 @@ class Salesforce_Push {
 					$op = 'Create';
 					$result = $sfapi->object_create( $mapping['salesforce_object'], $params );
 				} // End if().
-			} catch ( SalesforceException $e ) {
+			} catch ( Object_Sync_Sf_Exception $e ) {
 				// create log entry for failed create or upsert
 				$status = 'error';
 				$title = ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'];
@@ -836,7 +836,7 @@ class Salesforce_Push {
 				// hook for push success
 				do_action( 'object_sync_for_salesforce_push_success', $op, $sfapi->response, $synced_object, $object_id );
 
-			} catch ( SalesforceException $e ) {
+			} catch ( Object_Sync_Sf_Exception $e ) {
 				// create log entry for failed update
 				$status = 'error';
 				if ( isset( $this->logging ) ) {
