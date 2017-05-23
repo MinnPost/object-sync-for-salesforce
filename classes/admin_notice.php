@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Generate notices in the WordPress admin
  */
-class Wordpress_Salesforce_Admin_Notice {
+class Object_Sync_Sf_Admin_Notice {
 
 	protected $condition;
 	protected $message;
