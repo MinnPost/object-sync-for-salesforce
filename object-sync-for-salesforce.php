@@ -371,7 +371,7 @@ class Object_Sync_Salesforce {
 	*/
 	private function load_admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
-		$admin = new Wordpress_Salesforce_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes );
+		$admin = new Object_Sync_Sf_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes );
 		add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
 		add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 5 );
