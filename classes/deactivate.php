@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * What to do when the plugin is deactivated
  */
-class Wordpress_Salesforce_Deactivate {
+class Object_Sync_Sf_Deactivate {
 
 	protected $wpdb;
 	protected $version;

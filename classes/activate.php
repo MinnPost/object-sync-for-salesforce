@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * What to do when the plugin is activated
  */
-class Wordpress_Salesforce_Activate {
+class Object_Sync_Sf_Activate {
 
 	protected $wpdb;
 	protected $version;

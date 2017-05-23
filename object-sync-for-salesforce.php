@@ -286,7 +286,7 @@ class Object_Sync_Salesforce {
 	 */
 	private function activate( $wpdb, $version, $text_domain ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
-		$activate = new Wordpress_Salesforce_Activate( $wpdb, $version, $text_domain );
+		$activate = new Object_Sync_Sf_Activate( $wpdb, $version, $text_domain );
 		return $activate;
 	}
 
@@ -303,7 +303,7 @@ class Object_Sync_Salesforce {
 	 */
 	private function deactivate( $wpdb, $version, $text_domain, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
-		$deactivate = new Wordpress_Salesforce_Deactivate( $wpdb, $version, $text_domain, $schedulable_classes );
+		$deactivate = new Object_Sync_Sf_Deactivate( $wpdb, $version, $text_domain, $schedulable_classes );
 	}
 
 
