@@ -1058,7 +1058,7 @@ class Object_Sync_Sf_Admin {
 	* Prepare fieldmap data and redirect after processing
 	* This runs when the create or update forms are submitted
 	* It is public because it depends on an admin hook
-	* It then calls the salesforce_mapping class and sends prepared data over to it, then redirects to the correct page
+	* It then calls the Object_Sync_Sf_Mapping class and sends prepared data over to it, then redirects to the correct page
 	* This method does include error handling, by loading the submission in a transient if there is an error, and then deleting it upon success
 	*
 	*/
@@ -1111,7 +1111,7 @@ class Object_Sync_Sf_Admin {
 	* Delete fieldmap data and redirect after processing
 	* This runs when the delete link is clicked, after the user confirms
 	* It is public because it depends on an admin hook
-	* It then calls the salesforce_mapping class and the delete method
+	* It then calls the Object_Sync_Sf_Mapping class and the delete method
 	*
 	*/
 	public function delete_fieldmap() {

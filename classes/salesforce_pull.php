@@ -280,8 +280,8 @@ class Salesforce_Pull {
 	* @return Object_Sync_Sf_Salesforce_Select_Query or null if no mappings or no mapped fields
 	*   were found.
 	*
-	* @see Salesforce_Mapping::get_mapped_fields
-	* @see Salesforce_Mapping::get_mapped_record_types
+	* @see Object_Sync_Sf_Mapping::get_mapped_fields
+	* @see Object_Sync_Sf_Mapping::get_mapped_record_types
 	*/
 	private function get_pull_query( $type, $salesforce_mapping = array() ) {
 		$mapped_fields = array();

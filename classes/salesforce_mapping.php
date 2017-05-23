@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Map objects and records between WordPress and Salesforce
  */
-class Salesforce_Mapping {
+class Object_Sync_Sf_Mapping {
 
 	protected $wpdb;
 	protected $version;
