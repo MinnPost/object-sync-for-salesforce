@@ -188,6 +188,8 @@ The admin section is divided into tabs:
 
 Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill in functional gaps missing in the REST API. Will require the Salesforce PHP Toolkit, if/when we choose to do it.
 
+Currently there is a branch pursuing this functionality. [35-soap](https://github.com/MinnPost/object-sync-for-salesforce/tree/35-soap)
+
 ## Developer hooks
 
 This plugin contains many hooks to allow other WordPress plugins to extend the functionality. It aims to reproduce all hooks provided by the Drupal suite. It also includes many additional hooks that give WordPress developers additional functionality.
