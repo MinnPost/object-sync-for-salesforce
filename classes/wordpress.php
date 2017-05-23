@@ -14,7 +14,7 @@ class Object_Sync_Sf_Wordpress {
 
 	protected $wpdb;
 	protected $version;
-	protected $text_domain;
+	protected $slug;
 	protected $mappings;
 	protected $logging;
 
@@ -23,14 +23,14 @@ class Object_Sync_Sf_Wordpress {
 	*
 	* @param object $wpdb
 	* @param string $version
-	* @param string $text_domain
+	* @param string $slug
 	* @param object $mappings
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $text_domain, $mappings, $logging ) {
+	public function __construct( $wpdb, $version, $slug, $mappings, $logging ) {
 		$this->wpdb = $wpdb;
 		$this->version = $version;
-		$this->text_domain = $text_domain;
+		$this->slug = $slug;
 		$this->mappings = $mappings;
 		$this->logging = $logging;
 
@@ -995,10 +995,10 @@ class Object_Sync_Sf_Wordpress {
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Users: Tried to run user_upsert, and ended up without a user id', $this->text_domain ),
+			__( 'Error: Users: Tried to run user_upsert, and ended up without a user id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -1319,10 +1319,10 @@ class Object_Sync_Sf_Wordpress {
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Posts: Tried to run post_upsert, and ended up without a post id', $this->text_domain ),
+			__( 'Error: Posts: Tried to run post_upsert, and ended up without a post id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -1641,10 +1641,10 @@ class Object_Sync_Sf_Wordpress {
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id', $this->text_domain ),
+			__( 'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -1966,10 +1966,10 @@ class Object_Sync_Sf_Wordpress {
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Terms: Tried to run term_upsert, and ended up without a term id', $this->text_domain ),
+			__( 'Error: Terms: Tried to run term_upsert, and ended up without a term id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -2220,11 +2220,11 @@ class Object_Sync_Sf_Wordpress {
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 				$logging->setup(
-					sprintf (
-						__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', $this->text_domain ),
+					sprintf(
+						__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', 'object-sync-for-salesforce' ),
 						ucfirst( $status ),
 						$count,
 						$key,
@@ -2304,10 +2304,10 @@ class Object_Sync_Sf_Wordpress {
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Comments: Tried to run comment_upsert, and ended up without a comment id', $this->text_domain ),
+			__( 'Error: Comments: Tried to run comment_upsert, and ended up without a comment id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,

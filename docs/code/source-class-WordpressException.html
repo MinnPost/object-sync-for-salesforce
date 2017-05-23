@@ -98,7 +98,7 @@
 </span><span id="14" class="l"><a href="#14">  14: </a>
 </span><span id="15" class="l"><a href="#15">  15: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$wpdb</span>;
 </span><span id="16" class="l"><a href="#16">  16: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$version</span>;
-</span><span id="17" class="l"><a href="#17">  17: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$text_domain</span>;
+</span><span id="17" class="l"><a href="#17">  17: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$slug</span>;
 </span><span id="18" class="l"><a href="#18">  18: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$mappings</span>;
 </span><span id="19" class="l"><a href="#19">  19: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$logging</span>;
 </span><span id="20" class="l"><a href="#20">  20: </a>
@@ -107,14 +107,14 @@
 </span></span><span id="23" class="l"><a href="#23">  23: </a><span class="php-comment">    *
 </span></span><span id="24" class="l"><a href="#24">  24: </a><span class="php-comment">    * @param object $wpdb
 </span></span><span id="25" class="l"><a href="#25">  25: </a><span class="php-comment">    * @param string $version
-</span></span><span id="26" class="l"><a href="#26">  26: </a><span class="php-comment">    * @param string $text_domain
+</span></span><span id="26" class="l"><a href="#26">  26: </a><span class="php-comment">    * @param string $slug
 </span></span><span id="27" class="l"><a href="#27">  27: </a><span class="php-comment">    * @param object $mappings
 </span></span><span id="28" class="l"><a href="#28">  28: </a><span class="php-comment">    * @throws \Exception
 </span></span><span id="29" class="l"><a href="#29">  29: </a><span class="php-comment">    */</span>
-</span><span id="30" class="l"><a href="#30">  30: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span> ) {
+</span><span id="30" class="l"><a href="#30">  30: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span> ) {
 </span><span id="31" class="l"><a href="#31">  31: </a>        <span class="php-var">$this</span>-&gt;wpdb = <span class="php-var">$wpdb</span>;
 </span><span id="32" class="l"><a href="#32">  32: </a>        <span class="php-var">$this</span>-&gt;version = <span class="php-var">$version</span>;
-</span><span id="33" class="l"><a href="#33">  33: </a>        <span class="php-var">$this</span>-&gt;text_domain = <span class="php-var">$text_domain</span>;
+</span><span id="33" class="l"><a href="#33">  33: </a>        <span class="php-var">$this</span>-&gt;slug = <span class="php-var">$slug</span>;
 </span><span id="34" class="l"><a href="#34">  34: </a>        <span class="php-var">$this</span>-&gt;mappings = <span class="php-var">$mappings</span>;
 </span><span id="35" class="l"><a href="#35">  35: </a>        <span class="php-var">$this</span>-&gt;logging = <span class="php-var">$logging</span>;
 </span><span id="36" class="l"><a href="#36">  36: </a>
@@ -1079,10 +1079,10 @@
 </span><span id="995" class="l"><a href="#995"> 995: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="996" class="l"><a href="#996"> 996: </a>            <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
 </span><span id="997" class="l"><a href="#997"> 997: </a>        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
-</span><span id="998" class="l"><a href="#998"> 998: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="998" class="l"><a href="#998"> 998: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="999" class="l"><a href="#999"> 999: </a>        }
 </span><span id="1000" class="l"><a href="#1000">1000: </a>        <span class="php-var">$logging</span>-&gt;setup(
-</span><span id="1001" class="l"><a href="#1001">1001: </a>            __( <span class="php-quote">'Error: Users: Tried to run user_upsert, and ended up without a user id'</span>, <span class="php-var">$this</span>-&gt;text_domain ),
+</span><span id="1001" class="l"><a href="#1001">1001: </a>            __( <span class="php-quote">'Error: Users: Tried to run user_upsert, and ended up without a user id'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
 </span><span id="1002" class="l"><a href="#1002">1002: </a>            <span class="php-quote">''</span>,
 </span><span id="1003" class="l"><a href="#1003">1003: </a>            <span class="php-num">0</span>,
 </span><span id="1004" class="l"><a href="#1004">1004: </a>            <span class="php-num">0</span>,
@@ -1403,10 +1403,10 @@
 </span><span id="1319" class="l"><a href="#1319">1319: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="1320" class="l"><a href="#1320">1320: </a>            <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
 </span><span id="1321" class="l"><a href="#1321">1321: </a>        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
-</span><span id="1322" class="l"><a href="#1322">1322: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="1322" class="l"><a href="#1322">1322: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="1323" class="l"><a href="#1323">1323: </a>        }
 </span><span id="1324" class="l"><a href="#1324">1324: </a>        <span class="php-var">$logging</span>-&gt;setup(
-</span><span id="1325" class="l"><a href="#1325">1325: </a>            __( <span class="php-quote">'Error: Posts: Tried to run post_upsert, and ended up without a post id'</span>, <span class="php-var">$this</span>-&gt;text_domain ),
+</span><span id="1325" class="l"><a href="#1325">1325: </a>            __( <span class="php-quote">'Error: Posts: Tried to run post_upsert, and ended up without a post id'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
 </span><span id="1326" class="l"><a href="#1326">1326: </a>            <span class="php-quote">''</span>,
 </span><span id="1327" class="l"><a href="#1327">1327: </a>            <span class="php-num">0</span>,
 </span><span id="1328" class="l"><a href="#1328">1328: </a>            <span class="php-num">0</span>,
@@ -1725,10 +1725,10 @@
 </span><span id="1641" class="l"><a href="#1641">1641: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="1642" class="l"><a href="#1642">1642: </a>            <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
 </span><span id="1643" class="l"><a href="#1643">1643: </a>        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
-</span><span id="1644" class="l"><a href="#1644">1644: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="1644" class="l"><a href="#1644">1644: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="1645" class="l"><a href="#1645">1645: </a>        }
 </span><span id="1646" class="l"><a href="#1646">1646: </a>        <span class="php-var">$logging</span>-&gt;setup(
-</span><span id="1647" class="l"><a href="#1647">1647: </a>            __( <span class="php-quote">'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id'</span>, <span class="php-var">$this</span>-&gt;text_domain ),
+</span><span id="1647" class="l"><a href="#1647">1647: </a>            __( <span class="php-quote">'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
 </span><span id="1648" class="l"><a href="#1648">1648: </a>            <span class="php-quote">''</span>,
 </span><span id="1649" class="l"><a href="#1649">1649: </a>            <span class="php-num">0</span>,
 </span><span id="1650" class="l"><a href="#1650">1650: </a>            <span class="php-num">0</span>,
@@ -2050,10 +2050,10 @@
 </span><span id="1966" class="l"><a href="#1966">1966: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="1967" class="l"><a href="#1967">1967: </a>            <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
 </span><span id="1968" class="l"><a href="#1968">1968: </a>        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
-</span><span id="1969" class="l"><a href="#1969">1969: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="1969" class="l"><a href="#1969">1969: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="1970" class="l"><a href="#1970">1970: </a>        }
 </span><span id="1971" class="l"><a href="#1971">1971: </a>        <span class="php-var">$logging</span>-&gt;setup(
-</span><span id="1972" class="l"><a href="#1972">1972: </a>            __( <span class="php-quote">'Error: Terms: Tried to run term_upsert, and ended up without a term id'</span>, <span class="php-var">$this</span>-&gt;text_domain ),
+</span><span id="1972" class="l"><a href="#1972">1972: </a>            __( <span class="php-quote">'Error: Terms: Tried to run term_upsert, and ended up without a term id'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
 </span><span id="1973" class="l"><a href="#1973">1973: </a>            <span class="php-quote">''</span>,
 </span><span id="1974" class="l"><a href="#1974">1974: </a>            <span class="php-num">0</span>,
 </span><span id="1975" class="l"><a href="#1975">1975: </a>            <span class="php-num">0</span>,
@@ -2304,11 +2304,11 @@
 </span><span id="2220" class="l"><a href="#2220">2220: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="2221" class="l"><a href="#2221">2221: </a>                    <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
 </span><span id="2222" class="l"><a href="#2222">2222: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
-</span><span id="2223" class="l"><a href="#2223">2223: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="2223" class="l"><a href="#2223">2223: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="2224" class="l"><a href="#2224">2224: </a>                }
 </span><span id="2225" class="l"><a href="#2225">2225: </a>                <span class="php-var">$logging</span>-&gt;setup(
-</span><span id="2226" class="l"><a href="#2226">2226: </a>                    <span class="php-keyword2">sprintf</span> (
-</span><span id="2227" class="l"><a href="#2227">2227: </a>                        __( <span class="php-quote">'%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s'</span>, <span class="php-var">$this</span>-&gt;text_domain ),
+</span><span id="2226" class="l"><a href="#2226">2226: </a>                    <span class="php-keyword2">sprintf</span>(
+</span><span id="2227" class="l"><a href="#2227">2227: </a>                        __( <span class="php-quote">'%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
 </span><span id="2228" class="l"><a href="#2228">2228: </a>                        <span class="php-keyword2">ucfirst</span>( <span class="php-var">$status</span> ),
 </span><span id="2229" class="l"><a href="#2229">2229: </a>                        <span class="php-var">$count</span>,
 </span><span id="2230" class="l"><a href="#2230">2230: </a>                        <span class="php-var">$key</span>,
@@ -2388,10 +2388,10 @@
 </span><span id="2304" class="l"><a href="#2304">2304: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="2305" class="l"><a href="#2305">2305: </a>            <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
 </span><span id="2306" class="l"><a href="#2306">2306: </a>        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
-</span><span id="2307" class="l"><a href="#2307">2307: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="2307" class="l"><a href="#2307">2307: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="2308" class="l"><a href="#2308">2308: </a>        }
 </span><span id="2309" class="l"><a href="#2309">2309: </a>        <span class="php-var">$logging</span>-&gt;setup(
-</span><span id="2310" class="l"><a href="#2310">2310: </a>            __( <span class="php-quote">'Error: Comments: Tried to run comment_upsert, and ended up without a comment id'</span>, <span class="php-var">$this</span>-&gt;text_domain ),
+</span><span id="2310" class="l"><a href="#2310">2310: </a>            __( <span class="php-quote">'Error: Comments: Tried to run comment_upsert, and ended up without a comment id'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
 </span><span id="2311" class="l"><a href="#2311">2311: </a>            <span class="php-quote">''</span>,
 </span><span id="2312" class="l"><a href="#2312">2312: </a>            <span class="php-num">0</span>,
 </span><span id="2313" class="l"><a href="#2313">2313: </a>            <span class="php-num">0</span>,

@@ -14,7 +14,6 @@ class Object_Sync_Sf_Admin_Notice {
 
 	protected $condition;
 	protected $message;
-	protected $domain;
 	protected $dismissible;
 	protected $type;
 	protected $template;
@@ -24,16 +23,14 @@ class Object_Sync_Sf_Admin_Notice {
 	*
 	* @param mixed $condition
 	* @param string $message
-	* @param string $domain
 	* @param bool $dismissible
 	* @param string $type
 	* @param string $template
 	*
 	*/
-	public function __construct( $condition, $message, $domain, $dismissible = false, $type = '', $template = '' ) {
+	public function __construct( $condition, $message, $dismissible = false, $type = '', $template = '' ) {
 		$this->condition = $condition;
 		$this->message = $message;
-		$this->domain = $domain;
 		$this->dismissible = $dismissible;
 		$this->type = $type;
 		$this->template = $template;
@@ -68,7 +65,6 @@ class Object_Sync_Sf_Admin_Notice {
 
 		$condition = $this->condition;
 		$message = $this->message;
-		$text_domain = $this->domain;
 
 		require_once( $template );
 

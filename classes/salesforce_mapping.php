@@ -14,7 +14,7 @@ class Object_Sync_Sf_Mapping {
 
 	protected $wpdb;
 	protected $version;
-	protected $text_domain;
+	protected $slug;
 	protected $logging;
 
 	protected $fieldmap_table;
@@ -51,14 +51,14 @@ class Object_Sync_Sf_Mapping {
 	*
 	* @param object $wpdb
 	* @param string $version
-	* @param string $text_domain
+	* @param string $slug
 	* @param object $logging
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $text_domain, $logging ) {
+	public function __construct( $wpdb, $version, $slug, $logging ) {
 		$this->wpdb = $wpdb;
 		$this->version = $version;
-		$this->text_domain = $text_domain;
+		$this->slug = $slug;
 		$this->logging = $logging;
 
 		$this->fieldmap_table = $this->wpdb->prefix . 'object_sync_sf_field_map';
@@ -366,10 +366,10 @@ class Object_Sync_Sf_Mapping {
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
 			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 			}
 			$logging->setup(
-				__( ucfirst( $status ) . ': Mapping: error caused by trying to map the WordPress ' . $data['wordpress_object'] . ' with ID of ' . $data['wordpress_id'] . ' to Salesforce ID of 0, which is invalid.', $this->text_domain ),
+				__( ucfirst( $status ) . ': Mapping: error caused by trying to map the WordPress ' . $data['wordpress_object'] . ' with ID of ' . $data['wordpress_id'] . ' to Salesforce ID of 0, which is invalid.', 'object-sync-for-salesforce' ),
 				'',
 				0,
 				0,
@@ -386,10 +386,10 @@ class Object_Sync_Sf_Mapping {
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
 			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 			}
 			$logging->setup(
-				__( ucfirst( $status ) . ': Mapping: there is already a WordPress object mapped to the Salesforce object ' . $data['salesforce_id'] . ' and the mapping object ID is ' . $id, $this->text_domain ),
+				__( ucfirst( $status ) . ': Mapping: there is already a WordPress object mapped to the Salesforce object ' . $data['salesforce_id'] . ' and the mapping object ID is ' . $id, 'object-sync-for-salesforce' ),
 				'',
 				0,
 				0,
@@ -560,10 +560,10 @@ class Object_Sync_Sf_Mapping {
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
 			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 			}
 			$logging->setup(
-				__( ucfirst( $status ) . ': Mapping: there is more than one mapped WordPress object for the Salesforce object ' . $salesforce_id, $this->text_domain ),
+				__( ucfirst( $status ) . ': Mapping: there is more than one mapped WordPress object for the Salesforce object ' . $salesforce_id, 'object-sync-for-salesforce' ),
 				$log,
 				0,
 				0,

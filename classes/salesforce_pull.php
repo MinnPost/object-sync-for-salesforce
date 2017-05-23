@@ -15,7 +15,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	protected $wpdb;
 	protected $version;
 	protected $login_credentials;
-	protected $text_domain;
+	protected $slug;
 	protected $salesforce;
 	protected $mappings;
 	protected $logging;
@@ -32,7 +32,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* @param object $wpdb
 	* @param string $version
 	* @param array $login_credentials
-	* @param string $text_domain
+	* @param string $slug
 	* @param object $wordpress
 	* @param object $salesforce
 	* @param object $mappings
@@ -40,11 +40,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* @param array $schedulable_classes
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->login_credentials = $login_credentials;
-		$this->text_domain = $text_domain;
+		$this->slug = $slug;
 		$this->wordpress = $wordpress;
 		$this->salesforce = $salesforce;
 		$this->mappings = $mappings;
@@ -129,7 +129,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
 			require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
 		}
-		$schedule = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging, $this->schedulable_classes );
+		$schedule = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging, $this->schedulable_classes );
 		$this->schedule = $schedule;
 		return $schedule;
 	}
@@ -255,11 +255,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 
 				$logging->setup(
-					__( $title, $this->text_domain ),
+					__( $title, 'object-sync-for-salesforce' ),
 					$response['message'],
 					$sf_mapping['sync_triggers'],
 					'',
@@ -496,10 +496,10 @@ class Object_Sync_Sf_Salesforce_Pull {
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 				$logging->setup(
-					__( ucfirst( $status ) . ': Salesforce Pull: unable to process queue item because it has no Salesforce Id.', $this->text_domain ),
+					__( ucfirst( $status ) . ': Salesforce Pull: unable to process queue item because it has no Salesforce Id.', 'object-sync-for-salesforce' ),
 					print_r( $object, true ),
 					$sf_sync_trigger,
 					$status
@@ -579,11 +579,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 							if ( isset( $this->logging ) ) {
 								$logging = $this->logging;
 							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 							}
 
 							$logging->setup(
-								__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
+								__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', 'object-sync-for-salesforce' ),
 								$e->getMessage(),
 								$sf_sync_trigger,
 								$mapping_object['wordpress_id'],
@@ -611,11 +611,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 							if ( isset( $this->logging ) ) {
 								$logging = $this->logging;
 							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 							}
 
 							$logging->setup(
-								__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', $this->text_domain ),
+								__( ucfirst( $status ) . ': ' . $op . ' WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ')', 'object-sync-for-salesforce' ),
 								'',
 								$sf_sync_trigger,
 								$mapping_object['wordpress_id'],
@@ -644,11 +644,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 						if ( isset( $this->logging ) ) {
 							$logging = $this->logging;
 						} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-							$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+							$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 						}
 
 						$logging->setup(
-							__( ucfirst( $status ) . ': ' . $op . ' ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ') did not delete the WordPress item...', $this->text_domain ),
+							__( ucfirst( $status ) . ': ' . $op . ' ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (' . $salesforce_mapping['salesforce_object'] . ' ' . $mapping_object['salesforce_id'] . ') did not delete the WordPress item...', 'object-sync-for-salesforce' ),
 							$more_ids,
 							$sf_sync_trigger,
 							$mapping_object['wordpress_id'],
@@ -803,11 +803,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 								if ( isset( $this->logging ) ) {
 									$logging = $this->logging;
 								} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-									$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+									$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 								}
 								$parent = 0;
 								$logging->setup(
-									__( $title, $this->text_domain ),
+									__( $title, 'object-sync-for-salesforce' ),
 									$body,
 									$sf_sync_trigger,
 									$parent,
@@ -828,7 +828,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							if ( isset( $this->logging ) ) {
 								$logging = $this->logging;
 							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 							}
 							// if we know the wordpress object id we can put it in there
 							if ( null !== $wordpress_id ) {
@@ -837,7 +837,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 								$parent = 0;
 							}
 							$logging->setup(
-								__( $title, $this->text_domain ),
+								__( $title, 'object-sync-for-salesforce' ),
 								$body,
 								$sf_sync_trigger,
 								$parent,
@@ -887,7 +887,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
 					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 					}
 
 					// if we know the wordpress object id we can put it in there
@@ -898,7 +898,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					}
 
 					$logging->setup(
-						__( $title, $this->text_domain ),
+						__( $title, 'object-sync-for-salesforce' ),
 						$e->getMessage(),
 						$sf_sync_trigger,
 						$parent,
@@ -939,11 +939,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
 					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 					}
 
 					$logging->setup(
-						__( ucfirst( $status ) . ': ' . $op . ' ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $wordpress_id . ' (Salesforce ' . $salesforce_mapping['salesforce_object'] . ' ID of ' . $object['Id'] . ')', $this->text_domain ),
+						__( ucfirst( $status ) . ': ' . $op . ' ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $wordpress_id . ' (Salesforce ' . $salesforce_mapping['salesforce_object'] . ' ID of ' . $object['Id'] . ')', 'object-sync-for-salesforce' ),
 						'',
 						$sf_sync_trigger,
 						$wordpress_id,
@@ -965,7 +965,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
 					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 					}
 
 					if ( is_object( $wordpress_id ) ) {
@@ -973,7 +973,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					}
 
 					$logging->setup(
-						__( $status . ' syncing: ' . $op . ' to WordPress (Salesforce ' . $salesforce_mapping['salesforce_object'] . ' Id ' . $object['Id'] . ')', $this->text_domain ),
+						__( $status . ' syncing: ' . $op . ' to WordPress (Salesforce ' . $salesforce_mapping['salesforce_object'] . ' Id ' . $object['Id'] . ')', 'object-sync-for-salesforce' ),
 						'Object: ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $wordpress_id . '<br>br>' . 'Message: ' . print_r( $result['errors'], true ),
 						$sf_sync_trigger,
 						$wordpress_id,
@@ -1010,17 +1010,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$result = $this->wordpress->object_update( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'], $params );
 
 					$mapping_object['last_sync_status'] = $this->mappings->status_success;
-					$mapping_object['last_sync_message'] = __( 'Mapping object updated via function: ' . __FUNCTION__, $this->text_domain );
+					$mapping_object['last_sync_message'] = __( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
 
 					$status = 'success';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
 					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 					}
 
 					$logging->setup(
-						__( ucfirst( $status ) . ': ' . $op . ' ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (Salesforce ' . $salesforce_mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ')', $this->text_domain ),
+						__( ucfirst( $status ) . ': ' . $op . ' ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (Salesforce ' . $salesforce_mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ')', 'object-sync-for-salesforce' ),
 						'',
 						$sf_sync_trigger,
 						$mapping_object['wordpress_id'],
@@ -1036,11 +1036,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
 					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 					}
 
 					$logging->setup(
-						__( ucfirst( $status ) . ': ' . $op . ' ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (Salesforce ' . $salesforce_mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ')', $this->text_domain ),
+						__( ucfirst( $status ) . ': ' . $op . ' ' . $salesforce_mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $mapping_object['wordpress_id'] . ' (Salesforce ' . $salesforce_mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ')', 'object-sync-for-salesforce' ),
 						$e->getMessage(),
 						$sf_sync_trigger,
 						$mapping_object['wordpress_id'],
@@ -1120,7 +1120,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				'last_sync' => current_time( 'mysql' ),
 				'last_sync_action' => 'pull',
 				'last_sync_status' => $this->mappings->status_success,
-				'last_sync_message' => __( 'Mapping object created via function: ' . __FUNCTION__, $this->text_domain ),
+				'last_sync_message' => __( 'Mapping object created via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__,
 				'action' => 'created',
 			)
 		);

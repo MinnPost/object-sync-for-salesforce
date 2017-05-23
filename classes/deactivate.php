@@ -19,18 +19,18 @@ class Object_Sync_Sf_Deactivate {
 	* Constructor which sets up deactivate hooks
 	* @param object $wpdb
 	* @param string $version
-	* @param string $text_domain
+	* @param string $slug
 	* @param array $schedulable_classes
 	*
 	*/
-	public function __construct( $wpdb, $version, $text_domain, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $slug, $schedulable_classes ) {
 		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->schedulable_classes = $schedulable_classes;
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'clear_schedule' ) );
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'delete_log_post_type' ) );
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'remove_roles_capabilities' ) );
+		register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
+		register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'clear_schedule' ) );
+		register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'delete_log_post_type' ) );
+		register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'remove_roles_capabilities' ) );
 	}
 
 	/**

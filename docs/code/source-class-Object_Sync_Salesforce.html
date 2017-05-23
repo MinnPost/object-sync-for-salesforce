@@ -113,9 +113,9 @@
 </span><span id="29" class="l"><a href="#29"> 29: </a>
 </span><span id="30" class="l"><a href="#30"> 30: </a>    <span class="php-comment">/**
 </span></span><span id="31" class="l"><a href="#31"> 31: </a><span class="php-comment">    * @var string
-</span></span><span id="32" class="l"><a href="#32"> 32: </a><span class="php-comment">    * The plugin's text_domain for translation
+</span></span><span id="32" class="l"><a href="#32"> 32: </a><span class="php-comment">    * The plugin's slug so we can include it when necessary
 </span></span><span id="33" class="l"><a href="#33"> 33: </a><span class="php-comment">    */</span>
-</span><span id="34" class="l"><a href="#34"> 34: </a>    <span class="php-keyword1">private</span> <span class="php-var">$text_domain</span>;
+</span><span id="34" class="l"><a href="#34"> 34: </a>    <span class="php-keyword1">private</span> <span class="php-var">$slug</span>;
 </span><span id="35" class="l"><a href="#35"> 35: </a>
 </span><span id="36" class="l"><a href="#36"> 36: </a>    <span class="php-comment">/**
 </span></span><span id="37" class="l"><a href="#37"> 37: </a><span class="php-comment">    * @var array
@@ -205,7 +205,7 @@
 </span><span id="121" class="l"><a href="#121">121: </a>        <span class="php-var">$this</span>-&gt;wpdb = <span class="php-var">$wpdb</span>;
 </span><span id="122" class="l"><a href="#122">122: </a>        <span class="php-var">$this</span>-&gt;version = <span class="php-quote">'0.0.4'</span>;
 </span><span id="123" class="l"><a href="#123">123: </a>        <span class="php-var">$this</span>-&gt;login_credentials = <span class="php-var">$this</span>-&gt;get_login_credentials();
-</span><span id="124" class="l"><a href="#124">124: </a>        <span class="php-var">$this</span>-&gt;text_domain = <span class="php-quote">'object-sync-for-salesforce'</span>;
+</span><span id="124" class="l"><a href="#124">124: </a>        <span class="php-var">$this</span>-&gt;slug = <span class="php-quote">'object-sync-for-salesforce'</span>;
 </span><span id="125" class="l"><a href="#125">125: </a>
 </span><span id="126" class="l"><a href="#126">126: </a>        <span class="php-var">$this</span>-&gt;schedulable_classes = <span class="php-keyword1">array</span>(
 </span><span id="127" class="l"><a href="#127">127: </a>            <span class="php-quote">'salesforce_push'</span> =&gt; <span class="php-keyword1">array</span>(
@@ -251,21 +251,21 @@
 </span></span><span id="167" class="l"><a href="#167">167: </a><span class="php-comment">        }
 </span></span><span id="168" class="l"><a href="#168">168: </a><span class="php-comment">        */</span>
 </span><span id="169" class="l"><a href="#169">169: </a>
-</span><span id="170" class="l"><a href="#170">170: </a>        <span class="php-var">$this</span>-&gt;activated = <span class="php-var">$this</span>-&gt;activate( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
-</span><span id="171" class="l"><a href="#171">171: </a>        <span class="php-var">$this</span>-&gt;deactivate( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain, <span class="php-var">$this</span>-&gt;schedulable_classes );
+</span><span id="170" class="l"><a href="#170">170: </a>        <span class="php-var">$this</span>-&gt;activated = <span class="php-var">$this</span>-&gt;activate( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;slug );
+</span><span id="171" class="l"><a href="#171">171: </a>        <span class="php-var">$this</span>-&gt;deactivate( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;slug, <span class="php-var">$this</span>-&gt;schedulable_classes );
 </span><span id="172" class="l"><a href="#172">172: </a>
-</span><span id="173" class="l"><a href="#173">173: </a>        <span class="php-var">$this</span>-&gt;logging = <span class="php-var">$this</span>-&gt;logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="173" class="l"><a href="#173">173: </a>        <span class="php-var">$this</span>-&gt;logging = <span class="php-var">$this</span>-&gt;logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="174" class="l"><a href="#174">174: </a>
-</span><span id="175" class="l"><a href="#175">175: </a>        <span class="php-var">$this</span>-&gt;mappings = <span class="php-var">$this</span>-&gt;mappings( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain, <span class="php-var">$this</span>-&gt;logging );
+</span><span id="175" class="l"><a href="#175">175: </a>        <span class="php-var">$this</span>-&gt;mappings = <span class="php-var">$this</span>-&gt;mappings( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;slug, <span class="php-var">$this</span>-&gt;logging );
 </span><span id="176" class="l"><a href="#176">176: </a>
-</span><span id="177" class="l"><a href="#177">177: </a>        <span class="php-var">$this</span>-&gt;wordpress = <span class="php-var">$this</span>-&gt;wordpress( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;logging );
+</span><span id="177" class="l"><a href="#177">177: </a>        <span class="php-var">$this</span>-&gt;wordpress = <span class="php-var">$this</span>-&gt;wordpress( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;slug, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;logging );
 </span><span id="178" class="l"><a href="#178">178: </a>        <span class="php-var">$this</span>-&gt;salesforce = <span class="php-var">$this</span>-&gt;salesforce_get_api();
 </span><span id="179" class="l"><a href="#179">179: </a>
-</span><span id="180" class="l"><a href="#180">180: </a>        <span class="php-var">$this</span>-&gt;push = <span class="php-var">$this</span>-&gt;push( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;text_domain, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
+</span><span id="180" class="l"><a href="#180">180: </a>        <span class="php-var">$this</span>-&gt;push = <span class="php-var">$this</span>-&gt;push( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;slug, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
 </span><span id="181" class="l"><a href="#181">181: </a>
-</span><span id="182" class="l"><a href="#182">182: </a>        <span class="php-var">$this</span>-&gt;pull = <span class="php-var">$this</span>-&gt;pull( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;text_domain, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
+</span><span id="182" class="l"><a href="#182">182: </a>        <span class="php-var">$this</span>-&gt;pull = <span class="php-var">$this</span>-&gt;pull( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;slug, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
 </span><span id="183" class="l"><a href="#183">183: </a>
-</span><span id="184" class="l"><a href="#184">184: </a>        <span class="php-var">$this</span>-&gt;load_admin( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;text_domain, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;push, <span class="php-var">$this</span>-&gt;pull, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
+</span><span id="184" class="l"><a href="#184">184: </a>        <span class="php-var">$this</span>-&gt;load_admin( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;slug, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;push, <span class="php-var">$this</span>-&gt;pull, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
 </span><span id="185" class="l"><a href="#185">185: </a>
 </span><span id="186" class="l"><a href="#186">186: </a>    }
 </span><span id="187" class="l"><a href="#187">187: </a>
@@ -274,17 +274,17 @@
 </span></span><span id="190" class="l"><a href="#190">190: </a><span class="php-comment">     *
 </span></span><span id="191" class="l"><a href="#191">191: </a><span class="php-comment">     * @param object $wpdb
 </span></span><span id="192" class="l"><a href="#192">192: </a><span class="php-comment">     * @param string $version
-</span></span><span id="193" class="l"><a href="#193">193: </a><span class="php-comment">     * @param string $text_domain
+</span></span><span id="193" class="l"><a href="#193">193: </a><span class="php-comment">     * @param string $slug
 </span></span><span id="194" class="l"><a href="#194">194: </a><span class="php-comment">     *
 </span></span><span id="195" class="l"><a href="#195">195: </a><span class="php-comment">     * @return object
 </span></span><span id="196" class="l"><a href="#196">196: </a><span class="php-comment">     *  Instance of Object_Sync_Sf_Logging
 </span></span><span id="197" class="l"><a href="#197">197: </a><span class="php-comment">     */</span>
-</span><span id="198" class="l"><a href="#198">198: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> logging( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$text_domain</span> ) {
+</span><span id="198" class="l"><a href="#198">198: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> logging( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span> ) {
 </span><span id="199" class="l"><a href="#199">199: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'WP_Logging'</span> ) &amp;&amp; <span class="php-keyword2">file_exists</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'vendor/autoload.php'</span> ) ) {
 </span><span id="200" class="l"><a href="#200">200: </a>            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'vendor/autoload.php'</span>;
 </span><span id="201" class="l"><a href="#201">201: </a>            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/logging.php'</span>;
 </span><span id="202" class="l"><a href="#202">202: </a>        }
-</span><span id="203" class="l"><a href="#203">203: </a>        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$text_domain</span> );
+</span><span id="203" class="l"><a href="#203">203: </a>        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span> );
 </span><span id="204" class="l"><a href="#204">204: </a>        <span class="php-keyword1">return</span> <span class="php-var">$logging</span>;
 </span><span id="205" class="l"><a href="#205">205: </a>    }
 </span><span id="206" class="l"><a href="#206">206: </a>
@@ -293,15 +293,15 @@
 </span></span><span id="209" class="l"><a href="#209">209: </a><span class="php-comment">     *
 </span></span><span id="210" class="l"><a href="#210">210: </a><span class="php-comment">     * @param object $wpdb
 </span></span><span id="211" class="l"><a href="#211">211: </a><span class="php-comment">     * @param string $version
-</span></span><span id="212" class="l"><a href="#212">212: </a><span class="php-comment">     * @param string $text_domain
+</span></span><span id="212" class="l"><a href="#212">212: </a><span class="php-comment">     * @param string $slug
 </span></span><span id="213" class="l"><a href="#213">213: </a><span class="php-comment">     * @param object $logging
 </span></span><span id="214" class="l"><a href="#214">214: </a><span class="php-comment">     *
 </span></span><span id="215" class="l"><a href="#215">215: </a><span class="php-comment">     * @return object
 </span></span><span id="216" class="l"><a href="#216">216: </a><span class="php-comment">     *  Instance of Object_Sync_Sf_Mapping
 </span></span><span id="217" class="l"><a href="#217">217: </a><span class="php-comment">     */</span>
-</span><span id="218" class="l"><a href="#218">218: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> mappings( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$logging</span> ) {
+</span><span id="218" class="l"><a href="#218">218: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> mappings( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$logging</span> ) {
 </span><span id="219" class="l"><a href="#219">219: </a>        <span class="php-keyword1">require_once</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/salesforce_mapping.php'</span> );
-</span><span id="220" class="l"><a href="#220">220: </a>        <span class="php-var">$mappings</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Mapping( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$logging</span> );
+</span><span id="220" class="l"><a href="#220">220: </a>        <span class="php-var">$mappings</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Mapping( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$logging</span> );
 </span><span id="221" class="l"><a href="#221">221: </a>        <span class="php-keyword1">return</span> <span class="php-var">$mappings</span>;
 </span><span id="222" class="l"><a href="#222">222: </a>    }
 </span><span id="223" class="l"><a href="#223">223: </a>
@@ -310,16 +310,16 @@
 </span></span><span id="226" class="l"><a href="#226">226: </a><span class="php-comment">    *
 </span></span><span id="227" class="l"><a href="#227">227: </a><span class="php-comment">    * @param object $wpdb
 </span></span><span id="228" class="l"><a href="#228">228: </a><span class="php-comment">    * @param string $version
-</span></span><span id="229" class="l"><a href="#229">229: </a><span class="php-comment">    * @param string $text_domain
+</span></span><span id="229" class="l"><a href="#229">229: </a><span class="php-comment">    * @param string $slug
 </span></span><span id="230" class="l"><a href="#230">230: </a><span class="php-comment">    * @param object $mappings
 </span></span><span id="231" class="l"><a href="#231">231: </a><span class="php-comment">    * @param object $logging
 </span></span><span id="232" class="l"><a href="#232">232: </a><span class="php-comment">    *
 </span></span><span id="233" class="l"><a href="#233">233: </a><span class="php-comment">    * @return object
 </span></span><span id="234" class="l"><a href="#234">234: </a><span class="php-comment">    *   Instance of Object_Sync_Sf_Wordpress
 </span></span><span id="235" class="l"><a href="#235">235: </a><span class="php-comment">    */</span>
-</span><span id="236" class="l"><a href="#236">236: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> wordpress( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span> ) {
+</span><span id="236" class="l"><a href="#236">236: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> wordpress( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span> ) {
 </span><span id="237" class="l"><a href="#237">237: </a>        <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/wordpress.php'</span>;
-</span><span id="238" class="l"><a href="#238">238: </a>        <span class="php-var">$wordpress</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Wordpress( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span> );
+</span><span id="238" class="l"><a href="#238">238: </a>        <span class="php-var">$wordpress</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Wordpress( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span> );
 </span><span id="239" class="l"><a href="#239">239: </a>        <span class="php-keyword1">return</span> <span class="php-var">$wordpress</span>;
 </span><span id="240" class="l"><a href="#240">240: </a>    }
 </span><span id="241" class="l"><a href="#241">241: </a>
@@ -341,14 +341,14 @@
 </span><span id="257" class="l"><a href="#257">257: </a>        <span class="php-var">$authorize_path</span> = <span class="php-var">$this</span>-&gt;login_credentials[<span class="php-quote">'authorize_path'</span>];
 </span><span id="258" class="l"><a href="#258">258: </a>        <span class="php-var">$token_path</span> = <span class="php-var">$this</span>-&gt;login_credentials[<span class="php-quote">'token_path'</span>];
 </span><span id="259" class="l"><a href="#259">259: </a>        <span class="php-var">$rest_api_version</span> = <span class="php-var">$this</span>-&gt;login_credentials[<span class="php-quote">'rest_api_version'</span>];
-</span><span id="260" class="l"><a href="#260">260: </a>        <span class="php-var">$text_domain</span> = <span class="php-var">$this</span>-&gt;text_domain;
+</span><span id="260" class="l"><a href="#260">260: </a>        <span class="php-var">$slug</span> = <span class="php-var">$this</span>-&gt;slug;
 </span><span id="261" class="l"><a href="#261">261: </a>        <span class="php-var">$wordpress</span> = <span class="php-var">$this</span>-&gt;wordpress;
 </span><span id="262" class="l"><a href="#262">262: </a>        <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
 </span><span id="263" class="l"><a href="#263">263: </a>        <span class="php-var">$schedulable_classes</span> = <span class="php-var">$this</span>-&gt;schedulable_classes;
 </span><span id="264" class="l"><a href="#264">264: </a>        <span class="php-var">$is_authorized</span> = <span class="php-keyword1">false</span>;
 </span><span id="265" class="l"><a href="#265">265: </a>        <span class="php-var">$sfapi</span> = <span class="php-quote">''</span>;
 </span><span id="266" class="l"><a href="#266">266: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$consumer_key</span> &amp;&amp; <span class="php-var">$consumer_secret</span> ) {
-</span><span id="267" class="l"><a href="#267">267: </a>            <span class="php-var">$sfapi</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Salesforce( <span class="php-var">$consumer_key</span>, <span class="php-var">$consumer_secret</span>, <span class="php-var">$login_url</span>, <span class="php-var">$callback_url</span>, <span class="php-var">$authorize_path</span>, <span class="php-var">$token_path</span>, <span class="php-var">$rest_api_version</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> );
+</span><span id="267" class="l"><a href="#267">267: </a>            <span class="php-var">$sfapi</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Salesforce( <span class="php-var">$consumer_key</span>, <span class="php-var">$consumer_secret</span>, <span class="php-var">$login_url</span>, <span class="php-var">$callback_url</span>, <span class="php-var">$authorize_path</span>, <span class="php-var">$token_path</span>, <span class="php-var">$rest_api_version</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$slug</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> );
 </span><span id="268" class="l"><a href="#268">268: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$sfapi</span>-&gt;is_authorized() === <span class="php-keyword1">true</span> ) {
 </span><span id="269" class="l"><a href="#269">269: </a>                <span class="php-var">$is_authorized</span> = <span class="php-keyword1">true</span>;
 </span><span id="270" class="l"><a href="#270">270: </a>            }
@@ -364,14 +364,14 @@
 </span></span><span id="280" class="l"><a href="#280">280: </a><span class="php-comment">     *
 </span></span><span id="281" class="l"><a href="#281">281: </a><span class="php-comment">     * @param object $wpdb
 </span></span><span id="282" class="l"><a href="#282">282: </a><span class="php-comment">     * @param string $version
-</span></span><span id="283" class="l"><a href="#283">283: </a><span class="php-comment">     * @param string $text_domain
+</span></span><span id="283" class="l"><a href="#283">283: </a><span class="php-comment">     * @param string $slug
 </span></span><span id="284" class="l"><a href="#284">284: </a><span class="php-comment">     *
 </span></span><span id="285" class="l"><a href="#285">285: </a><span class="php-comment">     * @return object
 </span></span><span id="286" class="l"><a href="#286">286: </a><span class="php-comment">     *  Instance of Wordpress_Salesforce_Activate
 </span></span><span id="287" class="l"><a href="#287">287: </a><span class="php-comment">     */</span>
-</span><span id="288" class="l"><a href="#288">288: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> activate( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$text_domain</span> ) {
+</span><span id="288" class="l"><a href="#288">288: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> activate( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span> ) {
 </span><span id="289" class="l"><a href="#289">289: </a>        <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/activate.php'</span>;
-</span><span id="290" class="l"><a href="#290">290: </a>        <span class="php-var">$activate</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Activate( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$text_domain</span> );
+</span><span id="290" class="l"><a href="#290">290: </a>        <span class="php-var">$activate</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Activate( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span> );
 </span><span id="291" class="l"><a href="#291">291: </a>        <span class="php-keyword1">return</span> <span class="php-var">$activate</span>;
 </span><span id="292" class="l"><a href="#292">292: </a>    }
 </span><span id="293" class="l"><a href="#293">293: </a>
@@ -380,15 +380,15 @@
 </span></span><span id="296" class="l"><a href="#296">296: </a><span class="php-comment">     *
 </span></span><span id="297" class="l"><a href="#297">297: </a><span class="php-comment">     * @param object $wpdb
 </span></span><span id="298" class="l"><a href="#298">298: </a><span class="php-comment">     * @param string $version
-</span></span><span id="299" class="l"><a href="#299">299: </a><span class="php-comment">     * @param string $text_domain
+</span></span><span id="299" class="l"><a href="#299">299: </a><span class="php-comment">     * @param string $slug
 </span></span><span id="300" class="l"><a href="#300">300: </a><span class="php-comment">     * @param array $schedulable_classes
 </span></span><span id="301" class="l"><a href="#301">301: </a><span class="php-comment">     *
 </span></span><span id="302" class="l"><a href="#302">302: </a><span class="php-comment">     * @return object
 </span></span><span id="303" class="l"><a href="#303">303: </a><span class="php-comment">     *  Instance of Wordpress_Salesforce_Deactivate
 </span></span><span id="304" class="l"><a href="#304">304: </a><span class="php-comment">     */</span>
-</span><span id="305" class="l"><a href="#305">305: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> deactivate( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$schedulable_classes</span> ) {
+</span><span id="305" class="l"><a href="#305">305: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> deactivate( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$schedulable_classes</span> ) {
 </span><span id="306" class="l"><a href="#306">306: </a>        <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/deactivate.php'</span>;
-</span><span id="307" class="l"><a href="#307">307: </a>        <span class="php-var">$deactivate</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Deactivate( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$schedulable_classes</span> );
+</span><span id="307" class="l"><a href="#307">307: </a>        <span class="php-var">$deactivate</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Deactivate( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$schedulable_classes</span> );
 </span><span id="308" class="l"><a href="#308">308: </a>    }
 </span><span id="309" class="l"><a href="#309">309: </a>
 </span><span id="310" class="l"><a href="#310">310: </a>
@@ -398,7 +398,7 @@
 </span></span><span id="314" class="l"><a href="#314">314: </a><span class="php-comment">     * @param object $wpdb
 </span></span><span id="315" class="l"><a href="#315">315: </a><span class="php-comment">     * @param string $version
 </span></span><span id="316" class="l"><a href="#316">316: </a><span class="php-comment">     * @param array $login_credentials
-</span></span><span id="317" class="l"><a href="#317">317: </a><span class="php-comment">     * @param string $text_domain
+</span></span><span id="317" class="l"><a href="#317">317: </a><span class="php-comment">     * @param string $slug
 </span></span><span id="318" class="l"><a href="#318">318: </a><span class="php-comment">     * @param object $wordpress
 </span></span><span id="319" class="l"><a href="#319">319: </a><span class="php-comment">     * @param object $salesforce
 </span></span><span id="320" class="l"><a href="#320">320: </a><span class="php-comment">     * @param object $mappings
@@ -408,9 +408,9 @@
 </span></span><span id="324" class="l"><a href="#324">324: </a><span class="php-comment">     * @return object
 </span></span><span id="325" class="l"><a href="#325">325: </a><span class="php-comment">     *  Instance of Object_Sync_Sf_Salesforce_Push
 </span></span><span id="326" class="l"><a href="#326">326: </a><span class="php-comment">     */</span>
-</span><span id="327" class="l"><a href="#327">327: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> push( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> ) {
+</span><span id="327" class="l"><a href="#327">327: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> push( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$slug</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> ) {
 </span><span id="328" class="l"><a href="#328">328: </a>        <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/salesforce_push.php'</span>;
-</span><span id="329" class="l"><a href="#329">329: </a>        <span class="php-var">$push</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Salesforce_Push( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> );
+</span><span id="329" class="l"><a href="#329">329: </a>        <span class="php-var">$push</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Salesforce_Push( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$slug</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> );
 </span><span id="330" class="l"><a href="#330">330: </a>        <span class="php-keyword1">return</span> <span class="php-var">$push</span>;
 </span><span id="331" class="l"><a href="#331">331: </a>    }
 </span><span id="332" class="l"><a href="#332">332: </a>
@@ -420,7 +420,7 @@
 </span></span><span id="336" class="l"><a href="#336">336: </a><span class="php-comment">     * @param object $wpdb
 </span></span><span id="337" class="l"><a href="#337">337: </a><span class="php-comment">     * @param string $version
 </span></span><span id="338" class="l"><a href="#338">338: </a><span class="php-comment">     * @param array $login_credentials
-</span></span><span id="339" class="l"><a href="#339">339: </a><span class="php-comment">     * @param string $text_domain
+</span></span><span id="339" class="l"><a href="#339">339: </a><span class="php-comment">     * @param string $slug
 </span></span><span id="340" class="l"><a href="#340">340: </a><span class="php-comment">     * @param object $wordpress
 </span></span><span id="341" class="l"><a href="#341">341: </a><span class="php-comment">     * @param object $salesforce
 </span></span><span id="342" class="l"><a href="#342">342: </a><span class="php-comment">     * @param object $mappings
@@ -429,9 +429,9 @@
 </span></span><span id="345" class="l"><a href="#345">345: </a><span class="php-comment">     * @return object
 </span></span><span id="346" class="l"><a href="#346">346: </a><span class="php-comment">     *  Instance of Object_Sync_Sf_Salesforce_Pull
 </span></span><span id="347" class="l"><a href="#347">347: </a><span class="php-comment">     */</span>
-</span><span id="348" class="l"><a href="#348">348: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> pull( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> ) {
+</span><span id="348" class="l"><a href="#348">348: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> pull( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$slug</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> ) {
 </span><span id="349" class="l"><a href="#349">349: </a>        <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/salesforce_pull.php'</span>;
-</span><span id="350" class="l"><a href="#350">350: </a>        <span class="php-var">$pull</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Salesforce_Pull( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> );
+</span><span id="350" class="l"><a href="#350">350: </a>        <span class="php-var">$pull</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Salesforce_Pull( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$slug</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> );
 </span><span id="351" class="l"><a href="#351">351: </a>        <span class="php-keyword1">return</span> <span class="php-var">$pull</span>;
 </span><span id="352" class="l"><a href="#352">352: </a>    }
 </span><span id="353" class="l"><a href="#353">353: </a>
@@ -442,7 +442,7 @@
 </span></span><span id="358" class="l"><a href="#358">358: </a><span class="php-comment">    * @param object $wpdb
 </span></span><span id="359" class="l"><a href="#359">359: </a><span class="php-comment">    * @param string $version
 </span></span><span id="360" class="l"><a href="#360">360: </a><span class="php-comment">    * @param array $login_credentials
-</span></span><span id="361" class="l"><a href="#361">361: </a><span class="php-comment">    * @param string $text_domain
+</span></span><span id="361" class="l"><a href="#361">361: </a><span class="php-comment">    * @param string $slug
 </span></span><span id="362" class="l"><a href="#362">362: </a><span class="php-comment">    * @param object $wordpress
 </span></span><span id="363" class="l"><a href="#363">363: </a><span class="php-comment">    * @param object $salesforce
 </span></span><span id="364" class="l"><a href="#364">364: </a><span class="php-comment">    * @param object $mappings
@@ -454,88 +454,89 @@
 </span></span><span id="370" class="l"><a href="#370">370: </a><span class="php-comment">    *   Instance of Wordpress_Salesforce_Admin
 </span></span><span id="371" class="l"><a href="#371">371: </a><span class="php-comment">    *
 </span></span><span id="372" class="l"><a href="#372">372: </a><span class="php-comment">    */</span>
-</span><span id="373" class="l"><a href="#373">373: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> load_admin( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$push</span>, <span class="php-var">$pull</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> ) {
+</span><span id="373" class="l"><a href="#373">373: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> load_admin( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$slug</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$push</span>, <span class="php-var">$pull</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> ) {
 </span><span id="374" class="l"><a href="#374">374: </a>        <span class="php-keyword1">require_once</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/admin.php'</span> );
-</span><span id="375" class="l"><a href="#375">375: </a>        <span class="php-var">$admin</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Admin( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$text_domain</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$push</span>, <span class="php-var">$pull</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> );
+</span><span id="375" class="l"><a href="#375">375: </a>        <span class="php-var">$admin</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Admin( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$slug</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$push</span>, <span class="php-var">$pull</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> );
 </span><span id="376" class="l"><a href="#376">376: </a>        add_action( <span class="php-quote">'admin_menu'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$admin</span>, <span class="php-quote">'create_admin_menu'</span> ) );
 </span><span id="377" class="l"><a href="#377">377: </a>        add_action( <span class="php-quote">'admin_enqueue_scripts'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'admin_scripts_and_styles'</span> ) );
-</span><span id="378" class="l"><a href="#378">378: </a>        add_filter( <span class="php-quote">'plugin_action_links'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'plugin_action_links'</span> ), <span class="php-num">10</span>, <span class="php-num">5</span> );
-</span><span id="379" class="l"><a href="#379">379: </a>        <span class="php-keyword1">return</span> <span class="php-var">$admin</span>;
-</span><span id="380" class="l"><a href="#380">380: </a>    }
-</span><span id="381" class="l"><a href="#381">381: </a>
-</span><span id="382" class="l"><a href="#382">382: </a>    <span class="php-comment">/**
-</span></span><span id="383" class="l"><a href="#383">383: </a><span class="php-comment">    * Display a Settings link on the main Plugins page
-</span></span><span id="384" class="l"><a href="#384">384: </a><span class="php-comment">    *
-</span></span><span id="385" class="l"><a href="#385">385: </a><span class="php-comment">    * @param array $links
-</span></span><span id="386" class="l"><a href="#386">386: </a><span class="php-comment">    * @param string $file
-</span></span><span id="387" class="l"><a href="#387">387: </a><span class="php-comment">    * @return array $links
-</span></span><span id="388" class="l"><a href="#388">388: </a><span class="php-comment">    *   These are the links that go with this plugin's entry
-</span></span><span id="389" class="l"><a href="#389">389: </a><span class="php-comment">    */</span>
-</span><span id="390" class="l"><a href="#390">390: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> plugin_action_links( <span class="php-var">$links</span>, <span class="php-var">$file</span> ) {
-</span><span id="391" class="l"><a href="#391">391: </a>        <span class="php-keyword1">if</span> ( plugin_basename( __FILE__ ) === <span class="php-var">$file</span> ) {
-</span><span id="392" class="l"><a href="#392">392: </a>            <span class="php-var">$settings</span> = <span class="php-quote">'&lt;a href=&quot;'</span> . get_admin_url() . <span class="php-quote">'options-general.php?page=object-sync-salesforce-admin&quot;&gt;'</span> . __( <span class="php-quote">'Settings'</span>, <span class="php-var">$this</span>-&gt;text_domain ) . <span class="php-quote">'&lt;/a&gt;'</span>;
-</span><span id="393" class="l"><a href="#393">393: </a>            <span class="php-comment">// make the 'Settings' link appear first</span>
-</span><span id="394" class="l"><a href="#394">394: </a>            <span class="php-keyword2">array_unshift</span>( <span class="php-var">$links</span>, <span class="php-var">$settings</span> );
-</span><span id="395" class="l"><a href="#395">395: </a>        }
-</span><span id="396" class="l"><a href="#396">396: </a>        <span class="php-keyword1">return</span> <span class="php-var">$links</span>;
-</span><span id="397" class="l"><a href="#397">397: </a>    }
-</span><span id="398" class="l"><a href="#398">398: </a>
+</span><span id="378" class="l"><a href="#378">378: </a>        add_action( <span class="php-quote">'plugins_loaded'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'textdomain'</span> ) );
+</span><span id="379" class="l"><a href="#379">379: </a>        add_filter( <span class="php-quote">'plugin_action_links'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'plugin_action_links'</span> ), <span class="php-num">10</span>, <span class="php-num">5</span> );
+</span><span id="380" class="l"><a href="#380">380: </a>        <span class="php-keyword1">return</span> <span class="php-var">$admin</span>;
+</span><span id="381" class="l"><a href="#381">381: </a>    }
+</span><span id="382" class="l"><a href="#382">382: </a>
+</span><span id="383" class="l"><a href="#383">383: </a>    <span class="php-comment">/**
+</span></span><span id="384" class="l"><a href="#384">384: </a><span class="php-comment">    * Display a Settings link on the main Plugins page
+</span></span><span id="385" class="l"><a href="#385">385: </a><span class="php-comment">    *
+</span></span><span id="386" class="l"><a href="#386">386: </a><span class="php-comment">    * @param array $links
+</span></span><span id="387" class="l"><a href="#387">387: </a><span class="php-comment">    * @param string $file
+</span></span><span id="388" class="l"><a href="#388">388: </a><span class="php-comment">    * @return array $links
+</span></span><span id="389" class="l"><a href="#389">389: </a><span class="php-comment">    *   These are the links that go with this plugin's entry
+</span></span><span id="390" class="l"><a href="#390">390: </a><span class="php-comment">    */</span>
+</span><span id="391" class="l"><a href="#391">391: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> plugin_action_links( <span class="php-var">$links</span>, <span class="php-var">$file</span> ) {
+</span><span id="392" class="l"><a href="#392">392: </a>        <span class="php-keyword1">if</span> ( plugin_basename( __FILE__ ) === <span class="php-var">$file</span> ) {
+</span><span id="393" class="l"><a href="#393">393: </a>            <span class="php-var">$settings</span> = <span class="php-quote">'&lt;a href=&quot;'</span> . get_admin_url() . <span class="php-quote">'options-general.php?page=object-sync-salesforce-admin&quot;&gt;'</span> . __( <span class="php-quote">'Settings'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ) . <span class="php-quote">'&lt;/a&gt;'</span>;
+</span><span id="394" class="l"><a href="#394">394: </a>            <span class="php-comment">// make the 'Settings' link appear first</span>
+</span><span id="395" class="l"><a href="#395">395: </a>            <span class="php-keyword2">array_unshift</span>( <span class="php-var">$links</span>, <span class="php-var">$settings</span> );
+</span><span id="396" class="l"><a href="#396">396: </a>        }
+</span><span id="397" class="l"><a href="#397">397: </a>        <span class="php-keyword1">return</span> <span class="php-var">$links</span>;
+</span><span id="398" class="l"><a href="#398">398: </a>    }
 </span><span id="399" class="l"><a href="#399">399: </a>
-</span><span id="400" class="l"><a href="#400">400: </a>    <span class="php-comment">/**
-</span></span><span id="401" class="l"><a href="#401">401: </a><span class="php-comment">    * Admin styles. Load the CSS and JavaScript for the plugin's settings
-</span></span><span id="402" class="l"><a href="#402">402: </a><span class="php-comment">    *
-</span></span><span id="403" class="l"><a href="#403">403: </a><span class="php-comment">    * @return void
-</span></span><span id="404" class="l"><a href="#404">404: </a><span class="php-comment">    */</span>
-</span><span id="405" class="l"><a href="#405">405: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> admin_scripts_and_styles() {
-</span><span id="406" class="l"><a href="#406">406: </a>        wp_enqueue_script( <span class="php-var">$this</span>-&gt;text_domain . <span class="php-quote">'-admin'</span>, plugins_url( <span class="php-quote">'assets/js/object-sync-for-salesforce-admin.min.js'</span>, __FILE__ ), <span class="php-keyword1">array</span>( <span class="php-quote">'jquery'</span> ), <span class="php-var">$this</span>-&gt;version, <span class="php-keyword1">true</span> );
-</span><span id="407" class="l"><a href="#407">407: </a>        wp_enqueue_style( <span class="php-var">$this</span>-&gt;text_domain . <span class="php-quote">'-admin'</span>, plugins_url( <span class="php-quote">'assets/css/object-sync-for-salesforce-admin.min.css'</span>, __FILE__ ), <span class="php-keyword1">array</span>(), <span class="php-var">$this</span>-&gt;version, <span class="php-quote">'all'</span> );
-</span><span id="408" class="l"><a href="#408">408: </a>    }
-</span><span id="409" class="l"><a href="#409">409: </a>
-</span><span id="410" class="l"><a href="#410">410: </a>    <span class="php-comment">/**
-</span></span><span id="411" class="l"><a href="#411">411: </a><span class="php-comment">     * Load textdomain
-</span></span><span id="412" class="l"><a href="#412">412: </a><span class="php-comment">     *
-</span></span><span id="413" class="l"><a href="#413">413: </a><span class="php-comment">     * @return void
-</span></span><span id="414" class="l"><a href="#414">414: </a><span class="php-comment">     */</span>
-</span><span id="415" class="l"><a href="#415">415: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <span class="php-keyword2">textdomain</span>() {
-</span><span id="416" class="l"><a href="#416">416: </a>        load_plugin_textdomain( <span class="php-var">$this</span>-&gt;text_domain, <span class="php-keyword1">false</span>, <span class="php-keyword2">dirname</span>( plugin_basename( __FILE__ ) ) . <span class="php-quote">'/languages/'</span> );
-</span><span id="417" class="l"><a href="#417">417: </a>    }
-</span><span id="418" class="l"><a href="#418">418: </a>
-</span><span id="419" class="l"><a href="#419">419: </a>    <span class="php-comment">/**
-</span></span><span id="420" class="l"><a href="#420">420: </a><span class="php-comment">    * Get the pre-login Salesforce credentials.
-</span></span><span id="421" class="l"><a href="#421">421: </a><span class="php-comment">    * These depend on the plugin's settings or constants defined in wp-config.php.
-</span></span><span id="422" class="l"><a href="#422">422: </a><span class="php-comment">    *
-</span></span><span id="423" class="l"><a href="#423">423: </a><span class="php-comment">    * @return array $login_credentials
-</span></span><span id="424" class="l"><a href="#424">424: </a><span class="php-comment">    *   Includes all settings necessary to log into the Salesforce API.
-</span></span><span id="425" class="l"><a href="#425">425: </a><span class="php-comment">    *   Replaces settings options with wp-config.php values if they exist.
-</span></span><span id="426" class="l"><a href="#426">426: </a><span class="php-comment">    */</span>
-</span><span id="427" class="l"><a href="#427">427: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> get_login_credentials() {
-</span><span id="428" class="l"><a href="#428">428: </a>
-</span><span id="429" class="l"><a href="#429">429: </a>        <span class="php-var">$consumer_key</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY : get_option( <span class="php-quote">'object_sync_for_salesforce_consumer_key'</span>, <span class="php-quote">''</span> );
-</span><span id="430" class="l"><a href="#430">430: </a>        <span class="php-var">$consumer_secret</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET : get_option( <span class="php-quote">'object_sync_for_salesforce_consumer_secret'</span>, <span class="php-quote">''</span> );
-</span><span id="431" class="l"><a href="#431">431: </a>        <span class="php-var">$callback_url</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL : get_option( <span class="php-quote">'object_sync_for_salesforce_callback_url'</span>, <span class="php-quote">''</span> );
-</span><span id="432" class="l"><a href="#432">432: </a>        <span class="php-var">$login_base_url</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL : get_option( <span class="php-quote">'object_sync_for_salesforce_login_base_url'</span>, <span class="php-quote">''</span> );
-</span><span id="433" class="l"><a href="#433">433: </a>        <span class="php-var">$authorize_url_path</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH : get_option( <span class="php-quote">'object_sync_for_salesforce_authorize_url_path'</span>, <span class="php-quote">''</span> );
-</span><span id="434" class="l"><a href="#434">434: </a>        <span class="php-var">$token_url_path</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH : get_option( <span class="php-quote">'object_sync_for_salesforce_token_url_path'</span>, <span class="php-quote">''</span> );
-</span><span id="435" class="l"><a href="#435">435: </a>        <span class="php-var">$api_version</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_API_VERSION'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_API_VERSION : get_option( <span class="php-quote">'object_sync_for_salesforce_api_version'</span>, <span class="php-quote">''</span> );
-</span><span id="436" class="l"><a href="#436">436: </a>
-</span><span id="437" class="l"><a href="#437">437: </a>        <span class="php-var">$login_credentials</span> = <span class="php-keyword1">array</span>(
-</span><span id="438" class="l"><a href="#438">438: </a>            <span class="php-quote">'consumer_key'</span> =&gt; <span class="php-var">$consumer_key</span>,
-</span><span id="439" class="l"><a href="#439">439: </a>            <span class="php-quote">'consumer_secret'</span> =&gt; <span class="php-var">$consumer_secret</span>,
-</span><span id="440" class="l"><a href="#440">440: </a>            <span class="php-quote">'callback_url'</span> =&gt; <span class="php-var">$callback_url</span>,
-</span><span id="441" class="l"><a href="#441">441: </a>            <span class="php-quote">'login_url'</span> =&gt; <span class="php-var">$login_base_url</span>,
-</span><span id="442" class="l"><a href="#442">442: </a>            <span class="php-quote">'authorize_path'</span> =&gt; <span class="php-var">$authorize_url_path</span>,
-</span><span id="443" class="l"><a href="#443">443: </a>            <span class="php-quote">'token_path'</span> =&gt; <span class="php-var">$token_url_path</span>,
-</span><span id="444" class="l"><a href="#444">444: </a>            <span class="php-quote">'rest_api_version'</span> =&gt; <span class="php-var">$api_version</span>,
-</span><span id="445" class="l"><a href="#445">445: </a>        );
-</span><span id="446" class="l"><a href="#446">446: </a>
-</span><span id="447" class="l"><a href="#447">447: </a>        <span class="php-keyword1">return</span> <span class="php-var">$login_credentials</span>;
-</span><span id="448" class="l"><a href="#448">448: </a>
-</span><span id="449" class="l"><a href="#449">449: </a>    }
-</span><span id="450" class="l"><a href="#450">450: </a>
-</span><span id="451" class="l"><a href="#451">451: </a>} <span class="php-comment">// end class</span>
-</span><span id="452" class="l"><a href="#452">452: </a><span class="php-comment">// Instantiate our class</span>
-</span><span id="453" class="l"><a href="#453">453: </a><span class="php-var">$object_sync_salesforce</span> = Object_Sync_Salesforce::get_instance();
-</span><span id="454" class="l"><a href="#454">454: </a></span></code></pre>
+</span><span id="400" class="l"><a href="#400">400: </a>
+</span><span id="401" class="l"><a href="#401">401: </a>    <span class="php-comment">/**
+</span></span><span id="402" class="l"><a href="#402">402: </a><span class="php-comment">    * Admin styles. Load the CSS and JavaScript for the plugin's settings
+</span></span><span id="403" class="l"><a href="#403">403: </a><span class="php-comment">    *
+</span></span><span id="404" class="l"><a href="#404">404: </a><span class="php-comment">    * @return void
+</span></span><span id="405" class="l"><a href="#405">405: </a><span class="php-comment">    */</span>
+</span><span id="406" class="l"><a href="#406">406: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> admin_scripts_and_styles() {
+</span><span id="407" class="l"><a href="#407">407: </a>        wp_enqueue_script( <span class="php-var">$this</span>-&gt;slug . <span class="php-quote">'-admin'</span>, plugins_url( <span class="php-quote">'assets/js/object-sync-for-salesforce-admin.min.js'</span>, __FILE__ ), <span class="php-keyword1">array</span>( <span class="php-quote">'jquery'</span> ), <span class="php-var">$this</span>-&gt;version, <span class="php-keyword1">true</span> );
+</span><span id="408" class="l"><a href="#408">408: </a>        wp_enqueue_style( <span class="php-var">$this</span>-&gt;slug . <span class="php-quote">'-admin'</span>, plugins_url( <span class="php-quote">'assets/css/object-sync-for-salesforce-admin.min.css'</span>, __FILE__ ), <span class="php-keyword1">array</span>(), <span class="php-var">$this</span>-&gt;version, <span class="php-quote">'all'</span> );
+</span><span id="409" class="l"><a href="#409">409: </a>    }
+</span><span id="410" class="l"><a href="#410">410: </a>
+</span><span id="411" class="l"><a href="#411">411: </a>    <span class="php-comment">/**
+</span></span><span id="412" class="l"><a href="#412">412: </a><span class="php-comment">     * Load textdomain
+</span></span><span id="413" class="l"><a href="#413">413: </a><span class="php-comment">     *
+</span></span><span id="414" class="l"><a href="#414">414: </a><span class="php-comment">     * @return void
+</span></span><span id="415" class="l"><a href="#415">415: </a><span class="php-comment">     */</span>
+</span><span id="416" class="l"><a href="#416">416: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <span class="php-keyword2">textdomain</span>() {
+</span><span id="417" class="l"><a href="#417">417: </a>        load_plugin_textdomain( <span class="php-quote">'object-sync-for-salesforce'</span>, <span class="php-keyword1">false</span>, <span class="php-keyword2">dirname</span>( plugin_basename( __FILE__ ) ) . <span class="php-quote">'/languages/'</span> );
+</span><span id="418" class="l"><a href="#418">418: </a>    }
+</span><span id="419" class="l"><a href="#419">419: </a>
+</span><span id="420" class="l"><a href="#420">420: </a>    <span class="php-comment">/**
+</span></span><span id="421" class="l"><a href="#421">421: </a><span class="php-comment">    * Get the pre-login Salesforce credentials.
+</span></span><span id="422" class="l"><a href="#422">422: </a><span class="php-comment">    * These depend on the plugin's settings or constants defined in wp-config.php.
+</span></span><span id="423" class="l"><a href="#423">423: </a><span class="php-comment">    *
+</span></span><span id="424" class="l"><a href="#424">424: </a><span class="php-comment">    * @return array $login_credentials
+</span></span><span id="425" class="l"><a href="#425">425: </a><span class="php-comment">    *   Includes all settings necessary to log into the Salesforce API.
+</span></span><span id="426" class="l"><a href="#426">426: </a><span class="php-comment">    *   Replaces settings options with wp-config.php values if they exist.
+</span></span><span id="427" class="l"><a href="#427">427: </a><span class="php-comment">    */</span>
+</span><span id="428" class="l"><a href="#428">428: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> get_login_credentials() {
+</span><span id="429" class="l"><a href="#429">429: </a>
+</span><span id="430" class="l"><a href="#430">430: </a>        <span class="php-var">$consumer_key</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY : get_option( <span class="php-quote">'object_sync_for_salesforce_consumer_key'</span>, <span class="php-quote">''</span> );
+</span><span id="431" class="l"><a href="#431">431: </a>        <span class="php-var">$consumer_secret</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET : get_option( <span class="php-quote">'object_sync_for_salesforce_consumer_secret'</span>, <span class="php-quote">''</span> );
+</span><span id="432" class="l"><a href="#432">432: </a>        <span class="php-var">$callback_url</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL : get_option( <span class="php-quote">'object_sync_for_salesforce_callback_url'</span>, <span class="php-quote">''</span> );
+</span><span id="433" class="l"><a href="#433">433: </a>        <span class="php-var">$login_base_url</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL : get_option( <span class="php-quote">'object_sync_for_salesforce_login_base_url'</span>, <span class="php-quote">''</span> );
+</span><span id="434" class="l"><a href="#434">434: </a>        <span class="php-var">$authorize_url_path</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH : get_option( <span class="php-quote">'object_sync_for_salesforce_authorize_url_path'</span>, <span class="php-quote">''</span> );
+</span><span id="435" class="l"><a href="#435">435: </a>        <span class="php-var">$token_url_path</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH : get_option( <span class="php-quote">'object_sync_for_salesforce_token_url_path'</span>, <span class="php-quote">''</span> );
+</span><span id="436" class="l"><a href="#436">436: </a>        <span class="php-var">$api_version</span> = <span class="php-keyword2">defined</span>( <span class="php-quote">'OBJECT_SYNC_SF_SALESFORCE_API_VERSION'</span> ) ? OBJECT_SYNC_SF_SALESFORCE_API_VERSION : get_option( <span class="php-quote">'object_sync_for_salesforce_api_version'</span>, <span class="php-quote">''</span> );
+</span><span id="437" class="l"><a href="#437">437: </a>
+</span><span id="438" class="l"><a href="#438">438: </a>        <span class="php-var">$login_credentials</span> = <span class="php-keyword1">array</span>(
+</span><span id="439" class="l"><a href="#439">439: </a>            <span class="php-quote">'consumer_key'</span> =&gt; <span class="php-var">$consumer_key</span>,
+</span><span id="440" class="l"><a href="#440">440: </a>            <span class="php-quote">'consumer_secret'</span> =&gt; <span class="php-var">$consumer_secret</span>,
+</span><span id="441" class="l"><a href="#441">441: </a>            <span class="php-quote">'callback_url'</span> =&gt; <span class="php-var">$callback_url</span>,
+</span><span id="442" class="l"><a href="#442">442: </a>            <span class="php-quote">'login_url'</span> =&gt; <span class="php-var">$login_base_url</span>,
+</span><span id="443" class="l"><a href="#443">443: </a>            <span class="php-quote">'authorize_path'</span> =&gt; <span class="php-var">$authorize_url_path</span>,
+</span><span id="444" class="l"><a href="#444">444: </a>            <span class="php-quote">'token_path'</span> =&gt; <span class="php-var">$token_url_path</span>,
+</span><span id="445" class="l"><a href="#445">445: </a>            <span class="php-quote">'rest_api_version'</span> =&gt; <span class="php-var">$api_version</span>,
+</span><span id="446" class="l"><a href="#446">446: </a>        );
+</span><span id="447" class="l"><a href="#447">447: </a>
+</span><span id="448" class="l"><a href="#448">448: </a>        <span class="php-keyword1">return</span> <span class="php-var">$login_credentials</span>;
+</span><span id="449" class="l"><a href="#449">449: </a>
+</span><span id="450" class="l"><a href="#450">450: </a>    }
+</span><span id="451" class="l"><a href="#451">451: </a>
+</span><span id="452" class="l"><a href="#452">452: </a>} <span class="php-comment">// end class</span>
+</span><span id="453" class="l"><a href="#453">453: </a><span class="php-comment">// Instantiate our class</span>
+</span><span id="454" class="l"><a href="#454">454: </a><span class="php-var">$object_sync_salesforce</span> = Object_Sync_Salesforce::get_instance();
+</span><span id="455" class="l"><a href="#455">455: </a></span></code></pre>
 
 	<div id="footer">
 		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>

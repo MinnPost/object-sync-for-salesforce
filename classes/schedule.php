@@ -15,7 +15,7 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 	protected $wpdb;
 	protected $version;
 	protected $login_credentials;
-	protected $text_domain;
+	protected $slug;
 	protected $wordpress;
 	protected $salesforce;
 	protected $mappings;
@@ -28,7 +28,7 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 	* @param object $wpdb
 	* @param string $version
 	* @param array $login_credentials
-	* @param string $text_domain
+	* @param string $slug
 	* @param object $wordpress
 	* @param object $salesforce
 	* @param object $mappings
@@ -36,12 +36,12 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 	* @throws \Exception
 	*/
 
-	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $schedule_name, $logging, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $schedule_name, $logging, $schedulable_classes ) {
 
 		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->login_credentials = $login_credentials;
-		$this->text_domain = $text_domain;
+		$this->slug = $slug;
 		$this->wordpress = $wordpress;
 		$this->salesforce = $salesforce;
 		$this->mappings = $mappings;
@@ -202,7 +202,7 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 		if ( is_array( $this->schedulable_classes[ $this->schedule_name ] ) ) {
 			$schedule = $this->schedulable_classes[ $this->schedule_name ];
 			if ( isset( $schedule['class'] ) ) {
-				$class = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
+				$class = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 				$method = $schedule['callback'];
 				$task = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
 			}
@@ -223,7 +223,7 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 		if ( is_array( $this->schedulable_classes[ $this->schedule_name ] ) ) {
 			$schedule = $this->schedulable_classes[ $this->schedule_name ];
 			if ( isset( $schedule['class'] ) ) {
-				$class = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
+				$class = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 				$method = $schedule['initializer'];
 				$task = $class->$method();
 			}

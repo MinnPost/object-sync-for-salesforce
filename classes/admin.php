@@ -15,7 +15,7 @@ class Object_Sync_Sf_Admin {
 	protected $wpdb;
 	protected $version;
 	protected $login_credentials;
-	protected $text_domain;
+	protected $slug;
 	protected $salesforce;
 	protected $wordpress;
 	protected $mappings;
@@ -70,7 +70,7 @@ class Object_Sync_Sf_Admin {
 	* @param object $wpdb
 	* @param string $version
 	* @param array $login_credentials
-	* @param string $text_domain
+	* @param string $slug
 	* @param object $wordpress
 	* @param object $salesforce
 	* @param object $mappings
@@ -80,11 +80,11 @@ class Object_Sync_Sf_Admin {
 	* @param array $schedulable_classes
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
 		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->login_credentials = $login_credentials;
-		$this->text_domain = $text_domain;
+		$this->slug = $slug;
 		$this->wordpress = $wordpress;
 		$this->salesforce = $salesforce;
 		$this->mappings = $mappings;
@@ -177,7 +177,6 @@ class Object_Sync_Sf_Admin {
 		$consumer_key = $this->login_credentials['consumer_key'];
 		$consumer_secret = $this->login_credentials['consumer_secret'];
 		$callback_url = $this->login_credentials['callback_url'];
-		$text_domain = $this->text_domain;
 
 		try {
 			switch ( $tab ) {
@@ -811,8 +810,6 @@ class Object_Sync_Sf_Admin {
 			),
 		);
 
-		$domain = 'object-sync-for-salesforce';
-
 		foreach ( $notices as $key => $value ) {
 
 			$condition = $value['condition'];
@@ -822,10 +819,6 @@ class Object_Sync_Sf_Admin {
 				$dismissible = $value['dismissible'];
 			} else {
 				$dismissible = false;
-			}
-
-			if ( isset( $value['domain'] ) ) {
-				$domain = $value['domain'];
 			}
 
 			if ( isset( $value['type'] ) ) {
@@ -839,7 +832,7 @@ class Object_Sync_Sf_Admin {
 			}
 
 			if ( $condition ) {
-				new Object_Sync_Sf_Admin_Notice( $condition, $message, $domain, $dismissible, $type, $template );
+				new Object_Sync_Sf_Admin_Notice( $condition, $message, $dismissible, $type, $template );
 			}
 		}
 
@@ -1390,7 +1383,6 @@ class Object_Sync_Sf_Admin {
 		$consumer_key = $this->login_credentials['consumer_key'];
 		$consumer_secret = $this->login_credentials['consumer_secret'];
 		$callback_url = $this->login_credentials['callback_url'];
-		$text_domain = 'object-sync-for-salesforce';
 
 		$current_tab = $tab;
 		screen_icon();
@@ -1441,7 +1433,7 @@ class Object_Sync_Sf_Admin {
 			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
 			require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
 		}
-		$schedule = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, 'object-sync-for-salesforce', $this->wordpress, $this->salesforce, $this->mappings, $schedule_name, $this->logging, $this->schedulable_classes );
+		$schedule = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $schedule_name, $this->logging, $this->schedulable_classes );
 		$this->schedule = $schedule;
 		return $schedule;
 	}
