@@ -138,7 +138,7 @@ class Object_Sync_Sf_Admin {
 	*
 	*/
 	public function create_admin_menu() {
-		$title = __( 'Salesforce', $this->text_domain );
+		$title = __( 'Salesforce', 'object-sync-for-salesforce' );
 		add_options_page( $title, $title, 'configure_salesforce', 'object-sync-salesforce-admin', array( $this, 'show_admin_page' ) );
 	}
 
@@ -171,7 +171,7 @@ class Object_Sync_Sf_Admin {
 		// currently it will go into the default switch case for $tab
 		$tabs = apply_filters( 'object_sync_for_salesforce_settings_tabs', $tabs );
 
-		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
+		$tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'settings';
 		$this->tabs( $tabs, $tab );
 
 		$consumer_key = $this->login_credentials['consumer_key'];
@@ -183,34 +183,34 @@ class Object_Sync_Sf_Admin {
 			switch ( $tab ) {
 				case 'authorize':
 					if ( isset( $_GET['code'] ) ) {
-						$is_authorized = $this->salesforce['sfapi']->request_token( esc_attr( $_GET['code'] ) );
+						$is_authorized = $this->salesforce['sfapi']->request_token( sanitize_key( $_GET['code'] ) );
 						echo "<script>window.location = '$callback_url';</script>";
 					} elseif ( true === $this->salesforce['is_authorized'] ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/authorized.php' );
 							$this->status( $this->salesforce['sfapi'] );
-					} elseif ( true === is_object ( $this->salesforce['sfapi'] ) && isset( $consumer_key ) && isset( $consumer_secret ) ) {
+					} elseif ( true === is_object( $this->salesforce['sfapi'] ) && isset( $consumer_key ) && isset( $consumer_secret ) ) {
 						echo '<p><a class="button button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html( 'Connect to Salesforce' ) . '</a></p>';
 					} else {
-						$message = __( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="' . get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=settings' ) . '">Settings</a> tab to add them.', $this->text_domain );
+						$message = __( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="' . get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=settings' ) . '">Settings</a> tab to add them.', 'object-sync-for-salesforce' );
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
 					}
 					break;
 				case 'fieldmaps':
 					if ( isset( $_GET['method'] ) ) {
 
-						$method = esc_attr( $_GET['method'] );
+						$method = sanitize_key( $_GET['method'] );
 						$error_url = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=' . $method );
 						$success_url = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps' );
 
 						if ( isset( $_GET['transient'] ) ) {
-							$transient = esc_html( $_GET['transient'] );
+							$transient = sanitize_key( $_GET['transient'] );
 							$posted = get_transient( $transient );
 						}
 
 						if ( isset( $posted ) && is_array( $posted ) ) {
 							$map = $posted;
 						} elseif ( 'edit' === $method || 'clone' === $method || 'delete' === $method ) {
-							$map = $this->mappings->get_fieldmaps( $_GET['id'] );
+							$map = $this->mappings->get_fieldmaps( isset( $_GET['id'] ) ? sanitize_key( $_GET['id'] ) : '' );
 						}
 
 						if ( isset( $map ) && is_array( $map ) ) {
@@ -242,8 +242,8 @@ class Object_Sync_Sf_Admin {
 					echo '<p>' . $message . '</p>';
 					break;
 				case 'clear_schedule':
-					if ( isset( $_GET['schedule_name'] ) )  {
-						$schedule_name = urlencode( $_GET['schedule_name'] );
+					if ( isset( $_GET['schedule_name'] ) ) {
+						$schedule_name = sanitize_key( $_GET['schedule_name'] );
 					}
 					$message = $this->clear_schedule( $schedule_name );
 					echo '<p>' . $message . '</p>';
@@ -255,7 +255,7 @@ class Object_Sync_Sf_Admin {
 						if ( true === $this->salesforce['is_authorized'] ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
 						} else {
-							$message = __( 'Salesforce needs to be authorized to connect to this website. Use the <a href="' . $callback_url . '">Authorize tab</a> to connect.', $this->text_domain );
+							$message = __( 'Salesforce needs to be authorized to connect to this website. Use the <a href="' . $callback_url . '">Authorize tab</a> to connect.', 'object-sync-for-salesforce' );
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
 						}
@@ -292,8 +292,8 @@ class Object_Sync_Sf_Admin {
 	*
 	*/
 	public function salesforce_settings_forms() {
-		$page = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
-		$section = isset( $_GET['tab'] ) ? $_GET['tab'] : 'settings';
+		$page = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'settings';
+		$section = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'settings';
 
 		$input_callback_default = array( $this, 'display_input_field' );
 		$input_checkboxes_default = array( $this, 'display_checkboxes' );
@@ -533,7 +533,7 @@ class Object_Sync_Sf_Admin {
 			add_settings_section( $key, $value['label'], null, $page );
 			$schedule_settings = array(
 				$key . '_schedule_number' => array(
-					'title' => __( 'Run schedule every', $this->text_domain ),
+					'title' => __( 'Run schedule every', 'object-sync-for-salesforce' ),
 					'callback' => $callbacks['text'],
 					'page' => $page,
 					'section' => $key,
@@ -545,7 +545,7 @@ class Object_Sync_Sf_Admin {
 					),
 				),
 				$key . '_schedule_unit' => array(
-					'title' => __( 'Time unit', $this->text_domain ),
+					'title' => __( 'Time unit', 'object-sync-for-salesforce' ),
 					'callback' => $callbacks['select'],
 					'page' => $page,
 					'section' => $key,
@@ -570,7 +570,7 @@ class Object_Sync_Sf_Admin {
 					),
 				),
 				$key . '_clear_button' => array(
-					'title' => __( 'This queue has ' . $this->get_schedule_count( $key ) . ' ' . ( $this->get_schedule_count( $key ) === '1' ? 'item' : 'items' ), $this->text_domain ),
+					'title' => __( 'This queue has ' . $this->get_schedule_count( $key ) . ' ' . ( $this->get_schedule_count( $key ) === '1' ? 'item' : 'items' ), 'object-sync-for-salesforce' ),
 					'callback' => $callbacks['link'],
 					'page' => $page,
 					'section' => $key,
@@ -686,7 +686,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'logs_how_often_number' => array(
-				'title' => __( 'Check for old logs every', $this->text_domain ),
+				'title' => __( 'Check for old logs every', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page' => $page,
 				'section' => $section,
@@ -699,7 +699,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'logs_how_often_unit' => array(
-				'title' => __( 'Time unit', $this->text_domain ),
+				'title' => __( 'Time unit', 'object-sync-for-salesforce' ),
 					'callback' => $callbacks['select'],
 					'page' => $page,
 					'section' => $section,
@@ -811,7 +811,7 @@ class Object_Sync_Sf_Admin {
 			),
 		);
 
-		$domain = $this->text_domain;
+		$domain = 'object-sync-for-salesforce';
 
 		foreach ( $notices as $key => $value ) {
 
@@ -1345,7 +1345,7 @@ class Object_Sync_Sf_Admin {
 			if ( isset( $mapping['id'] ) && ! isset( $_GET['edit_salesforce_mapping'] ) ) {
 				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
 			} elseif ( ! empty( $fieldmap ) ) { // is the user mapped to something already?
-				if ( isset( $_GET['edit_salesforce_mapping'] ) && 'true' === urlencode( $_GET['edit_salesforce_mapping'] ) ) {
+				if ( isset( $_GET['edit_salesforce_mapping'] ) && 'true' === sanitize_key( $_GET['edit_salesforce_mapping'] ) ) {
 					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
 				} else {
 					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
@@ -1390,7 +1390,7 @@ class Object_Sync_Sf_Admin {
 		$consumer_key = $this->login_credentials['consumer_key'];
 		$consumer_secret = $this->login_credentials['consumer_secret'];
 		$callback_url = $this->login_credentials['callback_url'];
-		$text_domain = $this->text_domain;
+		$text_domain = 'object-sync-for-salesforce';
 
 		$current_tab = $tab;
 		screen_icon();
@@ -1404,7 +1404,7 @@ class Object_Sync_Sf_Admin {
 		echo '</h2>';
 
 		if ( isset( $_GET['tab'] ) ) {
-			$tab = urlencode( $_GET['tab'] );
+			$tab = sanitize_key( $_GET['tab'] );
 		} else {
 			$tab = '';
 		}
@@ -1441,7 +1441,7 @@ class Object_Sync_Sf_Admin {
 			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
 			require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
 		}
-		$schedule = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $schedule_name, $this->logging, $this->schedulable_classes );
+		$schedule = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, 'object-sync-for-salesforce', $this->wordpress, $this->salesforce, $this->mappings, $schedule_name, $this->logging, $this->schedulable_classes );
 		$this->schedule = $schedule;
 		return $schedule;
 	}
@@ -1472,7 +1472,7 @@ class Object_Sync_Sf_Admin {
 				'last_sync' => current_time( 'mysql' ),
 				'last_sync_action' => $action,
 				'last_sync_status' => $this->mappings->status_success,
-				'last_sync_message' => __( 'Mapping object updated via function: ', $this->text_domain ) . __FUNCTION__,
+				'last_sync_message' => __( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__,
 			)
 		);
 
