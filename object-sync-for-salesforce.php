@@ -149,19 +149,20 @@ class Object_Sync_Salesforce {
 		add_filter( 'object_sync_for_salesforce_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
 		function modify_schedulable_classes( $schedulable_classes ) {
 			$schedulable_classes = array(
-	            array(
-	                'name' => 'salesforce_push',
-	                'label' => 'Push to Salesforce'
-	            ),
-	            array(
-	                'name' => 'salesforce',
-	                'label' => 'Salesforce Authorization'
-	            ),
-	            array(
-	                'name' => 'wordpress',
-	                'label' => 'WordPress'
-	            )
-	        );
+				'salesforce_push' => array(
+				    'label' => 'Push to Salesforce',
+				    'class' => 'Salesforce_Push',
+				    'callback' => 'salesforce_push_sync_rest',
+				),
+				'wordpress' => array(
+				    'label' => 'WordPress',
+				    'class' => 'Object_Sync_Sf_Wordpress',
+				),
+				'salesforce' => array(
+				    'label' => 'Salesforce Authorization',
+				    'class' => 'Object_Sync_Sf_Salesforce',
+				),
+			);
 			return $schedulable_classes;
 		}
 		*/
