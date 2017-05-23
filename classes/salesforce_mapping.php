@@ -61,8 +61,8 @@ class Object_Sync_Sf_Mapping {
 		$this->text_domain = $text_domain;
 		$this->logging = $logging;
 
-		$this->fieldmap_table = $this->wpdb->prefix . 'salesforce_field_map';
-		$this->object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
+		$this->fieldmap_table = $this->wpdb->prefix . 'object_sync_sf_field_map';
+		$this->object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 
 		// this is how we define when syncing should occur on each field map
 		// it gets used in the admin settings, as well as the push/pull methods to see if something should happen
