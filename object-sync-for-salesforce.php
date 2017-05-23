@@ -58,19 +58,19 @@ class Object_Sync_Salesforce {
 
 	/**
 	* @var object
-	* Load and initialize the Salesforce_Mapping class
+	* Load and initialize the Object_Sync_Sf_Mapping class
 	*/
 	private $mappings;
 
 	/**
 	* @var object
-	* Load and initialize the Wordpress class
+	* Load and initialize the Object_Sync_Sf_Wordpress class
 	*/
 	private $wordpress;
 
 	/**
 	* @var object
-	* Load and initialize the Salesforce class.
+	* Load and initialize the Object_Sync_Sf_Salesforce class.
 	* This contains the Salesforce API methods
 	*/
 	public $salesforce;
@@ -137,7 +137,7 @@ class Object_Sync_Salesforce {
 			),
 			'salesforce' => array(
 			    'label' => 'Salesforce Authorization',
-			    'class' => 'Salesforce',
+			    'class' => 'Object_Sync_Sf_Salesforce',
 			),
 		);
 
@@ -213,11 +213,11 @@ class Object_Sync_Salesforce {
 	 * @param object $logging
 	 *
 	 * @return object
-	 *	Instance of Salesforce_Mapping
+	 *	Instance of Object_Sync_Sf_Mapping
 	 */
 	private function mappings( $wpdb, $version, $text_domain, $logging ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
-		$mappings = new Salesforce_Mapping( $wpdb, $version, $text_domain, $logging );
+		$mappings = new Object_Sync_Sf_Mapping( $wpdb, $version, $text_domain, $logging );
 		return $mappings;
 	}
 
@@ -231,7 +231,7 @@ class Object_Sync_Salesforce {
 	* @param object $logging
 	*
 	* @return object
-	*	Instance of Wordpress
+	*	Instance of Object_Sync_Sf_Wordpress
 	*/
 	private function wordpress( $wpdb, $version, $text_domain, $mappings, $logging ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
