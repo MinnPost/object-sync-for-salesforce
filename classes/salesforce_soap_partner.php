@@ -11,7 +11,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
  * Expose the partner SOAP API by extending SforcePartnerClient and configuring
  * it with the OAUTH credentials and endpoints from the Salesforce API class.
  */
-class Salesforce_Soap_Partner extends SforcePartnerClient {
+class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 
 	protected $sf_api;
 	protected $is_authorized;

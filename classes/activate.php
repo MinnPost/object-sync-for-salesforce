@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * What to do when the plugin is activated
  */
-class Wordpress_Salesforce_Activate {
+class Object_Sync_Sf_Activate {
 
 	protected $wpdb;
 	protected $version;
@@ -25,12 +25,23 @@ class Wordpress_Salesforce_Activate {
 	*
 	*/
 	public function __construct( $wpdb, $version, $text_domain ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->installed_version = get_option( 'object_sync_for_salesforce_db_version', '' );
+		register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'php_requirements' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'wordpress_salesforce_tables' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'add_roles_capabilities' ) );
 		add_action( 'plugins_loaded', array( $this, 'wordpress_salesforce_update_db_check' ) );
+	}
+
+	/**
+	* Check for the minimum required version of php
+	*/
+	public function php_requirements() {
+		if ( version_compare( PHP_VERSION, '5.5', '<' ) ) {
+			deactivate_plugins( plugin_basename( __FILE__ ) );
+			wp_die( '<strong>This plugin requires PHP Version 5.5</strong> <br />Please contact your host to upgrade PHP on your server, and then retry activating the plugin.' );
+		}
 	}
 
 	/**
@@ -42,7 +53,7 @@ class Wordpress_Salesforce_Activate {
 
 		$charset_collate = $this->wpdb->get_charset_collate();
 
-		$field_map_table = $this->wpdb->prefix . 'salesforce_field_map';
+		$field_map_table = $this->wpdb->prefix . 'object_sync_sf_field_map';
 		$field_map_sql = "CREATE TABLE $field_map_table (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			label varchar(64) NOT NULL DEFAULT '',
@@ -62,7 +73,7 @@ class Wordpress_Salesforce_Activate {
 			KEY name_sf_type_wordpress_type (wordpress_object,salesforce_object)
 		) $charset_collate";
 
-		$object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
+		$object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 		$object_map_sql = "CREATE TABLE $object_map_table (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			wordpress_id bigint(20) NOT NULL,

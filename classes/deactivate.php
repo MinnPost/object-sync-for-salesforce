@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * What to do when the plugin is deactivated
  */
-class Wordpress_Salesforce_Deactivate {
+class Object_Sync_Sf_Deactivate {
 
 	protected $wpdb;
 	protected $version;
@@ -24,7 +24,7 @@ class Wordpress_Salesforce_Deactivate {
 	*
 	*/
 	public function __construct( $wpdb, $version, $text_domain, $schedulable_classes ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->schedulable_classes = $schedulable_classes;
 		register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
@@ -39,8 +39,8 @@ class Wordpress_Salesforce_Deactivate {
 	*
 	*/
 	public function wordpress_salesforce_drop_tables() {
-		$field_map_table = $this->wpdb->prefix . 'salesforce_field_map';
-		$object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
+		$field_map_table = $this->wpdb->prefix . 'object_sync_sf_field_map';
+		$object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 		$this->wpdb->query( 'DROP TABLE IF EXISTS ' . $field_map_table );
 		$this->wpdb->query( 'DROP TABLE IF EXISTS ' . $object_map_table );
 		delete_option( 'object_sync_for_salesforce_db_version' );

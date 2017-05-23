@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Ability to authorize and communicate with the Salesforce APIs. This class can make read and write calls to Salesforce, and also cache the responses in WordPress
  */
-class Salesforce {
+class Object_Sync_Sf_Salesforce {
 
 	public $response;
 
@@ -103,7 +103,7 @@ class Salesforce {
 	* @return string
 	*   sObject name, e.g. "Account", "Contact", "my__Custom_Object__c" or FALSE
 	*   if no match could be found.
-	* @throws SalesforceException
+	* @throws Object_Sync_Sf_Exception
 	*/
 	public function get_sobject_type( $sf_id ) {
 		$objects = $this->objects(
@@ -159,7 +159,7 @@ class Salesforce {
 	* @return mixed
 	*   The requested response.
 	*
-	* @throws SalesforceException
+	* @throws Object_Sync_Sf_Exception
 	*/
 	public function api_call( $path, $params = array(), $method = 'GET', $options = array(), $type = 'rest' ) {
 		if ( ! $this->get_access_token() ) {
@@ -182,7 +182,7 @@ class Salesforce {
 				$this->response = $this->api_http_request( $path, $params, $method, $options, $type );
 				// Throw an error if we still have bad response.
 				if ( ! in_array( $this->response['code'], $this->success_codes ) ) {
-					throw new SalesforceException( $this->response['data'][0]['message'], $this->response['code'] );
+					throw new Object_Sync_Sf_Exception( $this->response['data'][0]['message'], $this->response['code'] );
 				}
 				break;
 			case in_array( $this->response['code'], $this->success_codes ):
@@ -191,7 +191,7 @@ class Salesforce {
 			default:
 				// We have problem and no specific Salesforce error provided.
 				if ( empty( $this->response['data'] ) ) {
-					throw new SalesforceException( $this->response['error'], $this->response['code'] );
+					throw new Object_Sync_Sf_Exception( $this->response['error'], $this->response['code'] );
 				}
 		}
 
@@ -200,11 +200,11 @@ class Salesforce {
 		}
 
 		if ( isset( $this->response['data']['error'] ) ) {
-			throw new SalesforceException( $this->response['data']['error_description'], $this->response['data']['error'] );
+			throw new Object_Sync_Sf_Exception( $this->response['data']['error_description'], $this->response['data']['error'] );
 		}
 
 		if ( ! empty( $this->response['data']['errorCode'] ) ) {
-			throw new SalesforceException( $this->response['data']['message'], $this->response['code'] );
+			throw new Object_Sync_Sf_Exception( $this->response['data']['message'], $this->response['code'] );
 		}
 		return $this->response;
 	}
@@ -285,8 +285,8 @@ class Salesforce {
 			$title = ucfirst( $status ) . ': on Salesforce API HTTP Request to URL: ' . $url;
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 			}
 
 			$logging->setup(
@@ -369,8 +369,8 @@ class Salesforce {
 				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
 				$logging->setup(
@@ -386,8 +386,8 @@ class Salesforce {
 				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
 				$logging->setup(
@@ -403,8 +403,8 @@ class Salesforce {
 				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 				$logging->setup(
 					__( $title, $this->text_domain ),
@@ -508,12 +508,12 @@ class Salesforce {
 	* this is a scheduleable class and so we could add a method from this class to run every 24 hours, but it's unclear to me that we need it. salesforce seems to refresh itself as it needs to.
 	* but it could be a performance boost to do it at scheduleable intervals instead.
 	*
-	* @throws SalesforceException
+	* @throws Object_Sync_Sf_Exception
 	*/
 	protected function refresh_token() {
 		$refresh_token = $this->get_refresh_token();
 		if ( empty( $refresh_token ) ) {
-			throw new SalesforceException( esc_html__( 'There is no refresh token.', $this->text_domain ) );
+			throw new Object_Sync_Sf_Exception( esc_html__( 'There is no refresh token.', $this->text_domain ) );
 		}
 
 		$data = array(
@@ -534,14 +534,20 @@ class Salesforce {
 		$response = $this->http_request( $url, $data, $headers, 'POST' );
 
 		if ( 200 !== $response['code'] ) {
-			// @TODO: Deal with error better.
-			throw new SalesforceException( esc_html__( 'Unable to get a Salesforce access token.', $this->text_domain ), $response['code'] );
+			throw new Object_Sync_Sf_Exception(
+				esc_html(
+					sprintf(
+						__( 'Unable to get a Salesforce access token. Salesforce returned the following errorCode: ', $this->text_domain ) . $response['code']
+					)
+				),
+				$response['code']
+			);
 		}
 
 		$data = $response['data'];
 
 		if ( is_array( $data ) && isset( $data['error'] ) ) {
-			throw new SalesforceException( $data['error_description'], $data['error'] );
+			throw new Object_Sync_Sf_Exception( $data['error_description'], $data['error'] );
 		}
 
 		$this->set_access_token( $data['access_token'] );
@@ -555,7 +561,7 @@ class Salesforce {
 	* @param string $id
 	*   Identity URL.
 	*
-	* @throws SalesforceException
+	* @throws Object_Sync_Sf_Exception
 	*/
 	protected function set_identity( $id ) {
 		$headers = array(
@@ -565,7 +571,7 @@ class Salesforce {
 		);
 		$response = $this->http_request( $id, null, $headers );
 		if ( 200 !== $response['code'] ) {
-			throw new SalesforceException( esc_html__( 'Unable to access identity service.', $this->text_domain ), $response['code'] );
+			throw new Object_Sync_Sf_Exception( esc_html__( 'Unable to access identity service.', $this->text_domain ), $response['code'] );
 		}
 		$data = $response['data'];
 		update_option( 'object_sync_for_salesforce_identity', $data );
@@ -623,7 +629,7 @@ class Salesforce {
 
 		if ( 200 !== $response['code'] ) {
 			$error = isset( $data['error_description'] ) ? $data['error_description'] : $response['error'];
-			throw new SalesforceException( $error, $response['code'] );
+			throw new Object_Sync_Sf_Exception( $error, $response['code'] );
 		}
 
 		// Ensure all required attributes are returned. They can be omitted if the
@@ -1149,7 +1155,7 @@ class Salesforce {
 			return ! empty( $cached[ $name ][ $devname ] ) ? $cached[ $name ][ $devname ]['Id'] : null;
 		}
 
-		$query = new Salesforce_Select_Query( 'RecordType' );
+		$query = new Object_Sync_Sf_Salesforce_Select_Query( 'RecordType' );
 		$query->fields = array( 'Id', 'Name', 'DeveloperName', 'SobjectType' );
 
 		$result = $this->query( $query );
@@ -1177,8 +1183,5 @@ class Salesforce {
 
 }
 
-class SalesforceException extends Exception {
-}
-
-class SalesforcePullException extends SalesforceException {
+class Object_Sync_Sf_Exception extends Exception {
 }

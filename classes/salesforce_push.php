@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Push data from WordPress into Salesforce
  */
-class Salesforce_Push {
+class Object_Sync_Sf_Salesforce_Push {
 
 	protected $wpdb;
 	protected $version;
@@ -38,10 +38,10 @@ class Salesforce_Push {
 	* @param object $mappings
 	* @param object $logging
 	* @param array $schedulable_classes
-	* @throws \Exception
+	* @throws \Object_Sync_Sf_Exception
 	*/
 	public function __construct( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->login_credentials = $login_credentials;
 		$this->text_domain = $text_domain;
@@ -54,6 +54,8 @@ class Salesforce_Push {
 		$this->schedule_name = 'salesforce_push';
 		$this->schedule = $this->schedule();
 		$this->add_actions();
+
+		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
 
 	}
 
@@ -68,25 +70,25 @@ class Salesforce_Push {
 			foreach ( $this->mappings->get_fieldmaps() as $mapping ) {
 				$object_type = $mapping['wordpress_object'];
 				if ( 'user' === $object_type ) {
-		    		add_action( 'user_register', array( &$this, 'add_user' ) );
-		    		add_action( 'profile_update', array( &$this, 'edit_user' ), 10, 2 );
-		    		add_action( 'delete_user', array( &$this, 'delete_user' ) );
+		    		add_action( 'user_register', array( $this, 'add_user' ) );
+		    		add_action( 'profile_update', array( $this, 'edit_user' ), 10, 2 );
+		    		add_action( 'delete_user', array( $this, 'delete_user' ) );
 		    	} elseif ( 'post' === $object_type ) {
-		    		add_action( 'save_post', array( &$this, 'post_actions' ), 10, 2 );
+		    		add_action( 'save_post', array( $this, 'post_actions' ), 10, 2 );
 		    	} elseif ( 'attachment' === $object_type ) {
-		    		add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
-		    		add_action( 'edit_attachment', array( &$this, 'edit_attachment' ) );
-		    		add_action( 'delete_attachment', array( &$this, 'delete_attachment' ) );
+		    		add_action( 'add_attachment', array( $this, 'add_attachment' ) );
+		    		add_action( 'edit_attachment', array( $this, 'edit_attachment' ) );
+		    		add_action( 'delete_attachment', array( $this, 'delete_attachment' ) );
 		    	} elseif ( 'category' === $object_type || 'tag' === $object_type || 'post_tag' === $object_type ) {
-					add_action( 'create_term', array( &$this, 'add_term' ), 10, 3 );
-					add_action( 'edit_terms', array( &$this, 'edit_term' ), 10, 2 );
-					add_action( 'delete_term', array( &$this, 'delete_term' ), 10, 4 );
+					add_action( 'create_term', array( $this, 'add_term' ), 10, 3 );
+					add_action( 'edit_terms', array( $this, 'edit_term' ), 10, 2 );
+					add_action( 'delete_term', array( $this, 'delete_term' ), 10, 4 );
 				} elseif ( 'comment' === $object_type ) {
-					add_action( 'comment_post', array( &$this, 'add_comment' ), 10, 3 );
-					add_action( 'edit_comment', array( &$this, 'edit_comment' ) );
-					add_action( 'delete_comment', array( &$this, 'delete_comment' ) ); // to be clear: this only runs when the comment gets deleted from the trash, either manually or automatically
+					add_action( 'comment_post', array( $this, 'add_comment' ), 10, 3 );
+					add_action( 'edit_comment', array( $this, 'edit_comment' ) );
+					add_action( 'delete_comment', array( $this, 'delete_comment' ) ); // to be clear: this only runs when the comment gets deleted from the trash, either manually or automatically
 				} else { // this is for custom post types
-					add_action( 'save_post_' . $object_type, array( &$this, 'post_actions' ), 10, 2 );
+					add_action( 'save_post_' . $object_type, array( $this, 'post_actions' ), 10, 2 );
 				}
 			}
 		}
@@ -341,8 +343,8 @@ class Salesforce_Push {
 			$status = 'error';
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 			}
 			$logging->setup(
 				__( ucfirst( $status ) . ': Salesforce Push: unable to process queue item because it has no WordPress ' . $object_id_field . '.', $this->text_domain ),
@@ -414,11 +416,11 @@ class Salesforce_Push {
 	}
 
 	private function schedule() {
-		if ( ! class_exists( 'Wordpress_Salesforce_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
+		if ( ! class_exists( 'Object_Sync_Sf_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
 			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
 			require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
 		}
-		$schedule = new Wordpress_Salesforce_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging, $this->schedulable_classes );
+		$schedule = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging, $this->schedulable_classes );
 		$this->schedule = $schedule;
 		return $schedule;
 	}
@@ -485,13 +487,13 @@ class Salesforce_Push {
 				if ( count( $salesforce_check ) === count( $salesforce_check, COUNT_RECURSIVE ) ) {
 					try {
 						$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
-					} catch ( SalesforceException $e ) {
+					} catch ( Object_Sync_Sf_Exception $e ) {
 						$status = 'error';
 						// create log entry for failed delete
 						if ( isset( $this->logging ) ) {
 							$logging = $this->logging;
-						} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-							$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+						} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+							$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 						}
 
 						$logging->setup(
@@ -512,8 +514,8 @@ class Salesforce_Push {
 						$status = 'success';
 						if ( isset( $this->logging ) ) {
 							$logging = $this->logging;
-						} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-							$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+						} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+							$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 						}
 
 						$logging->setup(
@@ -545,8 +547,8 @@ class Salesforce_Push {
 					$status = 'notice';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 
 					$logging->setup(
@@ -695,7 +697,7 @@ class Salesforce_Push {
 					$op = 'Create';
 					$result = $sfapi->object_create( $mapping['salesforce_object'], $params );
 				} // End if().
-			} catch ( SalesforceException $e ) {
+			} catch ( Object_Sync_Sf_Exception $e ) {
 				// create log entry for failed create or upsert
 				$status = 'error';
 				$title = ucfirst( $status ) . ': ' . $op . ' ' . $mapping['salesforce_object'];
@@ -705,8 +707,8 @@ class Salesforce_Push {
 				$title .=  ' (WordPress ' . $mapping['wordpress_object'] . ' with ' . $object_id . ' of ' . $object["$object_id"] . ')';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
 				$logging->setup(
@@ -738,8 +740,8 @@ class Salesforce_Push {
 
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
 				$logging->setup(
@@ -765,8 +767,8 @@ class Salesforce_Push {
 				$status = 'error';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
 				$logging->setup(
@@ -796,8 +798,8 @@ class Salesforce_Push {
 				$status = 'notice';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
 				$logging->setup(
@@ -826,8 +828,8 @@ class Salesforce_Push {
 				$status = 'success';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
 				$logging->setup(
@@ -841,13 +843,13 @@ class Salesforce_Push {
 				// hook for push success
 				do_action( 'object_sync_for_salesforce_push_success', $op, $sfapi->response, $synced_object, $object_id );
 
-			} catch ( SalesforceException $e ) {
+			} catch ( Object_Sync_Sf_Exception $e ) {
 				// create log entry for failed update
 				$status = 'error';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
 				$logging->setup(

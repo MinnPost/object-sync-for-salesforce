@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Log events based on plugin settings
  */
-class Salesforce_Logging extends WP_Logging {
+class Object_Sync_Sf_Logging extends WP_Logging {
 
 	protected $wpdb;
 	protected $version;
@@ -29,7 +29,7 @@ class Salesforce_Logging extends WP_Logging {
 	* @throws \Exception
 	*/
 	public function __construct( $wpdb, $version, $text_domain ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->text_domain = $text_domain;
 

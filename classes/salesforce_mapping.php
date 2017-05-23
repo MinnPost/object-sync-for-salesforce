@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Map objects and records between WordPress and Salesforce
  */
-class Salesforce_Mapping {
+class Object_Sync_Sf_Mapping {
 
 	protected $wpdb;
 	protected $version;
@@ -56,13 +56,13 @@ class Salesforce_Mapping {
 	* @throws \Exception
 	*/
 	public function __construct( $wpdb, $version, $text_domain, $logging ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->text_domain = $text_domain;
 		$this->logging = $logging;
 
-		$this->fieldmap_table = $this->wpdb->prefix . 'salesforce_field_map';
-		$this->object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
+		$this->fieldmap_table = $this->wpdb->prefix . 'object_sync_sf_field_map';
+		$this->object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 
 		// this is how we define when syncing should occur on each field map
 		// it gets used in the admin settings, as well as the push/pull methods to see if something should happen
@@ -279,6 +279,16 @@ class Salesforce_Mapping {
 						'direction' => sanitize_text_field( $posted['direction'][ $key ] ),
 						'is_delete' => sanitize_text_field( $posted['is_delete'][ $key ] ),
 					);
+
+					// if the wordpress key or the salesforce key are blank, remove this incomplete mapping
+					// this prevents https://github.com/MinnPost/object-sync-for-salesforce/issues/82
+					if (
+						empty( $setup['fields'][ $key ][ 'wordpress_field' ][ 'label' ] )
+						||
+						empty( $setup['fields'][ $key ][ 'salesforce_field' ][ 'label' ] )
+					) {
+						unset( $setup['fields'][ $key ] );
+					}
 				}
 			}
 			$data['fields'] = maybe_serialize( $setup['fields'] );
@@ -355,8 +365,8 @@ class Salesforce_Mapping {
 			$status = 'error';
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 			}
 			$logging->setup(
 				__( ucfirst( $status ) . ': Mapping: error caused by trying to map the WordPress ' . $data['wordpress_object'] . ' with ID of ' . $data['wordpress_id'] . ' to Salesforce ID of 0, which is invalid.', $this->text_domain ),
@@ -375,8 +385,8 @@ class Salesforce_Mapping {
 			$status = 'error';
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 			}
 			$logging->setup(
 				__( ucfirst( $status ) . ': Mapping: there is already a WordPress object mapped to the Salesforce object ' . $data['salesforce_id'] . ' and the mapping object ID is ' . $id, $this->text_domain ),
@@ -549,8 +559,8 @@ class Salesforce_Mapping {
 			// create log entry for multiple maps
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 			}
 			$logging->setup(
 				__( ucfirst( $status ) . ': Mapping: there is more than one mapped WordPress object for the Salesforce object ' . $salesforce_id, $this->text_domain ),

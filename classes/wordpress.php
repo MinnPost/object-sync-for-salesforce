@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Pull data from Salesforce into WordPress
  */
-class Wordpress {
+class Object_Sync_Sf_Wordpress {
 
 	protected $wpdb;
 	protected $version;
@@ -28,7 +28,7 @@ class Wordpress {
 	* @throws \Exception
 	*/
 	public function __construct( $wpdb, $version, $text_domain, $mappings, $logging ) {
-		$this->wpdb = &$wpdb;
+		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->text_domain = $text_domain;
 		$this->mappings = $mappings;
@@ -43,6 +43,9 @@ class Wordpress {
 			'cache_expiration' => $this->cache_expiration( 'wordpress_data_cache', 86400 ),
 			'type' => 'read',
 		);
+
+		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
+
 	}
 
 	/**
@@ -991,8 +994,8 @@ class Wordpress {
 		// create log entry for lack of a user id
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
-		} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-			$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 		}
 		$logging->setup(
 			__( 'Error: Users: Tried to run user_upsert, and ended up without a user id', $this->text_domain ),
@@ -1315,8 +1318,8 @@ class Wordpress {
 		// create log entry for lack of a post id
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
-		} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-			$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 		}
 		$logging->setup(
 			__( 'Error: Posts: Tried to run post_upsert, and ended up without a post id', $this->text_domain ),
@@ -1637,8 +1640,8 @@ class Wordpress {
 		// create log entry for lack of an attachment id
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
-		} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-			$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 		}
 		$logging->setup(
 			__( 'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id', $this->text_domain ),
@@ -1962,8 +1965,8 @@ class Wordpress {
 		// create log entry for lack of a term id
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
-		} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-			$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 		}
 		$logging->setup(
 			__( 'Error: Terms: Tried to run term_upsert, and ended up without a term id', $this->text_domain ),
@@ -2212,15 +2215,22 @@ class Wordpress {
 					'method_read' => $methods['method_read'],
 				);
 			} elseif ( count( $comments ) > 1 ) {
-				$status = 'notice';
+				$status = 'error';
 				// create log entry for multiple matches
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 				$logging->setup(
-					__( ucfirst( $status ) . ': Comments: there are ' . $count . ' comment matches for the Salesforce key ' . $key . ' with the value of ' . $value, $this->text_domain ),
+					sprintf (
+						__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', $this->text_domain ),
+						ucfirst( $status ),
+						$count,
+						$key,
+						$value,
+						var_export( $comments )
+					),
 					'',
 					0,
 					0,
@@ -2280,7 +2290,7 @@ class Wordpress {
 				// comment does exist based on username, and we aren't doing a check only. we want to update the wp user here.
 				$comment_id = $existing_id;
 			}
-		} // End if().
+		} // End if() that sets up the parameters in the $params array.
 
 		if ( isset( $comment_id ) ) {
 			foreach ( $params as $key => $value ) {
@@ -2293,8 +2303,8 @@ class Wordpress {
 		// create log entry for lack of a comment id
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
-		} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-			$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 		}
 		$logging->setup(
 			__( 'Error: Comments: Tried to run comment_upsert, and ended up without a comment id', $this->text_domain ),

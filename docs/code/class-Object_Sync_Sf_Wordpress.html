@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class Wordpress | Object Sync for Salesforce</title>
+	<title>Class Object_Sync_Sf_Wordpress | Object Sync for Salesforce</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -23,28 +23,28 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
 				<li><a href="class-Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
-				<li><a href="class-Salesforce.html">Salesforce</a></li>
-				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
-				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
-				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
-				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
-				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
-				<li><a href="class-Salesforce_Soap_Partner.html">Salesforce_Soap_Partner</a></li>
-				<li class="active"><a href="class-Wordpress.html">Wordpress</a></li>
-				<li><a href="class-Wordpress_Salesforce_Activate.html">Wordpress_Salesforce_Activate</a></li>
-				<li><a href="class-Wordpress_Salesforce_Admin.html">Wordpress_Salesforce_Admin</a></li>
-				<li><a href="class-Wordpress_Salesforce_Deactivate.html">Wordpress_Salesforce_Deactivate</a></li>
-				<li><a href="class-Wordpress_Salesforce_Schedule.html">Wordpress_Salesforce_Schedule</a></li>
+				<li><a href="class-Object_Sync_Sf_Activate.html">Object_Sync_Sf_Activate</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin.html">Object_Sync_Sf_Admin</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin_Notice.html">Object_Sync_Sf_Admin_Notice</a></li>
+				<li><a href="class-Object_Sync_Sf_Deactivate.html">Object_Sync_Sf_Deactivate</a></li>
+				<li><a href="class-Object_Sync_Sf_Logging.html">Object_Sync_Sf_Logging</a></li>
+				<li><a href="class-Object_Sync_Sf_Mapping.html">Object_Sync_Sf_Mapping</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce.html">Object_Sync_Sf_Salesforce</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Soap.html">Object_Sync_Sf_Salesforce_Soap</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
+				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
+				<li class="active"><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
 			</ul>
 
 
 
 			<h3>Exceptions</h3>
 			<ul>
-				<li><a href="class-SalesforceException.html">SalesforceException</a></li>
-				<li><a href="class-SalesforcePullException.html">SalesforcePullException</a></li>
+				<li><a href="class-Object_Sync_Sf_Exception.html">Object_Sync_Sf_Exception</a></li>
 				<li><a href="class-WordpressException.html">WordpressException</a></li>
 			</ul>
 
@@ -83,7 +83,7 @@
 	</div>
 
 <div id="content" class="class">
-	<h1>Class Wordpress</h1>
+	<h1>Class Object_Sync_Sf_Wordpress</h1>
 
 
 	<div class="description">
@@ -104,7 +104,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Wordpress.html#10-2397" title="Go to source code">wordpress.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Wordpress.html#10-2407" title="Go to source code">wordpress.php</a>
 		<br>
 	</div>
 
@@ -124,7 +124,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Wordpress.html#21-46" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$mappings</var></span>, <span> <var>$logging</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#21-49" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$mappings</var></span>, <span> <var>$logging</var></span> )</code>
 
 		<div class="description short">
 			<p>Constructor which discovers objects in WordPress</p>
@@ -171,7 +171,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_object_types">#</a>
-		<code><a href="source-class-Wordpress.html#48-92" title="Go to source code">get_object_types</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#51-95" title="Go to source code">get_object_types</a>( )</code>
 
 		<div class="description short">
 			<p>Get WordPress object types</p>
@@ -205,7 +205,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_wordpress_table_structure">#</a>
-		<code><a href="source-class-Wordpress.html#94-242" title="Go to source code">get_wordpress_table_structure</a>( <span>string <var>$object_type</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#97-245" title="Go to source code">get_wordpress_table_structure</a>( <span>string <var>$object_type</var></span> )</code>
 
 		<div class="description short">
 			<p>Get WordPress table structure for an object</p>
@@ -244,7 +244,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_wordpress_object_fields">#</a>
-		<code><a href="source-class-Wordpress.html#244-297" title="Go to source code">get_wordpress_object_fields</a>( <span>string <var>$wordpress_object</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#247-300" title="Go to source code">get_wordpress_object_fields</a>( <span>string <var>$wordpress_object</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Get WordPress fields for an object</p>
@@ -285,7 +285,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_wordpress_object_data">#</a>
-		<code><a href="source-class-Wordpress.html#299-337" title="Go to source code">get_wordpress_object_data</a>( <span>string <var>$object_type</var></span>, <span>string <var>$object_id</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#302-340" title="Go to source code">get_wordpress_object_data</a>( <span>string <var>$object_type</var></span>, <span>string <var>$object_id</var></span> )</code>
 
 		<div class="description short">
 			<p>Get WordPress data based on what object it is</p>
@@ -326,7 +326,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cache_get">#</a>
-		<code><a href="source-class-Wordpress.html#339-356" title="Go to source code">cache_get</a>( <span>string <var>$url</var></span>, <span>array <var>$args</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#342-359" title="Go to source code">cache_get</a>( <span>string <var>$url</var></span>, <span>array <var>$args</var></span> )</code>
 
 		<div class="description short">
 			<p>Check to see if this API call exists in the cache
@@ -369,7 +369,7 @@ if it does, return the transient for that key</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cache_set">#</a>
-		<code><a href="source-class-Wordpress.html#358-379" title="Go to source code">cache_set</a>( <span>string <var>$url</var></span>, <span>array <var>$args</var></span>, <span>array <var>$data</var></span>, <span> <var>$cache_expiration</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#361-382" title="Go to source code">cache_set</a>( <span>string <var>$url</var></span>, <span>array <var>$args</var></span>, <span>array <var>$data</var></span>, <span> <var>$cache_expiration</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a cache entry for the current result, with the url and args as the key</p>
@@ -410,7 +410,7 @@ if it does, return the transient for that key</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cache_expiration">#</a>
-		<code><a href="source-class-Wordpress.html#381-391" title="Go to source code">cache_expiration</a>( <span>string <var>$option_key</var></span>, <span>integer <var>$expire</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#384-394" title="Go to source code">cache_expiration</a>( <span>string <var>$option_key</var></span>, <span>integer <var>$expire</var></span> )</code>
 
 		<div class="description short">
 			<p>If there is a WordPress setting for how long to keep this specific cache, return it and set the object property
@@ -449,7 +449,7 @@ Otherwise, return seconds in 24 hours</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_fields">#</a>
-		<code><a href="source-class-Wordpress.html#393-469" title="Go to source code">object_fields</a>( <span>string <var>$object_name</var></span>, <span>string <var>$id_field</var></span>, <span>string <var>$content_table</var></span>, <span>array <var>$content_methods</var></span>, <span>string <var>$meta_table</var></span>, <span>array <var>$meta_methods</var></span>, <span>string <var>$where</var></span>, <span>array <var>$ignore_keys</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#396-472" title="Go to source code">object_fields</a>( <span>string <var>$object_name</var></span>, <span>string <var>$id_field</var></span>, <span>string <var>$content_table</var></span>, <span>array <var>$content_methods</var></span>, <span>string <var>$meta_table</var></span>, <span>array <var>$meta_methods</var></span>, <span>string <var>$where</var></span>, <span>array <var>$ignore_keys</var></span> )</code>
 
 		<div class="description short">
 			<p>Get all the fields for an object
@@ -510,7 +510,7 @@ we just need to make sure we get all applicable fields for the object itself, as
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_create">#</a>
-		<code><a href="source-class-Wordpress.html#471-541" title="Go to source code">object_create</a>( <span>string <var>$name</var></span>, <span>array <var>$params</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#474-544" title="Go to source code">object_create</a>( <span>string <var>$name</var></span>, <span>array <var>$params</var></span> )</code>
 
 		<div class="description short">
 			<p>Create a new object of a given type.</p>
@@ -559,7 +559,7 @@ we just need to make sure we get all applicable fields for the object itself, as
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#544-642" title="Go to source code">object_upsert</a>( <span>string <var>$name</var></span>, <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#547-645" title="Go to source code">object_upsert</a>( <span>string <var>$name</var></span>, <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create new records or update existing records.</p>
@@ -622,7 +622,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_update">#</a>
-		<code><a href="source-class-Wordpress.html#644-715" title="Go to source code">object_update</a>( <span>string <var>$name</var></span>, <span>string <var>$id</var></span>, <span>array <var>$params</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#647-718" title="Go to source code">object_update</a>( <span>string <var>$name</var></span>, <span>string <var>$id</var></span>, <span>array <var>$params</var></span> )</code>
 
 		<div class="description short">
 			<p>Update an existing object.</p>
@@ -672,7 +672,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_delete">#</a>
-		<code><a href="source-class-Wordpress.html#717-782" title="Go to source code">object_delete</a>( <span>string <var>$name</var></span>, <span>string <var>$id</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#720-785" title="Go to source code">object_delete</a>( <span>string <var>$name</var></span>, <span>string <var>$id</var></span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress object.</p>
@@ -717,7 +717,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_user_create">#</a>
-		<code><a href="source-class-Wordpress.html#784-878" title="Go to source code">user_create</a>( <span>array <var>$params</var></span>, <span> <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#787-881" title="Go to source code">user_create</a>( <span>array <var>$params</var></span>, <span> <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress user.</p>
@@ -761,7 +761,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_user_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#880-1005" title="Go to source code">user_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#883-1008" title="Go to source code">user_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress user or update it if a match is found.</p>
@@ -815,7 +815,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_user_update">#</a>
-		<code><a href="source-class-Wordpress.html#1007-1066" title="Go to source code">user_update</a>( <span>string <var>$user_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1010-1069" title="Go to source code">user_update</a>( <span>string <var>$user_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Update a WordPress user.</p>
@@ -860,7 +860,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_user_delete">#</a>
-		<code><a href="source-class-Wordpress.html#1068-1086" title="Go to source code">user_delete</a>( <span>integer <var>$id</var></span>, <span>integer <var>$reassign</var> = <span class="php-keyword1">null</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1071-1089" title="Go to source code">user_delete</a>( <span>integer <var>$id</var></span>, <span>integer <var>$reassign</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress user.</p>
@@ -902,7 +902,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_post_create">#</a>
-		<code><a href="source-class-Wordpress.html#1088-1167" title="Go to source code">post_create</a>( <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1091-1170" title="Go to source code">post_create</a>( <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress post.</p>
@@ -948,7 +948,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_post_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#1169-1329" title="Go to source code">post_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">'post'</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1172-1332" title="Go to source code">post_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">'post'</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress post or update it if a match is found.</p>
@@ -1004,7 +1004,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_post_update">#</a>
-		<code><a href="source-class-Wordpress.html#1331-1403" title="Go to source code">post_update</a>( <span>string <var>$post_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1334-1406" title="Go to source code">post_update</a>( <span>string <var>$post_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>string <var>$post_type</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Update a WordPress post.</p>
@@ -1051,7 +1051,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_post_delete">#</a>
-		<code><a href="source-class-Wordpress.html#1405-1421" title="Go to source code">post_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1408-1424" title="Go to source code">post_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress post.</p>
@@ -1093,7 +1093,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachment_create">#</a>
-		<code><a href="source-class-Wordpress.html#1423-1496" title="Go to source code">attachment_create</a>( <span>array <var>$params</var></span>, <span> <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1426-1499" title="Go to source code">attachment_create</a>( <span>array <var>$params</var></span>, <span> <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress attachment.</p>
@@ -1137,7 +1137,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachment_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#1498-1651" title="Go to source code">attachment_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1501-1654" title="Go to source code">attachment_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress attachment or update it if a match is found.</p>
@@ -1189,7 +1189,7 @@ the list of matching records.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachment_update">#</a>
-		<code><a href="source-class-Wordpress.html#1653-1751" title="Go to source code">attachment_update</a>( <span>string <var>$attachment_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1656-1754" title="Go to source code">attachment_update</a>( <span>string <var>$attachment_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Update a WordPress attachment.</p>
@@ -1238,7 +1238,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_attachment_delete">#</a>
-		<code><a href="source-class-Wordpress.html#1753-1769" title="Go to source code">attachment_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1756-1772" title="Go to source code">attachment_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress attachment.</p>
@@ -1280,7 +1280,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_term_create">#</a>
-		<code><a href="source-class-Wordpress.html#1771-1846" title="Go to source code">term_create</a>( <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1774-1849" title="Go to source code">term_create</a>( <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress term.</p>
@@ -1326,7 +1326,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_term_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#1848-1976" title="Go to source code">term_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1851-1979" title="Go to source code">term_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress term or update it if a match is found.</p>
@@ -1382,7 +1382,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_term_update">#</a>
-		<code><a href="source-class-Wordpress.html#1978-2048" title="Go to source code">term_update</a>( <span>string <var>$term_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#1981-2051" title="Go to source code">term_update</a>( <span>string <var>$term_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$taxonomy</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Update a WordPress term.</p>
@@ -1429,7 +1429,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_term_delete">#</a>
-		<code><a href="source-class-Wordpress.html#2050-2068" title="Go to source code">term_delete</a>( <span>string <var>$term_id</var></span>, <span>string <var>$taxonomy</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#2053-2071" title="Go to source code">term_delete</a>( <span>string <var>$term_id</var></span>, <span>string <var>$taxonomy</var></span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress term.</p>
@@ -1470,7 +1470,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_comment_create">#</a>
-		<code><a href="source-class-Wordpress.html#2070-2150" title="Go to source code">comment_create</a>( <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#2073-2153" title="Go to source code">comment_create</a>( <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress comment.</p>
@@ -1514,7 +1514,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_comment_upsert">#</a>
-		<code><a href="source-class-Wordpress.html#2152-2307" title="Go to source code">comment_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#2155-2317" title="Go to source code">comment_upsert</a>( <span>string <var>$key</var></span>, <span>string <var>$value</var></span>, <span>array <var>$methods</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span></span>, <span>boolean <var>$push_drafts</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$check_only</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create a new WordPress comment or update it if a match is found.</p>
@@ -1568,7 +1568,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_comment_update">#</a>
-		<code><a href="source-class-Wordpress.html#2309-2377" title="Go to source code">comment_update</a>( <span>string <var>$comment_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span> </span>, <span>string <var>$id_field</var>,…</span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#2319-2387" title="Go to source code">comment_update</a>( <span>string <var>$comment_id</var></span>, <span>array <var>$params</var></span>, <span>string <var>$id_field</var> = <span class="php-quote">'comment_ID'</span> </span>, <span>string <var>$id_field</var>,…</span> )</code>
 
 		<div class="description short">
 			<p>Update a WordPress comment.</p>
@@ -1616,7 +1616,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_comment_delete">#</a>
-		<code><a href="source-class-Wordpress.html#2379-2395" title="Go to source code">comment_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Wordpress.html#2389-2405" title="Go to source code">comment_delete</a>( <span>integer <var>$id</var></span>, <span>boolean <var>$force_delete</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Delete a WordPress comment.</p>
@@ -1668,7 +1668,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress.html#15" title="Go to source code"><var>$wpdb</var></a>
+				<a href="source-class-Object_Sync_Sf_Wordpress.html#15" title="Go to source code"><var>$wpdb</var></a>
 
 			<div class="description short">
 				
@@ -1693,7 +1693,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress.html#16" title="Go to source code"><var>$version</var></a>
+				<a href="source-class-Object_Sync_Sf_Wordpress.html#16" title="Go to source code"><var>$version</var></a>
 
 			<div class="description short">
 				
@@ -1718,7 +1718,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress.html#17" title="Go to source code"><var>$text_domain</var></a>
+				<a href="source-class-Object_Sync_Sf_Wordpress.html#17" title="Go to source code"><var>$text_domain</var></a>
 
 			<div class="description short">
 				
@@ -1743,7 +1743,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress.html#18" title="Go to source code"><var>$mappings</var></a>
+				<a href="source-class-Object_Sync_Sf_Wordpress.html#18" title="Go to source code"><var>$mappings</var></a>
 
 			<div class="description short">
 				
@@ -1768,7 +1768,7 @@ developers should use hooks to change this, if it does not meet their needs</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Wordpress.html#19" title="Go to source code"><var>$logging</var></a>
+				<a href="source-class-Object_Sync_Sf_Wordpress.html#19" title="Go to source code"><var>$logging</var></a>
 
 			<div class="description short">
 				
