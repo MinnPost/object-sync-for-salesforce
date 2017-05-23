@@ -98,7 +98,7 @@ class Object_Sync_Sf_Admin {
 		// default token url path
 		$this->default_token_url_path = '/services/oauth2/token';
 		// what Salesforce API version to start the settings with. This is only used in the settings form
-		$this->default_api_version = '39.0';
+		$this->default_api_version = '40.0';
 		// default pull throttle for avoiding going over api limits
 		$this->default_pull_throttle = 5;
 		// default setting for triggerable items
@@ -333,7 +333,7 @@ class Object_Sync_Sf_Admin {
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_CONSUMER_KEY',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY',
 				),
 
 			),
@@ -346,7 +346,7 @@ class Object_Sync_Sf_Admin {
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_CONSUMER_SECRET',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET',
 				),
 			),
 			'callback_url' => array(
@@ -358,7 +358,7 @@ class Object_Sync_Sf_Admin {
 					'type' => 'url',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_CALLBACK_URL',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL',
 				),
 			),
 			'login_base_url' => array(
@@ -370,7 +370,7 @@ class Object_Sync_Sf_Admin {
 					'type' => 'url',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_LOGIN_BASE_URL',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL',
 				),
 			),
 			'authorize_url_path' => array(
@@ -382,7 +382,7 @@ class Object_Sync_Sf_Admin {
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc' => 'For most Salesforce installs, this should not be changed.',
-					'constant' => 'SALESFORCE_AUTHORIZE_URL_PATH',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH',
 					'default' => $this->default_authorize_url_path,
 				),
 			),
@@ -395,7 +395,7 @@ class Object_Sync_Sf_Admin {
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc' => 'For most Salesforce installs, this should not be changed.',
-					'constant' => 'SALESFORCE_TOKEN_URL_PATH',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH',
 					'default' => $this->default_token_url_path,
 				),
 			),
@@ -408,7 +408,7 @@ class Object_Sync_Sf_Admin {
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_API_VERSION',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION',
 					'default' => $this->default_api_version,
 				),
 			),
@@ -474,7 +474,7 @@ class Object_Sync_Sf_Admin {
 					'type' => 'select',
 					'validate' => 'sanitize_text_field',
 					'desc' => '',
-					'constant' => 'SALESFORCE_API_VERSION',
+					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION',
 					'items' => $this->version_options(),
 				),
 			);
