@@ -285,8 +285,8 @@ class Object_Sync_Sf_Salesforce {
 			$title = ucfirst( $status ) . ': on Salesforce API HTTP Request to URL: ' . $url;
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 			}
 
 			$logging->setup(
@@ -369,8 +369,8 @@ class Object_Sync_Sf_Salesforce {
 				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
 				$logging->setup(
@@ -386,8 +386,8 @@ class Object_Sync_Sf_Salesforce {
 				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
 				$logging->setup(
@@ -403,8 +403,8 @@ class Object_Sync_Sf_Salesforce {
 				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 				$logging->setup(
 					__( $title, $this->text_domain ),

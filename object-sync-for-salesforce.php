@@ -52,7 +52,7 @@ class Object_Sync_Salesforce {
 
 	/**
 	* @var object
-	* Load and initialize the Salesforce_Logging class
+	* Load and initialize the Object_Sync_Sf_Logging class
 	*/
 	private $logging;
 
@@ -192,14 +192,14 @@ class Object_Sync_Salesforce {
 	 * @param string $text_domain
 	 *
 	 * @return object
-	 *	Instance of Salesforce_Logging
+	 *	Instance of Object_Sync_Sf_Logging
 	 */
 	private function logging( $wpdb, $version, $text_domain ) {
 		if ( ! class_exists( 'WP_Logging' ) && file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
 			require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 			require_once plugin_dir_path( __FILE__ ) . 'classes/logging.php';
 		}
-		$logging = new Salesforce_Logging( $wpdb, $version, $text_domain );
+		$logging = new Object_Sync_Sf_Logging( $wpdb, $version, $text_domain );
 		return $logging;
 	}
 

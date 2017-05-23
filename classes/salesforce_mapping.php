@@ -365,8 +365,8 @@ class Salesforce_Mapping {
 			$status = 'error';
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 			}
 			$logging->setup(
 				__( ucfirst( $status ) . ': Mapping: error caused by trying to map the WordPress ' . $data['wordpress_object'] . ' with ID of ' . $data['wordpress_id'] . ' to Salesforce ID of 0, which is invalid.', $this->text_domain ),
@@ -385,8 +385,8 @@ class Salesforce_Mapping {
 			$status = 'error';
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 			}
 			$logging->setup(
 				__( ucfirst( $status ) . ': Mapping: there is already a WordPress object mapped to the Salesforce object ' . $data['salesforce_id'] . ' and the mapping object ID is ' . $id, $this->text_domain ),
@@ -559,8 +559,8 @@ class Salesforce_Mapping {
 			// create log entry for multiple maps
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 			}
 			$logging->setup(
 				__( ucfirst( $status ) . ': Mapping: there is more than one mapped WordPress object for the Salesforce object ' . $salesforce_id, $this->text_domain ),

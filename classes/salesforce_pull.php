@@ -254,8 +254,8 @@ class Salesforce_Pull {
 				$title = ucfirst( $status ) . ': ' . $response['errorCode'] . ' ' . $salesforce_mapping['salesforce_object'];
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 
 				$logging->setup(
@@ -495,8 +495,8 @@ class Salesforce_Pull {
 				$status = 'error';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 				}
 				$logging->setup(
 					__( ucfirst( $status ) . ': Salesforce Pull: unable to process queue item because it has no Salesforce Id.', $this->text_domain ),
@@ -578,8 +578,8 @@ class Salesforce_Pull {
 							// create log entry for failed delete
 							if ( isset( $this->logging ) ) {
 								$logging = $this->logging;
-							} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-								$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 							}
 
 							$logging->setup(
@@ -610,8 +610,8 @@ class Salesforce_Pull {
 							$status = 'success';
 							if ( isset( $this->logging ) ) {
 								$logging = $this->logging;
-							} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-								$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 							}
 
 							$logging->setup(
@@ -643,8 +643,8 @@ class Salesforce_Pull {
 						$status = 'notice';
 						if ( isset( $this->logging ) ) {
 							$logging = $this->logging;
-						} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-							$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+						} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+							$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 						}
 
 						$logging->setup(
@@ -802,8 +802,8 @@ class Salesforce_Pull {
 
 								if ( isset( $this->logging ) ) {
 									$logging = $this->logging;
-								} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-									$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+								} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+									$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 								}
 								$parent = 0;
 								$logging->setup(
@@ -827,8 +827,8 @@ class Salesforce_Pull {
 							$body = 'The WordPress ' . $salesforce_mapping['wordpress_object'] . ' with ' . $structure['id_field'] . ' of ' . $wordpress_id . ' is already mapped to the Salesforce ' . $salesforce_mapping['salesforce_object'] . ' with Id of ' . $mapping_object['salesforce_id'] . ' in the mapping object with id of ' . $mapping_object['id'] . '. The Salesforce ' . $salesforce_mapping['salesforce_object'] . ' with Id of ' . $object['Id'] . ' was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing user data without user intention.';
 							if ( isset( $this->logging ) ) {
 								$logging = $this->logging;
-							} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-								$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 							}
 							// if we know the wordpress object id we can put it in there
 							if ( null !== $wordpress_id ) {
@@ -886,8 +886,8 @@ class Salesforce_Pull {
 					$title .= ' (Salesforce ' . $salesforce_mapping['salesforce_object'] . ' with Id ' . ' of ' . $object['Id'] . ')';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 
 					// if we know the wordpress object id we can put it in there
@@ -938,8 +938,8 @@ class Salesforce_Pull {
 
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 
 					$logging->setup(
@@ -964,8 +964,8 @@ class Salesforce_Pull {
 					$status = 'error';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 
 					if ( is_object( $wordpress_id ) ) {
@@ -1015,8 +1015,8 @@ class Salesforce_Pull {
 					$status = 'success';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 
 					$logging->setup(
@@ -1035,8 +1035,8 @@ class Salesforce_Pull {
 					$status = 'error';
 					if ( isset( $this->logging ) ) {
 						$logging = $this->logging;
-					} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-						$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
 					}
 
 					$logging->setup(
