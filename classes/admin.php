@@ -793,7 +793,7 @@ class Object_Sync_Sf_Admin {
 	*/
 	public function notices() {
 
-		require_once plugin_dir_path( __FILE__ ) . '../classes/admin_notice.php';
+		require_once plugin_dir_path( __FILE__ ) . '../classes/admin-notice.php';
 
 		$notices = array(
 			'permission' => array(
