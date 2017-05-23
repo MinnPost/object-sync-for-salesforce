@@ -24,28 +24,27 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Admin_Notice.html">Admin_Notice</a></li>
 				<li><a href="class-Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
-				<li><a href="class-Salesforce.html">Salesforce</a></li>
-				<li><a href="class-Salesforce_Logging.html">Salesforce_Logging</a></li>
-				<li><a href="class-Salesforce_Mapping.html">Salesforce_Mapping</a></li>
-				<li><a href="class-Salesforce_Pull.html">Salesforce_Pull</a></li>
-				<li><a href="class-Salesforce_Push.html">Salesforce_Push</a></li>
-				<li><a href="class-Salesforce_Select_Query.html">Salesforce_Select_Query</a></li>
-				<li><a href="class-Salesforce_Soap.html">Salesforce_Soap</a></li>
-				<li><a href="class-Wordpress.html">Wordpress</a></li>
-				<li><a href="class-Wordpress_Salesforce_Activate.html">Wordpress_Salesforce_Activate</a></li>
-				<li><a href="class-Wordpress_Salesforce_Admin.html">Wordpress_Salesforce_Admin</a></li>
-				<li><a href="class-Wordpress_Salesforce_Deactivate.html">Wordpress_Salesforce_Deactivate</a></li>
-				<li><a href="class-Wordpress_Salesforce_Schedule.html">Wordpress_Salesforce_Schedule</a></li>
+				<li><a href="class-Object_Sync_Sf_Activate.html">Object_Sync_Sf_Activate</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin.html">Object_Sync_Sf_Admin</a></li>
+				<li><a href="class-Object_Sync_Sf_Admin_Notice.html">Object_Sync_Sf_Admin_Notice</a></li>
+				<li><a href="class-Object_Sync_Sf_Deactivate.html">Object_Sync_Sf_Deactivate</a></li>
+				<li><a href="class-Object_Sync_Sf_Logging.html">Object_Sync_Sf_Logging</a></li>
+				<li><a href="class-Object_Sync_Sf_Mapping.html">Object_Sync_Sf_Mapping</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce.html">Object_Sync_Sf_Salesforce</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
+				<li><a href="class-Object_Sync_Sf_Salesforce_Soap.html">Object_Sync_Sf_Salesforce_Soap</a></li>
+				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
+				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
 			</ul>
 
 
 
 			<h3>Exceptions</h3>
 			<ul>
-				<li><a href="class-SalesforceException.html">SalesforceException</a></li>
-				<li><a href="class-SalesforcePullException.html">SalesforcePullException</a></li>
+				<li><a href="class-Object_Sync_Sf_Exception.html">Object_Sync_Sf_Exception</a></li>
 				<li><a href="class-WordpressException.html">WordpressException</a></li>
 			</ul>
 
@@ -95,7 +94,7 @@
 </span><span id="10" class="l"><a href="#10">  10: </a><span class="php-comment">/**
 </span></span><span id="11" class="l"><a href="#11">  11: </a><span class="php-comment"> * Ability to authorize and communicate with the Salesforce APIs. This class can make read and write calls to Salesforce, and also cache the responses in WordPress
 </span></span><span id="12" class="l"><a href="#12">  12: </a><span class="php-comment"> */</span>
-</span><span id="13" class="l"><a href="#13">  13: </a><span class="php-keyword1">class</span> Salesforce {
+</span><span id="13" class="l"><a href="#13">  13: </a><span class="php-keyword1">class</span> Object_Sync_Sf_Salesforce {
 </span><span id="14" class="l"><a href="#14">  14: </a>
 </span><span id="15" class="l"><a href="#15">  15: </a>    <span class="php-keyword1">public</span> <span class="php-var">$response</span>;
 </span><span id="16" class="l"><a href="#16">  16: </a>
@@ -188,7 +187,7 @@
 </span></span><span id="103" class="l"><a href="#103"> 103: </a><span class="php-comment">    * @return string
 </span></span><span id="104" class="l"><a href="#104"> 104: </a><span class="php-comment">    *   sObject name, e.g. &quot;Account&quot;, &quot;Contact&quot;, &quot;my__Custom_Object__c&quot; or FALSE
 </span></span><span id="105" class="l"><a href="#105"> 105: </a><span class="php-comment">    *   if no match could be found.
-</span></span><span id="106" class="l"><a href="#106"> 106: </a><span class="php-comment">    * @throws SalesforceException
+</span></span><span id="106" class="l"><a href="#106"> 106: </a><span class="php-comment">    * @throws Object_Sync_Sf_Exception
 </span></span><span id="107" class="l"><a href="#107"> 107: </a><span class="php-comment">    */</span>
 </span><span id="108" class="l"><a href="#108"> 108: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> get_sobject_type( <span class="php-var">$sf_id</span> ) {
 </span><span id="109" class="l"><a href="#109"> 109: </a>        <span class="php-var">$objects</span> = <span class="php-var">$this</span>-&gt;objects(
@@ -244,7 +243,7 @@
 </span></span><span id="159" class="l"><a href="#159"> 159: </a><span class="php-comment">    * @return mixed
 </span></span><span id="160" class="l"><a href="#160"> 160: </a><span class="php-comment">    *   The requested response.
 </span></span><span id="161" class="l"><a href="#161"> 161: </a><span class="php-comment">    *
-</span></span><span id="162" class="l"><a href="#162"> 162: </a><span class="php-comment">    * @throws SalesforceException
+</span></span><span id="162" class="l"><a href="#162"> 162: </a><span class="php-comment">    * @throws Object_Sync_Sf_Exception
 </span></span><span id="163" class="l"><a href="#163"> 163: </a><span class="php-comment">    */</span>
 </span><span id="164" class="l"><a href="#164"> 164: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> api_call( <span class="php-var">$path</span>, <span class="php-var">$params</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$method</span> = <span class="php-quote">'GET'</span>, <span class="php-var">$options</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$type</span> = <span class="php-quote">'rest'</span> ) {
 </span><span id="165" class="l"><a href="#165"> 165: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-var">$this</span>-&gt;get_access_token() ) {
@@ -267,7 +266,7 @@
 </span><span id="182" class="l"><a href="#182"> 182: </a>                <span class="php-var">$this</span>-&gt;response = <span class="php-var">$this</span>-&gt;api_http_request( <span class="php-var">$path</span>, <span class="php-var">$params</span>, <span class="php-var">$method</span>, <span class="php-var">$options</span>, <span class="php-var">$type</span> );
 </span><span id="183" class="l"><a href="#183"> 183: </a>                <span class="php-comment">// Throw an error if we still have bad response.</span>
 </span><span id="184" class="l"><a href="#184"> 184: </a>                <span class="php-keyword1">if</span> ( ! <span class="php-keyword2">in_array</span>( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'code'</span>], <span class="php-var">$this</span>-&gt;success_codes ) ) {
-</span><span id="185" class="l"><a href="#185"> 185: </a>                    <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> SalesforceException( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'data'</span>][<span class="php-num">0</span>][<span class="php-quote">'message'</span>], <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'code'</span>] );
+</span><span id="185" class="l"><a href="#185"> 185: </a>                    <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> Object_Sync_Sf_Exception( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'data'</span>][<span class="php-num">0</span>][<span class="php-quote">'message'</span>], <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'code'</span>] );
 </span><span id="186" class="l"><a href="#186"> 186: </a>                }
 </span><span id="187" class="l"><a href="#187"> 187: </a>                <span class="php-keyword1">break</span>;
 </span><span id="188" class="l"><a href="#188"> 188: </a>            <span class="php-keyword1">case</span> <span class="php-keyword2">in_array</span>( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'code'</span>], <span class="php-var">$this</span>-&gt;success_codes ):
@@ -276,7 +275,7 @@
 </span><span id="191" class="l"><a href="#191"> 191: </a>            <span class="php-keyword1">default</span>:
 </span><span id="192" class="l"><a href="#192"> 192: </a>                <span class="php-comment">// We have problem and no specific Salesforce error provided.</span>
 </span><span id="193" class="l"><a href="#193"> 193: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'data'</span>] ) ) {
-</span><span id="194" class="l"><a href="#194"> 194: </a>                    <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> SalesforceException( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'error'</span>], <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'code'</span>] );
+</span><span id="194" class="l"><a href="#194"> 194: </a>                    <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> Object_Sync_Sf_Exception( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'error'</span>], <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'code'</span>] );
 </span><span id="195" class="l"><a href="#195"> 195: </a>                }
 </span><span id="196" class="l"><a href="#196"> 196: </a>        }
 </span><span id="197" class="l"><a href="#197"> 197: </a>
@@ -285,11 +284,11 @@
 </span><span id="200" class="l"><a href="#200"> 200: </a>        }
 </span><span id="201" class="l"><a href="#201"> 201: </a>
 </span><span id="202" class="l"><a href="#202"> 202: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'data'</span>][<span class="php-quote">'error'</span>] ) ) {
-</span><span id="203" class="l"><a href="#203"> 203: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> SalesforceException( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'data'</span>][<span class="php-quote">'error_description'</span>], <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'data'</span>][<span class="php-quote">'error'</span>] );
+</span><span id="203" class="l"><a href="#203"> 203: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> Object_Sync_Sf_Exception( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'data'</span>][<span class="php-quote">'error_description'</span>], <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'data'</span>][<span class="php-quote">'error'</span>] );
 </span><span id="204" class="l"><a href="#204"> 204: </a>        }
 </span><span id="205" class="l"><a href="#205"> 205: </a>
 </span><span id="206" class="l"><a href="#206"> 206: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'data'</span>][<span class="php-quote">'errorCode'</span>] ) ) {
-</span><span id="207" class="l"><a href="#207"> 207: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> SalesforceException( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'data'</span>][<span class="php-quote">'message'</span>], <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'code'</span>] );
+</span><span id="207" class="l"><a href="#207"> 207: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> Object_Sync_Sf_Exception( <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'data'</span>][<span class="php-quote">'message'</span>], <span class="php-var">$this</span>-&gt;response[<span class="php-quote">'code'</span>] );
 </span><span id="208" class="l"><a href="#208"> 208: </a>        }
 </span><span id="209" class="l"><a href="#209"> 209: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;response;
 </span><span id="210" class="l"><a href="#210"> 210: </a>    }
@@ -370,8 +369,8 @@
 </span><span id="285" class="l"><a href="#285"> 285: </a>            <span class="php-var">$title</span> = <span class="php-keyword2">ucfirst</span>( <span class="php-var">$status</span> ) . <span class="php-quote">': on Salesforce API HTTP Request to URL: '</span> . <span class="php-var">$url</span>;
 </span><span id="286" class="l"><a href="#286"> 286: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="287" class="l"><a href="#287"> 287: </a>                <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="288" class="l"><a href="#288"> 288: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="289" class="l"><a href="#289"> 289: </a>                <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="288" class="l"><a href="#288"> 288: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="289" class="l"><a href="#289"> 289: </a>                <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="290" class="l"><a href="#290"> 290: </a>            }
 </span><span id="291" class="l"><a href="#291"> 291: </a>
 </span><span id="292" class="l"><a href="#292"> 292: </a>            <span class="php-var">$logging</span>-&gt;setup(
@@ -454,8 +453,8 @@
 </span><span id="369" class="l"><a href="#369"> 369: </a>                <span class="php-var">$title</span> = <span class="php-keyword2">ucfirst</span>( <span class="php-var">$status</span> ) . <span class="php-quote">': '</span> . <span class="php-var">$code</span> . <span class="php-quote">': on Salesforce curl request'</span>;
 </span><span id="370" class="l"><a href="#370"> 370: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="371" class="l"><a href="#371"> 371: </a>                    <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="372" class="l"><a href="#372"> 372: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="373" class="l"><a href="#373"> 373: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="372" class="l"><a href="#372"> 372: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="373" class="l"><a href="#373"> 373: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="374" class="l"><a href="#374"> 374: </a>                }
 </span><span id="375" class="l"><a href="#375"> 375: </a>
 </span><span id="376" class="l"><a href="#376"> 376: </a>                <span class="php-var">$logging</span>-&gt;setup(
@@ -471,8 +470,8 @@
 </span><span id="386" class="l"><a href="#386"> 386: </a>                <span class="php-var">$title</span> = <span class="php-keyword2">ucfirst</span>( <span class="php-var">$status</span> ) . <span class="php-quote">': '</span> . <span class="php-var">$code</span> . <span class="php-quote">': on Salesforce curl request'</span>;
 </span><span id="387" class="l"><a href="#387"> 387: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="388" class="l"><a href="#388"> 388: </a>                    <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="389" class="l"><a href="#389"> 389: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="390" class="l"><a href="#390"> 390: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="389" class="l"><a href="#389"> 389: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="390" class="l"><a href="#390"> 390: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="391" class="l"><a href="#391"> 391: </a>                }
 </span><span id="392" class="l"><a href="#392"> 392: </a>
 </span><span id="393" class="l"><a href="#393"> 393: </a>                <span class="php-var">$logging</span>-&gt;setup(
@@ -488,8 +487,8 @@
 </span><span id="403" class="l"><a href="#403"> 403: </a>                <span class="php-var">$title</span> = <span class="php-keyword2">ucfirst</span>( <span class="php-var">$status</span> ) . <span class="php-quote">': '</span> . <span class="php-var">$code</span> . <span class="php-quote">': on Salesforce curl request'</span>;
 </span><span id="404" class="l"><a href="#404"> 404: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="405" class="l"><a href="#405"> 405: </a>                    <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="406" class="l"><a href="#406"> 406: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Salesforce_Logging'</span> ) ) {
-</span><span id="407" class="l"><a href="#407"> 407: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Salesforce_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
+</span><span id="406" class="l"><a href="#406"> 406: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="407" class="l"><a href="#407"> 407: </a>                    <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;text_domain );
 </span><span id="408" class="l"><a href="#408"> 408: </a>                }
 </span><span id="409" class="l"><a href="#409"> 409: </a>                <span class="php-var">$logging</span>-&gt;setup(
 </span><span id="410" class="l"><a href="#410"> 410: </a>                    __( <span class="php-var">$title</span>, <span class="php-var">$this</span>-&gt;text_domain ),
@@ -593,12 +592,12 @@
 </span></span><span id="508" class="l"><a href="#508"> 508: </a><span class="php-comment">    * this is a scheduleable class and so we could add a method from this class to run every 24 hours, but it's unclear to me that we need it. salesforce seems to refresh itself as it needs to.
 </span></span><span id="509" class="l"><a href="#509"> 509: </a><span class="php-comment">    * but it could be a performance boost to do it at scheduleable intervals instead.
 </span></span><span id="510" class="l"><a href="#510"> 510: </a><span class="php-comment">    *
-</span></span><span id="511" class="l"><a href="#511"> 511: </a><span class="php-comment">    * @throws SalesforceException
+</span></span><span id="511" class="l"><a href="#511"> 511: </a><span class="php-comment">    * @throws Object_Sync_Sf_Exception
 </span></span><span id="512" class="l"><a href="#512"> 512: </a><span class="php-comment">    */</span>
 </span><span id="513" class="l"><a href="#513"> 513: </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> refresh_token() {
 </span><span id="514" class="l"><a href="#514"> 514: </a>        <span class="php-var">$refresh_token</span> = <span class="php-var">$this</span>-&gt;get_refresh_token();
 </span><span id="515" class="l"><a href="#515"> 515: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$refresh_token</span> ) ) {
-</span><span id="516" class="l"><a href="#516"> 516: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> SalesforceException( esc_html__( <span class="php-quote">'There is no refresh token.'</span>, <span class="php-var">$this</span>-&gt;text_domain ) );
+</span><span id="516" class="l"><a href="#516"> 516: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> Object_Sync_Sf_Exception( esc_html__( <span class="php-quote">'There is no refresh token.'</span>, <span class="php-var">$this</span>-&gt;text_domain ) );
 </span><span id="517" class="l"><a href="#517"> 517: </a>        }
 </span><span id="518" class="l"><a href="#518"> 518: </a>
 </span><span id="519" class="l"><a href="#519"> 519: </a>        <span class="php-var">$data</span> = <span class="php-keyword1">array</span>(
@@ -619,7 +618,7 @@
 </span><span id="534" class="l"><a href="#534"> 534: </a>        <span class="php-var">$response</span> = <span class="php-var">$this</span>-&gt;<span class="php-keyword2">http_request</span>( <span class="php-var">$url</span>, <span class="php-var">$data</span>, <span class="php-var">$headers</span>, <span class="php-quote">'POST'</span> );
 </span><span id="535" class="l"><a href="#535"> 535: </a>
 </span><span id="536" class="l"><a href="#536"> 536: </a>        <span class="php-keyword1">if</span> ( <span class="php-num">200</span> !== <span class="php-var">$response</span>[<span class="php-quote">'code'</span>] ) {
-</span><span id="537" class="l"><a href="#537"> 537: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> SalesforceException(
+</span><span id="537" class="l"><a href="#537"> 537: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> Object_Sync_Sf_Exception(
 </span><span id="538" class="l"><a href="#538"> 538: </a>                esc_html(
 </span><span id="539" class="l"><a href="#539"> 539: </a>                    <span class="php-keyword2">sprintf</span>(
 </span><span id="540" class="l"><a href="#540"> 540: </a>                        __( <span class="php-quote">'Unable to get a Salesforce access token. Salesforce returned the following errorCode: '</span>, <span class="php-var">$this</span>-&gt;text_domain ) . <span class="php-var">$response</span>[<span class="php-quote">'code'</span>]
@@ -632,7 +631,7 @@
 </span><span id="547" class="l"><a href="#547"> 547: </a>        <span class="php-var">$data</span> = <span class="php-var">$response</span>[<span class="php-quote">'data'</span>];
 </span><span id="548" class="l"><a href="#548"> 548: </a>
 </span><span id="549" class="l"><a href="#549"> 549: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$data</span> ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$data</span>[<span class="php-quote">'error'</span>] ) ) {
-</span><span id="550" class="l"><a href="#550"> 550: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> SalesforceException( <span class="php-var">$data</span>[<span class="php-quote">'error_description'</span>], <span class="php-var">$data</span>[<span class="php-quote">'error'</span>] );
+</span><span id="550" class="l"><a href="#550"> 550: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> Object_Sync_Sf_Exception( <span class="php-var">$data</span>[<span class="php-quote">'error_description'</span>], <span class="php-var">$data</span>[<span class="php-quote">'error'</span>] );
 </span><span id="551" class="l"><a href="#551"> 551: </a>        }
 </span><span id="552" class="l"><a href="#552"> 552: </a>
 </span><span id="553" class="l"><a href="#553"> 553: </a>        <span class="php-var">$this</span>-&gt;set_access_token( <span class="php-var">$data</span>[<span class="php-quote">'access_token'</span>] );
@@ -646,7 +645,7 @@
 </span></span><span id="561" class="l"><a href="#561"> 561: </a><span class="php-comment">    * @param string $id
 </span></span><span id="562" class="l"><a href="#562"> 562: </a><span class="php-comment">    *   Identity URL.
 </span></span><span id="563" class="l"><a href="#563"> 563: </a><span class="php-comment">    *
-</span></span><span id="564" class="l"><a href="#564"> 564: </a><span class="php-comment">    * @throws SalesforceException
+</span></span><span id="564" class="l"><a href="#564"> 564: </a><span class="php-comment">    * @throws Object_Sync_Sf_Exception
 </span></span><span id="565" class="l"><a href="#565"> 565: </a><span class="php-comment">    */</span>
 </span><span id="566" class="l"><a href="#566"> 566: </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> set_identity( <span class="php-var">$id</span> ) {
 </span><span id="567" class="l"><a href="#567"> 567: </a>        <span class="php-var">$headers</span> = <span class="php-keyword1">array</span>(
@@ -656,7 +655,7 @@
 </span><span id="571" class="l"><a href="#571"> 571: </a>        );
 </span><span id="572" class="l"><a href="#572"> 572: </a>        <span class="php-var">$response</span> = <span class="php-var">$this</span>-&gt;<span class="php-keyword2">http_request</span>( <span class="php-var">$id</span>, <span class="php-keyword1">null</span>, <span class="php-var">$headers</span> );
 </span><span id="573" class="l"><a href="#573"> 573: </a>        <span class="php-keyword1">if</span> ( <span class="php-num">200</span> !== <span class="php-var">$response</span>[<span class="php-quote">'code'</span>] ) {
-</span><span id="574" class="l"><a href="#574"> 574: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> SalesforceException( esc_html__( <span class="php-quote">'Unable to access identity service.'</span>, <span class="php-var">$this</span>-&gt;text_domain ), <span class="php-var">$response</span>[<span class="php-quote">'code'</span>] );
+</span><span id="574" class="l"><a href="#574"> 574: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> Object_Sync_Sf_Exception( esc_html__( <span class="php-quote">'Unable to access identity service.'</span>, <span class="php-var">$this</span>-&gt;text_domain ), <span class="php-var">$response</span>[<span class="php-quote">'code'</span>] );
 </span><span id="575" class="l"><a href="#575"> 575: </a>        }
 </span><span id="576" class="l"><a href="#576"> 576: </a>        <span class="php-var">$data</span> = <span class="php-var">$response</span>[<span class="php-quote">'data'</span>];
 </span><span id="577" class="l"><a href="#577"> 577: </a>        update_option( <span class="php-quote">'object_sync_for_salesforce_identity'</span>, <span class="php-var">$data</span> );
@@ -714,7 +713,7 @@
 </span><span id="629" class="l"><a href="#629"> 629: </a>
 </span><span id="630" class="l"><a href="#630"> 630: </a>        <span class="php-keyword1">if</span> ( <span class="php-num">200</span> !== <span class="php-var">$response</span>[<span class="php-quote">'code'</span>] ) {
 </span><span id="631" class="l"><a href="#631"> 631: </a>            <span class="php-var">$error</span> = <span class="php-keyword1">isset</span>( <span class="php-var">$data</span>[<span class="php-quote">'error_description'</span>] ) ? <span class="php-var">$data</span>[<span class="php-quote">'error_description'</span>] : <span class="php-var">$response</span>[<span class="php-quote">'error'</span>];
-</span><span id="632" class="l"><a href="#632"> 632: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> SalesforceException( <span class="php-var">$error</span>, <span class="php-var">$response</span>[<span class="php-quote">'code'</span>] );
+</span><span id="632" class="l"><a href="#632"> 632: </a>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> Object_Sync_Sf_Exception( <span class="php-var">$error</span>, <span class="php-var">$response</span>[<span class="php-quote">'code'</span>] );
 </span><span id="633" class="l"><a href="#633"> 633: </a>        }
 </span><span id="634" class="l"><a href="#634"> 634: </a>
 </span><span id="635" class="l"><a href="#635"> 635: </a>        <span class="php-comment">// Ensure all required attributes are returned. They can be omitted if the</span>
@@ -1240,7 +1239,7 @@
 </span><span id="1155" class="l"><a href="#1155">1155: </a>            <span class="php-keyword1">return</span> ! <span class="php-keyword1">empty</span>( <span class="php-var">$cached</span>[ <span class="php-var">$name</span> ][ <span class="php-var">$devname</span> ] ) ? <span class="php-var">$cached</span>[ <span class="php-var">$name</span> ][ <span class="php-var">$devname</span> ][<span class="php-quote">'Id'</span>] : <span class="php-keyword1">null</span>;
 </span><span id="1156" class="l"><a href="#1156">1156: </a>        }
 </span><span id="1157" class="l"><a href="#1157">1157: </a>
-</span><span id="1158" class="l"><a href="#1158">1158: </a>        <span class="php-var">$query</span> = <span class="php-keyword1">new</span> Salesforce_Select_Query( <span class="php-quote">'RecordType'</span> );
+</span><span id="1158" class="l"><a href="#1158">1158: </a>        <span class="php-var">$query</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Salesforce_Select_Query( <span class="php-quote">'RecordType'</span> );
 </span><span id="1159" class="l"><a href="#1159">1159: </a>        <span class="php-var">$query</span>-&gt;fields = <span class="php-keyword1">array</span>( <span class="php-quote">'Id'</span>, <span class="php-quote">'Name'</span>, <span class="php-quote">'DeveloperName'</span>, <span class="php-quote">'SobjectType'</span> );
 </span><span id="1160" class="l"><a href="#1160">1160: </a>
 </span><span id="1161" class="l"><a href="#1161">1161: </a>        <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;query( <span class="php-var">$query</span> );
@@ -1268,12 +1267,9 @@
 </span><span id="1183" class="l"><a href="#1183">1183: </a>
 </span><span id="1184" class="l"><a href="#1184">1184: </a>}
 </span><span id="1185" class="l"><a href="#1185">1185: </a>
-</span><span id="1186" class="l"><a href="#1186">1186: </a><span class="php-keyword1">class</span> SalesforceException <span class="php-keyword1">extends</span> Exception {
+</span><span id="1186" class="l"><a href="#1186">1186: </a><span class="php-keyword1">class</span> Object_Sync_Sf_Exception <span class="php-keyword1">extends</span> Exception {
 </span><span id="1187" class="l"><a href="#1187">1187: </a>}
-</span><span id="1188" class="l"><a href="#1188">1188: </a>
-</span><span id="1189" class="l"><a href="#1189">1189: </a><span class="php-keyword1">class</span> SalesforcePullException <span class="php-keyword1">extends</span> SalesforceException {
-</span><span id="1190" class="l"><a href="#1190">1190: </a>}
-</span><span id="1191" class="l"><a href="#1191">1191: </a></span></code></pre>
+</span><span id="1188" class="l"><a href="#1188">1188: </a></span></code></pre>
 
 	<div id="footer">
 		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>
@@ -1281,6 +1277,6 @@
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?e025fad4c1553a0f094faf53f85cd94c02040af7"></script>
+<script src="elementlist.js?073b305b935ed6d0264c33e7073e310cd6cccb4f"></script>
 </body>
 </html>

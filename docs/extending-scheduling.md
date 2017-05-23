@@ -8,12 +8,12 @@ This plugin starts with an array of what classes can be scheduled with the [`sch
 $this->schedulable_classes = array(
 	'salesforce_push' => array(
 	    'label' => 'Push to Salesforce',
-	    'class' => 'Salesforce_Push',
+	    'class' => 'Object_Sync_Sf_Salesforce_Push',
 	    'callback' => 'salesforce_push_sync_rest',
 	),
 	'salesforce_pull' => array(
 	    'label' => 'Pull from Salesforce',
-	    'class' => 'Salesforce_Pull',
+	    'class' => 'Object_Sync_Sf_Salesforce_Pull',
 	    'initializer' => 'salesforce_pull',
 	    'callback' => 'salesforce_pull_process_records',
 	),
@@ -39,7 +39,7 @@ function modify_schedulable_classes( $schedulable_classes ) {
     $schedulable_classes = array(
 		'salesforce_push' => array(
 		    'label' => 'Push to Salesforce',
-		    'class' => 'Salesforce_Push',
+		    'class' => 'Object_Sync_Sf_Salesforce_Push',
 		    'callback' => 'salesforce_push_sync_rest',
 		),
 		'wordpress' => array(
