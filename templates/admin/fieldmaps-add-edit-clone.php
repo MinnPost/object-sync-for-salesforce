@@ -163,12 +163,12 @@
 		<table class="wp-list-table widefat striped fields">
 			<thead>
 				<tr>
-					<th class="column-wordpress_field">WordPress Field</th>
-					<th class="column-salesforce_field">Salesforce Field</th>
-					<th class="column-is_prematch">Prematch</th>
-					<th class="column-is_key">Salesforce Key</th>
-					<th class="column-direction">Direction</th>
-					<th class="column-is_delete">Delete</th>
+					<th class="column-wordpress_field"><?php echo esc_html__( 'WordPress Field', 'object-sync-for-salesforce' ); ?></th>
+					<th class="column-salesforce_field"><?php echo esc_html__( 'Salesforce Field', 'object-sync-for-salesforce' ); ?></th>
+					<th class="column-is_prematch"><?php echo esc_html__( 'Prematch', 'object-sync-for-salesforce' ); ?></th>
+					<th class="column-is_key"><?php echo esc_html__( 'Salesforce Key', 'object-sync-for-salesforce' ); ?></th>
+					<th class="column-direction"><?php echo esc_html__( 'Direction', 'object-sync-for-salesforce' ); ?></th>
+					<th class="column-is_delete"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
