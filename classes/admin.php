@@ -1258,9 +1258,9 @@ class Object_Sync_Sf_Admin {
 				}
 
 				echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
-				    esc_html( $value ),
-				    esc_attr( $selected ),
-				    esc_html( $text )
+					esc_attr( $value ),
+					esc_attr( $selected ),
+					esc_html( $text )
 				);
 
 			}
