@@ -175,6 +175,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @since       1.0
 	 *
 	 * @uses        self::add()
+	 * @see         Object_Sync_Sf_Mapping::__construct()    the location of the bitmasks that define the logging triggers.
 	 *
 	 * @return      none
 	*/
@@ -182,7 +183,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public function setup( $title, $message, $trigger = 0, $parent = 0, $status ) {
 		if ( '1' === $this->enabled && in_array( $status, $this->statuses_to_log, true ) ) {
 			$triggers_to_log = get_option( 'object_sync_for_salesforce_triggers_to_log', array() );
-			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in salesforce_mapping, starting in line 70
+			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in Object_Sync_Sf_Mapping class's method __construct()
 			if ( in_array( $trigger, $triggers_to_log ) || 0 === $trigger ) {
 				$this->add( $title, $message, $parent );
 			}
@@ -206,10 +207,10 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public static function add( $title = '', $message = '', $parent = 0, $type = 'salesforce' ) {
 
 		$log_data = array(
-			'post_title'   => $title,
-			'post_content' => $message,
-			'post_parent'  => $parent,
-			'log_type'     => $type,
+			'post_title'   => sanitize_title( $title, htmlentities( $title) ),
+			'post_content' => wp_kses_post( $message ),
+			'post_parent'  => esc_attr( $parent ),
+			'log_type'     => esc_attr( $type ),
 		);
 
 		return self::insert_log( $log_data );
@@ -231,9 +232,9 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public static function get_logs( $object_id = 0, $type = 'salesforce', $paged = null ) {
 		return self::get_connected_logs(
 			array(
-				'post_parent' => $object_id,
-				'paged' => $paged,
-				'log_type' => $type,
+				'post_parent' => (int) $object_id,
+				'paged' => (int) $paged,
+				'log_type' => (string) $type,
 			)
 		);
 	}
@@ -307,7 +308,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public static function get_log_count( $object_id = 0, $type = 'salesforce', $meta_query = null ) {
 
 		$query_args = array(
-			'post_parent'    => $object_id,
+			'post_parent'    => (int) $object_id,
 			'post_type'      => 'wp_log',
 			'posts_per_page' => 100,
 			'post_status'    => 'publish',
@@ -319,7 +320,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 				array(
 					'taxonomy' => 'wp_log_type',
 					'field'    => 'slug',
-					'terms'    => $type,
+					'terms'    => sanitize_key( $type ),
 				),
 			);
 
