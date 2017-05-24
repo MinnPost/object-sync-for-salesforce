@@ -1457,7 +1457,7 @@ class Object_Sync_Sf_Admin {
 			if ( 'settings' === $tab_key || ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) ) {
 				echo sprintf( '<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
 					esc_attr( $active ),
-					esc_url( 'page=object-sync-salesforce-admin&tab=' . $tab_key ),
+					esc_url( '?page=object-sync-salesforce-admin&tab=' . $tab_key ),
 					esc_html( $tab_caption )
 				);
 			}
