@@ -182,15 +182,23 @@ class Object_Sync_Sf_Admin {
 			switch ( $tab ) {
 				case 'authorize':
 					if ( isset( $_GET['code'] ) ) {
-						$is_authorized = $this->salesforce['sfapi']->request_token( sanitize_key( $_GET['code'] ) );
-						echo "<script>window.location = '$callback_url';</script>";
+						// this string is an oauth token
+						$data = esc_html( wp_unslash( $_GET['code'] ) );
+						$is_authorized = $this->salesforce['sfapi']->request_token( $data );
+						?>
+						<script>window.location = '<?php echo esc_url_raw( $callback_url ); ?>'</script>
+						<?php
 					} elseif ( true === $this->salesforce['is_authorized'] ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/authorized.php' );
 							$this->status( $this->salesforce['sfapi'] );
 					} elseif ( true === is_object( $this->salesforce['sfapi'] ) && isset( $consumer_key ) && isset( $consumer_secret ) ) {
-						echo '<p><a class="button button-primary" href="' . $this->salesforce['sfapi']->get_authorization_code() . '">' . esc_html( 'Connect to Salesforce' ) . '</a></p>';
+						?>
+						<p><a class="button button-primary" href="<?php echo esc_url( $this->salesforce['sfapi']->get_authorization_code() ); ?>"><?php echo esc_html__( 'Connect to Salesforce', 'object-sync-for-salesforce' ); ?></a></p>
+						<?php
 					} else {
-						$message = __( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="' . get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=settings' ) . '">Settings</a> tab to add them.', 'object-sync-for-salesforce' );
+						$url = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=settings' ) );
+						$anchor = esc_html__( 'Settings', 'object-sync-for-salesforce' );
+						$message = sprintf( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="%s">%s</a> tab to add them.', $url, $anchor );
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
 					}
 					break;
@@ -237,15 +245,13 @@ class Object_Sync_Sf_Admin {
 					} // End if().
 					break;
 				case 'logout':
-					$message = $this->logout();
-					echo '<p>' . $message . '</p>';
+					$this->logout();
 					break;
 				case 'clear_schedule':
 					if ( isset( $_GET['schedule_name'] ) ) {
 						$schedule_name = sanitize_key( $_GET['schedule_name'] );
 					}
-					$message = $this->clear_schedule( $schedule_name );
-					echo '<p>' . $message . '</p>';
+					$this->clear_schedule( $schedule_name );
 					break;
 				case 'settings':
 					$consumer_key = $this->login_credentials['consumer_key'];
@@ -254,7 +260,9 @@ class Object_Sync_Sf_Admin {
 						if ( true === $this->salesforce['is_authorized'] ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
 						} else {
-							$message = __( 'Salesforce needs to be authorized to connect to this website. Use the <a href="' . $callback_url . '">Authorize tab</a> to connect.', 'object-sync-for-salesforce' );
+							$url = esc_url( $callback_url );
+							$anchor = esc_html__( 'Authorize tab', 'object-sync-for-salesforce' );
+							$message = sprintf( 'Salesforce needs to be authorized to connect to this website. Use the <a href="%s">%s</a> to connect.', $url, $anchor );
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
 						}
@@ -267,20 +275,26 @@ class Object_Sync_Sf_Admin {
 					$content_before = apply_filters( 'object_sync_for_salesforce_settings_tab_content_before', null, $tab );
 					$content_after = apply_filters( 'object_sync_for_salesforce_settings_tab_content_after', null, $tab );
 					if ( null !== $content_before ) {
-						echo $content_before;
+						echo esc_html( $content_before );
 					}
 					if ( true === $include_settings ) {
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
 					}
 					if ( null !== $content_after ) {
-						echo $content_after;
+						echo esc_html( $content_after );
 					}
 					break;
 			} // End switch().
 		} catch ( SalesforceApiException $ex ) {
-				echo 'Error ' . $ex->getCode() . ', ' . $ex->getMessage();
+			echo sprintf( '<p>Error <strong>%1$s</strong>: %2$s</p>',
+				absint( $ex->getCode() ),
+		    	esc_html( $ex->getMessage() )
+		    );
 		} catch ( Exception $ex ) {
-			echo 'Error ' . $ex->getCode() . ', ' . $ex->getMessage();
+			echo sprintf( '<p>Error <strong>%1$s</strong>: %2$s</p>',
+				absint( $ex->getCode() ),
+		    	esc_html( $ex->getMessage() )
+		    );
 		} // End try().
 		echo '</div>';
 	}
@@ -569,14 +583,14 @@ class Object_Sync_Sf_Admin {
 					),
 				),
 				$key . '_clear_button' => array(
-					'title' => __( 'This queue has ' . $this->get_schedule_count( $key ) . ' ' . ( $this->get_schedule_count( $key ) === '1' ? 'item' : 'items' ), 'object-sync-for-salesforce' ),
+					'title' => sprintf( 'This queue has ' . _n( '%s item', '%s items', $this->get_schedule_count( $key ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key ) ),
 					'callback' => $callbacks['link'],
 					'page' => $page,
 					'section' => $key,
 					'args' => array(
 						'label' => 'Clear this queue',
 						'desc' => '',
-						'url' => '?page=object-sync-salesforce-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key,
+						'url' => esc_url( '?page=object-sync-salesforce-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key ),
 						'link_class' => 'button button-secondary',
 					),
 				),
@@ -594,7 +608,7 @@ class Object_Sync_Sf_Admin {
 						'title' => $title,
 						'id' => $id,
 						'label_for' => $id,
-						'name' => $name
+						'name' => $name,
 					)
 				);
 				add_settings_field( $id, $title, $callback, $page, $section, $args );
@@ -1296,7 +1310,10 @@ class Object_Sync_Sf_Admin {
 		$this->access_token = delete_option( 'object_sync_for_salesforce_access_token' );
 		$this->instance_url = delete_option( 'object_sync_for_salesforce_instance_url' );
 		$this->refresh_token = delete_option( 'object_sync_for_salesforce_refresh_token' );
-		return 'You have been logged out. You can use use the connect button to log in again.';
+		echo sprintf( '<p>You have been logged out. You can use the <a href="%1$s">%2$s</a> tab to log in again.</p>',
+		    esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=authorize' ) ),
+		    esc_html__( 'Authorize', 'object-sync-for-salesforce' )
+		);
 	}
 
 	/**
@@ -1410,9 +1427,9 @@ class Object_Sync_Sf_Admin {
 		if ( '' !== $schedule_name ) {
 			$schedule = $this->schedule( $schedule_name );
 			$schedule->cancel_by_name( $schedule_name );
-			return 'You have cleared the ' . $schedule_name . ' schedule.';
+			echo sprintf( __( 'You have cleared the %s schedule.', 'object-sync-for-salesforce' ), $schedule_name );
 		} else {
-			return 'You need to specify the name of the schedule you want to clear.';
+			echo esc_html__( 'You need to specify the name of the schedule you want to clear.', 'object-sync-for-salesforce' );
 		}
 	}
 
