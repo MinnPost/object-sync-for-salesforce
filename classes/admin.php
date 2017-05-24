@@ -199,7 +199,8 @@ class Object_Sync_Sf_Admin {
 					} else {
 						$url = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=settings' ) );
 						$anchor = esc_html__( 'Settings', 'object-sync-for-salesforce' );
-						$message = sprintf( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="%s">%s</a> tab to add them.', $url, $anchor );
+						// translators: placeholders are for the settings tab link: 1) the url, and 2) the anchor text
+						$message = sprintf( esc_html__( 'Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href="%1$s">%2$s</a> tab to add them.', 'object-sync-salesforce' ), $url, $anchor );
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
 					}
 					break;
