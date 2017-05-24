@@ -1053,6 +1053,7 @@ class Object_Sync_Sf_Admin {
 	* @param int $mapping_id
 	*/
 	public function refresh_mapped_data( $mapping_id = '' ) {
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		if ( empty( $mapping_id ) ) {
 			$mapping_id = isset( $post_data['mapping_id'] ) ? absint( $post_data['mapping_id'] ) : '';
 		}
