@@ -180,8 +180,9 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	*/
 
 	public function setup( $title, $message, $trigger = 0, $parent = 0, $status ) {
-		if ( '1' === $this->enabled && in_array( $status, $this->statuses_to_log ) ) {
+		if ( '1' === $this->enabled && in_array( $status, $this->statuses_to_log, true ) ) {
 			$triggers_to_log = get_option( 'object_sync_for_salesforce_triggers_to_log', array() );
+			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in salesforce_mapping, starting in line 70
 			if ( in_array( $trigger, $triggers_to_log ) || 0 === $trigger ) {
 				$this->add( $title, $message, $parent );
 			}
