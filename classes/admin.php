@@ -290,13 +290,13 @@ class Object_Sync_Sf_Admin {
 		} catch ( SalesforceApiException $ex ) {
 			echo sprintf( '<p>Error <strong>%1$s</strong>: %2$s</p>',
 				absint( $ex->getCode() ),
-		    	esc_html( $ex->getMessage() )
-		    );
+				esc_html( $ex->getMessage() )
+			);
 		} catch ( Exception $ex ) {
 			echo sprintf( '<p>Error <strong>%1$s</strong>: %2$s</p>',
 				absint( $ex->getCode() ),
-		    	esc_html( $ex->getMessage() )
-		    );
+				esc_html( $ex->getMessage() )
+			);
 		} // End try().
 		echo '</div>';
 	}
@@ -1176,21 +1176,21 @@ class Object_Sync_Sf_Admin {
 			}
 
 			echo sprintf( '<input type="%1$s" value="%2$s" name="%3$s" id="%4$s" class="%5$s"%6$s>',
-			    esc_attr( $type ),
-			    esc_html( $value ),
-			    esc_attr( $name ),
-			    esc_attr( $id ),
-			    sanitize_html_class( $class . esc_html( ' code' ) ),
-			    esc_html( $checked )
+				esc_attr( $type ),
+				esc_html( $value ),
+				esc_attr( $name ),
+				esc_attr( $id ),
+				sanitize_html_class( $class . esc_html( ' code' ) ),
+				esc_html( $checked )
 			);
 			if ( '' !== $desc ) {
 				echo sprintf( '<p class="description">%1$s</p>',
-				    esc_html( $desc )
+					esc_html( $desc )
 				);
 			}
 		} else {
 			echo sprintf( '<p><code>%1$s</code></p>',
-			    esc_html__( 'Defined in wp-config.php', 'object-sync-for-salesforce' )
+				esc_html__( 'Defined in wp-config.php', 'object-sync-for-salesforce' )
 			);
 		}
 	}
@@ -1218,16 +1218,16 @@ class Object_Sync_Sf_Admin {
 				}
 			}
 			echo sprintf( '<div class="checkbox"><label><input type="%1$s" value="%2$s" name="%3$s" id="%4$s"%5$s>%6$s</label></div>',
-			    esc_attr( $type ),
-			    esc_html( $key ),
-			    esc_attr( $name ),
-			    esc_attr( $id ),
-			    esc_html( $checked ),
-			    esc_html( $text )
+				esc_attr( $type ),
+				esc_html( $key ),
+				esc_attr( $name ),
+				esc_attr( $id ),
+				esc_html( $checked ),
+				esc_html( $text )
 			);
 			if ( '' !== $desc ) {
 				echo sprintf( '<p class="description">%1$s</p>',
-				    esc_html( $desc )
+					esc_html( $desc )
 				);
 			}
 		}
@@ -1247,8 +1247,8 @@ class Object_Sync_Sf_Admin {
 			$current_value = get_option( $name );
 
 			echo sprintf( '<div class="select"><select id="%1$s" name="%2$s"><option value="">- Select one -</option>',
-			    esc_attr( $id ),
-			    esc_attr( $name )
+				esc_attr( $id ),
+				esc_attr( $name )
 			);
 
 			foreach ( $args['items'] as $key => $value ) {
@@ -1260,22 +1260,22 @@ class Object_Sync_Sf_Admin {
 				}
 
 				echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
-				    esc_html( $value ),
-				    esc_attr( $selected ),
-				    esc_html( $text )
+					esc_attr( $value ),
+					esc_attr( $selected ),
+					esc_html( $text )
 				);
 
 			}
 			echo '</select>';
 			if ( '' !== $desc ) {
 				echo sprintf( '<p class="description">%1$s</p>',
-				    esc_html( $desc )
+					esc_html( $desc )
 				);
 			}
 			echo '</div>';
 		} else {
 			echo sprintf( '<p><code>%1$s</code></p>',
-			    esc_html__( 'Defined in wp-config.php', 'object-sync-for-salesforce' )
+				esc_html__( 'Defined in wp-config.php', 'object-sync-for-salesforce' )
 			);
 		}
 	}
@@ -1309,13 +1309,13 @@ class Object_Sync_Sf_Admin {
 		if ( isset( $args['link_class'] ) ) {
 			echo sprintf( '<p><a class="%1$s" href="%2$s">%3$s</a></p>',
 				esc_attr( $args['link_class'] ),
-			    esc_url( $url ),
-			    esc_html( $label )
+				esc_url( $url ),
+				esc_html( $label )
 			);
 		} else {
 			echo sprintf( '<p><a href="%1$s">%2$s</a></p>',
-			    esc_url( $url ),
-			    esc_html( $label )
+				esc_url( $url ),
+				esc_html( $label )
 			);
 		}
 
@@ -1364,8 +1364,8 @@ class Object_Sync_Sf_Admin {
 		$this->instance_url = delete_option( 'object_sync_for_salesforce_instance_url' );
 		$this->refresh_token = delete_option( 'object_sync_for_salesforce_refresh_token' );
 		echo sprintf( '<p>You have been logged out. You can use the <a href="%1$s">%2$s</a> tab to log in again.</p>',
-		    esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=authorize' ) ),
-		    esc_html__( 'Authorize', 'object-sync-for-salesforce' )
+			esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=authorize' ) ),
+			esc_html__( 'Authorize', 'object-sync-for-salesforce' )
 		);
 	}
 
