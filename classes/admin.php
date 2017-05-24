@@ -864,7 +864,7 @@ class Object_Sync_Sf_Admin {
 	public function get_salesforce_object_description( $data = array() ) {
 		$ajax = false;
 		if ( empty( $data ) ) {
-			$data = $_POST;
+			$data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 			$ajax = true;
 		}
 
@@ -950,8 +950,9 @@ class Object_Sync_Sf_Admin {
 	*/
 	public function get_wordpress_object_fields( $wordpress_object = '' ) {
 		$ajax = false;
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		if ( empty( $wordpress_object ) ) {
-			$wordpress_object = $_POST['wordpress_object'];
+			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
 			$ajax = true;
 		}
 
@@ -973,11 +974,12 @@ class Object_Sync_Sf_Admin {
 	* @return array $object_fields
 	*/
 	public function get_wp_sf_object_fields( $wordpress_object = '', $salesforce = '' ) {
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		if ( empty( $wordpress_object ) ) {
-			$wordpress_object = $_POST['wordpress_object'];
+			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
 		}
 		if ( empty( $salesforce_object ) ) {
-			$salesforce_object = $_POST['salesforce_object'];
+			$salesforce_object = isset( $post_data['salesforce_object'] ) ? sanitize_text_field( wp_unslash( $post_data['salesforce_object'] ) ) : '';
 		}
 
 		$object_fields['wordpress'] = $this->get_wordpress_object_fields( $wordpress_object );
@@ -987,7 +989,7 @@ class Object_Sync_Sf_Admin {
 			)
 		);
 
-		if ( ! empty( $_POST ) ) {
+		if ( ! empty( $post_data ) ) {
 			wp_send_json_success( $object_fields );
 		} else {
 			return $object_fields;
@@ -1002,14 +1004,15 @@ class Object_Sync_Sf_Admin {
 	* @param int $wordpress_id
 	*/
 	public function push_to_salesforce( $wordpress_object = '', $wordpress_id = '' ) {
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		if ( empty( $wordpress_object ) && empty( $wordpress_id ) ) {
-			$wordpress_object = $_POST['wordpress_object'];
-			$wordpress_id = $_POST['wordpress_id'];
+			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
+			$wordpress_id = isset( $post_data['wordpress_id'] ) ? absint( $post_data['wordpress_id'] ) : '';
 		}
 		$data = $this->wordpress->get_wordpress_object_data( $wordpress_object, $wordpress_id );
 		$result = $this->push->manual_object_update( $data, $wordpress_object );
 
-		if ( ! empty( $_POST['wordpress_object'] ) && ! empty( $_POST['wordpress_id'] ) ) {
+		if ( ! empty( $post_data['wordpress_object'] ) && ! empty( $post_data['wordpress_id'] ) ) {
 			wp_send_json_success( $result );
 		} else {
 			return $result;
@@ -1025,13 +1028,14 @@ class Object_Sync_Sf_Admin {
 	* @param string $wordpress_object
 	*/
 	public function pull_from_salesforce( $salesforce_id = '', $wordpress_object = '' ) {
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		if ( empty( $wordpress_object ) && empty( $salesforce_id ) ) {
-			$wordpress_object = $_POST['wordpress_object'];
-			$salesforce_id = $_POST['salesforce_id'];
+			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
+			$salesforce_id = isset( $post_data['salesforce_id'] ) ? sanitize_text_field( wp_unslash( $post_data['salesforce_id'] ) ) : '';
 		}
 		$type = $this->salesforce['sfapi']->get_sobject_type( $salesforce_id );
 		$result = $this->pull->manual_pull( $type, $salesforce_id, $wordpress_object ); // we want the wp object to make sure we get the right fieldmap
-		if ( ! empty( $_POST ) ) {
+		if ( ! empty( $post_data ) ) {
 			wp_send_json_success( $result );
 		} else {
 			return $result;
@@ -1040,21 +1044,20 @@ class Object_Sync_Sf_Admin {
 
 	/**
 	* Manually pull the Salesforce object into WordPress
-	* This takes either the $_POST array via ajax, or can be directly called with $salesforce_id fields
+	* This takes an id for a mapping object row
 	*
-	* @param string $salesforce_id
-	* @param string $wordpress_object
+	* @param int $mapping_id
 	*/
 	public function refresh_mapped_data( $mapping_id = '' ) {
 		if ( empty( $mapping_id ) ) {
-			$mapping_id = $_POST['mapping_id'];
+			$mapping_id = isset( $post_data['mapping_id'] ) ? absint( $post_data['mapping_id'] ) : '';
 		}
 		$result = $this->mappings->get_object_maps(
 			array(
 				'id' => $mapping_id,
 			)
 		);
-		if ( ! empty( $_POST ) ) {
+		if ( ! empty( $post_data ) ) {
 			wp_send_json_success( $result );
 		} else {
 			return $result;
@@ -1071,43 +1074,44 @@ class Object_Sync_Sf_Admin {
 	*/
 	public function prepare_fieldmap_data() {
 		$error = false;
-		$cachekey = md5( json_encode( $_POST ) );
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$cachekey = md5( wp_json_encode( $post_data ) );
 
-		if ( ! isset( $_POST['label'] ) || ! isset( $_POST['salesforce_object'] ) || ! isset( $_POST['wordpress_object'] ) ) {
+		if ( ! isset( $post_data['label'] ) || ! isset( $post_data['salesforce_object'] ) || ! isset( $post_data['wordpress_object'] ) ) {
 			$error = true;
 		}
-		if ( $error === true ) {
-			set_transient( $cachekey, $_POST, 0 );
+		if ( true === $error ) {
+			set_transient( $cachekey, $post_data, 0 );
 			if ( '' !== $cachekey ) {
-				$url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
+				$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&transient=' . $cachekey;
 			}
 		} else { // there are no errors
 			// send the row to the fieldmap class
 			// if it is add or clone, use the create method
-			$method = esc_attr( $_POST['method'] );
+			$method = esc_attr( $post_data['method'] );
 			$salesforce_fields = $this->get_salesforce_object_fields(
 				array(
-					'salesforce_object' => $_POST['salesforce_object'],
+					'salesforce_object' => $post_data['salesforce_object'],
 				)
 			);
-			$wordpress_fields = $this->get_wordpress_object_fields( $_POST['wordpress_object'] );
+			$wordpress_fields = $this->get_wordpress_object_fields( $post_data['wordpress_object'] );
 			if ( 'add' === $method || 'clone' === $method ) {
-				$result = $this->mappings->create_fieldmap( $_POST, $wordpress_fields, $salesforce_fields );
+				$result = $this->mappings->create_fieldmap( $post_data, $wordpress_fields, $salesforce_fields );
 			} elseif ( 'edit' === $method ) { // if it is edit, use the update method
-				$id = esc_attr( $_POST['id'] );
-				$result = $this->mappings->update_fieldmap( $_POST, $wordpress_fields, $salesforce_fields, $id );
+				$id = esc_attr( $post_data['id'] );
+				$result = $this->mappings->update_fieldmap( $post_data, $wordpress_fields, $salesforce_fields, $id );
 			}
 			if ( false === $result ) { // if the database didn't save, it's still an error
-				set_transient( $cachekey, $_POST, 0 );
+				set_transient( $cachekey, $post_data, 0 );
 				if ( '' !== $cachekey ) {
-					$url = esc_url_raw( $_POST['redirect_url_error'] ) . '&transient=' . $cachekey;
+					$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&transient=' . $cachekey;
 				}
 			} else {
-				if ( isset( $_POST['transient'] ) ) { // there was previously an error saved. can delete it now.
-					delete_transient( esc_attr( $_POST['transient'] ) );
+				if ( isset( $post_data['transient'] ) ) { // there was previously an error saved. can delete it now.
+					delete_transient( esc_attr( $post_data['transient'] ) );
 				}
 				// then send the user to the list of fieldmaps
-				$url = esc_url_raw( $_POST['redirect_url_success'] );
+				$url = esc_url_raw( $post_data['redirect_url_success'] );
 			}
 		}
 		wp_redirect( $url );
@@ -1122,12 +1126,13 @@ class Object_Sync_Sf_Admin {
 	*
 	*/
 	public function delete_fieldmap() {
-		if ( $_POST['id'] ) {
-			$result = $this->mappings->delete_fieldmap( $_POST['id'] );
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		if ( $post_data['id'] ) {
+			$result = $this->mappings->delete_fieldmap( $post_data['id'] );
 			if ( true === $result ) {
-				$url = esc_url_raw( $_POST['redirect_url_success'] );
+				$url = esc_url_raw( $post_data['redirect_url_success'] );
 			} else {
-				$url = esc_url_raw( $_POST['redirect_url_error'] ) . '&id=' . $_POST['id'];
+				$url = esc_url_raw( $post_data['redirect_url_error'] . '&id=' . $post_data['id'] );
 			}
 			wp_redirect( $url );
 			exit();
@@ -1370,20 +1375,21 @@ class Object_Sync_Sf_Admin {
 	*
 	*/
 	public function save_salesforce_user_fields( $user_id ) {
-		if ( isset( $_POST['salesforce_update_mapped_user'] ) && urlencode( '1' === $_POST['salesforce_update_mapped_user'] ) ) {
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		if ( isset( $post_data['salesforce_update_mapped_user'] ) && '1' === rawurlencode( $post_data['salesforce_update_mapped_user'] ) ) {
 			$mapping_object = $this->mappings->get_object_maps(
 				array(
 					'wordpress_id' => $user_id,
 					'wordpress_object' => 'user',
 				)
 			);
-			$mapping_object['salesforce_id'] = $_POST['salesforce_id'];
+			$mapping_object['salesforce_id'] = $post_data['salesforce_id'];
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
-		} elseif ( isset( $_POST['salesforce_create_mapped_user'] ) && '1' === urlencode( $_POST['salesforce_create_mapped_user'] ) ) {
+		} elseif ( isset( $post_data['salesforce_create_mapped_user'] ) && '1' === rawurlencode( $post_data['salesforce_create_mapped_user'] ) ) {
 			// if a Salesforce ID was entered
-			if ( isset( $_POST['salesforce_id'] ) && ! empty( $_POST['salesforce_id'] ) ) {
-				$mapping_object = $this->create_object_map( $user_id, 'user', $_POST['salesforce_id'] );
-			} elseif ( isset( $_POST['push_new_user_to_salesforce'] ) ) {
+			if ( isset( $post_data['salesforce_id'] ) && ! empty( $post_data['salesforce_id'] ) ) {
+				$mapping_object = $this->create_object_map( $user_id, 'user', $post_data['salesforce_id'] );
+			} elseif ( isset( $post_data['push_new_user_to_salesforce'] ) ) {
 				// otherwise, create a new record in Salesforce
 				$result = $this->push_to_salesforce( 'user', $user_id );
 			}
