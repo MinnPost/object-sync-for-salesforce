@@ -1177,7 +1177,7 @@ class Object_Sync_Sf_Admin {
 
 			echo sprintf( '<input type="%1$s" value="%2$s" name="%3$s" id="%4$s" class="%5$s"%6$s>',
 				esc_attr( $type ),
-				esc_html( $value ),
+				esc_attr( $value ),
 				esc_attr( $name ),
 				esc_attr( $id ),
 				sanitize_html_class( $class . esc_html( ' code' ) ),
@@ -1219,7 +1219,7 @@ class Object_Sync_Sf_Admin {
 			}
 			echo sprintf( '<div class="checkbox"><label><input type="%1$s" value="%2$s" name="%3$s" id="%4$s"%5$s>%6$s</label></div>',
 				esc_attr( $type ),
-				esc_html( $key ),
+				esc_attr( $key ),
 				esc_attr( $name ),
 				esc_attr( $id ),
 				esc_html( $checked ),
