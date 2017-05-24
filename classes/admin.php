@@ -1168,13 +1168,24 @@ class Object_Sync_Sf_Admin {
 			if ( '' === $value && isset( $args['default'] ) && '' !== $args['default'] ) {
 				$value = $args['default'];
 			}
-			echo '<input type="' . $type. '" value="' . $value . '" name="' . $name . '" id="' . $id . '"
-			class="' . $class . ' code" ' . $checked . ' />';
+
+			echo sprintf( '<input type="%1$s" value="%2$s" name="%3$s" id="%4$s" class="%5$s"%6$s>',
+			    esc_attr( $type ),
+			    esc_html( $value ),
+			    esc_attr( $name ),
+			    esc_attr( $id ),
+			    sanitize_html_class( $class . esc_html( ' code' ) ),
+			    esc_html( $checked )
+			);
 			if ( '' !== $desc ) {
-				echo '<p class="description">' . $desc . '</p>';
+				echo sprintf( '<p class="description">%1$s</p>',
+				    esc_html( $desc )
+				);
 			}
 		} else {
-			echo '<p><code>Defined in wp-config.php</code></p>';
+			echo sprintf( '<p><code>%1$s</code></p>',
+			    esc_html__( 'Defined in wp-config.php', 'object-sync-for-salesforce' )
+			);
 		}
 	}
 
@@ -1193,16 +1204,25 @@ class Object_Sync_Sf_Admin {
 			$id = $value['id'];
 			$desc = $value['desc'];
 			$checked = '';
-			if ( is_array( $options ) && in_array( $key, $options ) ) {
+			if ( is_array( $options ) && in_array( $key, $options, true ) ) {
 				$checked = 'checked';
 			} elseif ( is_array( $options ) && empty( $options ) ) {
 				if ( isset( $value['default'] ) && true === $value['default'] ) {
 					$checked = 'checked';
 				}
 			}
-			echo '<div class="checkbox"><label><input type="' . $type. '" value="' . $key . '" name="' . $name . '[]" id="' . $id . '" ' . $checked . ' />' . $text . '</label></div>';
+			echo sprintf( '<div class="checkbox"><label><input type="%1$s" value="%2$s" name="%3$s" id="%4$s"%5$s>%6$s</label></div>',
+			    esc_attr( $type ),
+			    esc_html( $key ),
+			    esc_attr( $name ),
+			    esc_attr( $id ),
+			    esc_html( $checked ),
+			    esc_html( $text )
+			);
 			if ( '' !== $desc ) {
-				echo '<p class="description">' . $desc . '</p>';
+				echo sprintf( '<p class="description">%1$s</p>',
+				    esc_html( $desc )
+				);
 			}
 		}
 	}
@@ -1219,7 +1239,12 @@ class Object_Sync_Sf_Admin {
 		$desc   = $args['desc'];
 		if ( ! isset( $args['constant'] ) || ! defined( $args['constant'] ) ) {
 			$current_value = get_option( $name );
-			echo '<div><select id="' . $id . '" name="' . $name . '"><option value="">- Select one -</option>';
+
+			echo sprintf( '<div class="select"><select id="%1$s" name="%2$s"><option value="">- Select one -</option>',
+			    esc_attr( $id ),
+			    esc_attr( $name )
+			);
+
 			foreach ( $args['items'] as $key => $value ) {
 				$text = $value['text'];
 				$value = $value['value'];
@@ -1227,15 +1252,25 @@ class Object_Sync_Sf_Admin {
 				if ( $key === $current_value || $value === $current_value ) {
 					$selected = ' selected';
 				}
-				echo '<option value="' . $value . '"' . $selected . '>' . $text . '</option>';
+
+				echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
+				    esc_html( $value ),
+				    esc_attr( $selected ),
+				    esc_html( $text )
+				);
+
 			}
 			echo '</select>';
 			if ( '' !== $desc ) {
-				echo '<p class="description">' . $desc . '</p>';
+				echo sprintf( '<p class="description">%1$s</p>',
+				    esc_html( $desc )
+				);
 			}
 			echo '</div>';
 		} else {
-			echo '<p><code>Defined in wp-config.php</code></p>';
+			echo sprintf( '<p><code>%1$s</code></p>',
+			    esc_html__( 'Defined in wp-config.php', 'object-sync-for-salesforce' )
+			);
 		}
 	}
 
@@ -1266,15 +1301,22 @@ class Object_Sync_Sf_Admin {
 		$desc   = $args['desc'];
 		$url = $args['url'];
 		if ( isset( $args['link_class'] ) ) {
-			$class = ' class="' . $args['link_class'] . '"';
+			echo sprintf( '<p><a class="%1$s" href="%2$s">%3$s</a></p>',
+				esc_attr( $args['link_class'] ),
+			    esc_url( $url ),
+			    esc_html( $label )
+			);
 		} else {
-			$class = '';
+			echo sprintf( '<p><a href="%1$s">%2$s</a></p>',
+			    esc_url( $url ),
+			    esc_html( $label )
+			);
 		}
 
-		echo '<p><a' . $class . ' href="' . $url . '">' . $label . '</a></p>';
-
 		if ( '' !== $desc ) {
-			echo '<p class="description">' . $desc . '</p>';
+			echo sprintf( '<p class="description">%1$s</p>',
+				esc_html( $desc )
+			);
 		}
 
 	}
@@ -1411,9 +1453,13 @@ class Object_Sync_Sf_Admin {
 		screen_icon();
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab_key => $tab_caption ) {
-			$active = $current_tab === $tab_key ? 'nav-tab-active' : '';
+			$active = $current_tab === $tab_key ? ' nav-tab-active' : '';
 			if ( 'settings' === $tab_key || ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) ) {
-				echo '<a class="nav-tab ' . $active . '" href="?page=object-sync-salesforce-admin&tab=' . $tab_key . '">' . $tab_caption . '</a>';
+				echo sprintf( '<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
+					esc_attr( $active ),
+					esc_url( 'page=object-sync-salesforce-admin&tab=' . $tab_key ),
+					esc_html( $tab_caption )
+				);
 			}
 		}
 		echo '</h2>';
