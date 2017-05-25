@@ -1112,7 +1112,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$result = $this->wordpress->object_update( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'], $params );
 
 					$mapping_object['last_sync_status'] = $this->mappings->status_success;
-					$mapping_object['last_sync_message'] = __( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
+					$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
 
 					$status = 'success';
 					if ( isset( $this->logging ) ) {
@@ -1241,7 +1241,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				'last_sync' => current_time( 'mysql' ),
 				'last_sync_action' => 'pull',
 				'last_sync_status' => $this->mappings->status_success,
-				'last_sync_message' => __( 'Mapping object created via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__,
+				'last_sync_message' => esc_html__( 'Mapping object created via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__,
 				'action' => 'created',
 			)
 		);
