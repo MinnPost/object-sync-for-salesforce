@@ -17,7 +17,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: classes/admin.php:141
+#: classes/admin.php:141, templates/admin/user-profile-salesforce-change.php:2, templates/admin/user-profile-salesforce-map.php:2, templates/admin/user-profile-salesforce.php:5
 msgid "Salesforce"
 msgstr ""
 
@@ -244,11 +244,11 @@ msgstr ""
 msgid "Disconnect from Salesforce"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:13, templates/admin/status.php:16
+#: templates/admin/fieldmaps-add-edit-clone.php:13, templates/admin/fieldmaps-list.php:5, templates/admin/status.php:16
 msgid "Label"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:18
+#: templates/admin/fieldmaps-add-edit-clone.php:18, templates/admin/fieldmaps-list.php:6
 msgid "WordPress Object"
 msgstr ""
 
@@ -256,7 +256,7 @@ msgstr ""
 msgid "Select object type"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:41
+#: templates/admin/fieldmaps-add-edit-clone.php:41, templates/admin/fieldmaps-list.php:7
 msgid "Salesforce Object"
 msgstr ""
 
@@ -284,7 +284,7 @@ msgstr ""
 msgid "Direction"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:171
+#: templates/admin/fieldmaps-add-edit-clone.php:171, templates/admin/fieldmaps-list.php:25
 msgid "Delete"
 msgstr ""
 
@@ -393,7 +393,23 @@ msgid "This fieldmap is called %1$s and it maps the Salesforce %2$s object to th
 msgstr ""
 
 #: templates/admin/fieldmaps-list.php:1
+msgid "Fieldmaps"
+msgstr ""
+
+#: templates/admin/fieldmaps-list.php:1
 msgid "Add New"
+msgstr ""
+
+#: templates/admin/fieldmaps-list.php:8, templates/admin/user-profile-salesforce.php:35
+msgid "Actions"
+msgstr ""
+
+#: templates/admin/fieldmaps-list.php:19, templates/admin/user-profile-salesforce.php:12
+msgid "Edit"
+msgstr ""
+
+#: templates/admin/fieldmaps-list.php:22
+msgid "Clone"
 msgstr ""
 
 #: templates/admin/fieldmaps-list.php:35
@@ -416,10 +432,62 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: templates/admin/user-profile-salesforce-change.php:6
+#: templates/admin/user-profile-salesforce-change.php:3
+msgid "You can change the Salesforce object that this WordPress user maps to by changing the ID and updating this user."
+msgstr ""
+
+#: templates/admin/user-profile-salesforce-change.php:6, templates/admin/user-profile-salesforce-map.php:6
 msgid "Salesforce ID"
 msgstr ""
 
-#: templates/admin/user-profile-salesforce-change.php:9
+#: templates/admin/user-profile-salesforce-change.php:9, templates/admin/user-profile-salesforce-map.php:9
 msgid "Enter a Salesforce object ID."
+msgstr ""
+
+#: templates/admin/user-profile-salesforce-map.php:3
+msgid "This user is not mapped to an object in Salesforce. You can run a push to send this object to Salesforce, which will cause it to follow the plugin's normal mapping conventions, or you can create a manual link to a Salesforce object."
+msgstr ""
+
+#: templates/admin/user-profile-salesforce-map.php:11
+msgid "Push to Salesforce as new record"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:7
+msgid "This user is mapped to a Salesforce object"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:10
+msgid "Salesforce Id"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:15
+msgid "Last Sync Message"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:20
+msgid "Last Sync Action"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:25
+msgid "Last Sync Status"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:26
+msgid "success"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:26
+msgid "error"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:30
+msgid "Last Sync"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:37
+msgid "Push to Salesforce"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:38
+msgid "Pull from Salesforce"
 msgstr ""
