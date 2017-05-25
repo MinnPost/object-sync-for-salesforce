@@ -268,8 +268,7 @@ class Object_Sync_Sf_Mapping {
 		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
-				// This triggers a linter warning for array_search, but it is array_column and doesn't have a third argument.
-				$method_key = array_search( $value, array_column( $wordpress_fields, 'key' ) );
+				$method_key = array_search( $value, array_column( $wordpress_fields, 'key' ), true );
 				if ( ! isset( $posted['direction'][ $key ] ) ) {
 					$posted['direction'][ $key ] = 'sync';
 				}
