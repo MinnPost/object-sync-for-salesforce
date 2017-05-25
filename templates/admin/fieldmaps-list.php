@@ -1,11 +1,11 @@
-<h3>Fieldmaps <a class="page-title-action" href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=add' ) ); ?>"><?php echo esc_html__( 'Add New', 'object-sync-for-salesforce' ); ?></a></h3>
+<h3><?php echo esc_html__( 'Fieldmaps', 'object-sync-for-salesforce' ); ?> <a class="page-title-action" href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=add' ) ); ?>"><?php echo esc_html__( 'Add New', 'object-sync-for-salesforce' ); ?></a></h3>
 <table class="widefat striped">
 	<thead>
 		<tr>
-			<th><?php echo esc_html__( 'Label' ); ?></th>
-			<th><?php echo esc_html__( 'WordPress Object' ); ?></th>
-			<th><?php echo esc_html__( 'Salesforce Object' ); ?></th>
-			<th colspan="3"><?php echo esc_html__( 'Actions' ); ?></th>
+			<th><?php echo esc_html__( 'Label', 'object-sync-for-salesforce' ); ?></th>
+			<th><?php echo esc_html__( 'WordPress Object', 'object-sync-for-salesforce' ); ?></th>
+			<th><?php echo esc_html__( 'Salesforce Object', 'object-sync-for-salesforce' ); ?></th>
+			<th colspan="3"><?php echo esc_html__( 'Actions', 'object-sync-for-salesforce' ); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,13 +16,13 @@
 			<td><?php echo esc_html( $record['wordpress_object'] ); ?></td>
 			<td><?php echo esc_html( $record['salesforce_object'] ); ?></td>
 			<td>
-				<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=edit&id=' . $record['id'] ) ); ?>">Edit</a>
+				<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=edit&id=' . $record['id'] ) ); ?>"><?php echo esc_html__( 'Edit', 'object-sync-for-salesforce' ); ?></a>
 			</td>
 			<td>
-				<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=clone&id=' . $record['id'] ) ); ?>">Clone</a>
+				<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=clone&id=' . $record['id'] ) ); ?>"><?php echo esc_html__( 'Clone', 'object-sync-for-salesforce' ); ?></a>
 			</td>
 			<td>
-				<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=delete&id=' . $record['id'] ) ); ?>">Delete</a>
+				<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=delete&id=' . $record['id'] ) ); ?>"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
 			</td>
 		</tr>
 			<?php } ?>
