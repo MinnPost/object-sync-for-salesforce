@@ -829,7 +829,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				);
 
 				// translators: placeholders are 1) the name of the Salesforce object type, 2) the error message returned from the Salesforce APIs
-				$body = sprintf( '<p>' . esc_html__( 'Object: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' esc_html__( 'Message: %2$s', 'object-sync-for-salesforce' ) . '</p>',
+				$body = sprintf( '<p>' . esc_html__( 'Object: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: %2$s', 'object-sync-for-salesforce' ) . '</p>',
 					esc_attr( $mapping['salesforce_object'] ),
 					esc_html( $salesforce_data['message'] )
 				);
@@ -875,7 +875,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				);
 
 				// translators: placeholders are 1) when a sync on this mapping last occured, 2) when the object was last updated
-				$body = sprintf( '<p>' . esc_html__( 'Last sync time: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' esc_html__( 'Object updated time: %2$s', 'object-sync-for-salesforce' ) . '</p>',
+				$body = sprintf( '<p>' . esc_html__( 'Last sync time: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Object updated time: %2$s', 'object-sync-for-salesforce' ) . '</p>',
 					esc_attr( $mapping_object['last_sync'] ),
 					esc_html( $mapping_object['object_updated'] )
 				);
