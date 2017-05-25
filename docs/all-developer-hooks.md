@@ -8,6 +8,10 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: allow other plugins to give the `configure_salesforce` capability to WordPress roles in addition to the `administrator` role.
     - code: [classes/activate.php](../classes/activate.php) and [classes/deactivate.php](../classes/deactivate.php)
     - documentation: [extending roles](./docs/extending-roles.md)
+- `object_sync_for_salesforce_logging_post_type_args`:
+	- description: allow other plugins to modify the `post_type` arguments used to create the Log post type.
+	- code: [classes/logging.php](../classes/logging.php)
+	- documentation: [extending roles](./docs/extending-logging.md)
 - `object_sync_for_salesforce_push_object_allowed`:
     - description: prevent a push per-mapping.
     - code: (should document with push stuff)
