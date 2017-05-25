@@ -391,7 +391,7 @@ class Object_Sync_Sf_Mapping {
 			$logging->setup(
 				sprintf(
 					// translators: %1$s is the status word "Error". %2$s is the name of a WordPress object. %3$s is the IS of that object.
-					__( '%1$s: Mapping: error caused by trying to map the WordPress %2$s with ID of %3$s to Salesforce ID of 0, which is invalid.', 'object-sync-for-salesforce' ),
+					esc_html__( '%1$s: Mapping: error caused by trying to map the WordPress %2$s with ID of %3$s to Salesforce ID of 0, which is invalid.', 'object-sync-for-salesforce' ),
 					esc_html( ucfirst( $status ) ),
 					esc_html( $data['wordpress_object'] ),
 					esc_html( $data['wordpress_id'] )
@@ -417,7 +417,7 @@ class Object_Sync_Sf_Mapping {
 			$logging->setup(
 				sprintf(
 					// translators: %1$s is the status word "Error". %2$s is the ID of a Salesforce object. %2$s is the ID of a mapping object.
-					__( '%1$s: Mapping: there is already a WordPress object mapped to the Salesforce object %2$s and the mapping object ID is %3$s', 'object-sync-for-salesforce' ),
+					esc_html__( '%1$s: Mapping: there is already a WordPress object mapped to the Salesforce object %2$s and the mapping object ID is %3$s', 'object-sync-for-salesforce' ),
 					esc_html( ucfirst( $status ) ),
 					esc_html( $data['salesforce_id'] ),
 					esc_html( $id )
@@ -592,7 +592,7 @@ class Object_Sync_Sf_Mapping {
 			$logging->setup(
 				sprintf(
 					// translators: %1$s is the status descriptor "Notice". %2$s is the ID of a Salesforce object.
-					__( '%1$s: Mapping: there is more than one mapped WordPress object for the Salesforce object %2$s', 'object-sync-for-salesforce' ),
+					esc_html__( '%1$s: Mapping: there is more than one mapped WordPress object for the Salesforce object %2$s', 'object-sync-for-salesforce' ),
 					esc_html( ucfirst( $status ) ),
 					esc_html( $salesforce_id )
 				),

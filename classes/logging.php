@@ -244,7 +244,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public static function add( $title = '', $message = '', $parent = 0, $type = 'salesforce' ) {
 
 		$log_data = array(
-			'post_title'   => sanitize_title( $title, htmlentities( $title ) ),
+			'post_title'   => esc_html( $title ),
 			'post_content' => wp_kses_post( $message ),
 			'post_parent'  => esc_attr( $parent ),
 			'log_type'     => esc_attr( $type ),
