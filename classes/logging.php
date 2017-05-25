@@ -52,6 +52,8 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			add_filter( 'wp_logging_prune_when', array( $this, 'set_prune_age' ), 10, 1 );
 			add_filter( 'wp_logging_prune_query_args', array( $this, 'set_prune_args' ), 10, 1 );
 
+			add_filter( 'wp_logging_post_type_args', array( $this, 'set_log_visibility' ), 1, 1 );
+
 			$schedule_unit = get_option( 'object_sync_for_salesforce_logs_how_often_unit', '' );
 			$schedule_number = get_option( 'object_sync_for_salesforce_logs_how_often_number', '' );
 			$frequency = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
@@ -61,6 +63,25 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 				wp_schedule_event( time(), $key, $this->schedule_name );
 			}
 		}
+	}
+
+	public function set_log_visibility( $log_args ) {
+		// set public to true overrides the WP_DEBUG setting that is the default on the class
+		// capabilities makes it so (currently) only admin users can see the log posts in their admin view
+		// note: there is no actual "public" view for this post type
+		$log_args['public'] = true;
+		$log_args['capabilities'] = array(
+			'edit_post'          => 'update_core',
+			'read_post'          => 'update_core',
+			'delete_post'        => 'update_core',
+			'edit_posts'         => 'update_core',
+			'edit_others_posts'  => 'update_core',
+			'delete_posts'       => 'update_core',
+			'publish_posts'      => 'update_core',
+			'read_private_posts' => 'update_core',
+		);
+
+		return $log_args;
 	}
 
 	/**
