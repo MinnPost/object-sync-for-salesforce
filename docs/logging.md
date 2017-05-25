@@ -2,14 +2,15 @@
 
 The plugin uses, by extending, the [WP Logging Class](https://github.com/pippinsplugins/WP-Logging) to log plugin-specific events. The main class is stored in the /vendor/wp-logging folder, which we tie into this plugin with composer.
 
-We use the default settings for this class when possible. This means the Log content type will be created, and entries will be added to the database according to the settings below, but to see them you'll need to enable `WP_DEBUG`. To do this, in your `wp-config.php` file, add this code: `define( 'WP_DEBUG', true );`.
+We use the default settings for this class when possible. One place we override them is the capability to see log posts. All admin users can see the Logs content type in their admin view.
 
 Our extension to this class does a few things:
 
-1. Force a type of 'salesforce' on all logs this plugin creates.
-2. Get logging-related options configured by the `admin` class.
-3. Setup new log entries based on the plugin's settings, including user-defined.
-4. Retrieve log entries related to this plugin.
+1. Allow all users who can configure this plugin to see the Logs content type in their admin view by default (there is a [developer hook](./extending-logging.md) to customize this).
+2. Force a type of 'salesforce' on all logs this plugin creates.
+3. Get logging-related options configured by the `admin` class.
+4. Setup new log entries based on the plugin's settings, including user-defined.
+5. Retrieve log entries related to this plugin.
 
 ## Settings
 
