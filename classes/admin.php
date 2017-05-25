@@ -461,7 +461,7 @@ class Object_Sync_Sf_Admin {
 				'args' => array(
 					'type' => 'number',
 					'validate' => 'sanitize_text_field',
-					'desc' => 'Number of seconds to wait between repeated salesforce pulls.<br>Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage.',
+					'desc' => 'Number of seconds to wait between repeated salesforce pulls. Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage.',
 					'constant' => '',
 					'default' => $this->default_pull_throttle,
 				),
@@ -474,7 +474,7 @@ class Object_Sync_Sf_Admin {
 				'args' => array(
 					'type' => 'checkbox',
 					'validate' => 'sanitize_text_field',
-					'desc' => 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create <strong>a lot</strong> of entries if enabled; it is not recommended to use it in a production environment.',
+					'desc' => 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment.',
 					'constant' => '',
 				),
 			),
