@@ -841,7 +841,7 @@ class Object_Sync_Sf_Wordpress {
 						$errors[] = array(
 							'message' => sprintf(
 								// translators: %1$s is a method name.
-								__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
+								esc_html__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
 								esc_html( $method )
 							),
 							'key' => $key,
@@ -854,7 +854,7 @@ class Object_Sync_Sf_Wordpress {
 				do_action( 'object_sync_for_salesforce_set_more_user_data', $user_id, $params, 'create' );
 
 				// Send notification of new user.
-				// todo: Figure out what permissions out to get notifications for this and make sure it works the right way.
+				// todo: Figure out what permissions ought to get notifications for this and make sure it works the right way.
 				wp_new_user_notification( $user_id, null, 'admin user' );
 
 			}
@@ -994,7 +994,7 @@ class Object_Sync_Sf_Wordpress {
 		}
 		$logging->setup(
 			// todo: can we get any more specific about this?
-			__( 'Error: Users: Tried to run user_upsert, and ended up without a user id', 'object-sync-for-salesforce' ),
+			esc_html__( 'Error: Users: Tried to run user_upsert, and ended up without a user id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -1297,7 +1297,7 @@ class Object_Sync_Sf_Wordpress {
 		}
 		$logging->setup(
 			// todo: can we be more explicit here about what post upsert failed?
-			__( 'Error: Posts: Tried to run post_upsert, and ended up without a post id', 'object-sync-for-salesforce' ),
+			esc_html__( 'Error: Posts: Tried to run post_upsert, and ended up without a post id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -1601,7 +1601,7 @@ class Object_Sync_Sf_Wordpress {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id', 'object-sync-for-salesforce' ),
+			esc_html__( 'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -1767,7 +1767,7 @@ class Object_Sync_Sf_Wordpress {
 					$errors[] = array(
 						'message' => sprintf(
 							// translators: %1$s is a method name.
-							__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
+							esc_html__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
 							esc_html( $method )
 						),
 						'key' => $key,
@@ -1919,7 +1919,7 @@ class Object_Sync_Sf_Wordpress {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Terms: Tried to run term_upsert, and ended up without a term id', 'object-sync-for-salesforce' ),
+			esc_html__( 'Error: Terms: Tried to run term_upsert, and ended up without a term id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -1969,7 +1969,7 @@ class Object_Sync_Sf_Wordpress {
 					$errors[] = array(
 						'message' => sprintf(
 							// translators: %1$s is a method name.
-							__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
+							esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
 							esc_html( $method )
 						),
 						'key' => $key,
@@ -2072,7 +2072,7 @@ class Object_Sync_Sf_Wordpress {
 					$errors[] = array(
 						'message' => sprintf(
 							// translators: %1$s is a method name.
-							__( 'Tried to add meta with method %1$s.', 'object-sync-for-salesforce' ),
+							esc_html__( 'Tried to add meta with method %1$s.', 'object-sync-for-salesforce' ),
 							esc_html( $method )
 						),
 						'key' => $key,
@@ -2171,9 +2171,9 @@ class Object_Sync_Sf_Wordpress {
 				$logging->setup(
 					sprintf(
 						// translators: %1$s is the status message "Error". %2$s is a number. %3$s is a key. %4$s is the value of that key. %5$s is a var_export'd array of comments.
-						__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', 'object-sync-for-salesforce' ),
-						esc_html( ucfirst( $status ) ),
-						esc_html( $count ),
+						esc_html__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', 'object-sync-for-salesforce' ),
+						esc_attr( ucfirst( $status ) ),
+						absint( count( $comments ) ),
 						esc_html( $key ),
 						esc_html( $value ),
 						esc_html( var_export( $comments ) ) // Debugging code in production because having useful error messages is good.
@@ -2254,7 +2254,7 @@ class Object_Sync_Sf_Wordpress {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Comments: Tried to run comment_upsert, and ended up without a comment id', 'object-sync-for-salesforce' ),
+			esc_html__( 'Error: Comments: Tried to run comment_upsert, and ended up without a comment id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -2301,7 +2301,7 @@ class Object_Sync_Sf_Wordpress {
 					$errors[] = array(
 						'message' => sprintf(
 							// Translators: %1$s is a method name.
-							__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
+							esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
 							esc_html( $method )
 						),
 						'key' => $key,
