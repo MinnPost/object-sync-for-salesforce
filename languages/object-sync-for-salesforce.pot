@@ -64,7 +64,7 @@ msgstr ""
 msgid "You need to specify the name of the schedule you want to clear."
 msgstr ""
 
-#: classes/admin.php:1545, classes/salesforce_pull.php:1115, classes/salesforce_push.php:805, classes/salesforce_push.php:904
+#: classes/admin.php:1545, classes/salesforce_pull.php:1116, classes/salesforce_push.php:805, classes/salesforce_push.php:904
 msgid "Mapping object updated via function: "
 msgstr ""
 
@@ -100,15 +100,15 @@ msgstr ""
 msgid "Unable to access identity service."
 msgstr ""
 
-#: classes/salesforce_mapping.php:395
+#: classes/salesforce_mapping.php:394
 msgid "%1$s: Mapping: error caused by trying to map the WordPress %2$s with ID of %3$s to Salesforce ID of 0, which is invalid."
 msgstr ""
 
-#: classes/salesforce_mapping.php:421
+#: classes/salesforce_mapping.php:420
 msgid "%1$s: Mapping: there is already a WordPress object mapped to the Salesforce object %2$s and the mapping object ID is %3$s"
 msgstr ""
 
-#: classes/salesforce_mapping.php:596
+#: classes/salesforce_mapping.php:595
 msgid "%1$s: Mapping: there is more than one mapped WordPress object for the Salesforce object %2$s"
 msgstr ""
 
@@ -116,67 +116,67 @@ msgstr ""
 msgid "Error: %1$s %2$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:508
+#: classes/salesforce_pull.php:509
 msgid "Error: Salesforce Pull: unable to process queue item because it has no Salesforce Id."
 msgstr ""
 
-#: classes/salesforce_pull.php:637
+#: classes/salesforce_pull.php:638
 msgid "Success: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)"
 msgstr ""
 
-#: classes/salesforce_pull.php:658
+#: classes/salesforce_pull.php:659
 msgid "The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress ID. They are:"
 msgstr ""
 
-#: classes/salesforce_pull.php:670
+#: classes/salesforce_pull.php:671
 msgid "The map row between this Salesforce object and the WordPress object, as stored in the WordPress database, will be deleted, and this Salesforce object has been deleted, but the WordPress object row will remain untouched."
 msgstr ""
 
-#: classes/salesforce_pull.php:680
+#: classes/salesforce_pull.php:681
 msgid "Notice: %1$s %2$s with %3$s of %4$s (%5$s %6$s) did not delete the WordPress item."
 msgstr ""
 
-#: classes/salesforce_pull.php:829
+#: classes/salesforce_pull.php:830
 msgid "Error: There is at least one object map with a WordPress ID of 0."
 msgstr ""
 
-#: classes/salesforce_pull.php:833
+#: classes/salesforce_pull.php:834
 msgid "There is an object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of 0 and the Salesforce object with ID of %3$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:839
+#: classes/salesforce_pull.php:840
 msgid "There are multiple object maps with WordPress ID of 0. Their IDs are: "
 msgstr ""
 
-#: classes/salesforce_pull.php:842
+#: classes/salesforce_pull.php:843
 msgid "Mapping object id: %1$s. Salesforce Id: %2$s. WordPress object type: %3$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:875
+#: classes/salesforce_pull.php:876
 msgid "Notice: Because object map %1$s already exists, WordPress %2$s %3$s was not mapped to Salesforce Id %4$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:883
+#: classes/salesforce_pull.php:884
 msgid "The WordPress %1$s with %2$s of %3$s is already mapped to the Salesforce %4$s with Id of %5$s in the mapping object with id of %6$s. The Salesforce %4$s with Id of %5$s was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing data unintentionally."
 msgstr ""
 
-#: classes/salesforce_pull.php:1022, classes/salesforce_pull.php:1125
+#: classes/salesforce_pull.php:1023, classes/salesforce_pull.php:1126
 msgid "Success: %1$s %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)"
 msgstr ""
 
-#: classes/salesforce_pull.php:1063
+#: classes/salesforce_pull.php:1064
 msgid "Error syncing: %1$s to WordPress (Salesforce %2$s Id %3$s)"
 msgstr ""
 
-#: classes/salesforce_pull.php:1070
+#: classes/salesforce_pull.php:1071
 msgid "Object: %1$s with %2$s of %3$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:1070
+#: classes/salesforce_pull.php:1071
 msgid "Message: "
 msgstr ""
 
-#: classes/salesforce_pull.php:1244
+#: classes/salesforce_pull.php:1245
 msgid "Mapping object created via function: "
 msgstr ""
 
@@ -216,27 +216,39 @@ msgstr ""
 msgid "Mapping object %1$s via function"
 msgstr ""
 
-#: classes/wordpress.php:1001
+#: classes/wordpress.php:844, classes/wordpress.php:1770
+msgid "Tried to upsert meta with method %1$s."
+msgstr ""
+
+#: classes/wordpress.php:997
 msgid "Error: Users: Tried to run user_upsert, and ended up without a user id"
 msgstr ""
 
-#: classes/wordpress.php:1325
+#: classes/wordpress.php:1300
 msgid "Error: Posts: Tried to run post_upsert, and ended up without a post id"
 msgstr ""
 
-#: classes/wordpress.php:1647
+#: classes/wordpress.php:1604
 msgid "Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id"
 msgstr ""
 
-#: classes/wordpress.php:1972
+#: classes/wordpress.php:1922
 msgid "Error: Terms: Tried to run term_upsert, and ended up without a term id"
 msgstr ""
 
-#: classes/wordpress.php:2227
+#: classes/wordpress.php:1972, classes/wordpress.php:2304
+msgid "Tried to update meta with method %1$s."
+msgstr ""
+
+#: classes/wordpress.php:2075
+msgid "Tried to add meta with method %1$s."
+msgstr ""
+
+#: classes/wordpress.php:2174
 msgid "%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s"
 msgstr ""
 
-#: classes/wordpress.php:2310
+#: classes/wordpress.php:2257
 msgid "Error: Comments: Tried to run comment_upsert, and ended up without a comment id"
 msgstr ""
 
