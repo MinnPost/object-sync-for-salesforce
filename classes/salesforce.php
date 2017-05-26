@@ -325,6 +325,12 @@ class Object_Sync_Sf_Salesforce {
 	*/
 	protected function http_request( $url, $data, $headers = array(), $method = 'GET', $options = array() ) {
 		// Build the request, including path and headers. Internal use.
+
+		/*
+		 * Note: curl is used because wp_remote_get, wp_remote_post, wp_remote_request don't work. Salesforce returns various errors.
+		 * There is a GitHub branch attempting with the goal of addressing this in a future version: https://github.com/MinnPost/object-sync-for-salesforce/issues/94
+		*/
+
 		$curl = curl_init();
 		curl_setopt( $curl, CURLOPT_URL, $url );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
