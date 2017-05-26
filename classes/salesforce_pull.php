@@ -926,8 +926,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 							)
 						);
 
-						// now we can create the object in wp if we've gotten to this point
-						$result = $this->wordpress->object_create( $salesforce_mapping['wordpress_object'], $params );
+						// now we can upsert the object in wp if we've gotten to this point
+						// this command will either create or update the object
+						$result = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['push_drafts'] );
 
 					} else {
 						// No key or prematch field exists on this field map object, create a new object in WordPress.
