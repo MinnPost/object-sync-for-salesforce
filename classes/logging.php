@@ -246,7 +246,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		$log_data = array(
 			'post_title'   => esc_html( $title ),
 			'post_content' => wp_kses_post( $message ),
-			'post_parent'  => esc_attr( $parent ),
+			'post_parent'  => absint( $parent ),
 			'log_type'     => esc_attr( $type ),
 		);
 
