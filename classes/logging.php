@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for the Object_Sync_Sf_Logging class. Extend the WP_Logging class for the purposes of Object Sync for Salesforce.
+ *
  * @file
  */
 
@@ -20,12 +22,12 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 
 
 	/**
-	* Constructor which sets content type and pruning
-	*
-	* @param object $wpdb
-	* @param string $version
-	* @throws \Exception
-	*/
+	 * Constructor which sets content type and pruning
+	 *
+	 * @param object $wpdb An instance of the wpdb class.
+	 * @param string $version The version of this plugin.
+	 * @throws \Exception
+	 */
 	public function __construct( $wpdb, $version ) {
 		$this->wpdb = $wpdb;
 		$this->version = $version;
@@ -40,10 +42,10 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	}
 
 	/**
-	* Start. This creates a schedule for pruning logs, and also the custom content type
-	*
-	* @throws \Exception
-	*/
+	 * Start. This creates a schedule for pruning logs, and also the custom content type
+	 *
+	 * @throws \Exception
+	 */
 	private function init() {
 		if ( '1' === $this->enabled ) {
 			add_filter( 'cron_schedules', array( $this, 'add_prune_interval' ) );
@@ -86,10 +88,11 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	}
 
 	/**
-	* add interval to wp schedules based on admin settings
-	*
-	* @return array $frequency
-	*/
+	 * Add interval to wp schedules based on admin settings
+	 *
+	 * @param array $schedules An array of scheduled cron items.
+	 * @return array $frequency
+	 */
 	public function add_prune_interval( $schedules ) {
 
 		$schedule_unit = get_option( 'object_sync_for_salesforce_logs_how_often_unit', '' );
@@ -108,10 +111,13 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	}
 
 	/**
-	* Convert the schedule frequency from the admin settings into an array
-	* interval must be in seconds for the class to use it
-	*
-	*/
+	 * Convert the schedule frequency from the admin settings into an array
+	 * interval must be in seconds for the class to use it
+	 *
+	 * @param string $unit A unit of time.
+	 * @param number $number The number of those units.
+	 * @return array
+	 */
 	public function get_schedule_frequency( $unit, $number ) {
 
 		switch ( $unit ) {
@@ -138,22 +144,22 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	}
 
 	/**
-	* Set terms for Salesforce logs
-	*
-	* @param array $terms
-	* @return array $terms
-	*/
+	 * Set terms for Salesforce logs
+	 *
+	 * @param array $terms An array of string log types in the WP_Logging class.
+	 * @return array $terms
+	 */
 	public function set_log_types( $terms ) {
 		$terms[] = 'salesforce';
 		return $terms;
 	}
 
 	/**
-	* Should logs be pruned at all?
-	*
-	* @param string $should_we_prune
-	* @return string $should_we_prune
-	*/
+	 * Should logs be pruned at all?
+	 *
+	 * @param string $should_we_prune Whether to prune old log items.
+	 * @return string $should_we_prune Whether to prune old log items.
+	 */
 	public function set_prune_option( $should_we_prune ) {
 		$should_we_prune = get_option( 'object_sync_for_salesforce_prune_logs', $should_we_prune );
 		if ( '1' === $should_we_prune ) {
@@ -163,11 +169,11 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	}
 
 	/**
-	* Set how often to prune the Salesforce logs
-	*
-	* @param string $how_old
-	* @return string $how_old
-	*/
+	 * Set how often to prune the Salesforce logs
+	 *
+	 * @param string $how_old How old the oldest non-pruned log items should be allowed to be.
+	 * @return string $how_old
+	 */
 	public function set_prune_age( $how_old ) {
 		$value = get_option( 'object_sync_for_salesforce_logs_how_old', '' ) . ' ago';
 		if ( '' !== $value ) {
@@ -178,11 +184,11 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	}
 
 	/**
-	* Set arguments for only getting the Salesforce logs
-	*
-	* @param array $args
-	* @return array $args
-	*/
+	 * Set arguments for only getting the Salesforce logs
+	 *
+	 * @param array $args Argument array for get_posts determining what posts are eligible for pruning.
+	 * @return array $args
+	 */
 	public function set_prune_args( $args ) {
 		$args['wp_log_type'] = 'salesforce';
 		return $args;
@@ -196,14 +202,21 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @access      public
 	 * @since       1.0
 	 *
-	 * @uses        self::add()
+	 * @param       string $title A log post title.
+	 * @param       string $message The log message.
+	 * @param       string|0 $trigger The type of log triggered. Usually one of: debug, notice, warning, error.
+	 * @param       int $parent The parent WordPress object.
+	 * @param       string $status The log status.
 	 *
-	 * @return      none
-	*/
-
+	 * @uses        self::add()
+	 * @see         Object_Sync_Sf_Mapping::__construct()    the location of the bitmasks that define the logging triggers.
+	 *
+	 * @return      void
+	 */
 	public function setup( $title, $message, $trigger = 0, $parent = 0, $status ) {
-		if ( '1' === $this->enabled && in_array( $status, $this->statuses_to_log ) ) {
+		if ( '1' === $this->enabled && in_array( $status, $this->statuses_to_log, true ) ) {
 			$triggers_to_log = get_option( 'object_sync_for_salesforce_triggers_to_log', array() );
+			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in Object_Sync_Sf_Mapping class's method __construct()
 			if ( in_array( $trigger, $triggers_to_log ) || 0 === $trigger ) {
 				$this->add( $title, $message, $parent );
 			}
@@ -219,18 +232,22 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @access      public
 	 * @since       1.0
 	 *
+	 * @param       string $title A log post title.
+	 *
 	 * @uses        self::insert_log()
+	 * @param       string $message The log message.
+	 * @param       int $parent The parent WordPress object.
+	 * @param       string $type The type of log message; defaults to 'salesforce'.
 	 *
 	 * @return      int The ID of the new log entry
-	*/
-
+	 */
 	public static function add( $title = '', $message = '', $parent = 0, $type = 'salesforce' ) {
 
 		$log_data = array(
-			'post_title'   => $title,
-			'post_content' => $message,
-			'post_parent'  => $parent,
-			'log_type'     => $type,
+			'post_title'   => esc_html( $title ),
+			'post_content' => wp_kses_post( $message ),
+			'post_parent'  => absint( $parent ),
+			'log_type'     => esc_attr( $type ),
 		);
 
 		return self::insert_log( $log_data );
@@ -244,17 +261,20 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @access      private
 	 * @since       1.0
 	 *
+	 * @param       int $object_id A WordPress object ID.
+	 * @param       string $type The type of log item; defaults to 'salesforce' because that's the type of logs we create.
+	 * @param       int $paged Which page of results do we want?
+	 *
 	 * @uses        self::get_connected_logs()
 	 *
 	 * @return      array
-	*/
-
+	 */
 	public static function get_logs( $object_id = 0, $type = 'salesforce', $paged = null ) {
 		return self::get_connected_logs(
 			array(
-				'post_parent' => $object_id,
-				'paged' => $paged,
-				'log_type' => $type,
+				'post_parent' => (int) $object_id,
+				'paged' => (int) $paged,
+				'log_type' => (string) $type,
 			)
 		);
 	}
@@ -268,14 +288,15 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @access  private
 	 * @since   1.0
 	 *
+	 * @param   Array $args An array of arguments for get_posts().
+	 *
 	 * @uses    wp_parse_args()
 	 * @uses    get_posts()
 	 * @uses    get_query_var()
 	 * @uses    self::valid_type()
 	 *
 	 * @return  array / false
-	*/
-
+	 */
 	public static function get_connected_logs( $args = array() ) {
 
 		$defaults = array(
@@ -307,7 +328,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			return $logs;
 		}
 
-		// no logs found
+		// no logs found.
 		return false;
 
 	}
@@ -319,16 +340,19 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @access  private
 	 * @since   1.0
 	 *
+	 * @param       int $object_id A WordPress object ID.
+	 * @param       string $type The type of log item; defaults to 'salesforce' because that's the type of logs we create.
+	 * @param       Array $meta_query A WordPress meta query, parseable by WP_Meta_Query.
+	 *
 	 * @uses    WP_Query()
 	 * @uses    self::valid_type()
 	 *
 	 * @return  int
-	*/
-
+	 */
 	public static function get_log_count( $object_id = 0, $type = 'salesforce', $meta_query = null ) {
 
 		$query_args = array(
-			'post_parent'    => $object_id,
+			'post_parent'    => (int) $object_id,
 			'post_type'      => 'wp_log',
 			'posts_per_page' => 100,
 			'post_status'    => 'publish',
@@ -340,7 +364,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 				array(
 					'taxonomy' => 'wp_log_type',
 					'field'    => 'slug',
-					'terms'    => $type,
+					'terms'    => sanitize_key( $type ),
 				),
 			);
 

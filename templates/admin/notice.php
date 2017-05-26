@@ -1,3 +1,3 @@
-<div class="notice<?php echo $class; ?><?php echo $dismissible; ?>">
-	<p><?php _e( $message, 'object-sync-for-salesforce' ); ?></p>
+<div class="notice<?php echo esc_attr( $class ); ?><?php echo esc_attr( $dismissible ); ?>">
+	<p><?php esc_html( $message ); ?></p>
 </div>

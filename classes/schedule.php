@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for the Object_Sync_Sf_Schedule class. Extend the WP_Background_Process class for the purposes of Object Sync for Salesforce.
+ *
  * @file
  */
 

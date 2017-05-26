@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for Object_Sync_Sf_Wordpress.
+ *
  * @file
  */
 
@@ -8,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 }
 
 /**
- * Pull data from Salesforce into WordPress
+ * Work with the WordPress $wpdb object. This class can make read and write calls to the WordPress database, and also cache the responses.
  */
 class Object_Sync_Sf_Wordpress {
 
@@ -19,14 +21,15 @@ class Object_Sync_Sf_Wordpress {
 	protected $logging;
 
 	/**
-	* Constructor which discovers objects in WordPress
-	*
-	* @param object $wpdb
-	* @param string $version
-	* @param string $slug
-	* @param object $mappings
-	* @throws \Exception
-	*/
+	 * Constructor which discovers objects in WordPress
+	 *
+	 * @param object $wpdb A wpdb object.
+	 * @param string $version The plugin version.
+	 * @param string $slug The plugin slug.
+	 * @param object $mappings Mapping objects.
+	 * @param object $logging a Object_Sync_Sf_Logging instance.
+	 * @throws \Exception
+	 */
 	public function __construct( $wpdb, $version, $slug, $mappings, $logging ) {
 		$this->wpdb = $wpdb;
 		$this->version = $version;
@@ -49,31 +52,29 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Get WordPress object types
-	*
-	* @return array $wordpress_objects
-	*/
+	 * Get WordPress object types
+	 *
+	 * @return array $wordpress_objects
+	 */
 	public function get_object_types() {
-
-		// allow developers to specify, especially non-post, content types that should be included or ignored
-
-		// example to add/remove types
 		/*
-		add_filter( 'object_sync_for_salesforce_add_more_wordpress_types', 'add_more_types', 10, 1 );
-		function add_more_types( $more_types ) {
-			$more_types = array( 'foo' );
-			// or $more_types[] = 'foo';
-			return $more_types;
-		}
+		 * Allow developers to specify, especially non-post, content types that should be included or ignored.
+		 * Here's an example of filters to add/remove types:
+		 *
+			add_filter( 'object_sync_for_salesforce_add_more_wordpress_types', 'add_more_types', 10, 1 );
+			function add_more_types( $more_types ) {
+				$more_types = array( 'foo' );
+				// or $more_types[] = 'foo';
+				return $more_types;
+			}
 
-		add_filter( 'object_sync_for_salesforce_remove_wordpress_types', 'remove_types', 10, 1 );
-		function remove_types( $types_to_remove ) {
-			$types_to_remove = array( 'acme_product' );
-			// or $types_to_remove[] = 'acme_product';
-			return $types_to_remove;
-		}
+			add_filter( 'object_sync_for_salesforce_remove_wordpress_types', 'remove_types', 10, 1 );
+			function remove_types( $types_to_remove ) {
+				$types_to_remove = array( 'acme_product' );
+				// or $types_to_remove[] = 'acme_product';
+				return $types_to_remove;
+			}
 		*/
-
 		$wordpress_types_not_posts_include = apply_filters( 'object_sync_for_salesforce_add_more_wordpress_types', array() );
 		$wordpress_types_ignore = apply_filters( 'object_sync_for_salesforce_remove_wordpress_types', array( 'wp_log' ) );
 
@@ -95,11 +96,11 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Get WordPress table structure for an object
-	*
-	* @param string $object_type
-	* @return array $object_table_structure
-	*/
+	 * Get WordPress table structure for an object
+	 *
+	 * @param string $object_type The type of object.
+	 * @return array $object_table_structure The table structure.
+	 */
 	public function get_wordpress_table_structure( $object_type ) {
 		if ( 'attachment' === $object_type ) {
 			$object_table_structure = array(
@@ -124,7 +125,7 @@ class Object_Sync_Sf_Wordpress {
 				'ignore_keys' => array(),
 			);
 		} elseif ( 'user' === $object_type ) {
-			// user meta fields need to use update_user_meta for create as well, otherwise it'll just get created twice because apparently when the post is created it's already there
+			// User meta fields need to use update_user_meta for create as well, otherwise it'll just get created twice because apparently when the post is created it's already there.
 			$object_table_structure = array(
 				'object_name' => 'user',
 				'content_methods' => array(
@@ -144,7 +145,7 @@ class Object_Sync_Sf_Wordpress {
 				'meta_table' => $this->wpdb->prefix . 'usermeta',
 				'meta_join_field' => 'user_id',
 				'where' => '',
-				'ignore_keys' => array( // keep it simple and avoid security risks
+				'ignore_keys' => array( // Keep it simple and avoid security risks.
 					'user_pass',
 					'user_activation_key',
 					'session_tokens',
@@ -173,7 +174,7 @@ class Object_Sync_Sf_Wordpress {
 				'ignore_keys' => array(),
 			);
 		} elseif ( 'category' === $object_type || 'tag' === $object_type || 'post_tag' === $object_type ) {
-			// i am unsure why post_tag wasn't here for so long, but i figure it probably needs to be there
+			// I am unsure why post_tag wasn't here for so long, but i figure it probably needs to be there.
 			$object_table_structure = array(
 				'object_name' => 'term',
 				'content_methods' => array(
@@ -202,7 +203,7 @@ class Object_Sync_Sf_Wordpress {
 					'create' => 'wp_new_comment',
 					'read' => 'get_comments',
 					'update' => 'wp_update_comment',
-					'delete' => 'wp_delete_comment'
+					'delete' => 'wp_delete_comment',
 				),
 				'meta_methods' => array(
 					'create' => 'add_comment_meta',
@@ -217,7 +218,7 @@ class Object_Sync_Sf_Wordpress {
 				'where' => '',
 				'ignore_keys' => array(),
 			);
-		} else { // this is for custom post types
+		} else { // This is for custom post types.
 			$object_table_structure = array(
 				'object_name' => 'post',
 				'content_methods' => array(
@@ -245,12 +246,12 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Get WordPress fields for an object
-	*
-	* @param string $wordpress_object
-	* @param string $id_field
-	* @return array $object_fields
-	*/
+	 * Get WordPress fields for an object
+	 *
+	 * @param string $wordpress_object The type of WordPress object.
+	 * @param string $id_field The field of that object that corresponds with its ID in the database.
+	 * @return array $object_fields
+	 */
 	public function get_wordpress_object_fields( $wordpress_object, $id_field = 'ID' ) {
 
 		$object_table_structure = $this->get_wordpress_table_structure( $wordpress_object );
@@ -266,7 +267,7 @@ class Object_Sync_Sf_Wordpress {
 
 		$object_fields = array();
 
-		// should cache that array
+		// Try to find the object fields in cache before acquiring it from other source.
 		if ( true === $this->options['cache'] && 'write' !== $this->options['cache'] ) {
 			$cached = $this->cache_get( $wordpress_object, array( 'data', 'meta' ) );
 			if ( is_array( $cached ) ) {
@@ -288,11 +289,12 @@ class Object_Sync_Sf_Wordpress {
 			$object_fields['cached'] = false;
 		}
 
-		// developers can use this hook to change the wordpress object field array
-		// the returned $object_fields needs to be an array like the above
-		// $object_fields = array( 'data' => array(), 'from_cache' => bool, 'cached' => bool );
-		// this is useful for custom objects that do not use the normal metadata table structure
-
+		/*
+		 * Developers can use this hook to change the wordpress object field array.
+		 * The returned $object_fields needs to be an array like is described earlier in this method:
+		 *     $object_fields = array( 'data' => array(), 'from_cache' => bool, 'cached' => bool );
+		 * This is useful for custom objects that do not use the normal metadata table structure.
+		 */
 		$object_fields = apply_filters( 'object_sync_for_salesforce_wordpress_object_fields', $object_fields, $wordpress_object );
 
 		return $object_fields['data'];
@@ -300,12 +302,12 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Get WordPress data based on what object it is
-	*
-	* @param string $object_type
-	* @param string $object_id
-	* @return array $wordpress_object
-	*/
+	 * Get WordPress data based on what object it is
+	 *
+	 * @param string $object_type The type of object.
+	 * @param string $object_id The ID of the object.
+	 * @return array $wordpress_object
+	 */
 	public function get_wordpress_object_data( $object_type, $object_id ) {
 
 		$wordpress_object = array();
@@ -318,7 +320,7 @@ class Object_Sync_Sf_Wordpress {
 			$data = get_term( $object_id );
 		} elseif ( 'comment' === $object_type ) {
 			$data = get_comment( $object_id );
-		} else { // this is for custom post types
+		} else { // This is for custom post types.
 			$data = get_post( $object_id );
 		}
 
@@ -328,11 +330,10 @@ class Object_Sync_Sf_Wordpress {
 			$wordpress_object[ $field ] = $data->{$field};
 		}
 
-		// developers can use this hook to change the wordpress object
-		// including any formatting that needs to happen to the data
-		// the returned $wordpress_object needs to be an array like the above
-		// this is useful for custom objects or custom formatting
-
+		// Developers can use this hook to change the wordpress object,
+		// including any formatting that needs to happen to the data.
+		// The returned $wordpress_object needs to be an array like described above.
+		// This is useful for custom objects or custom formatting.
 		$wordpress_object = apply_filters( 'object_sync_for_salesforce_wordpress_object_data', $wordpress_object );
 
 		return $wordpress_object;
@@ -343,8 +344,8 @@ class Object_Sync_Sf_Wordpress {
 	 * Check to see if this API call exists in the cache
 	 * if it does, return the transient for that key
 	 *
-	 * @param string $url
-	 * @param array $args
+	 * @param string $url The API call we'd like to make.
+	 * @param array  $args The arguents of the API call.
 	 * @return get_transient $cachekey
 	 */
 	public function cache_get( $url, $args ) {
@@ -361,9 +362,12 @@ class Object_Sync_Sf_Wordpress {
 	/**
 	 * Create a cache entry for the current result, with the url and args as the key
 	 *
-	 * @param string $url
-	 * @param array $args
-	 * @param array $data
+	 * @param string $url The API query URL.
+	 * @param array  $args The arguments passed on the API query.
+	 * @param array  $data The data received.
+	 * @param string $cache_expiration How long to keep the cache result around for.
+	 * @return Bool whether or not the value was set
+	 * @link https://developer.wordpress.org/reference/functions/set_transient/
 	 */
 	public function cache_set( $url, $args, $data, $cache_expiration = '' ) {
 		if ( is_array( $args ) ) {
@@ -373,8 +377,8 @@ class Object_Sync_Sf_Wordpress {
 			$args .= $url;
 		}
 		$cachekey = md5( wp_json_encode( $args ) );
-		// cache_expiration is how long it should be stored in the cache
-		// if we didn't give a custom one, use the default
+		// Cache_expiration is how long it should be stored in the cache.
+		// If we didn't give a custom one, use the default.
 		if ( '' === $cache_expiration ) {
 			$cache_expiration = $this->options['cache_expiration'];
 		}
@@ -385,8 +389,9 @@ class Object_Sync_Sf_Wordpress {
 	 * If there is a WordPress setting for how long to keep this specific cache, return it and set the object property
 	 * Otherwise, return seconds in 24 hours
 	 *
-	 * @param string $option_key
-	 * @param int $expire
+	 * @param string $option_key The cache item to keep around.
+	 * @param int    $expire The default time after which to expire the cache.
+	 * @return The cache expiration saved in the database.
 	 */
 	public function cache_expiration( $option_key, $expire ) {
 		$cache_expiration = get_option( $option_key, $expire );
@@ -400,21 +405,21 @@ class Object_Sync_Sf_Wordpress {
 	 * if there's a better way to do this than the mess of queries below, we should switch to that when we can
 	 * we just need to make sure we get all applicable fields for the object itself, as well as its meta fields
 	 *
-	 * @param string $object_name
-	 * @param string $id_field
-	 * @param string $content_table
-	 * @param array $content_methods
-	 * @param string $meta_table
-	 * @param array $meta_methods
-	 * @param string $where
-	 * @param array $ignore_keys
-	 * @return array $all_fields
+	 * @param string $object_name THe name of the object type.
+	 * @param string $id_field The database filed that contains its ID.
+	 * @param string $content_table The table that normally contains such objects.
+	 * @param array  $content_methods Unused, but included as part of the return.
+	 * @param string $meta_table The table where meta values for this object type are contained.
+	 * @param array  $meta_methods Unused, but included as part of the return.
+	 * @param string $where SQL query.
+	 * @param array  $ignore_keys Fields to ignore from the database.
+	 * @return array $all_fields The fields for the object.
 	 */
 	private function object_fields( $object_name, $id_field, $content_table, $content_methods, $meta_table, $meta_methods, $where, $ignore_keys ) {
-		// these two queries load all the fields from the specified object unless they have been specified as ignore fields
-		// they also load the fields that are meta_keys from the specified object's meta table
-		// maybe a box for a custom query, since custom fields get done in so many ways
-		// eventually this would be the kind of thing we could use fields api for, if it ever gets done
+		// These two queries load all the fields from the specified object unless they have been specified as ignore fields.
+		// They also load the fields that are meta_keys from the specified object's meta table.
+		// Maybe a box for a custom query, since custom fields get done in so many ways.
+		// Eventually this would be the kind of thing we could use fields api for, if it ever gets done.
 		$data_fields = $this->wpdb->get_col( "DESC {$content_table}", 0 );
 
 		if ( is_array( $meta_table ) ) {
@@ -434,7 +439,7 @@ class Object_Sync_Sf_Wordpress {
 		$all_fields = array();
 
 		foreach ( $data_fields as $key => $value ) {
-			if ( ! in_array( $value, $ignore_keys ) ) {
+			if ( ! in_array( $value, $ignore_keys, true ) ) {
 				$all_fields[] = array(
 					'key' => $value,
 					'table' => $content_table,
@@ -444,7 +449,7 @@ class Object_Sync_Sf_Wordpress {
 		}
 
 		foreach ( $meta_fields as $key => $value ) {
-			if ( ! in_array( $value->meta_key, $ignore_keys ) ) {
+			if ( ! in_array( $value->meta_key, $ignore_keys, true ) ) {
 				$all_fields[] = array(
 					'key' => $value->meta_key,
 					'table' => $meta_table,
@@ -456,7 +461,7 @@ class Object_Sync_Sf_Wordpress {
 		if ( 'term' === $object_name ) {
 			$taxonomy = $this->wpdb->get_col( "DESC {$tax_table}", 0 );
 			foreach ( $taxonomy as $key => $value ) {
-				$exists = array_search( $value, array_column( $all_fields, 'key' ) );
+				$exists = array_search( $value, array_column( $all_fields, 'key' ), true );
 				if ( 0 !== $exists ) {
 					$all_fields[] = array(
 						'key' => $value,
@@ -472,24 +477,22 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Create a new object of a given type.
-	*
-	* @param string $name
-	*   Object type name, E.g., user, post, comment
-	* @param array $params
-	*   Values of the fields to set for the object.
-	*
-	* @return array
-	*   data:
-	*     id : 123,
-	*     success : true
-	*   errors : [ ],
-	*   from_cache:
-	*   cached:
-	*   is_redo:
-	*
-	* part of CRUD for WordPress objects
-	*/
+	 * Create a new object of a given type.
+	 *
+	 * @param string $name Object type name, E.g., user, post, comment.
+	 * @param array  $params Values of the fields to set for the object.
+	 *
+	 * @return array
+	 *   data:
+	 *     id : 123,
+	 *     success : true
+	 *   errors : [ ],
+	 *   from_cache:
+	 *   cached:
+	 *   is_redo:
+	 *
+	 * part of CRUD for WordPress objects
+	 */
 	public function object_create( $name, $params ) {
 
 		$structure = $this->get_wordpress_table_structure( $name );
@@ -515,17 +518,16 @@ class Object_Sync_Sf_Wordpress {
 				break;
 			default:
 
-				// developers can use this hook to create objects with their own methods
-				// the returned $result needs to be an array like this
-				// $id_field should be the database key; i.e. 'ID' and the value should be the new item's id, or whatever wordpress returns from the method (sometimes this can be an error)
-				// $success should be a boolean value
 				/*
+				 * Developers can use this hook to create objects with their own methods.
+				 * The returned $result needs to be an array like this.
+				 * $id_field should be the database key; i.e. 'ID' and the value should be the new item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+				 * $success should be a boolean value
 					$result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
-				*/
-				// use hook like: add_filter( 'object_sync_for_salesforce_create_custom_wordpress_item', add_object, 10, 1 );
-				// the one param is: array( 'name' => objecttype, 'params' => array_of_params, 'id_field' => idfield )
-
-				// check to see if someone is calling the filter, and apply it if so
+				 * use hook like: add_filter( 'object_sync_for_salesforce_create_custom_wordpress_item', add_object, 10, 1 );
+				 * the one param is: array( 'name' => objecttype, 'params' => array_of_params, 'id_field' => idfield )
+				 */
+				// Check to see if someone is calling the filter, and apply it if so.
 				if ( ! has_filter( 'object_sync_for_salesforce_create_custom_wordpress_item' ) ) {
 					$result = $this->post_create( $params, $id_field, $name );
 				} else {
@@ -545,38 +547,31 @@ class Object_Sync_Sf_Wordpress {
 
 
 	/**
-	* Create new records or update existing records.
-	*
-	* The new records or updated records are based on the value of the specified
-	* field.  If the value is not unique, REST API returns a 300 response with
-	* the list of matching records.
-	*
-	* @param string $name
-	*   Object type name, E.g., user, post, comment
-	* @param string $key
-	*   The field to check if this record should be created or updated.
-	* @param string $value
-	*   The value for this record of the field specified for $key.
-	* @param array $methods
-	*   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
-	* @param array $params
-	*   Values of the fields to set for the object.
-	* @param bool $push_drafts
-	*	Whether to save WordPress drafts when pushing to Salesforce
-	* @param bool $check_only
-	*	Allows this method to only check for matching records, instead of making any data changes
-	*
-	* @return array
-	*   data:
-	*     "id" : 123,
-	*     "success" : true
-	*   "errors" : [ ],
-	*   from_cache:
-	*   cached:
-	*   is_redo:
-	*
-	* part of CRUD for WordPress objects
-	*/
+	 * Create new records or update existing records.
+	 *
+	 * The new records or updated records are based on the value of the specified
+	 * field.  If the value is not unique, REST API returns a 300 response with
+	 * the list of matching records.
+	 *
+	 * @param string $name Object type name, E.g., user, post, comment.
+	 * @param string $key The field to check if this record should be created or updated.
+	 * @param string $value The value for this record of the field specified for $key.
+	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $params Values of the fields to set for the object.
+	 * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
+	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 *
+	 * @return array
+	 *   data:
+	 *     "id" : 123,
+	 *     "success" : true
+	 *   "errors" : [ ],
+	 *   from_cache:
+	 *   cached:
+	 *   is_redo:
+	 *
+	 * part of CRUD for WordPress objects
+	 */
 	public function object_upsert( $name, $key, $value, $methods = array(), $params, $push_drafts = false, $check_only = false ) {
 
 		$structure = $this->get_wordpress_table_structure( $name );
@@ -587,7 +582,7 @@ class Object_Sync_Sf_Wordpress {
 			unset( $params[ $key ] );
 		}
 
-		// allow developers to change both the key and value by which objects should be matched
+		// Allow developers to change both the key and value by which objects should be matched.
 		$key = apply_filters( 'object_sync_for_salesforce_modify_upsert_key', $key );
 		$value = apply_filters( 'object_sync_for_salesforce_modify_upsert_value', $value );
 
@@ -611,17 +606,18 @@ class Object_Sync_Sf_Wordpress {
 				break;
 			default:
 
-				// developers can use this hook to upsert objects with their own methods
-				// the returned $result needs to be an array like this
-				// $id_field should be the database key; i.e. 'ID' and the value should be the item's id, or whatever wordpress returns from the method (sometimes this can be an error)
-				// $success should be a boolean value
 				/*
-					$result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
+				 * Developers can use this hook to upsert objects with their own methods.
+				 * The returned $result needs to be an array like this:
+				 * $id_field should be the database key; i.e. 'ID' and the value should be the item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+				 * $success should be a boolean value
+				 *     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
+				 * Use hook like this:
+				 *     add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', add_object, 10, 1 );
+				 * The one param is:
+				 *     array( 'key' => key, 'value' => value, 'methods' => methods, 'params' => array_of_params, 'id_field' => idfield, 'push_drafts' => pushdrafts, 'name' => name, 'check_only' => $check_only )
 				*/
-				// use hook like: add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', add_object, 10, 1 );
-				// the one param is: array( 'key' => key, 'value' => value, 'methods' => methods, 'params' => array_of_params, 'id_field' => idfield, 'push_drafts' => pushdrafts, 'name' => name, 'check_only' => $check_only )
-
-				// check to see if someone is calling the filter, and apply it if so
+				// Check to see if someone is calling the filter, and apply it if so.
 				if ( ! has_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item' ) ) {
 					$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name, $check_only );
 				} else {
@@ -645,25 +641,22 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Update an existing object.
-	*
-	* @param string $name
-	*   Object type name, E.g., user, post, comment
-	* @param string $id
-	*   WordPress id of the object.
-	* @param array $params
-	*   Values of the fields to set for the object.
-	*
-	* part of CRUD for WordPress objects
-	*
-	* @return array
-	*   data:
-	*		success: 1
-	*   "errors" : [ ],
-	*   from_cache:
-	*   cached:
-	*   is_redo:
-	*/
+	 * Update an existing object.
+	 *
+	 * @param string $name Object type name, E.g., user, post, comment.
+	 * @param string $id WordPress id of the object.
+	 * @param array  $params Values of the fields to set for the object.
+	 *
+	 * part of CRUD for WordPress objects
+	 *
+	 * @return array
+	 *   data:
+	 *     success: 1
+	 *   "errors" : [ ],
+	 *   from_cache:
+	 *   cached:
+	 *   is_redo:
+	 */
 	public function object_update( $name, $id, $params ) {
 
 		$structure = $this->get_wordpress_table_structure( $name );
@@ -671,7 +664,7 @@ class Object_Sync_Sf_Wordpress {
 
 		switch ( $name ) {
 			case 'user':
-				// user id does not come through by default, but we need it to pass to wp method
+				// User id does not come through by default, but we need it to pass to wp method.
 				$result = $this->user_update( $id, $params, $id_field );
 				break;
 			case 'post':
@@ -690,17 +683,18 @@ class Object_Sync_Sf_Wordpress {
 				break;
 			default:
 
-				// developers can use this hook to update objects with their own methods
-				// the returned $result needs to be an array like this
-				// $id_field should be the database key; i.e. 'ID' and the value should be the updated item's id, or whatever wordpress returns from the method (sometimes this can be an error)
-				// $success should be a boolean value
 				/*
-					$result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
-				*/
-				// use hook like: add_filter( 'object_sync_for_salesforce_update_custom_wordpress_item', add_object, 10, 1 );
-				// the one param is: array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
-
-				// check to see if someone is calling the filter, and apply it if so
+				 * Developers can use this hook to update objects with their own methods.
+				 * The returned $result needs to be an array like this:
+				 *     $id_field should be the database key; i.e. 'ID' and the value should be the updated item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+				 * $success should be a boolean value
+				 *     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
+				 * Use hook like this:
+				 *     add_filter( 'object_sync_for_salesforce_update_custom_wordpress_item', add_object, 10, 1 );
+				 * The one param is:
+				 *     array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
+				 */
+				// Check to see if someone is calling the filter, and apply it if so.
 				if ( ! has_filter( 'object_sync_for_salesforce_update_custom_wordpress_item' ) ) {
 					$result = $this->post_update( $id, $params, $id_field );
 				} else {
@@ -718,20 +712,18 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Delete a WordPress object.
-	*
-	* @param string $name
-	*   Object type name, E.g., user, post, comment
-	* @param string $id
-	*   WordPress id of the object.
-	*
-	* @return array
-	*   data:
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	* part of CRUD for WordPress objects
-	*/
+	 * Delete a WordPress object.
+	 *
+	 * @param string $name Object type name, E.g., user, post, comment.
+	 * @param string $id WordPress id of the object.
+	 *
+	 * @return array
+	 *   data:
+	 *     success: 1
+	 *   "errors" : [ ],
+	 *
+	 * part of CRUD for WordPress objects
+	 */
 	public function object_delete( $name, $id ) {
 		$structure = $this->get_wordpress_table_structure( $name );
 		$id_field = $structure['id_field'];
@@ -756,12 +748,15 @@ class Object_Sync_Sf_Wordpress {
 				break;
 			default:
 
-				// developers can use this hook to delete objects with their own methods
-				// the returned $success is an object of the correct type, or a FALSE
-				// use hook like: add_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item', add_object, 10, 1 );
-				// the one param is: array( 'id' => id, 'name' => objecttype )
-
-				// check to see if someone is calling the filter, and apply it if so
+				/*
+				 * Developers can use this hook to delete objects with their own methods.
+				 * The returned $success is an object of the correct type, or a FALSE
+				 * Use hook like:
+				 *     add_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item', add_object, 10, 1 );
+				 * The one param is:
+				 *     array( 'id' => id, 'name' => objecttype )
+				 */
+				// Check to see if someone is calling the filter, and apply it if so.
 				if ( ! has_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item' ) ) {
 					$success = $this->post_delete( $id );
 				} else {
@@ -785,25 +780,24 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Create a new WordPress user.
-	*
-	* @param array $params
-	*   array of user data params
-	*
-	* @return array
-	*   data:
-	*     ID : 123,
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Create a new WordPress user.
+	 *
+	 * @param array  $params array of user data params.
+	 * @param string $id_field The column in the DB that holdes the user ID.
+	 *
+	 * @return array
+	 *   data:
+	 *     ID : 123,
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function user_create( $params, $id_field = 'ID' ) {
 
-		// allow username to be email address or username
-		// the username could be autogenerated before this point for the sake of URLs
+		// Allow username to be email address or username.
+		// The username could be autogenerated before this point for the sake of URLs.
 		$username = $params['user_email']['value'];
 		$email_address = $params['user_email']['value'];
-		if ( isset( $params['user_login']['value'] ) ) { // user_login is used by username_exists
+		if ( isset( $params['user_login']['value'] ) ) { // User_login is used by username_exists.
 			$username = $params['user_login']['value'];
 		} else {
 			$params['user_login'] = array(
@@ -813,11 +807,11 @@ class Object_Sync_Sf_Wordpress {
 			);
 		}
 
-		// this is a new user
-		if ( null == username_exists( $username ) ) {
+		// This is a new user.
+		if ( false === username_exists( $username ) ) {
 
 			// Create the user
-			// wordpress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email
+			// Wordpress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email.
 			$params['user_pass'] = array(
 				'value' => wp_generate_password( 12, false ),
 				'method_modify' => 'wp_insert_user',
@@ -844,15 +838,23 @@ class Object_Sync_Sf_Wordpress {
 					$meta_id = $method( $user_id, $key, $value['value'] );
 					if ( false === $meta_id ) {
 						$success = false;
-						$errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
+						$errors[] = array(
+							'message' => sprintf(
+								// translators: %1$s is a method name.
+								esc_html__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
+								esc_html( $method )
+							),
+							'key' => $key,
+							'value' => $value,
+						);
 					}
 				}
 
-				// developers can use this hook to set any other user data - permissions, etc
+				// Developers can use this hook to set any other user data - permissions, etc.
 				do_action( 'object_sync_for_salesforce_set_more_user_data', $user_id, $params, 'create' );
 
-				// send notification of new user
-				// todo: figure out what permissions out to get notifications for this and make sure it works the right way
+				// Send notification of new user.
+				// todo: Figure out what permissions ought to get notifications for this and make sure it works the right way.
 				wp_new_user_notification( $user_id, null, 'admin user' );
 
 			}
@@ -881,47 +883,39 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Create a new WordPress user or update it if a match is found.
-	*
-	* @param string $key
-	*   what key we are looking at for possible matches
-	* @param string $value
-	*   what value we are looking at for possible matches
-	* @param array $methods
-	*   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
-	* @param array $params
-	*   array of user data params
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not ID
-	* @param bool $push_drafts
-	*	Whether to save WordPress drafts when pushing to Salesforce
-	* @param bool $check_only
-	*	Allows this method to only check for matching records, instead of making any data changes
-	*
-	* @return array
-	*   data:
-	*     ID : 123,
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Create a new WordPress user or update it if a match is found.
+	 *
+	 * @param string $key What key we are looking at for possible matches.
+	 * @param string $value What value we are looking at for possible matches.
+	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $params Array of user data params. This is generated by Object_Sync_Sf_Mapping::map_params().
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
+	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 *
+	 * @return array
+	 *   data:
+	 *     ID : 123,
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $check_only = false ) {
 
-		// if the key is user_email, we need to make it just email because that is how the wordpress method reads it
+		// If the key is user_email, we need to make it just email because that is how the wordpress method reads it.
 		$method = $methods['method_match'];
 		if ( '' !== $method ) {
-			// this should give us the user object
+			// This should give us the user object.
 			$user = $method( str_replace( 'user_', '', $key ), $value );
 			if ( isset( $user->{$id_field} ) ) {
-				// user does exist after checking the matching value. we want its id
+				// User does exist after checking the matching value. we want its id.
 				$user_id = $user->{$id_field};
 
 				if ( true === $check_only ) {
-					// we are just checking to see if there is a match
+					// We are just checking to see if there is a match.
 					return $user_id;
 				}
 
-				// on the prematch fields, we specify the method_update param
+				// On the prematch fields, we specify the method_update param.
 				if ( isset( $methods['method_update'] ) ) {
 					$method = $methods['method_update'];
 				} else {
@@ -933,8 +927,8 @@ class Object_Sync_Sf_Wordpress {
 					'method_read' => $methods['method_read'],
 				);
 			} elseif ( false === $check_only ) {
-				// user does not exist after checking the matching value. create it.
-				// on the prematch fields, we specify the method_create param
+				// User does not exist after checking the matching value. create it.
+				// On the prematch fields, we specify the method_create param.
 				if ( isset( $methods['method_create'] ) ) {
 					$method = $methods['method_create'];
 				} else {
@@ -948,38 +942,38 @@ class Object_Sync_Sf_Wordpress {
 				$result = $this->user_create( $params );
 				return $result;
 			} else {
-				// check only is true but there's not a user yet
+				// Check only is true but there's not a user yet.
 				return null;
 			} // End if().
 		} else {
-			// there is no method by which to check the user. we can check other ways here.
+			// There is no method by which to check the user. we can check other ways here.
 			$params[ $key ] = array(
 				'value' => $value,
 				'method_modify' => $methods['method_modify'],
 				'method_read' => $methods['method_read'],
 			);
 
-			// allow username to be email address or username
-			// the username could be autogenerated before this point for the sake of URLs
+			// Allow username to be email address or username.
+			// The username could be autogenerated before this point for the sake of URLs.
 			if ( isset( $params['user_email']['value'] ) ) {
 				$username = $params['user_email']['value'];
 				$email_address = $params['user_email']['value'];
 			}
-			if ( isset( $params['user_login']['value'] ) ) { // user_login is used by username_exists
+			if ( isset( $params['user_login']['value'] ) ) { // user_login is used by username_exists.
 				$username = $params['user_login']['value'];
 			}
 
-			$existing_id = username_exists( $username ); // returns an id if there is a result
+			$existing_id = username_exists( $username ); // Returns an id if there is a result.
 
-			// user does not exist after more checking. we want to create it
-			if ( null === $existing_id && false === $check_only ) {
+			// User does not exist after more checking. we want to create it.
+			if ( false === $existing_id && false === $check_only ) {
 				$result = $this->user_create( $params );
 				return $result;
 			} elseif ( true === $check_only ) {
-				// we are just checking to see if there is a match
+				// We are just checking to see if there is a match.
 				return $existing_id;
 			} else {
-				// user does exist based on username, and we aren't doing a check only. we want to update the wp user here.
+				// User does exist based on username, and we aren't doing a check only. we want to update the wp user here.
 				$user_id = $existing_id;
 			}
 		} // End if().
@@ -991,14 +985,16 @@ class Object_Sync_Sf_Wordpress {
 			$result = $this->user_update( $user_id, $params );
 			return $result;
 		}
-		// create log entry for lack of a user id
+
+		// Create log entry for lack of a user id.
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Users: Tried to run user_upsert, and ended up without a user id', 'object-sync-for-salesforce' ),
+			// todo: can we get any more specific about this?
+			esc_html__( 'Error: Users: Tried to run user_upsert, and ended up without a user id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -1008,21 +1004,17 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Update a WordPress user.
-	*
-	* @param string $user_id
-	*   the ID for the user to be updated. This value needs to be in the array that is sent to wp_update_user
-	* @param array $params
-	*   array of user data params
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not ID
-	*
-	* @return array
-	*   data:
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Update a WordPress user.
+	 *
+	 * @param string $user_id The ID for the user to be updated. This value needs to be in the array that is sent to wp_update_user.
+	 * @param array  $params Array of user data params.
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 *
+	 * @return array
+	 *   data:
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function user_update( $user_id, $params, $id_field = 'ID' ) {
 		$content = array();
 		$content[ $id_field ] = $user_id;
@@ -1053,7 +1045,7 @@ class Object_Sync_Sf_Wordpress {
 				}
 			}
 
-			// developers can use this hook to set any other user data - permissions, etc
+			// Developers can use this hook to set any other user data - permissions, etc.
 			do_action( 'object_sync_for_salesforce_set_more_user_data', $user_id, $params, 'update' );
 
 		}
@@ -1069,42 +1061,33 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Delete a WordPress user.
-	*
-	* @param int $id
-	*   User ID
-	* @param int $reassign
-	*   If we should reassign any posts to other users
-	*   We don't change this from NULL anywhere in this plugin
-	*
-	* @return boolean
-	*   true if successful
-	*
-	*/
+	 * Delete a WordPress user.
+	 *
+	 * @param int $id User ID.
+	 * @param int $reassign If we should reassign any posts to other users. We don't change this from NULL anywhere in this plugin.
+	 *
+	 * @return boolean true if successful
+	 */
 	private function user_delete( $id, $reassign = null ) {
-		// according to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error
-		include_once( './wp-admin/includes/user.php' );
+		// According to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error.
+		require_once( './wp-admin/includes/user.php' );
 		$result = wp_delete_user( $id, $reassign );
 		return $result;
 	}
 
 	/**
-	* Create a new WordPress post.
-	*
-	* @param array $params
-	*   array of post data params
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not ID
-	* @param string $post_type
-	*   optional string for custom post type, if applicable
-	*
-	* @return array
-	*   data:
-	*     ID : 123,
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Create a new WordPress post.
+	 *
+	 * @param array  $params Array of post data params.
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 * @param string $post_type Optional string for custom post type, if applicable.
+	 *
+	 * @return array
+	 *   data:
+	 *     ID : 123,
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function post_create( $params, $id_field = 'ID', $post_type = '' ) {
 		foreach ( $params as $key => $value ) {
 			if ( 'wp_insert_post' === $value['method_modify'] ) {
@@ -1113,7 +1096,7 @@ class Object_Sync_Sf_Wordpress {
 			}
 		}
 
-		if ( $post_type !== '' ) {
+		if ( '' !== $post_type ) {
 			$content['post_type'] = $post_type;
 		}
 
@@ -1125,7 +1108,7 @@ class Object_Sync_Sf_Wordpress {
 		} else {
 			$success = true;
 			$errors = array();
-			// if it's a custom post type, fix the methods
+			// If it's a custom post type, fix the methods.
 			if ( isset( $params['RecordTypeId']['value'] ) ) {
 				$params['RecordTypeId']['method_modify'] = 'update_post_meta';
 				$params['RecordTypeId']['method_read'] = 'get_post_meta';
@@ -1144,7 +1127,7 @@ class Object_Sync_Sf_Wordpress {
 				}
 			}
 
-			// developers can use this hook to set any other post data
+			// Developers can use this hook to set any other post data.
 			do_action( 'object_sync_for_salesforce_set_more_post_data', $post_id, $params, 'create' );
 
 		}
@@ -1170,40 +1153,31 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Create a new WordPress post or update it if a match is found.
-	*
-	* @param string $key
-	*   what key we are looking at for possible matches
-	* @param string $value
-	*   what value we are looking at for possible matches
-	* @param array $methods
-	*   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
-	* @param array $params
-	*   array of post data params
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not ID
-	* @param bool @push_drafts
-	* indicates whether we should match against draft posts
-	* @param string $post_type
-	*   optional string for custom post type, if applicable
-	* @param bool $check_only
-	*	Allows this method to only check for matching records, instead of making any data changes
-	*
-	* @return array
-	*   data:
-	*     ID : 123,
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Create a new WordPress post or update it if a match is found.
+	 *
+	 * @param string $key What key we are looking at for possible matches.
+	 * @param string $value What value we are looking at for possible matches.
+	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $params Array of post data params.
+	 * @param string $id_field optional string of what the ID field is, if it is ever not ID.
+	 * @param bool   $push_drafts Indicates whether we should match against draft posts.
+	 * @param string $post_type Optional string for custom post type, if applicable.
+	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 *
+	 * @return array
+	 *   data:
+	 *     ID : 123,
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $post_type = 'post', $check_only = false ) {
 
 		$method = $methods['method_match'];
 
 		if ( '' !== $method ) {
-			// by default, posts use get_posts as the method. args can be like this
-			// the args don't really make sense, and are inconsistently documented
-			// this should give us the post object
+			// By default, posts use get_posts as the method. args can be like this.
+			// The args don't really make sense, and are inconsistently documented.
+			// This should give us the post object.
 			$args = array();
 			if ( 'post_title' === $key ) {
 				$params['post_title'] = array(
@@ -1225,15 +1199,15 @@ class Object_Sync_Sf_Wordpress {
 			$posts = $method( $args );
 
 			if ( isset( $posts[0]->{$id_field} ) ) {
-				// post does exist after checking the matching value. we want its id
+				// Post does exist after checking the matching value. We want its id.
 				$post_id = $posts[0]->{$id_field};
 
 				if ( true === $check_only ) {
-					// we are just checking to see if there is a match
+					// We are just checking to see if there is a match.
 					return $post_id;
 				}
 
-				// on the prematch fields, we specify the method_update param
+				// On the prematch fields, we specify the method_update param.
 				if ( isset( $methods['method_update'] ) ) {
 					$method = $methods['method_update'];
 				} else {
@@ -1245,8 +1219,8 @@ class Object_Sync_Sf_Wordpress {
 					'method_read' => $methods['method_read'],
 				);
 			} elseif ( false === $check_only ) {
-				// post does not exist after checking the matching value. create it.
-				// on the prematch fields, we specify the method_create param
+				// Post does not exist after checking the matching value. create it.
+				// On the prematch fields, we specify the method_create param.
 				if ( isset( $methods['method_create'] ) ) {
 					$method = $methods['method_create'];
 				} else {
@@ -1260,47 +1234,47 @@ class Object_Sync_Sf_Wordpress {
 				$result = $this->post_create( $params );
 				return $result;
 			} else {
-				// check only is true but there's not a post yet
+				// Check only is true but there's not a post yet.
 				return null;
 			} // End if().
 		} else {
-			// there is no method by which to check the post. we can check other ways here.
+			// There is no method by which to check the post. we can check other ways here.
 			$params[ $key ] = array(
 				'value' => $value,
 				'method_modify' => $methods['method_modify'],
 				'method_read' => $methods['method_read'],
 			);
 
-			// if we have a title, use it to check for existing post
+			// If we have a title, use it to check for existing post.
 			if ( isset( $params['post_title']['value'] ) ) {
 				$title = $params['post_title']['value'];
 			}
 
-			// if we have content, use it to check for existing post
+			// If we have content, use it to check for existing post.
 			if ( isset( $params['post_content']['value'] ) ) {
 				$content = $params['post_content']['value'];
 			} else {
 				$content = '';
 			}
 
-			// if we have a date, use it to check for existing post
+			// If we have a date, use it to check for existing post.
 			if ( isset( $params['post_date']['value'] ) ) {
 				$date = $params['post_date']['value'];
 			} else {
 				$date = '';
 			}
 
-			$existing_id = post_exists( $title, $content, $date ); // returns an id if there is a result
+			$existing_id = post_exists( $title, $content, $date ); // Returns an id if there is a result. Returns 0 if not.
 
-			// post does not exist after more checking. maybe we want to create it
-			if ( null === $existing_id && false === $check_only ) {
+			// Post does not exist after more checking. maybe we want to create it.
+			if ( 0 === $existing_id && false === $check_only ) {
 				$result = $this->post_create( $params );
 				return $result;
 			} elseif ( true === $check_only ) {
-				// we are just checking to see if there is a match
+				// We are just checking to see if there is a match.
 				return $existing_id;
 			} else {
-				// post does exist based on fields, and we aren't doing a check only. we want to update the wp post here.
+				// Post does exist based on fields, and we aren't doing a check only. we want to update the wp post here.
 				$post_id = $existing_id;
 			}
 
@@ -1315,14 +1289,15 @@ class Object_Sync_Sf_Wordpress {
 			$result = $this->post_update( $post_id, $params );
 			return $result;
 		}
-		// create log entry for lack of a post id
+		// Create log entry for lack of a post id.
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Posts: Tried to run post_upsert, and ended up without a post id', 'object-sync-for-salesforce' ),
+			// todo: can we be more explicit here about what post upsert failed?
+			esc_html__( 'Error: Posts: Tried to run post_upsert, and ended up without a post id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -1332,23 +1307,18 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Update a WordPress post.
-	*
-	* @param string $post_id
-	*   the ID for the post to be updated. This value needs to be in the array that is sent to wp_update_post
-	* @param array $params
-	*   array of post data params
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not ID
-	* @param string $post_type
-	*   optional string for custom post type, if applicable
-	*
-	* @return array
-	*   data:
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Update a WordPress post.
+	 *
+	 * @param string $post_id The ID for the post to be updated. This value needs to be in the array that is sent to wp_update_post.
+	 * @param array  $params Array of post data params.
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 * @param string $post_type Optional string for custom post type, if applicable.
+	 *
+	 * @return array
+	 *   data:
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function post_update( $post_id, $params, $id_field = 'ID', $post_type = '' ) {
 		$content = array();
 		$content[ $id_field ] = $post_id;
@@ -1371,7 +1341,7 @@ class Object_Sync_Sf_Wordpress {
 		} else {
 			$success = true;
 			$errors = array();
-			// if it's a custom post type, fix the methods
+			// If it's a custom post type, fix the methods.
 			if ( isset( $params['RecordTypeId']['value'] ) ) {
 				$params['RecordTypeId']['method_modify'] = 'update_post_meta';
 				$params['RecordTypeId']['method_read'] = 'get_post_meta';
@@ -1390,7 +1360,7 @@ class Object_Sync_Sf_Wordpress {
 				}
 			}
 
-			// developers can use this hook to set any other post data
+			// Developers can use this hook to set any other post data.
 			do_action( 'object_sync_for_salesforce_set_more_post_data', $post_id, $params, 'update' );
 
 		}
@@ -1406,38 +1376,32 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Delete a WordPress post.
-	*
-	* @param int $id
-	*   Post ID
-	* @param bool $force_delete
-	*   If we should bypass the trash
-	*   We don't change this from FALSE anywhere in this plugin
-	*
-	* @return mixed
-	*   post object if successful, false if failed
-	*
-	*/
+	 * Delete a WordPress post.
+	 *
+	 * @param int  $id Post ID.
+	 * @param bool $force_delete If we should bypass the trash. We don't change this from FALSE anywhere in this plugin.
+	 *
+	 * @return mixed post object if successful, false if failed
+	 */
 	private function post_delete( $id, $force_delete = false ) {
 		$result = wp_delete_post( $id, $force_delete );
 		return $result;
 	}
 
 	/**
-	* Create a new WordPress attachment.
-	*
-	* @param array $params
-	*   array of attachment data params
-	*
-	* @return array
-	*   data:
-	*     ID : 123,
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Create a new WordPress attachment.
+	 *
+	 * @param array  $params Array of attachment data params.
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 *
+	 * @return array
+	 *   data:
+	 *     ID : 123,
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function attachment_create( $params, $id_field = 'ID' ) {
-		// WP requires post_title, post_content (can be empty), post_status, and post_mime_type to create an attachment
+		// WP requires post_title, post_content (can be empty), post_status, and post_mime_type to create an attachment.
 		foreach ( $params as $key => $value ) {
 			if ( 'wp_insert_attachment' === $value['method_modify'] ) {
 				$content[ $key ] = $value['value'];
@@ -1445,7 +1409,7 @@ class Object_Sync_Sf_Wordpress {
 			}
 		}
 
-		// developers can use this hook to pass filename and parent data for the attachment
+		// Developers can use this hook to pass filename and parent data for the attachment.
 		$params = apply_filters( 'object_sync_for_salesforce_set_initial_attachment_data', $params );
 
 		if ( isset( $params['filename']['value'] ) ) {
@@ -1470,9 +1434,9 @@ class Object_Sync_Sf_Wordpress {
 			$errors = array();
 
 			if ( false !== $filename ) {
-				// according to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file
+				// According to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file.
 				require_once( ABSPATH . 'wp-admin/includes/image.php' );
-				// generate metadata for the attachment
+				// Generate metadata for the attachment.
 				$attach_data = wp_generate_attachment_metadata( $attachment_id, $filename );
 				wp_update_attachment_metadata( $attachment_id, $attach_data );
 			}
@@ -1481,7 +1445,7 @@ class Object_Sync_Sf_Wordpress {
 				set_post_thumbnail( $parent_post_id, $attachment_id );
 			}
 
-			// developers can use this hook to set any other attachment data
+			// Developers can use this hook to set any other attachment data.
 			do_action( 'object_sync_for_salesforce_set_more_attachment_data', $attachment_id, $params, 'create' );
 
 		}
@@ -1499,37 +1463,30 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Create a new WordPress attachment or update it if a match is found.
-	*
-	* @param string $key
-	*   what key we are looking at for possible matches
-	* @param string $value
-	*   what value we are looking at for possible matches
-	* @param array $methods
-	*   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
-	* @param array $params
-	*   array of attachment data params
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not ID
-	* @param bool $check_only
-	*	Allows this method to only check for matching records, instead of making any data changes
-	*
-	* @return array
-	*   data:
-	*     ID : 123,
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Create a new WordPress attachment or update it if a match is found.
+	 *
+	 * @param string $key What key we are looking at for possible matches.
+	 * @param string $value What value we are looking at for possible matches.
+	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $params Array of attachment data params.
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 *
+	 * @return array
+	 *   data:
+	 *     ID : 123,
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function attachment_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $check_only = false ) {
 
 		$method = $methods['method_match'];
 
 		if ( '' !== $method ) {
-			// get_posts is more helpful here, so that is the method attachment uses for 'read'
-			// by default, posts use get_posts as the method. args can be like this
-			// the args don't really make sense, and are inconsistently documented
-			// this should give us the post object
+			// Get_posts is more helpful here, so that is the method attachment uses for 'read'.
+			// By default, posts use get_posts as the method. args can be like this.
+			// The args don't really make sense, and are inconsistently documented.
+			// This should give us the post object.
 			$args = array();
 			if ( 'post_title' === $key ) {
 				$params['post_title'] = array(
@@ -1546,15 +1503,15 @@ class Object_Sync_Sf_Wordpress {
 			$posts = $method( $args );
 
 			if ( isset( $posts[0]->{$id_field} ) ) {
-				// attachment does exist after checking the matching value. we want its id
+				// Attachment does exist after checking the matching value. we want its id.
 				$attachment_id = $posts[0]->{$id_field};
 
 				if ( true === $check_only ) {
-					// we are just checking to see if there is a match
+					// We are just checking to see if there is a match.
 					return $attachment_id;
 				}
 
-				// on the prematch fields, we specify the method_update param
+				// On the prematch fields, we specify the method_update param.
 				if ( isset( $methods['method_update'] ) ) {
 					$method = $methods['method_update'];
 				} else {
@@ -1566,8 +1523,8 @@ class Object_Sync_Sf_Wordpress {
 					'method_read' => $methods['method_read'],
 				);
 			} elseif ( false === $check_only ) {
-				// attachment does not exist after checking the matching value. create it.
-				// on the prematch fields, we specify the method_create param
+				// Attachment does not exist after checking the matching value. create it.
+				// On the prematch fields, we specify the method_create param.
 				if ( isset( $methods['method_create'] ) ) {
 					$method = $methods['method_create'];
 				} else {
@@ -1581,47 +1538,47 @@ class Object_Sync_Sf_Wordpress {
 				$result = $this->attachment_create( $params );
 				return $result;
 			} else {
-				// check only is true but there's not an attachment yet
+				// Check only is true but there's not an attachment yet.
 				return null;
 			} // End if().
 		} else {
-			// there is no method by which to check the post. we can check other ways here.
+			// There is no method by which to check the post. we can check other ways here.
 			$params[ $key ] = array(
 				'value' => $value,
 				'method_modify' => $methods['method_modify'],
 				'method_read' => $methods['method_read'],
 			);
 
-			// if we have a title, use it to check for existing post
+			// If we have a title, use it to check for existing post.
 			if ( isset( $params['post_title']['value'] ) ) {
 				$title = $params['post_title']['value'];
 			}
 
-			// if we have content, use it to check for existing post
+			// If we have content, use it to check for existing post.
 			if ( isset( $params['post_content']['value'] ) ) {
 				$content = $params['post_content']['value'];
 			} else {
 				$content = '';
 			}
 
-			// if we have a date, use it to check for existing post
+			// If we have a date, use it to check for existing post.
 			if ( isset( $params['post_date']['value'] ) ) {
 				$date = $params['post_date']['value'];
 			} else {
 				$date = '';
 			}
 
-			$existing_id = post_exists( $title, $content, $date ); // returns an id if there is a result
+			$existing_id = post_exists( $title, $content, $date ); // Returns an id if there is a result. Returns 0 if not.
 
-			// attachment does not exist after more checking. maybe we want to create it
-			if ( null === $existing_id && false === $check_only ) {
+			// Attachment does not exist after more checking. maybe we want to create it.
+			if ( 0 === $existing_id && false === $check_only ) {
 				$result = $this->attachment_create( $params );
 				return $result;
 			} elseif ( true === $check_only ) {
-				// we are just checking to see if there is a match
+				// We are just checking to see if there is a match.
 				return $existing_id;
 			} else {
-				// attachment does exist based on fields, and we aren't doing a check only. we want to update the wp attachment here.
+				// Attachment does exist based on fields, and we aren't doing a check only. we want to update the wp attachment here.
 				$attachment_id = $existing_id;
 			}
 
@@ -1637,14 +1594,14 @@ class Object_Sync_Sf_Wordpress {
 			return $result;
 		}
 
-		// create log entry for lack of an attachment id
+		// Create log entry for lack of an attachment id.
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id', 'object-sync-for-salesforce' ),
+			esc_html__( 'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -1654,30 +1611,26 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Update a WordPress attachment.
-	*
-	* @param string $attachment_id
-	*   the ID for the attachment to be updated. This value needs to be in the array that is sent to the update methods
-	* @param array $params
-	*   array of attachment data params
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not ID
-	*
-	* @return array
-	*   data:
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	* Note: this method uses wp_insert_attachment for core content fields as there isn't a corresponding method for updating these rows
-	* it does use wp_update_attachment_metadata for the meta fields, though.
-	* developers should use hooks to change this, if it does not meet their needs
-	*
-	*/
+	 * Update a WordPress attachment.
+	 *
+	 * @param string $attachment_id The ID for the attachment to be updated. This value needs to be in the array that is sent to the update methods.
+	 * @param array  $params Array of attachment data params.
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 *
+	 * @return array
+	 *   data:
+	 *     success: 1
+	 *   "errors" : [ ],
+	 *
+	 * Note: this method uses wp_insert_attachment for core content fields as there isn't a corresponding method for updating these rows
+	 * it does use wp_update_attachment_metadata for the meta fields, though.
+	 * Developers should use hooks to change this, if it does not meet their needs.
+	 */
 	private function attachment_update( $attachment_id, $params, $id_field = 'ID' ) {
 		$content = array();
 		$content[ $id_field ] = $attachment_id;
 		foreach ( $params as $key => $value ) {
-			if ( 'wp_insert_attachment' === $value['method_modify'] ) { // should also be insert attachment maybe
+			if ( 'wp_insert_attachment' === $value['method_modify'] ) { // Should also be insert attachment maybe.
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1705,13 +1658,13 @@ class Object_Sync_Sf_Wordpress {
 			$errors = array();
 
 			if ( false !== $filename ) {
-				// according to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file
+				// According to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file.
 				require_once( ABSPATH . 'wp-admin/includes/image.php' );
-				// generate metadata for the attachment
+				// Generate metadata for the attachment.
 				$attach_data = wp_generate_attachment_metadata( $attachment_id, $filename );
 			}
 
-			// put the data from salesforce into the meta array
+			// Put the data from salesforce into the meta array.
 			$attach_new_data = array();
 			foreach ( $params as $key => $value ) {
 				$method = $value['method_modify'];
@@ -1738,7 +1691,7 @@ class Object_Sync_Sf_Wordpress {
 				set_post_thumbnail( $parent_post_id, $attachment_id );
 			}
 
-			// developers can use this hook to set any other attachment data
+			// Developers can use this hook to set any other attachment data.
 			do_action( 'object_sync_for_salesforce_set_more_attachment_data', $attachment_id, $params, 'update' );
 
 		} // End if().
@@ -1754,40 +1707,32 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Delete a WordPress attachment.
-	*
-	* @param int $id
-	*   Attachment ID
-	* @param bool $force_delete
-	*   If we should bypass the trash
-	*   We don't change this from FALSE anywhere in this plugin
-	*
-	* @return mixed
-	*   attachment object if successful, false if failed
-	*
-	*/
+	 * Delete a WordPress attachment.
+	 *
+	 * @param int  $id Attachment ID.
+	 * @param bool $force_delete If we should bypass the trash. We don't change this from FALSE anywhere in this plugin.
+	 *
+	 * @return mixed
+	 *   attachment object if successful, false if failed
+	 */
 	private function attachment_delete( $id, $force_delete = false ) {
 		$result = wp_delete_attachment( $id, $force_delete );
 		return $result;
 	}
 
 	/**
-	* Create a new WordPress term.
-	*
-	* @param array $params
-	*   array of term data params
-	* @param string $taxonomy
-	*   the taxonomy to which to add the term. this is required.
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not ID
-	*
-	* @return array
-	*   data:
-	*     ID : 123,
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Create a new WordPress term.
+	 *
+	 * @param array  $params Array of term data params.
+	 * @param string $taxonomy The taxonomy to which to add the term. this is required.
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 *
+	 * @return array
+	 *   data:
+	 *     ID : 123,
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function term_create( $params, $taxonomy, $id_field = 'ID' ) {
 		if ( 'tag' === $taxonomy ) {
 			$taxonomy = 'post_tag';
@@ -1819,11 +1764,19 @@ class Object_Sync_Sf_Wordpress {
 				$meta_id = $method( $term_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
 					$success = false;
-					$errors[] = array( 'message' => __( 'Tried to upsert meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
+					$errors[] = array(
+						'message' => sprintf(
+							// translators: %1$s is a method name.
+							esc_html__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
+							esc_html( $method )
+						),
+						'key' => $key,
+						'value' => $value,
+					);
 				}
 			}
 
-			// developers can use this hook to set any other term data
+			// Developers can use this hook to set any other term data.
 			do_action( 'object_sync_for_salesforce_set_more_term_data', $term_id, $params, 'create' );
 
 		}
@@ -1849,50 +1802,41 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Create a new WordPress term or update it if a match is found.
-	*
-	* @param string $key
-	*   what key we are looking at for possible matches
-	* @param string $value
-	*   what value we are looking at for possible matches
-	* @param array $methods
-	*   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
-	* @param array $params
-	*   array of term data params
-	* @param string $taxonomy
-	*   the taxonomy to which to add the term. this is required.
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not ID
-	* @param bool $push_drafts
-	*	Whether to save WordPress drafts when pushing to Salesforce
-	* @param bool $check_only
-	*	Allows this method to only check for matching records, instead of making any data changes
-	*
-	* @return array
-	*   data:
-	*     ID : 123,
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Create a new WordPress term or update it if a match is found.
+	 *
+	 * @param string $key What key we are looking at for possible matches.
+	 * @param string $value What value we are looking at for possible matches.
+	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $params Array of term data params.
+	 * @param string $taxonomy The taxonomy to which to add the term. this is required..
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
+	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 *
+	 * @return array
+	 *   data:
+	 *     ID : 123,
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $push_drafts = false, $check_only = false ) {
 		if ( 'tag' === $taxonomy ) {
 			$taxonomy = 'post_tag';
 		}
 		$method = $methods['method_match'];
 		if ( '' !== $method ) {
-			// this should give us the term object
-			$term = $method( $key, $value, $taxonomy ); // we need to put the taxonomy in there probably
+			// This should give us the term object.
+			$term = $method( $key, $value, $taxonomy ); // We need to put the taxonomy in there probably.
 			if ( isset( $term->{$id_field} ) ) {
-				// term does exist after checking the matching value. we want its id
+				// Term does exist after checking the matching value. we want its id.
 				$term_id = $term->{$id_field};
 
 				if ( true === $check_only ) {
-					// we are just checking to see if there is a match
+					// We are just checking to see if there is a match.
 					return $term_id;
 				}
 
-				// on the prematch fields, we specify the method_update param
+				// On the prematch fields, we specify the method_update param.
 				if ( isset( $methods['method_update'] ) ) {
 					$method = $methods['method_update'];
 				} else {
@@ -1904,8 +1848,8 @@ class Object_Sync_Sf_Wordpress {
 					'method_read' => $methods['method_read'],
 				);
 			} elseif ( false === $check_only ) {
-				// term does not exist after checking the matching value. create it.
-				// on the prematch fields, we specify the method_create param
+				// Term does not exist after checking the matching value. Create it.
+				// On the prematch fields, we specify the method_create param.
 				if ( isset( $methods['method_create'] ) ) {
 					$method = $methods['method_create'];
 				} else {
@@ -1919,11 +1863,11 @@ class Object_Sync_Sf_Wordpress {
 				$result = $this->term_create( $params, $taxonomy, $id_field );
 				return $result;
 			} else {
-				// check only is true but there's not a term yet
+				// Check only is true but there's not a term yet.
 				return null;
 			} // End if().
 		} else {
-			// there is no method by which to check the term. we can check other ways here.
+			// There is no method by which to check the term. we can check other ways here.
 			$params[ $key ] = array(
 				'value' => $value,
 				'method_modify' => $methods['method_modify'],
@@ -1940,17 +1884,23 @@ class Object_Sync_Sf_Wordpress {
 				$parent = 0;
 			}
 
-			$existing_id = term_exists( $term, $taxonomy, $parent ); // returns an id if there is a result
+			// Returns an id if there is a result. Returns null if it does not exist.
+			// wpcom_vip_term_exists is cached, and therefore preferred.
+			if ( function_exists( 'wpcom_vip_term_exists' ) ) {
+				$existing_id = wpcom_vip_term_exists( $term, $taxonomy, $parent );
+			} else {
+				$existing_id = term_exists( $term, $taxonomy, $parent );
+			}
 
-			// term does not exist after more checking. maybe we want to create it
+			// Term does not exist after more checking. maybe we want to create it.
 			if ( null === $existing_id && false === $check_only ) {
 				$result = $this->term_create( $params, $taxonomy, $id_field );
 				return $result;
 			} elseif ( true === $check_only ) {
-				// we are just checking to see if there is a match
+				// We are just checking to see if there is a match.
 				return $existing_id;
 			} else {
-				// term does exist based on criteria, and we aren't doing a check only. we want to update the wp term here.
+				// Term does exist based on criteria, and we aren't doing a check only. we want to update the wp term here.
 				$term_id = $existing_id;
 			}
 		} // End if().
@@ -1962,14 +1912,14 @@ class Object_Sync_Sf_Wordpress {
 			$result = $this->term_update( $term_id, $params, $taxonomy, $id_field );
 			return $result;
 		}
-		// create log entry for lack of a term id
+		// Create log entry for lack of a term id.
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Terms: Tried to run term_upsert, and ended up without a term id', 'object-sync-for-salesforce' ),
+			esc_html__( 'Error: Terms: Tried to run term_upsert, and ended up without a term id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -1979,23 +1929,18 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Update a WordPress term.
-	*
-	* @param string $term_id
-	*   the ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term
-	* @param array $params
-	*   array of term data params
-	* @param string $taxonomy
-	*   the taxonomy to which to add the term. this is required.
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not ID
-	*
-	* @return array
-	*   data:
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Update a WordPress term.
+	 *
+	 * @param string $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
+	 * @param array  $params Array of term data params.
+	 * @param string $taxonomy The taxonomy to which to add the term. this is required.
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 *
+	 * @return array
+	 *   data:
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function term_update( $term_id, $params, $taxonomy, $id_field = 'ID' ) {
 		if ( 'tag' === $taxonomy ) {
 			$taxonomy = 'post_tag';
@@ -2021,11 +1966,19 @@ class Object_Sync_Sf_Wordpress {
 				$meta_id = $method( $term_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
 					$success = false;
-					$errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
+					$errors[] = array(
+						'message' => sprintf(
+							// translators: %1$s is a method name.
+							esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
+							esc_html( $method )
+						),
+						'key' => $key,
+						'value' => $value,
+					);
 				}
 			}
 
-			// developers can use this hook to set any other term data
+			// Developers can use this hook to set any other term data.
 			do_action( 'object_sync_for_salesforce_set_more_term_data', $term_id, $params, 'update' );
 
 		}
@@ -2051,17 +2004,13 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Delete a WordPress term.
-	*
-	* @param string $term_id
-	*   the ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term
-	* @param string $taxonomy
-	*   the taxonomy from which to delete the term. this is required.
-	*
-	* @return bool
-	*   true if successful, false if failed
-	*
-	*/
+	 * Delete a WordPress term.
+	 *
+	 * @param string $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
+	 * @param string $taxonomy The taxonomy from which to delete the term. this is required.
+	 *
+	 * @return bool True if successful, false if failed.
+	 */
 	private function term_delete( $term_id, $taxonomy ) {
 		if ( 'tag' === $taxonomy ) {
 			$taxonomy = 'post_tag';
@@ -2071,20 +2020,17 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Create a new WordPress comment.
-	*
-	* @param array $params
-	*   array of comment data params
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not comment_ID
-	*
-	* @return array
-	*   data:
-	*     ID : 123,
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Create a new WordPress comment.
+	 *
+	 * @param array  $params Array of comment data params.
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not comment_ID.
+	 *
+	 * @return array
+	 *   data:
+	 *     ID : 123,
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function comment_create( $params, $id_field = 'comment_ID' ) {
 		foreach ( $params as $key => $value ) {
 			if ( 'wp_new_comment' === $value['method_modify'] ) {
@@ -2093,7 +2039,7 @@ class Object_Sync_Sf_Wordpress {
 			}
 		}
 
-		// fields that are required for comments, even if they are empty values
+		// Fields that are required for comments, even if they are empty values.
 		if ( ! isset( $content['comment_author'] ) ) {
 			$content['comment_author'] = '';
 		}
@@ -2123,11 +2069,19 @@ class Object_Sync_Sf_Wordpress {
 				$meta_id = $method( $comment_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
 					$success = false;
-					$errors[] = array( 'message' => __( 'Tried to add meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
+					$errors[] = array(
+						'message' => sprintf(
+							// translators: %1$s is a method name.
+							esc_html__( 'Tried to add meta with method %1$s.', 'object-sync-for-salesforce' ),
+							esc_html( $method )
+						),
+						'key' => $key,
+						'value' => $value,
+					);
 				}
 			}
 
-			// developers can use this hook to set any other comment data
+			// Developers can use this hook to set any other comment data.
 			do_action( 'object_sync_for_salesforce_set_more_comment_data', $comment_id, $params, 'create' );
 
 		}
@@ -2153,37 +2107,29 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Create a new WordPress comment or update it if a match is found.
-	*
-	* @param string $key
-	*   what key we are looking at for possible matches
-	* @param string $value
-	*   what value we are looking at for possible matches
-	* @param array $methods
-	*   what wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query
-	* @param array $params
-	*   array of comment data params
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not comment_ID
-	* @param bool $push_drafts
-	*	Whether to save WordPress drafts when pushing to Salesforce
-	* @param bool $check_only
-	*	Allows this method to only check for matching records, instead of making any data changes
-	*
-	* @return array
-	*   data:
-	*     ID : 123,
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Create a new WordPress comment or update it if a match is found.
+	 *
+	 * @param string $key What key we are looking at for possible matches.
+	 * @param string $value What value we are looking at for possible matches.
+	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $params Array of comment data params.
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not comment_ID.
+	 * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
+	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 *
+	 * @return array
+	 *   data:
+	 *     ID : 123,
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $push_drafts = false, $check_only = false ) {
 		$method = $methods['method_match'];
 		if ( 'get_comment' === $method ) {
 			$method = 'get_comments';
 		}
 		if ( '' !== $method ) {
-			// this should give us the comment object
+			// This should give us the comment object.
 			$match = array();
 			if ( 'comment_author' === $key ) {
 				$match['author__in'] = array( $value );
@@ -2195,15 +2141,15 @@ class Object_Sync_Sf_Wordpress {
 
 			if ( 1 === count( $comments ) ) {
 				$comment = $comments[0];
-				// comment does exist after checking the matching value. we want its id
+				// Comment does exist after checking the matching value. we want its id.
 				$comment_id = $comment->{$id_field};
 
 				if ( true === $check_only ) {
-					// we are just checking to see if there is a match
+					// We are just checking to see if there is a match.
 					return $comment_id;
 				}
 
-				// on the prematch fields, we specify the method_update param
+				// On the prematch fields, we specify the method_update param.
 				if ( isset( $methods['method_update'] ) ) {
 					$method = $methods['method_update'];
 				} else {
@@ -2216,7 +2162,7 @@ class Object_Sync_Sf_Wordpress {
 				);
 			} elseif ( count( $comments ) > 1 ) {
 				$status = 'error';
-				// create log entry for multiple matches
+				// Create log entry for multiple matches.
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
@@ -2224,12 +2170,12 @@ class Object_Sync_Sf_Wordpress {
 				}
 				$logging->setup(
 					sprintf(
-						__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', 'object-sync-for-salesforce' ),
-						ucfirst( $status ),
-						$count,
-						$key,
-						$value,
-						var_export( $comments )
+						// translators: %1$s is a number. %2$s is a key. %3$s is the value of that key. %4$s is a var_export'd array of comments.
+						esc_html__( 'Error: Comments: there are %1$s comment matches for the Salesforce key %2$s with the value of %3$s. Here they are: %4$s', 'object-sync-for-salesforce' ),
+						absint( count( $comments ) ),
+						esc_html( $key ),
+						esc_html( $value ),
+						esc_html( var_export( $comments ) ) // Debugging code in production because having useful error messages is good.
 					),
 					'',
 					0,
@@ -2237,8 +2183,8 @@ class Object_Sync_Sf_Wordpress {
 					$status
 				);
 			} elseif ( false === $check_only ) {
-				// comment does not exist after checking the matching value. create it.
-				// on the prematch fields, we specify the method_create param
+				// Comment does not exist after checking the matching value. Create it.
+				// On the prematch fields, we specify the method_create param.
 				if ( isset( $methods['method_create'] ) ) {
 					$method = $methods['method_create'];
 				} else {
@@ -2252,11 +2198,11 @@ class Object_Sync_Sf_Wordpress {
 				$result = $this->comment_create( $params, $id_field );
 				return $result;
 			} else {
-				// check only is true but there's not a comment yet
+				// Check only is true but there's not a comment yet.
 				return null;
 			} // End if().
 		} else {
-			// there is no method by which to check the comment. we can check other ways here.
+			// There is no method by which to check the comment. We can check other ways here.
 			$params[ $key ] = array(
 				'value' => $value,
 				'method_modify' => $methods['method_modify'],
@@ -2277,17 +2223,17 @@ class Object_Sync_Sf_Wordpress {
 				$timezone = 'blog';
 			}
 
-			$existing_id = comment_exists( $comment_author, $comment_date, $timezone ); // returns an id if there is a result
+			$existing_id = comment_exists( $comment_author, $comment_date, $timezone ); // Returns an id if there is a result. Uses $wpdb->get_var, so it returns null if there is no value
 
-			// comment does not exist after more checking. we want to create it
+			// Comment does not exist after more checking. We want to create it.
 			if ( null === $existing_id && false === $check_only ) {
 				$result = $this->comment_create( $params, $id_field );
 				return $result;
 			} elseif ( true === $check_only ) {
-				// we are just checking to see if there is a match
+				// We are just checking to see if there is a match.
 				return $existing_id;
 			} else {
-				// comment does exist based on username, and we aren't doing a check only. we want to update the wp user here.
+				// Comment does exist based on username, and we aren't doing a check only. we want to update the wp user here.
 				$comment_id = $existing_id;
 			}
 		} // End if() that sets up the parameters in the $params array.
@@ -2300,14 +2246,14 @@ class Object_Sync_Sf_Wordpress {
 			return $result;
 		}
 
-		// create log entry for lack of a comment id
+		// Create log entry for lack of a comment id.
 		if ( isset( $this->logging ) ) {
 			$logging = $this->logging;
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
 		$logging->setup(
-			__( 'Error: Comments: Tried to run comment_upsert, and ended up without a comment id', 'object-sync-for-salesforce' ),
+			esc_html__( 'Error: Comments: Tried to run comment_upsert, and ended up without a comment id', 'object-sync-for-salesforce' ),
 			'',
 			0,
 			0,
@@ -2317,23 +2263,17 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Update a WordPress comment.
-	*
-	* @param string $comment_id
-	*   the ID for the comment to be updated. This value needs to be in the array that is sent to wp_update_comment
-	* @param array $params
-	*   array of comment data params
-	* @param string $taxonomy
-	*   the taxonomy to which to add the comment. this is required.
-	* @param string $id_field
-	*   optional string of what the ID field is, if it is ever not ID
-	*
-	* @return array
-	*   data:
-	*		success: 1
-	*   "errors" : [ ],
-	*
-	*/
+	 * Update a WordPress comment.
+	 *
+	 * @param string $comment_id The ID for the comment to be updated. This value needs to be in the array that is sent to wp_update_comment.
+	 * @param array  $params Array of comment data params.
+	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 *
+	 * @return array
+	 *   data:
+	 *     success: 1
+	 *   "errors" : [ ],
+	 */
 	private function comment_update( $comment_id, $params, $id_field = 'comment_ID' ) {
 		$content = array();
 		$content[ $id_field ] = $comment_id;
@@ -2357,11 +2297,19 @@ class Object_Sync_Sf_Wordpress {
 				$meta_id = $method( $comment_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
 					$success = false;
-					$errors[] = array( 'message' => __( 'Tried to update meta with method ' . $method . ' .' ), 'key' => $key, 'value' => $value );
+					$errors[] = array(
+						'message' => sprintf(
+							// Translators: %1$s is a method name.
+							esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
+							esc_html( $method )
+						),
+						'key' => $key,
+						'value' => $value,
+					);
 				}
 			}
 
-			// developers can use this hook to set any other comment data
+			// Developers can use this hook to set any other comment data.
 			do_action( 'object_sync_for_salesforce_set_more_comment_data', $comment_id, $params, 'update' );
 
 		}
@@ -2387,18 +2335,13 @@ class Object_Sync_Sf_Wordpress {
 	}
 
 	/**
-	* Delete a WordPress comment.
-	*
-	* @param int $id
-	*   Comment ID
-	* @param bool $force_delete
-	*   If we should bypass the trash
-	*   We don't change this from FALSE anywhere in this plugin
-	*
-	* @return boolean
-	*   true if successful, false if failed
-	*
-	*/
+	 * Delete a WordPress comment.
+	 *
+	 * @param int  $id Comment ID.
+	 * @param bool $force_delete If we should bypass the trash. We don't change this from FALSE anywhere in this plugin.
+	 *
+	 * @return boolean true if successful, false if failed.
+	 */
 	private function comment_delete( $id, $force_delete = false ) {
 		$result = wp_delete_comment( $id, $force_delete );
 		return $result;
@@ -2406,5 +2349,8 @@ class Object_Sync_Sf_Wordpress {
 
 }
 
+/**
+ * WordpressException is a placeholder class in the event that we want to modify Exception for our own purposes.
+ */
 class WordpressException extends Exception {
 }
