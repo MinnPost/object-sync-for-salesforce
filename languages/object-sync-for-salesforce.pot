@@ -100,16 +100,16 @@ msgstr ""
 msgid "Unable to access identity service."
 msgstr ""
 
-#: classes/salesforce_mapping.php:394
-msgid "%1$s: Mapping: error caused by trying to map the WordPress %2$s with ID of %3$s to Salesforce ID of 0, which is invalid."
+#: classes/salesforce_mapping.php:396
+msgid "Error Mapping: error caused by trying to map the WordPress %1$s with ID of %2$s to Salesforce ID of 0, which is invalid."
 msgstr ""
 
-#: classes/salesforce_mapping.php:420
-msgid "%1$s: Mapping: there is already a WordPress object mapped to the Salesforce object %2$s and the mapping object ID is %3$s"
+#: classes/salesforce_mapping.php:421
+msgid "Error: Mapping: there is already a WordPress object mapped to the Salesforce object %1$s and the mapping object ID is %2$s"
 msgstr ""
 
 #: classes/salesforce_mapping.php:595
-msgid "%1$s: Mapping: there is more than one mapped WordPress object for the Salesforce object %2$s"
+msgid "Notice: Mapping: there is more than one mapped WordPress object for the Salesforce object %2$s"
 msgstr ""
 
 #: classes/salesforce_pull.php:257
@@ -236,7 +236,7 @@ msgstr ""
 msgid "Error: Terms: Tried to run term_upsert, and ended up without a term id"
 msgstr ""
 
-#: classes/wordpress.php:1972, classes/wordpress.php:2304
+#: classes/wordpress.php:1972, classes/wordpress.php:2303
 msgid "Tried to update meta with method %1$s."
 msgstr ""
 
@@ -245,10 +245,10 @@ msgid "Tried to add meta with method %1$s."
 msgstr ""
 
 #: classes/wordpress.php:2174
-msgid "%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s"
+msgid "Error: Comments: there are %1$s comment matches for the Salesforce key %2$s with the value of %3$s. Here they are: %4$s"
 msgstr ""
 
-#: classes/wordpress.php:2257
+#: classes/wordpress.php:2256
 msgid "Error: Comments: Tried to run comment_upsert, and ended up without a comment id"
 msgstr ""
 
