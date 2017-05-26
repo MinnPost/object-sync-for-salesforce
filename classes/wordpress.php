@@ -2170,9 +2170,8 @@ class Object_Sync_Sf_Wordpress {
 				}
 				$logging->setup(
 					sprintf(
-						// translators: %1$s is the status message "Error". %2$s is a number. %3$s is a key. %4$s is the value of that key. %5$s is a var_export'd array of comments.
-						esc_html__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', 'object-sync-for-salesforce' ),
-						esc_attr( ucfirst( $status ) ),
+						// translators: %1$s is a number. %2$s is a key. %3$s is the value of that key. %4$s is a var_export'd array of comments.
+						esc_html__( 'Error: Comments: there are %1$s comment matches for the Salesforce key %2$s with the value of %3$s. Here they are: %4$s', 'object-sync-for-salesforce' ),
 						absint( count( $comments ) ),
 						esc_html( $key ),
 						esc_html( $value ),
