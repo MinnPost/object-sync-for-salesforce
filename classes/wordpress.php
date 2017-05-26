@@ -808,7 +808,7 @@ class Object_Sync_Sf_Wordpress {
 		}
 
 		// This is a new user.
-		if ( null === username_exists( $username ) ) {
+		if ( false === username_exists( $username ) ) {
 
 			// Create the user
 			// Wordpress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email.
@@ -966,7 +966,7 @@ class Object_Sync_Sf_Wordpress {
 			$existing_id = username_exists( $username ); // Returns an id if there is a result.
 
 			// User does not exist after more checking. we want to create it.
-			if ( null === $existing_id && false === $check_only ) {
+			if ( false === $existing_id && false === $check_only ) {
 				$result = $this->user_create( $params );
 				return $result;
 			} elseif ( true === $check_only ) {
@@ -1264,10 +1264,10 @@ class Object_Sync_Sf_Wordpress {
 				$date = '';
 			}
 
-			$existing_id = post_exists( $title, $content, $date ); // Returns an id if there is a result.
+			$existing_id = post_exists( $title, $content, $date ); // Returns an id if there is a result. Returns 0 if not.
 
 			// Post does not exist after more checking. maybe we want to create it.
-			if ( null === $existing_id && false === $check_only ) {
+			if ( 0 === $existing_id && false === $check_only ) {
 				$result = $this->post_create( $params );
 				return $result;
 			} elseif ( true === $check_only ) {
@@ -1568,10 +1568,10 @@ class Object_Sync_Sf_Wordpress {
 				$date = '';
 			}
 
-			$existing_id = post_exists( $title, $content, $date ); // Returns an id if there is a result.
+			$existing_id = post_exists( $title, $content, $date ); // Returns an id if there is a result. Returns 0 if not.
 
 			// Attachment does not exist after more checking. maybe we want to create it.
-			if ( null === $existing_id && false === $check_only ) {
+			if ( 0 === $existing_id && false === $check_only ) {
 				$result = $this->attachment_create( $params );
 				return $result;
 			} elseif ( true === $check_only ) {
@@ -1884,7 +1884,7 @@ class Object_Sync_Sf_Wordpress {
 				$parent = 0;
 			}
 
-			// Returns an id if there is a result.
+			// Returns an id if there is a result. Returns null if it does not exist.
 			// wpcom_vip_term_exists is cached, and therefore preferred.
 			if ( function_exists( 'wpcom_vip_term_exists' ) ) {
 				$existing_id = wpcom_vip_term_exists( $term, $taxonomy, $parent );
@@ -2170,9 +2170,8 @@ class Object_Sync_Sf_Wordpress {
 				}
 				$logging->setup(
 					sprintf(
-						// translators: %1$s is the status message "Error". %2$s is a number. %3$s is a key. %4$s is the value of that key. %5$s is a var_export'd array of comments.
-						esc_html__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', 'object-sync-for-salesforce' ),
-						esc_attr( ucfirst( $status ) ),
+						// translators: %1$s is a number. %2$s is a key. %3$s is the value of that key. %4$s is a var_export'd array of comments.
+						esc_html__( 'Error: Comments: there are %1$s comment matches for the Salesforce key %2$s with the value of %3$s. Here they are: %4$s', 'object-sync-for-salesforce' ),
 						absint( count( $comments ) ),
 						esc_html( $key ),
 						esc_html( $value ),
@@ -2224,7 +2223,7 @@ class Object_Sync_Sf_Wordpress {
 				$timezone = 'blog';
 			}
 
-			$existing_id = comment_exists( $comment_author, $comment_date, $timezone ); // Returns an id if there is a result.
+			$existing_id = comment_exists( $comment_author, $comment_date, $timezone ); // Returns an id if there is a result. Uses $wpdb->get_var, so it returns null if there is no value
 
 			// Comment does not exist after more checking. We want to create it.
 			if ( null === $existing_id && false === $check_only ) {
