@@ -66,9 +66,11 @@ class Object_Sync_Sf_Mapping {
 		$this->fieldmap_table = $this->wpdb->prefix . 'object_sync_sf_field_map';
 		$this->object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 
-		// This is how we define when syncing should occur on each field map.
-		// It gets used in the admin settings, as well as the push/pull methods to see if something should happen.
-		// I don't know why the Drupal plugin used bit flags, but can't think of a reason not to keep the convention.
+		/*
+		 * These parameters are how we define when syncing should occur on each field map.
+		 * They get used in the admin settings, as well as the push/pull methods to see if something should happen.
+		 * It is unclear why the Drupal module used bit flags, but it seems reasonable to keep the convention.
+		*/
 		$this->sync_off = 0x0000;
 		$this->sync_wordpress_create = 0x0001;
 		$this->sync_wordpress_update = 0x0002;
