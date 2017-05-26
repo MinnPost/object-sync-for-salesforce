@@ -291,7 +291,7 @@ class Object_Sync_Salesforce {
 	*/
 	public function salesforce_soap_partner( $sfapi ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_soap_partner.php' );
-		$salesforce_soap_partner = new Salesforce_Soap_Partner( $sfapi );
+		$salesforce_soap_partner = new Object_Sync_Sf_Salesforce_Soap_Partner( $sfapi );
 		return $salesforce_soap_partner;
 	}
 
