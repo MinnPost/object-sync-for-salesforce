@@ -330,7 +330,7 @@
 </span><span id="246" class="l"><a href="#246">246: </a>        <span class="php-var">$log_data</span> = <span class="php-keyword1">array</span>(
 </span><span id="247" class="l"><a href="#247">247: </a>            <span class="php-quote">'post_title'</span>   =&gt; esc_html( <span class="php-var">$title</span> ),
 </span><span id="248" class="l"><a href="#248">248: </a>            <span class="php-quote">'post_content'</span> =&gt; wp_kses_post( <span class="php-var">$message</span> ),
-</span><span id="249" class="l"><a href="#249">249: </a>            <span class="php-quote">'post_parent'</span>  =&gt; esc_attr( <span class="php-var">$parent</span> ),
+</span><span id="249" class="l"><a href="#249">249: </a>            <span class="php-quote">'post_parent'</span>  =&gt; absint( <span class="php-var">$parent</span> ),
 </span><span id="250" class="l"><a href="#250">250: </a>            <span class="php-quote">'log_type'</span>     =&gt; esc_attr( <span class="php-var">$type</span> ),
 </span><span id="251" class="l"><a href="#251">251: </a>        );
 </span><span id="252" class="l"><a href="#252">252: </a>

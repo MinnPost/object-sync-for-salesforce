@@ -892,7 +892,7 @@
 </span><span id="808" class="l"><a href="#808"> 808: </a>        }
 </span><span id="809" class="l"><a href="#809"> 809: </a>
 </span><span id="810" class="l"><a href="#810"> 810: </a>        <span class="php-comment">// This is a new user.</span>
-</span><span id="811" class="l"><a href="#811"> 811: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> === username_exists( <span class="php-var">$username</span> ) ) {
+</span><span id="811" class="l"><a href="#811"> 811: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">false</span> === username_exists( <span class="php-var">$username</span> ) ) {
 </span><span id="812" class="l"><a href="#812"> 812: </a>
 </span><span id="813" class="l"><a href="#813"> 813: </a>            <span class="php-comment">// Create the user</span>
 </span><span id="814" class="l"><a href="#814"> 814: </a>            <span class="php-comment">// Wordpress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email.</span>
@@ -1050,7 +1050,7 @@
 </span><span id="966" class="l"><a href="#966"> 966: </a>            <span class="php-var">$existing_id</span> = username_exists( <span class="php-var">$username</span> ); <span class="php-comment">// Returns an id if there is a result.</span>
 </span><span id="967" class="l"><a href="#967"> 967: </a>
 </span><span id="968" class="l"><a href="#968"> 968: </a>            <span class="php-comment">// User does not exist after more checking. we want to create it.</span>
-</span><span id="969" class="l"><a href="#969"> 969: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> === <span class="php-var">$existing_id</span> &amp;&amp; <span class="php-keyword1">false</span> === <span class="php-var">$check_only</span> ) {
+</span><span id="969" class="l"><a href="#969"> 969: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">false</span> === <span class="php-var">$existing_id</span> &amp;&amp; <span class="php-keyword1">false</span> === <span class="php-var">$check_only</span> ) {
 </span><span id="970" class="l"><a href="#970"> 970: </a>                <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;user_create( <span class="php-var">$params</span> );
 </span><span id="971" class="l"><a href="#971"> 971: </a>                <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
 </span><span id="972" class="l"><a href="#972"> 972: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword1">true</span> === <span class="php-var">$check_only</span> ) {
@@ -1348,10 +1348,10 @@
 </span><span id="1264" class="l"><a href="#1264">1264: </a>                <span class="php-var">$date</span> = <span class="php-quote">''</span>;
 </span><span id="1265" class="l"><a href="#1265">1265: </a>            }
 </span><span id="1266" class="l"><a href="#1266">1266: </a>
-</span><span id="1267" class="l"><a href="#1267">1267: </a>            <span class="php-var">$existing_id</span> = post_exists( <span class="php-var">$title</span>, <span class="php-var">$content</span>, <span class="php-var">$date</span> ); <span class="php-comment">// Returns an id if there is a result.</span>
+</span><span id="1267" class="l"><a href="#1267">1267: </a>            <span class="php-var">$existing_id</span> = post_exists( <span class="php-var">$title</span>, <span class="php-var">$content</span>, <span class="php-var">$date</span> ); <span class="php-comment">// Returns an id if there is a result. Returns 0 if not.</span>
 </span><span id="1268" class="l"><a href="#1268">1268: </a>
 </span><span id="1269" class="l"><a href="#1269">1269: </a>            <span class="php-comment">// Post does not exist after more checking. maybe we want to create it.</span>
-</span><span id="1270" class="l"><a href="#1270">1270: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> === <span class="php-var">$existing_id</span> &amp;&amp; <span class="php-keyword1">false</span> === <span class="php-var">$check_only</span> ) {
+</span><span id="1270" class="l"><a href="#1270">1270: </a>            <span class="php-keyword1">if</span> ( <span class="php-num">0</span> === <span class="php-var">$existing_id</span> &amp;&amp; <span class="php-keyword1">false</span> === <span class="php-var">$check_only</span> ) {
 </span><span id="1271" class="l"><a href="#1271">1271: </a>                <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;post_create( <span class="php-var">$params</span> );
 </span><span id="1272" class="l"><a href="#1272">1272: </a>                <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
 </span><span id="1273" class="l"><a href="#1273">1273: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword1">true</span> === <span class="php-var">$check_only</span> ) {
@@ -1652,10 +1652,10 @@
 </span><span id="1568" class="l"><a href="#1568">1568: </a>                <span class="php-var">$date</span> = <span class="php-quote">''</span>;
 </span><span id="1569" class="l"><a href="#1569">1569: </a>            }
 </span><span id="1570" class="l"><a href="#1570">1570: </a>
-</span><span id="1571" class="l"><a href="#1571">1571: </a>            <span class="php-var">$existing_id</span> = post_exists( <span class="php-var">$title</span>, <span class="php-var">$content</span>, <span class="php-var">$date</span> ); <span class="php-comment">// Returns an id if there is a result.</span>
+</span><span id="1571" class="l"><a href="#1571">1571: </a>            <span class="php-var">$existing_id</span> = post_exists( <span class="php-var">$title</span>, <span class="php-var">$content</span>, <span class="php-var">$date</span> ); <span class="php-comment">// Returns an id if there is a result. Returns 0 if not.</span>
 </span><span id="1572" class="l"><a href="#1572">1572: </a>
 </span><span id="1573" class="l"><a href="#1573">1573: </a>            <span class="php-comment">// Attachment does not exist after more checking. maybe we want to create it.</span>
-</span><span id="1574" class="l"><a href="#1574">1574: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> === <span class="php-var">$existing_id</span> &amp;&amp; <span class="php-keyword1">false</span> === <span class="php-var">$check_only</span> ) {
+</span><span id="1574" class="l"><a href="#1574">1574: </a>            <span class="php-keyword1">if</span> ( <span class="php-num">0</span> === <span class="php-var">$existing_id</span> &amp;&amp; <span class="php-keyword1">false</span> === <span class="php-var">$check_only</span> ) {
 </span><span id="1575" class="l"><a href="#1575">1575: </a>                <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;attachment_create( <span class="php-var">$params</span> );
 </span><span id="1576" class="l"><a href="#1576">1576: </a>                <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
 </span><span id="1577" class="l"><a href="#1577">1577: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword1">true</span> === <span class="php-var">$check_only</span> ) {
@@ -1968,7 +1968,7 @@
 </span><span id="1884" class="l"><a href="#1884">1884: </a>                <span class="php-var">$parent</span> = <span class="php-num">0</span>;
 </span><span id="1885" class="l"><a href="#1885">1885: </a>            }
 </span><span id="1886" class="l"><a href="#1886">1886: </a>
-</span><span id="1887" class="l"><a href="#1887">1887: </a>            <span class="php-comment">// Returns an id if there is a result.</span>
+</span><span id="1887" class="l"><a href="#1887">1887: </a>            <span class="php-comment">// Returns an id if there is a result. Returns null if it does not exist.</span>
 </span><span id="1888" class="l"><a href="#1888">1888: </a>            <span class="php-comment">// wpcom_vip_term_exists is cached, and therefore preferred.</span>
 </span><span id="1889" class="l"><a href="#1889">1889: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">function_exists</span>( <span class="php-quote">'wpcom_vip_term_exists'</span> ) ) {
 </span><span id="1890" class="l"><a href="#1890">1890: </a>                <span class="php-var">$existing_id</span> = wpcom_vip_term_exists( <span class="php-var">$term</span>, <span class="php-var">$taxonomy</span>, <span class="php-var">$parent</span> );
@@ -2254,192 +2254,191 @@
 </span><span id="2170" class="l"><a href="#2170">2170: </a>                }
 </span><span id="2171" class="l"><a href="#2171">2171: </a>                <span class="php-var">$logging</span>-&gt;setup(
 </span><span id="2172" class="l"><a href="#2172">2172: </a>                    <span class="php-keyword2">sprintf</span>(
-</span><span id="2173" class="l"><a href="#2173">2173: </a>                        <span class="php-comment">// translators: %1$s is the status message &quot;Error&quot;. %2$s is a number. %3$s is a key. %4$s is the value of that key. %5$s is a var_export'd array of comments.</span>
-</span><span id="2174" class="l"><a href="#2174">2174: </a>                        esc_html__( <span class="php-quote">'%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
-</span><span id="2175" class="l"><a href="#2175">2175: </a>                        esc_attr( <span class="php-keyword2">ucfirst</span>( <span class="php-var">$status</span> ) ),
-</span><span id="2176" class="l"><a href="#2176">2176: </a>                        absint( <span class="php-keyword2">count</span>( <span class="php-var">$comments</span> ) ),
-</span><span id="2177" class="l"><a href="#2177">2177: </a>                        esc_html( <span class="php-var">$key</span> ),
-</span><span id="2178" class="l"><a href="#2178">2178: </a>                        esc_html( <span class="php-var">$value</span> ),
-</span><span id="2179" class="l"><a href="#2179">2179: </a>                        esc_html( <span class="php-keyword2">var_export</span>( <span class="php-var">$comments</span> ) ) <span class="php-comment">// Debugging code in production because having useful error messages is good.</span>
-</span><span id="2180" class="l"><a href="#2180">2180: </a>                    ),
-</span><span id="2181" class="l"><a href="#2181">2181: </a>                    <span class="php-quote">''</span>,
+</span><span id="2173" class="l"><a href="#2173">2173: </a>                        <span class="php-comment">// translators: %1$s is a number. %2$s is a key. %3$s is the value of that key. %4$s is a var_export'd array of comments.</span>
+</span><span id="2174" class="l"><a href="#2174">2174: </a>                        esc_html__( <span class="php-quote">'Error: Comments: there are %1$s comment matches for the Salesforce key %2$s with the value of %3$s. Here they are: %4$s'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
+</span><span id="2175" class="l"><a href="#2175">2175: </a>                        absint( <span class="php-keyword2">count</span>( <span class="php-var">$comments</span> ) ),
+</span><span id="2176" class="l"><a href="#2176">2176: </a>                        esc_html( <span class="php-var">$key</span> ),
+</span><span id="2177" class="l"><a href="#2177">2177: </a>                        esc_html( <span class="php-var">$value</span> ),
+</span><span id="2178" class="l"><a href="#2178">2178: </a>                        esc_html( <span class="php-keyword2">var_export</span>( <span class="php-var">$comments</span> ) ) <span class="php-comment">// Debugging code in production because having useful error messages is good.</span>
+</span><span id="2179" class="l"><a href="#2179">2179: </a>                    ),
+</span><span id="2180" class="l"><a href="#2180">2180: </a>                    <span class="php-quote">''</span>,
+</span><span id="2181" class="l"><a href="#2181">2181: </a>                    <span class="php-num">0</span>,
 </span><span id="2182" class="l"><a href="#2182">2182: </a>                    <span class="php-num">0</span>,
-</span><span id="2183" class="l"><a href="#2183">2183: </a>                    <span class="php-num">0</span>,
-</span><span id="2184" class="l"><a href="#2184">2184: </a>                    <span class="php-var">$status</span>
-</span><span id="2185" class="l"><a href="#2185">2185: </a>                );
-</span><span id="2186" class="l"><a href="#2186">2186: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword1">false</span> === <span class="php-var">$check_only</span> ) {
-</span><span id="2187" class="l"><a href="#2187">2187: </a>                <span class="php-comment">// Comment does not exist after checking the matching value. Create it.</span>
-</span><span id="2188" class="l"><a href="#2188">2188: </a>                <span class="php-comment">// On the prematch fields, we specify the method_create param.</span>
-</span><span id="2189" class="l"><a href="#2189">2189: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$methods</span>[<span class="php-quote">'method_create'</span>] ) ) {
-</span><span id="2190" class="l"><a href="#2190">2190: </a>                    <span class="php-var">$method</span> = <span class="php-var">$methods</span>[<span class="php-quote">'method_create'</span>];
-</span><span id="2191" class="l"><a href="#2191">2191: </a>                } <span class="php-keyword1">else</span> {
-</span><span id="2192" class="l"><a href="#2192">2192: </a>                    <span class="php-var">$method</span> = <span class="php-var">$methods</span>[<span class="php-quote">'method_modify'</span>];
-</span><span id="2193" class="l"><a href="#2193">2193: </a>                }
-</span><span id="2194" class="l"><a href="#2194">2194: </a>                <span class="php-var">$params</span>[ <span class="php-var">$key</span> ] = <span class="php-keyword1">array</span>(
-</span><span id="2195" class="l"><a href="#2195">2195: </a>                    <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span>,
-</span><span id="2196" class="l"><a href="#2196">2196: </a>                    <span class="php-quote">'method_modify'</span> =&gt; <span class="php-var">$method</span>,
-</span><span id="2197" class="l"><a href="#2197">2197: </a>                    <span class="php-quote">'method_read'</span> =&gt; <span class="php-var">$methods</span>[<span class="php-quote">'method_read'</span>],
-</span><span id="2198" class="l"><a href="#2198">2198: </a>                );
-</span><span id="2199" class="l"><a href="#2199">2199: </a>                <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;comment_create( <span class="php-var">$params</span>, <span class="php-var">$id_field</span> );
-</span><span id="2200" class="l"><a href="#2200">2200: </a>                <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
-</span><span id="2201" class="l"><a href="#2201">2201: </a>            } <span class="php-keyword1">else</span> {
-</span><span id="2202" class="l"><a href="#2202">2202: </a>                <span class="php-comment">// Check only is true but there's not a comment yet.</span>
-</span><span id="2203" class="l"><a href="#2203">2203: </a>                <span class="php-keyword1">return</span> <span class="php-keyword1">null</span>;
-</span><span id="2204" class="l"><a href="#2204">2204: </a>            } <span class="php-comment">// End if().</span>
-</span><span id="2205" class="l"><a href="#2205">2205: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="2206" class="l"><a href="#2206">2206: </a>            <span class="php-comment">// There is no method by which to check the comment. We can check other ways here.</span>
-</span><span id="2207" class="l"><a href="#2207">2207: </a>            <span class="php-var">$params</span>[ <span class="php-var">$key</span> ] = <span class="php-keyword1">array</span>(
-</span><span id="2208" class="l"><a href="#2208">2208: </a>                <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span>,
-</span><span id="2209" class="l"><a href="#2209">2209: </a>                <span class="php-quote">'method_modify'</span> =&gt; <span class="php-var">$methods</span>[<span class="php-quote">'method_modify'</span>],
-</span><span id="2210" class="l"><a href="#2210">2210: </a>                <span class="php-quote">'method_read'</span> =&gt; <span class="php-var">$methods</span>[<span class="php-quote">'method_read'</span>],
-</span><span id="2211" class="l"><a href="#2211">2211: </a>            );
-</span><span id="2212" class="l"><a href="#2212">2212: </a>
-</span><span id="2213" class="l"><a href="#2213">2213: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'comment_author'</span>][<span class="php-quote">'value'</span>] ) ) {
-</span><span id="2214" class="l"><a href="#2214">2214: </a>                <span class="php-var">$comment_author</span> = <span class="php-var">$params</span>[<span class="php-quote">'comment_author'</span>][<span class="php-quote">'value'</span>];
-</span><span id="2215" class="l"><a href="#2215">2215: </a>            }
-</span><span id="2216" class="l"><a href="#2216">2216: </a>
-</span><span id="2217" class="l"><a href="#2217">2217: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'comment_date'</span>][<span class="php-quote">'value'</span>] ) ) {
-</span><span id="2218" class="l"><a href="#2218">2218: </a>                <span class="php-var">$comment_date</span> = <span class="php-var">$params</span>[<span class="php-quote">'comment_date'</span>][<span class="php-quote">'value'</span>];
-</span><span id="2219" class="l"><a href="#2219">2219: </a>            }
-</span><span id="2220" class="l"><a href="#2220">2220: </a>
-</span><span id="2221" class="l"><a href="#2221">2221: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'timezone'</span>][<span class="php-quote">'value'</span>] ) ) {
-</span><span id="2222" class="l"><a href="#2222">2222: </a>                <span class="php-var">$timezone</span> = <span class="php-var">$params</span>[<span class="php-quote">'timezone'</span>][<span class="php-quote">'value'</span>];
-</span><span id="2223" class="l"><a href="#2223">2223: </a>            } <span class="php-keyword1">else</span> {
-</span><span id="2224" class="l"><a href="#2224">2224: </a>                <span class="php-var">$timezone</span> = <span class="php-quote">'blog'</span>;
-</span><span id="2225" class="l"><a href="#2225">2225: </a>            }
-</span><span id="2226" class="l"><a href="#2226">2226: </a>
-</span><span id="2227" class="l"><a href="#2227">2227: </a>            <span class="php-var">$existing_id</span> = comment_exists( <span class="php-var">$comment_author</span>, <span class="php-var">$comment_date</span>, <span class="php-var">$timezone</span> ); <span class="php-comment">// Returns an id if there is a result.</span>
-</span><span id="2228" class="l"><a href="#2228">2228: </a>
-</span><span id="2229" class="l"><a href="#2229">2229: </a>            <span class="php-comment">// Comment does not exist after more checking. We want to create it.</span>
-</span><span id="2230" class="l"><a href="#2230">2230: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> === <span class="php-var">$existing_id</span> &amp;&amp; <span class="php-keyword1">false</span> === <span class="php-var">$check_only</span> ) {
-</span><span id="2231" class="l"><a href="#2231">2231: </a>                <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;comment_create( <span class="php-var">$params</span>, <span class="php-var">$id_field</span> );
-</span><span id="2232" class="l"><a href="#2232">2232: </a>                <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
-</span><span id="2233" class="l"><a href="#2233">2233: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword1">true</span> === <span class="php-var">$check_only</span> ) {
-</span><span id="2234" class="l"><a href="#2234">2234: </a>                <span class="php-comment">// We are just checking to see if there is a match.</span>
-</span><span id="2235" class="l"><a href="#2235">2235: </a>                <span class="php-keyword1">return</span> <span class="php-var">$existing_id</span>;
-</span><span id="2236" class="l"><a href="#2236">2236: </a>            } <span class="php-keyword1">else</span> {
-</span><span id="2237" class="l"><a href="#2237">2237: </a>                <span class="php-comment">// Comment does exist based on username, and we aren't doing a check only. we want to update the wp user here.</span>
-</span><span id="2238" class="l"><a href="#2238">2238: </a>                <span class="php-var">$comment_id</span> = <span class="php-var">$existing_id</span>;
-</span><span id="2239" class="l"><a href="#2239">2239: </a>            }
-</span><span id="2240" class="l"><a href="#2240">2240: </a>        } <span class="php-comment">// End if() that sets up the parameters in the $params array.</span>
-</span><span id="2241" class="l"><a href="#2241">2241: </a>
-</span><span id="2242" class="l"><a href="#2242">2242: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$comment_id</span> ) ) {
-</span><span id="2243" class="l"><a href="#2243">2243: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
-</span><span id="2244" class="l"><a href="#2244">2244: </a>                <span class="php-var">$params</span>[ <span class="php-var">$key</span> ][<span class="php-quote">'method_modify'</span>] = <span class="php-var">$methods</span>[<span class="php-quote">'method_update'</span>];
-</span><span id="2245" class="l"><a href="#2245">2245: </a>            }
-</span><span id="2246" class="l"><a href="#2246">2246: </a>            <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;comment_update( <span class="php-var">$comment_id</span>, <span class="php-var">$params</span>, <span class="php-var">$id_field</span> );
-</span><span id="2247" class="l"><a href="#2247">2247: </a>            <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
-</span><span id="2248" class="l"><a href="#2248">2248: </a>        }
-</span><span id="2249" class="l"><a href="#2249">2249: </a>
-</span><span id="2250" class="l"><a href="#2250">2250: </a>        <span class="php-comment">// Create log entry for lack of a comment id.</span>
-</span><span id="2251" class="l"><a href="#2251">2251: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
-</span><span id="2252" class="l"><a href="#2252">2252: </a>            <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
-</span><span id="2253" class="l"><a href="#2253">2253: </a>        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
-</span><span id="2254" class="l"><a href="#2254">2254: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
-</span><span id="2255" class="l"><a href="#2255">2255: </a>        }
-</span><span id="2256" class="l"><a href="#2256">2256: </a>        <span class="php-var">$logging</span>-&gt;setup(
-</span><span id="2257" class="l"><a href="#2257">2257: </a>            esc_html__( <span class="php-quote">'Error: Comments: Tried to run comment_upsert, and ended up without a comment id'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
-</span><span id="2258" class="l"><a href="#2258">2258: </a>            <span class="php-quote">''</span>,
+</span><span id="2183" class="l"><a href="#2183">2183: </a>                    <span class="php-var">$status</span>
+</span><span id="2184" class="l"><a href="#2184">2184: </a>                );
+</span><span id="2185" class="l"><a href="#2185">2185: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword1">false</span> === <span class="php-var">$check_only</span> ) {
+</span><span id="2186" class="l"><a href="#2186">2186: </a>                <span class="php-comment">// Comment does not exist after checking the matching value. Create it.</span>
+</span><span id="2187" class="l"><a href="#2187">2187: </a>                <span class="php-comment">// On the prematch fields, we specify the method_create param.</span>
+</span><span id="2188" class="l"><a href="#2188">2188: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$methods</span>[<span class="php-quote">'method_create'</span>] ) ) {
+</span><span id="2189" class="l"><a href="#2189">2189: </a>                    <span class="php-var">$method</span> = <span class="php-var">$methods</span>[<span class="php-quote">'method_create'</span>];
+</span><span id="2190" class="l"><a href="#2190">2190: </a>                } <span class="php-keyword1">else</span> {
+</span><span id="2191" class="l"><a href="#2191">2191: </a>                    <span class="php-var">$method</span> = <span class="php-var">$methods</span>[<span class="php-quote">'method_modify'</span>];
+</span><span id="2192" class="l"><a href="#2192">2192: </a>                }
+</span><span id="2193" class="l"><a href="#2193">2193: </a>                <span class="php-var">$params</span>[ <span class="php-var">$key</span> ] = <span class="php-keyword1">array</span>(
+</span><span id="2194" class="l"><a href="#2194">2194: </a>                    <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span>,
+</span><span id="2195" class="l"><a href="#2195">2195: </a>                    <span class="php-quote">'method_modify'</span> =&gt; <span class="php-var">$method</span>,
+</span><span id="2196" class="l"><a href="#2196">2196: </a>                    <span class="php-quote">'method_read'</span> =&gt; <span class="php-var">$methods</span>[<span class="php-quote">'method_read'</span>],
+</span><span id="2197" class="l"><a href="#2197">2197: </a>                );
+</span><span id="2198" class="l"><a href="#2198">2198: </a>                <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;comment_create( <span class="php-var">$params</span>, <span class="php-var">$id_field</span> );
+</span><span id="2199" class="l"><a href="#2199">2199: </a>                <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
+</span><span id="2200" class="l"><a href="#2200">2200: </a>            } <span class="php-keyword1">else</span> {
+</span><span id="2201" class="l"><a href="#2201">2201: </a>                <span class="php-comment">// Check only is true but there's not a comment yet.</span>
+</span><span id="2202" class="l"><a href="#2202">2202: </a>                <span class="php-keyword1">return</span> <span class="php-keyword1">null</span>;
+</span><span id="2203" class="l"><a href="#2203">2203: </a>            } <span class="php-comment">// End if().</span>
+</span><span id="2204" class="l"><a href="#2204">2204: </a>        } <span class="php-keyword1">else</span> {
+</span><span id="2205" class="l"><a href="#2205">2205: </a>            <span class="php-comment">// There is no method by which to check the comment. We can check other ways here.</span>
+</span><span id="2206" class="l"><a href="#2206">2206: </a>            <span class="php-var">$params</span>[ <span class="php-var">$key</span> ] = <span class="php-keyword1">array</span>(
+</span><span id="2207" class="l"><a href="#2207">2207: </a>                <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span>,
+</span><span id="2208" class="l"><a href="#2208">2208: </a>                <span class="php-quote">'method_modify'</span> =&gt; <span class="php-var">$methods</span>[<span class="php-quote">'method_modify'</span>],
+</span><span id="2209" class="l"><a href="#2209">2209: </a>                <span class="php-quote">'method_read'</span> =&gt; <span class="php-var">$methods</span>[<span class="php-quote">'method_read'</span>],
+</span><span id="2210" class="l"><a href="#2210">2210: </a>            );
+</span><span id="2211" class="l"><a href="#2211">2211: </a>
+</span><span id="2212" class="l"><a href="#2212">2212: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'comment_author'</span>][<span class="php-quote">'value'</span>] ) ) {
+</span><span id="2213" class="l"><a href="#2213">2213: </a>                <span class="php-var">$comment_author</span> = <span class="php-var">$params</span>[<span class="php-quote">'comment_author'</span>][<span class="php-quote">'value'</span>];
+</span><span id="2214" class="l"><a href="#2214">2214: </a>            }
+</span><span id="2215" class="l"><a href="#2215">2215: </a>
+</span><span id="2216" class="l"><a href="#2216">2216: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'comment_date'</span>][<span class="php-quote">'value'</span>] ) ) {
+</span><span id="2217" class="l"><a href="#2217">2217: </a>                <span class="php-var">$comment_date</span> = <span class="php-var">$params</span>[<span class="php-quote">'comment_date'</span>][<span class="php-quote">'value'</span>];
+</span><span id="2218" class="l"><a href="#2218">2218: </a>            }
+</span><span id="2219" class="l"><a href="#2219">2219: </a>
+</span><span id="2220" class="l"><a href="#2220">2220: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'timezone'</span>][<span class="php-quote">'value'</span>] ) ) {
+</span><span id="2221" class="l"><a href="#2221">2221: </a>                <span class="php-var">$timezone</span> = <span class="php-var">$params</span>[<span class="php-quote">'timezone'</span>][<span class="php-quote">'value'</span>];
+</span><span id="2222" class="l"><a href="#2222">2222: </a>            } <span class="php-keyword1">else</span> {
+</span><span id="2223" class="l"><a href="#2223">2223: </a>                <span class="php-var">$timezone</span> = <span class="php-quote">'blog'</span>;
+</span><span id="2224" class="l"><a href="#2224">2224: </a>            }
+</span><span id="2225" class="l"><a href="#2225">2225: </a>
+</span><span id="2226" class="l"><a href="#2226">2226: </a>            <span class="php-var">$existing_id</span> = comment_exists( <span class="php-var">$comment_author</span>, <span class="php-var">$comment_date</span>, <span class="php-var">$timezone</span> ); <span class="php-comment">// Returns an id if there is a result. Uses $wpdb-&gt;get_var, so it returns null if there is no value</span>
+</span><span id="2227" class="l"><a href="#2227">2227: </a>
+</span><span id="2228" class="l"><a href="#2228">2228: </a>            <span class="php-comment">// Comment does not exist after more checking. We want to create it.</span>
+</span><span id="2229" class="l"><a href="#2229">2229: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> === <span class="php-var">$existing_id</span> &amp;&amp; <span class="php-keyword1">false</span> === <span class="php-var">$check_only</span> ) {
+</span><span id="2230" class="l"><a href="#2230">2230: </a>                <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;comment_create( <span class="php-var">$params</span>, <span class="php-var">$id_field</span> );
+</span><span id="2231" class="l"><a href="#2231">2231: </a>                <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
+</span><span id="2232" class="l"><a href="#2232">2232: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword1">true</span> === <span class="php-var">$check_only</span> ) {
+</span><span id="2233" class="l"><a href="#2233">2233: </a>                <span class="php-comment">// We are just checking to see if there is a match.</span>
+</span><span id="2234" class="l"><a href="#2234">2234: </a>                <span class="php-keyword1">return</span> <span class="php-var">$existing_id</span>;
+</span><span id="2235" class="l"><a href="#2235">2235: </a>            } <span class="php-keyword1">else</span> {
+</span><span id="2236" class="l"><a href="#2236">2236: </a>                <span class="php-comment">// Comment does exist based on username, and we aren't doing a check only. we want to update the wp user here.</span>
+</span><span id="2237" class="l"><a href="#2237">2237: </a>                <span class="php-var">$comment_id</span> = <span class="php-var">$existing_id</span>;
+</span><span id="2238" class="l"><a href="#2238">2238: </a>            }
+</span><span id="2239" class="l"><a href="#2239">2239: </a>        } <span class="php-comment">// End if() that sets up the parameters in the $params array.</span>
+</span><span id="2240" class="l"><a href="#2240">2240: </a>
+</span><span id="2241" class="l"><a href="#2241">2241: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$comment_id</span> ) ) {
+</span><span id="2242" class="l"><a href="#2242">2242: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
+</span><span id="2243" class="l"><a href="#2243">2243: </a>                <span class="php-var">$params</span>[ <span class="php-var">$key</span> ][<span class="php-quote">'method_modify'</span>] = <span class="php-var">$methods</span>[<span class="php-quote">'method_update'</span>];
+</span><span id="2244" class="l"><a href="#2244">2244: </a>            }
+</span><span id="2245" class="l"><a href="#2245">2245: </a>            <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;comment_update( <span class="php-var">$comment_id</span>, <span class="php-var">$params</span>, <span class="php-var">$id_field</span> );
+</span><span id="2246" class="l"><a href="#2246">2246: </a>            <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
+</span><span id="2247" class="l"><a href="#2247">2247: </a>        }
+</span><span id="2248" class="l"><a href="#2248">2248: </a>
+</span><span id="2249" class="l"><a href="#2249">2249: </a>        <span class="php-comment">// Create log entry for lack of a comment id.</span>
+</span><span id="2250" class="l"><a href="#2250">2250: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
+</span><span id="2251" class="l"><a href="#2251">2251: </a>            <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
+</span><span id="2252" class="l"><a href="#2252">2252: </a>        } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
+</span><span id="2253" class="l"><a href="#2253">2253: </a>            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
+</span><span id="2254" class="l"><a href="#2254">2254: </a>        }
+</span><span id="2255" class="l"><a href="#2255">2255: </a>        <span class="php-var">$logging</span>-&gt;setup(
+</span><span id="2256" class="l"><a href="#2256">2256: </a>            esc_html__( <span class="php-quote">'Error: Comments: Tried to run comment_upsert, and ended up without a comment id'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
+</span><span id="2257" class="l"><a href="#2257">2257: </a>            <span class="php-quote">''</span>,
+</span><span id="2258" class="l"><a href="#2258">2258: </a>            <span class="php-num">0</span>,
 </span><span id="2259" class="l"><a href="#2259">2259: </a>            <span class="php-num">0</span>,
-</span><span id="2260" class="l"><a href="#2260">2260: </a>            <span class="php-num">0</span>,
-</span><span id="2261" class="l"><a href="#2261">2261: </a>            <span class="php-quote">'error'</span>
-</span><span id="2262" class="l"><a href="#2262">2262: </a>        );
-</span><span id="2263" class="l"><a href="#2263">2263: </a>
-</span><span id="2264" class="l"><a href="#2264">2264: </a>    }
-</span><span id="2265" class="l"><a href="#2265">2265: </a>
-</span><span id="2266" class="l"><a href="#2266">2266: </a>    <span class="php-comment">/**
-</span></span><span id="2267" class="l"><a href="#2267">2267: </a><span class="php-comment">     * Update a WordPress comment.
-</span></span><span id="2268" class="l"><a href="#2268">2268: </a><span class="php-comment">     *
-</span></span><span id="2269" class="l"><a href="#2269">2269: </a><span class="php-comment">     * @param string $comment_id The ID for the comment to be updated. This value needs to be in the array that is sent to wp_update_comment.
-</span></span><span id="2270" class="l"><a href="#2270">2270: </a><span class="php-comment">     * @param array  $params Array of comment data params.
-</span></span><span id="2271" class="l"><a href="#2271">2271: </a><span class="php-comment">     * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
-</span></span><span id="2272" class="l"><a href="#2272">2272: </a><span class="php-comment">     *
-</span></span><span id="2273" class="l"><a href="#2273">2273: </a><span class="php-comment">     * @return array
-</span></span><span id="2274" class="l"><a href="#2274">2274: </a><span class="php-comment">     *   data:
-</span></span><span id="2275" class="l"><a href="#2275">2275: </a><span class="php-comment">     *     success: 1
-</span></span><span id="2276" class="l"><a href="#2276">2276: </a><span class="php-comment">     *   &quot;errors&quot; : [ ],
-</span></span><span id="2277" class="l"><a href="#2277">2277: </a><span class="php-comment">     */</span>
-</span><span id="2278" class="l"><a href="#2278">2278: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> comment_update( <span class="php-var">$comment_id</span>, <span class="php-var">$params</span>, <span class="php-var">$id_field</span> = <span class="php-quote">'comment_ID'</span> ) {
-</span><span id="2279" class="l"><a href="#2279">2279: </a>        <span class="php-var">$content</span> = <span class="php-keyword1">array</span>();
-</span><span id="2280" class="l"><a href="#2280">2280: </a>        <span class="php-var">$content</span>[ <span class="php-var">$id_field</span> ] = <span class="php-var">$comment_id</span>;
-</span><span id="2281" class="l"><a href="#2281">2281: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
-</span><span id="2282" class="l"><a href="#2282">2282: </a>            <span class="php-keyword1">if</span> ( <span class="php-quote">'wp_update_comment'</span> === <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>] ) {
-</span><span id="2283" class="l"><a href="#2283">2283: </a>                <span class="php-var">$content</span>[ <span class="php-var">$key</span> ] = <span class="php-var">$value</span>[<span class="php-quote">'value'</span>];
-</span><span id="2284" class="l"><a href="#2284">2284: </a>                <span class="php-keyword1">unset</span>( <span class="php-var">$params</span>[ <span class="php-var">$key</span> ] );
-</span><span id="2285" class="l"><a href="#2285">2285: </a>            }
-</span><span id="2286" class="l"><a href="#2286">2286: </a>        }
-</span><span id="2287" class="l"><a href="#2287">2287: </a>
-</span><span id="2288" class="l"><a href="#2288">2288: </a>        <span class="php-var">$updated</span> = wp_update_comment( <span class="php-var">$content</span> );
-</span><span id="2289" class="l"><a href="#2289">2289: </a>
-</span><span id="2290" class="l"><a href="#2290">2290: </a>        <span class="php-keyword1">if</span> ( <span class="php-num">0</span> === <span class="php-var">$updated</span> ) {
-</span><span id="2291" class="l"><a href="#2291">2291: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
-</span><span id="2292" class="l"><a href="#2292">2292: </a>            <span class="php-var">$errors</span> = <span class="php-var">$updated</span>;
-</span><span id="2293" class="l"><a href="#2293">2293: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="2294" class="l"><a href="#2294">2294: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
-</span><span id="2295" class="l"><a href="#2295">2295: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
-</span><span id="2296" class="l"><a href="#2296">2296: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
-</span><span id="2297" class="l"><a href="#2297">2297: </a>                <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
-</span><span id="2298" class="l"><a href="#2298">2298: </a>                <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$comment_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
-</span><span id="2299" class="l"><a href="#2299">2299: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">false</span> === <span class="php-var">$meta_id</span> ) {
-</span><span id="2300" class="l"><a href="#2300">2300: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
-</span><span id="2301" class="l"><a href="#2301">2301: </a>                    <span class="php-var">$errors</span>[] = <span class="php-keyword1">array</span>(
-</span><span id="2302" class="l"><a href="#2302">2302: </a>                        <span class="php-quote">'message'</span> =&gt; <span class="php-keyword2">sprintf</span>(
-</span><span id="2303" class="l"><a href="#2303">2303: </a>                            <span class="php-comment">// Translators: %1$s is a method name.</span>
-</span><span id="2304" class="l"><a href="#2304">2304: </a>                            esc_html__( <span class="php-quote">'Tried to update meta with method %1$s.'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
-</span><span id="2305" class="l"><a href="#2305">2305: </a>                            esc_html( <span class="php-var">$method</span> )
-</span><span id="2306" class="l"><a href="#2306">2306: </a>                        ),
-</span><span id="2307" class="l"><a href="#2307">2307: </a>                        <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>,
-</span><span id="2308" class="l"><a href="#2308">2308: </a>                        <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span>,
-</span><span id="2309" class="l"><a href="#2309">2309: </a>                    );
-</span><span id="2310" class="l"><a href="#2310">2310: </a>                }
-</span><span id="2311" class="l"><a href="#2311">2311: </a>            }
-</span><span id="2312" class="l"><a href="#2312">2312: </a>
-</span><span id="2313" class="l"><a href="#2313">2313: </a>            <span class="php-comment">// Developers can use this hook to set any other comment data.</span>
-</span><span id="2314" class="l"><a href="#2314">2314: </a>            do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_comment_data'</span>, <span class="php-var">$comment_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
-</span><span id="2315" class="l"><a href="#2315">2315: </a>
-</span><span id="2316" class="l"><a href="#2316">2316: </a>        }
-</span><span id="2317" class="l"><a href="#2317">2317: </a>
-</span><span id="2318" class="l"><a href="#2318">2318: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$updated</span> ) ) {
-</span><span id="2319" class="l"><a href="#2319">2319: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
-</span><span id="2320" class="l"><a href="#2320">2320: </a>            <span class="php-var">$errors</span> = <span class="php-var">$updated</span>;
-</span><span id="2321" class="l"><a href="#2321">2321: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="2322" class="l"><a href="#2322">2322: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
-</span><span id="2323" class="l"><a href="#2323">2323: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
-</span><span id="2324" class="l"><a href="#2324">2324: </a>        }
-</span><span id="2325" class="l"><a href="#2325">2325: </a>
-</span><span id="2326" class="l"><a href="#2326">2326: </a>        <span class="php-var">$result</span> = <span class="php-keyword1">array</span>(
-</span><span id="2327" class="l"><a href="#2327">2327: </a>            <span class="php-quote">'data'</span> =&gt; <span class="php-keyword1">array</span>(
-</span><span id="2328" class="l"><a href="#2328">2328: </a>                <span class="php-var">$id_field</span> =&gt; <span class="php-var">$comment_id</span>,
-</span><span id="2329" class="l"><a href="#2329">2329: </a>                <span class="php-quote">'success'</span> =&gt; <span class="php-var">$success</span>,
-</span><span id="2330" class="l"><a href="#2330">2330: </a>            ),
-</span><span id="2331" class="l"><a href="#2331">2331: </a>            <span class="php-quote">'errors'</span> =&gt; <span class="php-var">$errors</span>,
-</span><span id="2332" class="l"><a href="#2332">2332: </a>        );
-</span><span id="2333" class="l"><a href="#2333">2333: </a>
-</span><span id="2334" class="l"><a href="#2334">2334: </a>        <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
-</span><span id="2335" class="l"><a href="#2335">2335: </a>
-</span><span id="2336" class="l"><a href="#2336">2336: </a>    }
-</span><span id="2337" class="l"><a href="#2337">2337: </a>
-</span><span id="2338" class="l"><a href="#2338">2338: </a>    <span class="php-comment">/**
-</span></span><span id="2339" class="l"><a href="#2339">2339: </a><span class="php-comment">     * Delete a WordPress comment.
-</span></span><span id="2340" class="l"><a href="#2340">2340: </a><span class="php-comment">     *
-</span></span><span id="2341" class="l"><a href="#2341">2341: </a><span class="php-comment">     * @param int  $id Comment ID.
-</span></span><span id="2342" class="l"><a href="#2342">2342: </a><span class="php-comment">     * @param bool $force_delete If we should bypass the trash. We don't change this from FALSE anywhere in this plugin.
-</span></span><span id="2343" class="l"><a href="#2343">2343: </a><span class="php-comment">     *
-</span></span><span id="2344" class="l"><a href="#2344">2344: </a><span class="php-comment">     * @return boolean true if successful, false if failed.
-</span></span><span id="2345" class="l"><a href="#2345">2345: </a><span class="php-comment">     */</span>
-</span><span id="2346" class="l"><a href="#2346">2346: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> comment_delete( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> = <span class="php-keyword1">false</span> ) {
-</span><span id="2347" class="l"><a href="#2347">2347: </a>        <span class="php-var">$result</span> = wp_delete_comment( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> );
-</span><span id="2348" class="l"><a href="#2348">2348: </a>        <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
-</span><span id="2349" class="l"><a href="#2349">2349: </a>    }
-</span><span id="2350" class="l"><a href="#2350">2350: </a>
-</span><span id="2351" class="l"><a href="#2351">2351: </a>}
-</span><span id="2352" class="l"><a href="#2352">2352: </a>
-</span><span id="2353" class="l"><a href="#2353">2353: </a><span class="php-comment">/**
-</span></span><span id="2354" class="l"><a href="#2354">2354: </a><span class="php-comment"> * WordpressException is a placeholder class in the event that we want to modify Exception for our own purposes.
-</span></span><span id="2355" class="l"><a href="#2355">2355: </a><span class="php-comment"> */</span>
-</span><span id="2356" class="l"><a href="#2356">2356: </a><span class="php-keyword1">class</span> WordpressException <span class="php-keyword1">extends</span> Exception {
-</span><span id="2357" class="l"><a href="#2357">2357: </a>}
-</span><span id="2358" class="l"><a href="#2358">2358: </a></span></code></pre>
+</span><span id="2260" class="l"><a href="#2260">2260: </a>            <span class="php-quote">'error'</span>
+</span><span id="2261" class="l"><a href="#2261">2261: </a>        );
+</span><span id="2262" class="l"><a href="#2262">2262: </a>
+</span><span id="2263" class="l"><a href="#2263">2263: </a>    }
+</span><span id="2264" class="l"><a href="#2264">2264: </a>
+</span><span id="2265" class="l"><a href="#2265">2265: </a>    <span class="php-comment">/**
+</span></span><span id="2266" class="l"><a href="#2266">2266: </a><span class="php-comment">     * Update a WordPress comment.
+</span></span><span id="2267" class="l"><a href="#2267">2267: </a><span class="php-comment">     *
+</span></span><span id="2268" class="l"><a href="#2268">2268: </a><span class="php-comment">     * @param string $comment_id The ID for the comment to be updated. This value needs to be in the array that is sent to wp_update_comment.
+</span></span><span id="2269" class="l"><a href="#2269">2269: </a><span class="php-comment">     * @param array  $params Array of comment data params.
+</span></span><span id="2270" class="l"><a href="#2270">2270: </a><span class="php-comment">     * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+</span></span><span id="2271" class="l"><a href="#2271">2271: </a><span class="php-comment">     *
+</span></span><span id="2272" class="l"><a href="#2272">2272: </a><span class="php-comment">     * @return array
+</span></span><span id="2273" class="l"><a href="#2273">2273: </a><span class="php-comment">     *   data:
+</span></span><span id="2274" class="l"><a href="#2274">2274: </a><span class="php-comment">     *     success: 1
+</span></span><span id="2275" class="l"><a href="#2275">2275: </a><span class="php-comment">     *   &quot;errors&quot; : [ ],
+</span></span><span id="2276" class="l"><a href="#2276">2276: </a><span class="php-comment">     */</span>
+</span><span id="2277" class="l"><a href="#2277">2277: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> comment_update( <span class="php-var">$comment_id</span>, <span class="php-var">$params</span>, <span class="php-var">$id_field</span> = <span class="php-quote">'comment_ID'</span> ) {
+</span><span id="2278" class="l"><a href="#2278">2278: </a>        <span class="php-var">$content</span> = <span class="php-keyword1">array</span>();
+</span><span id="2279" class="l"><a href="#2279">2279: </a>        <span class="php-var">$content</span>[ <span class="php-var">$id_field</span> ] = <span class="php-var">$comment_id</span>;
+</span><span id="2280" class="l"><a href="#2280">2280: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
+</span><span id="2281" class="l"><a href="#2281">2281: </a>            <span class="php-keyword1">if</span> ( <span class="php-quote">'wp_update_comment'</span> === <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>] ) {
+</span><span id="2282" class="l"><a href="#2282">2282: </a>                <span class="php-var">$content</span>[ <span class="php-var">$key</span> ] = <span class="php-var">$value</span>[<span class="php-quote">'value'</span>];
+</span><span id="2283" class="l"><a href="#2283">2283: </a>                <span class="php-keyword1">unset</span>( <span class="php-var">$params</span>[ <span class="php-var">$key</span> ] );
+</span><span id="2284" class="l"><a href="#2284">2284: </a>            }
+</span><span id="2285" class="l"><a href="#2285">2285: </a>        }
+</span><span id="2286" class="l"><a href="#2286">2286: </a>
+</span><span id="2287" class="l"><a href="#2287">2287: </a>        <span class="php-var">$updated</span> = wp_update_comment( <span class="php-var">$content</span> );
+</span><span id="2288" class="l"><a href="#2288">2288: </a>
+</span><span id="2289" class="l"><a href="#2289">2289: </a>        <span class="php-keyword1">if</span> ( <span class="php-num">0</span> === <span class="php-var">$updated</span> ) {
+</span><span id="2290" class="l"><a href="#2290">2290: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
+</span><span id="2291" class="l"><a href="#2291">2291: </a>            <span class="php-var">$errors</span> = <span class="php-var">$updated</span>;
+</span><span id="2292" class="l"><a href="#2292">2292: </a>        } <span class="php-keyword1">else</span> {
+</span><span id="2293" class="l"><a href="#2293">2293: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
+</span><span id="2294" class="l"><a href="#2294">2294: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
+</span><span id="2295" class="l"><a href="#2295">2295: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$params</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span> ) {
+</span><span id="2296" class="l"><a href="#2296">2296: </a>                <span class="php-var">$method</span> = <span class="php-var">$value</span>[<span class="php-quote">'method_modify'</span>];
+</span><span id="2297" class="l"><a href="#2297">2297: </a>                <span class="php-var">$meta_id</span> = <span class="php-var">$method</span>( <span class="php-var">$comment_id</span>, <span class="php-var">$key</span>, <span class="php-var">$value</span>[<span class="php-quote">'value'</span>] );
+</span><span id="2298" class="l"><a href="#2298">2298: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">false</span> === <span class="php-var">$meta_id</span> ) {
+</span><span id="2299" class="l"><a href="#2299">2299: </a>                    <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
+</span><span id="2300" class="l"><a href="#2300">2300: </a>                    <span class="php-var">$errors</span>[] = <span class="php-keyword1">array</span>(
+</span><span id="2301" class="l"><a href="#2301">2301: </a>                        <span class="php-quote">'message'</span> =&gt; <span class="php-keyword2">sprintf</span>(
+</span><span id="2302" class="l"><a href="#2302">2302: </a>                            <span class="php-comment">// Translators: %1$s is a method name.</span>
+</span><span id="2303" class="l"><a href="#2303">2303: </a>                            esc_html__( <span class="php-quote">'Tried to update meta with method %1$s.'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
+</span><span id="2304" class="l"><a href="#2304">2304: </a>                            esc_html( <span class="php-var">$method</span> )
+</span><span id="2305" class="l"><a href="#2305">2305: </a>                        ),
+</span><span id="2306" class="l"><a href="#2306">2306: </a>                        <span class="php-quote">'key'</span> =&gt; <span class="php-var">$key</span>,
+</span><span id="2307" class="l"><a href="#2307">2307: </a>                        <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span>,
+</span><span id="2308" class="l"><a href="#2308">2308: </a>                    );
+</span><span id="2309" class="l"><a href="#2309">2309: </a>                }
+</span><span id="2310" class="l"><a href="#2310">2310: </a>            }
+</span><span id="2311" class="l"><a href="#2311">2311: </a>
+</span><span id="2312" class="l"><a href="#2312">2312: </a>            <span class="php-comment">// Developers can use this hook to set any other comment data.</span>
+</span><span id="2313" class="l"><a href="#2313">2313: </a>            do_action( <span class="php-quote">'object_sync_for_salesforce_set_more_comment_data'</span>, <span class="php-var">$comment_id</span>, <span class="php-var">$params</span>, <span class="php-quote">'update'</span> );
+</span><span id="2314" class="l"><a href="#2314">2314: </a>
+</span><span id="2315" class="l"><a href="#2315">2315: </a>        }
+</span><span id="2316" class="l"><a href="#2316">2316: </a>
+</span><span id="2317" class="l"><a href="#2317">2317: </a>        <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$updated</span> ) ) {
+</span><span id="2318" class="l"><a href="#2318">2318: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">false</span>;
+</span><span id="2319" class="l"><a href="#2319">2319: </a>            <span class="php-var">$errors</span> = <span class="php-var">$updated</span>;
+</span><span id="2320" class="l"><a href="#2320">2320: </a>        } <span class="php-keyword1">else</span> {
+</span><span id="2321" class="l"><a href="#2321">2321: </a>            <span class="php-var">$success</span> = <span class="php-keyword1">true</span>;
+</span><span id="2322" class="l"><a href="#2322">2322: </a>            <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
+</span><span id="2323" class="l"><a href="#2323">2323: </a>        }
+</span><span id="2324" class="l"><a href="#2324">2324: </a>
+</span><span id="2325" class="l"><a href="#2325">2325: </a>        <span class="php-var">$result</span> = <span class="php-keyword1">array</span>(
+</span><span id="2326" class="l"><a href="#2326">2326: </a>            <span class="php-quote">'data'</span> =&gt; <span class="php-keyword1">array</span>(
+</span><span id="2327" class="l"><a href="#2327">2327: </a>                <span class="php-var">$id_field</span> =&gt; <span class="php-var">$comment_id</span>,
+</span><span id="2328" class="l"><a href="#2328">2328: </a>                <span class="php-quote">'success'</span> =&gt; <span class="php-var">$success</span>,
+</span><span id="2329" class="l"><a href="#2329">2329: </a>            ),
+</span><span id="2330" class="l"><a href="#2330">2330: </a>            <span class="php-quote">'errors'</span> =&gt; <span class="php-var">$errors</span>,
+</span><span id="2331" class="l"><a href="#2331">2331: </a>        );
+</span><span id="2332" class="l"><a href="#2332">2332: </a>
+</span><span id="2333" class="l"><a href="#2333">2333: </a>        <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
+</span><span id="2334" class="l"><a href="#2334">2334: </a>
+</span><span id="2335" class="l"><a href="#2335">2335: </a>    }
+</span><span id="2336" class="l"><a href="#2336">2336: </a>
+</span><span id="2337" class="l"><a href="#2337">2337: </a>    <span class="php-comment">/**
+</span></span><span id="2338" class="l"><a href="#2338">2338: </a><span class="php-comment">     * Delete a WordPress comment.
+</span></span><span id="2339" class="l"><a href="#2339">2339: </a><span class="php-comment">     *
+</span></span><span id="2340" class="l"><a href="#2340">2340: </a><span class="php-comment">     * @param int  $id Comment ID.
+</span></span><span id="2341" class="l"><a href="#2341">2341: </a><span class="php-comment">     * @param bool $force_delete If we should bypass the trash. We don't change this from FALSE anywhere in this plugin.
+</span></span><span id="2342" class="l"><a href="#2342">2342: </a><span class="php-comment">     *
+</span></span><span id="2343" class="l"><a href="#2343">2343: </a><span class="php-comment">     * @return boolean true if successful, false if failed.
+</span></span><span id="2344" class="l"><a href="#2344">2344: </a><span class="php-comment">     */</span>
+</span><span id="2345" class="l"><a href="#2345">2345: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> comment_delete( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> = <span class="php-keyword1">false</span> ) {
+</span><span id="2346" class="l"><a href="#2346">2346: </a>        <span class="php-var">$result</span> = wp_delete_comment( <span class="php-var">$id</span>, <span class="php-var">$force_delete</span> );
+</span><span id="2347" class="l"><a href="#2347">2347: </a>        <span class="php-keyword1">return</span> <span class="php-var">$result</span>;
+</span><span id="2348" class="l"><a href="#2348">2348: </a>    }
+</span><span id="2349" class="l"><a href="#2349">2349: </a>
+</span><span id="2350" class="l"><a href="#2350">2350: </a>}
+</span><span id="2351" class="l"><a href="#2351">2351: </a>
+</span><span id="2352" class="l"><a href="#2352">2352: </a><span class="php-comment">/**
+</span></span><span id="2353" class="l"><a href="#2353">2353: </a><span class="php-comment"> * WordpressException is a placeholder class in the event that we want to modify Exception for our own purposes.
+</span></span><span id="2354" class="l"><a href="#2354">2354: </a><span class="php-comment"> */</span>
+</span><span id="2355" class="l"><a href="#2355">2355: </a><span class="php-keyword1">class</span> WordpressException <span class="php-keyword1">extends</span> Exception {
+</span><span id="2356" class="l"><a href="#2356">2356: </a>}
+</span><span id="2357" class="l"><a href="#2357">2357: </a></span></code></pre>
 
 	<div id="footer">
 		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>

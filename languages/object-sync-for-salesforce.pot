@@ -64,7 +64,7 @@ msgstr ""
 msgid "You need to specify the name of the schedule you want to clear."
 msgstr ""
 
-#: classes/admin.php:1547, classes/salesforce_pull.php:1118, classes/salesforce_push.php:807, classes/salesforce_push.php:906
+#: classes/admin.php:1547, classes/salesforce_pull.php:1119, classes/salesforce_push.php:807, classes/salesforce_push.php:906
 msgid "Mapping object updated via function: "
 msgstr ""
 
@@ -160,23 +160,23 @@ msgstr ""
 msgid "The WordPress %1$s with %2$s of %3$s is already mapped to the Salesforce %4$s with Id of %5$s in the mapping object with id of %6$s. The Salesforce %4$s with Id of %5$s was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing data unintentionally."
 msgstr ""
 
-#: classes/salesforce_pull.php:1025, classes/salesforce_pull.php:1128
+#: classes/salesforce_pull.php:1026, classes/salesforce_pull.php:1129
 msgid "Success: %1$s %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)"
 msgstr ""
 
-#: classes/salesforce_pull.php:1066
+#: classes/salesforce_pull.php:1067
 msgid "Error syncing: %1$s to WordPress (Salesforce %2$s Id %3$s)"
 msgstr ""
 
-#: classes/salesforce_pull.php:1073
+#: classes/salesforce_pull.php:1074
 msgid "Object: %1$s with %2$s of %3$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:1073
+#: classes/salesforce_pull.php:1074
 msgid "Message: "
 msgstr ""
 
-#: classes/salesforce_pull.php:1247
+#: classes/salesforce_pull.php:1248
 msgid "Mapping object created via function: "
 msgstr ""
 
