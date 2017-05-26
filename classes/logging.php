@@ -1,6 +1,6 @@
 <?php
 /**
- * Extend the WP_Logging class for the purposes of Object Sync for Salesforce
+ * Class file for the Object_Sync_Sf_Logging class. Extend the WP_Logging class for the purposes of Object Sync for Salesforce.
  *
  * @file
  */

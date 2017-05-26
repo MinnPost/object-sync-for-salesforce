@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for the Object_Sync_Sf_Admin class.
+ *
  * @file
  */
 
@@ -8,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 }
 
 /**
- * Create default WordPress admin functionality for Salesforce to configure the plugin.
+ * Create default WordPress admin functionality to configure the plugin.
  */
 class Object_Sync_Sf_Admin {
 

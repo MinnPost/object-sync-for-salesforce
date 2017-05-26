@@ -13,90 +13,90 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: object-sync-for-salesforce.php:393, classes/admin.php:201
+#: object-sync-for-salesforce.php:393, classes/admin.php:203
 msgid "Settings"
 msgstr ""
 
-#: classes/admin.php:141, templates/admin/user-profile-salesforce-change.php:2, templates/admin/user-profile-salesforce-map.php:2, templates/admin/user-profile-salesforce.php:5
+#: classes/admin.php:143, templates/admin/user-profile-salesforce-change.php:2, templates/admin/user-profile-salesforce-map.php:2, templates/admin/user-profile-salesforce.php:5
 msgid "Salesforce"
 msgstr ""
 
-#: classes/admin.php:197
+#: classes/admin.php:199
 msgid "Connect to Salesforce"
 msgstr ""
 
-#: classes/admin.php:266
+#: classes/admin.php:268
 msgid "Authorize tab"
 msgstr ""
 
-#: classes/admin.php:552
+#: classes/admin.php:554
 msgid "Run schedule every"
 msgstr ""
 
-#: classes/admin.php:564, classes/admin.php:719
+#: classes/admin.php:566, classes/admin.php:721
 msgid "Time unit"
 msgstr ""
 
-#: classes/admin.php:590
+#: classes/admin.php:592
 msgid "%s item"
 msgid_plural "%s items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/admin.php:706
+#: classes/admin.php:708
 msgid "Check for old logs every"
 msgstr ""
 
-#: classes/admin.php:1193, classes/admin.php:1278
+#: classes/admin.php:1195, classes/admin.php:1280
 msgid "Defined in wp-config.php"
 msgstr ""
 
-#: classes/admin.php:1368
+#: classes/admin.php:1370
 msgid "Authorize"
 msgstr ""
 
 #. translators: $schedule_name is the name of the current queue. Defaults: salesforce_pull, salesforce_push, salesforce
-#: classes/admin.php:1491
+#: classes/admin.php:1493
 msgid "You have cleared the %s schedule."
 msgstr ""
 
-#: classes/admin.php:1493
+#: classes/admin.php:1495
 msgid "You need to specify the name of the schedule you want to clear."
 msgstr ""
 
-#: classes/admin.php:1545, classes/salesforce_pull.php:1116, classes/salesforce_push.php:805, classes/salesforce_push.php:904
+#: classes/admin.php:1547, classes/salesforce_pull.php:1118, classes/salesforce_push.php:807, classes/salesforce_push.php:906
 msgid "Mapping object updated via function: "
 msgstr ""
 
-#: classes/salesforce.php:293
+#: classes/salesforce.php:295
 msgid "Debug: on Salesforce API HTTP Request to URL: %1$s."
 msgstr ""
 
-#: classes/salesforce.php:381, classes/salesforce.php:402, classes/salesforce.php:430
+#: classes/salesforce.php:389, classes/salesforce.php:410, classes/salesforce.php:438
 msgid "Error: %1$s: on Salesforce http request"
 msgstr ""
 
-#: classes/salesforce.php:407
+#: classes/salesforce.php:415
 msgid "URL: %1$s"
 msgstr ""
 
-#: classes/salesforce.php:407, classes/salesforce_push.php:832
+#: classes/salesforce.php:415, classes/salesforce_push.php:834
 msgid "Message: %2$s"
 msgstr ""
 
-#: classes/salesforce.php:407
+#: classes/salesforce.php:415
 msgid "Code: %3$s"
 msgstr ""
 
-#: classes/salesforce.php:541
+#: classes/salesforce.php:549
 msgid "There is no refresh token."
 msgstr ""
 
-#: classes/salesforce.php:565
+#: classes/salesforce.php:573
 msgid "Unable to get a Salesforce access token. Salesforce returned the following errorCode: "
 msgstr ""
 
-#: classes/salesforce.php:599
+#: classes/salesforce.php:607
 msgid "Unable to access identity service."
 msgstr ""
 
@@ -112,107 +112,107 @@ msgstr ""
 msgid "%1$s: Mapping: there is more than one mapped WordPress object for the Salesforce object %2$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:255
+#: classes/salesforce_pull.php:257
 msgid "Error: %1$s %2$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:509
+#: classes/salesforce_pull.php:511
 msgid "Error: Salesforce Pull: unable to process queue item because it has no Salesforce Id."
 msgstr ""
 
-#: classes/salesforce_pull.php:638
+#: classes/salesforce_pull.php:640
 msgid "Success: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)"
 msgstr ""
 
-#: classes/salesforce_pull.php:659
+#: classes/salesforce_pull.php:661
 msgid "The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress ID. They are:"
 msgstr ""
 
-#: classes/salesforce_pull.php:671
+#: classes/salesforce_pull.php:673
 msgid "The map row between this Salesforce object and the WordPress object, as stored in the WordPress database, will be deleted, and this Salesforce object has been deleted, but the WordPress object row will remain untouched."
 msgstr ""
 
-#: classes/salesforce_pull.php:681
+#: classes/salesforce_pull.php:683
 msgid "Notice: %1$s %2$s with %3$s of %4$s (%5$s %6$s) did not delete the WordPress item."
 msgstr ""
 
-#: classes/salesforce_pull.php:830
+#: classes/salesforce_pull.php:832
 msgid "Error: There is at least one object map with a WordPress ID of 0."
 msgstr ""
 
-#: classes/salesforce_pull.php:834
+#: classes/salesforce_pull.php:836
 msgid "There is an object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of 0 and the Salesforce object with ID of %3$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:840
+#: classes/salesforce_pull.php:842
 msgid "There are multiple object maps with WordPress ID of 0. Their IDs are: "
 msgstr ""
 
-#: classes/salesforce_pull.php:843
+#: classes/salesforce_pull.php:845
 msgid "Mapping object id: %1$s. Salesforce Id: %2$s. WordPress object type: %3$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:876
+#: classes/salesforce_pull.php:878
 msgid "Notice: Because object map %1$s already exists, WordPress %2$s %3$s was not mapped to Salesforce Id %4$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:884
+#: classes/salesforce_pull.php:886
 msgid "The WordPress %1$s with %2$s of %3$s is already mapped to the Salesforce %4$s with Id of %5$s in the mapping object with id of %6$s. The Salesforce %4$s with Id of %5$s was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing data unintentionally."
 msgstr ""
 
-#: classes/salesforce_pull.php:1023, classes/salesforce_pull.php:1126
+#: classes/salesforce_pull.php:1025, classes/salesforce_pull.php:1128
 msgid "Success: %1$s %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)"
 msgstr ""
 
-#: classes/salesforce_pull.php:1064
+#: classes/salesforce_pull.php:1066
 msgid "Error syncing: %1$s to WordPress (Salesforce %2$s Id %3$s)"
 msgstr ""
 
-#: classes/salesforce_pull.php:1071
+#: classes/salesforce_pull.php:1073
 msgid "Object: %1$s with %2$s of %3$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:1071
+#: classes/salesforce_pull.php:1073
 msgid "Message: "
 msgstr ""
 
-#: classes/salesforce_pull.php:1245
+#: classes/salesforce_pull.php:1247
 msgid "Mapping object created via function: "
 msgstr ""
 
-#: classes/salesforce_push.php:351
+#: classes/salesforce_push.php:353
 msgid "Error: Salesforce Push: unable to process queue item because it has no WordPress %1$s."
 msgstr ""
 
-#: classes/salesforce_push.php:534, classes/salesforce_push.php:786, classes/salesforce_push.php:914
+#: classes/salesforce_push.php:536, classes/salesforce_push.php:788, classes/salesforce_push.php:916
 msgid "Success: %1$s %2$s %3$s (WordPress %4$s with %5$s of %6$s)"
 msgstr ""
 
-#: classes/salesforce_push.php:577
+#: classes/salesforce_push.php:579
 msgid "Notice: %1$s %2$s %3$s (WordPress %4$s with %5$s of %6$s did not delete the Salesforce item.)"
 msgstr ""
 
-#: classes/salesforce_push.php:823
+#: classes/salesforce_push.php:825
 msgid "%1$s error syncing: %2$s to Salesforce (WordPress %3$s with %4$s of %5$s)"
 msgstr ""
 
-#: classes/salesforce_push.php:832
+#: classes/salesforce_push.php:834
 msgid "Object: %1$s"
 msgstr ""
 
-#: classes/salesforce_push.php:869
+#: classes/salesforce_push.php:871
 msgid "Notice: %1$s: Did not sync WordPress %2$s with %3$s of %4$s with Salesforce Id %5$s because the last sync timestamp was greater than the object updated timestamp."
 msgstr ""
 
-#: classes/salesforce_push.php:878
+#: classes/salesforce_push.php:880
 msgid "Last sync time: %1$s"
 msgstr ""
 
-#: classes/salesforce_push.php:878
+#: classes/salesforce_push.php:880
 msgid "Object updated time: %2$s"
 msgstr ""
 
-#: classes/salesforce_push.php:1014
+#: classes/salesforce_push.php:1016
 msgid "Mapping object %1$s via function"
 msgstr ""
 

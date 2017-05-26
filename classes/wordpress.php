@@ -1,6 +1,6 @@
 <?php
 /**
- * The class file for Object_Sync_Sf_Wordpress, which handles pulling data from Salesforce into WordPress
+ * Class file for Object_Sync_Sf_Wordpress.
  *
  * @file
  */
@@ -10,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 }
 
 /**
- * Pull data from Salesforce into WordPress
+ * Work with the WordPress $wpdb object. This class can make read and write calls to the WordPress database, and also cache the responses.
  */
 class Object_Sync_Sf_Wordpress {
 

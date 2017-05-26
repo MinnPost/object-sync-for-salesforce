@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for the Object_Sync_Sf_Salesforce class.
+ *
  * @file
  */
 
@@ -8,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 }
 
 /**
- * Ability to authorize and communicate with the Salesforce APIs. This class can make read and write calls to Salesforce, and also cache the responses in WordPress
+ * Ability to authorize and communicate with the Salesforce REST API. This class can make read and write calls to Salesforce, and also cache the responses in WordPress.
  */
 class Object_Sync_Sf_Salesforce {
 
