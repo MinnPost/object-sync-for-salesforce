@@ -386,6 +386,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				$last_delete_sync = get_option( 'object_sync_for_salesforce_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 				$now = current_time( 'timestamp', true );
+				update_option( 'object_sync_for_salesforce_pull_delete_last_' . $type, $now );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
 				// (using an incompatible date may lead to exceptions).
