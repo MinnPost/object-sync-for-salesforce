@@ -34,7 +34,6 @@
 				<li class="active"><a href="class-Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
-				<li><a href="class-Object_Sync_Sf_Salesforce_Soap.html">Object_Sync_Sf_Salesforce_Soap</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
 				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
@@ -104,7 +103,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#10-1139" title="Go to source code">salesforce_pull.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#12-1264" title="Go to source code">salesforce_pull.php</a>
 		<br>
 	</div>
 
@@ -124,7 +123,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#29-68" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#31-70" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$slug</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Constructor which sets up pull schedule</p>
@@ -142,7 +141,7 @@
 					<dd></dd>
 					<dt><var>$login_credentials</var></dt>
 					<dd></dd>
-					<dt><var>$text_domain</var></dt>
+					<dt><var>$slug</var></dt>
 					<dd></dd>
 					<dt><var>$wordpress</var></dt>
 					<dd></dd>
@@ -179,7 +178,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add_actions">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#70-76" title="Go to source code">add_actions</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#72-78" title="Go to source code">add_actions</a>( )</code>
 
 		<div class="description short">
 			<p>Create the action hooks based on what object maps exist from the admin settings</p>
@@ -209,7 +208,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_pull_webhook">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#78-100" title="Go to source code">salesforce_pull_webhook</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#80-102" title="Go to source code">salesforce_pull_webhook</a>( )</code>
 
 		<div class="description short">
 			<p>Ajax callback for salesforce pull. Returns status of 200 for successful
@@ -245,7 +244,7 @@ this is the ajax callback; not a cron run</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_pull">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#102-121" title="Go to source code">salesforce_pull</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#104-123" title="Go to source code">salesforce_pull</a>( )</code>
 
 		<div class="description short">
 			<p>Callback for the standard pull process used by webhooks and cron.</p>
@@ -275,7 +274,7 @@ this is the ajax callback; not a cron run</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_schedule">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#123-135" title="Go to source code">schedule</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#125-137" title="Go to source code">schedule</a>( )</code>
 
 		<div class="description short">
 			<p>Load schedule
@@ -307,7 +306,7 @@ This loads the schedule class</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_check_throttle">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#137-154" title="Go to source code">check_throttle</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#139-156" title="Go to source code">check_throttle</a>( )</code>
 
 		<div class="description short">
 			<p>Determines if the Salesforce pull should be allowed, or throttled.</p>
@@ -343,7 +342,7 @@ This loads the schedule class</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_updated_records">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#156-271" title="Go to source code">get_updated_records</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#158-278" title="Go to source code">get_updated_records</a>( )</code>
 
 		<div class="description short">
 			<p>Pull updated records from Salesforce and place them in the queue.</p>
@@ -378,7 +377,7 @@ and places each updated SF object into the queue for later processing.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_pull_query">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#273-358" title="Go to source code">get_pull_query</a>( <span>string <var>$type</var></span>, <span> <var>$salesforce_mapping</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#280-366" title="Go to source code">get_pull_query</a>( <span>string <var>$type</var></span>, <span> <var>$salesforce_mapping</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Given a SObject type name, build an SOQL query to include all fields for all
@@ -427,7 +426,7 @@ SalesforceMappings mapped to that SObject.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_deleted_records">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#360-437" title="Go to source code">get_deleted_records</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#368-446" title="Go to source code">get_deleted_records</a>( )</code>
 
 		<div class="description short">
 			<p>Get deleted records from salesforce.
@@ -459,7 +458,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_manual_pull">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#439-458" title="Go to source code">manual_pull</a>( <span>string <var>$object_type</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$wordpress_object</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#448-467" title="Go to source code">manual_pull</a>( <span>string <var>$object_type</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$wordpress_object</var></span> )</code>
 
 		<div class="description short">
 			<p>Method for ajax hooks to call for pulling manually</p>
@@ -498,7 +497,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_pull_process_records">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#460-1104" title="Go to source code">salesforce_pull_process_records</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#469-1229" title="Go to source code">salesforce_pull_process_records</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
 
 		<div class="description short">
 			<p>Sync WordPress objects and Salesforce objects from the queue using the REST API.</p>
@@ -543,7 +542,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_object_map">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#1106-1137" title="Go to source code">create_object_map</a>( <span>array <var>$salesforce_object</var></span>, <span>string <var>$wordpress_id</var></span>, <span>array <var>$field_mapping</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#1231-1262" title="Go to source code">create_object_map</a>( <span>array <var>$salesforce_object</var></span>, <span>string <var>$wordpress_id</var></span>, <span>array <var>$field_mapping</var></span> )</code>
 
 		<div class="description short">
 			<p>Create an object map between a Salesforce object and a WordPress object</p>
@@ -597,7 +596,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#15" title="Go to source code"><var>$wpdb</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#17" title="Go to source code"><var>$wpdb</var></a>
 
 			<div class="description short">
 				
@@ -622,7 +621,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#16" title="Go to source code"><var>$version</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#18" title="Go to source code"><var>$version</var></a>
 
 			<div class="description short">
 				
@@ -647,7 +646,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#17" title="Go to source code"><var>$login_credentials</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#19" title="Go to source code"><var>$login_credentials</var></a>
 
 			<div class="description short">
 				
@@ -665,14 +664,14 @@ This is the database row for the map object</p>
 			</div>
 		</td>
 	</tr>
-	<tr data-order="text_domain" id="$text_domain">
+	<tr data-order="slug" id="$slug">
 		<td class="attributes"><code>
 			protected  
 			
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#18" title="Go to source code"><var>$text_domain</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#20" title="Go to source code"><var>$slug</var></a>
 
 			<div class="description short">
 				
@@ -685,7 +684,7 @@ This is the database row for the map object</p>
 		</td>
 		<td class="value">
 			<div>
-				<a href="#$text_domain" class="anchor">#</a>
+				<a href="#$slug" class="anchor">#</a>
 				<code></code>
 			</div>
 		</td>
@@ -697,7 +696,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#19" title="Go to source code"><var>$salesforce</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#21" title="Go to source code"><var>$salesforce</var></a>
 
 			<div class="description short">
 				
@@ -722,7 +721,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#20" title="Go to source code"><var>$mappings</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#22" title="Go to source code"><var>$mappings</var></a>
 
 			<div class="description short">
 				
@@ -747,7 +746,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#21" title="Go to source code"><var>$logging</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#23" title="Go to source code"><var>$logging</var></a>
 
 			<div class="description short">
 				
@@ -772,7 +771,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#22" title="Go to source code"><var>$schedulable_classes</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#24" title="Go to source code"><var>$schedulable_classes</var></a>
 
 			<div class="description short">
 				
@@ -797,7 +796,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#24-27" title="Go to source code"><var>$schedule_name</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#26-29" title="Go to source code"><var>$schedule_name</var></a>
 
 			<div class="description short">
 				

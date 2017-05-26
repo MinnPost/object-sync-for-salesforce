@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for the Object_Sync_Sf_Activate class.
+ *
  * @file
  */
 
@@ -21,16 +23,16 @@ class Object_Sync_Sf_Activate {
 	*
 	* @param object $wpdb
 	* @param string $version
-	* @param string $text_domain
+	* @param string $slug
 	*
 	*/
-	public function __construct( $wpdb, $version, $text_domain ) {
+	public function __construct( $wpdb, $version, $slug ) {
 		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->installed_version = get_option( 'object_sync_for_salesforce_db_version', '' );
-		register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'php_requirements' ) );
-		register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'wordpress_salesforce_tables' ) );
-		register_activation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'add_roles_capabilities' ) );
+		register_activation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'php_requirements' ) );
+		register_activation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'wordpress_salesforce_tables' ) );
+		register_activation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'add_roles_capabilities' ) );
 		add_action( 'plugins_loaded', array( $this, 'wordpress_salesforce_update_db_check' ) );
 	}
 

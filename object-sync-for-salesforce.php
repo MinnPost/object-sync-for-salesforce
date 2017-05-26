@@ -29,9 +29,9 @@ class Object_Sync_Salesforce {
 
 	/**
 	* @var string
-	* The plugin's text_domain for translation
+	* The plugin's slug so we can include it when necessary
 	*/
-	private $text_domain;
+	private $slug;
 
 	/**
 	* @var array
@@ -128,7 +128,7 @@ class Object_Sync_Salesforce {
 		$this->wpdb = $wpdb;
 		$this->version = '0.0.4';
 		$this->login_credentials = $this->get_login_credentials();
-		$this->text_domain = 'object-sync-for-salesforce';
+		$this->slug = 'object-sync-for-salesforce';
 
 		$this->schedulable_classes = array(
 			'salesforce_push' => array(
@@ -151,45 +151,45 @@ class Object_Sync_Salesforce {
 		// users can modify the list of schedulable classes
 		$this->schedulable_classes = apply_filters( 'object_sync_for_salesforce_modify_schedulable_classes', $this->schedulable_classes );
 
-		// example to modify the array of classes by adding one and removing one
 		/*
-		add_filter( 'object_sync_for_salesforce_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
-		function modify_schedulable_classes( $schedulable_classes ) {
-			$schedulable_classes = array(
-				'salesforce_push' => array(
-				    'label' => 'Push to Salesforce',
-				    'class' => 'Object_Sync_Sf_Salesforce_Push',
-				    'callback' => 'salesforce_push_sync_rest',
-				),
-				'wordpress' => array(
-				    'label' => 'WordPress',
-				    'class' => 'Object_Sync_Sf_Wordpress',
-				),
-				'salesforce' => array(
-				    'label' => 'Salesforce Authorization',
-				    'class' => 'Object_Sync_Sf_Salesforce',
-				),
-			);
-			return $schedulable_classes;
-		}
+		 * example to modify the array of classes by adding one and removing one
+		 * add_filter( 'object_sync_for_salesforce_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
+		 * function modify_schedulable_classes( $schedulable_classes ) {
+		 * 	$schedulable_classes = array(
+		 * 		'salesforce_push' => array(
+		 * 		    'label' => 'Push to Salesforce',
+		 * 		    'class' => 'Object_Sync_Sf_Salesforce_Push',
+		 * 		    'callback' => 'salesforce_push_sync_rest',
+		 * 		),
+		 * 		'wordpress' => array(
+		 * 		    'label' => 'WordPress',
+		 * 		    'class' => 'Object_Sync_Sf_Wordpress',
+		 * 		),
+		 * 		'salesforce' => array(
+		 * 		    'label' => 'Salesforce Authorization',
+		 * 		    'class' => 'Object_Sync_Sf_Salesforce',
+		 * 		),
+		 * 	);
+		 * 	return $schedulable_classes;
+		 * }
 		*/
 
-		$this->activated = $this->activate( $this->wpdb, $this->version, $this->text_domain );
-		$this->deactivate( $this->wpdb, $this->version, $this->text_domain, $this->schedulable_classes );
+		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug );
+		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->schedulable_classes );
 
-		$this->logging = $this->logging( $this->wpdb, $this->version, $this->text_domain );
+		$this->logging = $this->logging( $this->wpdb, $this->version );
 
-		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->text_domain, $this->logging );
+		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->slug, $this->logging );
 
-		$this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->text_domain, $this->mappings, $this->logging );
+		$this->wordpress = $this->wordpress( $this->wpdb, $this->version, $this->slug, $this->mappings, $this->logging );
 		$this->salesforce = $this->salesforce_get_api();
 		$this->salesforce_soap_partner = $this->salesforce_soap_partner( $this->salesforce['sfapi'] );
 
-		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
+		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 
-		$this->pull = $this->pull( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
+		$this->pull = $this->pull( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 
-		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->text_domain, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull, $this->logging, $this->schedulable_classes );
+		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull, $this->logging, $this->schedulable_classes );
 
 	}
 
@@ -198,17 +198,17 @@ class Object_Sync_Salesforce {
 	 *
 	 * @param object $wpdb
 	 * @param string $version
-	 * @param string $text_domain
+	 * @param string $slug
 	 *
 	 * @return object
 	 *	Instance of Object_Sync_Sf_Logging
 	 */
-	private function logging( $wpdb, $version, $text_domain ) {
+	private function logging( $wpdb, $version ) {
 		if ( ! class_exists( 'WP_Logging' ) && file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
 			require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 			require_once plugin_dir_path( __FILE__ ) . 'classes/logging.php';
 		}
-		$logging = new Object_Sync_Sf_Logging( $wpdb, $version, $text_domain );
+		$logging = new Object_Sync_Sf_Logging( $wpdb, $version );
 		return $logging;
 	}
 
@@ -217,15 +217,15 @@ class Object_Sync_Salesforce {
 	 *
 	 * @param object $wpdb
 	 * @param string $version
-	 * @param string $text_domain
+	 * @param string $slug
 	 * @param object $logging
 	 *
 	 * @return object
 	 *	Instance of Object_Sync_Sf_Mapping
 	 */
-	private function mappings( $wpdb, $version, $text_domain, $logging ) {
+	private function mappings( $wpdb, $version, $slug, $logging ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
-		$mappings = new Object_Sync_Sf_Mapping( $wpdb, $version, $text_domain, $logging );
+		$mappings = new Object_Sync_Sf_Mapping( $wpdb, $version, $slug, $logging );
 		return $mappings;
 	}
 
@@ -234,16 +234,16 @@ class Object_Sync_Salesforce {
 	*
 	* @param object $wpdb
 	* @param string $version
-	* @param string $text_domain
+	* @param string $slug
 	* @param object $mappings
 	* @param object $logging
 	*
 	* @return object
 	*	Instance of Object_Sync_Sf_Wordpress
 	*/
-	private function wordpress( $wpdb, $version, $text_domain, $mappings, $logging ) {
+	private function wordpress( $wpdb, $version, $slug, $mappings, $logging ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
-		$wordpress = new Object_Sync_Sf_Wordpress( $wpdb, $version, $text_domain, $mappings, $logging );
+		$wordpress = new Object_Sync_Sf_Wordpress( $wpdb, $version, $slug, $mappings, $logging );
 		return $wordpress;
 	}
 
@@ -265,14 +265,14 @@ class Object_Sync_Salesforce {
 		$authorize_path = $this->login_credentials['authorize_path'];
 		$token_path = $this->login_credentials['token_path'];
 		$rest_api_version = $this->login_credentials['rest_api_version'];
-		$text_domain = $this->text_domain;
+		$slug = $this->slug;
 		$wordpress = $this->wordpress;
 		$logging = $this->logging;
 		$schedulable_classes = $this->schedulable_classes;
 		$is_authorized = false;
 		$sfapi = '';
 		if ( $consumer_key && $consumer_secret ) {
-			$sfapi = new Object_Sync_Sf_Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging, $schedulable_classes );
+			$sfapi = new Object_Sync_Sf_Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes );
 			if ( $sfapi->is_authorized() === true ) {
 				$is_authorized = true;
 			}
@@ -300,14 +300,14 @@ class Object_Sync_Salesforce {
 	 *
 	 * @param object $wpdb
 	 * @param string $version
-	 * @param string $text_domain
+	 * @param string $slug
 	 *
 	 * @return object
 	 *	Instance of Wordpress_Salesforce_Activate
 	 */
-	private function activate( $wpdb, $version, $text_domain ) {
+	private function activate( $wpdb, $version, $slug ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
-		$activate = new Object_Sync_Sf_Activate( $wpdb, $version, $text_domain );
+		$activate = new Object_Sync_Sf_Activate( $wpdb, $version, $slug );
 		return $activate;
 	}
 
@@ -316,15 +316,15 @@ class Object_Sync_Salesforce {
 	 *
 	 * @param object $wpdb
 	 * @param string $version
-	 * @param string $text_domain
+	 * @param string $slug
 	 * @param array $schedulable_classes
 	 *
 	 * @return object
 	 *	Instance of Wordpress_Salesforce_Deactivate
 	 */
-	private function deactivate( $wpdb, $version, $text_domain, $schedulable_classes ) {
+	private function deactivate( $wpdb, $version, $slug, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
-		$deactivate = new Object_Sync_Sf_Deactivate( $wpdb, $version, $text_domain, $schedulable_classes );
+		$deactivate = new Object_Sync_Sf_Deactivate( $wpdb, $version, $slug, $schedulable_classes );
 	}
 
 
@@ -334,7 +334,7 @@ class Object_Sync_Salesforce {
 	 * @param object $wpdb
 	 * @param string $version
 	 * @param array $login_credentials
-	 * @param string $text_domain
+	 * @param string $slug
 	 * @param object $wordpress
 	 * @param object $salesforce
 	 * @param object $mappings
@@ -344,9 +344,9 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *	Instance of Object_Sync_Sf_Salesforce_Push
 	 */
-	private function push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
+	private function push( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
-		$push = new Object_Sync_Sf_Salesforce_Push( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
+		$push = new Object_Sync_Sf_Salesforce_Push( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
 		return $push;
 	}
 
@@ -356,7 +356,7 @@ class Object_Sync_Salesforce {
 	 * @param object $wpdb
 	 * @param string $version
 	 * @param array $login_credentials
-	 * @param string $text_domain
+	 * @param string $slug
 	 * @param object $wordpress
 	 * @param object $salesforce
 	 * @param object $mappings
@@ -365,9 +365,9 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *	Instance of Object_Sync_Sf_Salesforce_Pull
 	 */
-	private function pull( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
+	private function pull( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_pull.php';
-		$pull = new Object_Sync_Sf_Salesforce_Pull( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
+		$pull = new Object_Sync_Sf_Salesforce_Pull( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
 		return $pull;
 	}
 
@@ -378,7 +378,7 @@ class Object_Sync_Salesforce {
 	* @param object $wpdb
 	* @param string $version
 	* @param array $login_credentials
-	* @param string $text_domain
+	* @param string $slug
 	* @param object $wordpress
 	* @param object $salesforce
 	* @param object $mappings
@@ -390,11 +390,12 @@ class Object_Sync_Salesforce {
 	*	Instance of Wordpress_Salesforce_Admin
 	*
 	*/
-	private function load_admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
+	private function load_admin( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/admin.php' );
-		$admin = new Object_Sync_Sf_Admin( $wpdb, $version, $login_credentials, $text_domain, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes );
+		$admin = new Object_Sync_Sf_Admin( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes );
 		add_action( 'admin_menu', array( $admin, 'create_admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
+		add_action( 'plugins_loaded', array( $this, 'textdomain' ) );
 		add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 5 );
 		return $admin;
 	}
@@ -409,7 +410,7 @@ class Object_Sync_Salesforce {
 	*/
 	public function plugin_action_links( $links, $file ) {
 		if ( plugin_basename( __FILE__ ) === $file ) {
-			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=object-sync-salesforce-admin">' . __( 'Settings', $this->text_domain ) . '</a>';
+			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=object-sync-salesforce-admin">' . __( 'Settings', 'object-sync-for-salesforce' ) . '</a>';
 			// make the 'Settings' link appear first
 			array_unshift( $links, $settings );
 		}
@@ -423,8 +424,8 @@ class Object_Sync_Salesforce {
 	* @return void
 	*/
 	public function admin_scripts_and_styles() {
-		wp_enqueue_script( $this->text_domain . '-admin', plugins_url( 'assets/js/object-sync-for-salesforce-admin.min.js', __FILE__ ), array( 'jquery' ), $this->version, true );
-		wp_enqueue_style( $this->text_domain . '-admin', plugins_url( 'assets/css/object-sync-for-salesforce-admin.min.css', __FILE__ ), array(), $this->version, 'all' );
+		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/object-sync-for-salesforce-admin.min.js', __FILE__ ), array( 'jquery' ), $this->version, true );
+		wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/object-sync-for-salesforce-admin.min.css', __FILE__ ), array(), $this->version, 'all' );
 	}
 
 	/**
@@ -433,7 +434,7 @@ class Object_Sync_Salesforce {
 	 * @return void
 	 */
 	public function textdomain() {
-		load_plugin_textdomain( $this->text_domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'object-sync-for-salesforce', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**

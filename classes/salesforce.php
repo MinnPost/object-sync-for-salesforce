@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for the Object_Sync_Sf_Salesforce class.
+ *
  * @file
  */
 
@@ -8,7 +10,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 }
 
 /**
- * Ability to authorize and communicate with the Salesforce APIs. This class can make read and write calls to Salesforce, and also cache the responses in WordPress
+ * Ability to authorize and communicate with the Salesforce REST API. This class can make read and write calls to Salesforce, and also cache the responses in WordPress.
  */
 class Object_Sync_Sf_Salesforce {
 
@@ -33,14 +35,14 @@ class Object_Sync_Sf_Salesforce {
 	*   What version of the Salesforce REST API to use
 	* @param object $wordpress
 	*   Object for doing things to WordPress - retrieving data, cache, etc.
-	* @param string $text_domain
-	*   Text domain for this plugin. Would be used in any future translations.
+	* @param string $slug
+	*   Slug for this plugin. Can be used for file including, especially
 	* @param object $logging
 	*	Logging object for this plugin.
 	* @param array $schedulable_classes
 	*	array of classes that can have scheduled tasks specific to them
 	*/
-	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging, $schedulable_classes ) {
+	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes ) {
 		$this->consumer_key = $consumer_key;
 		$this->consumer_secret = $consumer_secret;
 		$this->login_url = $login_url;
@@ -49,7 +51,7 @@ class Object_Sync_Sf_Salesforce {
 		$this->token_path = $token_path;
 		$this->rest_api_version = $rest_api_version;
 		$this->wordpress = $wordpress;
-		$this->text_domain = $text_domain;
+		$this->slug = $slug;
 		$this->logging = $logging;
 		$this->schedulable_classes = $schedulable_classes;
 		$this->options = array(
@@ -85,7 +87,7 @@ class Object_Sync_Sf_Salesforce {
 			$chars = str_split( $chunk, 1 );
 			$bits = '';
 			foreach ( $chars as $char ) {
-				$bits .= ( ! is_numeric( $char ) && $char === strtoupper( $char ) ) ? '1' : '0';
+				$bits .= ( ! is_numeric( $char ) && strtoupper( $char ) === $char ) ? '1' : '0';
 			}
 			$map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345';
 			$extra .= substr( $map, base_convert( strrev( $bits ), 2, 10 ), 1 );
@@ -181,11 +183,11 @@ class Object_Sync_Sf_Salesforce {
 				$options['is_redo'] = true;
 				$this->response = $this->api_http_request( $path, $params, $method, $options, $type );
 				// Throw an error if we still have bad response.
-				if ( ! in_array( $this->response['code'], $this->success_codes ) ) {
+				if ( ! in_array( $this->response['code'], $this->success_codes, true ) ) {
 					throw new Object_Sync_Sf_Exception( $this->response['data'][0]['message'], $this->response['code'] );
 				}
 				break;
-			case in_array( $this->response['code'], $this->success_codes ):
+			case in_array( $this->response['code'], $this->success_codes, true ):
 				// All clear.
 				break;
 			default:
@@ -206,6 +208,7 @@ class Object_Sync_Sf_Salesforce {
 		if ( ! empty( $this->response['data']['errorCode'] ) ) {
 			throw new Object_Sync_Sf_Exception( $this->response['data']['message'], $this->response['code'] );
 		}
+
 		return $this->response;
 	}
 
@@ -258,13 +261,13 @@ class Object_Sync_Sf_Salesforce {
 			} else {
 				$data = wp_json_encode( $params );
 				$result = $this->http_request( $url, $data, $headers, $method, $options );
-				if ( in_array( $result['code'], $this->success_codes ) ) {
+				if ( in_array( $result['code'], $this->success_codes, true ) ) {
 					$result['cached'] = $this->wordpress->cache_set( $url, $params, $result, $options['cache_expiration'] );
 				} else {
 					$result['cached'] = false;
 				}
 				$result['from_cache'] = false;
-    		}
+			}
 		} else {
 			$data = wp_json_encode( $params );
 			$result = $this->http_request( $url, $data, $headers, $method, $options );
@@ -282,16 +285,20 @@ class Object_Sync_Sf_Salesforce {
 		if ( 1 === (int) $this->debug ) {
 			// create log entry for the api call if debug is true
 			$status = 'debug';
-			$title = ucfirst( $status ) . ': on Salesforce API HTTP Request to URL: ' . $url;
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
 			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 			}
 
+			// translators: placeholder is the URL of the Salesforce API request
+			$title = sprintf( esc_html__( 'Debug: on Salesforce API HTTP Request to URL: %1$s.', 'object-sync-for-salesforce' ),
+			    esc_url( $url )
+			);
+
 			$logging->setup(
-				__( $title, $this->text_domain ),
-				print_r( $result, true ),
+				$title,
+				print_r( $result, true ), // log the result because we are debugging the whole api call
 				0,
 				0,
 				$status
@@ -320,6 +327,12 @@ class Object_Sync_Sf_Salesforce {
 	*/
 	protected function http_request( $url, $data, $headers = array(), $method = 'GET', $options = array() ) {
 		// Build the request, including path and headers. Internal use.
+
+		/*
+		 * Note: curl is used because wp_remote_get, wp_remote_post, wp_remote_request don't work. Salesforce returns various errors.
+		 * There is a GitHub branch attempting with the goal of addressing this in a future version: https://github.com/MinnPost/object-sync-for-salesforce/issues/94
+		*/
+
 		$curl = curl_init();
 		curl_setopt( $curl, CURLOPT_URL, $url );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
@@ -361,20 +374,24 @@ class Object_Sync_Sf_Salesforce {
 		$data = json_decode( $json_response, true ); // decode it into an array
 
 		// don't use the exception if the status is a success one, or if it just needs a refresh token (salesforce uses 401 for this)
-		if ( ! in_array( $code, $this->success_or_refresh_codes ) ) {
+		if ( ! in_array( $code, $this->success_or_refresh_codes, true ) ) {
 			$curl_error = curl_error( $curl );
 			if ( '' !== $curl_error ) {
 				// create log entry for failed curl
 				$status = 'error';
-				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 
+				// translators: placeholder is the URL of the Salesforce API request
+				$title = sprintf( esc_html__( 'Error: %1$s: on Salesforce http request', 'object-sync-for-salesforce' ),
+				    esc_attr( $code )
+				);
+
 				$logging->setup(
-					__( $title, $this->text_domain ),
+					$title,
 					$curl_error,
 					0,
 					0,
@@ -383,16 +400,27 @@ class Object_Sync_Sf_Salesforce {
 			} elseif ( isset( $data[0]['errorCode'] ) && '' !== $data[0]['errorCode'] ) { // salesforce uses this structure to return errors
 				// create log entry for failed curl
 				$status = 'error';
-				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 
+				// translators: placeholder is the server code returned by the api
+				$title = sprintf( esc_html__( 'Error: %1$s: on Salesforce http request', 'object-sync-for-salesforce' ),
+				    absint( $code )
+				);
+
+				// translators: placeholders are: 1) the URL requested, 2) the message returned by the error, 3) the server code returned
+				$body = sprintf( '<p>' . esc_html__( 'URL: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: %2$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Code: %3$s', 'object-sync-for-salesforce' ),
+				    esc_attr( $url ),
+				    esc_html( $data[0]['message'] ),
+				    absint( $code )
+				);
+
 				$logging->setup(
-					__( $title, $this->text_domain ),
-					esc_html__( 'URL: ' . $url . ' Message: ' . $data[0]['message'] . '  Code: ' . $code, $this->text_domain ),
+					$title,
+					$body,
 					0,
 					0,
 					$status
@@ -400,21 +428,26 @@ class Object_Sync_Sf_Salesforce {
 			} else {
 				// create log entry for failed curl
 				$status = 'error';
-				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->text_domain );
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
+
+				// translators: placeholder is the server code returned by Salesforce
+				$title = sprintf( esc_html__( 'Error: %1$s: on Salesforce http request', 'object-sync-for-salesforce' ),
+				    absint( $code )
+				);
+
 				$logging->setup(
-					__( $title, $this->text_domain ),
-					print_r( $data, true ),
+					$title,
+					print_r( $data, true ), // log the result because we are debugging the whole api call
 					0,
 					0,
 					$status
 				);
-			}
-		}
+			} // End if().
+		} // End if().
 
 		curl_close( $curl );
 
@@ -513,7 +546,7 @@ class Object_Sync_Sf_Salesforce {
 	protected function refresh_token() {
 		$refresh_token = $this->get_refresh_token();
 		if ( empty( $refresh_token ) ) {
-			throw new Object_Sync_Sf_Exception( esc_html__( 'There is no refresh token.', $this->text_domain ) );
+			throw new Object_Sync_Sf_Exception( esc_html__( 'There is no refresh token.', 'object-sync-for-salesforce' ) );
 		}
 
 		$data = array(
@@ -537,7 +570,7 @@ class Object_Sync_Sf_Salesforce {
 			throw new Object_Sync_Sf_Exception(
 				esc_html(
 					sprintf(
-						__( 'Unable to get a Salesforce access token. Salesforce returned the following errorCode: ', $this->text_domain ) . $response['code']
+						__( 'Unable to get a Salesforce access token. Salesforce returned the following errorCode: ', 'object-sync-for-salesforce' ) . $response['code']
 					)
 				),
 				$response['code']
@@ -571,7 +604,7 @@ class Object_Sync_Sf_Salesforce {
 		);
 		$response = $this->http_request( $id, null, $headers );
 		if ( 200 !== $response['code'] ) {
-			throw new Object_Sync_Sf_Exception( esc_html__( 'Unable to access identity service.', $this->text_domain ), $response['code'] );
+			throw new Object_Sync_Sf_Exception( esc_html__( 'Unable to access identity service.', 'object-sync-for-salesforce' ), $response['code'] );
 		}
 		$data = $response['data'];
 		update_option( 'object_sync_for_salesforce_identity', $data );
@@ -668,7 +701,13 @@ class Object_Sync_Sf_Salesforce {
 	*
 	* updateable is really how the api spells it
 	*/
-	public function objects( $conditions = array( 'updateable' => true, 'triggerable' => true ), $reset = false ) {
+	public function objects(
+		$conditions = array(
+			'updateable' => true,
+			'triggerable' => true,
+		),
+		$reset = false
+	) {
 
 		$options = array(
 			'reset' => $reset,
@@ -1118,12 +1157,12 @@ class Object_Sync_Sf_Salesforce {
 		if ( empty( $start ) ) {
 			$start = strtotime( '-29 days' );
 		}
-		$start = urlencode( gmdate( DATE_ATOM, $start ) );
+		$start = rawurlencode( gmdate( DATE_ATOM, $start ) );
 
 		if ( empty( $end ) ) {
 			$end = time();
 		}
-		$end = urlencode( gmdate( DATE_ATOM, $end ) );
+		$end = rawurlencode( gmdate( DATE_ATOM, $end ) );
 
 		$options = array(
 			'cache' => false,

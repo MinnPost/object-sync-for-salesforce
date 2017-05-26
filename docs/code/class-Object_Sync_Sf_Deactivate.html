@@ -34,7 +34,6 @@
 				<li><a href="class-Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
-				<li><a href="class-Object_Sync_Sf_Salesforce_Soap.html">Object_Sync_Sf_Salesforce_Soap</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
 				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
@@ -104,7 +103,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Deactivate.html#10-94" title="Go to source code">deactivate.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Deactivate.html#12-96" title="Go to source code">deactivate.php</a>
 		<br>
 	</div>
 
@@ -124,7 +123,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Deactivate.html#18-34" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Deactivate.html#20-36" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$slug</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Constructor which sets up deactivate hooks</p>
@@ -140,7 +139,7 @@
 					<dd></dd>
 					<dt><var>$version</var></dt>
 					<dd></dd>
-					<dt><var>$text_domain</var></dt>
+					<dt><var>$slug</var></dt>
 					<dd></dd>
 					<dt><var>$schedulable_classes</var></dt>
 					<dd></dd>
@@ -165,7 +164,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_wordpress_salesforce_drop_tables">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Deactivate.html#36-47" title="Go to source code">wordpress_salesforce_drop_tables</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Deactivate.html#38-49" title="Go to source code">wordpress_salesforce_drop_tables</a>( )</code>
 
 		<div class="description short">
 			<p>Drop database tables for Salesforce
@@ -197,7 +196,7 @@ This removes the tables for fieldmaps (between types of objects) and object maps
 
 		<td class="name"><div>
 		<a class="anchor" href="#_clear_schedule">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Deactivate.html#49-58" title="Go to source code">clear_schedule</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Deactivate.html#51-60" title="Go to source code">clear_schedule</a>( )</code>
 
 		<div class="description short">
 			<p>Clear the scheduled tasks
@@ -229,7 +228,7 @@ This removes all the scheduled tasks that are included in the plugin's $schedula
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_log_post_type">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Deactivate.html#60-67" title="Go to source code">delete_log_post_type</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Deactivate.html#62-69" title="Go to source code">delete_log_post_type</a>( )</code>
 
 		<div class="description short">
 			<p>Delete the log post type
@@ -261,7 +260,7 @@ This removes the log post type</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_remove_roles_capabilities">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Deactivate.html#69-92" title="Go to source code">remove_roles_capabilities</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Deactivate.html#71-94" title="Go to source code">remove_roles_capabilities</a>( )</code>
 
 		<div class="description short">
 			<p>Remove roles and capabilities
@@ -305,7 +304,7 @@ This removes the configure_salesforce capability from the admin role</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Deactivate.html#15" title="Go to source code"><var>$wpdb</var></a>
+				<a href="source-class-Object_Sync_Sf_Deactivate.html#17" title="Go to source code"><var>$wpdb</var></a>
 
 			<div class="description short">
 				
@@ -330,7 +329,7 @@ This removes the configure_salesforce capability from the admin role</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Deactivate.html#16" title="Go to source code"><var>$version</var></a>
+				<a href="source-class-Object_Sync_Sf_Deactivate.html#18" title="Go to source code"><var>$version</var></a>
 
 			<div class="description short">
 				

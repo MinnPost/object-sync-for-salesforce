@@ -34,7 +34,6 @@
 				<li><a href="class-Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
-				<li><a href="class-Object_Sync_Sf_Salesforce_Soap.html">Object_Sync_Sf_Salesforce_Soap</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
 				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
@@ -104,7 +103,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Object_Sync_Salesforce.html#13-471" title="Go to source code"></a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Salesforce.html#13-472" title="Go to source code"></a>
 		<br>
 	</div>
 
@@ -190,7 +189,7 @@ This instance makes the class reusable by other plugins</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_logging">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#196-213" title="Go to source code">logging</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#196-213" title="Go to source code">logging</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$slug</var>,…</span> )</code>
 
 		<div class="description short">
 			<p>Log events</p>
@@ -206,7 +205,7 @@ This instance makes the class reusable by other plugins</p>
 					<dd></dd>
 					<dt><var>$version</var></dt>
 					<dd></dd>
-					<dt><var>$text_domain</var></dt>
+					<dt><var>$slug</var>,…</dt>
 					<dd></dd>
 				</dl></div>
 
@@ -233,7 +232,7 @@ This instance makes the class reusable by other plugins</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_mappings">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#215-230" title="Go to source code">mappings</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$logging</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#215-230" title="Go to source code">mappings</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$slug</var></span>, <span>object <var>$logging</var></span> )</code>
 
 		<div class="description short">
 			<p>Map the Salesforce and WordPress objects and fields to each other</p>
@@ -249,7 +248,7 @@ This instance makes the class reusable by other plugins</p>
 					<dd></dd>
 					<dt><var>$version</var></dt>
 					<dd></dd>
-					<dt><var>$text_domain</var></dt>
+					<dt><var>$slug</var></dt>
 					<dd></dd>
 					<dt><var>$logging</var></dt>
 					<dd></dd>
@@ -278,7 +277,7 @@ This instance makes the class reusable by other plugins</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_wordpress">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#232-248" title="Go to source code">wordpress</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#232-248" title="Go to source code">wordpress</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$slug</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span> )</code>
 
 		<div class="description short">
 			<p>Private helper to load methods for manipulating core WordPress data across the plugin</p>
@@ -294,7 +293,7 @@ This instance makes the class reusable by other plugins</p>
 					<dd></dd>
 					<dt><var>$version</var></dt>
 					<dd></dd>
-					<dt><var>$text_domain</var></dt>
+					<dt><var>$slug</var></dt>
 					<dd></dd>
 					<dt><var>$mappings</var></dt>
 					<dd></dd>
@@ -398,7 +397,7 @@ This is public so other plugins can access the same SF instance</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_activate">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#298-312" title="Go to source code">activate</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#298-312" title="Go to source code">activate</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$slug</var></span> )</code>
 
 		<div class="description short">
 			<p>What to do upon activation of the plugin</p>
@@ -414,7 +413,7 @@ This is public so other plugins can access the same SF instance</p>
 					<dd></dd>
 					<dt><var>$version</var></dt>
 					<dd></dd>
-					<dt><var>$text_domain</var></dt>
+					<dt><var>$slug</var></dt>
 					<dd></dd>
 				</dl></div>
 
@@ -441,7 +440,7 @@ This is public so other plugins can access the same SF instance</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_deactivate">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#314-328" title="Go to source code">deactivate</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$text_domain</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#314-328" title="Go to source code">deactivate</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>string <var>$slug</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>What to do upon deactivation of the plugin</p>
@@ -457,7 +456,7 @@ This is public so other plugins can access the same SF instance</p>
 					<dd></dd>
 					<dt><var>$version</var></dt>
 					<dd></dd>
-					<dt><var>$text_domain</var></dt>
+					<dt><var>$slug</var></dt>
 					<dd></dd>
 					<dt><var>$schedulable_classes</var></dt>
 					<dd></dd>
@@ -486,7 +485,7 @@ This is public so other plugins can access the same SF instance</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_push">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#331-351" title="Go to source code">push</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#331-351" title="Go to source code">push</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$slug</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Methods to push data from WordPress to Salesforce</p>
@@ -504,7 +503,7 @@ This is public so other plugins can access the same SF instance</p>
 					<dd></dd>
 					<dt><var>$login_credentials</var></dt>
 					<dd></dd>
-					<dt><var>$text_domain</var></dt>
+					<dt><var>$slug</var></dt>
 					<dd></dd>
 					<dt><var>$wordpress</var></dt>
 					<dd></dd>
@@ -541,7 +540,7 @@ This is public so other plugins can access the same SF instance</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_pull">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#353-372" title="Go to source code">pull</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#353-372" title="Go to source code">pull</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$slug</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Methods to pull data from Salesforce to WordPress</p>
@@ -559,7 +558,7 @@ This is public so other plugins can access the same SF instance</p>
 					<dd></dd>
 					<dt><var>$login_credentials</var></dt>
 					<dd></dd>
-					<dt><var>$text_domain</var></dt>
+					<dt><var>$slug</var></dt>
 					<dd></dd>
 					<dt><var>$wordpress</var></dt>
 					<dd></dd>
@@ -596,7 +595,7 @@ This is public so other plugins can access the same SF instance</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_load_admin">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#374-400" title="Go to source code">load_admin</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$push</var></span>, <span>object <var>$pull</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#374-401" title="Go to source code">load_admin</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$slug</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$push</var></span>, <span>object <var>$pull</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Load the admin class.
@@ -616,7 +615,7 @@ This also creates admin menu, unless the plugin that calls this library has indi
 					<dd></dd>
 					<dt><var>$login_credentials</var></dt>
 					<dd></dd>
-					<dt><var>$text_domain</var></dt>
+					<dt><var>$slug</var></dt>
 					<dd></dd>
 					<dt><var>$wordpress</var></dt>
 					<dd></dd>
@@ -658,7 +657,7 @@ Instance of Wordpress_Salesforce_Admin</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_plugin_action_links">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#402-417" title="Go to source code">plugin_action_links</a>( <span>array <var>$links</var></span>, <span>string <var>$file</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#403-418" title="Go to source code">plugin_action_links</a>( <span>array <var>$links</var></span>, <span>string <var>$file</var></span> )</code>
 
 		<div class="description short">
 			<p>Display a Settings link on the main Plugins page</p>
@@ -700,7 +699,7 @@ These are the links that go with this plugin's entry</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_admin_scripts_and_styles">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#420-428" title="Go to source code">admin_scripts_and_styles</a>( )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#421-429" title="Go to source code">admin_scripts_and_styles</a>( )</code>
 
 		<div class="description short">
 			<p>Admin styles. Load the CSS and JavaScript for the plugin's settings</p>
@@ -730,7 +729,7 @@ These are the links that go with this plugin's entry</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_textdomain">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#430-437" title="Go to source code">textdomain</a>( )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#431-438" title="Go to source code">textdomain</a>( )</code>
 
 		<div class="description short">
 			<p>Load textdomain</p>
@@ -760,7 +759,7 @@ These are the links that go with this plugin's entry</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_login_credentials">#</a>
-		<code><a href="source-class-Object_Sync_Salesforce.html#439-469" title="Go to source code">get_login_credentials</a>( )</code>
+		<code><a href="source-class-Object_Sync_Salesforce.html#440-470" title="Go to source code">get_login_credentials</a>( )</code>
 
 		<div class="description short">
 			<p>Get the pre-login Salesforce credentials.
@@ -851,27 +850,27 @@ Replaces settings options with wp-config.php values if they exist.</p>
 			</div>
 		</td>
 	</tr>
-	<tr data-order="text_domain" id="$text_domain">
+	<tr data-order="slug" id="$slug">
 		<td class="attributes"><code>
 			private  
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Salesforce.html#30-34" title="Go to source code"><var>$text_domain</var></a>
+				<a href="source-class-Object_Sync_Salesforce.html#30-34" title="Go to source code"><var>$slug</var></a>
 
 			<div class="description short">
-				<p>The plugin's text_domain for translation</p>
+				<p>The plugin's slug so we can include it when necessary</p>
 			</div>
 
 			<div class="description detailed hidden">
-				<p>The plugin's text_domain for translation</p>
+				<p>The plugin's slug so we can include it when necessary</p>
 
 			</div>
 		</td>
 		<td class="value">
 			<div>
-				<a href="#$text_domain" class="anchor">#</a>
+				<a href="#$slug" class="anchor">#</a>
 				<code></code>
 			</div>
 		</td>

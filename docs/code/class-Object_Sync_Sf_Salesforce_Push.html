@@ -34,7 +34,6 @@
 				<li><a href="class-Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
 				<li class="active"><a href="class-Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
-				<li><a href="class-Object_Sync_Sf_Salesforce_Soap.html">Object_Sync_Sf_Salesforce_Soap</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
 				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
@@ -104,7 +103,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Salesforce_Push.html#10-924" title="Go to source code">salesforce_push.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Salesforce_Push.html#12-1041" title="Go to source code">salesforce_push.php</a>
 		<br>
 	</div>
 
@@ -124,7 +123,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#29-60" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$text_domain</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#31-62" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$slug</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Constructor which sets up push schedule</p>
@@ -142,7 +141,7 @@
 					<dd></dd>
 					<dt><var>$login_credentials</var></dt>
 					<dd></dd>
-					<dt><var>$text_domain</var></dt>
+					<dt><var>$slug</var></dt>
 					<dd></dd>
 					<dt><var>$wordpress</var></dt>
 					<dd></dd>
@@ -179,7 +178,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add_actions">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#62-95" title="Go to source code">add_actions</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#64-97" title="Go to source code">add_actions</a>( )</code>
 
 		<div class="description short">
 			<p>Create the action hooks based on what object maps exist from the admin settings
@@ -211,7 +210,7 @@ is wordpress going to actually keep that blogroll stuff? currently we are not do
 
 		<td class="name"><div>
 		<a class="anchor" href="#_manual_object_update">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#97-106" title="Go to source code">manual_object_update</a>( <span>array <var>$object</var></span>, <span>string <var>$type</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#99-108" title="Go to source code">manual_object_update</a>( <span>array <var>$object</var></span>, <span>string <var>$type</var></span> )</code>
 
 		<div class="description short">
 			<p>Method for ajax hooks to call for pushing manually</p>
@@ -248,7 +247,7 @@ is wordpress going to actually keep that blogroll stuff? currently we are not do
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add_user">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#108-116" title="Go to source code">add_user</a>( <span>string <var>$user_id</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#110-118" title="Go to source code">add_user</a>( <span>string <var>$user_id</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for adding a user</p>
@@ -283,7 +282,7 @@ is wordpress going to actually keep that blogroll stuff? currently we are not do
 
 		<td class="name"><div>
 		<a class="anchor" href="#_edit_user">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#118-127" title="Go to source code">edit_user</a>( <span>string <var>$user_id</var></span>, <span>object <var>$old_user_data</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#120-129" title="Go to source code">edit_user</a>( <span>string <var>$user_id</var></span>, <span>object <var>$old_user_data</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for editing a user</p>
@@ -320,7 +319,7 @@ is wordpress going to actually keep that blogroll stuff? currently we are not do
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_user">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#129-137" title="Go to source code">delete_user</a>( <span>string <var>$user_id</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#131-139" title="Go to source code">delete_user</a>( <span>string <var>$user_id</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for deleting a user</p>
@@ -355,7 +354,7 @@ is wordpress going to actually keep that blogroll stuff? currently we are not do
 
 		<td class="name"><div>
 		<a class="anchor" href="#_post_actions">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#139-175" title="Go to source code">post_actions</a>( <span>string <var>$post_id</var></span>, <span>object <var>$post</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#141-177" title="Go to source code">post_actions</a>( <span>string <var>$post_id</var></span>, <span>object <var>$post</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for posts of any type
@@ -394,7 +393,7 @@ This can handle create, update, and delete actions</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add_attachment">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#177-185" title="Go to source code">add_attachment</a>( <span>string <var>$post_id</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#179-187" title="Go to source code">add_attachment</a>( <span>string <var>$post_id</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for adding an attachment</p>
@@ -429,7 +428,7 @@ This can handle create, update, and delete actions</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_edit_attachment">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#187-195" title="Go to source code">edit_attachment</a>( <span>string <var>$post_id</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#189-197" title="Go to source code">edit_attachment</a>( <span>string <var>$post_id</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for editing an attachment</p>
@@ -464,7 +463,7 @@ This can handle create, update, and delete actions</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_attachment">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#197-205" title="Go to source code">delete_attachment</a>( <span>string <var>$post_id</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#199-207" title="Go to source code">delete_attachment</a>( <span>string <var>$post_id</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for editing an attachment</p>
@@ -499,7 +498,7 @@ This can handle create, update, and delete actions</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add_term">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#207-217" title="Go to source code">add_term</a>( <span>string <var>$term_id</var></span>, <span>string <var>$tt_id</var></span>, <span>string <var>$taxonomy</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#209-219" title="Go to source code">add_term</a>( <span>string <var>$term_id</var></span>, <span>string <var>$tt_id</var></span>, <span>string <var>$taxonomy</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for adding a term</p>
@@ -538,7 +537,7 @@ This can handle create, update, and delete actions</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_edit_term">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#219-228" title="Go to source code">edit_term</a>( <span>string <var>$term_id</var></span>, <span>string <var>$taxonomy</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#221-230" title="Go to source code">edit_term</a>( <span>string <var>$term_id</var></span>, <span>string <var>$taxonomy</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for editing a term</p>
@@ -575,7 +574,7 @@ This can handle create, update, and delete actions</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_term">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#230-242" title="Go to source code">delete_term</a>( <span>integer <var>$term</var></span>, <span>integer <var>$tt_id</var></span>, <span>string <var>$taxonomy</var></span>, <span>object <var>$deleted_term</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#232-244" title="Go to source code">delete_term</a>( <span>integer <var>$term</var></span>, <span>integer <var>$tt_id</var></span>, <span>string <var>$taxonomy</var></span>, <span>object <var>$deleted_term</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for deleting a term</p>
@@ -616,7 +615,7 @@ This can handle create, update, and delete actions</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add_comment">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#244-254" title="Go to source code">add_comment</a>( <span>string <var>$comment_id</var></span>, <span>integer|string <var>$comment_approved</var></span>, <span>array <var>$commentdata</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#246-256" title="Go to source code">add_comment</a>( <span>string <var>$comment_id</var></span>, <span>integer|string <var>$comment_approved</var></span>, <span>array <var>$commentdata</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Callback method for adding a comment</p>
@@ -655,7 +654,7 @@ This can handle create, update, and delete actions</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_edit_comment">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#256-264" title="Go to source code">edit_comment</a>( <span>string <var>$comment_id</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#258-266" title="Go to source code">edit_comment</a>( <span>string <var>$comment_id</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for editing a comment</p>
@@ -690,7 +689,7 @@ This can handle create, update, and delete actions</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_comment">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#266-274" title="Go to source code">delete_comment</a>( <span>string <var>$comment_id</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#268-276" title="Go to source code">delete_comment</a>( <span>string <var>$comment_id</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback method for deleting a comment</p>
@@ -725,7 +724,7 @@ This can handle create, update, and delete actions</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_insert">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#276-282" title="Go to source code">object_insert</a>( <span> <var>$object</var></span>, <span> <var>$type</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#278-284" title="Go to source code">object_insert</a>( <span> <var>$object</var></span>, <span> <var>$type</var></span> )</code>
 
 		<div class="description short">
 			<p>Insert a new object
@@ -757,7 +756,7 @@ This calls the overall push crud method, which controls queuing and sending data
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_update">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#284-290" title="Go to source code">object_update</a>( <span> <var>$object</var></span>, <span> <var>$type</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#286-292" title="Go to source code">object_update</a>( <span> <var>$object</var></span>, <span> <var>$type</var></span> )</code>
 
 		<div class="description short">
 			<p>Update an existing object
@@ -789,7 +788,7 @@ This calls the overall push crud method, which controls queuing and sending data
 
 		<td class="name"><div>
 		<a class="anchor" href="#_object_delete">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#292-298" title="Go to source code">object_delete</a>( <span> <var>$object</var></span>, <span> <var>$type</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#294-300" title="Go to source code">object_delete</a>( <span> <var>$object</var></span>, <span> <var>$type</var></span> )</code>
 
 		<div class="description short">
 			<p>Delete an existing object
@@ -821,7 +820,7 @@ This calls the overall push crud method, which controls queuing and sending data
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_push_object_crud">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#300-416" title="Go to source code">salesforce_push_object_crud</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>integer <var>$sf_sync_trigger</var></span>, <span>boolean <var>$manual</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#302-426" title="Go to source code">salesforce_push_object_crud</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>integer <var>$sf_sync_trigger</var></span>, <span>boolean <var>$manual</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Push objects to Salesforce.
@@ -864,7 +863,7 @@ This method decides whether to do the processing immediately or queue it to the 
 
 		<td class="name"><div>
 		<a class="anchor" href="#_schedule">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#418-426" title="Go to source code">schedule</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#428-436" title="Go to source code">schedule</a>( )</code>
 
 		<div class="description short">
 			
@@ -882,7 +881,7 @@ This method decides whether to do the processing immediately or queue it to the 
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="salesforce_push_sync" id="_salesforce_push_sync">
+	<tr data-order="salesforce_push_sync_rest" id="_salesforce_push_sync_rest">
 
 		<td class="attributes"><code>
 			 public 
@@ -893,8 +892,8 @@ This method decides whether to do the processing immediately or queue it to the 
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_salesforce_push_sync">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#428-880" title="Go to source code">salesforce_push_sync</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
+		<a class="anchor" href="#_salesforce_push_sync_rest">#</a>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#438-994" title="Go to source code">salesforce_push_sync_rest</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
 
 		<div class="description short">
 			<p>Sync WordPress objects and Salesforce objects using the REST API.</p>
@@ -939,7 +938,7 @@ This method decides whether to do the processing immediately or queue it to the 
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_object_map">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#882-922" title="Go to source code">create_object_map</a>( <span>array <var>$wordpress_object</var></span>, <span>string <var>$id_field_name</var></span>, <span>string <var>$salesforce_id</var></span>, <span>array <var>$field_mapping</var></span>, <span> <var>$pending</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#996-1039" title="Go to source code">create_object_map</a>( <span>array <var>$wordpress_object</var></span>, <span>string <var>$id_field_name</var></span>, <span>string <var>$salesforce_id</var></span>, <span>array <var>$field_mapping</var></span>, <span> <var>$pending</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create an object map between a WordPress object and a Salesforce object</p>
@@ -997,7 +996,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#15" title="Go to source code"><var>$wpdb</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#17" title="Go to source code"><var>$wpdb</var></a>
 
 			<div class="description short">
 				
@@ -1022,7 +1021,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#16" title="Go to source code"><var>$version</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#18" title="Go to source code"><var>$version</var></a>
 
 			<div class="description short">
 				
@@ -1047,7 +1046,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#17" title="Go to source code"><var>$login_credentials</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#19" title="Go to source code"><var>$login_credentials</var></a>
 
 			<div class="description short">
 				
@@ -1065,14 +1064,14 @@ This is the database row for the map object</p>
 			</div>
 		</td>
 	</tr>
-	<tr data-order="text_domain" id="$text_domain">
+	<tr data-order="slug" id="$slug">
 		<td class="attributes"><code>
 			protected  
 			
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#18" title="Go to source code"><var>$text_domain</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#20" title="Go to source code"><var>$slug</var></a>
 
 			<div class="description short">
 				
@@ -1085,7 +1084,7 @@ This is the database row for the map object</p>
 		</td>
 		<td class="value">
 			<div>
-				<a href="#$text_domain" class="anchor">#</a>
+				<a href="#$slug" class="anchor">#</a>
 				<code></code>
 			</div>
 		</td>
@@ -1097,7 +1096,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#19" title="Go to source code"><var>$salesforce</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#21" title="Go to source code"><var>$salesforce</var></a>
 
 			<div class="description short">
 				
@@ -1122,7 +1121,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#20" title="Go to source code"><var>$mappings</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#22" title="Go to source code"><var>$mappings</var></a>
 
 			<div class="description short">
 				
@@ -1147,7 +1146,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#21" title="Go to source code"><var>$logging</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#23" title="Go to source code"><var>$logging</var></a>
 
 			<div class="description short">
 				
@@ -1172,7 +1171,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#22" title="Go to source code"><var>$schedulable_classes</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#24" title="Go to source code"><var>$schedulable_classes</var></a>
 
 			<div class="description short">
 				
@@ -1197,7 +1196,7 @@ This is the database row for the map object</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#24-27" title="Go to source code"><var>$schedule_name</var></a>
+				<a href="source-class-Object_Sync_Sf_Salesforce_Push.html#26-29" title="Go to source code"><var>$schedule_name</var></a>
 
 			<div class="description short">
 				
