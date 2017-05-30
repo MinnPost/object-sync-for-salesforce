@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for the Object_Sync_Sf_Select_Query class.
+ *
  * @file
  */
 
@@ -46,7 +48,7 @@ class Object_Sync_Sf_Salesforce_Select_Query {
 			$value = "('" . implode( "','", $value ) . "')";
 
 			// Set operator to IN if wasn't already changed from the default.
-			if ( '=' == $operator ) {
+			if ( '=' === $operator ) {
 				$operator = 'IN';
 			}
 		}

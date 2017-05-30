@@ -13,77 +13,493 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: object-sync-for-salesforce.php:393
+#: object-sync-for-salesforce.php:393, classes/admin.php:203
 msgid "Settings"
 msgstr ""
 
-#: classes/admin.php:141
+#: classes/admin.php:143, templates/admin/user-profile-salesforce-change.php:2, templates/admin/user-profile-salesforce-map.php:2, templates/admin/user-profile-salesforce.php:5
 msgid "Salesforce"
 msgstr ""
 
-#: classes/admin.php:193, classes/admin.php:257, classes/admin.php:572, classes/salesforce.php:395, classes/salesforce_mapping.php:372, classes/salesforce_mapping.php:392, classes/salesforce_mapping.php:566, classes/salesforce_pull.php:502, classes/salesforce_pull.php:618, classes/salesforce_pull.php:651, classes/salesforce_pull.php:946, classes/salesforce_pull.php:976, classes/salesforce_pull.php:1023, classes/salesforce_push.php:350, classes/salesforce_push.php:515, classes/salesforce_push.php:548, classes/salesforce_push.php:741, classes/salesforce_push.php:768, classes/salesforce_push.php:799, classes/salesforce_push.php:829, classes/salesforce_push.php:908
+#: classes/admin.php:199
+msgid "Connect to Salesforce"
 msgstr ""
 
-#: classes/admin.php:535
+#: classes/admin.php:268
+msgid "Authorize tab"
+msgstr ""
+
+#: classes/admin.php:554
 msgid "Run schedule every"
 msgstr ""
 
-#: classes/admin.php:547, classes/admin.php:701
+#: classes/admin.php:566, classes/admin.php:721
 msgid "Time unit"
 msgstr ""
 
-#: classes/admin.php:688
+#: classes/admin.php:592
+msgid "%s item"
+msgid_plural "%s items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/admin.php:708
 msgid "Check for old logs every"
 msgstr ""
 
-#: classes/admin.php:1467, classes/salesforce_pull.php:1013, classes/salesforce_push.php:819
+#: classes/admin.php:1195, classes/admin.php:1280
+msgid "Defined in wp-config.php"
+msgstr ""
+
+#: classes/admin.php:1370
+msgid "Authorize"
+msgstr ""
+
+#. translators: $schedule_name is the name of the current queue. Defaults: salesforce_pull, salesforce_push, salesforce
+#: classes/admin.php:1493
+msgid "You have cleared the %s schedule."
+msgstr ""
+
+#: classes/admin.php:1495
+msgid "You need to specify the name of the schedule you want to clear."
+msgstr ""
+
+#: classes/admin.php:1547, classes/salesforce_pull.php:1119, classes/salesforce_push.php:807, classes/salesforce_push.php:906
 msgid "Mapping object updated via function: "
 msgstr ""
 
-#: classes/salesforce.php:293, classes/salesforce.php:377, classes/salesforce.php:394, classes/salesforce.php:410, classes/salesforce_pull.php:262, classes/salesforce_pull.php:810, classes/salesforce_pull.php:840
-msgid "$title"
+#: classes/salesforce.php:295
+msgid "Debug: on Salesforce API HTTP Request to URL: %1$s."
 msgstr ""
 
-#: classes/salesforce.php:516
+#: classes/salesforce.php:389, classes/salesforce.php:410, classes/salesforce.php:438
+msgid "Error: %1$s: on Salesforce http request"
+msgstr ""
+
+#: classes/salesforce.php:415
+msgid "URL: %1$s"
+msgstr ""
+
+#: classes/salesforce.php:415, classes/salesforce_push.php:834
+msgid "Message: %2$s"
+msgstr ""
+
+#: classes/salesforce.php:415
+msgid "Code: %3$s"
+msgstr ""
+
+#: classes/salesforce.php:549
 msgid "There is no refresh token."
 msgstr ""
 
-#: classes/salesforce.php:540
+#: classes/salesforce.php:573
 msgid "Unable to get a Salesforce access token. Salesforce returned the following errorCode: "
 msgstr ""
 
-#: classes/salesforce.php:574
+#: classes/salesforce.php:607
 msgid "Unable to access identity service."
 msgstr ""
 
-#: classes/salesforce_pull.php:1123, classes/salesforce_push.php:750
+#: classes/salesforce_mapping.php:396
+msgid "Error Mapping: error caused by trying to map the WordPress %1$s with ID of %2$s to Salesforce ID of 0, which is invalid."
+msgstr ""
+
+#: classes/salesforce_mapping.php:421
+msgid "Error: Mapping: there is already a WordPress object mapped to the Salesforce object %1$s and the mapping object ID is %2$s"
+msgstr ""
+
+#: classes/salesforce_mapping.php:595
+msgid "Notice: Mapping: there is more than one mapped WordPress object for the Salesforce object %2$s"
+msgstr ""
+
+#: classes/salesforce_pull.php:257
+msgid "Error: %1$s %2$s"
+msgstr ""
+
+#: classes/salesforce_pull.php:511
+msgid "Error: Salesforce Pull: unable to process queue item because it has no Salesforce Id."
+msgstr ""
+
+#: classes/salesforce_pull.php:640
+msgid "Success: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)"
+msgstr ""
+
+#: classes/salesforce_pull.php:661
+msgid "The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress ID. They are:"
+msgstr ""
+
+#: classes/salesforce_pull.php:673
+msgid "The map row between this Salesforce object and the WordPress object, as stored in the WordPress database, will be deleted, and this Salesforce object has been deleted, but the WordPress object row will remain untouched."
+msgstr ""
+
+#: classes/salesforce_pull.php:683
+msgid "Notice: %1$s %2$s with %3$s of %4$s (%5$s %6$s) did not delete the WordPress item."
+msgstr ""
+
+#: classes/salesforce_pull.php:832
+msgid "Error: There is at least one object map with a WordPress ID of 0."
+msgstr ""
+
+#: classes/salesforce_pull.php:836
+msgid "There is an object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of 0 and the Salesforce object with ID of %3$s"
+msgstr ""
+
+#: classes/salesforce_pull.php:842
+msgid "There are multiple object maps with WordPress ID of 0. Their IDs are: "
+msgstr ""
+
+#: classes/salesforce_pull.php:845
+msgid "Mapping object id: %1$s. Salesforce Id: %2$s. WordPress object type: %3$s"
+msgstr ""
+
+#: classes/salesforce_pull.php:878
+msgid "Notice: Because object map %1$s already exists, WordPress %2$s %3$s was not mapped to Salesforce Id %4$s"
+msgstr ""
+
+#: classes/salesforce_pull.php:886
+msgid "The WordPress %1$s with %2$s of %3$s is already mapped to the Salesforce %4$s with Id of %5$s in the mapping object with id of %6$s. The Salesforce %4$s with Id of %5$s was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing data unintentionally."
+msgstr ""
+
+#: classes/salesforce_pull.php:1026, classes/salesforce_pull.php:1129
+msgid "Success: %1$s %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)"
+msgstr ""
+
+#: classes/salesforce_pull.php:1067
+msgid "Error syncing: %1$s to WordPress (Salesforce %2$s Id %3$s)"
+msgstr ""
+
+#: classes/salesforce_pull.php:1074
+msgid "Object: %1$s with %2$s of %3$s"
+msgstr ""
+
+#: classes/salesforce_pull.php:1074
+msgid "Message: "
+msgstr ""
+
+#: classes/salesforce_pull.php:1248
 msgid "Mapping object created via function: "
 msgstr ""
 
-#: classes/wordpress.php:1001
+#: classes/salesforce_push.php:353
+msgid "Error: Salesforce Push: unable to process queue item because it has no WordPress %1$s."
+msgstr ""
+
+#: classes/salesforce_push.php:536, classes/salesforce_push.php:788, classes/salesforce_push.php:916
+msgid "Success: %1$s %2$s %3$s (WordPress %4$s with %5$s of %6$s)"
+msgstr ""
+
+#: classes/salesforce_push.php:579
+msgid "Notice: %1$s %2$s %3$s (WordPress %4$s with %5$s of %6$s did not delete the Salesforce item.)"
+msgstr ""
+
+#: classes/salesforce_push.php:825
+msgid "%1$s error syncing: %2$s to Salesforce (WordPress %3$s with %4$s of %5$s)"
+msgstr ""
+
+#: classes/salesforce_push.php:834
+msgid "Object: %1$s"
+msgstr ""
+
+#: classes/salesforce_push.php:871
+msgid "Notice: %1$s: Did not sync WordPress %2$s with %3$s of %4$s with Salesforce Id %5$s because the last sync timestamp was greater than the object updated timestamp."
+msgstr ""
+
+#: classes/salesforce_push.php:880
+msgid "Last sync time: %1$s"
+msgstr ""
+
+#: classes/salesforce_push.php:880
+msgid "Object updated time: %2$s"
+msgstr ""
+
+#: classes/salesforce_push.php:1016
+msgid "Mapping object %1$s via function"
+msgstr ""
+
+#: classes/wordpress.php:844, classes/wordpress.php:1770
+msgid "Tried to upsert meta with method %1$s."
+msgstr ""
+
+#: classes/wordpress.php:997
 msgid "Error: Users: Tried to run user_upsert, and ended up without a user id"
 msgstr ""
 
-#: classes/wordpress.php:1325
+#: classes/wordpress.php:1300
 msgid "Error: Posts: Tried to run post_upsert, and ended up without a post id"
 msgstr ""
 
-#: classes/wordpress.php:1647
+#: classes/wordpress.php:1604
 msgid "Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id"
 msgstr ""
 
-#: classes/wordpress.php:1972
+#: classes/wordpress.php:1922
 msgid "Error: Terms: Tried to run term_upsert, and ended up without a term id"
 msgstr ""
 
-#: classes/wordpress.php:2227
-msgid "%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s"
+#: classes/wordpress.php:1972, classes/wordpress.php:2303
+msgid "Tried to update meta with method %1$s."
 msgstr ""
 
-#: classes/wordpress.php:2310
+#: classes/wordpress.php:2075
+msgid "Tried to add meta with method %1$s."
+msgstr ""
+
+#: classes/wordpress.php:2174
+msgid "Error: Comments: there are %1$s comment matches for the Salesforce key %2$s with the value of %3$s. Here they are: %4$s"
+msgstr ""
+
+#: classes/wordpress.php:2256
 msgid "Error: Comments: Tried to run comment_upsert, and ended up without a comment id"
 msgstr ""
 
-#: templates/admin/notice.php:2
-msgid "$message"
+#: templates/admin/authorized.php:2
+msgid "Disconnect from Salesforce"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:13, templates/admin/fieldmaps-list.php:5, templates/admin/status.php:16
+msgid "Label"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:18, templates/admin/fieldmaps-list.php:6
+msgid "WordPress Object"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:20, templates/admin/fieldmaps-add-edit-clone.php:44
+msgid "Select object type"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:41, templates/admin/fieldmaps-list.php:7
+msgid "Salesforce Object"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:162
+msgid "Fieldmap"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:166
+msgid "WordPress Field"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:167
+msgid "Salesforce Field"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:168
+msgid "Prematch"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:169
+msgid "Salesforce Key"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:170
+msgid "Direction"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:171, templates/admin/fieldmaps-list.php:25
+msgid "Delete"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:182, templates/admin/fieldmaps-add-edit-clone.php:285
+msgid "Select WordPress field"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:203, templates/admin/fieldmaps-add-edit-clone.php:299
+msgid "Select Salesforce field"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:234
+msgid "This pair should be checked for existing matches in Salesforce before adding"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:244
+msgid "This Salesforce field is an External ID in Salesforce"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:269, templates/admin/fieldmaps-add-edit-clone.php:323
+msgid "Salesforce to WordPress"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:270, templates/admin/fieldmaps-add-edit-clone.php:324
+msgid "WordPress to Salesforce"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:271, templates/admin/fieldmaps-add-edit-clone.php:325
+msgid "Sync"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:340
+msgid "Add another field mapping"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:342
+msgid "Add field mapping"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:346
+msgid "Prematch tells the plugin to match records that have the same value before sending data to Salesforce. Salesforce Key indicates the Salesforce field is an External ID. If either of these is checked, the plugin will do an UPSERT to avoid duplicate data when possible."
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:349
+msgid "Action triggers"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:383
+msgid "WordPress create"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:384
+msgid "WordPress update"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:385
+msgid "WordPress delete"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:386
+msgid "Salesforce create"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:387
+msgid "Salesforce update"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:388
+msgid "Salesforce delete"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:392
+msgid "Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. These settings are used by the %1$s and %2$s classes respectively."
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:397
+msgid "Process asynchronously"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:401
+msgid "If selected, push data will be queued for processing and synchronized when %s is run. This may increase site performance, but changes will not be reflected in real time."
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:405
+msgid "Push drafts"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:406
+msgid "If selected, WordPress will send drafts of this object type (if it creates drafts for it) to Salesforce."
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:409
+msgid "Weight"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:411
+msgid "Weight is intended for use when you have multiple fieldmaps for the same object, either in WordPress or Salesforce."
+msgstr ""
+
+#: templates/admin/fieldmaps-delete.php:6
+msgid "Are you sure you want to delete this fieldmap?"
+msgstr ""
+
+#: templates/admin/fieldmaps-delete.php:10
+msgid "This fieldmap is called %1$s and it maps the Salesforce %2$s object to the WordPress %3$s object."
+msgstr ""
+
+#: templates/admin/fieldmaps-list.php:1
+msgid "Fieldmaps"
+msgstr ""
+
+#: templates/admin/fieldmaps-list.php:1
+msgid "Add New"
+msgstr ""
+
+#: templates/admin/fieldmaps-list.php:8, templates/admin/user-profile-salesforce.php:35
+msgid "Actions"
+msgstr ""
+
+#: templates/admin/fieldmaps-list.php:19, templates/admin/user-profile-salesforce.php:12
+msgid "Edit"
+msgstr ""
+
+#: templates/admin/fieldmaps-list.php:22
+msgid "Clone"
+msgstr ""
+
+#: templates/admin/fieldmaps-list.php:35
+msgid "No fieldmaps exist yet. You can "
+msgstr ""
+
+#: templates/admin/status.php:1
+msgid "Salesforce Status"
+msgstr ""
+
+#: templates/admin/status.php:5
+msgid "Currently, we are using version %1$s of the Salesforce REST API. Available versions are displayed below."
+msgstr ""
+
+#: templates/admin/status.php:17
+msgid "URL"
+msgstr ""
+
+#: templates/admin/status.php:18
+msgid "Version"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce-change.php:3
+msgid "You can change the Salesforce object that this WordPress user maps to by changing the ID and updating this user."
+msgstr ""
+
+#: templates/admin/user-profile-salesforce-change.php:6, templates/admin/user-profile-salesforce-map.php:6
+msgid "Salesforce ID"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce-change.php:9, templates/admin/user-profile-salesforce-map.php:9
+msgid "Enter a Salesforce object ID."
+msgstr ""
+
+#: templates/admin/user-profile-salesforce-map.php:3
+msgid "This user is not mapped to an object in Salesforce. You can run a push to send this object to Salesforce, which will cause it to follow the plugin's normal mapping conventions, or you can create a manual link to a Salesforce object."
+msgstr ""
+
+#: templates/admin/user-profile-salesforce-map.php:11
+msgid "Push to Salesforce as new record"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:7
+msgid "This user is mapped to a Salesforce object"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:10
+msgid "Salesforce Id"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:15
+msgid "Last Sync Message"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:20
+msgid "Last Sync Action"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:25
+msgid "Last Sync Status"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:26
+msgid "success"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:26
+msgid "error"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:30
+msgid "Last Sync"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:37
+msgid "Push to Salesforce"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:38
+msgid "Pull from Salesforce"
 msgstr ""

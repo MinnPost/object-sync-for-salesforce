@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for the Object_Sync_Sf_Salesforce_Soap class.
+ *
  * @file
  */
 

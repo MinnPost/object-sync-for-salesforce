@@ -144,27 +144,27 @@ class Object_Sync_Salesforce {
 		// users can modify the list of schedulable classes
 		$this->schedulable_classes = apply_filters( 'object_sync_for_salesforce_modify_schedulable_classes', $this->schedulable_classes );
 
-		// example to modify the array of classes by adding one and removing one
 		/*
-		add_filter( 'object_sync_for_salesforce_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
-		function modify_schedulable_classes( $schedulable_classes ) {
-			$schedulable_classes = array(
-				'salesforce_push' => array(
-				    'label' => 'Push to Salesforce',
-				    'class' => 'Object_Sync_Sf_Salesforce_Push',
-				    'callback' => 'salesforce_push_sync_rest',
-				),
-				'wordpress' => array(
-				    'label' => 'WordPress',
-				    'class' => 'Object_Sync_Sf_Wordpress',
-				),
-				'salesforce' => array(
-				    'label' => 'Salesforce Authorization',
-				    'class' => 'Object_Sync_Sf_Salesforce',
-				),
-			);
-			return $schedulable_classes;
-		}
+		 * example to modify the array of classes by adding one and removing one
+		 * add_filter( 'object_sync_for_salesforce_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
+		 * function modify_schedulable_classes( $schedulable_classes ) {
+		 * 	$schedulable_classes = array(
+		 * 		'salesforce_push' => array(
+		 * 		    'label' => 'Push to Salesforce',
+		 * 		    'class' => 'Object_Sync_Sf_Salesforce_Push',
+		 * 		    'callback' => 'salesforce_push_sync_rest',
+		 * 		),
+		 * 		'wordpress' => array(
+		 * 		    'label' => 'WordPress',
+		 * 		    'class' => 'Object_Sync_Sf_Wordpress',
+		 * 		),
+		 * 		'salesforce' => array(
+		 * 		    'label' => 'Salesforce Authorization',
+		 * 		    'class' => 'Object_Sync_Sf_Salesforce',
+		 * 		),
+		 * 	);
+		 * 	return $schedulable_classes;
+		 * }
 		*/
 
 		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug );

@@ -86,7 +86,7 @@
 
 
 	<div class="description">
-	<p>Create default WordPress admin functionality for Salesforce to configure the plugin.</p>
+	<p>Create default WordPress admin functionality to configure the plugin.</p>
 	</div>
 
 
@@ -103,7 +103,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Admin.html#10-1475" title="Go to source code">admin.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Admin.html#12-1555" title="Go to source code">admin.php</a>
 		<br>
 	</div>
 
@@ -123,7 +123,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#67-111" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$slug</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$push</var></span>, <span>object <var>$pull</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#69-113" title="Go to source code">__construct</a>( <span>object <var>$wpdb</var></span>, <span>string <var>$version</var></span>, <span>array <var>$login_credentials</var></span>, <span>string <var>$slug</var></span>, <span>object <var>$wordpress</var></span>, <span>object <var>$salesforce</var></span>, <span>object <var>$mappings</var></span>, <span>object <var>$push</var></span>, <span>object <var>$pull</var></span>, <span>object <var>$logging</var></span>, <span>array <var>$schedulable_classes</var></span> )</code>
 
 		<div class="description short">
 			<p>Constructor which sets up admin pages</p>
@@ -182,7 +182,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_add_actions">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#113-134" title="Go to source code">add_actions</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#115-136" title="Go to source code">add_actions</a>( )</code>
 
 		<div class="description short">
 			<p>Create the action hooks to create the admin page(s)</p>
@@ -212,7 +212,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_admin_menu">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#136-143" title="Go to source code">create_admin_menu</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#138-145" title="Go to source code">create_admin_menu</a>( )</code>
 
 		<div class="description short">
 			<p>Create WordPress admin options page</p>
@@ -242,7 +242,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_show_admin_page">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#145-286" title="Go to source code">show_admin_page</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#147-304" title="Go to source code">show_admin_page</a>( )</code>
 
 		<div class="description short">
 			<p>Render full admin pages in WordPress
@@ -276,7 +276,7 @@ This allows other plugins to add tabs to the Salesforce settings screen</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_settings_forms">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#288-313" title="Go to source code">salesforce_settings_forms</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#306-332" title="Go to source code">salesforce_settings_forms</a>( )</code>
 
 		<div class="description short">
 			<p>Create default WordPress admin settings form for salesforce
@@ -308,7 +308,7 @@ This is for the Settings page/tab</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_fields_settings">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#315-508" title="Go to source code">fields_settings</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$callbacks</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#334-527" title="Go to source code">fields_settings</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$callbacks</var></span> )</code>
 
 		<div class="description short">
 			<p>Fields for the Settings tab
@@ -349,7 +349,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
 		<td class="name"><div>
 		<a class="anchor" href="#_fields_fieldmaps">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#510-520" title="Go to source code">fields_fieldmaps</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$input_callback</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#529-539" title="Go to source code">fields_fieldmaps</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$input_callback</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Fields for the Fieldmaps tab
@@ -390,7 +390,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
 		<td class="name"><div>
 		<a class="anchor" href="#_fields_scheduling">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#522-604" title="Go to source code">fields_scheduling</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$callbacks</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#541-624" title="Go to source code">fields_scheduling</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>string <var>$callbacks</var></span> )</code>
 
 		<div class="description short">
 			<p>Fields for the Scheduling tab
@@ -431,7 +431,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
 		<td class="name"><div>
 		<a class="anchor" href="#_fields_log_settings">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#606-788" title="Go to source code">fields_log_settings</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>array <var>$callbacks</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#626-808" title="Go to source code">fields_log_settings</a>( <span>string <var>$page</var></span>, <span>string <var>$section</var></span>, <span>array <var>$callbacks</var></span> )</code>
 
 		<div class="description short">
 			<p>Fields for the Log Settings tab
@@ -472,7 +472,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
 		<td class="name"><div>
 		<a class="anchor" href="#_notices">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#790-839" title="Go to source code">notices</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#810-860" title="Go to source code">notices</a>( )</code>
 
 		<div class="description short">
 			<p>Create the notices, settings, and conditions by which admin notices should appear</p>
@@ -502,7 +502,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_salesforce_object_description">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#841-894" title="Go to source code">get_salesforce_object_description</a>( <span>array <var>$data</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#862-915" title="Go to source code">get_salesforce_object_description</a>( <span>array <var>$data</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Get all the Salesforce object settings for fieldmapping
@@ -544,7 +544,7 @@ can optionally contain a type</p></dd>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_salesforce_object_fields">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#896-928" title="Go to source code">get_salesforce_object_fields</a>( <span>array <var>$data</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#917-949" title="Go to source code">get_salesforce_object_fields</a>( <span>array <var>$data</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Get Salesforce object fields for fieldmapping</p>
@@ -584,7 +584,7 @@ can optionally contain a type for the field</p></dd>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_wordpress_object_fields">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#930-951" title="Go to source code">get_wordpress_object_fields</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#951-973" title="Go to source code">get_wordpress_object_fields</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Get WordPress object fields for fieldmapping
@@ -625,7 +625,7 @@ This takes either the $_POST array via ajax, or can be directly called with a $w
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_wp_sf_object_fields">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#953-981" title="Go to source code">get_wp_sf_object_fields</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span></span>, <span>string <var>$salesforce</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#975-1004" title="Go to source code">get_wp_sf_object_fields</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span></span>, <span>string <var>$salesforce</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Get WordPress and Salesforce object fields together for fieldmapping
@@ -668,7 +668,7 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
 
 		<td class="name"><div>
 		<a class="anchor" href="#_push_to_salesforce">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#983-1004" title="Go to source code">push_to_salesforce</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span></span>, <span>integer <var>$wordpress_id</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1006-1028" title="Go to source code">push_to_salesforce</a>( <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span></span>, <span>integer <var>$wordpress_id</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Manually push the WordPress object to Salesforce
@@ -707,7 +707,7 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
 
 		<td class="name"><div>
 		<a class="anchor" href="#_pull_from_salesforce">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1006-1025" title="Go to source code">pull_from_salesforce</a>( <span>string <var>$salesforce_id</var> = <span class="php-quote">''</span></span>, <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1030-1050" title="Go to source code">pull_from_salesforce</a>( <span>string <var>$salesforce_id</var> = <span class="php-quote">''</span></span>, <span>string <var>$wordpress_object</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Manually pull the Salesforce object into WordPress
@@ -746,23 +746,21 @@ This takes either the $_POST array via ajax, or can be directly called with $sal
 
 		<td class="name"><div>
 		<a class="anchor" href="#_refresh_mapped_data">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1027-1048" title="Go to source code">refresh_mapped_data</a>( <span>string <var>$mapping_id</var> = <span class="php-quote">''</span> </span>, <span>string <var>$wordpress_object</var>,…</span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1052-1073" title="Go to source code">refresh_mapped_data</a>( <span>integer <var>$mapping_id</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Manually pull the Salesforce object into WordPress
-This takes either the $_POST array via ajax, or can be directly called with $salesforce_id fields</p>
+This takes an id for a mapping object row</p>
 		</div>
 
 		<div class="description detailed hidden">
 			<p>Manually pull the Salesforce object into WordPress
-This takes either the $_POST array via ajax, or can be directly called with $salesforce_id fields</p>
+This takes an id for a mapping object row</p>
 
 
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$mapping_id</var></dt>
-					<dd>$salesforce_id</dd>
-					<dt><var>$wordpress_object</var>,…</dt>
 					<dd></dd>
 				</dl></div>
 
@@ -785,7 +783,7 @@ This takes either the $_POST array via ajax, or can be directly called with $sal
 
 		<td class="name"><div>
 		<a class="anchor" href="#_prepare_fieldmap_data">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1050-1101" title="Go to source code">prepare_fieldmap_data</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1075-1127" title="Go to source code">prepare_fieldmap_data</a>( )</code>
 
 		<div class="description short">
 			<p>Prepare fieldmap data and redirect after processing
@@ -823,7 +821,7 @@ This method does include error handling, by loading the submission in a transien
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_fieldmap">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1103-1121" title="Go to source code">delete_fieldmap</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1129-1148" title="Go to source code">delete_fieldmap</a>( )</code>
 
 		<div class="description short">
 			<p>Delete fieldmap data and redirect after processing
@@ -859,7 +857,7 @@ It then calls the Object_Sync_Sf_Mapping class and the delete method</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_display_input_field">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1123-1160" title="Go to source code">display_input_field</a>( <span>array <var>$args</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1150-1198" title="Go to source code">display_input_field</a>( <span>array <var>$args</var></span> )</code>
 
 		<div class="description short">
 			<p>Default display for <input> fields</p>
@@ -894,7 +892,7 @@ It then calls the Object_Sync_Sf_Mapping class and the delete method</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_display_checkboxes">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1162-1189" title="Go to source code">display_checkboxes</a>( <span>array <var>$args</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1200-1236" title="Go to source code">display_checkboxes</a>( <span>array <var>$args</var></span> )</code>
 
 		<div class="description short">
 			<p>Display for multiple checkboxes
@@ -931,7 +929,7 @@ Above method can handle a single checkbox as it is</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_display_select">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1191-1221" title="Go to source code">display_select</a>( <span>array <var>$args</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1238-1283" title="Go to source code">display_select</a>( <span>array <var>$args</var></span> )</code>
 
 		<div class="description short">
 			<p>Display for a dropdown</p>
@@ -966,7 +964,7 @@ Above method can handle a single checkbox as it is</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_version_options">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1223-1238" title="Go to source code">version_options</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1285-1300" title="Go to source code">version_options</a>( )</code>
 
 		<div class="description short">
 			<p>Dropdown formatted list of Salesforce API versions</p>
@@ -1000,7 +998,7 @@ Above method can handle a single checkbox as it is</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_display_link">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1240-1261" title="Go to source code">display_link</a>( <span>array <var>$args</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1302-1330" title="Go to source code">display_link</a>( <span>array <var>$args</var></span> )</code>
 
 		<div class="description short">
 			<p>Default display for <a href> links</p>
@@ -1035,7 +1033,7 @@ Above method can handle a single checkbox as it is</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_status">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1263-1288" title="Go to source code">status</a>( <span>object <var>$sfapi</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1332-1357" title="Go to source code">status</a>( <span>object <var>$sfapi</var></span> )</code>
 
 		<div class="description short">
 			<p>Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it</p>
@@ -1070,7 +1068,7 @@ Above method can handle a single checkbox as it is</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_logout">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1290-1300" title="Go to source code">logout</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1359-1372" title="Go to source code">logout</a>( )</code>
 
 		<div class="description short">
 			<p>Deauthorize WordPress from Salesforce.
@@ -1104,7 +1102,7 @@ For this plugin at this time, that is the decision we are making: don't do any k
 
 		<td class="name"><div>
 		<a class="anchor" href="#_check_wordpress_admin_permissions">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1302-1322" title="Go to source code">check_wordpress_admin_permissions</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1374-1394" title="Go to source code">check_wordpress_admin_permissions</a>( )</code>
 
 		<div class="description short">
 			<p>Check Wordpress Admin permissions
@@ -1136,7 +1134,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_show_salesforce_user_fields">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1324-1348" title="Go to source code">show_salesforce_user_fields</a>( <span>object <var>$user</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1396-1421" title="Go to source code">show_salesforce_user_fields</a>( <span>object <var>$user</var></span> )</code>
 
 		<div class="description short">
 			<p>Show what we know about this user's relationship to a Salesforce object, if any</p>
@@ -1171,7 +1169,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save_salesforce_user_fields">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1350-1374" title="Go to source code">save_salesforce_user_fields</a>( <span>integer <var>$user_id</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1423-1448" title="Go to source code">save_salesforce_user_fields</a>( <span>integer <var>$user_id</var></span> )</code>
 
 		<div class="description short">
 			<p>If the user profile has been mapped to Salesforce, do it</p>
@@ -1206,7 +1204,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_tabs">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1376-1403" title="Go to source code">tabs</a>( <span>array <var>$tabs</var></span>, <span>string <var>$tab</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1450-1482" title="Go to source code">tabs</a>( <span>array <var>$tabs</var></span>, <span>string <var>$tab</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Render tabs for settings pages in admin</p>
@@ -1243,7 +1241,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_clear_schedule">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1405-1417" title="Go to source code">clear_schedule</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1484-1497" title="Go to source code">clear_schedule</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Clear schedule
@@ -1275,7 +1273,7 @@ This clears the schedule if the user clicks the button</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_schedule_count">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1419-1426" title="Go to source code">get_schedule_count</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1499-1506" title="Go to source code">get_schedule_count</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			
@@ -1305,7 +1303,7 @@ This clears the schedule if the user clicks the button</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_schedule">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1428-1439" title="Go to source code">schedule</a>( <span> <var>$schedule_name</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1508-1519" title="Go to source code">schedule</a>( <span> <var>$schedule_name</var></span> )</code>
 
 		<div class="description short">
 			<p>Load the schedule class</p>
@@ -1335,7 +1333,7 @@ This clears the schedule if the user clicks the button</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_object_map">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1441-1473" title="Go to source code">create_object_map</a>( <span>integer <var>$wordpress_id</var></span>, <span>string <var>$wordpress_object</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$action</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1521-1553" title="Go to source code">create_object_map</a>( <span>integer <var>$wordpress_id</var></span>, <span>string <var>$wordpress_object</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$action</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create an object map between a WordPress object and a Salesforce object</p>
@@ -1391,7 +1389,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#15" title="Go to source code"><var>$wpdb</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#17" title="Go to source code"><var>$wpdb</var></a>
 
 			<div class="description short">
 				
@@ -1416,7 +1414,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#16" title="Go to source code"><var>$version</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#18" title="Go to source code"><var>$version</var></a>
 
 			<div class="description short">
 				
@@ -1441,7 +1439,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#17" title="Go to source code"><var>$login_credentials</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#19" title="Go to source code"><var>$login_credentials</var></a>
 
 			<div class="description short">
 				
@@ -1466,7 +1464,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#18" title="Go to source code"><var>$slug</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#20" title="Go to source code"><var>$slug</var></a>
 
 			<div class="description short">
 				
@@ -1491,7 +1489,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#19" title="Go to source code"><var>$salesforce</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#21" title="Go to source code"><var>$salesforce</var></a>
 
 			<div class="description short">
 				
@@ -1516,7 +1514,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#20" title="Go to source code"><var>$wordpress</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#22" title="Go to source code"><var>$wordpress</var></a>
 
 			<div class="description short">
 				
@@ -1541,7 +1539,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#21" title="Go to source code"><var>$mappings</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#23" title="Go to source code"><var>$mappings</var></a>
 
 			<div class="description short">
 				
@@ -1566,7 +1564,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#22" title="Go to source code"><var>$push</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#24" title="Go to source code"><var>$push</var></a>
 
 			<div class="description short">
 				
@@ -1591,7 +1589,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#23" title="Go to source code"><var>$pull</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#25" title="Go to source code"><var>$pull</var></a>
 
 			<div class="description short">
 				
@@ -1616,7 +1614,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#24" title="Go to source code"><var>$schedulable_classes</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#26" title="Go to source code"><var>$schedulable_classes</var></a>
 
 			<div class="description short">
 				
@@ -1641,7 +1639,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#26-30" title="Go to source code"><var>$default_authorize_url_path</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#28-32" title="Go to source code"><var>$default_authorize_url_path</var></a>
 
 			<div class="description short">
 				<p>Default path for the Salesforce authorize URL</p>
@@ -1666,7 +1664,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#32-36" title="Go to source code"><var>$default_token_url_path</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#34-38" title="Go to source code"><var>$default_token_url_path</var></a>
 
 			<div class="description short">
 				<p>Default path for the Salesforce token URL</p>
@@ -1691,7 +1689,7 @@ This clears the schedule if the user clicks the button</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#38-44" title="Go to source code"><var>$default_api_version</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#40-46" title="Go to source code"><var>$default_api_version</var></a>
 
 			<div class="description short">
 				<p>What version of the Salesforce API should be the default on the settings screen.
@@ -1720,7 +1718,7 @@ been authenticated with Salesforce.</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#46-51" title="Go to source code"><var>$default_triggerable</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#48-53" title="Go to source code"><var>$default_triggerable</var></a>
 
 			<div class="description short">
 				<p>Default for whether to limit to triggerable items
@@ -1747,7 +1745,7 @@ Users can edit this</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#53-58" title="Go to source code"><var>$default_updateable</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#55-60" title="Go to source code"><var>$default_updateable</var></a>
 
 			<div class="description short">
 				<p>Default for whether to limit to updateable items
@@ -1774,7 +1772,7 @@ Users can edit this</p>
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-Object_Sync_Sf_Admin.html#60-65" title="Go to source code"><var>$default_pull_throttle</var></a>
+				<a href="source-class-Object_Sync_Sf_Admin.html#62-67" title="Go to source code"><var>$default_pull_throttle</var></a>
 
 			<div class="description short">
 				<p>Default pull throttle for how often Salesforce can pull
