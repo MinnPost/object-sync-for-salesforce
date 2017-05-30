@@ -18,7 +18,7 @@ To install the plugin in WordPress, your PHP environment needs the following:
 
 ### Install for developers
 
-Most users should install the plugin from the WordPress plugin directory (we will provide a link once it is there), developers will often install it from the GitHub repository.
+Most users should install the plugin from the [WordPress plugin directory](https://wordpress.org/plugins/object-sync-for-salesforce/), though developers will often want to install it from the GitHub repository:
 
 1. Run `cd` to get into the `wp-content/plugins` directory of a WordPress install.
 2. Run `git clone https://github.com/MinnPost/object-sync-for-salesforce.git`

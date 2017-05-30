@@ -36,7 +36,7 @@ Some other options:
 
 ## Installation and setup
 
-You can find a detailed [initial setup instruction](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md) document for this plugin.
+You can find a detailed [initial setup instruction](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md) document for this plugin. Most users will want to install the plugin from the [WordPress plugin repository](https://wordpress.org/plugins/object-sync-for-salesforce/), and then follow the documentation for activating and configuring the plugin.
 
 ## Classes
 
