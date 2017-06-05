@@ -1369,7 +1369,7 @@ class Object_Sync_Sf_Admin {
 		if ( true === $contacts['from_cache'] ) {
 			$contacts_from_cache = esc_html__( 'they were loaded from the cache', 'object-sync-salesforce' );
 		} else {
-			$contacts_from_cache = esc_html__( 'thet were not loaded from the cache', 'object-sync-salesforce' );
+			$contacts_from_cache = esc_html__( 'they were not loaded from the cache', 'object-sync-salesforce' );
 		}
 
 		if ( true === $contacts['is_redo'] ) {
