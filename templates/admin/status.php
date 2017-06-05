@@ -10,7 +10,7 @@
 <table class="widefat striped">
 	<thead>
 		<summary>
-			<h4>Available Salesforce API versions. This list is <?php echo esc_html( $versions_is_cached ); ?> cached, <?php echo esc_html( $versions_andorbut ); ?> items <?php echo esc_html( $versions_from_cache ); ?> loaded from the cache. This is not an authenticated request, so it does not touch the Salesforce token.</h4>
+			<h4><?php echo $versions_apicall_summary; ?></h4>
 		</summary>
 		<tr>
 			<th><?php echo esc_html__( 'Label', 'object-sync-for-salesforce' ); ?></th>
@@ -38,7 +38,7 @@
 <table class="widefat striped">
 	<thead>
 		<summary>
-			<h4>Salesforce successfully returned <?php echo absint( $contacts['data']['totalSize'] ); ?> <?php echo esc_html( $contacts['data']['records'][0]['attributes']['type'] ); ?> records. They are <?php echo esc_html( $contacts_is_cached ); ?>cached, <?php echo esc_html( $contacts_andorbut ); ?> they <?php echo esc_html( $contacts_from_cache ); ?> loaded from the cache. This request did <?php echo esc_html( $contacts_is_redo ); ?>require refreshing the Salesforce token.</h4>
+			<h4><?php echo $contacts_apicall_summary; ?></h4>
 		</summary>
 		<tr>
 			<th><?php echo esc_html__( 'Contact ID' ); ?></th>
