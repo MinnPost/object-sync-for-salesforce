@@ -3,7 +3,7 @@ Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations
 Tags: salesforce
 Requires at least: 4.5
 Tested up to: 4.7
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,3 +123,13 @@ Steps:
 ### More documentation
 
 There is extensive documentation of the plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md). You can find a detailed [initial setup instruction](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md) document there as well.
+
+== Changelog ==
+
+* 1.0.1 (2015-06-05)
+
+ * made table summaries on API status page into translatable strings
+
+* 1.0.0 (2017-05-30)
+
+ * first stable release
