@@ -1,6 +1,6 @@
 === Object Sync for Salesforce ===
 Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations
-Tags: salesforce
+Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.7
 Stable tag: 1.0.1
