@@ -203,3 +203,5 @@ If you'd like to contribute to this project, please see our [contributing guidel
 ## Notes
 
 ## Changelog
+
+We maintain a separate [changelog](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/changelog.md) document.

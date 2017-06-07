@@ -1362,19 +1362,54 @@ class Object_Sync_Sf_Admin {
 
 		$versions = $sfapi->get_api_versions();
 
-		// format this array into html so users can see the versions
-		$versions_is_cached = true === $versions['cached'] ? '' : 'not ';
-		$versions_from_cache = true === $versions['from_cache'] ? 'were' : 'were not';
-		$versions_is_redo = true === $versions['is_redo'] ? '' : 'not ';
-		$versions_andorbut = true === $versions['from_cache'] ? 'and' : 'but';
+		// format this array into text so users can see the versions
+		if ( true === $versions['cached'] ) {
+			$versions_is_cached = esc_html__( 'This list is cached, and' , 'object-sync-salesforce' );
+		} else {
+			$versions_is_cached = esc_html__( 'This list is not cached, but', 'object-sync-salesforce' );
+		}
+
+		if ( true === $versions['from_cache'] ) {
+			$versions_from_cache = esc_html__( 'items were loaded from the cache', 'object-sync-salesforce' );
+		} else {
+			$versions_from_cache = esc_html__( 'items were not loaded from the cache', 'object-sync-salesforce' );
+		}
+
+		// translators: 1) $versions_is_cached is the "This list is/is not cached, and/but" line, 2) $versions_from_cache is the "items were/were not loaded from the cache" line
+		$versions_apicall_summary = sprintf( esc_html__( 'Available Salesforce API versions. %1$s %2$s. This is not an authenticated request, so it does not touch the Salesforce token.', 'object-sync-for-salesforce' ),
+			$versions_is_cached,
+			$versions_from_cache
+		);
 
 		$contacts = $sfapi->query( 'SELECT Name, Id from Contact LIMIT 100' );
 
 		// format this array into html so users can see the contacts
-		$contacts_is_cached = true === $contacts['cached'] ? '' : 'not ';
-		$contacts_from_cache = true === $contacts['from_cache'] ? 'were' : 'were not';
-		$contacts_andorbut = true === $contacts['from_cache'] ? 'and' : 'but';
-		$contacts_is_redo = true === $contacts['is_redo'] ? '' : 'not ';
+		if ( true === $contacts['cached'] ) {
+			$contacts_is_cached = esc_html__( 'They are cached, and' , 'object-sync-salesforce' );
+		} else {
+			$contacts_is_cached = esc_html__( 'They are not cached, but', 'object-sync-salesforce' );
+		}
+
+		if ( true === $contacts['from_cache'] ) {
+			$contacts_from_cache = esc_html__( 'they were loaded from the cache', 'object-sync-salesforce' );
+		} else {
+			$contacts_from_cache = esc_html__( 'they were not loaded from the cache', 'object-sync-salesforce' );
+		}
+
+		if ( true === $contacts['is_redo'] ) {
+			$contacts_refreshed_token = esc_html__( 'This request did require refreshing the Salesforce token', 'object-sync-salesforce' );
+		} else {
+			$contacts_refreshed_token = esc_html__( 'This request did not require refreshing the Salesforce token', 'object-sync-salesforce' );
+		}
+
+		// translators: 1) $contacts['data']['totalSize'] is the number of items loaded, 2) $contacts['data']['records'][0]['attributes']['type'] is the name of the Salesforce object, 3) $contacts_is_cached is the "They are/are not cached, and/but" line, 4) $contacts_from_cache is the "they were/were not loaded from the cache" line, 5) is the "this request did/did not require refreshing the Salesforce token" line
+		$contacts_apicall_summary = sprintf( esc_html__( 'Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s.', 'object-sync-for-salesforce' ),
+			absint( $contacts['data']['totalSize'] ),
+			esc_html( $contacts['data']['records'][0]['attributes']['type'] ),
+			$contacts_is_cached,
+			$contacts_from_cache,
+			$contacts_refreshed_token
+		);
 
 		require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/status.php' );
 
