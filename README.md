@@ -184,11 +184,11 @@ The admin section is divided into tabs:
 
 ### Classes Todo
 
-#### Salesforce Soap (salesforce_soap)
+#### Salesforce_Soap_Partner (salesforce_soap_partner)
 
 Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill in functional gaps missing in the REST API. Will require the Salesforce PHP Toolkit, if/when we choose to do it.
 
-Currently there is a branch pursuing this functionality. [35-soap](https://github.com/MinnPost/object-sync-for-salesforce/tree/35-soap)
+Currently there is a branch to pursue this functionality. [35-soap](https://github.com/MinnPost/object-sync-for-salesforce/tree/35-soap). It is partially present in master as well, but it does not currently do anything, including loading this class.
 
 ## Developer hooks
 

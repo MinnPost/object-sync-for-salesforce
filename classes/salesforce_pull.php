@@ -374,13 +374,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$sfapi = $this->salesforce['sfapi'];
 
-		$use_soap = get_option( 'object_sync_for_salesforce_use_soap', false );
-		if ( '1' === $use_soap ) {
-			$wsdl = get_option( 'object_sync_for_salesforce_soap_wsdl_path', plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml' );
-			$client = new Object_Sync_Sf_Salesforce_Soap_Partner( $sfapi, $wsdl );
-			$use_soap = true;
-		}
-
 		// the drupal module runs a check_merged_records call right here. but it seems to be an invalid SOQL query.
 		// we are not incorporating that part of this branch at this time
 
