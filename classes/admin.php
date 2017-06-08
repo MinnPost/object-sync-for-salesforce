@@ -1236,7 +1236,7 @@ class Object_Sync_Sf_Admin {
 			$id = $value['id'];
 			$desc = $value['desc'];
 			$checked = '';
-			if ( is_array( $options ) && in_array( $key, $options, true ) ) {
+			if ( is_array( $options ) && in_array( (string) $key, $options, true ) ) {
 				$checked = 'checked';
 			} elseif ( is_array( $options ) && empty( $options ) ) {
 				if ( isset( $value['default'] ) && true === $value['default'] ) {

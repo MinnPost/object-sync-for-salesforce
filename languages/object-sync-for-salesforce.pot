@@ -72,7 +72,7 @@ msgstr ""
 msgid "You need to specify the name of the schedule you want to clear."
 msgstr ""
 
-#: classes/admin.php:1606, classes/salesforce_pull.php:1126, classes/salesforce_push.php:821, classes/salesforce_push.php:920, release/svn/trunk/classes/admin.php:1582, release/svn/trunk/classes/salesforce_pull.php:1119, release/svn/trunk/classes/salesforce_push.php:807, release/svn/trunk/classes/salesforce_push.php:906, release/svn/tags/1.0.0/classes/admin.php:1547, release/svn/tags/1.0.0/classes/salesforce_pull.php:1119, release/svn/tags/1.0.0/classes/salesforce_push.php:807, release/svn/tags/1.0.0/classes/salesforce_push.php:906, release/svn/tags/1.0.1/classes/admin.php:1582, release/svn/tags/1.0.1/classes/salesforce_pull.php:1119, release/svn/tags/1.0.1/classes/salesforce_push.php:807, release/svn/tags/1.0.1/classes/salesforce_push.php:906
+#: classes/admin.php:1606, classes/salesforce_pull.php:1126, classes/salesforce_push.php:814, classes/salesforce_push.php:913, release/svn/trunk/classes/admin.php:1582, release/svn/trunk/classes/salesforce_pull.php:1119, release/svn/trunk/classes/salesforce_push.php:807, release/svn/trunk/classes/salesforce_push.php:906, release/svn/tags/1.0.0/classes/admin.php:1547, release/svn/tags/1.0.0/classes/salesforce_pull.php:1119, release/svn/tags/1.0.0/classes/salesforce_push.php:807, release/svn/tags/1.0.0/classes/salesforce_push.php:906, release/svn/tags/1.0.1/classes/admin.php:1582, release/svn/tags/1.0.1/classes/salesforce_pull.php:1119, release/svn/tags/1.0.1/classes/salesforce_push.php:807, release/svn/tags/1.0.1/classes/salesforce_push.php:906
 msgid "Mapping object updated via function: "
 msgstr ""
 
@@ -88,7 +88,7 @@ msgstr ""
 msgid "URL: %1$s"
 msgstr ""
 
-#: classes/salesforce.php:415, classes/salesforce_push.php:848, release/svn/trunk/classes/salesforce.php:415, release/svn/trunk/classes/salesforce_push.php:834, release/svn/tags/1.0.0/classes/salesforce.php:415, release/svn/tags/1.0.0/classes/salesforce_push.php:834, release/svn/tags/1.0.1/classes/salesforce.php:415, release/svn/tags/1.0.1/classes/salesforce_push.php:834
+#: classes/salesforce.php:415, classes/salesforce_push.php:841, release/svn/trunk/classes/salesforce.php:415, release/svn/trunk/classes/salesforce_push.php:834, release/svn/tags/1.0.0/classes/salesforce.php:415, release/svn/tags/1.0.0/classes/salesforce_push.php:834, release/svn/tags/1.0.1/classes/salesforce.php:415, release/svn/tags/1.0.1/classes/salesforce_push.php:834
 msgid "Message: %2$s"
 msgstr ""
 
@@ -192,35 +192,35 @@ msgstr ""
 msgid "Error: Salesforce Push: unable to process queue item because it has no WordPress %1$s."
 msgstr ""
 
-#: classes/salesforce_push.php:550, classes/salesforce_push.php:802, classes/salesforce_push.php:930, release/svn/trunk/classes/salesforce_push.php:536, release/svn/trunk/classes/salesforce_push.php:788, release/svn/trunk/classes/salesforce_push.php:916, release/svn/tags/1.0.0/classes/salesforce_push.php:536, release/svn/tags/1.0.0/classes/salesforce_push.php:788, release/svn/tags/1.0.0/classes/salesforce_push.php:916, release/svn/tags/1.0.1/classes/salesforce_push.php:536, release/svn/tags/1.0.1/classes/salesforce_push.php:788, release/svn/tags/1.0.1/classes/salesforce_push.php:916
+#: classes/salesforce_push.php:543, classes/salesforce_push.php:795, classes/salesforce_push.php:923, release/svn/trunk/classes/salesforce_push.php:536, release/svn/trunk/classes/salesforce_push.php:788, release/svn/trunk/classes/salesforce_push.php:916, release/svn/tags/1.0.0/classes/salesforce_push.php:536, release/svn/tags/1.0.0/classes/salesforce_push.php:788, release/svn/tags/1.0.0/classes/salesforce_push.php:916, release/svn/tags/1.0.1/classes/salesforce_push.php:536, release/svn/tags/1.0.1/classes/salesforce_push.php:788, release/svn/tags/1.0.1/classes/salesforce_push.php:916
 msgid "Success: %1$s %2$s %3$s (WordPress %4$s with %5$s of %6$s)"
 msgstr ""
 
-#: classes/salesforce_push.php:593, release/svn/trunk/classes/salesforce_push.php:579, release/svn/tags/1.0.0/classes/salesforce_push.php:579, release/svn/tags/1.0.1/classes/salesforce_push.php:579
+#: classes/salesforce_push.php:586, release/svn/trunk/classes/salesforce_push.php:579, release/svn/tags/1.0.0/classes/salesforce_push.php:579, release/svn/tags/1.0.1/classes/salesforce_push.php:579
 msgid "Notice: %1$s %2$s %3$s (WordPress %4$s with %5$s of %6$s did not delete the Salesforce item.)"
 msgstr ""
 
-#: classes/salesforce_push.php:839, release/svn/trunk/classes/salesforce_push.php:825, release/svn/tags/1.0.0/classes/salesforce_push.php:825, release/svn/tags/1.0.1/classes/salesforce_push.php:825
+#: classes/salesforce_push.php:832, release/svn/trunk/classes/salesforce_push.php:825, release/svn/tags/1.0.0/classes/salesforce_push.php:825, release/svn/tags/1.0.1/classes/salesforce_push.php:825
 msgid "%1$s error syncing: %2$s to Salesforce (WordPress %3$s with %4$s of %5$s)"
 msgstr ""
 
-#: classes/salesforce_push.php:848, release/svn/trunk/classes/salesforce_push.php:834, release/svn/tags/1.0.0/classes/salesforce_push.php:834, release/svn/tags/1.0.1/classes/salesforce_push.php:834
+#: classes/salesforce_push.php:841, release/svn/trunk/classes/salesforce_push.php:834, release/svn/tags/1.0.0/classes/salesforce_push.php:834, release/svn/tags/1.0.1/classes/salesforce_push.php:834
 msgid "Object: %1$s"
 msgstr ""
 
-#: classes/salesforce_push.php:885, release/svn/trunk/classes/salesforce_push.php:871, release/svn/tags/1.0.0/classes/salesforce_push.php:871, release/svn/tags/1.0.1/classes/salesforce_push.php:871
+#: classes/salesforce_push.php:878, release/svn/trunk/classes/salesforce_push.php:871, release/svn/tags/1.0.0/classes/salesforce_push.php:871, release/svn/tags/1.0.1/classes/salesforce_push.php:871
 msgid "Notice: %1$s: Did not sync WordPress %2$s with %3$s of %4$s with Salesforce Id %5$s because the last sync timestamp was greater than the object updated timestamp."
 msgstr ""
 
-#: classes/salesforce_push.php:894, release/svn/trunk/classes/salesforce_push.php:880, release/svn/tags/1.0.0/classes/salesforce_push.php:880, release/svn/tags/1.0.1/classes/salesforce_push.php:880
+#: classes/salesforce_push.php:887, release/svn/trunk/classes/salesforce_push.php:880, release/svn/tags/1.0.0/classes/salesforce_push.php:880, release/svn/tags/1.0.1/classes/salesforce_push.php:880
 msgid "Last sync time: %1$s"
 msgstr ""
 
-#: classes/salesforce_push.php:894, release/svn/trunk/classes/salesforce_push.php:880, release/svn/tags/1.0.0/classes/salesforce_push.php:880, release/svn/tags/1.0.1/classes/salesforce_push.php:880
+#: classes/salesforce_push.php:887, release/svn/trunk/classes/salesforce_push.php:880, release/svn/tags/1.0.0/classes/salesforce_push.php:880, release/svn/tags/1.0.1/classes/salesforce_push.php:880
 msgid "Object updated time: %2$s"
 msgstr ""
 
-#: classes/salesforce_push.php:1030, release/svn/trunk/classes/salesforce_push.php:1016, release/svn/tags/1.0.0/classes/salesforce_push.php:1016, release/svn/tags/1.0.1/classes/salesforce_push.php:1016
+#: classes/salesforce_push.php:1023, release/svn/trunk/classes/salesforce_push.php:1016, release/svn/tags/1.0.0/classes/salesforce_push.php:1016, release/svn/tags/1.0.1/classes/salesforce_push.php:1016
 msgid "Mapping object %1$s via function"
 msgstr ""
 
