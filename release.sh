@@ -3,24 +3,23 @@ RELEASE_DIR=release;
 SVN_PATH=$RELEASE_DIR/svn;
 SVN_REPO="https://plugins.svn.wordpress.org/object-sync-for-salesforce/";
 BLACKLIST=(
-./**/.*
+*./**/.*
 apigen.neon
 assets/js/src/\*
 assets/sass/\*
 bin/\*
-composer.lock
-composer.json
-Gulpfile.js
-node_modules/\*
-package.json
-phpunit.xml
+*composer.lock
+*composer.json
+*Gulpfile.js
+*node_modules/\*
+*package.json
+*phpunit.xml
 release.sh
 release/\*
-tests/\*
+*test/\*
+*tests/\*
+*unit_test/\*
 _sourcefiles/\*
-vendor/**/.*
-vendor/test/\*
-vendor/unit_test/\*
 );
 
 function ensure_release_dir() {
