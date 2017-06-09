@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 1.0.3 (2015-06-09)
+
+	* Update the deploy file so it keeps .git, .gitignore, etc. items out of the deployed plugin
+
 * 1.0.2 (2015-06-09)
 
 	* Update tested WordPress version to reflect 4.8
