@@ -3,7 +3,6 @@ RELEASE_DIR=release;
 SVN_PATH=$RELEASE_DIR/svn;
 SVN_REPO="https://plugins.svn.wordpress.org/object-sync-for-salesforce/";
 BLACKLIST=(
-*.*
 *./**/.*
 apigen.neon
 assets/js/src/\*
