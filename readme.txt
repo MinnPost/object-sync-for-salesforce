@@ -3,7 +3,7 @@ Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.7
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,10 +126,16 @@ There is extensive documentation of the plugin, including its developer hooks, [
 
 == Changelog ==
 
+* 1.0.2 (2015-06-09)
+
+	* Update tested WordPress version to reflect 4.8
+	* Some basic preparation work for supporting the Salesforce SOAP API
+	* Update dependencies
+
 * 1.0.1 (2015-06-05)
 
- * made table summaries on API status page into translatable strings
+	* made table summaries on API status page into translatable strings
 
 * 1.0.0 (2017-05-30)
 
- * first stable release
+	* first stable release
