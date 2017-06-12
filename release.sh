@@ -16,6 +16,7 @@ package.json
 phpunit.xml
 release.sh
 release/\*
+test/\*
 tests/\*
 _sourcefiles/\*
 );

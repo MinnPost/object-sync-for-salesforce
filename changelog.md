@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 1.0.4 (2015-06-12)
+
+	* Fix the tested version again, as it was reverted
+
 * 1.0.3 (2015-06-09)
 
 	* Update the deploy file so it keeps .git, .gitignore, etc. items out of the deployed plugin

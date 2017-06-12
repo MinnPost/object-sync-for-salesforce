@@ -2,8 +2,8 @@
 Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations
 Tags: salesforce, sync, crm
 Requires at least: 4.5
-Tested up to: 4.7
-Stable tag: 1.0.3
+Tested up to: 4.8
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,10 @@ Steps:
 There is extensive documentation of the plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md). You can find a detailed [initial setup instruction](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md) document there as well.
 
 == Changelog ==
+
+* 1.0.4 (2015-06-12)
+
+	* Fix the tested version again, as it was reverted
 
 * 1.0.3 (2015-06-12)
 
