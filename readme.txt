@@ -92,15 +92,13 @@ Supported constant names are:
 
 Set them in `wp-config.php` like this:
 
-```
-define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY', 'valuefromsalesforce');
-define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET', 'valuefromsalesforce');
-define('OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL', 'https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize');
-define('OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL', 'https://test.salesforce.com');
-define('OBJECT_SYNC_SF_SALESFORCE_API_VERSION', '38.0');
-define('OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH', '/services/oauth2/authorize');
-define('OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH', '/services/oauth2/token');
-```
+`define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY', 'valuefromsalesforce');`
+`define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET', 'valuefromsalesforce');`
+`define('OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL', 'https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize');`
+`define('OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL', 'https://test.salesforce.com');`
+`define('OBJECT_SYNC_SF_SALESFORCE_API_VERSION', '40.0');`
+`define('OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH', '/services/oauth2/authorize');`
+`define('OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH', '/services/oauth2/token');`
 
 For any value that is already defined in `wp-config.php`, the Settings screen will display "Defined in wp-config.php" in place of the text field.
 
@@ -126,9 +124,9 @@ There is extensive documentation of the plugin, including its developer hooks, [
 
 == Changelog ==
 
-* 1.0.3 (2015-06-09)
+* 1.0.3 (2015-06-12)
 
-	* Update the deploy file so it keeps .git, .gitignore, etc. items out of the deployed plugin
+	* Update the deploy file so it keeps more unneeded items, especially from Composer libraries, out of the deployed plugin
 
 * 1.0.2 (2015-06-09)
 

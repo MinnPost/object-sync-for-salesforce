@@ -18,6 +18,7 @@ release.sh
 release/\*
 *test/\*
 *tests/\*
+*travis.yml
 *unit_test/\*
 _sourcefiles/\*
 );
