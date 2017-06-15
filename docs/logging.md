@@ -23,6 +23,6 @@ If you choose to enable logging, you'll see a Logs custom content type added to 
 1. What statuses to log
 2. What triggers to log
 
-We recommend that you allow WordPress to automatically delete old log entries. If you want to do that, you'll have to enable that option, and also fill out hte settings for how often the plugin should delete and how often it should check.
+We recommend that you allow WordPress to automatically delete old log entries. If you want to do that, you'll have to enable that option, and also fill out the settings for how often the plugin should delete and how often it should check.
 
 These settings together mean that the plugin will check at intervals, and when it finds log entries that meet its criteria, it will delete them.
