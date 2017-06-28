@@ -6,7 +6,7 @@ Below is summary information, but you can also access [full documentation](https
 
 ## About
 
-This plugin creates a mapping functionality between Salesforce objects and WordPress content types. For any supported WordPress content types (e.g. post, page, user, or any custom content type in your installation), you can assign Salesforce objects that will be created / updated when the data in WordPress is saved. For each such assignment, you choose which WordPress and Salesforce fields should be mapped to one another.
+This plugin creates a mapping functionality between Salesforce objects and WordPress content types. For any supported WordPress content types (e.g. post, page, user, or any custom content type in your installation), you can assign Salesforce objects that will be created / updated when the data in WordPress is saved, and the WordPress objects can be created / updated when the data in Salesforce is saved. Both of these directions act upon any matching data that is created after the plugin is installed. For each such assignment, you choose which WordPress and Salesforce fields should be mapped to one another.
 
 This plugin also includes API hooks that allow for additional plugins to modify what data the plugin is working with, or what happens upon specific events.
 
@@ -29,7 +29,7 @@ Some other options:
 
 ## Requirements
 
-1. A PHP installation of at least version 5.6.
+1. A PHP installation of at least version 5.5.
 2. SSL support.
 3. A Salesforce account. Developers can register at [http://www.developerforce.com/events/regular/registration.php](http://www.developerforce.com/events/regular/registration.php)
 4. A remote application/connected Salesforce app for authorization.
