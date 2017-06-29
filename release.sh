@@ -7,7 +7,7 @@ BLACKLIST=(
 apigen.neon
 assets/js/src/\*
 assets/sass/\*
-bin
+bin/*
 composer.lock
 composer.json
 Gulpfile.js
