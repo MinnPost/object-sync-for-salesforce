@@ -78,7 +78,7 @@ class Object_Sync_Sf_Activate {
 		$object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 		$object_map_sql = "CREATE TABLE $object_map_table (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-			wordpress_id bigint(20) NOT NULL,
+			wordpress_id varchar(32) NOT NULL,
 			salesforce_id varchar(32) NOT NULL DEFAULT '',
 			wordpress_object varchar(128) NOT NULL DEFAULT '',
 			created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -95,6 +95,10 @@ class Object_Sync_Sf_Activate {
 		) $charset_collate";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+		// Note: see https://wordpress.stackexchange.com/questions/67345/how-to-implement-wordpress-plugin-update-that-modifies-the-database
+		// When we run the dbDelta method below, "it checks if the table exists. What's more, it checks the column types. So if the table doesn't exist, it creates it, if it does, but some column types have changed it updates them, and if a column doesn't exists - it adds it."
+		// This does not remove columns if we remove columns, so we'll need to expand beyond this in the future if that happens, although I think the schema is pretty solid now.
 		dbDelta( $field_map_sql );
 		dbDelta( $object_map_sql );
 

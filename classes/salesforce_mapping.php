@@ -378,9 +378,9 @@ class Object_Sync_Sf_Mapping {
 	public function create_object_map( $posted = array() ) {
 		$data = $this->setup_object_map_data( $posted );
 		$data['created'] = current_time( 'mysql' );
-		// Check to see if we don't know the salesforce id, or if this is pending.
-		// If it is pending, the map will get updated after it finishes running.
-		if ( 0 !== $data['salesforce_id'] || 'pending' === $data['action'] ) {
+		// Check to see if we don't know the salesforce id and it is not a temporary id, or if this is pending.
+		// If it is using a temporary id, the map will get updated after it finishes running; it won't call this method unless there's an error, which we should log.
+		if ( substr( $data['salesforce_id'], 0, 7 ) !== 'tmp_sf_' || 'pending' === $data['action'] ) {
 			unset( $data['action'] );
 			$insert = $this->wpdb->insert( $this->object_map_table, $data );
 		} else {
@@ -393,7 +393,7 @@ class Object_Sync_Sf_Mapping {
 			$logging->setup(
 				sprintf(
 					// translators: %1$s is the name of a WordPress object. %2$s is the id of that object.
-					esc_html__( 'Error Mapping: error caused by trying to map the WordPress %1$s with ID of %2$s to Salesforce ID of 0, which is invalid.', 'object-sync-for-salesforce' ),
+					esc_html__( 'Error Mapping: error caused by trying to map the WordPress %1$s with ID of %2$s to Salesforce ID starting with "tmp_sf_", which is invalid.', 'object-sync-for-salesforce' ),
 					esc_attr( $data['wordpress_object'] ),
 					absint( $data['wordpress_id'] )
 				),
@@ -436,7 +436,7 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Get one or more object map rows between WordPress and Salesforce objects
 	 *
-	 * @param array $conditions Limitatinos on the SQL query for object mapping rows.
+	 * @param array $conditions Limitations on the SQL query for object mapping rows.
 	 * @param bool  $reset Unused parameter.
 	 * @return $map or $mappings
 	 * @throws \Exception
@@ -530,6 +530,22 @@ class Object_Sync_Sf_Mapping {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Delete an object map row between a WordPress and Salesforce object
+	 *
+	 * @param string $direction Whether this is part of a push or pull action
+	 * @return $id is a temporary string that will be replaced if the modification is successful
+	 */
+	public function generate_temporary_id( $direction ) {
+		if ( 'push' === $direction ) {
+			$prefix = 'tmp_sf_';
+		} elseif ( 'pull'  === $direction) {
+			$prefix = 'tmp_wp_';
+		}
+		$id = uniqid( $prefix, true );
+		return $id;
 	}
 
 	/**
