@@ -646,7 +646,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			// right here we should set the pushing transient
 			// this means we have to create the mapping object here as well, and update it with the correct IDs after successful response
 			// create the mapping object between the rows
-			$mapping_object_id = $this->create_object_map( $object, $object_id, 0, $mapping, true );
+			$mapping_object_id = $this->create_object_map( $object, $object_id, $this->mappings->generate_temporary_id( 'push' ), $mapping, true );
 			set_transient( 'salesforce_pushing_' . $mapping_object_id, 1, $seconds );
 			set_transient( 'salesforce_pushing_object_id', $mapping_object_id );
 			$mapping_object = $this->mappings->get_object_maps(
