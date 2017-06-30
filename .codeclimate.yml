@@ -1,8 +1,10 @@
 languages:
   PHP: true
-phpcodesniffer:
-  enabled: true
-  config:
-    standard: "Wordpress"
+engines:
+  phpcodesniffer:
+    enabled: true
+    config:
+      file_extensions: "php"
+      standard: "WordPress"
 exclude_paths:
   - tests/**/*
