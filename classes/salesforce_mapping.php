@@ -507,10 +507,12 @@ class Object_Sync_Sf_Mapping {
 	 * Setup the data for the object map
 	 *
 	 * @param array $posted It's $_POST.
-	 * @return $data Literally returns the input of the function.
+	 * @return $data Filtered array with only the keys that are in the object map database table. Strips out things from WordPress form if they're present.
 	 */
 	private function setup_object_map_data( $posted = array() ) {
-		$data = $posted;
+		$allowed_fields = $this->wpdb->get_col( "DESC {$this->object_map_table}", 0 );
+		$allowed_fields[] = 'action'; // we use this in both directions even though it isn't in the database; we remove it from the array later if it is present
+		$data = array_intersect_key( $posted, array_flip( $allowed_fields ) );
 		return $data;
 	}
 

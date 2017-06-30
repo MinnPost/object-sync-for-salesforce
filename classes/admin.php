@@ -134,6 +134,8 @@ class Object_Sync_Sf_Admin {
 		add_action( 'edit_user_profile_update', array( $this, 'save_salesforce_user_fields' ) );
 
 		add_action( 'admin_post_delete_object_map', array( $this, 'delete_object_map' ) );
+		add_action( 'admin_post_post_object_map', array( $this, 'prepare_object_map_data' ) );
+
 	}
 
 	/**
@@ -287,9 +289,24 @@ class Object_Sync_Sf_Admin {
 						$error_url = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=' . $method );
 						$success_url = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors' );
 
+						if ( isset( $get_data['map_transient'] ) ) {
+							$transient = sanitize_key( $get_data['map_transient'] );
+							$posted = get_transient( $transient );
+						}
+
+						if ( isset( $posted ) && is_array( $posted ) ) {
+							$map_row = $posted;
 						} elseif ( 'edit' === $method || 'delete' === $method ) {
 							$map_row = $this->mappings->get_failed_object_map( isset( $get_data['id'] ) ? sanitize_key( $get_data['id'] ) : '' );
 						}
+
+						if ( isset( $map_row ) && is_array( $map_row ) ) {
+							$salesforce_id = $map_row['salesforce_id'];
+							$wordpress_id = $map_row['wordpress_id'];
+						}
+
+						if ( 'edit' === $method ) {
+							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors-edit.php' );
 						} elseif ( 'delete' === $method ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors-delete.php' );
 						}
@@ -853,6 +870,12 @@ class Object_Sync_Sf_Admin {
 				'type' => 'error',
 				'dismissible' => true,
 			),
+			'object_map' => array(
+				'condition' => isset( $get_data['map_transient'] ),
+				'message' => 'Errors kept this object map from being saved.',
+				'type' => 'error',
+				'dismissible' => true,
+			),
 		);
 
 		foreach ( $notices as $key => $value ) {
@@ -1169,6 +1192,51 @@ class Object_Sync_Sf_Admin {
 			wp_safe_redirect( $url );
 			exit();
 		}
+	}
+
+	/**
+	* Prepare object data and redirect after processing
+	* This runs when the update form is submitted
+	* It is public because it depends on an admin hook
+	* It then calls the Object_Sync_Sf_Mapping class and sends prepared data over to it, then redirects to the correct page
+	* This method does include error handling, by loading the submission in a transient if there is an error, and then deleting it upon success
+	*
+	*/
+	public function prepare_object_map_data() {
+		$error = false;
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$cachekey = md5( wp_json_encode( $post_data ) );
+
+		if ( ! isset( $post_data['wordpress_id'] ) || ! isset( $post_data['salesforce_id'] ) ) {
+			$error = true;
+		}
+		if ( true === $error ) {
+			set_transient( $cachekey, $post_data, 0 );
+			if ( '' !== $cachekey ) {
+				$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&map_transient=' . $cachekey;
+			}
+		} else { // there are no errors
+			// send the row to the object map class
+			$method = esc_attr( $post_data['method'] );
+			if ( 'edit' === $method ) { // if it is edit, use the update method
+				$id = esc_attr( $post_data['id'] );
+				$result = $this->mappings->update_object_map( $post_data, $id );
+			}
+			if ( false === $result ) { // if the database didn't save, it's still an error
+				set_transient( $cachekey, $post_data, 0 );
+				if ( '' !== $cachekey ) {
+					$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&map_transient=' . $cachekey;
+				}
+			} else {
+				if ( isset( $post_data['map_transient'] ) ) { // there was previously an error saved. can delete it now.
+					delete_transient( esc_attr( $post_data['map_transient'] ) );
+				}
+				// then send the user to the success redirect url
+				$url = esc_url_raw( $post_data['redirect_url_success'] );
+			}
+		}
+		wp_safe_redirect( $url );
+		exit();
 	}
 
 	/**
