@@ -1,0 +1,6 @@
+phpcodesniffer:
+  enabled: true
+  config:
+    standard: "Wordpress"
+exclude_paths:
+  - tests/**/*
