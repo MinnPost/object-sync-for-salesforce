@@ -133,6 +133,7 @@ class Object_Sync_Sf_Admin {
 		add_action( 'personal_options_update', array( $this, 'save_salesforce_user_fields' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'save_salesforce_user_fields' ) );
 
+		add_action( 'admin_post_delete_object_map', array( $this, 'delete_object_map' ) );
 	}
 
 	/**
@@ -169,6 +170,11 @@ class Object_Sync_Sf_Admin {
 		// optionally make tab(s) for logging and log settings
 		$logging_enabled = get_option( 'object_sync_for_salesforce_enable_logging', false );
 		$tabs['log_settings'] = 'Log Settings';
+
+		$mapping_errors = $this->mappings->get_failed_object_maps();
+		if ( ! empty( $mapping_errors ) ) {
+			$tabs['mapping_errors'] = 'Mapping Errors';
+		}
 
 		// filter for extending the tabs available on the page
 		// currently it will go into the default switch case for $tab
@@ -272,6 +278,24 @@ class Object_Sync_Sf_Admin {
 						}
 					} else {
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+					}
+					break;
+				case 'mapping_errors':
+					if ( isset( $get_data['method'] ) ) {
+
+						$method = sanitize_key( $get_data['method'] );
+						$error_url = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=' . $method );
+						$success_url = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors' );
+
+						} elseif ( 'edit' === $method || 'delete' === $method ) {
+							$map_row = $this->mappings->get_failed_object_map( isset( $get_data['id'] ) ? sanitize_key( $get_data['id'] ) : '' );
+						}
+						} elseif ( 'delete' === $method ) {
+							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors-delete.php' );
+						}
+
+					} else {
+						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors.php' );
 					}
 					break;
 				default:
@@ -1137,6 +1161,27 @@ class Object_Sync_Sf_Admin {
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		if ( $post_data['id'] ) {
 			$result = $this->mappings->delete_fieldmap( $post_data['id'] );
+			if ( true === $result ) {
+				$url = esc_url_raw( $post_data['redirect_url_success'] );
+			} else {
+				$url = esc_url_raw( $post_data['redirect_url_error'] . '&id=' . $post_data['id'] );
+			}
+			wp_safe_redirect( $url );
+			exit();
+		}
+	}
+
+	/**
+	* Delete object map data and redirect after processing
+	* This runs when the delete link is clicked on an error row, after the user confirms
+	* It is public because it depends on an admin hook
+	* It then calls the Object_Sync_Sf_Mapping class and the delete method
+	*
+	*/
+	public function delete_object_map() {
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		if ( $post_data['id'] ) {
+			$result = $this->mappings->delete_object_map( $post_data['id'] );
 			if ( true === $result ) {
 				$url = esc_url_raw( $post_data['redirect_url_success'] );
 			} else {
