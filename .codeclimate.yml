@@ -1,3 +1,5 @@
+languages:
+  PHP: true
 phpcodesniffer:
   enabled: true
   config:
