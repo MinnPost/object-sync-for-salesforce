@@ -7,4 +7,5 @@ engines:
       file_extensions: "php"
       standard: "WordPress"
 exclude_paths:
+  - docs/**/*
   - tests/**/*
