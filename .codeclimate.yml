@@ -1,16 +1,19 @@
-languages:
-  PHP: true
 engines:
   phpcodesniffer:
     enabled: true
     config:
       file_extensions: "php"
       standard: "WordPress-Core"
+  csslint:
+    enabled: true
 ratings:
   paths:
   - classes/**
   - templates/**
   - "**.php"
+  - "**.css"
 exclude_paths:
   - docs/**/*
+  - node_modules/**/*
   - tests/**/*
+  - "**.min.css"

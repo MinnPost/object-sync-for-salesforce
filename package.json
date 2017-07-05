@@ -12,7 +12,6 @@
     "browser-sync": "~2",
     "css-mqpacker": "^6.0.1",
     "del": "^3.0.0",
-    "eslint-config-wordpress": "^2.0.0",
     "glob": "~7",
     "gulp": "~3",
     "gulp-babel": "~6",
@@ -36,7 +35,9 @@
     "gulp-wp-pot": "^2.0.6"
   },
   "devDependencies": {
+    "eslint-config-wordpress": "^2.0.0",
     "gulp": "^3.9.1",
-    "gulp-css-globbing": "^0.2.2"
+    "gulp-css-globbing": "^0.2.2",
+    "gulp-csslint": "^1.0.0"
   }
 }

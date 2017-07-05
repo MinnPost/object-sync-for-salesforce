@@ -4,6 +4,7 @@ const babel = require( 'gulp-babel' );
 const browserSync = require( 'browser-sync' );
 const cheerio = require( 'gulp-cheerio' );
 const concat = require( 'gulp-concat' );
+const csslint = require('gulp-csslint' );
 const cssnano = require( 'gulp-cssnano' );
 const del = require( 'del' );
 const eslint = require( 'gulp-eslint' );
@@ -272,24 +273,42 @@ gulp.task( 'sass:lint', () =>
 );
 
 /**
+ * CSS linting.
+ *
+ * https://www.npmjs.com/package/gulp-csslint
+ */
+gulp.task( 'css:lint', () =>
+	gulp.src( [
+		'assets/css/**/*.css',
+		'!assets/css/**/*.min.css'
+	] )
+		.pipe( csslint() )
+    	.pipe( csslint.formatter() )
+);
+
+/**
  * JavaScript linting.
  *
  * https://www.npmjs.com/package/gulp-eslint
  */
-gulp.task( 'js:lint', () =>
-	gulp.src( [
-		'assets/js/*.js',
-		'assets/js/*.js',
-		'!assets/js/object-sync-for-salesforce-admin.js',
-		'!assets/js/*.min.js',
-		'!Gruntfile.js',
-		'!Gulpfile.js',
-		'!node_modules/**'
-	] )
-		.pipe( eslint() )
-		.pipe( eslint.format() )
-		.pipe( eslint.failAfterError() )
-);
+gulp.task('js:lint', () => {
+    // ESLint ignores files with "node_modules" paths.
+    // So, it's best to have gulp ignore the directory as well.
+    // Also, Be sure to return the stream from the task;
+    // Otherwise, the task may end before the stream has finished.
+    return gulp.src(['**/*.js','!node_modules/**', '!**.min.js'])
+        // eslint() attaches the lint output to the "eslint" property
+        // of the file object so it can be used by other modules.
+        .pipe(eslint({
+        	fix: true
+        }))
+        // eslint.format() outputs the lint results to the console.
+        // Alternatively use eslint.formatEach() (see Docs).
+        .pipe(eslint.format())
+        // To have the process exit with an error code (1) on
+        // lint error, return the stream and pipe to failAfterError last.
+        .pipe(eslint.failAfterError());
+});
 
 /**
  * Process tasks and reload browsers on file changes.

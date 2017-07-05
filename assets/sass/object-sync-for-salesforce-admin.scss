@@ -29,7 +29,7 @@ $vertical-space: 15px;
 			margin-bottom: $vertical-space;
 			position: relative;
 		}
-		fieldset.fields {
+		.fields {
 			border: 0;
 		}
 
@@ -39,11 +39,11 @@ $vertical-space: 15px;
 			position: absolute;
 		}
 
-		fieldset.fields > :nth-child(2) {
+		.fields > :nth-child(2) {
 			padding-top: 35px;
 		}
 
-		fieldset.sync_triggers > :nth-child(2) {
+		.sync_triggers > :nth-child(2) {
 			padding-top: 45px;
 		}
 
@@ -57,12 +57,12 @@ $vertical-space: 15px;
 		}
 
 
-		div.radios label, div.checkboxes label {
+		.radios label, .checkboxes label {
 			display: block;
 			font-weight: normal;
 		}
 
-		div.radios input, div.checkboxes input {
+		.radios input, .checkboxes input {
 			display: inline-block;
 		}
 		div input, div select {
@@ -74,43 +74,42 @@ $vertical-space: 15px;
 				min-width: 200px;
 			}
 			td div {
-				padding-top: 0;
 				padding-left: 0;
+				padding-top: 0;
 			}
-		}
-	}
-
-	// messages to display
-	.salesforce_user_ajax_message {
-		border-left: 4px solid $success-color;
-		box-shadow: $box-shadow-less;
-		margin: 5px 0 $vertical-space;
-		padding: 1px 12px;
-		p {
-			margin: 0.5em 0;
-			padding: 2px;
-		}
-	}
-
-	// profile table for salesforce info
-	table.mapped-salesforce-user {
-		width: auto;
-		caption {
-			border: 1px solid $border-color-darker;
-			border-bottom: 0;
-			box-shadow: $box-shadow-more;
-			color: #555;
-			padding: 8px $horizontal-space;
-			font-size: 14px;
-			font-weight: 400;
-			line-height: 1.3em;
-			text-align: left;
-		}
-		tr th {
-			border-right: 1px solid $border-color-lighter;
-			font-size: 13px;
-			width: 140px;
 		}
 	}
 }
 
+// messages to display
+.salesforce_user_ajax_message {
+	border-left: 4px solid $success-color;
+	box-shadow: $box-shadow-less;
+	margin: 5px 0 $vertical-space;
+	padding: 1px 12px;
+	p {
+		margin: 0.5em 0;
+		padding: 2px;
+	}
+}
+
+// profile table for salesforce info
+.mapped-salesforce-user {
+	width: auto;
+	caption {
+		border: 1px solid $border-color-darker;
+		border-bottom: 0;
+		box-shadow: $box-shadow-more;
+		color: #555;
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 1.3em;
+		padding: 8px $horizontal-space;
+		text-align: left;
+	}
+	tr th {
+		border-right: 1px solid $border-color-lighter;
+		font-size: 13px;
+		width: 140px;
+	}
+}
