@@ -12,6 +12,7 @@ composer.lock
 composer.json
 Gulpfile.js
 node_modules/\*
+package-lock.json
 package.json
 phpunit.xml
 release.sh

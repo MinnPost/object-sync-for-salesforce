@@ -5,7 +5,7 @@ engines:
     enabled: true
     config:
       file_extensions: "php"
-      standard: "WordPress"
+      standard: "WordPress-Core"
 ratings:
   paths:
   - classes/**
