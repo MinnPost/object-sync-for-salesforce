@@ -6,6 +6,11 @@ engines:
     config:
       file_extensions: "php"
       standard: "WordPress"
+ratings:
+  paths:
+  - classes/**
+  - templates/**
+  - "**.php"
 exclude_paths:
   - docs/**/*
   - tests/**/*
