@@ -507,10 +507,12 @@ class Object_Sync_Sf_Mapping {
 	 * Setup the data for the object map
 	 *
 	 * @param array $posted It's $_POST.
-	 * @return $data Literally returns the input of the function.
+	 * @return $data Filtered array with only the keys that are in the object map database table. Strips out things from WordPress form if they're present.
 	 */
 	private function setup_object_map_data( $posted = array() ) {
-		$data = $posted;
+		$allowed_fields = $this->wpdb->get_col( "DESC {$this->object_map_table}", 0 );
+		$allowed_fields[] = 'action'; // we use this in both directions even though it isn't in the database; we remove it from the array later if it is present
+		$data = array_intersect_key( $posted, array_flip( $allowed_fields ) );
 		return $data;
 	}
 
@@ -764,6 +766,42 @@ class Object_Sync_Sf_Mapping {
 
 		return $mappings;
 
+	}
+
+	/**
+	 * Check object map table to see if there have been any failed object map create attempts
+	 *
+	 * @return array $errors Associative array of rows that failed to finish from either system
+	 */
+	public function get_failed_object_maps() {
+		$table = $this->object_map_table;
+		$errors = array();
+		$push_errors = $this->wpdb->get_results( 'SELECT * FROM ' . $table . ' WHERE salesforce_id LIKE "tmp_sf_%"', ARRAY_A );
+		$pull_errors = $this->wpdb->get_results( 'SELECT * FROM ' . $table . ' WHERE wordpress_id LIKE "tmp_wp_%"', ARRAY_A );
+		if ( ! empty( $push_errors ) ) {
+			$errors['push_errors'] = $push_errors;
+		}
+		if ( ! empty( $pull_errors ) ) {
+			$errors['pull_errors'] = $pull_errors;
+		}
+		return $errors;
+	}
+
+	/**
+	 * Check object map table to see if there have been any failed object map create attempts
+	 *
+	 * @param int   $id The ID of a desired mapping.
+	 *
+	 * @return array $error Associative array of single row that failed to finish based on id
+	 */
+	public function get_failed_object_map( $id ) {
+		$table = $this->object_map_table;
+		$error = array();
+		$error_row = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = "' . $id . '"', ARRAY_A );
+		if ( ! empty( $error_row ) ) {
+			$error = $error_row;
+		}
+		return $error;
 	}
 
 }
