@@ -310,7 +310,6 @@ class Object_Sync_Sf_Admin {
 						} elseif ( 'delete' === $method ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors-delete.php' );
 						}
-
 					} else {
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors.php' );
 					}

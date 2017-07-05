@@ -543,7 +543,7 @@ class Object_Sync_Sf_Mapping {
 	public function generate_temporary_id( $direction ) {
 		if ( 'push' === $direction ) {
 			$prefix = 'tmp_sf_';
-		} elseif ( 'pull'  === $direction) {
+		} elseif ( 'pull' === $direction ) {
 			$prefix = 'tmp_wp_';
 		}
 		$id = uniqid( $prefix, true );
