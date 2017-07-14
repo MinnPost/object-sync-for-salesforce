@@ -5,9 +5,9 @@ We welcome contributions and suggestions to help us improve this project.
 ### Workflow:
 
 1. [Fork this repo](https://help.github.com/articles/fork-a-repo)
-2. Create a branch (git checkout -b my-branch)
-3. Stage and commit your changes (git commit -am 'description of my changes')
-4. Push the changes to your fork (git push origin my-branch)
+2. Create a branch (`git checkout -b my-branch`)
+3. Stage and commit your changes (`git commit -am 'description of my changes'`)
+4. Push the changes to your fork (`git push origin my-branch`)
 5. [Submit a pull request to the parent repo](https://help.github.com/articles/creating-a-pull-request).
 6. Pull requests should be assigned to:
     - [@jonathanstegall](http://github.com/jonathanstegall) (primary)
