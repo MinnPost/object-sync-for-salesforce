@@ -71,6 +71,8 @@ This is the full documentation for this plugin, extending the information in [th
 
     This is a full list of all the developer hooks in the plugin. Each hook indicates what file contains it, and where the documentation for it resides.
 
+    We've also created a document where we'd like to list plugins that use these hooks. [Take a look](./example-extending-plugins.md), and/or submit others that you know about.
+
 9. [Code documentation](./code/index.html)
 
     This is an auto generated system that documents all of the PHP classes in the plugin. This is a good way for PHP developers to look through what the code is doing.
