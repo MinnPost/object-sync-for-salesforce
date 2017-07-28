@@ -1110,7 +1110,7 @@ class Object_Sync_Sf_Wordpress {
 			$content['post_content'] = ' ';
 		}
 
-		$post_id = wp_insert_post( $content );
+		$post_id = wp_insert_post( $content, true ); // return an error instead of a 0 id
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
