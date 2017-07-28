@@ -189,6 +189,32 @@ class Object_Sync_Sf_Admin {
 		$consumer_secret = $this->login_credentials['consumer_secret'];
 		$callback_url = $this->login_credentials['callback_url'];
 
+		if ( true !== $this->salesforce['is_authorized'] ) {
+			$url = esc_url( $callback_url );
+			$anchor = esc_html__( 'Authorize tab', 'object-sync-for-salesforce' );
+			$message = sprintf( 'Salesforce needs to be authorized to connect to this website. Use the <a href="%s">%s</a> to connect.', $url, $anchor );
+			require( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
+		}
+
+		if ( 0 === count( $this->mappings->get_fieldmaps() ) ) {
+			$url = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps' ) );
+			$anchor = esc_html__( 'Fieldmaps tab', 'object-sync-for-salesforce' );
+			$message = sprintf( 'No fieldmaps exist yet. Use the <a href="%s">%s</a> to map WordPress and Salesforce objects to each other.', $url, $anchor );
+			require( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
+		}
+
+		$push_schedule_number = get_option( 'object_sync_for_salesforce_salesforce_push_schedule_number', '' );
+		$push_schedule_unit = get_option( 'object_sync_for_salesforce_salesforce_push_schedule_unit', '' );
+		$pull_schedule_number = get_option( 'object_sync_for_salesforce_salesforce_pull_schedule_number', '' );
+		$pull_schedule_unit = get_option( 'object_sync_for_salesforce_salesforce_pull_schedule_unit', '' );
+
+		if ( '' === $push_schedule_number && '' === $push_schedule_unit && '' === $pull_schedule_number && '' === $pull_schedule_unit ) {
+			$url = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps' ) );
+			$anchor = esc_html__( 'Scheduling tab', 'object-sync-for-salesforce' );
+			$message = sprintf( 'Because the plugin schedule has not been saved, the plugin cannot run automatic operations. Use the <a href="%s">%s</a> to create schedules to run.', $url, $anchor );
+			require( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
+		}
+
 		try {
 			switch ( $tab ) {
 				case 'authorize':
@@ -266,21 +292,7 @@ class Object_Sync_Sf_Admin {
 					$this->clear_schedule( $schedule_name );
 					break;
 				case 'settings':
-					$consumer_key = $this->login_credentials['consumer_key'];
-					$consumer_secret = $this->login_credentials['consumer_secret'];
-					if ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) {
-						if ( true === $this->salesforce['is_authorized'] ) {
-							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
-						} else {
-							$url = esc_url( $callback_url );
-							$anchor = esc_html__( 'Authorize tab', 'object-sync-for-salesforce' );
-							$message = sprintf( 'Salesforce needs to be authorized to connect to this website. Use the <a href="%s">%s</a> to connect.', $url, $anchor );
-							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
-							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
-						}
-					} else {
-						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
-					}
+					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
 					break;
 				case 'mapping_errors':
 					if ( isset( $get_data['method'] ) ) {
