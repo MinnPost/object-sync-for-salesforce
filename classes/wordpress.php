@@ -1100,7 +1100,7 @@ class Object_Sync_Sf_Wordpress {
 			$content['post_type'] = $post_type;
 		}
 
-		// wordpress post creation will fail with an object of 0 if there is no title or content
+		// WordPress post creation will fail with an object of 0 if there is no title or content
 		// I think we should allow this to happen and not make users' data decisions, so
 		// if we're receiving nothing for either of these, create a blank one so it doesn't fail
 		if ( ! isset( $params['post_title'] ) ) {
