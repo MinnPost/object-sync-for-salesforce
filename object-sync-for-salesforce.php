@@ -64,7 +64,7 @@ class Object_Sync_Salesforce {
 
 	/**
 	* @var object
-	* Load and initialize the Object_Sync_Sf_Wordpress class
+	* Load and initialize the Object_Sync_Sf_WordPress class
 	*/
 	private $wordpress;
 
@@ -156,7 +156,7 @@ class Object_Sync_Salesforce {
 		 * 		),
 		 * 		'wordpress' => array( // WPCS: spelling ok.
 		 * 		    'label' => 'WordPress',
-		 * 		    'class' => 'Object_Sync_Sf_Wordpress',
+		 * 		    'class' => 'Object_Sync_Sf_WordPress',
 		 * 		),
 		 * 		'salesforce' => array(
 		 * 		    'label' => 'Salesforce Authorization',
@@ -231,11 +231,11 @@ class Object_Sync_Salesforce {
 	* @param object $logging
 	*
 	* @return object
-	*   Instance of Object_Sync_Sf_Wordpress
+	*   Instance of Object_Sync_Sf_WordPress
 	*/
 	private function wordpress( $wpdb, $version, $slug, $mappings, $logging ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
-		$wordpress = new Object_Sync_Sf_Wordpress( $wpdb, $version, $slug, $mappings, $logging );
+		$wordpress = new Object_Sync_Sf_WordPress( $wpdb, $version, $slug, $mappings, $logging );
 		return $wordpress;
 	}
 

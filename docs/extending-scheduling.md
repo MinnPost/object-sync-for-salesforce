@@ -44,7 +44,7 @@ function modify_schedulable_classes( $schedulable_classes ) {
 		),
 		'wordpress' => array(
 		    'label' => 'WordPress',
-		    'class' => 'Object_Sync_Sf_Wordpress',
+		    'class' => 'Object_Sync_Sf_WordPress',
 		),
 		'salesforce' => array(
 		    'label' => 'Salesforce Authorization',

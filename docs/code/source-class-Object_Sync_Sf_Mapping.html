@@ -37,7 +37,7 @@
 				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
-				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
+				<li><a href="class-Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
 			</ul>
 
 
@@ -384,7 +384,7 @@
 </span><span id="300" class="l"><a href="#300">300: </a>                        <span class="php-quote">'is_delete'</span> =&gt; sanitize_text_field( <span class="php-var">$posted</span>[<span class="php-quote">'is_delete'</span>][ <span class="php-var">$key</span> ] ),
 </span><span id="301" class="l"><a href="#301">301: </a>                    );
 </span><span id="302" class="l"><a href="#302">302: </a>
-</span><span id="303" class="l"><a href="#303">303: </a>                    <span class="php-comment">// If the wordpress key or the salesforce key are blank, remove this incomplete mapping.</span>
+</span><span id="303" class="l"><a href="#303">303: </a>                    <span class="php-comment">// If the WordPress key or the Salesforce key are blank, remove this incomplete mapping.</span>
 </span><span id="304" class="l"><a href="#304">304: </a>                    <span class="php-comment">// This prevents https://github.com/MinnPost/object-sync-for-salesforce/issues/82 .</span>
 </span><span id="305" class="l"><a href="#305">305: </a>                    <span class="php-keyword1">if</span> (
 </span><span id="306" class="l"><a href="#306">306: </a>                        <span class="php-keyword1">empty</span>( <span class="php-var">$setup</span>[<span class="php-quote">'fields'</span>][ <span class="php-var">$key</span> ][<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>] )
@@ -627,7 +627,7 @@
 </span><span id="543" class="l"><a href="#543">543: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> generate_temporary_id( <span class="php-var">$direction</span> ) {
 </span><span id="544" class="l"><a href="#544">544: </a>        <span class="php-keyword1">if</span> ( <span class="php-quote">'push'</span> === <span class="php-var">$direction</span> ) {
 </span><span id="545" class="l"><a href="#545">545: </a>            <span class="php-var">$prefix</span> = <span class="php-quote">'tmp_sf_'</span>;
-</span><span id="546" class="l"><a href="#546">546: </a>        } <span class="php-keyword1">elseif</span> ( <span class="php-quote">'pull'</span>  === <span class="php-var">$direction</span>) {
+</span><span id="546" class="l"><a href="#546">546: </a>        } <span class="php-keyword1">elseif</span> ( <span class="php-quote">'pull'</span> === <span class="php-var">$direction</span> ) {
 </span><span id="547" class="l"><a href="#547">547: </a>            <span class="php-var">$prefix</span> = <span class="php-quote">'tmp_wp_'</span>;
 </span><span id="548" class="l"><a href="#548">548: </a>        }
 </span><span id="549" class="l"><a href="#549">549: </a>        <span class="php-var">$id</span> = <span class="php-keyword2">uniqid</span>( <span class="php-var">$prefix</span>, <span class="php-keyword1">true</span> );
@@ -729,23 +729,23 @@
 </span><span id="645" class="l"><a href="#645">645: </a>
 </span><span id="646" class="l"><a href="#646">646: </a>            <span class="php-comment">// skip fields that aren't being pushed to Salesforce.</span>
 </span><span id="647" class="l"><a href="#647">647: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-var">$wordpress_haystack</span>, <span class="php-keyword1">true</span> ) &amp;&amp; ! <span class="php-keyword2">in_array</span>( <span class="php-var">$fieldmap</span>[<span class="php-quote">'direction'</span>], <span class="php-keyword2">array_values</span>( <span class="php-var">$this</span>-&gt;direction_wordpress ), <span class="php-keyword1">true</span> ) ) {
-</span><span id="648" class="l"><a href="#648">648: </a>                <span class="php-comment">// The trigger is a wordpress trigger, but the fieldmap direction is not a wordpress direction.</span>
+</span><span id="648" class="l"><a href="#648">648: </a>                <span class="php-comment">// The trigger is a WordPress trigger, but the fieldmap direction is not a WordPress direction.</span>
 </span><span id="649" class="l"><a href="#649">649: </a>                <span class="php-keyword1">continue</span>;
 </span><span id="650" class="l"><a href="#650">650: </a>            }
 </span><span id="651" class="l"><a href="#651">651: </a>
 </span><span id="652" class="l"><a href="#652">652: </a>            <span class="php-comment">// skip fields that aren't being pulled from Salesforce.</span>
 </span><span id="653" class="l"><a href="#653">653: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-var">$salesforce_haystack</span>, <span class="php-keyword1">true</span> ) &amp;&amp; ! <span class="php-keyword2">in_array</span>( <span class="php-var">$fieldmap</span>[<span class="php-quote">'direction'</span>], <span class="php-keyword2">array_values</span>( <span class="php-var">$this</span>-&gt;direction_salesforce ), <span class="php-keyword1">true</span> ) ) {
-</span><span id="654" class="l"><a href="#654">654: </a>                <span class="php-comment">// The trigger is a salesforce trigger, but the fieldmap direction is not a salesforce direction.</span>
+</span><span id="654" class="l"><a href="#654">654: </a>                <span class="php-comment">// The trigger is a Salesforce trigger, but the fieldmap direction is not a Salesforce direction.</span>
 </span><span id="655" class="l"><a href="#655">655: </a>                <span class="php-keyword1">continue</span>;
 </span><span id="656" class="l"><a href="#656">656: </a>            }
 </span><span id="657" class="l"><a href="#657">657: </a>
 </span><span id="658" class="l"><a href="#658">658: </a>            <span class="php-var">$salesforce_field</span> = <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>];
 </span><span id="659" class="l"><a href="#659">659: </a>            <span class="php-var">$wordpress_field</span> = <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>];
 </span><span id="660" class="l"><a href="#660">660: </a>
-</span><span id="661" class="l"><a href="#661">661: </a>            <span class="php-comment">// A wordpress event caused this.</span>
+</span><span id="661" class="l"><a href="#661">661: </a>            <span class="php-comment">// A WordPress event caused this.</span>
 </span><span id="662" class="l"><a href="#662">662: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-keyword2">array_values</span>( <span class="php-var">$wordpress_haystack</span> ), <span class="php-keyword1">true</span> ) ) {
 </span><span id="663" class="l"><a href="#663">663: </a>
-</span><span id="664" class="l"><a href="#664">664: </a>                <span class="php-comment">// Skip fields that aren't updateable when mapping params because salesforce will error otherwise.</span>
+</span><span id="664" class="l"><a href="#664">664: </a>                <span class="php-comment">// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise.</span>
 </span><span id="665" class="l"><a href="#665">665: </a>                <span class="php-keyword1">if</span> ( <span class="php-num">1</span> !== (int) <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'updateable'</span>] ) {
 </span><span id="666" class="l"><a href="#666">666: </a>                    <span class="php-keyword1">continue</span>;
 </span><span id="667" class="l"><a href="#667">667: </a>                }
@@ -897,6 +897,6 @@
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?84de9940d0baf7f03fd5a835ef74c5e3999acefd"></script>
+<script src="elementlist.js?0d86479586dd7588ff6b160a8732b3f6c120785d"></script>
 </body>
 </html>

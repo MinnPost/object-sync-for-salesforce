@@ -37,7 +37,7 @@
 				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
-				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
+				<li><a href="class-Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
 			</ul>
 
 
@@ -141,7 +141,7 @@
 </span><span id="57" class="l"><a href="#57">  57: </a>        <span class="php-var">$this</span>-&gt;schedule = <span class="php-var">$this</span>-&gt;schedule();
 </span><span id="58" class="l"><a href="#58">  58: </a>
 </span><span id="59" class="l"><a href="#59">  59: </a>        <span class="php-comment">// load the schedule class</span>
-</span><span id="60" class="l"><a href="#60">  60: </a>        <span class="php-comment">// the schedule needs to just run all the time at its configured intervals because wordpress will never trigger it on its own, ie by creating an object</span>
+</span><span id="60" class="l"><a href="#60">  60: </a>        <span class="php-comment">// the schedule needs to just run all the time at its configured intervals because WordPress will never trigger it on its own, ie by creating an object</span>
 </span><span id="61" class="l"><a href="#61">  61: </a>        <span class="php-var">$schedule</span> = <span class="php-var">$this</span>-&gt;schedule;
 </span><span id="62" class="l"><a href="#62">  62: </a>        <span class="php-comment">// create new schedule based on the options for this current class</span>
 </span><span id="63" class="l"><a href="#63">  63: </a>        <span class="php-comment">// this will use the existing schedule if it already exists; otherwise it'll create one</span>
@@ -388,7 +388,7 @@
 </span><span id="304" class="l"><a href="#304"> 304: </a>        <span class="php-comment">// Iterate over each field mapping to determine our query parameters.</span>
 </span><span id="305" class="l"><a href="#305"> 305: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$mappings</span> <span class="php-keyword1">as</span> <span class="php-var">$mapping</span> ) {
 </span><span id="306" class="l"><a href="#306"> 306: </a>
-</span><span id="307" class="l"><a href="#307"> 307: </a>            <span class="php-comment">// only use fields that come from salesforce to wordpress, or that sync</span>
+</span><span id="307" class="l"><a href="#307"> 307: </a>            <span class="php-comment">// only use fields that come from Salesforce to WordPress, or that sync</span>
 </span><span id="308" class="l"><a href="#308"> 308: </a>            <span class="php-var">$mapped_fields</span> = <span class="php-keyword2">array_merge</span>(
 </span><span id="309" class="l"><a href="#309"> 309: </a>                <span class="php-var">$mapped_fields</span>,
 </span><span id="310" class="l"><a href="#310"> 310: </a>                <span class="php-var">$this</span>-&gt;mappings-&gt;get_mapped_fields(
@@ -580,11 +580,11 @@
 </span><span id="496" class="l"><a href="#496"> 496: </a>
 </span><span id="497" class="l"><a href="#497"> 497: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$salesforce_mappings</span> <span class="php-keyword1">as</span> <span class="php-var">$salesforce_mapping</span> ) {
 </span><span id="498" class="l"><a href="#498"> 498: </a>
-</span><span id="499" class="l"><a href="#499"> 499: </a>            <span class="php-comment">// this returns the row that maps the individual salesforce row to the individual wordpress row</span>
+</span><span id="499" class="l"><a href="#499"> 499: </a>            <span class="php-comment">// this returns the row that maps the individual Salesforce row to the individual WordPress row</span>
 </span><span id="500" class="l"><a href="#500"> 500: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$object</span>[<span class="php-quote">'Id'</span>] ) ) {
 </span><span id="501" class="l"><a href="#501"> 501: </a>                <span class="php-var">$mapping_object</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;load_by_salesforce( <span class="php-var">$object</span>[<span class="php-quote">'Id'</span>] );
 </span><span id="502" class="l"><a href="#502"> 502: </a>            } <span class="php-keyword1">else</span> {
-</span><span id="503" class="l"><a href="#503"> 503: </a>                <span class="php-comment">// if we don't have a salesforce object id, we've got no business doing stuff in wordpress</span>
+</span><span id="503" class="l"><a href="#503"> 503: </a>                <span class="php-comment">// if we don't have a Salesforce object id, we've got no business doing stuff in WordPress</span>
 </span><span id="504" class="l"><a href="#504"> 504: </a>                <span class="php-var">$status</span> = <span class="php-quote">'error'</span>;
 </span><span id="505" class="l"><a href="#505"> 505: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="506" class="l"><a href="#506"> 506: </a>                    <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
@@ -627,7 +627,7 @@
 </span><span id="543" class="l"><a href="#543"> 543: </a>            <span class="php-comment">// hook to allow other plugins to define or alter the mapping object</span>
 </span><span id="544" class="l"><a href="#544"> 544: </a>            <span class="php-var">$mapping_object</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_pull_mapping_object'</span>, <span class="php-var">$mapping_object</span>, <span class="php-var">$object</span>, <span class="php-var">$mapping</span> );
 </span><span id="545" class="l"><a href="#545"> 545: </a>
-</span><span id="546" class="l"><a href="#546"> 546: </a>            <span class="php-comment">// we already have the data from salesforce at this point; we just need to work with it in wordpress</span>
+</span><span id="546" class="l"><a href="#546"> 546: </a>            <span class="php-comment">// we already have the data from Salesforce at this point; we just need to work with it in WordPress</span>
 </span><span id="547" class="l"><a href="#547"> 547: </a>            <span class="php-var">$synced_object</span> = <span class="php-keyword1">array</span>(
 </span><span id="548" class="l"><a href="#548"> 548: </a>                <span class="php-quote">'salesforce_object'</span> =&gt; <span class="php-var">$object</span>,
 </span><span id="549" class="l"><a href="#549"> 549: </a>                <span class="php-quote">'mapping_object'</span> =&gt; <span class="php-var">$mapping_object</span>,
@@ -639,18 +639,18 @@
 </span><span id="555" class="l"><a href="#555"> 555: </a>
 </span><span id="556" class="l"><a href="#556"> 556: </a>            <span class="php-var">$op</span> = <span class="php-quote">''</span>;
 </span><span id="557" class="l"><a href="#557"> 557: </a>
-</span><span id="558" class="l"><a href="#558"> 558: </a>            <span class="php-comment">// are these objects already connected in wordpress?</span>
+</span><span id="558" class="l"><a href="#558"> 558: </a>            <span class="php-comment">// are these objects already connected in WordPress?</span>
 </span><span id="559" class="l"><a href="#559"> 559: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] ) ) {
 </span><span id="560" class="l"><a href="#560"> 560: </a>                <span class="php-var">$is_new</span> = <span class="php-keyword1">false</span>;
 </span><span id="561" class="l"><a href="#561"> 561: </a>                <span class="php-var">$mapping_object_id_transient</span> = <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>];
 </span><span id="562" class="l"><a href="#562"> 562: </a>            } <span class="php-keyword1">else</span> {
-</span><span id="563" class="l"><a href="#563"> 563: </a>                <span class="php-comment">// there is not a mapping object for this wordpress object id yet</span>
+</span><span id="563" class="l"><a href="#563"> 563: </a>                <span class="php-comment">// there is not a mapping object for this WordPress object id yet</span>
 </span><span id="564" class="l"><a href="#564"> 564: </a>                <span class="php-comment">// check for that transient with the currently pushing id</span>
 </span><span id="565" class="l"><a href="#565"> 565: </a>                <span class="php-var">$is_new</span> = <span class="php-keyword1">true</span>;
 </span><span id="566" class="l"><a href="#566"> 566: </a>                <span class="php-var">$mapping_object_id_transient</span> = get_transient( <span class="php-quote">'salesforce_pushing_object_id'</span> );
 </span><span id="567" class="l"><a href="#567"> 567: </a>            }
 </span><span id="568" class="l"><a href="#568"> 568: </a>
-</span><span id="569" class="l"><a href="#569"> 569: </a>            <span class="php-comment">// drupal only does a salesforce_pull flag, but we might as well do push and pull because wordpress</span>
+</span><span id="569" class="l"><a href="#569"> 569: </a>            <span class="php-comment">// Drupal only does a salesforce_pull flag, but we might as well do push and pull because WordPress</span>
 </span><span id="570" class="l"><a href="#570"> 570: </a>            <span class="php-var">$salesforce_pushing</span> = (int) get_transient( <span class="php-quote">'salesforce_pushing_'</span> . <span class="php-var">$mapping_object_id_transient</span> );
 </span><span id="571" class="l"><a href="#571"> 571: </a>            <span class="php-keyword1">if</span> ( <span class="php-num">1</span> === <span class="php-var">$salesforce_pushing</span> ) {
 </span><span id="572" class="l"><a href="#572"> 572: </a>                <span class="php-var">$transients_to_delete</span>[] = <span class="php-var">$mapping_object_id_transient</span>;
@@ -678,7 +678,7 @@
 </span><span id="594" class="l"><a href="#594"> 594: </a>                                <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="595" class="l"><a href="#595"> 595: </a>                            }
 </span><span id="596" class="l"><a href="#596"> 596: </a>
-</span><span id="597" class="l"><a href="#597"> 597: </a>                            <span class="php-comment">// translators: placeholders are: 1) what operation is happening, 2) the name of the wordpress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value</span>
+</span><span id="597" class="l"><a href="#597"> 597: </a>                            <span class="php-comment">// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value</span>
 </span><span id="598" class="l"><a href="#598"> 598: </a>                            <span class="php-var">$title</span> = <span class="php-keyword2">sprintf</span>( esc_html__( <span class="php-quote">'Error: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
 </span><span id="599" class="l"><a href="#599"> 599: </a>                                esc_attr( <span class="php-var">$op</span> ),
 </span><span id="600" class="l"><a href="#600"> 600: </a>                                esc_attr( <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'wordpress_object'</span>] ),
@@ -720,7 +720,7 @@
 </span><span id="636" class="l"><a href="#636"> 636: </a>                                <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="637" class="l"><a href="#637"> 637: </a>                            }
 </span><span id="638" class="l"><a href="#638"> 638: </a>
-</span><span id="639" class="l"><a href="#639"> 639: </a>                            <span class="php-comment">// translators: placeholders are: 1) what operation is happening, 2) the name of the wordpress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value</span>
+</span><span id="639" class="l"><a href="#639"> 639: </a>                            <span class="php-comment">// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value</span>
 </span><span id="640" class="l"><a href="#640"> 640: </a>                            <span class="php-var">$title</span> = <span class="php-keyword2">sprintf</span>( esc_html__( <span class="php-quote">'Success: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
 </span><span id="641" class="l"><a href="#641"> 641: </a>                                esc_attr( <span class="php-var">$op</span> ),
 </span><span id="642" class="l"><a href="#642"> 642: </a>                                esc_attr( <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'wordpress_object'</span>] ),
@@ -763,7 +763,7 @@
 </span><span id="679" class="l"><a href="#679"> 679: </a>                            <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="680" class="l"><a href="#680"> 680: </a>                        }
 </span><span id="681" class="l"><a href="#681"> 681: </a>
-</span><span id="682" class="l"><a href="#682"> 682: </a>                        <span class="php-comment">// translators: placeholders are: 1) what operation is happening, 2) the name of the wordpress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value</span>
+</span><span id="682" class="l"><a href="#682"> 682: </a>                        <span class="php-comment">// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value</span>
 </span><span id="683" class="l"><a href="#683"> 683: </a>                        <span class="php-var">$title</span> = <span class="php-keyword2">sprintf</span>( esc_html__( <span class="php-quote">'Notice: %1$s %2$s with %3$s of %4$s (%5$s %6$s) did not delete the WordPress item.'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
 </span><span id="684" class="l"><a href="#684"> 684: </a>                            esc_attr( <span class="php-var">$op</span> ),
 </span><span id="685" class="l"><a href="#685"> 685: </a>                            esc_attr( <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'wordpress_object'</span>] ),
@@ -782,28 +782,28 @@
 </span><span id="698" class="l"><a href="#698"> 698: </a>                        );
 </span><span id="699" class="l"><a href="#699"> 699: </a>                    } <span class="php-comment">// End if().</span>
 </span><span id="700" class="l"><a href="#700"> 700: </a>
-</span><span id="701" class="l"><a href="#701"> 701: </a>                    <span class="php-comment">// delete the map row from wordpress after the wordpress row has been deleted</span>
-</span><span id="702" class="l"><a href="#702"> 702: </a>                    <span class="php-comment">// we delete the map row even if the wordpress delete failed, because the salesforce object is gone</span>
+</span><span id="701" class="l"><a href="#701"> 701: </a>                    <span class="php-comment">// delete the map row from WordPress after the WordPress row has been deleted</span>
+</span><span id="702" class="l"><a href="#702"> 702: </a>                    <span class="php-comment">// we delete the map row even if the WordPress delete failed, because the Salesforce object is gone</span>
 </span><span id="703" class="l"><a href="#703"> 703: </a>                    <span class="php-var">$this</span>-&gt;mappings-&gt;delete_object_map( <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] );
 </span><span id="704" class="l"><a href="#704"> 704: </a>                    <span class="php-comment">// there is no map row if we end this if statement</span>
 </span><span id="705" class="l"><a href="#705"> 705: </a>                } <span class="php-comment">// End if().</span>
 </span><span id="706" class="l"><a href="#706"> 706: </a>                <span class="php-keyword1">return</span>;
 </span><span id="707" class="l"><a href="#707"> 707: </a>            } <span class="php-comment">// End if().</span>
 </span><span id="708" class="l"><a href="#708"> 708: </a>
-</span><span id="709" class="l"><a href="#709"> 709: </a>            <span class="php-comment">// map the salesforce values to wordpress fields</span>
+</span><span id="709" class="l"><a href="#709"> 709: </a>            <span class="php-comment">// map the Salesforce values to WordPress fields</span>
 </span><span id="710" class="l"><a href="#710"> 710: </a>            <span class="php-var">$params</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;map_params( <span class="php-var">$mapping</span>, <span class="php-var">$object</span>, <span class="php-var">$sf_sync_trigger</span>, <span class="php-keyword1">false</span>, <span class="php-var">$is_new</span> );
 </span><span id="711" class="l"><a href="#711"> 711: </a>
 </span><span id="712" class="l"><a href="#712"> 712: </a>            <span class="php-comment">// hook to allow other plugins to modify the $params array</span>
-</span><span id="713" class="l"><a href="#713"> 713: </a>            <span class="php-comment">// use hook to map fields between the wordpress and salesforce objects</span>
+</span><span id="713" class="l"><a href="#713"> 713: </a>            <span class="php-comment">// use hook to map fields between the WordPress and Salesforce objects</span>
 </span><span id="714" class="l"><a href="#714"> 714: </a>            <span class="php-comment">// returns $params.</span>
 </span><span id="715" class="l"><a href="#715"> 715: </a>            <span class="php-var">$params</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_pull_params_modify'</span>, <span class="php-var">$params</span>, <span class="php-var">$mapping</span>, <span class="php-var">$object</span>, <span class="php-var">$sf_sync_trigger</span>, <span class="php-keyword1">false</span>, <span class="php-var">$is_new</span> );
 </span><span id="716" class="l"><a href="#716"> 716: </a>
-</span><span id="717" class="l"><a href="#717"> 717: </a>            <span class="php-comment">// if we don't get any params, there are no fields that should be sent to wordpress</span>
+</span><span id="717" class="l"><a href="#717"> 717: </a>            <span class="php-comment">// if we don't get any params, there are no fields that should be sent to WordPress</span>
 </span><span id="718" class="l"><a href="#718"> 718: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$params</span> ) ) {
 </span><span id="719" class="l"><a href="#719"> 719: </a>                <span class="php-keyword1">return</span>;
 </span><span id="720" class="l"><a href="#720"> 720: </a>            }
 </span><span id="721" class="l"><a href="#721"> 721: </a>
-</span><span id="722" class="l"><a href="#722"> 722: </a>            <span class="php-comment">// if there is a prematch wordpress field - ie email - on the fieldmap object</span>
+</span><span id="722" class="l"><a href="#722"> 722: </a>            <span class="php-comment">// if there is a prematch WordPress field - ie email - on the fieldmap object</span>
 </span><span id="723" class="l"><a href="#723"> 723: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>] ) &amp;&amp; <span class="php-keyword2">is_array</span>( <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>] ) ) {
 </span><span id="724" class="l"><a href="#724"> 724: </a>                <span class="php-var">$prematch_field_wordpress</span> = <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>][<span class="php-quote">'wordpress_field'</span>];
 </span><span id="725" class="l"><a href="#725"> 725: </a>                <span class="php-var">$prematch_field_salesforce</span> = <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>][<span class="php-quote">'salesforce_field'</span>];
@@ -858,10 +858,10 @@
 </span><span id="774" class="l"><a href="#774"> 774: </a>                    <span class="php-comment">// ex: match a WordPress user based on some other criteria than the predefined ones</span>
 </span><span id="775" class="l"><a href="#775"> 775: </a>                    <span class="php-comment">// returns a $salesforce_id.</span>
 </span><span id="776" class="l"><a href="#776"> 776: </a>                    <span class="php-comment">// it should keep NULL if there is no match</span>
-</span><span id="777" class="l"><a href="#777"> 777: </a>                    <span class="php-comment">// the function that calls this hook needs to check the mapping to make sure the wordpress object is the right type</span>
+</span><span id="777" class="l"><a href="#777"> 777: </a>                    <span class="php-comment">// the function that calls this hook needs to check the mapping to make sure the WordPress object is the right type</span>
 </span><span id="778" class="l"><a href="#778"> 778: </a>                    <span class="php-var">$wordpress_id</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_find_wp_object_match'</span>, <span class="php-keyword1">null</span>, <span class="php-var">$object</span>, <span class="php-var">$mapping</span>, <span class="php-quote">'pull'</span> );
 </span><span id="779" class="l"><a href="#779"> 779: </a>
-</span><span id="780" class="l"><a href="#780"> 780: </a>                    <span class="php-comment">// hook to allow other plugins to do something right before wordpress data is saved</span>
+</span><span id="780" class="l"><a href="#780"> 780: </a>                    <span class="php-comment">// hook to allow other plugins to do something right before WordPress data is saved</span>
 </span><span id="781" class="l"><a href="#781"> 781: </a>                    <span class="php-comment">// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't</span>
 </span><span id="782" class="l"><a href="#782"> 782: </a>                    do_action( <span class="php-quote">'object_sync_for_salesforce_pre_pull'</span>, <span class="php-var">$wordpress_id</span>, <span class="php-var">$mapping</span>, <span class="php-var">$object</span>, <span class="php-var">$object_id</span>, <span class="php-var">$params</span> );
 </span><span id="783" class="l"><a href="#783"> 783: </a>
@@ -893,8 +893,8 @@
 </span><span id="809" class="l"><a href="#809"> 809: </a>                            <span class="php-var">$wordpress_id</span> = <span class="php-var">$this</span>-&gt;wordpress-&gt;object_upsert( <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'wordpress_object'</span>], <span class="php-var">$upsert_key</span>, <span class="php-var">$upsert_value</span>, <span class="php-var">$upsert_methods</span>, <span class="php-var">$params</span>, <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'push_drafts'</span>], <span class="php-keyword1">true</span> );
 </span><span id="810" class="l"><a href="#810"> 810: </a>                        }
 </span><span id="811" class="l"><a href="#811"> 811: </a>
-</span><span id="812" class="l"><a href="#812"> 812: </a>                        <span class="php-comment">// find out if there is a mapping object for this wordpress object already</span>
-</span><span id="813" class="l"><a href="#813"> 813: </a>                        <span class="php-comment">// don't do it if the wordpress id is 0.</span>
+</span><span id="812" class="l"><a href="#812"> 812: </a>                        <span class="php-comment">// find out if there is a mapping object for this WordPress object already</span>
+</span><span id="813" class="l"><a href="#813"> 813: </a>                        <span class="php-comment">// don't do it if the WordPress id is 0.</span>
 </span><span id="814" class="l"><a href="#814"> 814: </a>                        <span class="php-keyword1">if</span> ( <span class="php-num">0</span> !== <span class="php-var">$wordpress_id</span> ) {
 </span><span id="815" class="l"><a href="#815"> 815: </a>                            <span class="php-var">$mapping_object</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;get_object_maps(
 </span><span id="816" class="l"><a href="#816"> 816: </a>                                <span class="php-keyword1">array</span>(
@@ -951,7 +951,7 @@
 </span><span id="867" class="l"><a href="#867"> 867: </a>                            } <span class="php-comment">// End if().</span>
 </span><span id="868" class="l"><a href="#868"> 868: </a>                        } <span class="php-comment">// End if().</span>
 </span><span id="869" class="l"><a href="#869"> 869: </a>
-</span><span id="870" class="l"><a href="#870"> 870: </a>                        <span class="php-comment">// there is already a mapping object. don't change the wordpress data to match this new salesforce record, but log it</span>
+</span><span id="870" class="l"><a href="#870"> 870: </a>                        <span class="php-comment">// there is already a mapping object. don't change the WordPress data to match this new Salesforce record, but log it</span>
 </span><span id="871" class="l"><a href="#871"> 871: </a>                        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] ) ) {
 </span><span id="872" class="l"><a href="#872"> 872: </a>                            <span class="php-comment">// set the transient so that salesforce_push doesn't start doing stuff, then return out of here</span>
 </span><span id="873" class="l"><a href="#873"> 873: </a>                            set_transient( <span class="php-quote">'salesforce_pulling_'</span> . <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>], <span class="php-num">1</span>, <span class="php-var">$seconds</span> );
@@ -981,7 +981,7 @@
 </span><span id="897" class="l"><a href="#897"> 897: </a>                            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Logging'</span> ) ) {
 </span><span id="898" class="l"><a href="#898"> 898: </a>                                <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="899" class="l"><a href="#899"> 899: </a>                            }
-</span><span id="900" class="l"><a href="#900"> 900: </a>                            <span class="php-comment">// if we know the wordpress object id we can put it in there</span>
+</span><span id="900" class="l"><a href="#900"> 900: </a>                            <span class="php-comment">// if we know the WordPress object id we can put it in there</span>
 </span><span id="901" class="l"><a href="#901"> 901: </a>                            <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> !== <span class="php-var">$wordpress_id</span> ) {
 </span><span id="902" class="l"><a href="#902"> 902: </a>                                <span class="php-var">$parent</span> = <span class="php-var">$wordpress_id</span>;
 </span><span id="903" class="l"><a href="#903"> 903: </a>                            } <span class="php-keyword1">else</span> {
@@ -994,7 +994,7 @@
 </span><span id="910" class="l"><a href="#910"> 910: </a>                                <span class="php-var">$parent</span>,
 </span><span id="911" class="l"><a href="#911"> 911: </a>                                <span class="php-var">$status</span>
 </span><span id="912" class="l"><a href="#912"> 912: </a>                            );
-</span><span id="913" class="l"><a href="#913"> 913: </a>                            <span class="php-comment">// exit out of here without saving any data in wordpress</span>
+</span><span id="913" class="l"><a href="#913"> 913: </a>                            <span class="php-comment">// exit out of here without saving any data in WordPress</span>
 </span><span id="914" class="l"><a href="#914"> 914: </a>                            <span class="php-keyword1">return</span>;
 </span><span id="915" class="l"><a href="#915"> 915: </a>                        } <span class="php-comment">// End if().</span>
 </span><span id="916" class="l"><a href="#916"> 916: </a>
@@ -1054,7 +1054,7 @@
 </span><span id="970" class="l"><a href="#970"> 970: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="971" class="l"><a href="#971"> 971: </a>                    }
 </span><span id="972" class="l"><a href="#972"> 972: </a>
-</span><span id="973" class="l"><a href="#973"> 973: </a>                    <span class="php-comment">// if we know the wordpress object id we can put it in there</span>
+</span><span id="973" class="l"><a href="#973"> 973: </a>                    <span class="php-comment">// if we know the WordPress object id we can put it in there</span>
 </span><span id="974" class="l"><a href="#974"> 974: </a>                    <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> !== <span class="php-var">$wordpress_id</span> ) {
 </span><span id="975" class="l"><a href="#975"> 975: </a>                        <span class="php-var">$parent</span> = <span class="php-var">$wordpress_id</span>;
 </span><span id="976" class="l"><a href="#976"> 976: </a>                    } <span class="php-keyword1">else</span> {
@@ -1093,9 +1093,9 @@
 </span><span id="1009" class="l"><a href="#1009">1009: </a>                    <span class="php-var">$wordpress_id</span> = <span class="php-num">0</span>;
 </span><span id="1010" class="l"><a href="#1010">1010: </a>                }
 </span><span id="1011" class="l"><a href="#1011">1011: </a>
-</span><span id="1012" class="l"><a href="#1012">1012: </a>                <span class="php-comment">// wordpress crud call was successful</span>
-</span><span id="1013" class="l"><a href="#1013">1013: </a>                <span class="php-comment">// this means the object has already been created/updated in wordpress</span>
-</span><span id="1014" class="l"><a href="#1014">1014: </a>                <span class="php-comment">// this is not redundant because this is where it creates the object mapping rows in wordpress if the object does not already have one (we are still inside $is_new === TRUE here)</span>
+</span><span id="1012" class="l"><a href="#1012">1012: </a>                <span class="php-comment">// WordPress crud call was successful</span>
+</span><span id="1013" class="l"><a href="#1013">1013: </a>                <span class="php-comment">// this means the object has already been created/updated in WordPress</span>
+</span><span id="1014" class="l"><a href="#1014">1014: </a>                <span class="php-comment">// this is not redundant because this is where it creates the object mapping rows in WordPress if the object does not already have one (we are still inside $is_new === TRUE here)</span>
 </span><span id="1015" class="l"><a href="#1015">1015: </a>
 </span><span id="1016" class="l"><a href="#1016">1016: </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$result</span>[<span class="php-quote">'errors'</span>] ) ) {
 </span><span id="1017" class="l"><a href="#1017">1017: </a>                    <span class="php-var">$status</span> = <span class="php-quote">'success'</span>;
@@ -1106,7 +1106,7 @@
 </span><span id="1022" class="l"><a href="#1022">1022: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="1023" class="l"><a href="#1023">1023: </a>                    }
 </span><span id="1024" class="l"><a href="#1024">1024: </a>
-</span><span id="1025" class="l"><a href="#1025">1025: </a>                    <span class="php-comment">// translators: placeholders are: 1) what operation is happening, 2) the name of the wordpress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value</span>
+</span><span id="1025" class="l"><a href="#1025">1025: </a>                    <span class="php-comment">// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value</span>
 </span><span id="1026" class="l"><a href="#1026">1026: </a>                    <span class="php-var">$title</span> = <span class="php-keyword2">sprintf</span>( esc_html__( <span class="php-quote">'Success: %1$s %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
 </span><span id="1027" class="l"><a href="#1027">1027: </a>                        esc_attr( <span class="php-var">$op</span> ),
 </span><span id="1028" class="l"><a href="#1028">1028: </a>                        esc_attr( <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'wordpress_object'</span>] ),
@@ -1182,7 +1182,7 @@
 </span><span id="1098" class="l"><a href="#1098">1098: </a>                set_transient( <span class="php-quote">'salesforce_pulling_object_id'</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] );
 </span><span id="1099" class="l"><a href="#1099">1099: </a>
 </span><span id="1100" class="l"><a href="#1100">1100: </a>                <span class="php-comment">// there is an existing object link</span>
-</span><span id="1101" class="l"><a href="#1101">1101: </a>                <span class="php-comment">// if the last sync is greater than the last time this object was updated by salesforce, skip it</span>
+</span><span id="1101" class="l"><a href="#1101">1101: </a>                <span class="php-comment">// if the last sync is greater than the last time this object was updated by Salesforce, skip it</span>
 </span><span id="1102" class="l"><a href="#1102">1102: </a>                <span class="php-comment">// this keeps us from doing redundant syncs</span>
 </span><span id="1103" class="l"><a href="#1103">1103: </a>                <span class="php-comment">// because SF stores all DateTimes in UTC.</span>
 </span><span id="1104" class="l"><a href="#1104">1104: </a>                <span class="php-var">$mapping_object</span>[<span class="php-quote">'object_updated'</span>] = current_time( <span class="php-quote">'mysql'</span> );
@@ -1192,7 +1192,7 @@
 </span><span id="1108" class="l"><a href="#1108">1108: </a>
 </span><span id="1109" class="l"><a href="#1109">1109: </a>                <span class="php-keyword1">try</span> {
 </span><span id="1110" class="l"><a href="#1110">1110: </a>
-</span><span id="1111" class="l"><a href="#1111">1111: </a>                    <span class="php-comment">// hook to allow other plugins to do something right before wordpress data is saved</span>
+</span><span id="1111" class="l"><a href="#1111">1111: </a>                    <span class="php-comment">// hook to allow other plugins to do something right before WordPress data is saved</span>
 </span><span id="1112" class="l"><a href="#1112">1112: </a>                    <span class="php-comment">// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't</span>
 </span><span id="1113" class="l"><a href="#1113">1113: </a>                    do_action( <span class="php-quote">'object_sync_for_salesforce_pre_pull'</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'wordpress_id'</span>], <span class="php-var">$mapping</span>, <span class="php-var">$object</span>, <span class="php-var">$object_id</span>, <span class="php-var">$params</span> );
 </span><span id="1114" class="l"><a href="#1114">1114: </a>
@@ -1209,7 +1209,7 @@
 </span><span id="1125" class="l"><a href="#1125">1125: </a>                        <span class="php-var">$logging</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Logging( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version );
 </span><span id="1126" class="l"><a href="#1126">1126: </a>                    }
 </span><span id="1127" class="l"><a href="#1127">1127: </a>
-</span><span id="1128" class="l"><a href="#1128">1128: </a>                    <span class="php-comment">// translators: placeholders are: 1) what operation is happening, 2) the name of the wordpress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value</span>
+</span><span id="1128" class="l"><a href="#1128">1128: </a>                    <span class="php-comment">// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value</span>
 </span><span id="1129" class="l"><a href="#1129">1129: </a>                    <span class="php-var">$title</span> = <span class="php-keyword2">sprintf</span>( esc_html__( <span class="php-quote">'Success: %1$s %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ),
 </span><span id="1130" class="l"><a href="#1130">1130: </a>                        esc_attr( <span class="php-var">$op</span> ),
 </span><span id="1131" class="l"><a href="#1131">1131: </a>                        esc_attr( <span class="php-var">$salesforce_mapping</span>[<span class="php-quote">'wordpress_object'</span>] ),
@@ -1277,12 +1277,12 @@
 </span><span id="1193" class="l"><a href="#1193">1193: </a>
 </span><span id="1194" class="l"><a href="#1194">1194: </a>                <span class="php-comment">// need to move these into the success check</span>
 </span><span id="1195" class="l"><a href="#1195">1195: </a>
-</span><span id="1196" class="l"><a href="#1196">1196: </a>                <span class="php-comment">// maybe can check to see if we actually updated anything in wordpress</span>
+</span><span id="1196" class="l"><a href="#1196">1196: </a>                <span class="php-comment">// maybe can check to see if we actually updated anything in WordPress</span>
 </span><span id="1197" class="l"><a href="#1197">1197: </a>                <span class="php-comment">// tell the mapping object - whether it is new or already existed - how we just used it</span>
 </span><span id="1198" class="l"><a href="#1198">1198: </a>                <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync_action'</span>] = <span class="php-quote">'pull'</span>;
 </span><span id="1199" class="l"><a href="#1199">1199: </a>                <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync'</span>] = current_time( <span class="php-quote">'mysql'</span> );
 </span><span id="1200" class="l"><a href="#1200">1200: </a>
-</span><span id="1201" class="l"><a href="#1201">1201: </a>                <span class="php-comment">// update that mapping object. the salesforce data version will be set here as well because we set it earlier</span>
+</span><span id="1201" class="l"><a href="#1201">1201: </a>                <span class="php-comment">// update that mapping object. the Salesforce data version will be set here as well because we set it earlier</span>
 </span><span id="1202" class="l"><a href="#1202">1202: </a>                <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;update_object_map( <span class="php-var">$mapping_object</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] );
 </span><span id="1203" class="l"><a href="#1203">1203: </a>                <span class="php-comment">// end of the if statement for is_new &amp; update or create trigger</span>
 </span><span id="1204" class="l"><a href="#1204">1204: </a>                <span class="php-comment">// this keeps stuff from running too many times, and also keeps it from using the wrong methods. we don't need a generic } else { here at this time.</span>
@@ -1347,6 +1347,6 @@
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?84de9940d0baf7f03fd5a835ef74c5e3999acefd"></script>
+<script src="elementlist.js?0d86479586dd7588ff6b160a8732b3f6c120785d"></script>
 </body>
 </html>

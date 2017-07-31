@@ -37,7 +37,7 @@
 				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
-				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
+				<li><a href="class-Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
 			</ul>
 
 
@@ -86,7 +86,7 @@
 </span><span id="2" class="l"><a href="#2">  2: </a><span class="php-comment">/*
 </span></span><span id="3" class="l"><a href="#3">  3: </a><span class="php-comment">Plugin Name: Object Sync for Salesforce
 </span></span><span id="4" class="l"><a href="#4">  4: </a><span class="php-comment">Description: WordPress plugin that implements mapping and syncing between Salesforce objects and WordPress objects
-</span></span><span id="5" class="l"><a href="#5">  5: </a><span class="php-comment">Version: 1.0.5
+</span></span><span id="5" class="l"><a href="#5">  5: </a><span class="php-comment">Version: 1.0.6
 </span></span><span id="6" class="l"><a href="#6">  6: </a><span class="php-comment">Author: MinnPost
 </span></span><span id="7" class="l"><a href="#7">  7: </a><span class="php-comment">Author URI: http://code.minnpost.com
 </span></span><span id="8" class="l"><a href="#8">  8: </a><span class="php-comment">License: GPL2+
@@ -148,7 +148,7 @@
 </span><span id="64" class="l"><a href="#64"> 64: </a>
 </span><span id="65" class="l"><a href="#65"> 65: </a>    <span class="php-comment">/**
 </span></span><span id="66" class="l"><a href="#66"> 66: </a><span class="php-comment">    * @var object
-</span></span><span id="67" class="l"><a href="#67"> 67: </a><span class="php-comment">    * Load and initialize the Object_Sync_Sf_Wordpress class
+</span></span><span id="67" class="l"><a href="#67"> 67: </a><span class="php-comment">    * Load and initialize the Object_Sync_Sf_WordPress class
 </span></span><span id="68" class="l"><a href="#68"> 68: </a><span class="php-comment">    */</span>
 </span><span id="69" class="l"><a href="#69"> 69: </a>    <span class="php-keyword1">private</span> <span class="php-var">$wordpress</span>;
 </span><span id="70" class="l"><a href="#70"> 70: </a>
@@ -203,7 +203,7 @@
 </span><span id="119" class="l"><a href="#119">119: </a>        <span class="php-keyword1">global</span> <span class="php-var">$wpdb</span>;
 </span><span id="120" class="l"><a href="#120">120: </a>
 </span><span id="121" class="l"><a href="#121">121: </a>        <span class="php-var">$this</span>-&gt;wpdb = <span class="php-var">$wpdb</span>;
-</span><span id="122" class="l"><a href="#122">122: </a>        <span class="php-var">$this</span>-&gt;version = <span class="php-quote">'1.0.5'</span>;
+</span><span id="122" class="l"><a href="#122">122: </a>        <span class="php-var">$this</span>-&gt;version = <span class="php-quote">'1.0.6'</span>;
 </span><span id="123" class="l"><a href="#123">123: </a>        <span class="php-var">$this</span>-&gt;login_credentials = <span class="php-var">$this</span>-&gt;get_login_credentials();
 </span><span id="124" class="l"><a href="#124">124: </a>        <span class="php-var">$this</span>-&gt;slug = <span class="php-quote">'object-sync-for-salesforce'</span>;
 </span><span id="125" class="l"><a href="#125">125: </a>
@@ -238,9 +238,9 @@
 </span></span><span id="154" class="l"><a href="#154">154: </a><span class="php-comment">         *          'class' =&gt; 'Object_Sync_Sf_Salesforce_Push',
 </span></span><span id="155" class="l"><a href="#155">155: </a><span class="php-comment">         *          'callback' =&gt; 'salesforce_push_sync_rest',
 </span></span><span id="156" class="l"><a href="#156">156: </a><span class="php-comment">         *      ),
-</span></span><span id="157" class="l"><a href="#157">157: </a><span class="php-comment">         *      'wordpress' =&gt; array(
+</span></span><span id="157" class="l"><a href="#157">157: </a><span class="php-comment">         *      'wordpress' =&gt; array( // WPCS: spelling ok.
 </span></span><span id="158" class="l"><a href="#158">158: </a><span class="php-comment">         *          'label' =&gt; 'WordPress',
-</span></span><span id="159" class="l"><a href="#159">159: </a><span class="php-comment">         *          'class' =&gt; 'Object_Sync_Sf_Wordpress',
+</span></span><span id="159" class="l"><a href="#159">159: </a><span class="php-comment">         *          'class' =&gt; 'Object_Sync_Sf_WordPress',
 </span></span><span id="160" class="l"><a href="#160">160: </a><span class="php-comment">         *      ),
 </span></span><span id="161" class="l"><a href="#161">161: </a><span class="php-comment">         *      'salesforce' =&gt; array(
 </span></span><span id="162" class="l"><a href="#162">162: </a><span class="php-comment">         *          'label' =&gt; 'Salesforce Authorization',
@@ -277,7 +277,7 @@
 </span></span><span id="193" class="l"><a href="#193">193: </a><span class="php-comment">     * @param string $slug
 </span></span><span id="194" class="l"><a href="#194">194: </a><span class="php-comment">     *
 </span></span><span id="195" class="l"><a href="#195">195: </a><span class="php-comment">     * @return object
-</span></span><span id="196" class="l"><a href="#196">196: </a><span class="php-comment">     *  Instance of Object_Sync_Sf_Logging
+</span></span><span id="196" class="l"><a href="#196">196: </a><span class="php-comment">     *   Instance of Object_Sync_Sf_Logging
 </span></span><span id="197" class="l"><a href="#197">197: </a><span class="php-comment">     */</span>
 </span><span id="198" class="l"><a href="#198">198: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> logging( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span> ) {
 </span><span id="199" class="l"><a href="#199">199: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'WP_Logging'</span> ) &amp;&amp; <span class="php-keyword2">file_exists</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'vendor/autoload.php'</span> ) ) {
@@ -297,7 +297,7 @@
 </span></span><span id="213" class="l"><a href="#213">213: </a><span class="php-comment">     * @param object $logging
 </span></span><span id="214" class="l"><a href="#214">214: </a><span class="php-comment">     *
 </span></span><span id="215" class="l"><a href="#215">215: </a><span class="php-comment">     * @return object
-</span></span><span id="216" class="l"><a href="#216">216: </a><span class="php-comment">     *  Instance of Object_Sync_Sf_Mapping
+</span></span><span id="216" class="l"><a href="#216">216: </a><span class="php-comment">     *   Instance of Object_Sync_Sf_Mapping
 </span></span><span id="217" class="l"><a href="#217">217: </a><span class="php-comment">     */</span>
 </span><span id="218" class="l"><a href="#218">218: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> mappings( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$logging</span> ) {
 </span><span id="219" class="l"><a href="#219">219: </a>        <span class="php-keyword1">require_once</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/salesforce_mapping.php'</span> );
@@ -315,11 +315,11 @@
 </span></span><span id="231" class="l"><a href="#231">231: </a><span class="php-comment">    * @param object $logging
 </span></span><span id="232" class="l"><a href="#232">232: </a><span class="php-comment">    *
 </span></span><span id="233" class="l"><a href="#233">233: </a><span class="php-comment">    * @return object
-</span></span><span id="234" class="l"><a href="#234">234: </a><span class="php-comment">    *   Instance of Object_Sync_Sf_Wordpress
+</span></span><span id="234" class="l"><a href="#234">234: </a><span class="php-comment">    *   Instance of Object_Sync_Sf_WordPress
 </span></span><span id="235" class="l"><a href="#235">235: </a><span class="php-comment">    */</span>
 </span><span id="236" class="l"><a href="#236">236: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> wordpress( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span> ) {
 </span><span id="237" class="l"><a href="#237">237: </a>        <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/wordpress.php'</span>;
-</span><span id="238" class="l"><a href="#238">238: </a>        <span class="php-var">$wordpress</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Wordpress( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span> );
+</span><span id="238" class="l"><a href="#238">238: </a>        <span class="php-var">$wordpress</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_WordPress( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span> );
 </span><span id="239" class="l"><a href="#239">239: </a>        <span class="php-keyword1">return</span> <span class="php-var">$wordpress</span>;
 </span><span id="240" class="l"><a href="#240">240: </a>    }
 </span><span id="241" class="l"><a href="#241">241: </a>
@@ -367,7 +367,7 @@
 </span></span><span id="283" class="l"><a href="#283">283: </a><span class="php-comment">     * @param string $slug
 </span></span><span id="284" class="l"><a href="#284">284: </a><span class="php-comment">     *
 </span></span><span id="285" class="l"><a href="#285">285: </a><span class="php-comment">     * @return object
-</span></span><span id="286" class="l"><a href="#286">286: </a><span class="php-comment">     *  Instance of Wordpress_Salesforce_Activate
+</span></span><span id="286" class="l"><a href="#286">286: </a><span class="php-comment">     *   Instance of Wordpress_Salesforce_Activate
 </span></span><span id="287" class="l"><a href="#287">287: </a><span class="php-comment">     */</span>
 </span><span id="288" class="l"><a href="#288">288: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> activate( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span> ) {
 </span><span id="289" class="l"><a href="#289">289: </a>        <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/activate.php'</span>;
@@ -384,7 +384,7 @@
 </span></span><span id="300" class="l"><a href="#300">300: </a><span class="php-comment">     * @param array $schedulable_classes
 </span></span><span id="301" class="l"><a href="#301">301: </a><span class="php-comment">     *
 </span></span><span id="302" class="l"><a href="#302">302: </a><span class="php-comment">     * @return object
-</span></span><span id="303" class="l"><a href="#303">303: </a><span class="php-comment">     *  Instance of Wordpress_Salesforce_Deactivate
+</span></span><span id="303" class="l"><a href="#303">303: </a><span class="php-comment">     *   Instance of Wordpress_Salesforce_Deactivate
 </span></span><span id="304" class="l"><a href="#304">304: </a><span class="php-comment">     */</span>
 </span><span id="305" class="l"><a href="#305">305: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> deactivate( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$schedulable_classes</span> ) {
 </span><span id="306" class="l"><a href="#306">306: </a>        <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/deactivate.php'</span>;
@@ -406,7 +406,7 @@
 </span></span><span id="322" class="l"><a href="#322">322: </a><span class="php-comment">     * @param array $schedulable_classes
 </span></span><span id="323" class="l"><a href="#323">323: </a><span class="php-comment">     *
 </span></span><span id="324" class="l"><a href="#324">324: </a><span class="php-comment">     * @return object
-</span></span><span id="325" class="l"><a href="#325">325: </a><span class="php-comment">     *  Instance of Object_Sync_Sf_Salesforce_Push
+</span></span><span id="325" class="l"><a href="#325">325: </a><span class="php-comment">     *   Instance of Object_Sync_Sf_Salesforce_Push
 </span></span><span id="326" class="l"><a href="#326">326: </a><span class="php-comment">     */</span>
 </span><span id="327" class="l"><a href="#327">327: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> push( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$slug</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> ) {
 </span><span id="328" class="l"><a href="#328">328: </a>        <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/salesforce_push.php'</span>;
@@ -427,7 +427,7 @@
 </span></span><span id="343" class="l"><a href="#343">343: </a><span class="php-comment">     * @param object $logging
 </span></span><span id="344" class="l"><a href="#344">344: </a><span class="php-comment">     * @param array $schedulable_classes
 </span></span><span id="345" class="l"><a href="#345">345: </a><span class="php-comment">     * @return object
-</span></span><span id="346" class="l"><a href="#346">346: </a><span class="php-comment">     *  Instance of Object_Sync_Sf_Salesforce_Pull
+</span></span><span id="346" class="l"><a href="#346">346: </a><span class="php-comment">     *   Instance of Object_Sync_Sf_Salesforce_Pull
 </span></span><span id="347" class="l"><a href="#347">347: </a><span class="php-comment">     */</span>
 </span><span id="348" class="l"><a href="#348">348: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> pull( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$slug</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> ) {
 </span><span id="349" class="l"><a href="#349">349: </a>        <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'classes/salesforce_pull.php'</span>;
@@ -544,6 +544,6 @@
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?84de9940d0baf7f03fd5a835ef74c5e3999acefd"></script>
+<script src="elementlist.js?0d86479586dd7588ff6b160a8732b3f6c120785d"></script>
 </body>
 </html>

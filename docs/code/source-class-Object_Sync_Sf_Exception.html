@@ -37,7 +37,7 @@
 				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
-				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
+				<li><a href="class-Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
 			</ul>
 
 
@@ -323,8 +323,8 @@
 </span><span id="239" class="l"><a href="#239"> 239: </a>            <span class="php-var">$url</span> = <span class="php-var">$path</span>;
 </span><span id="240" class="l"><a href="#240"> 240: </a>        }
 </span><span id="241" class="l"><a href="#241"> 241: </a>        <span class="php-var">$headers</span> = <span class="php-keyword1">array</span>(
-</span><span id="242" class="l"><a href="#242"> 242: </a>          <span class="php-quote">'Authorization'</span> =&gt; <span class="php-quote">'Authorization: OAuth '</span> . <span class="php-var">$this</span>-&gt;get_access_token(),
-</span><span id="243" class="l"><a href="#243"> 243: </a>          <span class="php-quote">'Accept-Encoding'</span> =&gt; <span class="php-quote">'Accept-Encoding: gzip, deflate'</span>,
+</span><span id="242" class="l"><a href="#242"> 242: </a>            <span class="php-quote">'Authorization'</span> =&gt; <span class="php-quote">'Authorization: OAuth '</span> . <span class="php-var">$this</span>-&gt;get_access_token(),
+</span><span id="243" class="l"><a href="#243"> 243: </a>            <span class="php-quote">'Accept-Encoding'</span> =&gt; <span class="php-quote">'Accept-Encoding: gzip, deflate'</span>,
 </span><span id="244" class="l"><a href="#244"> 244: </a>        );
 </span><span id="245" class="l"><a href="#245"> 245: </a>        <span class="php-keyword1">if</span> ( <span class="php-quote">'POST'</span> === <span class="php-var">$method</span> || <span class="php-quote">'PATCH'</span> === <span class="php-var">$method</span> ) {
 </span><span id="246" class="l"><a href="#246"> 246: </a>            <span class="php-var">$headers</span>[<span class="php-quote">'Content-Type'</span>] = <span class="php-quote">'Content-Type: application/json'</span>;
@@ -1117,7 +1117,7 @@
 </span><span id="1033" class="l"><a href="#1033">1033: </a>        <span class="php-comment">// cache the instance results as a long fallback if the setting says so</span>
 </span><span id="1034" class="l"><a href="#1034">1034: </a>        <span class="php-comment">// do this because salesforce will have errors if the instance has expired or is currently running</span>
 </span><span id="1035" class="l"><a href="#1035">1035: </a>        <span class="php-comment">// remember: the result of the above api_call is already cached (or not) according to the plugin's generic settings</span>
-</span><span id="1036" class="l"><a href="#1036">1036: </a>        <span class="php-comment">// this is fine i think, although it is a bit of redundancy in this case</span>
+</span><span id="1036" class="l"><a href="#1036">1036: </a>        <span class="php-comment">// this is fine I think, although it is a bit of redundancy in this case</span>
 </span><span id="1037" class="l"><a href="#1037">1037: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">true</span> === <span class="php-var">$cache_instance</span> ) {
 </span><span id="1038" class="l"><a href="#1038">1038: </a>            <span class="php-var">$cached</span> = <span class="php-var">$this</span>-&gt;wordpress-&gt;cache_get( <span class="php-var">$report_url</span> . <span class="php-quote">'_instance_cached'</span>, <span class="php-quote">''</span> );
 </span><span id="1039" class="l"><a href="#1039">1039: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$cached</span> ) ) {
@@ -1316,6 +1316,6 @@
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?84de9940d0baf7f03fd5a835ef74c5e3999acefd"></script>
+<script src="elementlist.js?0d86479586dd7588ff6b160a8732b3f6c120785d"></script>
 </body>
 </html>

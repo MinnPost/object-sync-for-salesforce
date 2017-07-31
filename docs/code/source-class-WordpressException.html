@@ -37,7 +37,7 @@
 				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
-				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
+				<li><a href="class-Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
 			</ul>
 
 
@@ -84,7 +84,7 @@
 
 <pre><code><span id="1" class="l"><a href="#1">   1: </a><span class="xlang">&lt;?php</span>
 </span><span id="2" class="l"><a href="#2">   2: </a><span class="php-comment">/**
-</span></span><span id="3" class="l"><a href="#3">   3: </a><span class="php-comment"> * Class file for Object_Sync_Sf_Wordpress.
+</span></span><span id="3" class="l"><a href="#3">   3: </a><span class="php-comment"> * Class file for Object_Sync_Sf_WordPress.
 </span></span><span id="4" class="l"><a href="#4">   4: </a><span class="php-comment"> *
 </span></span><span id="5" class="l"><a href="#5">   5: </a><span class="php-comment"> * @file
 </span></span><span id="6" class="l"><a href="#6">   6: </a><span class="php-comment"> */</span>
@@ -96,7 +96,7 @@
 </span><span id="12" class="l"><a href="#12">  12: </a><span class="php-comment">/**
 </span></span><span id="13" class="l"><a href="#13">  13: </a><span class="php-comment"> * Work with the WordPress $wpdb object. This class can make read and write calls to the WordPress database, and also cache the responses.
 </span></span><span id="14" class="l"><a href="#14">  14: </a><span class="php-comment"> */</span>
-</span><span id="15" class="l"><a href="#15">  15: </a><span class="php-keyword1">class</span> Object_Sync_Sf_Wordpress {
+</span><span id="15" class="l"><a href="#15">  15: </a><span class="php-keyword1">class</span> Object_Sync_Sf_WordPress {
 </span><span id="16" class="l"><a href="#16">  16: </a>
 </span><span id="17" class="l"><a href="#17">  17: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$wpdb</span>;
 </span><span id="18" class="l"><a href="#18">  18: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$version</span>;
@@ -374,7 +374,7 @@
 </span><span id="290" class="l"><a href="#290"> 290: </a>        }
 </span><span id="291" class="l"><a href="#291"> 291: </a>
 </span><span id="292" class="l"><a href="#292"> 292: </a>        <span class="php-comment">/*
-</span></span><span id="293" class="l"><a href="#293"> 293: </a><span class="php-comment">         * Developers can use this hook to change the wordpress object field array.
+</span></span><span id="293" class="l"><a href="#293"> 293: </a><span class="php-comment">         * Developers can use this hook to change the WordPress object field array.
 </span></span><span id="294" class="l"><a href="#294"> 294: </a><span class="php-comment">         * The returned $object_fields needs to be an array like is described earlier in this method:
 </span></span><span id="295" class="l"><a href="#295"> 295: </a><span class="php-comment">         *     $object_fields = array( 'data' =&gt; array(), 'from_cache' =&gt; bool, 'cached' =&gt; bool );
 </span></span><span id="296" class="l"><a href="#296"> 296: </a><span class="php-comment">         * This is useful for custom objects that do not use the normal metadata table structure.
@@ -414,7 +414,7 @@
 </span><span id="330" class="l"><a href="#330"> 330: </a>            <span class="php-var">$wordpress_object</span>[ <span class="php-var">$field</span> ] = <span class="php-var">$data</span>-&gt;{<span class="php-var">$field</span>};
 </span><span id="331" class="l"><a href="#331"> 331: </a>        }
 </span><span id="332" class="l"><a href="#332"> 332: </a>
-</span><span id="333" class="l"><a href="#333"> 333: </a>        <span class="php-comment">// Developers can use this hook to change the wordpress object,</span>
+</span><span id="333" class="l"><a href="#333"> 333: </a>        <span class="php-comment">// Developers can use this hook to change the WordPress object,</span>
 </span><span id="334" class="l"><a href="#334"> 334: </a>        <span class="php-comment">// including any formatting that needs to happen to the data.</span>
 </span><span id="335" class="l"><a href="#335"> 335: </a>        <span class="php-comment">// The returned $wordpress_object needs to be an array like described above.</span>
 </span><span id="336" class="l"><a href="#336"> 336: </a>        <span class="php-comment">// This is useful for custom objects or custom formatting.</span>
@@ -605,7 +605,7 @@
 </span><span id="521" class="l"><a href="#521"> 521: </a>                <span class="php-comment">/*
 </span></span><span id="522" class="l"><a href="#522"> 522: </a><span class="php-comment">                 * Developers can use this hook to create objects with their own methods.
 </span></span><span id="523" class="l"><a href="#523"> 523: </a><span class="php-comment">                 * The returned $result needs to be an array like this.
-</span></span><span id="524" class="l"><a href="#524"> 524: </a><span class="php-comment">                 * $id_field should be the database key; i.e. 'ID' and the value should be the new item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+</span></span><span id="524" class="l"><a href="#524"> 524: </a><span class="php-comment">                 * $id_field should be the database key; i.e. 'ID' and the value should be the new item's id, or whatever WordPress returns from the method (sometimes this can be an error)
 </span></span><span id="525" class="l"><a href="#525"> 525: </a><span class="php-comment">                 * $success should be a boolean value
 </span></span><span id="526" class="l"><a href="#526"> 526: </a><span class="php-comment">                    $result = array( 'data' =&gt; array( $id_field =&gt; $post_id, 'success' =&gt; $success ), 'errors' =&gt; $errors );
 </span></span><span id="527" class="l"><a href="#527"> 527: </a><span class="php-comment">                 * use hook like: add_filter( 'object_sync_for_salesforce_create_custom_wordpress_item', add_object, 10, 1 );
@@ -640,7 +640,7 @@
 </span></span><span id="556" class="l"><a href="#556"> 556: </a><span class="php-comment">     * @param string $name Object type name, E.g., user, post, comment.
 </span></span><span id="557" class="l"><a href="#557"> 557: </a><span class="php-comment">     * @param string $key The field to check if this record should be created or updated.
 </span></span><span id="558" class="l"><a href="#558"> 558: </a><span class="php-comment">     * @param string $value The value for this record of the field specified for $key.
-</span></span><span id="559" class="l"><a href="#559"> 559: </a><span class="php-comment">     * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+</span></span><span id="559" class="l"><a href="#559"> 559: </a><span class="php-comment">     * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 </span></span><span id="560" class="l"><a href="#560"> 560: </a><span class="php-comment">     * @param array  $params Values of the fields to set for the object.
 </span></span><span id="561" class="l"><a href="#561"> 561: </a><span class="php-comment">     * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
 </span></span><span id="562" class="l"><a href="#562"> 562: </a><span class="php-comment">     * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
@@ -693,7 +693,7 @@
 </span><span id="609" class="l"><a href="#609"> 609: </a>                <span class="php-comment">/*
 </span></span><span id="610" class="l"><a href="#610"> 610: </a><span class="php-comment">                 * Developers can use this hook to upsert objects with their own methods.
 </span></span><span id="611" class="l"><a href="#611"> 611: </a><span class="php-comment">                 * The returned $result needs to be an array like this:
-</span></span><span id="612" class="l"><a href="#612"> 612: </a><span class="php-comment">                 * $id_field should be the database key; i.e. 'ID' and the value should be the item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+</span></span><span id="612" class="l"><a href="#612"> 612: </a><span class="php-comment">                 * $id_field should be the database key; i.e. 'ID' and the value should be the item's id, or whatever WordPress returns from the method (sometimes this can be an error)
 </span></span><span id="613" class="l"><a href="#613"> 613: </a><span class="php-comment">                 * $success should be a boolean value
 </span></span><span id="614" class="l"><a href="#614"> 614: </a><span class="php-comment">                 *     $result = array( 'data' =&gt; array( $id_field =&gt; $post_id, 'success' =&gt; $success ), 'errors' =&gt; $errors );
 </span></span><span id="615" class="l"><a href="#615"> 615: </a><span class="php-comment">                 * Use hook like this:
@@ -770,7 +770,7 @@
 </span><span id="686" class="l"><a href="#686"> 686: </a>                <span class="php-comment">/*
 </span></span><span id="687" class="l"><a href="#687"> 687: </a><span class="php-comment">                 * Developers can use this hook to update objects with their own methods.
 </span></span><span id="688" class="l"><a href="#688"> 688: </a><span class="php-comment">                 * The returned $result needs to be an array like this:
-</span></span><span id="689" class="l"><a href="#689"> 689: </a><span class="php-comment">                 *     $id_field should be the database key; i.e. 'ID' and the value should be the updated item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+</span></span><span id="689" class="l"><a href="#689"> 689: </a><span class="php-comment">                 *     $id_field should be the database key; i.e. 'ID' and the value should be the updated item's id, or whatever WordPress returns from the method (sometimes this can be an error)
 </span></span><span id="690" class="l"><a href="#690"> 690: </a><span class="php-comment">                 * $success should be a boolean value
 </span></span><span id="691" class="l"><a href="#691"> 691: </a><span class="php-comment">                 *     $result = array( 'data' =&gt; array( $id_field =&gt; $post_id, 'success' =&gt; $success ), 'errors' =&gt; $errors );
 </span></span><span id="692" class="l"><a href="#692"> 692: </a><span class="php-comment">                 * Use hook like this:
@@ -895,7 +895,7 @@
 </span><span id="811" class="l"><a href="#811"> 811: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">false</span> === username_exists( <span class="php-var">$username</span> ) ) {
 </span><span id="812" class="l"><a href="#812"> 812: </a>
 </span><span id="813" class="l"><a href="#813"> 813: </a>            <span class="php-comment">// Create the user</span>
-</span><span id="814" class="l"><a href="#814"> 814: </a>            <span class="php-comment">// Wordpress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email.</span>
+</span><span id="814" class="l"><a href="#814"> 814: </a>            <span class="php-comment">// WordPress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email.</span>
 </span><span id="815" class="l"><a href="#815"> 815: </a>            <span class="php-var">$params</span>[<span class="php-quote">'user_pass'</span>] = <span class="php-keyword1">array</span>(
 </span><span id="816" class="l"><a href="#816"> 816: </a>                <span class="php-quote">'value'</span> =&gt; wp_generate_password( <span class="php-num">12</span>, <span class="php-keyword1">false</span> ),
 </span><span id="817" class="l"><a href="#817"> 817: </a>                <span class="php-quote">'method_modify'</span> =&gt; <span class="php-quote">'wp_insert_user'</span>,
@@ -971,7 +971,7 @@
 </span></span><span id="887" class="l"><a href="#887"> 887: </a><span class="php-comment">     *
 </span></span><span id="888" class="l"><a href="#888"> 888: </a><span class="php-comment">     * @param string $key What key we are looking at for possible matches.
 </span></span><span id="889" class="l"><a href="#889"> 889: </a><span class="php-comment">     * @param string $value What value we are looking at for possible matches.
-</span></span><span id="890" class="l"><a href="#890"> 890: </a><span class="php-comment">     * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+</span></span><span id="890" class="l"><a href="#890"> 890: </a><span class="php-comment">     * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 </span></span><span id="891" class="l"><a href="#891"> 891: </a><span class="php-comment">     * @param array  $params Array of user data params. This is generated by Object_Sync_Sf_Mapping::map_params().
 </span></span><span id="892" class="l"><a href="#892"> 892: </a><span class="php-comment">     * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
 </span></span><span id="893" class="l"><a href="#893"> 893: </a><span class="php-comment">     * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
@@ -985,7 +985,7 @@
 </span></span><span id="901" class="l"><a href="#901"> 901: </a><span class="php-comment">     */</span>
 </span><span id="902" class="l"><a href="#902"> 902: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> user_upsert( <span class="php-var">$key</span>, <span class="php-var">$value</span>, <span class="php-var">$methods</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$params</span>, <span class="php-var">$id_field</span> = <span class="php-quote">'ID'</span>, <span class="php-var">$push_drafts</span> = <span class="php-keyword1">false</span>, <span class="php-var">$check_only</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="903" class="l"><a href="#903"> 903: </a>
-</span><span id="904" class="l"><a href="#904"> 904: </a>        <span class="php-comment">// If the key is user_email, we need to make it just email because that is how the wordpress method reads it.</span>
+</span><span id="904" class="l"><a href="#904"> 904: </a>        <span class="php-comment">// If the key is user_email, we need to make it just email because that is how the WordPress method reads it.</span>
 </span><span id="905" class="l"><a href="#905"> 905: </a>        <span class="php-var">$method</span> = <span class="php-var">$methods</span>[<span class="php-quote">'method_match'</span>];
 </span><span id="906" class="l"><a href="#906"> 906: </a>        <span class="php-keyword1">if</span> ( <span class="php-quote">''</span> !== <span class="php-var">$method</span> ) {
 </span><span id="907" class="l"><a href="#907"> 907: </a>            <span class="php-comment">// This should give us the user object.</span>
@@ -1241,7 +1241,7 @@
 </span></span><span id="1157" class="l"><a href="#1157">1157: </a><span class="php-comment">     *
 </span></span><span id="1158" class="l"><a href="#1158">1158: </a><span class="php-comment">     * @param string $key What key we are looking at for possible matches.
 </span></span><span id="1159" class="l"><a href="#1159">1159: </a><span class="php-comment">     * @param string $value What value we are looking at for possible matches.
-</span></span><span id="1160" class="l"><a href="#1160">1160: </a><span class="php-comment">     * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+</span></span><span id="1160" class="l"><a href="#1160">1160: </a><span class="php-comment">     * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 </span></span><span id="1161" class="l"><a href="#1161">1161: </a><span class="php-comment">     * @param array  $params Array of post data params.
 </span></span><span id="1162" class="l"><a href="#1162">1162: </a><span class="php-comment">     * @param string $id_field optional string of what the ID field is, if it is ever not ID.
 </span></span><span id="1163" class="l"><a href="#1163">1163: </a><span class="php-comment">     * @param bool   $push_drafts Indicates whether we should match against draft posts.
@@ -1551,7 +1551,7 @@
 </span></span><span id="1467" class="l"><a href="#1467">1467: </a><span class="php-comment">     *
 </span></span><span id="1468" class="l"><a href="#1468">1468: </a><span class="php-comment">     * @param string $key What key we are looking at for possible matches.
 </span></span><span id="1469" class="l"><a href="#1469">1469: </a><span class="php-comment">     * @param string $value What value we are looking at for possible matches.
-</span></span><span id="1470" class="l"><a href="#1470">1470: </a><span class="php-comment">     * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+</span></span><span id="1470" class="l"><a href="#1470">1470: </a><span class="php-comment">     * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 </span></span><span id="1471" class="l"><a href="#1471">1471: </a><span class="php-comment">     * @param array  $params Array of attachment data params.
 </span></span><span id="1472" class="l"><a href="#1472">1472: </a><span class="php-comment">     * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
 </span></span><span id="1473" class="l"><a href="#1473">1473: </a><span class="php-comment">     * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
@@ -1890,7 +1890,7 @@
 </span></span><span id="1806" class="l"><a href="#1806">1806: </a><span class="php-comment">     *
 </span></span><span id="1807" class="l"><a href="#1807">1807: </a><span class="php-comment">     * @param string $key What key we are looking at for possible matches.
 </span></span><span id="1808" class="l"><a href="#1808">1808: </a><span class="php-comment">     * @param string $value What value we are looking at for possible matches.
-</span></span><span id="1809" class="l"><a href="#1809">1809: </a><span class="php-comment">     * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+</span></span><span id="1809" class="l"><a href="#1809">1809: </a><span class="php-comment">     * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 </span></span><span id="1810" class="l"><a href="#1810">1810: </a><span class="php-comment">     * @param array  $params Array of term data params.
 </span></span><span id="1811" class="l"><a href="#1811">1811: </a><span class="php-comment">     * @param string $taxonomy The taxonomy to which to add the term. this is required..
 </span></span><span id="1812" class="l"><a href="#1812">1812: </a><span class="php-comment">     * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
@@ -2195,7 +2195,7 @@
 </span></span><span id="2111" class="l"><a href="#2111">2111: </a><span class="php-comment">     *
 </span></span><span id="2112" class="l"><a href="#2112">2112: </a><span class="php-comment">     * @param string $key What key we are looking at for possible matches.
 </span></span><span id="2113" class="l"><a href="#2113">2113: </a><span class="php-comment">     * @param string $value What value we are looking at for possible matches.
-</span></span><span id="2114" class="l"><a href="#2114">2114: </a><span class="php-comment">     * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+</span></span><span id="2114" class="l"><a href="#2114">2114: </a><span class="php-comment">     * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 </span></span><span id="2115" class="l"><a href="#2115">2115: </a><span class="php-comment">     * @param array  $params Array of comment data params.
 </span></span><span id="2116" class="l"><a href="#2116">2116: </a><span class="php-comment">     * @param string $id_field Optional string of what the ID field is, if it is ever not comment_ID.
 </span></span><span id="2117" class="l"><a href="#2117">2117: </a><span class="php-comment">     * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
@@ -2446,6 +2446,6 @@
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?84de9940d0baf7f03fd5a835ef74c5e3999acefd"></script>
+<script src="elementlist.js?0d86479586dd7588ff6b160a8732b3f6c120785d"></script>
 </body>
 </html>
