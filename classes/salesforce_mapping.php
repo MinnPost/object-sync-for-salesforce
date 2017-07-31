@@ -300,7 +300,7 @@ class Object_Sync_Sf_Mapping {
 						'is_delete' => sanitize_text_field( $posted['is_delete'][ $key ] ),
 					);
 
-					// If the wordpress key or the salesforce key are blank, remove this incomplete mapping.
+					// If the WordPress key or the Salesforce key are blank, remove this incomplete mapping.
 					// This prevents https://github.com/MinnPost/object-sync-for-salesforce/issues/82 .
 					if (
 						empty( $setup['fields'][ $key ]['wordpress_field']['label'] )
@@ -645,23 +645,23 @@ class Object_Sync_Sf_Mapping {
 
 			// skip fields that aren't being pushed to Salesforce.
 			if ( in_array( $trigger, $wordpress_haystack, true ) && ! in_array( $fieldmap['direction'], array_values( $this->direction_wordpress ), true ) ) {
-				// The trigger is a wordpress trigger, but the fieldmap direction is not a wordpress direction.
+				// The trigger is a WordPress trigger, but the fieldmap direction is not a WordPress direction.
 				continue;
 			}
 
 			// skip fields that aren't being pulled from Salesforce.
 			if ( in_array( $trigger, $salesforce_haystack, true ) && ! in_array( $fieldmap['direction'], array_values( $this->direction_salesforce ), true ) ) {
-				// The trigger is a salesforce trigger, but the fieldmap direction is not a salesforce direction.
+				// The trigger is a Salesforce trigger, but the fieldmap direction is not a Salesforce direction.
 				continue;
 			}
 
 			$salesforce_field = $fieldmap['salesforce_field']['label'];
 			$wordpress_field = $fieldmap['wordpress_field']['label'];
 
-			// A wordpress event caused this.
+			// A WordPress event caused this.
 			if ( in_array( $trigger, array_values( $wordpress_haystack ), true ) ) {
 
-				// Skip fields that aren't updateable when mapping params because salesforce will error otherwise.
+				// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise.
 				if ( 1 !== (int) $fieldmap['salesforce_field']['updateable'] ) {
 					continue;
 				}

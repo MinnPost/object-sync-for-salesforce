@@ -771,28 +771,28 @@ class Object_Sync_Sf_Admin {
 			),
 			'logs_how_often_unit' => array(
 				'title' => __( 'Time unit', 'object-sync-for-salesforce' ),
-					'callback' => $callbacks['select'],
-					'page' => $page,
-					'section' => $section,
-					'args' => array(
-						'type' => 'select',
-						'validate' => 'sanitize_text_field',
-						'desc' => 'These two fields are how often the site will check for logs to delete.',
-						'items' => array(
-							'minutes' => array(
-								'text' => 'Minutes',
-								'value' => 'minutes',
-							),
-							'hours' => array(
-								'text' => 'Hours',
-								'value' => 'hours',
-							),
-							'days' => array(
-								'text' => 'Days',
-								'value' => 'days',
-							),
+				'callback' => $callbacks['select'],
+				'page' => $page,
+				'section' => $section,
+				'args' => array(
+					'type' => 'select',
+					'validate' => 'sanitize_text_field',
+					'desc' => 'These two fields are how often the site will check for logs to delete.',
+					'items' => array(
+						'minutes' => array(
+							'text' => 'Minutes',
+							'value' => 'minutes',
+						),
+						'hours' => array(
+							'text' => 'Hours',
+							'value' => 'hours',
+						),
+						'days' => array(
+							'text' => 'Days',
+							'value' => 'days',
 						),
 					),
+				),
 			),
 			'triggers_to_log' => array(
 				'title' => 'Triggers to log',
@@ -1531,7 +1531,7 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-	* Check Wordpress Admin permissions
+	* Check WordPress Admin permissions
 	* Check if the current user is allowed to access the Salesforce plugin options
 	*/
 	private function check_wordpress_admin_permissions() {

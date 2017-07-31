@@ -32,23 +32,23 @@ class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 		parent::__construct();
 		if ( empty( $wsdl ) ) {
 			$wsdl = plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml';
-	    }
-	    $this->set_authorized( false );
-	    $this->createConnection( $wsdl );
-	    $this->salesforce_api = $sfapi;
+		}
+		$this->set_authorized( false );
+		$this->createConnection( $wsdl );
+		$this->salesforce_api = $sfapi;
 
-	    if ( $this->salesforce_api->is_authorized() ) {
-	    	$token = $this->salesforce_api->get_access_token();
-	    	if ( ! $token ) {
-	    		$token = $this->salesforce_api->refresh_token();
-	    	}
-	    	$this->setSessionHeader( $token );
-	    	$this->setEndPoint( $this->salesforce_api->get_api_endpoint( 'partner' ) );
-	    	$this->set_authorized( true );
-	    } else {
-	    	error_log( 'salesforce is not authorized so we cannot use soap' );
-	    	$this->set_authorized( false );
-	    }
+		if ( $this->salesforce_api->is_authorized() ) {
+			$token = $this->salesforce_api->get_access_token();
+			if ( ! $token ) {
+				$token = $this->salesforce_api->refresh_token();
+			}
+			$this->setSessionHeader( $token );
+			$this->setEndPoint( $this->salesforce_api->get_api_endpoint( 'partner' ) );
+			$this->set_authorized( true );
+		} else {
+			error_log( 'salesforce is not authorized so we cannot use soap' );
+			$this->set_authorized( false );
+		}
 	}
 
 	protected function set_authorized( $is_authorized ) {

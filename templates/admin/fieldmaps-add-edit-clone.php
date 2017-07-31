@@ -27,9 +27,9 @@
 						$selected = '';
 					}
 					echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
-					    esc_html( $object ),
-					    esc_attr( $selected ),
-					    esc_html( $object )
+						esc_html( $object ),
+						esc_attr( $selected ),
+						esc_html( $object )
 					);
 				}
 				?>
@@ -60,9 +60,9 @@
 						$selected = '';
 					}
 					echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
-					    esc_html( $object['name'] ),
-					    esc_attr( $selected ),
-					    esc_html( $object['label'] )
+						esc_html( $object['name'] ),
+						esc_attr( $selected ),
+						esc_html( $object['label'] )
 					);
 				}
 				?>
@@ -87,11 +87,11 @@
 							$checked = '';
 						}
 						echo sprintf( '<label><input type="checkbox" class="form-checkbox" value="%1$s" name="%2$s" id="%3$s"%4$s>%5$s</label>',
-						    esc_html( $key ),
-						    esc_attr( 'salesforce_record_types_allowed[' . $key . ']' ),
-						    esc_attr( 'salesforce_record_types_allowed-' . $key ),
-						    esc_html( $checked ),
-						    esc_html( $value )
+							esc_html( $key ),
+							esc_attr( 'salesforce_record_types_allowed[' . $key . ']' ),
+							esc_attr( 'salesforce_record_types_allowed-' . $key ),
+							esc_html( $checked ),
+							esc_html( $value )
 						);
 					}
 					echo '</div>';
@@ -119,9 +119,9 @@
 						}
 						if ( ! isset( $salesforce_record_types_allowed ) || in_array( $key, $salesforce_record_types_allowed, true ) ) {
 							echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
-							    esc_attr( $key ),
-							    esc_attr( $selected ),
-							    esc_html( $value )
+								esc_attr( $key ),
+								esc_attr( $selected ),
+								esc_html( $value )
 							);
 						}
 					}
@@ -138,7 +138,7 @@
 					array(
 						'salesforce_object' => $salesforce_object,
 						'type' => 'datetime',
-					 )
+					)
 				);
 				echo '<select name="pull_trigger_field" id="pull_trigger_field">';
 				foreach ( $object_fields as $key => $value ) {
@@ -148,9 +148,9 @@
 						$selected = '';
 					}
 					echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
-					    esc_attr( $value['name'] ),
-					    esc_attr( $selected ),
-					    esc_html( $value['label'] )
+						esc_attr( $value['name'] ),
+						esc_attr( $selected ),
+						esc_html( $value['label'] )
 					);
 				}
 				echo '</select>';
@@ -189,9 +189,9 @@
 									$selected = '';
 								}
 								echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
-								    esc_attr( $wordpress_field['key'] ),
-								    esc_attr( $selected ),
-								    esc_html( $wordpress_field['key'] )
+									esc_attr( $wordpress_field['key'] ),
+									esc_attr( $selected ),
+									esc_html( $wordpress_field['key'] )
 								);
 							}
 							?>
@@ -214,9 +214,9 @@
 									$selected = '';
 								}
 								echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
-								    esc_attr( $salesforce_field['name'] ),
-								    esc_attr( $selected ),
-								    esc_html( $salesforce_field['label'] )
+									esc_attr( $salesforce_field['name'] ),
+									esc_attr( $selected ),
+									esc_html( $salesforce_field['label'] )
 								);
 							}
 							?>
@@ -287,8 +287,8 @@
 							$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
 							foreach ( $wordpress_fields as $wordpress_field ) {
 								echo sprintf( '<option value="%1$s">%2$s</option>',
-								    esc_attr( $wordpress_field['key'] ),
-								    esc_html( $wordpress_field['key'] )
+									esc_attr( $wordpress_field['key'] ),
+									esc_html( $wordpress_field['key'] )
 								);
 							}
 							?>
@@ -305,8 +305,8 @@
 							);
 							foreach ( $salesforce_fields as $salesforce_field ) {
 								echo sprintf( '<option value="%1$s">%2$s</option>',
-								    esc_attr( $salesforce_field['name'] ),
-								    esc_html( $salesforce_field['label'] )
+									esc_attr( $salesforce_field['name'] ),
+									esc_html( $salesforce_field['label'] )
 								);
 							}
 							?>
@@ -397,8 +397,9 @@
 			<label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo isset( $push_async ) && '1' === $push_async ? ' checked' : ''; ?>><?php echo esc_html__( 'Process asynchronously', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description">
 				<?php
-				// translators: placeholder is for wordpress cron method name
-				echo sprintf( esc_html__( 'If selected, push data will be queued for processing and synchronized when %s is run. This may increase site performance, but changes will not be reflected in real time.', 'object-sync-for-salesforce' ), '<code>wp_cron</code>' ); ?>
+				// translators: placeholder is for WordPress cron method name
+				echo sprintf( esc_html__( 'If selected, push data will be queued for processing and synchronized when %s is run. This may increase site performance, but changes will not be reflected in real time.', 'object-sync-for-salesforce' ), '<code>wp_cron</code>' );
+				?>
 			</p>
 		</div>
 		<div class="checkboxes">

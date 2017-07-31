@@ -19,9 +19,9 @@
 			<?php foreach ( $mapping_errors['pull_errors'] as $error ) { ?>
 		<tr>
 			<td><?php echo esc_html__( 'Pull from Salesforce', 'object-sync-for-salesforce' ); ?></td>
-			<td><?php echo $error['wordpress_id'] ?></td>
-			<td><?php echo $error['wordpress_object'] ?></td>
-			<td><?php echo $error['salesforce_id'] ?></td>
+			<td><?php echo $error['wordpress_id']; ?></td>
+			<td><?php echo $error['wordpress_object']; ?></td>
+			<td><?php echo $error['salesforce_id']; ?></td>
 			<td><?php echo date_i18n( 'Y-m-d g:i:sa', strtotime( $error['created'] ) ); ?></td>
 			<td>
 				<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=edit&id=' . $error['id'] ) ); ?>"><?php echo esc_html__( 'Edit', 'object-sync-for-salesforce' ); ?></a>
@@ -36,9 +36,9 @@
 			<?php foreach ( $mapping_errors['push_errors'] as $error ) { ?>
 		<tr>
 			<td><?php echo esc_html__( 'Push to Salesforce', 'object-sync-for-salesforce' ); ?></td>
-			<td><?php echo $error['wordpress_id'] ?></td>
-			<td><?php echo $error['wordpress_object'] ?></td>
-			<td><?php echo $error['salesforce_id'] ?></td>
+			<td><?php echo $error['wordpress_id']; ?></td>
+			<td><?php echo $error['wordpress_object']; ?></td>
+			<td><?php echo $error['salesforce_id']; ?></td>
 			<td><?php echo date_i18n( 'Y-m-d g:i:sa', strtotime( $error['created'] ) ); ?></td>
 			<td>
 				<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=edit&id=' . $error['id'] ) ); ?>"><?php echo esc_html__( 'Edit', 'object-sync-for-salesforce' ); ?></a>

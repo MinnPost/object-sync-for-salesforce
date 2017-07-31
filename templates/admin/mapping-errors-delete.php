@@ -8,9 +8,9 @@
 	<?php
 		// translators: the placeholders refer to: 1) the WordPress object name, 2) the WordPress object Id, and 3) the Salesforce object Id
 		echo sprintf( esc_html__( 'This object map maps the WordPress %1$s with an id value of %2$s to the Salesforce object with Id of %3$s.', 'object-sync-for-salesforce' ),
-	    	'<strong> ' . esc_html( $map_row['wordpress_object'] ) . '</strong>',
-	    	'<strong> ' . esc_html( $map_row['wordpress_id'] ) . '</strong>',
-	    	'<strong> ' . esc_html( $map_row['salesforce_id'] ) . '</strong>'
+			'<strong> ' . esc_html( $map_row['wordpress_object'] ) . '</strong>',
+			'<strong> ' . esc_html( $map_row['wordpress_id'] ) . '</strong>',
+			'<strong> ' . esc_html( $map_row['salesforce_id'] ) . '</strong>'
 		);
 	?>
 	</p>

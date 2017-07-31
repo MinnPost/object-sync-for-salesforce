@@ -31,10 +31,10 @@
 			<td colspan="4">
 				<p>
 				<?php
-					// translators: the placeholders refer to: 1) the fieldmap label, 2) the saleforce object name, and 3) the wordpress object name
+					// translators: the placeholders refer to: 1) the fieldmap label, 2) the saleforce object name, and 3) the WordPress object name
 					echo sprintf( esc_html__( 'No fieldmaps exist yet. You can ', 'object-sync-for-salesforce' ) . '<a href="%1$s">%2$s</a>.',
-				    	esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=add' ) ),
-				    	esc_html__( 'add one' )
+						esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=add' ) ),
+						esc_html__( 'add one' )
 					);
 				?>
 				</p>
