@@ -1343,7 +1343,7 @@ class Object_Sync_Sf_WordPress {
 			$content['post_type'] = $post_type;
 		}
 
-		$post_id = wp_update_post( $content );
+		$post_id = wp_update_post( $content, true ); // return an error instead of a 0 id
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
