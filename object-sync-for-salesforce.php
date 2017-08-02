@@ -2,7 +2,7 @@
 /*
 Plugin Name: Object Sync for Salesforce
 Description: WordPress plugin that implements mapping and syncing between Salesforce objects and WordPress objects
-Version: 1.0.1
+Version: 1.0.7
 Author: MinnPost
 Author URI: http://code.minnpost.com
 License: GPL2+
@@ -64,7 +64,7 @@ class Object_Sync_Salesforce {
 
 	/**
 	* @var object
-	* Load and initialize the Object_Sync_Sf_Wordpress class
+	* Load and initialize the Object_Sync_Sf_WordPress class
 	*/
 	private $wordpress;
 
@@ -126,25 +126,25 @@ class Object_Sync_Salesforce {
 		global $wpdb;
 
 		$this->wpdb = $wpdb;
-		$this->version = '1.0.1';
+		$this->version = '1.0.7';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->slug = 'object-sync-for-salesforce';
 
 		$this->schedulable_classes = array(
 			'salesforce_push' => array(
-			    'label' => 'Push to Salesforce',
-			    'class' => 'Object_Sync_Sf_Salesforce_Push',
-			    'callback' => 'salesforce_push_sync_rest',
+				'label' => 'Push to Salesforce',
+				'class' => 'Object_Sync_Sf_Salesforce_Push',
+				'callback' => 'salesforce_push_sync_rest',
 			),
 			'salesforce_pull' => array(
-			    'label' => 'Pull from Salesforce',
-			    'class' => 'Object_Sync_Sf_Salesforce_Pull',
-			    'initializer' => 'salesforce_pull',
-			    'callback' => 'salesforce_pull_process_records',
+				'label' => 'Pull from Salesforce',
+				'class' => 'Object_Sync_Sf_Salesforce_Pull',
+				'initializer' => 'salesforce_pull',
+				'callback' => 'salesforce_pull_process_records',
 			),
 			'salesforce' => array(
-			    'label' => 'Salesforce Authorization',
-			    'class' => 'Object_Sync_Sf_Salesforce',
+				'label' => 'Salesforce Authorization',
+				'class' => 'Object_Sync_Sf_Salesforce',
 			),
 		);
 
@@ -161,9 +161,9 @@ class Object_Sync_Salesforce {
 		 * 		    'class' => 'Object_Sync_Sf_Salesforce_Push',
 		 * 		    'callback' => 'salesforce_push_sync_rest',
 		 * 		),
-		 * 		'wordpress' => array(
+		 * 		'wordpress' => array( // WPCS: spelling ok.
 		 * 		    'label' => 'WordPress',
-		 * 		    'class' => 'Object_Sync_Sf_Wordpress',
+		 * 		    'class' => 'Object_Sync_Sf_WordPress',
 		 * 		),
 		 * 		'salesforce' => array(
 		 * 		    'label' => 'Salesforce Authorization',
@@ -201,7 +201,7 @@ class Object_Sync_Salesforce {
 	 * @param string $slug
 	 *
 	 * @return object
-	 *	Instance of Object_Sync_Sf_Logging
+	 *   Instance of Object_Sync_Sf_Logging
 	 */
 	private function logging( $wpdb, $version ) {
 		if ( ! class_exists( 'WP_Logging' ) && file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
@@ -221,7 +221,7 @@ class Object_Sync_Salesforce {
 	 * @param object $logging
 	 *
 	 * @return object
-	 *	Instance of Object_Sync_Sf_Mapping
+	 *   Instance of Object_Sync_Sf_Mapping
 	 */
 	private function mappings( $wpdb, $version, $slug, $logging ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_mapping.php' );
@@ -239,11 +239,11 @@ class Object_Sync_Salesforce {
 	* @param object $logging
 	*
 	* @return object
-	*	Instance of Object_Sync_Sf_Wordpress
+	*   Instance of Object_Sync_Sf_WordPress
 	*/
 	private function wordpress( $wpdb, $version, $slug, $mappings, $logging ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
-		$wordpress = new Object_Sync_Sf_Wordpress( $wpdb, $version, $slug, $mappings, $logging );
+		$wordpress = new Object_Sync_Sf_WordPress( $wpdb, $version, $slug, $mappings, $logging );
 		return $wordpress;
 	}
 
@@ -303,7 +303,7 @@ class Object_Sync_Salesforce {
 	 * @param string $slug
 	 *
 	 * @return object
-	 *	Instance of Wordpress_Salesforce_Activate
+	 *   Instance of Wordpress_Salesforce_Activate
 	 */
 	private function activate( $wpdb, $version, $slug ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
@@ -320,7 +320,7 @@ class Object_Sync_Salesforce {
 	 * @param array $schedulable_classes
 	 *
 	 * @return object
-	 *	Instance of Wordpress_Salesforce_Deactivate
+	 *   Instance of Wordpress_Salesforce_Deactivate
 	 */
 	private function deactivate( $wpdb, $version, $slug, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
@@ -342,7 +342,7 @@ class Object_Sync_Salesforce {
 	 * @param array $schedulable_classes
 	 *
 	 * @return object
-	 *	Instance of Object_Sync_Sf_Salesforce_Push
+	 *   Instance of Object_Sync_Sf_Salesforce_Push
 	 */
 	private function push( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
@@ -363,7 +363,7 @@ class Object_Sync_Salesforce {
 	 * @param object $logging
 	 * @param array $schedulable_classes
 	 * @return object
-	 *	Instance of Object_Sync_Sf_Salesforce_Pull
+	 *   Instance of Object_Sync_Sf_Salesforce_Pull
 	 */
 	private function pull( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_pull.php';
@@ -387,7 +387,7 @@ class Object_Sync_Salesforce {
 	* @param object $logging
 	* @param array $schedulable_classes
 	* @return object $admin
-	*	Instance of Wordpress_Salesforce_Admin
+	*   Instance of Wordpress_Salesforce_Admin
 	*
 	*/
 	private function load_admin( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
@@ -406,7 +406,7 @@ class Object_Sync_Salesforce {
 	* @param array $links
 	* @param string $file
 	* @return array $links
-	*	These are the links that go with this plugin's entry
+	*   These are the links that go with this plugin's entry
 	*/
 	public function plugin_action_links( $links, $file ) {
 		if ( plugin_basename( __FILE__ ) === $file ) {
@@ -442,8 +442,8 @@ class Object_Sync_Salesforce {
 	* These depend on the plugin's settings or constants defined in wp-config.php.
 	*
 	* @return array $login_credentials
-	*	Includes all settings necessary to log into the Salesforce API.
-	*	Replaces settings options with wp-config.php values if they exist.
+	*   Includes all settings necessary to log into the Salesforce API.
+	*   Replaces settings options with wp-config.php values if they exist.
 	*/
 	private function get_login_credentials() {
 

@@ -36,7 +36,7 @@
 				<li><a href="class-Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
-				<li><a href="class-Object_Sync_Sf_Wordpress.html">Object_Sync_Sf_Wordpress</a></li>
+				<li><a href="class-Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
 			</ul>
 
 
@@ -347,10 +347,10 @@ This is not an authenticated call, so it would not be a helpful test</p>
 					<dd>Method to initiate the call, such as GET or POST. Defaults to GET.</dd>
 					<dt><var>$options</var></dt>
 					<dd><p>Any method can supply options for the API call, and they'll be preserved as far as the curl request
-They get merged with the class options</p></dd>
+  They get merged with the class options</p></dd>
 					<dt><var>$type</var></dt>
 					<dd><p>Type of call. Defaults to 'rest' - currently we don't support other types.
-Other exammple in Drupal is 'apexrest'</p></dd>
+  Other exammple in Drupal is 'apexrest'</p></dd>
 				</dl></div>
 
 				<h4>Returns</h4>
@@ -402,10 +402,10 @@ This method is the only place where we read to or write from the cache</p>
 					<dd>Method to initiate the call, such as GET or POST.  Defaults to GET.</dd>
 					<dt><var>$options</var></dt>
 					<dd><p>This is the options array from the api_call method
-This is where it gets merged with $this->options</p></dd>
+  This is where it gets merged with $this->options</p></dd>
 					<dt><var>$type</var></dt>
 					<dd><p>Type of call. Defaults to 'rest' - currently we don't support other types
-Other exammple in Drupal is 'apexrest'</p></dd>
+  Other exammple in Drupal is 'apexrest'</p></dd>
 				</dl></div>
 
 				<h4>Returns</h4>
@@ -1049,7 +1049,7 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
-code: 201
+  code: 201
   data:
     "id" : "00190000001pPvHAAU",
     "success" : true
@@ -1108,7 +1108,7 @@ the list of matching records.</p>
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
-code: 201
+  code: 201
   data:
     "id" : "00190000001pPvHAAU",
     "success" : true
@@ -1163,13 +1163,13 @@ code: 201
 				<h4>Returns</h4>
 				<div class="list">
 					array<br><p>json: {"success":true,"body":""}
-code: 204
-data:
+  code: 204
+  data:
 success: 1
 body:
-from_cache:
-cached:
-is_redo:</p>
+  from_cache:
+  cached:
+  is_redo:</p>
 				</div>
 
 

@@ -38,9 +38,9 @@ class Object_Sync_Sf_Salesforce {
 	* @param string $slug
 	*   Slug for this plugin. Can be used for file including, especially
 	* @param object $logging
-	*	Logging object for this plugin.
+	*   Logging object for this plugin.
 	* @param array $schedulable_classes
-	*	array of classes that can have scheduled tasks specific to them
+	*   array of classes that can have scheduled tasks specific to them
 	*/
 	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes ) {
 		$this->consumer_key = $consumer_key;
@@ -153,10 +153,10 @@ class Object_Sync_Sf_Salesforce {
 	*   Method to initiate the call, such as GET or POST. Defaults to GET.
 	* @param array $options
 	*   Any method can supply options for the API call, and they'll be preserved as far as the curl request
-	*	They get merged with the class options
+	*   They get merged with the class options
 	* @param string $type
 	*   Type of call. Defaults to 'rest' - currently we don't support other types.
-	*	Other exammple in Drupal is 'apexrest'
+	*   Other exammple in Drupal is 'apexrest'
 	*
 	* @return mixed
 	*   The requested response.
@@ -224,10 +224,10 @@ class Object_Sync_Sf_Salesforce {
 	*   Method to initiate the call, such as GET or POST.  Defaults to GET.
 	* @param array $options
 	*   This is the options array from the api_call method
-	*	This is where it gets merged with $this->options
+	*   This is where it gets merged with $this->options
 	* @param string $type
 	*   Type of call. Defaults to 'rest' - currently we don't support other types
-	*	Other exammple in Drupal is 'apexrest'
+	*   Other exammple in Drupal is 'apexrest'
 	*
 	* @return array
 	*   The requested data.
@@ -239,8 +239,8 @@ class Object_Sync_Sf_Salesforce {
 			$url = $path;
 		}
 		$headers = array(
-		  'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
-		  'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
+			'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
+			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
 		);
 		if ( 'POST' === $method || 'PATCH' === $method ) {
 			$headers['Content-Type'] = 'Content-Type: application/json';
@@ -293,7 +293,7 @@ class Object_Sync_Sf_Salesforce {
 
 			// translators: placeholder is the URL of the Salesforce API request
 			$title = sprintf( esc_html__( 'Debug: on Salesforce API HTTP Request to URL: %1$s.', 'object-sync-for-salesforce' ),
-			    esc_url( $url )
+				esc_url( $url )
 			);
 
 			$logging->setup(
@@ -387,7 +387,7 @@ class Object_Sync_Sf_Salesforce {
 
 				// translators: placeholder is the URL of the Salesforce API request
 				$title = sprintf( esc_html__( 'Error: %1$s: on Salesforce http request', 'object-sync-for-salesforce' ),
-				    esc_attr( $code )
+					esc_attr( $code )
 				);
 
 				$logging->setup(
@@ -408,14 +408,14 @@ class Object_Sync_Sf_Salesforce {
 
 				// translators: placeholder is the server code returned by the api
 				$title = sprintf( esc_html__( 'Error: %1$s: on Salesforce http request', 'object-sync-for-salesforce' ),
-				    absint( $code )
+					absint( $code )
 				);
 
 				// translators: placeholders are: 1) the URL requested, 2) the message returned by the error, 3) the server code returned
 				$body = sprintf( '<p>' . esc_html__( 'URL: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: %2$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Code: %3$s', 'object-sync-for-salesforce' ),
-				    esc_attr( $url ),
-				    esc_html( $data[0]['message'] ),
-				    absint( $code )
+					esc_attr( $url ),
+					esc_html( $data[0]['message'] ),
+					absint( $code )
 				);
 
 				$logging->setup(
@@ -436,7 +436,7 @@ class Object_Sync_Sf_Salesforce {
 
 				// translators: placeholder is the server code returned by Salesforce
 				$title = sprintf( esc_html__( 'Error: %1$s: on Salesforce http request', 'object-sync-for-salesforce' ),
-				    absint( $code )
+					absint( $code )
 				);
 
 				$logging->setup(
@@ -813,8 +813,8 @@ class Object_Sync_Sf_Salesforce {
 	*   Values of the fields to set for the object.
 	*
 	* @return array
-	*	json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
-	*	code: 201
+	*   json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
+	*   code: 201
 	*   data:
 	*     "id" : "00190000001pPvHAAU",
 	*     "success" : true
@@ -850,8 +850,8 @@ class Object_Sync_Sf_Salesforce {
 	*   Values of the fields to set for the object.
 	*
 	* @return array
-	*	json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
-	*	code: 201
+	*   json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
+	*   code: 201
 	*   data:
 	*     "id" : "00190000001pPvHAAU",
 	*     "success" : true
@@ -895,14 +895,14 @@ class Object_Sync_Sf_Salesforce {
 	* part of core API calls
 	*
 	* @return array
-	*	json: {"success":true,"body":""}
-	*	code: 204
-	*	data:
+	*   json: {"success":true,"body":""}
+	*   code: 204
+	*   data:
 		success: 1
 		body:
-	*	from_cache:
-	*	cached:
-	*	is_redo:
+	*   from_cache:
+	*   cached:
+	*   is_redo:
 	*/
 	public function object_update( $name, $id, $params ) {
 		$options = array(
@@ -994,32 +994,32 @@ class Object_Sync_Sf_Salesforce {
 				$params = array(
 					'reportMetadata' => $result['data']['reportMetadata'],
 				);
-	            $report = $this->analytics_api(
-	                'reports',
-	                $id,
-	                'instances',
-	                $params,
-	                'POST'
-	            );
-	            // if we get an id from the post, that is the instance id
-	            if ( isset( $report['data']['id'] ) ) {
-	            	$instance_id = $report['data']['id'];
-	            } else {
-	        		// run the call again if we don't have an instance id
-	        		//error_log('run report again. we have no instance id.');
-	        		$this->run_analytics_report( $id, true );
-	        	}
+				$report = $this->analytics_api(
+					'reports',
+					$id,
+					'instances',
+					$params,
+					'POST'
+				);
+				// if we get an id from the post, that is the instance id
+				if ( isset( $report['data']['id'] ) ) {
+					$instance_id = $report['data']['id'];
+				} else {
+					// run the call again if we don't have an instance id
+					//error_log('run report again. we have no instance id.');
+					$this->run_analytics_report( $id, true );
+				}
 
-	            // cache the instance id so we can get the report results if they are applicable
-	            if ( '' === $report_cache_expiration ) {
-	            	$report_cache_expiration = $this->cache_expiration();
-	            }
-	            $this->wordpress->cache_set( $report_url, '', $instance_id, $report_cache_expiration );
-	        } else {
-	        	// run the call again if we don't have a reportMetadata array
-	        	//error_log('run report again. we have no reportmetadata.');
-	        	$this->run_analytics_report( $id, true );
-	        }
+				// cache the instance id so we can get the report results if they are applicable
+				if ( '' === $report_cache_expiration ) {
+					$report_cache_expiration = $this->cache_expiration();
+				}
+				$this->wordpress->cache_set( $report_url, '', $instance_id, $report_cache_expiration );
+			} else {
+				// run the call again if we don't have a reportMetadata array
+				//error_log('run report again. we have no reportmetadata.');
+				$this->run_analytics_report( $id, true );
+			}
 		} // End if().
 
 		$result = $this->api_call( $report_url . "/{$instance_id}", array(), $method );
@@ -1033,20 +1033,20 @@ class Object_Sync_Sf_Salesforce {
 		// cache the instance results as a long fallback if the setting says so
 		// do this because salesforce will have errors if the instance has expired or is currently running
 		// remember: the result of the above api_call is already cached (or not) according to the plugin's generic settings
-		// this is fine i think, although it is a bit of redundancy in this case
+		// this is fine I think, although it is a bit of redundancy in this case
 		if ( true === $cache_instance ) {
 			$cached = $this->wordpress->cache_get( $report_url . '_instance_cached', '' );
 			if ( is_array( $cached ) ) {
-	            $result = $cached;
-	        } else {
-	        	if ( 'Success' === $result['data']['attributes']['status'] ) {
-		            if ( '' === $instance_cache_expiration ) {
-		            	$instance_cache_expiration = $this->cache_expiration();
-		            }
-		            $this->wordpress->cache_set( $report_url . '_instance_cached', '', $result, $instance_cache_expiration );
-		        }
-	        }
-	    }
+				$result = $cached;
+			} else {
+				if ( 'Success' === $result['data']['attributes']['status'] ) {
+					if ( '' === $instance_cache_expiration ) {
+						$instance_cache_expiration = $this->cache_expiration();
+					}
+					$this->wordpress->cache_set( $report_url . '_instance_cached', '', $result, $instance_cache_expiration );
+				}
+			}
+		}
 
 		return $result;
 

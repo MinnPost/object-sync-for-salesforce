@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for Object_Sync_Sf_Wordpress.
+ * Class file for Object_Sync_Sf_WordPress.
  *
  * @file
  */
@@ -12,7 +12,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Work with the WordPress $wpdb object. This class can make read and write calls to the WordPress database, and also cache the responses.
  */
-class Object_Sync_Sf_Wordpress {
+class Object_Sync_Sf_WordPress {
 
 	protected $wpdb;
 	protected $version;
@@ -290,7 +290,7 @@ class Object_Sync_Sf_Wordpress {
 		}
 
 		/*
-		 * Developers can use this hook to change the wordpress object field array.
+		 * Developers can use this hook to change the WordPress object field array.
 		 * The returned $object_fields needs to be an array like is described earlier in this method:
 		 *     $object_fields = array( 'data' => array(), 'from_cache' => bool, 'cached' => bool );
 		 * This is useful for custom objects that do not use the normal metadata table structure.
@@ -330,7 +330,7 @@ class Object_Sync_Sf_Wordpress {
 			$wordpress_object[ $field ] = $data->{$field};
 		}
 
-		// Developers can use this hook to change the wordpress object,
+		// Developers can use this hook to change the WordPress object,
 		// including any formatting that needs to happen to the data.
 		// The returned $wordpress_object needs to be an array like described above.
 		// This is useful for custom objects or custom formatting.
@@ -521,7 +521,7 @@ class Object_Sync_Sf_Wordpress {
 				/*
 				 * Developers can use this hook to create objects with their own methods.
 				 * The returned $result needs to be an array like this.
-				 * $id_field should be the database key; i.e. 'ID' and the value should be the new item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+				 * $id_field should be the database key; i.e. 'ID' and the value should be the new item's id, or whatever WordPress returns from the method (sometimes this can be an error)
 				 * $success should be a boolean value
 					$result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
 				 * use hook like: add_filter( 'object_sync_for_salesforce_create_custom_wordpress_item', add_object, 10, 1 );
@@ -556,7 +556,7 @@ class Object_Sync_Sf_Wordpress {
 	 * @param string $name Object type name, E.g., user, post, comment.
 	 * @param string $key The field to check if this record should be created or updated.
 	 * @param string $value The value for this record of the field specified for $key.
-	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 	 * @param array  $params Values of the fields to set for the object.
 	 * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
@@ -609,7 +609,7 @@ class Object_Sync_Sf_Wordpress {
 				/*
 				 * Developers can use this hook to upsert objects with their own methods.
 				 * The returned $result needs to be an array like this:
-				 * $id_field should be the database key; i.e. 'ID' and the value should be the item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+				 * $id_field should be the database key; i.e. 'ID' and the value should be the item's id, or whatever WordPress returns from the method (sometimes this can be an error)
 				 * $success should be a boolean value
 				 *     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
 				 * Use hook like this:
@@ -686,7 +686,7 @@ class Object_Sync_Sf_Wordpress {
 				/*
 				 * Developers can use this hook to update objects with their own methods.
 				 * The returned $result needs to be an array like this:
-				 *     $id_field should be the database key; i.e. 'ID' and the value should be the updated item's id, or whatever wordpress returns from the method (sometimes this can be an error)
+				 *     $id_field should be the database key; i.e. 'ID' and the value should be the updated item's id, or whatever WordPress returns from the method (sometimes this can be an error)
 				 * $success should be a boolean value
 				 *     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
 				 * Use hook like this:
@@ -811,7 +811,7 @@ class Object_Sync_Sf_Wordpress {
 		if ( false === username_exists( $username ) ) {
 
 			// Create the user
-			// Wordpress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email.
+			// WordPress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email.
 			$params['user_pass'] = array(
 				'value' => wp_generate_password( 12, false ),
 				'method_modify' => 'wp_insert_user',
@@ -887,7 +887,7 @@ class Object_Sync_Sf_Wordpress {
 	 *
 	 * @param string $key What key we are looking at for possible matches.
 	 * @param string $value What value we are looking at for possible matches.
-	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 	 * @param array  $params Array of user data params. This is generated by Object_Sync_Sf_Mapping::map_params().
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
 	 * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
@@ -901,7 +901,7 @@ class Object_Sync_Sf_Wordpress {
 	 */
 	private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $check_only = false ) {
 
-		// If the key is user_email, we need to make it just email because that is how the wordpress method reads it.
+		// If the key is user_email, we need to make it just email because that is how the WordPress method reads it.
 		$method = $methods['method_match'];
 		if ( '' !== $method ) {
 			// This should give us the user object.
@@ -1100,7 +1100,17 @@ class Object_Sync_Sf_Wordpress {
 			$content['post_type'] = $post_type;
 		}
 
-		$post_id = wp_insert_post( $content );
+		// WordPress post creation will fail with an object of 0 if there is no title or content
+		// I think we should allow this to happen and not make users' data decisions, so
+		// if we're receiving nothing for either of these, create a blank one so it doesn't fail
+		if ( ! isset( $params['post_title'] ) ) {
+			$content['post_title'] = ' ';
+		}
+		if ( ! isset( $params['post_content'] ) ) {
+			$content['post_content'] = ' ';
+		}
+
+		$post_id = wp_insert_post( $content, true ); // return an error instead of a 0 id
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
@@ -1157,7 +1167,7 @@ class Object_Sync_Sf_Wordpress {
 	 *
 	 * @param string $key What key we are looking at for possible matches.
 	 * @param string $value What value we are looking at for possible matches.
-	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 	 * @param array  $params Array of post data params.
 	 * @param string $id_field optional string of what the ID field is, if it is ever not ID.
 	 * @param bool   $push_drafts Indicates whether we should match against draft posts.
@@ -1333,7 +1343,7 @@ class Object_Sync_Sf_Wordpress {
 			$content['post_type'] = $post_type;
 		}
 
-		$post_id = wp_update_post( $content );
+		$post_id = wp_update_post( $content, true ); // return an error instead of a 0 id
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
@@ -1467,7 +1477,7 @@ class Object_Sync_Sf_Wordpress {
 	 *
 	 * @param string $key What key we are looking at for possible matches.
 	 * @param string $value What value we are looking at for possible matches.
-	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 	 * @param array  $params Array of attachment data params.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
@@ -1806,7 +1816,7 @@ class Object_Sync_Sf_Wordpress {
 	 *
 	 * @param string $key What key we are looking at for possible matches.
 	 * @param string $value What value we are looking at for possible matches.
-	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 	 * @param array  $params Array of term data params.
 	 * @param string $taxonomy The taxonomy to which to add the term. this is required..
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
@@ -2111,7 +2121,7 @@ class Object_Sync_Sf_Wordpress {
 	 *
 	 * @param string $key What key we are looking at for possible matches.
 	 * @param string $value What value we are looking at for possible matches.
-	 * @param array  $methods What wordpress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
+	 * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 	 * @param array  $params Array of comment data params.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not comment_ID.
 	 * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.

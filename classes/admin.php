@@ -133,6 +133,9 @@ class Object_Sync_Sf_Admin {
 		add_action( 'personal_options_update', array( $this, 'save_salesforce_user_fields' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'save_salesforce_user_fields' ) );
 
+		add_action( 'admin_post_delete_object_map', array( $this, 'delete_object_map' ) );
+		add_action( 'admin_post_post_object_map', array( $this, 'prepare_object_map_data' ) );
+
 	}
 
 	/**
@@ -170,6 +173,11 @@ class Object_Sync_Sf_Admin {
 		$logging_enabled = get_option( 'object_sync_for_salesforce_enable_logging', false );
 		$tabs['log_settings'] = 'Log Settings';
 
+		$mapping_errors = $this->mappings->get_failed_object_maps();
+		if ( ! empty( $mapping_errors ) ) {
+			$tabs['mapping_errors'] = 'Mapping Errors';
+		}
+
 		// filter for extending the tabs available on the page
 		// currently it will go into the default switch case for $tab
 		$tabs = apply_filters( 'object_sync_for_salesforce_settings_tabs', $tabs );
@@ -180,6 +188,32 @@ class Object_Sync_Sf_Admin {
 		$consumer_key = $this->login_credentials['consumer_key'];
 		$consumer_secret = $this->login_credentials['consumer_secret'];
 		$callback_url = $this->login_credentials['callback_url'];
+
+		if ( true !== $this->salesforce['is_authorized'] ) {
+			$url = esc_url( $callback_url );
+			$anchor = esc_html__( 'Authorize tab', 'object-sync-for-salesforce' );
+			$message = sprintf( 'Salesforce needs to be authorized to connect to this website. Use the <a href="%s">%s</a> to connect.', $url, $anchor );
+			require( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
+		}
+
+		if ( 0 === count( $this->mappings->get_fieldmaps() ) ) {
+			$url = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps' ) );
+			$anchor = esc_html__( 'Fieldmaps tab', 'object-sync-for-salesforce' );
+			$message = sprintf( 'No fieldmaps exist yet. Use the <a href="%s">%s</a> to map WordPress and Salesforce objects to each other.', $url, $anchor );
+			require( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
+		}
+
+		$push_schedule_number = get_option( 'object_sync_for_salesforce_salesforce_push_schedule_number', '' );
+		$push_schedule_unit = get_option( 'object_sync_for_salesforce_salesforce_push_schedule_unit', '' );
+		$pull_schedule_number = get_option( 'object_sync_for_salesforce_salesforce_pull_schedule_number', '' );
+		$pull_schedule_unit = get_option( 'object_sync_for_salesforce_salesforce_pull_schedule_unit', '' );
+
+		if ( '' === $push_schedule_number && '' === $push_schedule_unit && '' === $pull_schedule_number && '' === $pull_schedule_unit ) {
+			$url = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps' ) );
+			$anchor = esc_html__( 'Scheduling tab', 'object-sync-for-salesforce' );
+			$message = sprintf( 'Because the plugin schedule has not been saved, the plugin cannot run automatic operations. Use the <a href="%s">%s</a> to create schedules to run.', $url, $anchor );
+			require( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
+		}
 
 		try {
 			switch ( $tab ) {
@@ -258,20 +292,38 @@ class Object_Sync_Sf_Admin {
 					$this->clear_schedule( $schedule_name );
 					break;
 				case 'settings':
-					$consumer_key = $this->login_credentials['consumer_key'];
-					$consumer_secret = $this->login_credentials['consumer_secret'];
-					if ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) {
-						if ( true === $this->salesforce['is_authorized'] ) {
-							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
-						} else {
-							$url = esc_url( $callback_url );
-							$anchor = esc_html__( 'Authorize tab', 'object-sync-for-salesforce' );
-							$message = sprintf( 'Salesforce needs to be authorized to connect to this website. Use the <a href="%s">%s</a> to connect.', $url, $anchor );
-							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
-							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+					break;
+				case 'mapping_errors':
+					if ( isset( $get_data['method'] ) ) {
+
+						$method = sanitize_key( $get_data['method'] );
+						$error_url = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=' . $method );
+						$success_url = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors' );
+
+						if ( isset( $get_data['map_transient'] ) ) {
+							$transient = sanitize_key( $get_data['map_transient'] );
+							$posted = get_transient( $transient );
+						}
+
+						if ( isset( $posted ) && is_array( $posted ) ) {
+							$map_row = $posted;
+						} elseif ( 'edit' === $method || 'delete' === $method ) {
+							$map_row = $this->mappings->get_failed_object_map( isset( $get_data['id'] ) ? sanitize_key( $get_data['id'] ) : '' );
+						}
+
+						if ( isset( $map_row ) && is_array( $map_row ) ) {
+							$salesforce_id = $map_row['salesforce_id'];
+							$wordpress_id = $map_row['wordpress_id'];
+						}
+
+						if ( 'edit' === $method ) {
+							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors-edit.php' );
+						} elseif ( 'delete' === $method ) {
+							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors-delete.php' );
 						}
 					} else {
-						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/settings.php' );
+						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors.php' );
 					}
 					break;
 				default:
@@ -743,28 +795,28 @@ class Object_Sync_Sf_Admin {
 			),
 			'logs_how_often_unit' => array(
 				'title' => __( 'Time unit', 'object-sync-for-salesforce' ),
-					'callback' => $callbacks['select'],
-					'page' => $page,
-					'section' => $section,
-					'args' => array(
-						'type' => 'select',
-						'validate' => 'sanitize_text_field',
-						'desc' => 'These two fields are how often the site will check for logs to delete.',
-						'items' => array(
-							'minutes' => array(
-								'text' => 'Minutes',
-								'value' => 'minutes',
-							),
-							'hours' => array(
-								'text' => 'Hours',
-								'value' => 'hours',
-							),
-							'days' => array(
-								'text' => 'Days',
-								'value' => 'days',
-							),
+				'callback' => $callbacks['select'],
+				'page' => $page,
+				'section' => $section,
+				'args' => array(
+					'type' => 'select',
+					'validate' => 'sanitize_text_field',
+					'desc' => 'These two fields are how often the site will check for logs to delete.',
+					'items' => array(
+						'minutes' => array(
+							'text' => 'Minutes',
+							'value' => 'minutes',
+						),
+						'hours' => array(
+							'text' => 'Hours',
+							'value' => 'hours',
+						),
+						'days' => array(
+							'text' => 'Days',
+							'value' => 'days',
 						),
 					),
+				),
 			),
 			'triggers_to_log' => array(
 				'title' => 'Triggers to log',
@@ -850,6 +902,12 @@ class Object_Sync_Sf_Admin {
 			'fieldmap' => array(
 				'condition' => isset( $get_data['transient'] ),
 				'message' => 'Errors kept this fieldmap from being saved.',
+				'type' => 'error',
+				'dismissible' => true,
+			),
+			'object_map' => array(
+				'condition' => isset( $get_data['map_transient'] ),
+				'message' => 'Errors kept this object map from being saved.',
 				'type' => 'error',
 				'dismissible' => true,
 			),
@@ -1172,6 +1230,72 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
+	* Prepare object data and redirect after processing
+	* This runs when the update form is submitted
+	* It is public because it depends on an admin hook
+	* It then calls the Object_Sync_Sf_Mapping class and sends prepared data over to it, then redirects to the correct page
+	* This method does include error handling, by loading the submission in a transient if there is an error, and then deleting it upon success
+	*
+	*/
+	public function prepare_object_map_data() {
+		$error = false;
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$cachekey = md5( wp_json_encode( $post_data ) );
+
+		if ( ! isset( $post_data['wordpress_id'] ) || ! isset( $post_data['salesforce_id'] ) ) {
+			$error = true;
+		}
+		if ( true === $error ) {
+			set_transient( $cachekey, $post_data, 0 );
+			if ( '' !== $cachekey ) {
+				$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&map_transient=' . $cachekey;
+			}
+		} else { // there are no errors
+			// send the row to the object map class
+			$method = esc_attr( $post_data['method'] );
+			if ( 'edit' === $method ) { // if it is edit, use the update method
+				$id = esc_attr( $post_data['id'] );
+				$result = $this->mappings->update_object_map( $post_data, $id );
+			}
+			if ( false === $result ) { // if the database didn't save, it's still an error
+				set_transient( $cachekey, $post_data, 0 );
+				if ( '' !== $cachekey ) {
+					$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&map_transient=' . $cachekey;
+				}
+			} else {
+				if ( isset( $post_data['map_transient'] ) ) { // there was previously an error saved. can delete it now.
+					delete_transient( esc_attr( $post_data['map_transient'] ) );
+				}
+				// then send the user to the success redirect url
+				$url = esc_url_raw( $post_data['redirect_url_success'] );
+			}
+		}
+		wp_safe_redirect( $url );
+		exit();
+	}
+
+	/**
+	* Delete object map data and redirect after processing
+	* This runs when the delete link is clicked on an error row, after the user confirms
+	* It is public because it depends on an admin hook
+	* It then calls the Object_Sync_Sf_Mapping class and the delete method
+	*
+	*/
+	public function delete_object_map() {
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		if ( $post_data['id'] ) {
+			$result = $this->mappings->delete_object_map( $post_data['id'] );
+			if ( true === $result ) {
+				$url = esc_url_raw( $post_data['redirect_url_success'] );
+			} else {
+				$url = esc_url_raw( $post_data['redirect_url_error'] . '&id=' . $post_data['id'] );
+			}
+			wp_safe_redirect( $url );
+			exit();
+		}
+	}
+
+	/**
 	* Default display for <input> fields
 	*
 	* @param array $args
@@ -1431,7 +1555,7 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-	* Check Wordpress Admin permissions
+	* Check WordPress Admin permissions
 	* Check if the current user is allowed to access the Salesforce plugin options
 	*/
 	private function check_wordpress_admin_permissions() {

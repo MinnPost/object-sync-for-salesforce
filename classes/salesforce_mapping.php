@@ -300,7 +300,7 @@ class Object_Sync_Sf_Mapping {
 						'is_delete' => sanitize_text_field( $posted['is_delete'][ $key ] ),
 					);
 
-					// If the wordpress key or the salesforce key are blank, remove this incomplete mapping.
+					// If the WordPress key or the Salesforce key are blank, remove this incomplete mapping.
 					// This prevents https://github.com/MinnPost/object-sync-for-salesforce/issues/82 .
 					if (
 						empty( $setup['fields'][ $key ]['wordpress_field']['label'] )
@@ -378,9 +378,9 @@ class Object_Sync_Sf_Mapping {
 	public function create_object_map( $posted = array() ) {
 		$data = $this->setup_object_map_data( $posted );
 		$data['created'] = current_time( 'mysql' );
-		// Check to see if we don't know the salesforce id, or if this is pending.
-		// If it is pending, the map will get updated after it finishes running.
-		if ( 0 !== $data['salesforce_id'] || 'pending' === $data['action'] ) {
+		// Check to see if we don't know the salesforce id and it is not a temporary id, or if this is pending.
+		// If it is using a temporary id, the map will get updated after it finishes running; it won't call this method unless there's an error, which we should log.
+		if ( substr( $data['salesforce_id'], 0, 7 ) !== 'tmp_sf_' || 'pending' === $data['action'] ) {
 			unset( $data['action'] );
 			$insert = $this->wpdb->insert( $this->object_map_table, $data );
 		} else {
@@ -393,7 +393,7 @@ class Object_Sync_Sf_Mapping {
 			$logging->setup(
 				sprintf(
 					// translators: %1$s is the name of a WordPress object. %2$s is the id of that object.
-					esc_html__( 'Error Mapping: error caused by trying to map the WordPress %1$s with ID of %2$s to Salesforce ID of 0, which is invalid.', 'object-sync-for-salesforce' ),
+					esc_html__( 'Error Mapping: error caused by trying to map the WordPress %1$s with ID of %2$s to Salesforce ID starting with "tmp_sf_", which is invalid.', 'object-sync-for-salesforce' ),
 					esc_attr( $data['wordpress_object'] ),
 					absint( $data['wordpress_id'] )
 				),
@@ -436,7 +436,7 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Get one or more object map rows between WordPress and Salesforce objects
 	 *
-	 * @param array $conditions Limitatinos on the SQL query for object mapping rows.
+	 * @param array $conditions Limitations on the SQL query for object mapping rows.
 	 * @param bool  $reset Unused parameter.
 	 * @return $map or $mappings
 	 * @throws \Exception
@@ -507,10 +507,12 @@ class Object_Sync_Sf_Mapping {
 	 * Setup the data for the object map
 	 *
 	 * @param array $posted It's $_POST.
-	 * @return $data Literally returns the input of the function.
+	 * @return $data Filtered array with only the keys that are in the object map database table. Strips out things from WordPress form if they're present.
 	 */
 	private function setup_object_map_data( $posted = array() ) {
-		$data = $posted;
+		$allowed_fields = $this->wpdb->get_col( "DESC {$this->object_map_table}", 0 );
+		$allowed_fields[] = 'action'; // we use this in both directions even though it isn't in the database; we remove it from the array later if it is present
+		$data = array_intersect_key( $posted, array_flip( $allowed_fields ) );
 		return $data;
 	}
 
@@ -530,6 +532,22 @@ class Object_Sync_Sf_Mapping {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Delete an object map row between a WordPress and Salesforce object
+	 *
+	 * @param string $direction Whether this is part of a push or pull action
+	 * @return $id is a temporary string that will be replaced if the modification is successful
+	 */
+	public function generate_temporary_id( $direction ) {
+		if ( 'push' === $direction ) {
+			$prefix = 'tmp_sf_';
+		} elseif ( 'pull' === $direction ) {
+			$prefix = 'tmp_wp_';
+		}
+		$id = uniqid( $prefix, true );
+		return $id;
 	}
 
 	/**
@@ -627,23 +645,23 @@ class Object_Sync_Sf_Mapping {
 
 			// skip fields that aren't being pushed to Salesforce.
 			if ( in_array( $trigger, $wordpress_haystack, true ) && ! in_array( $fieldmap['direction'], array_values( $this->direction_wordpress ), true ) ) {
-				// The trigger is a wordpress trigger, but the fieldmap direction is not a wordpress direction.
+				// The trigger is a WordPress trigger, but the fieldmap direction is not a WordPress direction.
 				continue;
 			}
 
 			// skip fields that aren't being pulled from Salesforce.
 			if ( in_array( $trigger, $salesforce_haystack, true ) && ! in_array( $fieldmap['direction'], array_values( $this->direction_salesforce ), true ) ) {
-				// The trigger is a salesforce trigger, but the fieldmap direction is not a salesforce direction.
+				// The trigger is a Salesforce trigger, but the fieldmap direction is not a Salesforce direction.
 				continue;
 			}
 
 			$salesforce_field = $fieldmap['salesforce_field']['label'];
 			$wordpress_field = $fieldmap['wordpress_field']['label'];
 
-			// A wordpress event caused this.
+			// A WordPress event caused this.
 			if ( in_array( $trigger, array_values( $wordpress_haystack ), true ) ) {
 
-				// Skip fields that aren't updateable when mapping params because salesforce will error otherwise.
+				// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise.
 				if ( 1 !== (int) $fieldmap['salesforce_field']['updateable'] ) {
 					continue;
 				}
@@ -748,6 +766,42 @@ class Object_Sync_Sf_Mapping {
 
 		return $mappings;
 
+	}
+
+	/**
+	 * Check object map table to see if there have been any failed object map create attempts
+	 *
+	 * @return array $errors Associative array of rows that failed to finish from either system
+	 */
+	public function get_failed_object_maps() {
+		$table = $this->object_map_table;
+		$errors = array();
+		$push_errors = $this->wpdb->get_results( 'SELECT * FROM ' . $table . ' WHERE salesforce_id LIKE "tmp_sf_%"', ARRAY_A );
+		$pull_errors = $this->wpdb->get_results( 'SELECT * FROM ' . $table . ' WHERE wordpress_id LIKE "tmp_wp_%"', ARRAY_A );
+		if ( ! empty( $push_errors ) ) {
+			$errors['push_errors'] = $push_errors;
+		}
+		if ( ! empty( $pull_errors ) ) {
+			$errors['pull_errors'] = $pull_errors;
+		}
+		return $errors;
+	}
+
+	/**
+	 * Check object map table to see if there have been any failed object map create attempts
+	 *
+	 * @param int   $id The ID of a desired mapping.
+	 *
+	 * @return array $error Associative array of single row that failed to finish based on id
+	 */
+	public function get_failed_object_map( $id ) {
+		$table = $this->object_map_table;
+		$error = array();
+		$error_row = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = "' . $id . '"', ARRAY_A );
+		if ( ! empty( $error_row ) ) {
+			$error = $error_row;
+		}
+		return $error;
 	}
 
 }
