@@ -355,7 +355,8 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			$args .= $url;
 		}
-		$cachekey = md5( wp_json_encode( $args ) );
+		$prefix = esc_sql( $this->transient_prefix() );
+		$cachekey = $prefix . md5( wp_json_encode( $args ) );
 		return get_transient( $cachekey );
 	}
 
@@ -376,13 +377,54 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			$args .= $url;
 		}
-		$cachekey = md5( wp_json_encode( $args ) );
+		$prefix = esc_sql( $this->transient_prefix() );
+		$cachekey = $prefix . md5( wp_json_encode( $args ) );
 		// Cache_expiration is how long it should be stored in the cache.
 		// If we didn't give a custom one, use the default.
 		if ( '' === $cache_expiration ) {
 			$cache_expiration = $this->options['cache_expiration'];
 		}
 		return set_transient( $cachekey, $data, $cache_expiration );
+	}
+
+	/**
+	 * Create a cache entry for the current result, with the url and args as the key
+	 *
+	 * @param string $subset If we only want to purge WordPress data, Salesforce data, options, etc.
+	 * @return Bool whether or not the purge was successful
+	 * @link https://css-tricks.com/the-deal-with-wordpress-transients/#article-header-id-22
+	 */
+	public function cache_purge( $subset = '' ) {
+		$prefix = esc_sql( $this->transient_prefix() );
+
+		// cache is stored somewhere other than the options table
+		// this is a big ball of wax
+		if ( wp_using_ext_object_cache() ) {
+
+		} else {
+			// cache is stored in the options table. this is pretty easy.
+			$options = $this->wpdb->options;
+			$t = esc_sql( '_transient_timeout_' . $prefix . '%' );
+			$sql = $wpdb ->prepare( "SELECT option_name FROM $options WHERE option_name LIKE '%s'", $t );
+			$transients = $this->wpdb->get_col( $sql );
+			foreach ( $transients as $transient ) {
+				// Strip away the WordPress prefix in order to arrive at the transient key.
+				$key = str_replace( '_transient_timeout_', '', $transient );
+				// Now that we have the key, use WordPress core to the delete the transient.
+				delete_transient( $key );
+			}
+		}
+
+	}
+
+	/**
+	 * Get the cache transient prefix for this plugin and return it
+	 *
+	 * @return The transient prefix
+	 */
+	private function transient_prefix() {
+		$transient_prefix = 'sfwp';
+		return $transient_prefix;
 	}
 
 	/**
