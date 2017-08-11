@@ -217,7 +217,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$this->schedule->push_to_queue( $data );
 						$this->schedule->save()->dispatch();
 					}
-
 				}
 
 				// Handle requests larger than the batch limit (usually 2000).
@@ -257,7 +256,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 								$this->schedule->push_to_queue( $data );
 								$this->schedule->save()->dispatch();
 							}
-
 						}
 					}
 
