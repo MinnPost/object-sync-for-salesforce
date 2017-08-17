@@ -3,7 +3,7 @@ Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.8
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -124,7 +124,13 @@ There is extensive documentation of the plugin, including its developer hooks, [
 
 == Changelog ==
 
+* 1.0.8 (2017-08-14)
+
+	* This checks a mapping's configured allowed sync triggers before queueing a record for pull processing, rather than as a part of the WordPress record's create or update. This resolves an issue. Thanks to GitHub user @charmoney for the report and the pull request.
+	* This release also fixes a bug related to 1.0.7, which after the fix was still incorrectly checking the `post_content` and `post_title` values.
+
 * 1.0.7 (2017-08-01)
+
 	* This sets up admin notices that always show above the plugin's admin tabs if: 1) the plugin is not authorized, 2) there are no fieldmaps, or 3) there is no schedule set up for the plugin. This is so users understand they have to do these things before the plugin can properly work.
 	* Fixed a bug where `wp_insert_post` failed if the `post_content` or `post_title` values were not passed, but the map row was still created. This passes empty values for both fields if they aren't present. It also throws a `WP_Errror` object if either `wp_insert_post` or `wp_update_post` fail.
 	* Also fixed some code formatting issues

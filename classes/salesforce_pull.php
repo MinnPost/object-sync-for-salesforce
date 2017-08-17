@@ -167,6 +167,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	private function get_updated_records() {
 		$sfapi = $this->salesforce['sfapi'];
 		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
+			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which SalesForce triggers are allowed for the mapping
 			$type = $salesforce_mapping['salesforce_object']; // this sets the salesfore object type for the SOQL query
 
 			$soql = $this->get_pull_query( $type, $salesforce_mapping );
@@ -198,21 +199,24 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					// if this record is new as of the last sync, use the create trigger
 					if ( isset( $result['CreatedDate'] ) && $result['CreatedDate'] > $last_sync ) {
-						$trigger = $this->mappings->sync_sf_create;
+						$sf_sync_trigger = $this->mappings->sync_sf_create;
 					} else {
-						$trigger = $this->mappings->sync_sf_update;
+						$sf_sync_trigger = $this->mappings->sync_sf_update;
 					}
 
-					$data = array(
-						'object_type' => $type,
-						'object' => $result,
-						'mapping' => $salesforce_mapping,
-						'sf_sync_trigger' => $trigger, // use the appropriate trigger based on when this was created
-					);
+					// Only queue when the record's trigger is configured for the mapping
+					// these are bit operators, so we leave out the strict
+					if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
+						$data = array(
+							'object_type' => $type,
+							'object' => $result,
+							'mapping' => $salesforce_mapping,
+							'sf_sync_trigger' => $sf_sync_trigger, // use the appropriate trigger based on when this was created
+						);
 
-					$this->schedule->push_to_queue( $data );
-					$this->schedule->save()->dispatch();
-
+						$this->schedule->push_to_queue( $data );
+						$this->schedule->save()->dispatch();
+					}
 				}
 
 				// Handle requests larger than the batch limit (usually 2000).
@@ -232,15 +236,26 @@ class Object_Sync_Sf_Salesforce_Pull {
 					if ( ! isset( $new_response['errorCode'] ) ) {
 						// Write items to the queue.
 						foreach ( $new_response['records'] as $result ) {
-							$data = array(
-								'object_type' => $type,
-								'object' => $result,
-								'mapping' => $mapping,
-								'sf_sync_trigger' => $this->mappings->sync_sf_update, // sf update trigger
-							);
-							$this->schedule->push_to_queue( $data );
-							$this->schedule->save();
+							// if this record is new as of the last sync, use the create trigger
+							if ( isset( $result['CreatedDate'] ) && $result['CreatedDate'] > $last_sync ) {
+								$sf_sync_trigger = $this->mappings->sync_sf_create;
+							} else {
+								$sf_sync_trigger = $this->mappings->sync_sf_update;
+							}
 
+							// Only queue when the record's trigger is configured for the mapping
+							// these are bit operators, so we leave out the strict
+							if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
+								$data = array(
+									'object_type' => $type,
+									'object' => $result,
+									'mapping' => $salesforce_mapping,
+									'sf_sync_trigger' => $sf_sync_trigger, // use the appropriate trigger based on when this was created
+								);
+
+								$this->schedule->push_to_queue( $data );
+								$this->schedule->save()->dispatch();
+							}
 						}
 					}
 
@@ -756,7 +771,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// methods to run the wp create or update operations
 
-			if ( true === $is_new && ( $sf_sync_trigger == $this->mappings->sync_sf_create ) ) { // trigger is a bit operator
+			if ( true === $is_new ) {
 
 				// setup SF record type. CampaignMember objects get their Campaign's type
 				// i am still a bit confused about this
@@ -1098,7 +1113,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					return;
 				} // End if().
-			} elseif ( false === $is_new && ( $sf_sync_trigger == $this->mappings->sync_sf_update ) ) { // the trigger is a bit operator; currently it will fail if strict
+			} elseif ( false === $is_new ) {
 
 				// right here we should set the pulling transient
 				set_transient( 'salesforce_pulling_' . $mapping_object['id'], 1, $seconds );

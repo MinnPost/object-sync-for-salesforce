@@ -70,7 +70,7 @@ The `deactivate` class also stops recurring tasks created by the `schedule` clas
 
 ### Logging (logging)
 
-This class extends the [WP Logging Class](https://github.com/pippinsplugins/WP-Logging) to log plugin-specific events. The main class is stored in the /vendor/wp-logging folder, which we tie into this plugin with composer. Our extension to this class does a few things:
+This class extends the [WP Logging Class](https://github.com/pippinsplugins/WP-Logging) to log plugin-specific events. The main class is stored in the /vendor/pippinsplugins/wp-logging folder, which we tie into this plugin with composer. Our extension to this class does a few things:
 
 1. Force a type of 'salesforce' on all logs this plugin creates.
 2. Get logging-related options configured by the `admin` class, including how often to get rid of entries.
@@ -83,7 +83,7 @@ This class extends the [WP Logging Class](https://github.com/pippinsplugins/WP-L
 
 Map WordPress content (including users) to Salesforce fields, including field level mapping.
 
-1. Defines important values for each triggering event (create, edit, delete from both WordPress and Salesforce), how to identify which direction an object should use (WordPress, Salesforce, or sync), and data tables in WordPress. This class is available to the `wordpress`, schedule`, `salesforce_push`, `salesforce_pull`, and `admin` classes.
+1. Defines important values for each triggering event (create, edit, delete from both WordPress and Salesforce), how to identify which direction an object should use (WordPress, Salesforce, or sync), and data tables in WordPress. This class is available to the `wordpress`, `schedule`, `salesforce_push`, `salesforce_pull`, and `admin` classes.
 2. Has a basic create/read/update/delete setup, including loading all results or a subset. Results can also be loaded by specific conditions, or by WordPress or Salesforce IDs.
 3. Handles mapping values for the fields that should be sent to WordPress or Salesforce when a sync event happens so the data is correct.
 4. Generates temporary IDs for the system that has yet to be synced (WordPress or Salesforce), and thus is used to track any sync rows that may fail to complete.
@@ -98,13 +98,13 @@ This class determines what to do when the `salesforce_push` and `salesforce_pull
 
 #### Starting with a Salesforce change
 
-1. The `schedule` for salesforce_pull` runs. If it finds new/updated/deleted records in Salesforce that relate to map objects in WordPress, it stores the data in a queue.
+1. The `schedule` for `salesforce_pull` runs. If it finds new/updated/deleted records in Salesforce that relate to map objects in WordPress, it stores the data in a queue.
 2. When the `schedule` runs again to process the queue, is used to create/update/delete objects in WordPress, and in `salesforce_mapping`. It checks for `salesforce_pushing` transients to make sure the data did not originate in WordPress, and it creates `salesforce_pulling` transients to indicate that data originated in Salesforce.
 3. If data originates in Salesforce, it is sent to the `wordpress` class to be saved in WordPress.
 4. `salesforce_push` checks for the `salesforce_pulling` transients, and if they exist and are current, it does not send data to the `salesforce` class.
 
 
-### Wordpress (wordpress)
+### WordPress (wordpress)
 
 This class handles getting and setting WordPress core data.
 
@@ -128,7 +128,7 @@ OAUTH2 authorization and wrapper around the supported Salesforce APIs. Methods s
 
 ### Schedule (schedule)
 
-This class extends the [WP Background Processing](https://github.com/A5hleyRich/wp-background-processing) class to schedule recurring tasks with more options than the `wp_cron` provided by WordPress Core. The main class is stored in the /vendor/wp-background-processing folder, which we need to somehow tie into this plugin.
+This class extends the [WP Background Processing](https://github.com/A5hleyRich/wp-background-processing) class to schedule recurring tasks with more options than the `wp_cron` provided by WordPress Core. The main class is stored in the /vendor/a5hleyrich/wp-background-processing folder, which we tie into this plugin with composer.
 
 This class is called by the individual classes that use it. Example: `salesforce_push` calls it when it pushes data to Salesforce.
 
@@ -170,32 +170,32 @@ This class controls and renders the admin functionality of the plugin. Its metho
 The admin section is divided into tabs:
 
 1. Settings
-    - The settings can be defined in `wp-config.php` as constants, or added to the database on this tab).
-    - Settings are required to connect to Salesforce, pick an API version, switch between production and sandbox instances, and also define the callback and token URLs as WordPress maintains them.
+	- The settings can be defined in `wp-config.php` as constants, or added to the database on this tab).
+	- Settings are required to connect to Salesforce, pick an API version, switch between production and sandbox instances, and also define the callback and token URLs as WordPress maintains them.
 2. Authorize
-    - If WordPress has not been authorized to connect to Salesforce, this tab will have a button to do so. It will use the settings from the Settings tab, and attempt to make a connection, after which it will return to this tab.
-    - If it is authorized, there is a disconnect button, and also a couple of demo API calls. One shows the available versions (this does not require authorization), and the other shows a list of up to 100 Contacts from Salesforce.
-    - This tab also shows what the Salesforce class is doing: that is, whether it loaded its data from the WordPress cache, and whether it had to refresh the Salesforce token or not. This helps understand how fast different things are happening, and what functionality works in your environment.
+	- If WordPress has not been authorized to connect to Salesforce, this tab will have a button to do so. It will use the settings from the Settings tab, and attempt to make a connection, after which it will return to this tab.
+	- If it is authorized, there is a disconnect button, and also a couple of demo API calls. One shows the available versions (this does not require authorization), and the other shows a list of up to 100 Contacts from Salesforce.
+	- This tab also shows what the Salesforce class is doing: that is, whether it loaded its data from the WordPress cache, and whether it had to refresh the Salesforce token or not. This helps understand how fast different things are happening, and what functionality works in your environment.
 4. Fieldmaps
-    - This tab lists all fieldmaps that have been created between WordPress and Salesforce objects, and allows for editing, cloning, or deleting them.
-    - New fieldmaps can also be added. They require a label, a WordPress object, and a Salesforce object. Fields to map are displayed based on what fields each object has, after the object is chosen.
+	- This tab lists all fieldmaps that have been created between WordPress and Salesforce objects, and allows for editing, cloning, or deleting them.
+	- New fieldmaps can also be added. They require a label, a WordPress object, and a Salesforce object. Fields to map are displayed based on what fields each object has, after the object is chosen.
 5. Scheduling
-    - This tab defines schedule settings for each class in the `schedulable_classes` array. Each class can be run at any interval, as defined in minutes, hours, or days.
-    - If you change the schedule for one of the classes, it will do its initial run immediately, and then the next time it runs will be at the updated interval.
-    - This tab also shows how many items are currently in the queue for each class.
+	- This tab defines schedule settings for each class in the `schedulable_classes` array. Each class can be run at any interval, as defined in minutes, hours, or days.
+	- If you change the schedule for one of the classes, it will do its initial run immediately, and then the next time it runs will be at the updated interval.
+	- This tab also shows how many items are currently in the queue for each class.
 7. Mapping Errors
 	- This tab only appears if there are object map rows that failed to be fully created to map objects between the two systems, and have a temporary ID for either WordPress or Salesforce. It gives a non SQL way to manage these errors.
 	- Users are able to edit or delete each error row's WordPress and/or Salesforce ID, in case the data they need to map does actually exist, or if they just want to let the plugin run again.
 6. Log Settings
-    - This tab allows admin users to tell the plugin whether or not it should log any events. If it is enabled, it will use the `logging` class. If it is not, nothing will happen.
-    - Users can set what statuses to log (error, success, and/or notice), if and how often entries should be deleted, and which events between WordPress and Salesforce should be logged.
+	- This tab allows admin users to tell the plugin whether or not it should log any events. If it is enabled, it will use the `logging` class. If it is not, nothing will happen.
+	- Users can set what statuses to log (error, success, and/or notice), if and how often entries should be deleted, and which events between WordPress and Salesforce should be logged.
 7. Other tabs added by the `object_sync_for_salesforce_settings_tabs` filter will appear after the Log Settings tab.
 
 ### Classes Todo
 
 #### Salesforce_Soap_Partner (salesforce_soap_partner)
 
-Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill in functional gaps missing in the REST API. Will require the Salesforce PHP Toolkit, if/when we choose to do it.
+Lightweight wrapper around the SOAP API, using the OAUTH access token, to fill in functional gaps missing in the REST API. Will require the Salesforce PHP Toolkit, which is available via composer. The 35-soap branch has code to facilitate this.
 
 Currently there is a branch to pursue this functionality. [35-soap](https://github.com/MinnPost/object-sync-for-salesforce/tree/35-soap). It is partially present in master as well, but it does not currently do anything, including loading this class.
 
@@ -208,8 +208,6 @@ There is a full list of all hooks, with links to each hook's documentation, in t
 ## Development
 
 If you'd like to contribute to this project, please see our [contributing guidelines](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md).
-
-## Notes
 
 ## Changelog
 
