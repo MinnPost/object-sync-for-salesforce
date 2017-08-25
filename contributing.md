@@ -20,7 +20,9 @@ You'll need to run `gulp` in the plugin's main directory if you make changes to 
 
 ### For documentation
 
-If your changes are relevant to the [code documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/code/index.html), run `apigen generate` in the plugin's root directory to recreate it. You'll need to have [apigen](http://www.apigen.org/) installed and in your path to do this.
+If your contribution is PHP work, it may be relevant to the [code documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/code/index.html). In that case, you may want to install [apigen](http://www.apigen.org/) to generate this documentation. You can use [this link](http://www.apigen.org/) to set it up.
+
+Run `apigen generate` in the plugin's root directory when you make relevant changes. You can check these changes in to the Git repository.
 
 ## Standards
 
