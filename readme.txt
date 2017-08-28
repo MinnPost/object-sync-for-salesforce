@@ -173,3 +173,6 @@ There is extensive documentation of the plugin, including its developer hooks, [
 * 1.0.0 (2017-05-30)
 
 	* first stable release
+
+== Upgrade Notice ==
+
