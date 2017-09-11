@@ -1,5 +1,6 @@
 === Object Sync for Salesforce ===
 Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations
+Donate link: https://support.minnpost.com/
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.8
@@ -172,3 +173,6 @@ There is extensive documentation of the plugin, including its developer hooks, [
 * 1.0.0 (2017-05-30)
 
 	* first stable release
+
+== Upgrade Notice ==
+
