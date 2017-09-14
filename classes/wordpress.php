@@ -559,7 +559,6 @@ class Object_Sync_Sf_WordPress {
 				$result = $this->comment_create( $params, $id_field );
 				break;
 			default:
-
 				/*
 				 * Developers can use this hook to create objects with their own methods.
 				 * The returned $result needs to be an array like this.
@@ -647,7 +646,6 @@ class Object_Sync_Sf_WordPress {
 				$result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
 				break;
 			default:
-
 				/*
 				 * Developers can use this hook to upsert objects with their own methods.
 				 * The returned $result needs to be an array like this:
@@ -724,7 +722,6 @@ class Object_Sync_Sf_WordPress {
 				$result = $this->comment_update( $id, $params, $id_field );
 				break;
 			default:
-
 				/*
 				 * Developers can use this hook to update objects with their own methods.
 				 * The returned $result needs to be an array like this:
@@ -789,7 +786,6 @@ class Object_Sync_Sf_WordPress {
 				$success = $this->comment_delete( $id );
 				break;
 			default:
-
 				/*
 				 * Developers can use this hook to delete objects with their own methods.
 				 * The returned $success is an object of the correct type, or a FALSE
@@ -2411,34 +2407,34 @@ class WordpressException extends Exception {
 /**
  * Class to store all theme/plugin transients as an array in one WordPress transient
  **/
-class wpse_174330_transient {
-  protected $name;
-  protected $transient;
+class Wpse_174330_Transient {
+	protected $name;
+	protected $transient;
 
-  public function __construct( $name ){
-    $this->name;
-    $this->transient = ( false !== ( $t = get_transient( $name ) ) ) ? $t : [];
-  }
-  public function all(){
-    return $this->transient;
-  }
-  public function flush(){
-    $this->transient = [];
-    delete_transient( $this->name );
-  }
-  public function set( $transient, $value, $expiration = '' ){
-    $this->transient[ $transient ] = $value;
-    $this->update();
-  }
-  public function get( $transient ){
-    return isset( $this->transient[ $transient ] ) ?
-      $this->transient[ $transient ] : false;
-  }
-  public function delete( $transient ){
-    unset( $this->transient[ $transient ] );
-    return $this>update();
-  }
-  protected function update(){
-    return set_transient( $this->name, $this->transient );
-  }
+	public function __construct( $name ) {
+		$this->name;
+		$this->transient = ( false !== ( get_transient( $name ) = $t ) ) ? $t : [];
+	}
+	public function all() {
+		return $this->transient;
+	}
+	public function flush() {
+		$this->transient = [];
+		delete_transient( $this->name );
+	}
+	public function set( $transient, $value, $expiration = '' ) {
+		$this->transient[ $transient ] = $value;
+		$this->update();
+	}
+	public function get( $transient ) {
+		return isset( $this->transient[ $transient ] ) ?
+		$this->transient[ $transient ] : false;
+	}
+	public function delete( $transient ) {
+		unset( $this->transient[ $transient ] );
+		return $this->update();
+	}
+	protected function update() {
+		return set_transient( $this->name, $this->transient );
+	}
 }
