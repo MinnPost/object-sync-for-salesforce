@@ -2413,7 +2413,7 @@ class Wpse_174330_Transient {
 
 	public function __construct( $name ) {
 		$this->name;
-		$this->transient = ( false !== ( get_transient( $name ) = $t ) ) ? $t : [];
+		$this->transient = ( false !== ( $t = get_transient( $name ) ) ) ? $t : [];
 	}
 	public function all() {
 		return $this->transient;
