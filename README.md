@@ -205,11 +205,11 @@ This plugin contains many hooks to allow other WordPress plugins to extend the f
 
 There is a full list of all hooks, with links to each hook's documentation, in the [developer hooks documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/all-developer-hooks.md) page.
 
-We also host [a document](./example-extending-plugins.md) intended to list plugins that use these hooks.
+We also host [a document](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/example-extending-plugins.md) intended to list plugins that use these hooks.
 
 ## Development
 
-If you'd like to contribute to this project, please see our [contributing guidelines](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md). If you build other plugins that use the developer hooks, please contribute to the [list](./example-extending-plugins.md).
+If you'd like to contribute to this project, please see our [contributing guidelines](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md). If you build other plugins that use the developer hooks, please contribute to the [list](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/example-extending-plugins.md).
 
 ## Changelog
 
