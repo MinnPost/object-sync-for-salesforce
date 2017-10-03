@@ -33,7 +33,7 @@ Some other options:
 
 1. A PHP installation of at least version 5.5.
 2. SSL support.
-3. A Salesforce account. Developers can register at [http://www.developerforce.com/events/regular/registration.php](http://www.developerforce.com/events/regular/registration.php)
+3. A Salesforce account. Developers can register for a free Developer Edition account at [https://developer.salesforce.com/signup](https://developer.salesforce.com/signup)
 4. A remote application/connected Salesforce app for authorization.
 
 ## Installation and setup

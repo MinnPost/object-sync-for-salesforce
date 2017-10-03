@@ -40,7 +40,7 @@ By default, the plugin's settings URL is `https://<your site>/wp-admin/options-g
 
 ### Prerequisites
 
-You'll need to have access to a Salesforce developer account. This should come with Enterprise Edition, Unlimited Edition, or Performance Edition. Developers can register for a free account at [http://www.developerforce.com/events/regular/registration.php](http://www.developerforce.com/events/regular/registration.php).
+You'll need to have access to a Salesforce developer account. This should come with Enterprise Edition, Unlimited Edition, or Performance Edition. Developers can register for a free Developer Edition account at [https://developer.salesforce.com/signup](https://developer.salesforce.com/signup).
 
 We recommend using a Sandbox to set up this plugin first before running it in production.
 
