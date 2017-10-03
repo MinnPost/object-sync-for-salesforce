@@ -4,7 +4,7 @@ Donate link: https://support.minnpost.com/
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.8
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,10 @@ There is extensive documentation of the plugin, including its developer hooks, [
 
 == Changelog ==
 
+* 1.0.9 (2017-10-03)
+
+	* This fixes a bug in which upserting a custom post type would incorrectly create a standard post, rather than the desired custom post object.
+
 * 1.0.8 (2017-08-14)
 
 	* This checks a mapping's configured allowed sync triggers before queueing a record for pull processing, rather than as a part of the WordPress record's create or update. This resolves an issue. Thanks to GitHub user @charmoney for the report and the pull request.
@@ -173,6 +177,4 @@ There is extensive documentation of the plugin, including its developer hooks, [
 * 1.0.0 (2017-05-30)
 
 	* first stable release
-
-== Upgrade Notice ==
 
