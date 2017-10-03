@@ -517,7 +517,6 @@ class Object_Sync_Sf_WordPress {
 				$result = $this->comment_create( $params, $id_field );
 				break;
 			default:
-
 				/*
 				 * Developers can use this hook to create objects with their own methods.
 				 * The returned $result needs to be an array like this.
@@ -537,7 +536,6 @@ class Object_Sync_Sf_WordPress {
 						'id_field' => $id_field,
 					) );
 				}
-
 				break;
 		} // End switch().
 
@@ -605,7 +603,6 @@ class Object_Sync_Sf_WordPress {
 				$result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
 				break;
 			default:
-
 				/*
 				 * Developers can use this hook to upsert objects with their own methods.
 				 * The returned $result needs to be an array like this:
@@ -632,7 +629,6 @@ class Object_Sync_Sf_WordPress {
 						'check_only' => $check_only,
 					) );
 				}
-
 				break;
 		} // End switch().
 
@@ -682,7 +678,6 @@ class Object_Sync_Sf_WordPress {
 				$result = $this->comment_update( $id, $params, $id_field );
 				break;
 			default:
-
 				/*
 				 * Developers can use this hook to update objects with their own methods.
 				 * The returned $result needs to be an array like this:
@@ -696,15 +691,15 @@ class Object_Sync_Sf_WordPress {
 				 */
 				// Check to see if someone is calling the filter, and apply it if so.
 				if ( ! has_filter( 'object_sync_for_salesforce_update_custom_wordpress_item' ) ) {
-					$result = $this->post_update( $id, $params, $id_field );
+					$result = $this->post_update( $id, $params, $id_field, $name );
 				} else {
 					$result = apply_filters( 'object_sync_for_salesforce_update_custom_wordpress_item', array(
 						'id' => $id,
 						'params' => $params,
+						'name' => $name,
 						'id_field' => $id_field,
 					) );
 				}
-
 				break;
 		} // End switch().
 
@@ -747,7 +742,6 @@ class Object_Sync_Sf_WordPress {
 				$success = $this->comment_delete( $id );
 				break;
 			default:
-
 				/*
 				 * Developers can use this hook to delete objects with their own methods.
 				 * The returned $success is an object of the correct type, or a FALSE
@@ -1242,7 +1236,7 @@ class Object_Sync_Sf_WordPress {
 					'method_modify' => $method,
 					'method_read' => $methods['method_read'],
 				);
-				$result = $this->post_create( $params );
+				$result = $this->post_create( $params, $id_field, $post_type );
 				return $result;
 			} else {
 				// Check only is true but there's not a post yet.
@@ -1279,7 +1273,7 @@ class Object_Sync_Sf_WordPress {
 
 			// Post does not exist after more checking. maybe we want to create it.
 			if ( 0 === $existing_id && false === $check_only ) {
-				$result = $this->post_create( $params );
+				$result = $this->post_create( $params, $id_field, $post_type );
 				return $result;
 			} elseif ( true === $check_only ) {
 				// We are just checking to see if there is a match.
@@ -1297,7 +1291,7 @@ class Object_Sync_Sf_WordPress {
 			foreach ( $params as $key => $value ) {
 				$params[ $key ]['method_modify'] = $methods['method_update'];
 			}
-			$result = $this->post_update( $post_id, $params );
+			$result = $this->post_update( $post_id, $params, $id_field, $post_type );
 			return $result;
 		}
 		// Create log entry for lack of a post id.
