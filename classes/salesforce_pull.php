@@ -215,11 +215,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 						);
 
 						// Initialize the queue with the data for this record and save
-						$this->schedule->data( array($data) );
+						$this->schedule->data( array( $data ) );
 						$this->schedule->save()->dispatch();
 						// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
-						$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[$salesforce_mapping['pull_trigger_field']], new DateTimeZone('UTC') );
-						update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, $last_sync_pull_trigger->format('U') );
+						$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
+						update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
 					}
 				}
 
@@ -258,11 +258,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 								);
 
 								// Initialize the queue with the data for this record and save
-								$this->schedule->data( array($data) );
+								$this->schedule->data( array( $data ) );
 								$this->schedule->save()->dispatch();
 								// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
-								$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[$salesforce_mapping['pull_trigger_field']], new DateTimeZone('UTC') );
-								update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, $last_sync_pull_trigger->format('U') );
+								$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
+								update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
 							}
 						}
 					}
@@ -385,7 +385,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 		}
 
 		// Order by the trigger field, requesting the oldest records first
-		$soql->order = array( $salesforce_mapping['pull_trigger_field'] => 'ASC' );
+		$soql->order = array(
+			$salesforce_mapping['pull_trigger_field'] => 'ASC'
+		);
 
 		return $soql;
 
