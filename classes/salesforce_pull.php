@@ -386,7 +386,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// Order by the trigger field, requesting the oldest records first
 		$soql->order = array(
-			$salesforce_mapping['pull_trigger_field'] => 'ASC'
+			$salesforce_mapping['pull_trigger_field'] => 'ASC',
 		);
 
 		return $soql;
