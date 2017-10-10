@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.8
-Stable tag: 1.0.9
+Stable tag: 1.0.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -124,6 +124,12 @@ Steps:
 There is extensive documentation of the plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md). You can find a detailed [initial setup instruction](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md) document there as well.
 
 == Changelog ==
+
+* 1.0.10 (2017-10-10)
+
+	* This avoids repeatedly queueing Salesforce objects by initializing rather than aggregating the queue before saving. This reduces memory use and database size significantly.
+	* Plugin now updates the pull sync timestamp for the data type after every successful record queue. This provides a correct starting point for the next pull to begin in case of a fatal error.
+	* Thanks to GitHub user @charmoney for the report and the pull request.
 
 * 1.0.9 (2017-10-03)
 

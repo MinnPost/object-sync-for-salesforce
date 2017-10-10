@@ -1,6 +1,12 @@
 Changelog
 =========
 
+* 1.0.10 (2017-10-10)
+
+	* This avoids repeatedly queueing Salesforce objects by initializing rather than aggregating the queue before saving. This reduces memory use and database size significantly.
+	* Plugin now updates the pull sync timestamp for the data type after every successful record queue. This provides a correct starting point for the next pull to begin in case of a fatal error.
+	* Thanks to GitHub user @charmoney for the report and the pull request.
+
 * 1.0.9 (2017-10-03)
 
 	* This fixes a bug in which upserting a custom post type would incorrectly create a standard post, rather than the desired custom post object.
