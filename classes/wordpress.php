@@ -1083,8 +1083,11 @@ class Object_Sync_Sf_WordPress {
 	 *   "errors" : [ ],
 	 */
 	private function post_create( $params, $id_field = 'ID', $post_type = '' ) {
+		$content = array();
+
 		foreach ( $params as $key => $value ) {
-			if ( 'wp_insert_post' === $value['method_modify'] ) {
+			// Check both insert & update to support creating a new WP post from a modified SF object
+			if ( 'wp_insert_post' === $value['method_modify'] || 'wp_update_post' === $value['method_modify'] ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
