@@ -474,6 +474,26 @@ class Object_Sync_Sf_Salesforce_Pull {
 						'mapping' => $mapping,
 						'sf_sync_trigger' => $this->mappings->sync_sf_delete, // sf delete trigger
 					);
+
+					// Hook to allow other plugins to prevent a pull per-mapping.
+					// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
+					$pull_allowed = apply_filters( 'object_sync_for_salesforce_pull_object_allowed', true, $type, $result, $sf_sync_trigger, $salesforce_mapping );
+
+					// example to keep from pulling the Contact with id of abcdef
+					/*
+					add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
+					// can always reduce this number if all the arguments are not necessary
+					function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
+						if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
+							return false;
+						}
+					}
+					*/
+
+					if ( false === $pull_allowed ) {
+						continue;
+					}
+
 					$this->schedule->push_to_queue( $data );
 					$this->schedule->save()->dispatch();
 
