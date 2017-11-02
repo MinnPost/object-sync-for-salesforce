@@ -1083,8 +1083,15 @@ class Object_Sync_Sf_WordPress {
 	 *   "errors" : [ ],
 	 */
 	private function post_create( $params, $id_field = 'ID', $post_type = '' ) {
+
+		// This is a new post; it does not exist in WordPress
+		if ( ! function_exists( 'post_exists' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/post.php' );
+		}
+		$post_exists = post_exists( $params['post_title']['value'], $params['post_content']['value'], $params['post_date']['value'] );
+
 		foreach ( $params as $key => $value ) {
-			if ( 'wp_insert_post' === $value['method_modify'] ) {
+			if ( 'wp_insert_post' === $value['method_modify'] || 0 === $post_exists ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1105,7 +1112,11 @@ class Object_Sync_Sf_WordPress {
 			$content['post_content'] = ' ';
 		}
 
-		$post_id = wp_insert_post( $content, true ); // return an error instead of a 0 id
+		if ( 0 !== $post_exists ) {
+			$post_id = $post_exists;
+		} else {
+			$post_id = wp_insert_post( $content, true ); // return an error instead of a 0 id
+		}
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
@@ -1268,7 +1279,9 @@ class Object_Sync_Sf_WordPress {
 			} else {
 				$date = '';
 			}
-
+			if ( ! function_exists( 'post_exists' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/post.php' );
+			}
 			$existing_id = post_exists( $title, $content, $date ); // Returns an id if there is a result. Returns 0 if not.
 
 			// Post does not exist after more checking. maybe we want to create it.
@@ -1406,9 +1419,15 @@ class Object_Sync_Sf_WordPress {
 	 *   "errors" : [ ],
 	 */
 	private function attachment_create( $params, $id_field = 'ID' ) {
+
+		if ( ! function_exists( 'post_exists' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/post.php' );
+		}
+		$attachment_exists = post_exists( $params['post_title']['value'], $params['post_content']['value'], $params['post_date']['value'] );
+
 		// WP requires post_title, post_content (can be empty), post_status, and post_mime_type to create an attachment.
 		foreach ( $params as $key => $value ) {
-			if ( 'wp_insert_attachment' === $value['method_modify'] ) {
+			if ( 'wp_insert_attachment' === $value['method_modify'] || 0 === $attachment_exists ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1429,7 +1448,11 @@ class Object_Sync_Sf_WordPress {
 			$parent = 0;
 		}
 
-		$attachment_id = wp_insert_attachment( $content, $filename, $parent );
+		if ( 0 !== $attachment_exists ) {
+			$attachment_id = $attachment_exists;
+		} else {
+			$attachment_id = wp_insert_attachment( $content, $filename, $parent );
+		}
 
 		if ( is_wp_error( $attachment_id ) ) {
 			$success = false;
@@ -1573,6 +1596,9 @@ class Object_Sync_Sf_WordPress {
 				$date = '';
 			}
 
+			if ( ! function_exists( 'post_exists' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/post.php' );
+			}
 			$existing_id = post_exists( $title, $content, $date ); // Returns an id if there is a result. Returns 0 if not.
 
 			// Attachment does not exist after more checking. maybe we want to create it.
@@ -1743,19 +1769,30 @@ class Object_Sync_Sf_WordPress {
 			$taxonomy = 'post_tag';
 		}
 		$args = array();
-		foreach ( $params as $key => $value ) {
-			if ( 'name' === $key ) {
-				$name = $value['value'];
-				unset( $params[ $key ] );
-			}
-			if ( 'wp_insert_term' === $value['method_modify'] && 'name' !== $key ) {
-				$args[ $key ] = $value['value'];
-				unset( $params[ $key ] );
-			}
+
+		if ( isset( $params['parent']['value'] ) ) {
+			$parent = $params['parent']['value'];
+		} else {
+			$parent = 0;
 		}
-		if ( isset( $name ) ) {
-			$term = wp_insert_term( $name, $taxonomy, $args );
-		}
+		// Check to see if this is a new term.
+		if ( false === term_exists( $params['name']['value'], $taxonomy, $parent ) ) {
+			foreach ( $params as $key => $value ) {
+				if ( 'name' === $key ) {
+					$name = $value['value'];
+					unset( $params[ $key ] );
+				}
+				if ( 'wp_insert_term' === $value['method_modify'] && 'name' !== $key ) {
+					$args[ $key ] = $value['value'];
+					unset( $params[ $key ] );
+				}
+			}
+			if ( isset( $name ) ) {
+				$term = wp_insert_term( $name, $taxonomy, $args );
+			}
+		} else {
+			$term = $term_exists;
+		} // End if().
 
 		if ( is_wp_error( $term ) ) {
 			$success = false;
@@ -1772,7 +1809,7 @@ class Object_Sync_Sf_WordPress {
 					$errors[] = array(
 						'message' => sprintf(
 							// translators: %1$s is a method name.
-							esc_html__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
+							esc_html__( 'Tried to create meta with method %1$s.', 'object-sync-for-salesforce' ),
 							esc_html( $method )
 						),
 						'key' => $key,
@@ -2037,6 +2074,7 @@ class Object_Sync_Sf_WordPress {
 	 *   "errors" : [ ],
 	 */
 	private function comment_create( $params, $id_field = 'comment_ID' ) {
+		$comment_exists = comment_exists( $params['comment_author']['value'], $params['comment_date']['value'], $params['timezone']['value'] );
 		foreach ( $params as $key => $value ) {
 			if ( 'wp_new_comment' === $value['method_modify'] ) {
 				$content[ $key ] = $value['value'];
@@ -2061,7 +2099,11 @@ class Object_Sync_Sf_WordPress {
 			$content['comment_type'] = '';
 		}
 
-		$comment_id = wp_new_comment( $content );
+		if ( null !== $comment_exists ) {
+			$comment_id = $comment_exists;
+		} else {
+			$comment_id = wp_new_comment( $content );
+		}
 
 		if ( is_wp_error( $comment_id ) ) {
 			$success = false;
