@@ -1,5 +1,5 @@
 === Object Sync for Salesforce ===
-Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations
+Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations, harmoney
 Donate link: https://www.minnpost.com/support
 Tags: salesforce, sync, crm
 Requires at least: 4.5
