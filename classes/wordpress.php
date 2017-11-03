@@ -1085,7 +1085,7 @@ class Object_Sync_Sf_WordPress {
 	private function post_create( $params, $id_field = 'ID', $post_type = 'post' ) {
 		// Load all params with a method_modify of the object structure's content_method into $content
 		$content = array();
-		$structure = get_wordpress_table_structure( $post_type );
+		$structure = $this->get_wordpress_table_structure( $post_type );
 		foreach ( $params as $key => $value ) {
 			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
 				$content[ $key ] = $value['value'];
@@ -1411,7 +1411,7 @@ class Object_Sync_Sf_WordPress {
 	private function attachment_create( $params, $id_field = 'ID' ) {
 		// Load all params with a method_modify of the object structure's content_method into $content
 		$content = array();
-		$structure = get_wordpress_table_structure( 'attachment' );
+		$structure = $this->get_wordpress_table_structure( 'attachment' );
 		// WP requires post_title, post_content (can be empty), post_status, and post_mime_type to create an attachment.
 		foreach ( $params as $key => $value ) {
 			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
@@ -1750,7 +1750,7 @@ class Object_Sync_Sf_WordPress {
 		}
 		// Load all params with a method_modify of the object structure's content_method into $content
 		$content = array();
-		$structure = get_wordpress_table_structure( $taxonomy );
+		$structure = $this->get_wordpress_table_structure( $taxonomy );
 		$args = array();
 		foreach ( $params as $key => $value ) {
 			if ( 'name' === $key ) {
@@ -2048,7 +2048,7 @@ class Object_Sync_Sf_WordPress {
 	private function comment_create( $params, $id_field = 'comment_ID' ) {
 		// Load all params with a method_modify of the object structure's content_method into $content
 		$content = array();
-		$structure = get_wordpress_table_structure( 'comment' );
+		$structure = $this->get_wordpress_table_structure( 'comment' );
 		foreach ( $params as $key => $value ) {
 			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
 				$content[ $key ] = $value['value'];
