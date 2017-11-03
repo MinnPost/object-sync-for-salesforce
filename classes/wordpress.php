@@ -1082,9 +1082,12 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function post_create( $params, $id_field = 'ID', $post_type = '' ) {
+	private function post_create( $params, $id_field = 'ID', $post_type = 'post' ) {
+		// Load all params with a method_modify of the object structure's content_method into $content
+		$content = array();
+		$structure = get_wordpress_table_structure( $post_type );
 		foreach ( $params as $key => $value ) {
-			if ( 'wp_insert_post' === $value['method_modify'] ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
