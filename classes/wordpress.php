@@ -257,9 +257,9 @@ class Object_Sync_Sf_WordPress {
 		$object_table_structure = $this->get_wordpress_table_structure( $wordpress_object );
 
 		$meta_table = $object_table_structure['meta_table'];
-		$meta_methods = $object_table_structure['meta_methods'];
+		$meta_methods = maybe_unserialize( $object_table_structure['meta_methods'] );
 		$content_table = $object_table_structure['content_table'];
-		$content_methods = $object_table_structure['content_methods'];
+		$content_methods = maybe_unserialize( $object_table_structure['content_methods'] );
 		$id_field = $object_table_structure['id_field'];
 		$object_name = $object_table_structure['object_name'];
 		$where = $object_table_structure['where'];
@@ -311,6 +311,16 @@ class Object_Sync_Sf_WordPress {
 	public function get_wordpress_object_data( $object_type, $object_id ) {
 
 		$wordpress_object = array();
+		$object_table_structure = $this->get_wordpress_table_structure( $object_type );
+
+		$meta_table = $object_table_structure['meta_table'];
+		$meta_methods = maybe_unserialize( $object_table_structure['meta_methods'] );
+		$content_table = $object_table_structure['content_table'];
+		$content_methods = maybe_unserialize( $object_table_structure['content_methods'] );
+		$id_field = $object_table_structure['id_field'];
+		$object_name = $object_table_structure['object_name'];
+		$where = $object_table_structure['where'];
+		$ignore_keys = $object_table_structure['ignore_keys'];
 
 		if ( 'user' === $object_type ) {
 			$data = get_userdata( $object_id );
@@ -443,7 +453,7 @@ class Object_Sync_Sf_WordPress {
 				$all_fields[] = array(
 					'key' => $value,
 					'table' => $content_table,
-					'methods' => $content_methods,
+					'methods' => serialize( $content_methods ),
 				);
 			}
 		}
@@ -453,7 +463,7 @@ class Object_Sync_Sf_WordPress {
 				$all_fields[] = array(
 					'key' => $value->meta_key,
 					'table' => $meta_table,
-					'methods' => $meta_methods,
+					'methods' => serialize( $meta_methods ),
 				);
 			}
 		}
@@ -466,7 +476,7 @@ class Object_Sync_Sf_WordPress {
 					$all_fields[] = array(
 						'key' => $value,
 						'table' => $tax_table,
-						'methods' => $content_methods,
+						'methods' => serialize( $content_methods ),
 					);
 				}
 			}

@@ -166,6 +166,20 @@ class Object_Sync_Sf_Salesforce_Push {
 			$update = 0;
 			$delete = 1;
 		}
+
+		// add support for woocommerce if it is installed
+		if ( defined( 'WC_VERSION' ) ) {
+			// statuses to ignore
+			if ( isset( $post->post_status ) && in_array( $post->post_status, array( 'wc-pending' ), true ) ) {
+				return;
+			}
+			// statuses to count as new. note that the api will also check to see if it already has been mapped before saving.
+			if ( isset( $post->post_status ) && in_array( $post->post_status, array( 'wc-on-hold', 'wc-processing' ), true ) ) {
+				$update = 0;
+				$delete = 0;
+			}
+		}
+
 		$post = $this->wordpress->get_wordpress_object_data( $post->post_type, $post_id );
 		if ( 1 === $update ) {
 			$this->object_update( $post, $post_type );
