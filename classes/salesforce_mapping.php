@@ -642,6 +642,7 @@ class Object_Sync_Sf_Mapping {
 
 			$wordpress_haystack = array_values( $this->wordpress_events );
 			$salesforce_haystack = array_values( $this->salesforce_events );
+			$fieldmap['wordpress_field']['methods'] = maybe_unserialize( $fieldmap['wordpress_field']['methods'] );
 
 			// skip fields that aren't being pushed to Salesforce.
 			if ( in_array( $trigger, $wordpress_haystack, true ) && ! in_array( $fieldmap['direction'], array_values( $this->direction_wordpress ), true ) ) {
