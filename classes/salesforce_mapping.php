@@ -288,7 +288,7 @@ class Object_Sync_Sf_Mapping {
 					$setup['fields'][ $key ] = array(
 						'wordpress_field' => array(
 							'label' => sanitize_text_field( $posted['wordpress_field'][ $key ] ),
-							'methods' => $wordpress_fields[ $method_key ]['methods'],
+							'methods' => maybe_unserialize( $wordpress_fields[ $method_key ]['methods'] ),
 						),
 						'salesforce_field' => array(
 							'label' => sanitize_text_field( $posted['salesforce_field'][ $key ] ),
