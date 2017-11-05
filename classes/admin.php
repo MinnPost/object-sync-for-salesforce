@@ -209,7 +209,7 @@ class Object_Sync_Sf_Admin {
 		$pull_schedule_unit = get_option( 'object_sync_for_salesforce_salesforce_pull_schedule_unit', '' );
 
 		if ( '' === $push_schedule_number && '' === $push_schedule_unit && '' === $pull_schedule_number && '' === $pull_schedule_unit ) {
-			$url = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps' ) );
+			$url = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=schedule' ) );
 			$anchor = esc_html__( 'Scheduling tab', 'object-sync-for-salesforce' );
 			$message = sprintf( 'Because the plugin schedule has not been saved, the plugin cannot run automatic operations. Use the <a href="%s">%s</a> to create schedules to run.', $url, $anchor );
 			require( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
