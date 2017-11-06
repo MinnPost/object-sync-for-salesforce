@@ -372,7 +372,7 @@
 </span><span id="288" class="l"><a href="#288">288: </a>                    <span class="php-var">$setup</span>[<span class="php-quote">'fields'</span>][ <span class="php-var">$key</span> ] = <span class="php-keyword1">array</span>(
 </span><span id="289" class="l"><a href="#289">289: </a>                        <span class="php-quote">'wordpress_field'</span> =&gt; <span class="php-keyword1">array</span>(
 </span><span id="290" class="l"><a href="#290">290: </a>                            <span class="php-quote">'label'</span> =&gt; sanitize_text_field( <span class="php-var">$posted</span>[<span class="php-quote">'wordpress_field'</span>][ <span class="php-var">$key</span> ] ),
-</span><span id="291" class="l"><a href="#291">291: </a>                            <span class="php-quote">'methods'</span> =&gt; <span class="php-var">$wordpress_fields</span>[ <span class="php-var">$method_key</span> ][<span class="php-quote">'methods'</span>],
+</span><span id="291" class="l"><a href="#291">291: </a>                            <span class="php-quote">'methods'</span> =&gt; maybe_unserialize( <span class="php-var">$wordpress_fields</span>[ <span class="php-var">$method_key</span> ][<span class="php-quote">'methods'</span>] ),
 </span><span id="292" class="l"><a href="#292">292: </a>                        ),
 </span><span id="293" class="l"><a href="#293">293: </a>                        <span class="php-quote">'salesforce_field'</span> =&gt; <span class="php-keyword1">array</span>(
 </span><span id="294" class="l"><a href="#294">294: </a>                            <span class="php-quote">'label'</span> =&gt; sanitize_text_field( <span class="php-var">$posted</span>[<span class="php-quote">'salesforce_field'</span>][ <span class="php-var">$key</span> ] ),
@@ -726,170 +726,171 @@
 </span><span id="642" class="l"><a href="#642">642: </a>
 </span><span id="643" class="l"><a href="#643">643: </a>            <span class="php-var">$wordpress_haystack</span> = <span class="php-keyword2">array_values</span>( <span class="php-var">$this</span>-&gt;wordpress_events );
 </span><span id="644" class="l"><a href="#644">644: </a>            <span class="php-var">$salesforce_haystack</span> = <span class="php-keyword2">array_values</span>( <span class="php-var">$this</span>-&gt;salesforce_events );
-</span><span id="645" class="l"><a href="#645">645: </a>
-</span><span id="646" class="l"><a href="#646">646: </a>            <span class="php-comment">// skip fields that aren't being pushed to Salesforce.</span>
-</span><span id="647" class="l"><a href="#647">647: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-var">$wordpress_haystack</span>, <span class="php-keyword1">true</span> ) &amp;&amp; ! <span class="php-keyword2">in_array</span>( <span class="php-var">$fieldmap</span>[<span class="php-quote">'direction'</span>], <span class="php-keyword2">array_values</span>( <span class="php-var">$this</span>-&gt;direction_wordpress ), <span class="php-keyword1">true</span> ) ) {
-</span><span id="648" class="l"><a href="#648">648: </a>                <span class="php-comment">// The trigger is a WordPress trigger, but the fieldmap direction is not a WordPress direction.</span>
-</span><span id="649" class="l"><a href="#649">649: </a>                <span class="php-keyword1">continue</span>;
-</span><span id="650" class="l"><a href="#650">650: </a>            }
-</span><span id="651" class="l"><a href="#651">651: </a>
-</span><span id="652" class="l"><a href="#652">652: </a>            <span class="php-comment">// skip fields that aren't being pulled from Salesforce.</span>
-</span><span id="653" class="l"><a href="#653">653: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-var">$salesforce_haystack</span>, <span class="php-keyword1">true</span> ) &amp;&amp; ! <span class="php-keyword2">in_array</span>( <span class="php-var">$fieldmap</span>[<span class="php-quote">'direction'</span>], <span class="php-keyword2">array_values</span>( <span class="php-var">$this</span>-&gt;direction_salesforce ), <span class="php-keyword1">true</span> ) ) {
-</span><span id="654" class="l"><a href="#654">654: </a>                <span class="php-comment">// The trigger is a Salesforce trigger, but the fieldmap direction is not a Salesforce direction.</span>
-</span><span id="655" class="l"><a href="#655">655: </a>                <span class="php-keyword1">continue</span>;
-</span><span id="656" class="l"><a href="#656">656: </a>            }
-</span><span id="657" class="l"><a href="#657">657: </a>
-</span><span id="658" class="l"><a href="#658">658: </a>            <span class="php-var">$salesforce_field</span> = <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>];
-</span><span id="659" class="l"><a href="#659">659: </a>            <span class="php-var">$wordpress_field</span> = <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>];
-</span><span id="660" class="l"><a href="#660">660: </a>
-</span><span id="661" class="l"><a href="#661">661: </a>            <span class="php-comment">// A WordPress event caused this.</span>
-</span><span id="662" class="l"><a href="#662">662: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-keyword2">array_values</span>( <span class="php-var">$wordpress_haystack</span> ), <span class="php-keyword1">true</span> ) ) {
-</span><span id="663" class="l"><a href="#663">663: </a>
-</span><span id="664" class="l"><a href="#664">664: </a>                <span class="php-comment">// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise.</span>
-</span><span id="665" class="l"><a href="#665">665: </a>                <span class="php-keyword1">if</span> ( <span class="php-num">1</span> !== (int) <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'updateable'</span>] ) {
-</span><span id="666" class="l"><a href="#666">666: </a>                    <span class="php-keyword1">continue</span>;
-</span><span id="667" class="l"><a href="#667">667: </a>                }
-</span><span id="668" class="l"><a href="#668">668: </a>
-</span><span id="669" class="l"><a href="#669">669: </a>                <span class="php-var">$params</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>] ] = <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>] ];
-</span><span id="670" class="l"><a href="#670">670: </a>
-</span><span id="671" class="l"><a href="#671">671: </a>                <span class="php-comment">// If the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce,</span>
-</span><span id="672" class="l"><a href="#672">672: </a>                <span class="php-comment">// but still put its name in the params array so we can check for it later.</span>
-</span><span id="673" class="l"><a href="#673">673: </a>                <span class="php-keyword1">if</span> ( <span class="php-quote">'1'</span> === <span class="php-var">$fieldmap</span>[<span class="php-quote">'is_key'</span>] ) {
-</span><span id="674" class="l"><a href="#674">674: </a>                    <span class="php-keyword1">if</span> ( ! <span class="php-var">$use_soap</span> ) {
-</span><span id="675" class="l"><a href="#675">675: </a>                        <span class="php-keyword1">unset</span>( <span class="php-var">$params</span>[ <span class="php-var">$salesforce_field</span> ] );
-</span><span id="676" class="l"><a href="#676">676: </a>                    }
-</span><span id="677" class="l"><a href="#677">677: </a>                    <span class="php-var">$params</span>[<span class="php-quote">'key'</span>] = <span class="php-keyword1">array</span>(
-</span><span id="678" class="l"><a href="#678">678: </a>                        <span class="php-quote">'salesforce_field'</span> =&gt; <span class="php-var">$salesforce_field</span>,
-</span><span id="679" class="l"><a href="#679">679: </a>                        <span class="php-quote">'wordpress_field'</span> =&gt; <span class="php-var">$wordpress_field</span>,
-</span><span id="680" class="l"><a href="#680">680: </a>                        <span class="php-quote">'value'</span> =&gt; <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>] ],
-</span><span id="681" class="l"><a href="#681">681: </a>                    );
-</span><span id="682" class="l"><a href="#682">682: </a>                }
-</span><span id="683" class="l"><a href="#683">683: </a>
-</span><span id="684" class="l"><a href="#684">684: </a>                <span class="php-comment">// If the field is a prematch in salesforce, put its name in the params array so we can check for it later.</span>
-</span><span id="685" class="l"><a href="#685">685: </a>                <span class="php-keyword1">if</span> ( <span class="php-quote">'1'</span> === <span class="php-var">$fieldmap</span>[<span class="php-quote">'is_prematch'</span>] ) {
-</span><span id="686" class="l"><a href="#686">686: </a>                    <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>] = <span class="php-keyword1">array</span>(
-</span><span id="687" class="l"><a href="#687">687: </a>                        <span class="php-quote">'salesforce_field'</span> =&gt; <span class="php-var">$salesforce_field</span>,
-</span><span id="688" class="l"><a href="#688">688: </a>                        <span class="php-quote">'wordpress_field'</span> =&gt; <span class="php-var">$wordpress_field</span>,
-</span><span id="689" class="l"><a href="#689">689: </a>                        <span class="php-quote">'value'</span> =&gt; <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>] ],
-</span><span id="690" class="l"><a href="#690">690: </a>                    );
-</span><span id="691" class="l"><a href="#691">691: </a>                }
-</span><span id="692" class="l"><a href="#692">692: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-var">$salesforce_haystack</span>, <span class="php-keyword1">true</span> ) ) {
-</span><span id="693" class="l"><a href="#693">693: </a>
-</span><span id="694" class="l"><a href="#694">694: </a>                <span class="php-comment">// A salesforce event caused this.</span>
-</span><span id="695" class="l"><a href="#695">695: </a>                <span class="php-comment">// Make an array because we need to store the methods for each field as well.</span>
-</span><span id="696" class="l"><a href="#696">696: </a>                <span class="php-var">$params</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>] ] = <span class="php-keyword1">array</span>();
-</span><span id="697" class="l"><a href="#697">697: </a>                <span class="php-var">$params</span>[ <span class="php-var">$wordpress_field</span> ][<span class="php-quote">'value'</span>] = <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>] ];
-</span><span id="698" class="l"><a href="#698">698: </a>
-</span><span id="699" class="l"><a href="#699">699: </a>                <span class="php-comment">// If the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce,</span>
-</span><span id="700" class="l"><a href="#700">700: </a>                <span class="php-comment">// but still put its name in the params array so we can check for it later.</span>
-</span><span id="701" class="l"><a href="#701">701: </a>                <span class="php-keyword1">if</span> ( <span class="php-quote">'1'</span> === <span class="php-var">$fieldmap</span>[<span class="php-quote">'is_key'</span>] ) {
-</span><span id="702" class="l"><a href="#702">702: </a>                    <span class="php-keyword1">if</span> ( ! <span class="php-var">$use_soap</span> ) {
-</span><span id="703" class="l"><a href="#703">703: </a>                        <span class="php-keyword1">unset</span>( <span class="php-var">$params</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>] ] );
-</span><span id="704" class="l"><a href="#704">704: </a>                    }
-</span><span id="705" class="l"><a href="#705">705: </a>                    <span class="php-var">$params</span>[<span class="php-quote">'key'</span>] = <span class="php-keyword1">array</span>(
-</span><span id="706" class="l"><a href="#706">706: </a>                        <span class="php-quote">'salesforce_field'</span> =&gt; <span class="php-var">$salesforce_field</span>,
-</span><span id="707" class="l"><a href="#707">707: </a>                        <span class="php-quote">'wordpress_field'</span> =&gt; <span class="php-var">$wordpress_field</span>,
-</span><span id="708" class="l"><a href="#708">708: </a>                        <span class="php-quote">'value'</span> =&gt; <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>] ],
-</span><span id="709" class="l"><a href="#709">709: </a>                        <span class="php-quote">'method_read'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'read'</span>],
-</span><span id="710" class="l"><a href="#710">710: </a>                        <span class="php-quote">'method_create'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'create'</span>],
-</span><span id="711" class="l"><a href="#711">711: </a>                        <span class="php-quote">'method_update'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'update'</span>],
-</span><span id="712" class="l"><a href="#712">712: </a>                    );
-</span><span id="713" class="l"><a href="#713">713: </a>                }
-</span><span id="714" class="l"><a href="#714">714: </a>
-</span><span id="715" class="l"><a href="#715">715: </a>                <span class="php-comment">// If the field is a prematch in salesforce, put its name in the params array so we can check for it later.</span>
-</span><span id="716" class="l"><a href="#716">716: </a>                <span class="php-keyword1">if</span> ( <span class="php-quote">'1'</span> === <span class="php-var">$fieldmap</span>[<span class="php-quote">'is_prematch'</span>] ) {
-</span><span id="717" class="l"><a href="#717">717: </a>                    <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>] = <span class="php-keyword1">array</span>(
-</span><span id="718" class="l"><a href="#718">718: </a>                        <span class="php-quote">'salesforce_field'</span> =&gt; <span class="php-var">$salesforce_field</span>,
-</span><span id="719" class="l"><a href="#719">719: </a>                        <span class="php-quote">'wordpress_field'</span> =&gt; <span class="php-var">$wordpress_field</span>,
-</span><span id="720" class="l"><a href="#720">720: </a>                        <span class="php-quote">'value'</span> =&gt; <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>] ],
-</span><span id="721" class="l"><a href="#721">721: </a>                        <span class="php-quote">'method_read'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'read'</span>],
-</span><span id="722" class="l"><a href="#722">722: </a>                        <span class="php-quote">'method_create'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'create'</span>],
-</span><span id="723" class="l"><a href="#723">723: </a>                        <span class="php-quote">'method_update'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'update'</span>],
-</span><span id="724" class="l"><a href="#724">724: </a>                    );
-</span><span id="725" class="l"><a href="#725">725: </a>                }
-</span><span id="726" class="l"><a href="#726">726: </a>
-</span><span id="727" class="l"><a href="#727">727: </a>                <span class="php-keyword1">switch</span> ( <span class="php-var">$trigger</span> ) {
-</span><span id="728" class="l"><a href="#728">728: </a>                    <span class="php-keyword1">case</span> <span class="php-var">$this</span>-&gt;sync_sf_create:
-</span><span id="729" class="l"><a href="#729">729: </a>                        <span class="php-var">$params</span>[ <span class="php-var">$wordpress_field</span> ][<span class="php-quote">'method_modify'</span>] = <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'create'</span>];
-</span><span id="730" class="l"><a href="#730">730: </a>                        <span class="php-keyword1">break</span>;
-</span><span id="731" class="l"><a href="#731">731: </a>                    <span class="php-keyword1">case</span> <span class="php-var">$this</span>-&gt;sync_sf_update:
-</span><span id="732" class="l"><a href="#732">732: </a>                        <span class="php-var">$params</span>[ <span class="php-var">$wordpress_field</span> ][<span class="php-quote">'method_modify'</span>] = <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'update'</span>];
-</span><span id="733" class="l"><a href="#733">733: </a>                        <span class="php-keyword1">break</span>;
-</span><span id="734" class="l"><a href="#734">734: </a>                    <span class="php-keyword1">case</span> <span class="php-var">$this</span>-&gt;sync_sf_delete:
-</span><span id="735" class="l"><a href="#735">735: </a>                        <span class="php-var">$params</span>[ <span class="php-var">$wordpress_field</span> ][<span class="php-quote">'method_modify'</span>] = <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'delete'</span>];
-</span><span id="736" class="l"><a href="#736">736: </a>                        <span class="php-keyword1">break</span>;
-</span><span id="737" class="l"><a href="#737">737: </a>                }
-</span><span id="738" class="l"><a href="#738">738: </a>
-</span><span id="739" class="l"><a href="#739">739: </a>                <span class="php-var">$params</span>[ <span class="php-var">$wordpress_field</span> ][<span class="php-quote">'method_read'</span>] = <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'read'</span>];
-</span><span id="740" class="l"><a href="#740">740: </a>
-</span><span id="741" class="l"><a href="#741">741: </a>            } <span class="php-comment">// End if().</span>
-</span><span id="742" class="l"><a href="#742">742: </a>        } <span class="php-comment">// End foreach().</span>
-</span><span id="743" class="l"><a href="#743">743: </a>
-</span><span id="744" class="l"><a href="#744">744: </a>        <span class="php-keyword1">return</span> <span class="php-var">$params</span>;
-</span><span id="745" class="l"><a href="#745">745: </a>
-</span><span id="746" class="l"><a href="#746">746: </a>    }
-</span><span id="747" class="l"><a href="#747">747: </a>
-</span><span id="748" class="l"><a href="#748">748: </a>    <span class="php-comment">/**
-</span></span><span id="749" class="l"><a href="#749">749: </a><span class="php-comment">     * Prepare field map data for use
-</span></span><span id="750" class="l"><a href="#750">750: </a><span class="php-comment">     *
-</span></span><span id="751" class="l"><a href="#751">751: </a><span class="php-comment">     * @param array  $mappings Array of fieldmaps.
-</span></span><span id="752" class="l"><a href="#752">752: </a><span class="php-comment">     * @param string $record_type Optional Salesforce record type to see if it is allowed or not.
-</span></span><span id="753" class="l"><a href="#753">753: </a><span class="php-comment">     *
-</span></span><span id="754" class="l"><a href="#754">754: </a><span class="php-comment">     * @return array $mappings Associative array of field maps ready to use
-</span></span><span id="755" class="l"><a href="#755">755: </a><span class="php-comment">     */</span>
-</span><span id="756" class="l"><a href="#756">756: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> prepare_fieldmap_data( <span class="php-var">$mappings</span>, <span class="php-var">$record_type</span> = <span class="php-quote">''</span> ) {
-</span><span id="757" class="l"><a href="#757">757: </a>
-</span><span id="758" class="l"><a href="#758">758: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$mappings</span> <span class="php-keyword1">as</span> <span class="php-var">$id</span> =&gt; <span class="php-var">$mapping</span> ) {
-</span><span id="759" class="l"><a href="#759">759: </a>            <span class="php-var">$mappings</span>[ <span class="php-var">$id</span> ][<span class="php-quote">'salesforce_record_types_allowed'</span>] = maybe_unserialize( <span class="php-var">$mapping</span>[<span class="php-quote">'salesforce_record_types_allowed'</span>] );
-</span><span id="760" class="l"><a href="#760">760: </a>            <span class="php-var">$mappings</span>[ <span class="php-var">$id</span> ][<span class="php-quote">'fields'</span>] = maybe_unserialize( <span class="php-var">$mapping</span>[<span class="php-quote">'fields'</span>] );
-</span><span id="761" class="l"><a href="#761">761: </a>            <span class="php-var">$mappings</span>[ <span class="php-var">$id</span> ][<span class="php-quote">'sync_triggers'</span>] = maybe_unserialize( <span class="php-var">$mapping</span>[<span class="php-quote">'sync_triggers'</span>] );
-</span><span id="762" class="l"><a href="#762">762: </a>            <span class="php-keyword1">if</span> ( <span class="php-quote">''</span> !== <span class="php-var">$record_type</span> &amp;&amp; ! <span class="php-keyword2">in_array</span>( <span class="php-var">$record_type</span>, <span class="php-var">$mappings</span>[ <span class="php-var">$id</span> ][<span class="php-quote">'salesforce_record_types_allowed'</span>], <span class="php-keyword1">true</span> ) ) {
-</span><span id="763" class="l"><a href="#763">763: </a>                <span class="php-keyword1">unset</span>( <span class="php-var">$mappings</span>[ <span class="php-var">$id</span> ] );
-</span><span id="764" class="l"><a href="#764">764: </a>            }
-</span><span id="765" class="l"><a href="#765">765: </a>        }
-</span><span id="766" class="l"><a href="#766">766: </a>
-</span><span id="767" class="l"><a href="#767">767: </a>        <span class="php-keyword1">return</span> <span class="php-var">$mappings</span>;
-</span><span id="768" class="l"><a href="#768">768: </a>
-</span><span id="769" class="l"><a href="#769">769: </a>    }
-</span><span id="770" class="l"><a href="#770">770: </a>
-</span><span id="771" class="l"><a href="#771">771: </a>    <span class="php-comment">/**
-</span></span><span id="772" class="l"><a href="#772">772: </a><span class="php-comment">     * Check object map table to see if there have been any failed object map create attempts
-</span></span><span id="773" class="l"><a href="#773">773: </a><span class="php-comment">     *
-</span></span><span id="774" class="l"><a href="#774">774: </a><span class="php-comment">     * @return array $errors Associative array of rows that failed to finish from either system
-</span></span><span id="775" class="l"><a href="#775">775: </a><span class="php-comment">     */</span>
-</span><span id="776" class="l"><a href="#776">776: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> get_failed_object_maps() {
-</span><span id="777" class="l"><a href="#777">777: </a>        <span class="php-var">$table</span> = <span class="php-var">$this</span>-&gt;object_map_table;
-</span><span id="778" class="l"><a href="#778">778: </a>        <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
-</span><span id="779" class="l"><a href="#779">779: </a>        <span class="php-var">$push_errors</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;get_results( <span class="php-quote">'SELECT * FROM '</span> . <span class="php-var">$table</span> . <span class="php-quote">' WHERE salesforce_id LIKE &quot;tmp_sf_%&quot;'</span>, ARRAY_A );
-</span><span id="780" class="l"><a href="#780">780: </a>        <span class="php-var">$pull_errors</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;get_results( <span class="php-quote">'SELECT * FROM '</span> . <span class="php-var">$table</span> . <span class="php-quote">' WHERE wordpress_id LIKE &quot;tmp_wp_%&quot;'</span>, ARRAY_A );
-</span><span id="781" class="l"><a href="#781">781: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$push_errors</span> ) ) {
-</span><span id="782" class="l"><a href="#782">782: </a>            <span class="php-var">$errors</span>[<span class="php-quote">'push_errors'</span>] = <span class="php-var">$push_errors</span>;
-</span><span id="783" class="l"><a href="#783">783: </a>        }
-</span><span id="784" class="l"><a href="#784">784: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$pull_errors</span> ) ) {
-</span><span id="785" class="l"><a href="#785">785: </a>            <span class="php-var">$errors</span>[<span class="php-quote">'pull_errors'</span>] = <span class="php-var">$pull_errors</span>;
-</span><span id="786" class="l"><a href="#786">786: </a>        }
-</span><span id="787" class="l"><a href="#787">787: </a>        <span class="php-keyword1">return</span> <span class="php-var">$errors</span>;
-</span><span id="788" class="l"><a href="#788">788: </a>    }
-</span><span id="789" class="l"><a href="#789">789: </a>
-</span><span id="790" class="l"><a href="#790">790: </a>    <span class="php-comment">/**
-</span></span><span id="791" class="l"><a href="#791">791: </a><span class="php-comment">     * Check object map table to see if there have been any failed object map create attempts
-</span></span><span id="792" class="l"><a href="#792">792: </a><span class="php-comment">     *
-</span></span><span id="793" class="l"><a href="#793">793: </a><span class="php-comment">     * @param int   $id The ID of a desired mapping.
-</span></span><span id="794" class="l"><a href="#794">794: </a><span class="php-comment">     *
-</span></span><span id="795" class="l"><a href="#795">795: </a><span class="php-comment">     * @return array $error Associative array of single row that failed to finish based on id
-</span></span><span id="796" class="l"><a href="#796">796: </a><span class="php-comment">     */</span>
-</span><span id="797" class="l"><a href="#797">797: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> get_failed_object_map( <span class="php-var">$id</span> ) {
-</span><span id="798" class="l"><a href="#798">798: </a>        <span class="php-var">$table</span> = <span class="php-var">$this</span>-&gt;object_map_table;
-</span><span id="799" class="l"><a href="#799">799: </a>        <span class="php-var">$error</span> = <span class="php-keyword1">array</span>();
-</span><span id="800" class="l"><a href="#800">800: </a>        <span class="php-var">$error_row</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;get_row( <span class="php-quote">'SELECT * FROM '</span> . <span class="php-var">$table</span> . <span class="php-quote">' WHERE id = &quot;'</span> . <span class="php-var">$id</span> . <span class="php-quote">'&quot;'</span>, ARRAY_A );
-</span><span id="801" class="l"><a href="#801">801: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$error_row</span> ) ) {
-</span><span id="802" class="l"><a href="#802">802: </a>            <span class="php-var">$error</span> = <span class="php-var">$error_row</span>;
-</span><span id="803" class="l"><a href="#803">803: </a>        }
-</span><span id="804" class="l"><a href="#804">804: </a>        <span class="php-keyword1">return</span> <span class="php-var">$error</span>;
-</span><span id="805" class="l"><a href="#805">805: </a>    }
-</span><span id="806" class="l"><a href="#806">806: </a>
-</span><span id="807" class="l"><a href="#807">807: </a>}
-</span><span id="808" class="l"><a href="#808">808: </a></span></code></pre>
+</span><span id="645" class="l"><a href="#645">645: </a>            <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>] = maybe_unserialize( <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>] );
+</span><span id="646" class="l"><a href="#646">646: </a>
+</span><span id="647" class="l"><a href="#647">647: </a>            <span class="php-comment">// skip fields that aren't being pushed to Salesforce.</span>
+</span><span id="648" class="l"><a href="#648">648: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-var">$wordpress_haystack</span>, <span class="php-keyword1">true</span> ) &amp;&amp; ! <span class="php-keyword2">in_array</span>( <span class="php-var">$fieldmap</span>[<span class="php-quote">'direction'</span>], <span class="php-keyword2">array_values</span>( <span class="php-var">$this</span>-&gt;direction_wordpress ), <span class="php-keyword1">true</span> ) ) {
+</span><span id="649" class="l"><a href="#649">649: </a>                <span class="php-comment">// The trigger is a WordPress trigger, but the fieldmap direction is not a WordPress direction.</span>
+</span><span id="650" class="l"><a href="#650">650: </a>                <span class="php-keyword1">continue</span>;
+</span><span id="651" class="l"><a href="#651">651: </a>            }
+</span><span id="652" class="l"><a href="#652">652: </a>
+</span><span id="653" class="l"><a href="#653">653: </a>            <span class="php-comment">// skip fields that aren't being pulled from Salesforce.</span>
+</span><span id="654" class="l"><a href="#654">654: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-var">$salesforce_haystack</span>, <span class="php-keyword1">true</span> ) &amp;&amp; ! <span class="php-keyword2">in_array</span>( <span class="php-var">$fieldmap</span>[<span class="php-quote">'direction'</span>], <span class="php-keyword2">array_values</span>( <span class="php-var">$this</span>-&gt;direction_salesforce ), <span class="php-keyword1">true</span> ) ) {
+</span><span id="655" class="l"><a href="#655">655: </a>                <span class="php-comment">// The trigger is a Salesforce trigger, but the fieldmap direction is not a Salesforce direction.</span>
+</span><span id="656" class="l"><a href="#656">656: </a>                <span class="php-keyword1">continue</span>;
+</span><span id="657" class="l"><a href="#657">657: </a>            }
+</span><span id="658" class="l"><a href="#658">658: </a>
+</span><span id="659" class="l"><a href="#659">659: </a>            <span class="php-var">$salesforce_field</span> = <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>];
+</span><span id="660" class="l"><a href="#660">660: </a>            <span class="php-var">$wordpress_field</span> = <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>];
+</span><span id="661" class="l"><a href="#661">661: </a>
+</span><span id="662" class="l"><a href="#662">662: </a>            <span class="php-comment">// A WordPress event caused this.</span>
+</span><span id="663" class="l"><a href="#663">663: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-keyword2">array_values</span>( <span class="php-var">$wordpress_haystack</span> ), <span class="php-keyword1">true</span> ) ) {
+</span><span id="664" class="l"><a href="#664">664: </a>
+</span><span id="665" class="l"><a href="#665">665: </a>                <span class="php-comment">// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise.</span>
+</span><span id="666" class="l"><a href="#666">666: </a>                <span class="php-keyword1">if</span> ( <span class="php-num">1</span> !== (int) <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'updateable'</span>] ) {
+</span><span id="667" class="l"><a href="#667">667: </a>                    <span class="php-keyword1">continue</span>;
+</span><span id="668" class="l"><a href="#668">668: </a>                }
+</span><span id="669" class="l"><a href="#669">669: </a>
+</span><span id="670" class="l"><a href="#670">670: </a>                <span class="php-var">$params</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>] ] = <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>] ];
+</span><span id="671" class="l"><a href="#671">671: </a>
+</span><span id="672" class="l"><a href="#672">672: </a>                <span class="php-comment">// If the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce,</span>
+</span><span id="673" class="l"><a href="#673">673: </a>                <span class="php-comment">// but still put its name in the params array so we can check for it later.</span>
+</span><span id="674" class="l"><a href="#674">674: </a>                <span class="php-keyword1">if</span> ( <span class="php-quote">'1'</span> === <span class="php-var">$fieldmap</span>[<span class="php-quote">'is_key'</span>] ) {
+</span><span id="675" class="l"><a href="#675">675: </a>                    <span class="php-keyword1">if</span> ( ! <span class="php-var">$use_soap</span> ) {
+</span><span id="676" class="l"><a href="#676">676: </a>                        <span class="php-keyword1">unset</span>( <span class="php-var">$params</span>[ <span class="php-var">$salesforce_field</span> ] );
+</span><span id="677" class="l"><a href="#677">677: </a>                    }
+</span><span id="678" class="l"><a href="#678">678: </a>                    <span class="php-var">$params</span>[<span class="php-quote">'key'</span>] = <span class="php-keyword1">array</span>(
+</span><span id="679" class="l"><a href="#679">679: </a>                        <span class="php-quote">'salesforce_field'</span> =&gt; <span class="php-var">$salesforce_field</span>,
+</span><span id="680" class="l"><a href="#680">680: </a>                        <span class="php-quote">'wordpress_field'</span> =&gt; <span class="php-var">$wordpress_field</span>,
+</span><span id="681" class="l"><a href="#681">681: </a>                        <span class="php-quote">'value'</span> =&gt; <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>] ],
+</span><span id="682" class="l"><a href="#682">682: </a>                    );
+</span><span id="683" class="l"><a href="#683">683: </a>                }
+</span><span id="684" class="l"><a href="#684">684: </a>
+</span><span id="685" class="l"><a href="#685">685: </a>                <span class="php-comment">// If the field is a prematch in salesforce, put its name in the params array so we can check for it later.</span>
+</span><span id="686" class="l"><a href="#686">686: </a>                <span class="php-keyword1">if</span> ( <span class="php-quote">'1'</span> === <span class="php-var">$fieldmap</span>[<span class="php-quote">'is_prematch'</span>] ) {
+</span><span id="687" class="l"><a href="#687">687: </a>                    <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>] = <span class="php-keyword1">array</span>(
+</span><span id="688" class="l"><a href="#688">688: </a>                        <span class="php-quote">'salesforce_field'</span> =&gt; <span class="php-var">$salesforce_field</span>,
+</span><span id="689" class="l"><a href="#689">689: </a>                        <span class="php-quote">'wordpress_field'</span> =&gt; <span class="php-var">$wordpress_field</span>,
+</span><span id="690" class="l"><a href="#690">690: </a>                        <span class="php-quote">'value'</span> =&gt; <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>] ],
+</span><span id="691" class="l"><a href="#691">691: </a>                    );
+</span><span id="692" class="l"><a href="#692">692: </a>                }
+</span><span id="693" class="l"><a href="#693">693: </a>            } <span class="php-keyword1">elseif</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$trigger</span>, <span class="php-var">$salesforce_haystack</span>, <span class="php-keyword1">true</span> ) ) {
+</span><span id="694" class="l"><a href="#694">694: </a>
+</span><span id="695" class="l"><a href="#695">695: </a>                <span class="php-comment">// A salesforce event caused this.</span>
+</span><span id="696" class="l"><a href="#696">696: </a>                <span class="php-comment">// Make an array because we need to store the methods for each field as well.</span>
+</span><span id="697" class="l"><a href="#697">697: </a>                <span class="php-var">$params</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>] ] = <span class="php-keyword1">array</span>();
+</span><span id="698" class="l"><a href="#698">698: </a>                <span class="php-var">$params</span>[ <span class="php-var">$wordpress_field</span> ][<span class="php-quote">'value'</span>] = <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>] ];
+</span><span id="699" class="l"><a href="#699">699: </a>
+</span><span id="700" class="l"><a href="#700">700: </a>                <span class="php-comment">// If the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce,</span>
+</span><span id="701" class="l"><a href="#701">701: </a>                <span class="php-comment">// but still put its name in the params array so we can check for it later.</span>
+</span><span id="702" class="l"><a href="#702">702: </a>                <span class="php-keyword1">if</span> ( <span class="php-quote">'1'</span> === <span class="php-var">$fieldmap</span>[<span class="php-quote">'is_key'</span>] ) {
+</span><span id="703" class="l"><a href="#703">703: </a>                    <span class="php-keyword1">if</span> ( ! <span class="php-var">$use_soap</span> ) {
+</span><span id="704" class="l"><a href="#704">704: </a>                        <span class="php-keyword1">unset</span>( <span class="php-var">$params</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'label'</span>] ] );
+</span><span id="705" class="l"><a href="#705">705: </a>                    }
+</span><span id="706" class="l"><a href="#706">706: </a>                    <span class="php-var">$params</span>[<span class="php-quote">'key'</span>] = <span class="php-keyword1">array</span>(
+</span><span id="707" class="l"><a href="#707">707: </a>                        <span class="php-quote">'salesforce_field'</span> =&gt; <span class="php-var">$salesforce_field</span>,
+</span><span id="708" class="l"><a href="#708">708: </a>                        <span class="php-quote">'wordpress_field'</span> =&gt; <span class="php-var">$wordpress_field</span>,
+</span><span id="709" class="l"><a href="#709">709: </a>                        <span class="php-quote">'value'</span> =&gt; <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>] ],
+</span><span id="710" class="l"><a href="#710">710: </a>                        <span class="php-quote">'method_read'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'read'</span>],
+</span><span id="711" class="l"><a href="#711">711: </a>                        <span class="php-quote">'method_create'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'create'</span>],
+</span><span id="712" class="l"><a href="#712">712: </a>                        <span class="php-quote">'method_update'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'update'</span>],
+</span><span id="713" class="l"><a href="#713">713: </a>                    );
+</span><span id="714" class="l"><a href="#714">714: </a>                }
+</span><span id="715" class="l"><a href="#715">715: </a>
+</span><span id="716" class="l"><a href="#716">716: </a>                <span class="php-comment">// If the field is a prematch in salesforce, put its name in the params array so we can check for it later.</span>
+</span><span id="717" class="l"><a href="#717">717: </a>                <span class="php-keyword1">if</span> ( <span class="php-quote">'1'</span> === <span class="php-var">$fieldmap</span>[<span class="php-quote">'is_prematch'</span>] ) {
+</span><span id="718" class="l"><a href="#718">718: </a>                    <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>] = <span class="php-keyword1">array</span>(
+</span><span id="719" class="l"><a href="#719">719: </a>                        <span class="php-quote">'salesforce_field'</span> =&gt; <span class="php-var">$salesforce_field</span>,
+</span><span id="720" class="l"><a href="#720">720: </a>                        <span class="php-quote">'wordpress_field'</span> =&gt; <span class="php-var">$wordpress_field</span>,
+</span><span id="721" class="l"><a href="#721">721: </a>                        <span class="php-quote">'value'</span> =&gt; <span class="php-var">$object</span>[ <span class="php-var">$fieldmap</span>[<span class="php-quote">'salesforce_field'</span>][<span class="php-quote">'label'</span>] ],
+</span><span id="722" class="l"><a href="#722">722: </a>                        <span class="php-quote">'method_read'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'read'</span>],
+</span><span id="723" class="l"><a href="#723">723: </a>                        <span class="php-quote">'method_create'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'create'</span>],
+</span><span id="724" class="l"><a href="#724">724: </a>                        <span class="php-quote">'method_update'</span> =&gt; <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'update'</span>],
+</span><span id="725" class="l"><a href="#725">725: </a>                    );
+</span><span id="726" class="l"><a href="#726">726: </a>                }
+</span><span id="727" class="l"><a href="#727">727: </a>
+</span><span id="728" class="l"><a href="#728">728: </a>                <span class="php-keyword1">switch</span> ( <span class="php-var">$trigger</span> ) {
+</span><span id="729" class="l"><a href="#729">729: </a>                    <span class="php-keyword1">case</span> <span class="php-var">$this</span>-&gt;sync_sf_create:
+</span><span id="730" class="l"><a href="#730">730: </a>                        <span class="php-var">$params</span>[ <span class="php-var">$wordpress_field</span> ][<span class="php-quote">'method_modify'</span>] = <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'create'</span>];
+</span><span id="731" class="l"><a href="#731">731: </a>                        <span class="php-keyword1">break</span>;
+</span><span id="732" class="l"><a href="#732">732: </a>                    <span class="php-keyword1">case</span> <span class="php-var">$this</span>-&gt;sync_sf_update:
+</span><span id="733" class="l"><a href="#733">733: </a>                        <span class="php-var">$params</span>[ <span class="php-var">$wordpress_field</span> ][<span class="php-quote">'method_modify'</span>] = <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'update'</span>];
+</span><span id="734" class="l"><a href="#734">734: </a>                        <span class="php-keyword1">break</span>;
+</span><span id="735" class="l"><a href="#735">735: </a>                    <span class="php-keyword1">case</span> <span class="php-var">$this</span>-&gt;sync_sf_delete:
+</span><span id="736" class="l"><a href="#736">736: </a>                        <span class="php-var">$params</span>[ <span class="php-var">$wordpress_field</span> ][<span class="php-quote">'method_modify'</span>] = <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'delete'</span>];
+</span><span id="737" class="l"><a href="#737">737: </a>                        <span class="php-keyword1">break</span>;
+</span><span id="738" class="l"><a href="#738">738: </a>                }
+</span><span id="739" class="l"><a href="#739">739: </a>
+</span><span id="740" class="l"><a href="#740">740: </a>                <span class="php-var">$params</span>[ <span class="php-var">$wordpress_field</span> ][<span class="php-quote">'method_read'</span>] = <span class="php-var">$fieldmap</span>[<span class="php-quote">'wordpress_field'</span>][<span class="php-quote">'methods'</span>][<span class="php-quote">'read'</span>];
+</span><span id="741" class="l"><a href="#741">741: </a>
+</span><span id="742" class="l"><a href="#742">742: </a>            } <span class="php-comment">// End if().</span>
+</span><span id="743" class="l"><a href="#743">743: </a>        } <span class="php-comment">// End foreach().</span>
+</span><span id="744" class="l"><a href="#744">744: </a>
+</span><span id="745" class="l"><a href="#745">745: </a>        <span class="php-keyword1">return</span> <span class="php-var">$params</span>;
+</span><span id="746" class="l"><a href="#746">746: </a>
+</span><span id="747" class="l"><a href="#747">747: </a>    }
+</span><span id="748" class="l"><a href="#748">748: </a>
+</span><span id="749" class="l"><a href="#749">749: </a>    <span class="php-comment">/**
+</span></span><span id="750" class="l"><a href="#750">750: </a><span class="php-comment">     * Prepare field map data for use
+</span></span><span id="751" class="l"><a href="#751">751: </a><span class="php-comment">     *
+</span></span><span id="752" class="l"><a href="#752">752: </a><span class="php-comment">     * @param array  $mappings Array of fieldmaps.
+</span></span><span id="753" class="l"><a href="#753">753: </a><span class="php-comment">     * @param string $record_type Optional Salesforce record type to see if it is allowed or not.
+</span></span><span id="754" class="l"><a href="#754">754: </a><span class="php-comment">     *
+</span></span><span id="755" class="l"><a href="#755">755: </a><span class="php-comment">     * @return array $mappings Associative array of field maps ready to use
+</span></span><span id="756" class="l"><a href="#756">756: </a><span class="php-comment">     */</span>
+</span><span id="757" class="l"><a href="#757">757: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> prepare_fieldmap_data( <span class="php-var">$mappings</span>, <span class="php-var">$record_type</span> = <span class="php-quote">''</span> ) {
+</span><span id="758" class="l"><a href="#758">758: </a>
+</span><span id="759" class="l"><a href="#759">759: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$mappings</span> <span class="php-keyword1">as</span> <span class="php-var">$id</span> =&gt; <span class="php-var">$mapping</span> ) {
+</span><span id="760" class="l"><a href="#760">760: </a>            <span class="php-var">$mappings</span>[ <span class="php-var">$id</span> ][<span class="php-quote">'salesforce_record_types_allowed'</span>] = maybe_unserialize( <span class="php-var">$mapping</span>[<span class="php-quote">'salesforce_record_types_allowed'</span>] );
+</span><span id="761" class="l"><a href="#761">761: </a>            <span class="php-var">$mappings</span>[ <span class="php-var">$id</span> ][<span class="php-quote">'fields'</span>] = maybe_unserialize( <span class="php-var">$mapping</span>[<span class="php-quote">'fields'</span>] );
+</span><span id="762" class="l"><a href="#762">762: </a>            <span class="php-var">$mappings</span>[ <span class="php-var">$id</span> ][<span class="php-quote">'sync_triggers'</span>] = maybe_unserialize( <span class="php-var">$mapping</span>[<span class="php-quote">'sync_triggers'</span>] );
+</span><span id="763" class="l"><a href="#763">763: </a>            <span class="php-keyword1">if</span> ( <span class="php-quote">''</span> !== <span class="php-var">$record_type</span> &amp;&amp; ! <span class="php-keyword2">in_array</span>( <span class="php-var">$record_type</span>, <span class="php-var">$mappings</span>[ <span class="php-var">$id</span> ][<span class="php-quote">'salesforce_record_types_allowed'</span>], <span class="php-keyword1">true</span> ) ) {
+</span><span id="764" class="l"><a href="#764">764: </a>                <span class="php-keyword1">unset</span>( <span class="php-var">$mappings</span>[ <span class="php-var">$id</span> ] );
+</span><span id="765" class="l"><a href="#765">765: </a>            }
+</span><span id="766" class="l"><a href="#766">766: </a>        }
+</span><span id="767" class="l"><a href="#767">767: </a>
+</span><span id="768" class="l"><a href="#768">768: </a>        <span class="php-keyword1">return</span> <span class="php-var">$mappings</span>;
+</span><span id="769" class="l"><a href="#769">769: </a>
+</span><span id="770" class="l"><a href="#770">770: </a>    }
+</span><span id="771" class="l"><a href="#771">771: </a>
+</span><span id="772" class="l"><a href="#772">772: </a>    <span class="php-comment">/**
+</span></span><span id="773" class="l"><a href="#773">773: </a><span class="php-comment">     * Check object map table to see if there have been any failed object map create attempts
+</span></span><span id="774" class="l"><a href="#774">774: </a><span class="php-comment">     *
+</span></span><span id="775" class="l"><a href="#775">775: </a><span class="php-comment">     * @return array $errors Associative array of rows that failed to finish from either system
+</span></span><span id="776" class="l"><a href="#776">776: </a><span class="php-comment">     */</span>
+</span><span id="777" class="l"><a href="#777">777: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> get_failed_object_maps() {
+</span><span id="778" class="l"><a href="#778">778: </a>        <span class="php-var">$table</span> = <span class="php-var">$this</span>-&gt;object_map_table;
+</span><span id="779" class="l"><a href="#779">779: </a>        <span class="php-var">$errors</span> = <span class="php-keyword1">array</span>();
+</span><span id="780" class="l"><a href="#780">780: </a>        <span class="php-var">$push_errors</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;get_results( <span class="php-quote">'SELECT * FROM '</span> . <span class="php-var">$table</span> . <span class="php-quote">' WHERE salesforce_id LIKE &quot;tmp_sf_%&quot;'</span>, ARRAY_A );
+</span><span id="781" class="l"><a href="#781">781: </a>        <span class="php-var">$pull_errors</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;get_results( <span class="php-quote">'SELECT * FROM '</span> . <span class="php-var">$table</span> . <span class="php-quote">' WHERE wordpress_id LIKE &quot;tmp_wp_%&quot;'</span>, ARRAY_A );
+</span><span id="782" class="l"><a href="#782">782: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$push_errors</span> ) ) {
+</span><span id="783" class="l"><a href="#783">783: </a>            <span class="php-var">$errors</span>[<span class="php-quote">'push_errors'</span>] = <span class="php-var">$push_errors</span>;
+</span><span id="784" class="l"><a href="#784">784: </a>        }
+</span><span id="785" class="l"><a href="#785">785: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$pull_errors</span> ) ) {
+</span><span id="786" class="l"><a href="#786">786: </a>            <span class="php-var">$errors</span>[<span class="php-quote">'pull_errors'</span>] = <span class="php-var">$pull_errors</span>;
+</span><span id="787" class="l"><a href="#787">787: </a>        }
+</span><span id="788" class="l"><a href="#788">788: </a>        <span class="php-keyword1">return</span> <span class="php-var">$errors</span>;
+</span><span id="789" class="l"><a href="#789">789: </a>    }
+</span><span id="790" class="l"><a href="#790">790: </a>
+</span><span id="791" class="l"><a href="#791">791: </a>    <span class="php-comment">/**
+</span></span><span id="792" class="l"><a href="#792">792: </a><span class="php-comment">     * Check object map table to see if there have been any failed object map create attempts
+</span></span><span id="793" class="l"><a href="#793">793: </a><span class="php-comment">     *
+</span></span><span id="794" class="l"><a href="#794">794: </a><span class="php-comment">     * @param int   $id The ID of a desired mapping.
+</span></span><span id="795" class="l"><a href="#795">795: </a><span class="php-comment">     *
+</span></span><span id="796" class="l"><a href="#796">796: </a><span class="php-comment">     * @return array $error Associative array of single row that failed to finish based on id
+</span></span><span id="797" class="l"><a href="#797">797: </a><span class="php-comment">     */</span>
+</span><span id="798" class="l"><a href="#798">798: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> get_failed_object_map( <span class="php-var">$id</span> ) {
+</span><span id="799" class="l"><a href="#799">799: </a>        <span class="php-var">$table</span> = <span class="php-var">$this</span>-&gt;object_map_table;
+</span><span id="800" class="l"><a href="#800">800: </a>        <span class="php-var">$error</span> = <span class="php-keyword1">array</span>();
+</span><span id="801" class="l"><a href="#801">801: </a>        <span class="php-var">$error_row</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;get_row( <span class="php-quote">'SELECT * FROM '</span> . <span class="php-var">$table</span> . <span class="php-quote">' WHERE id = &quot;'</span> . <span class="php-var">$id</span> . <span class="php-quote">'&quot;'</span>, ARRAY_A );
+</span><span id="802" class="l"><a href="#802">802: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$error_row</span> ) ) {
+</span><span id="803" class="l"><a href="#803">803: </a>            <span class="php-var">$error</span> = <span class="php-var">$error_row</span>;
+</span><span id="804" class="l"><a href="#804">804: </a>        }
+</span><span id="805" class="l"><a href="#805">805: </a>        <span class="php-keyword1">return</span> <span class="php-var">$error</span>;
+</span><span id="806" class="l"><a href="#806">806: </a>    }
+</span><span id="807" class="l"><a href="#807">807: </a>
+</span><span id="808" class="l"><a href="#808">808: </a>}
+</span><span id="809" class="l"><a href="#809">809: </a></span></code></pre>
 
 	<div id="footer">
 		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>
