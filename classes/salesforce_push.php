@@ -76,7 +76,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					add_action( 'profile_update', array( $this, 'edit_user' ), 10, 2 );
 					add_action( 'delete_user', array( $this, 'delete_user' ) );
 				} elseif ( 'post' === $object_type ) {
-					add_action( 'save_post', array( $this, 'post_actions' ), 10, 2 );
+					add_action( 'save_post', array( $this, 'post_actions' ), 11, 2 );
 				} elseif ( 'attachment' === $object_type ) {
 					add_action( 'add_attachment', array( $this, 'add_attachment' ) );
 					add_action( 'edit_attachment', array( $this, 'edit_attachment' ) );
@@ -90,7 +90,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					add_action( 'edit_comment', array( $this, 'edit_comment' ) );
 					add_action( 'delete_comment', array( $this, 'delete_comment' ) ); // to be clear: this only runs when the comment gets deleted from the trash, either manually or automatically
 				} else { // this is for custom post types
-					add_action( 'save_post_' . $object_type, array( $this, 'post_actions' ), 10, 2 );
+					add_action( 'save_post_' . $object_type, array( $this, 'post_actions' ), 11, 2 );
 				}
 			}
 		}
