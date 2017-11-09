@@ -287,6 +287,9 @@ class Object_Sync_Sf_Admin {
 				case 'logout':
 					$this->logout();
 					break;
+				case 'clear_cache':
+					$this->clear_cache();
+					break;
 				case 'clear_schedule':
 					if ( isset( $get_data['schedule_name'] ) ) {
 						$schedule_name = sanitize_key( $get_data['schedule_name'] );
@@ -1530,6 +1533,19 @@ class Object_Sync_Sf_Admin {
 			esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=authorize' ) ),
 			esc_html__( 'Authorize', 'object-sync-for-salesforce' )
 		);
+	}
+
+	/**
+	* Clear the plugin's cache.
+	* This uses the flush method contained in the WordPress cache to clear all of this plugin's cached data.
+	*/
+	private function clear_cache() {
+		$result = $this->wordpress->sfwp_transients->flush();
+		if ( true === $result ) {
+			echo sprintf( '<p>The plugin cache has been cleared.</p>' );
+		} else {
+			echo sprintf( '<p>There was an error clearing the plugin cache. Try refreshing this page.</p>' );
+		}
 	}
 
 	/**
