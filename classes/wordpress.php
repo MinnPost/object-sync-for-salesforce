@@ -365,7 +365,8 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			$args .= $url;
 		}
-		$cachekey = md5( wp_json_encode( $args ) );
+		$prefix = esc_sql( $this->transient_prefix() );
+		$cachekey = $prefix . md5( wp_json_encode( $args ) );
 		return get_transient( $cachekey );
 	}
 
@@ -386,7 +387,8 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			$args .= $url;
 		}
-		$cachekey = md5( wp_json_encode( $args ) );
+		$prefix = esc_sql( $this->transient_prefix() );
+		$cachekey = $prefix . md5( wp_json_encode( $args ) );
 		// Cache_expiration is how long it should be stored in the cache.
 		// If we didn't give a custom one, use the default.
 		if ( '' === $cache_expiration ) {
