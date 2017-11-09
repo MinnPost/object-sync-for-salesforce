@@ -398,6 +398,18 @@ class Object_Sync_Sf_WordPress {
 	}
 
 	/**
+
+	/**
+	 * Get the cache transient prefix for this plugin and return it
+	 *
+	 * @return The transient prefix
+	 */
+	private function transient_prefix() {
+		$transient_prefix = 'sfwp';
+		return $transient_prefix;
+	}
+
+	/**
 	 * If there is a WordPress setting for how long to keep this specific cache, return it and set the object property
 	 * Otherwise, return seconds in 24 hours
 	 *
