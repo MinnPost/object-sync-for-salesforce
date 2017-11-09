@@ -405,7 +405,7 @@ class Object_Sync_Sf_WordPress {
 	 * @return The transient prefix
 	 */
 	private function transient_prefix() {
-		$transient_prefix = 'sfwp';
+		$transient_prefix = 'sfwp_';
 		return $transient_prefix;
 	}
 
