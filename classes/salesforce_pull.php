@@ -464,6 +464,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				foreach ( $deleted['data']['deletedRecords'] as $result ) {
 
+					$sf_sync_trigger = $this->mappings->sync_sf_delete;
+
 					// salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?
 					if ( ! isset( $result['Id'] ) && isset( $result['id'] ) ) {
 						$result['Id'] = $result['id'];
@@ -472,7 +474,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						'object_type' => $type,
 						'object' => $result,
 						'mapping' => $mapping,
-						'sf_sync_trigger' => $this->mappings->sync_sf_delete, // sf delete trigger
+						'sf_sync_trigger' => $sf_sync_trigger, // sf delete trigger
 					);
 
 					// Hook to allow other plugins to prevent a pull per-mapping.
