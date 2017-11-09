@@ -47,6 +47,8 @@ class Object_Sync_Sf_WordPress {
 			'type' => 'read',
 		);
 
+		$this->sfwp_transients = new Object_Sync_Sf_WordPress_Transient( 'sfwp_transients' );
+
 		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
 
 	}
@@ -356,7 +358,7 @@ class Object_Sync_Sf_WordPress {
 	 *
 	 * @param string $url The API call we'd like to make.
 	 * @param array  $args The arguents of the API call.
-	 * @return get_transient $cachekey
+	 * @return $this->sfwp_transients->get $cachekey
 	 */
 	public function cache_get( $url, $args ) {
 		if ( is_array( $args ) ) {
@@ -365,9 +367,9 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			$args .= $url;
 		}
-		$prefix = esc_sql( $this->transient_prefix() );
-		$cachekey = $prefix . md5( wp_json_encode( $args ) );
-		return get_transient( $cachekey );
+
+		$cachekey = md5( wp_json_encode( $args ) );
+		return $this->sfwp_transients->get( $cachekey );
 	}
 
 	/**
@@ -378,7 +380,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param array  $data The data received.
 	 * @param string $cache_expiration How long to keep the cache result around for.
 	 * @return Bool whether or not the value was set
-	 * @link https://developer.wordpress.org/reference/functions/set_transient/
+	 * @link https://wordpress.stackexchange.com/questions/174330/transient-storage-location-database-xcache-w3total-cache
 	 */
 	public function cache_set( $url, $args, $data, $cache_expiration = '' ) {
 		if ( is_array( $args ) ) {
@@ -387,26 +389,13 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			$args .= $url;
 		}
-		$prefix = esc_sql( $this->transient_prefix() );
-		$cachekey = $prefix . md5( wp_json_encode( $args ) );
+		$cachekey = md5( wp_json_encode( $args ) );
 		// Cache_expiration is how long it should be stored in the cache.
 		// If we didn't give a custom one, use the default.
 		if ( '' === $cache_expiration ) {
 			$cache_expiration = $this->options['cache_expiration'];
 		}
-		return set_transient( $cachekey, $data, $cache_expiration );
-	}
-
-	/**
-
-	/**
-	 * Get the cache transient prefix for this plugin and return it
-	 *
-	 * @return The transient prefix
-	 */
-	private function transient_prefix() {
-		$transient_prefix = 'sfwp_';
-		return $transient_prefix;
+		return $this->sfwp_transients->set( $cachekey, $data, $cache_expiration );
 	}
 
 	/**

@@ -95,6 +95,8 @@ class Object_Sync_Sf_Admin {
 		$this->logging = $logging;
 		$this->schedulable_classes = $schedulable_classes;
 
+		$this->sfwp_transients = $this->wordpress->sfwp_transients;
+
 		// default authorize url path
 		$this->default_authorize_url_path = '/services/oauth2/authorize';
 		// default token url path
@@ -249,7 +251,7 @@ class Object_Sync_Sf_Admin {
 
 						if ( isset( $get_data['transient'] ) ) {
 							$transient = sanitize_key( $get_data['transient'] );
-							$posted = get_transient( $transient );
+							$posted = $this->sfwp_transients->get( $transient );
 						}
 
 						if ( isset( $posted ) && is_array( $posted ) ) {
@@ -303,7 +305,7 @@ class Object_Sync_Sf_Admin {
 
 						if ( isset( $get_data['map_transient'] ) ) {
 							$transient = sanitize_key( $get_data['map_transient'] );
-							$posted = get_transient( $transient );
+							$posted = $this->sfwp_transients->get( $transient );
 						}
 
 						if ( isset( $posted ) && is_array( $posted ) ) {
@@ -1147,7 +1149,7 @@ class Object_Sync_Sf_Admin {
 			$error = true;
 		}
 		if ( true === $error ) {
-			set_transient( $cachekey, $post_data, 0 );
+			$this->sfwp_transients->set( $cachekey, $post_data, $this->wordpress->options['cache_expiration'] );
 			if ( '' !== $cachekey ) {
 				$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&transient=' . $cachekey;
 			}
@@ -1168,13 +1170,13 @@ class Object_Sync_Sf_Admin {
 				$result = $this->mappings->update_fieldmap( $post_data, $wordpress_fields, $salesforce_fields, $id );
 			}
 			if ( false === $result ) { // if the database didn't save, it's still an error
-				set_transient( $cachekey, $post_data, 0 );
+				$this->sfwp_transients->set( $cachekey, $post_data, $this->wordpress->options['cache_expiration'] );
 				if ( '' !== $cachekey ) {
 					$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&transient=' . $cachekey;
 				}
 			} else {
 				if ( isset( $post_data['transient'] ) ) { // there was previously an error saved. can delete it now.
-					delete_transient( esc_attr( $post_data['transient'] ) );
+					$this->sfwp_transients->delete( esc_attr( $post_data['map_transient'] ) );
 				}
 				// then send the user to the list of fieldmaps
 				$url = esc_url_raw( $post_data['redirect_url_success'] );
@@ -1222,7 +1224,7 @@ class Object_Sync_Sf_Admin {
 			$error = true;
 		}
 		if ( true === $error ) {
-			set_transient( $cachekey, $post_data, 0 );
+			$this->sfwp_transients->set( $cachekey, $post_data, $this->wordpress->options['cache_expiration'] );
 			if ( '' !== $cachekey ) {
 				$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&map_transient=' . $cachekey;
 			}
@@ -1234,13 +1236,13 @@ class Object_Sync_Sf_Admin {
 				$result = $this->mappings->update_object_map( $post_data, $id );
 			}
 			if ( false === $result ) { // if the database didn't save, it's still an error
-				set_transient( $cachekey, $post_data, 0 );
+				$this->sfwp_transients->set( $cachekey, $post_data, $this->wordpress->options['cache_expiration'] );
 				if ( '' !== $cachekey ) {
 					$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&map_transient=' . $cachekey;
 				}
 			} else {
 				if ( isset( $post_data['map_transient'] ) ) { // there was previously an error saved. can delete it now.
-					delete_transient( esc_attr( $post_data['map_transient'] ) );
+					$this->sfwp_transients->delete( esc_attr( $post_data['map_transient'] ) );
 				}
 				// then send the user to the success redirect url
 				$url = esc_url_raw( $post_data['redirect_url_success'] );
