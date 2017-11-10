@@ -37,6 +37,7 @@
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
 				<li><a href="class-Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
+				<li><a href="class-Object_Sync_Sf_WordPress_Transient.html">Object_Sync_Sf_WordPress_Transient</a></li>
 			</ul>
 
 
@@ -103,7 +104,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#12-1306" title="Go to source code">salesforce_pull.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#12-1308" title="Go to source code">salesforce_pull.php</a>
 		<br>
 	</div>
 
@@ -426,7 +427,7 @@ SalesforceMappings mapped to that SObject.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_deleted_records">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#415-506" title="Go to source code">get_deleted_records</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#415-508" title="Go to source code">get_deleted_records</a>( )</code>
 
 		<div class="description short">
 			<p>Get deleted records from salesforce.
@@ -458,7 +459,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_manual_pull">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#508-527" title="Go to source code">manual_pull</a>( <span>string <var>$object_type</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$wordpress_object</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#510-529" title="Go to source code">manual_pull</a>( <span>string <var>$object_type</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$wordpress_object</var></span> )</code>
 
 		<div class="description short">
 			<p>Method for ajax hooks to call for pulling manually</p>
@@ -497,7 +498,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_pull_process_records">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#529-1271" title="Go to source code">salesforce_pull_process_records</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#531-1273" title="Go to source code">salesforce_pull_process_records</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
 
 		<div class="description short">
 			<p>Sync WordPress objects and Salesforce objects from the queue using the REST API.</p>
@@ -542,7 +543,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_object_map">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#1273-1304" title="Go to source code">create_object_map</a>( <span>array <var>$salesforce_object</var></span>, <span>string <var>$wordpress_id</var></span>, <span>array <var>$field_mapping</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#1275-1306" title="Go to source code">create_object_map</a>( <span>array <var>$salesforce_object</var></span>, <span>string <var>$wordpress_id</var></span>, <span>array <var>$field_mapping</var></span> )</code>
 
 		<div class="description short">
 			<p>Create an object map between a Salesforce object and a WordPress object</p>

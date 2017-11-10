@@ -10,6 +10,8 @@ Together, these mappings determine what the plugin should do when [`push`](./pus
 
 Use the Fieldmaps tab of the plugin settings, and click Add New to create a new fieldmap. This initial load can take a while, if the plugin needs to refresh its cached Salesforce data. The screen is the same if you edit an existing fieldmap, but it will already have data.
 
+**Note:** If your data structure in Salesforce or WordPress changes, the fieldmap list page will allow you to clear the plugin's cached data. This does not affect any cached data you may have for other plugins or functionality on your site.
+
 ![WordPress Create New Fieldmap screen](./assets/img/screenshots/03-wordpress-create-fieldmap.png)
 
 The settings for a WordPress fieldmap work like this:

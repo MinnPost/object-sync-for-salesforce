@@ -2,7 +2,7 @@
 /*
 Plugin Name: Object Sync for Salesforce
 Description: WordPress plugin that implements mapping and syncing between Salesforce objects and WordPress objects
-Version: 1.0.11
+Version: 1.1.0
 Author: MinnPost
 Author URI: http://code.minnpost.com
 License: GPL2+
@@ -119,7 +119,7 @@ class Object_Sync_Salesforce {
 		global $wpdb;
 
 		$this->wpdb = $wpdb;
-		$this->version = '1.0.11';
+		$this->version = '1.1.0';
 		$this->login_credentials = $this->get_login_credentials();
 		$this->slug = 'object-sync-for-salesforce';
 

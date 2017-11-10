@@ -179,6 +179,7 @@ The admin section is divided into tabs:
 4. Fieldmaps
 	- This tab lists all fieldmaps that have been created between WordPress and Salesforce objects, and allows for editing, cloning, or deleting them.
 	- New fieldmaps can also be added. They require a label, a WordPress object, and a Salesforce object. Fields to map are displayed based on what fields each object has, after the object is chosen.
+	- On the tab that lists all fieldmaps, users can clear the cache of this plugin's data, in case their data structure has changed and needs to be visible when adding or editing fieldmaps.
 5. Scheduling
 	- This tab defines schedule settings for each class in the `schedulable_classes` array. Each class can be run at any interval, as defined in minutes, hours, or days.
 	- If you change the schedule for one of the classes, it will do its initial run immediately, and then the next time it runs will be at the updated interval.

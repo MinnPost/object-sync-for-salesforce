@@ -38,6 +38,7 @@
 				<li><a href="class-Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
 				<li><a href="class-Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
 				<li><a href="class-Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
+				<li><a href="class-Object_Sync_Sf_WordPress_Transient.html">Object_Sync_Sf_WordPress_Transient</a></li>
 			</ul>
 
 
@@ -156,8 +157,8 @@
 </span><span id="72" class="l"><a href="#72">  72: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;mappings-&gt;get_fieldmaps() <span class="php-keyword1">as</span> <span class="php-var">$mapping</span> ) {
 </span><span id="73" class="l"><a href="#73">  73: </a>                <span class="php-var">$object_type</span> = <span class="php-var">$mapping</span>[<span class="php-quote">'wordpress_object'</span>];
 </span><span id="74" class="l"><a href="#74">  74: </a>                <span class="php-keyword1">if</span> ( <span class="php-quote">'user'</span> === <span class="php-var">$object_type</span> ) {
-</span><span id="75" class="l"><a href="#75">  75: </a>                    add_action( <span class="php-quote">'user_register'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'add_user'</span> ) );
-</span><span id="76" class="l"><a href="#76">  76: </a>                    add_action( <span class="php-quote">'profile_update'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'edit_user'</span> ), <span class="php-num">10</span>, <span class="php-num">2</span> );
+</span><span id="75" class="l"><a href="#75">  75: </a>                    add_action( <span class="php-quote">'user_register'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'add_user'</span> ), <span class="php-num">11</span>, <span class="php-num">1</span> );
+</span><span id="76" class="l"><a href="#76">  76: </a>                    add_action( <span class="php-quote">'profile_update'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'edit_user'</span> ), <span class="php-num">11</span>, <span class="php-num">2</span> );
 </span><span id="77" class="l"><a href="#77">  77: </a>                    add_action( <span class="php-quote">'delete_user'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'delete_user'</span> ) );
 </span><span id="78" class="l"><a href="#78">  78: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-quote">'post'</span> === <span class="php-var">$object_type</span> ) {
 </span><span id="79" class="l"><a href="#79">  79: </a>                    add_action( <span class="php-quote">'save_post'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'post_actions'</span> ), <span class="php-num">11</span>, <span class="php-num">2</span> );
@@ -166,11 +167,11 @@
 </span><span id="82" class="l"><a href="#82">  82: </a>                    add_action( <span class="php-quote">'edit_attachment'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'edit_attachment'</span> ) );
 </span><span id="83" class="l"><a href="#83">  83: </a>                    add_action( <span class="php-quote">'delete_attachment'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'delete_attachment'</span> ) );
 </span><span id="84" class="l"><a href="#84">  84: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-quote">'category'</span> === <span class="php-var">$object_type</span> || <span class="php-quote">'tag'</span> === <span class="php-var">$object_type</span> || <span class="php-quote">'post_tag'</span> === <span class="php-var">$object_type</span> ) {
-</span><span id="85" class="l"><a href="#85">  85: </a>                    add_action( <span class="php-quote">'create_term'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'add_term'</span> ), <span class="php-num">10</span>, <span class="php-num">3</span> );
-</span><span id="86" class="l"><a href="#86">  86: </a>                    add_action( <span class="php-quote">'edit_terms'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'edit_term'</span> ), <span class="php-num">10</span>, <span class="php-num">2</span> );
+</span><span id="85" class="l"><a href="#85">  85: </a>                    add_action( <span class="php-quote">'create_term'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'add_term'</span> ), <span class="php-num">11</span>, <span class="php-num">3</span> );
+</span><span id="86" class="l"><a href="#86">  86: </a>                    add_action( <span class="php-quote">'edit_terms'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'edit_term'</span> ), <span class="php-num">11</span>, <span class="php-num">2</span> );
 </span><span id="87" class="l"><a href="#87">  87: </a>                    add_action( <span class="php-quote">'delete_term'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'delete_term'</span> ), <span class="php-num">10</span>, <span class="php-num">4</span> );
 </span><span id="88" class="l"><a href="#88">  88: </a>                } <span class="php-keyword1">elseif</span> ( <span class="php-quote">'comment'</span> === <span class="php-var">$object_type</span> ) {
-</span><span id="89" class="l"><a href="#89">  89: </a>                    add_action( <span class="php-quote">'comment_post'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'add_comment'</span> ), <span class="php-num">10</span>, <span class="php-num">3</span> );
+</span><span id="89" class="l"><a href="#89">  89: </a>                    add_action( <span class="php-quote">'comment_post'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'add_comment'</span> ), <span class="php-num">11</span>, <span class="php-num">3</span> );
 </span><span id="90" class="l"><a href="#90">  90: </a>                    add_action( <span class="php-quote">'edit_comment'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'edit_comment'</span> ) );
 </span><span id="91" class="l"><a href="#91">  91: </a>                    add_action( <span class="php-quote">'delete_comment'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'delete_comment'</span> ) ); <span class="php-comment">// to be clear: this only runs when the comment gets deleted from the trash, either manually or automatically</span>
 </span><span id="92" class="l"><a href="#92">  92: </a>                } <span class="php-keyword1">else</span> { <span class="php-comment">// this is for custom post types</span>
@@ -1131,6 +1132,6 @@
 </div>
 </div>
 <script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?0d86479586dd7588ff6b160a8732b3f6c120785d"></script>
+<script src="elementlist.js?04aa35b40ab3986ede0da77d700f9b59bb72cde5"></script>
 </body>
 </html>
