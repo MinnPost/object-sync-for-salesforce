@@ -190,6 +190,21 @@ function update_salesforce_user_summary() {
 	});
 }
 
+function clear_sfwp_cache_link() {
+	$('#clear-sfwp-cache').click(function() {
+		var data = {
+			'action' : 'clear_sfwp_cache'
+		}
+		var that = $(this);
+		$.post(ajaxurl, data, function(response) {
+			if (response.success === true && response.data.success === true) {
+				that.parent().html(response.data.message).fadeIn();
+			}
+		});
+		return false;
+	});
+}
+
 // as the drupal plugin does, we only allow one field to be a prematch or key
 $(document).on('click', '.column-is_prematch input', function() {
 	$('.column-is_prematch input').not(this).prop('checked', false);
@@ -219,4 +234,5 @@ $(document).ready(function() {
 	salesforce_object_fields();
 	add_field_mapping_row();
 	push_and_pull_objects();
+	clear_sfwp_cache_link();
 });

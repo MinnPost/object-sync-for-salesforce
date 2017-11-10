@@ -130,6 +130,7 @@ class Object_Sync_Sf_Admin {
 		add_action( 'wp_ajax_push_to_salesforce', array( $this, 'push_to_salesforce' ) );
 		add_action( 'wp_ajax_pull_from_salesforce', array( $this, 'pull_from_salesforce' ) );
 		add_action( 'wp_ajax_refresh_mapped_data', array( $this, 'refresh_mapped_data' ) );
+		add_action( 'wp_ajax_clear_sfwp_cache', array( $this, 'clear_sfwp_cache' ) );
 
 		add_action( 'edit_user_profile', array( $this, 'show_salesforce_user_fields' ) );
 		add_action( 'personal_options_update', array( $this, 'save_salesforce_user_fields' ) );
@@ -1536,15 +1537,36 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
+	* Ajax call to clear the plugin cache.
+	*/
+	public function clear_sfwp_cache() {
+		$result = $this->clear_cache( true );
+		$response = array(
+			'message' => $result['message'],
+			'success' => $result['success'],
+		);
+		wp_send_json_success( $response );
+	}
+
+	/**
 	* Clear the plugin's cache.
 	* This uses the flush method contained in the WordPress cache to clear all of this plugin's cached data.
 	*/
-	private function clear_cache() {
+	private function clear_cache( $ajax = false ) {
 		$result = $this->wordpress->sfwp_transients->flush();
 		if ( true === $result ) {
-			echo sprintf( '<p>The plugin cache has been cleared.</p>' );
+			$message = 'The plugin cache has been cleared.';
 		} else {
-			echo sprintf( '<p>There was an error clearing the plugin cache. Try refreshing this page.</p>' );
+			$message = 'There was an error clearing the plugin cache. Try refreshing this page.';
+		}
+		if ( false === $ajax ) {
+			// translators: parameter 1 is the result message
+			echo sprintf( '<p>%1$s</p>', $message );
+		} else {
+			return array(
+				'message' => $message,
+				'success' => $result,
+			);
 		}
 	}
 
