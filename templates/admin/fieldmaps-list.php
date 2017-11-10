@@ -8,6 +8,22 @@
 			<th colspan="3"><?php echo esc_html__( 'Actions', 'object-sync-for-salesforce' ); ?></th>
 		</tr>
 	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="4">
+				<p><small>
+					<?php
+					// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
+					echo sprintf( esc_html__( 'Has your WordPress or Salesforce data structure changed? ', 'object-sync-for-salesforce' ) . '<a href="%1$s">%2$s</a> to make sure you can map the most recent data structures.',
+						esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=clear_cache' ) ),
+						esc_html__( 'Clear the plugin cache' )
+					);
+				?>
+				</p>
+				</small></p>
+			</td>
+		</tr>
+	</tfoot>
 	<tbody>
 		<?php if ( count( $fieldmaps ) > 0 ) : ?>
 			<?php foreach ( $fieldmaps as $record ) { ?>

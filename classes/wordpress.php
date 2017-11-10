@@ -47,6 +47,8 @@ class Object_Sync_Sf_WordPress {
 			'type' => 'read',
 		);
 
+		$this->sfwp_transients = new Object_Sync_Sf_WordPress_Transient( 'sfwp_transients' );
+
 		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
 
 	}
@@ -356,7 +358,7 @@ class Object_Sync_Sf_WordPress {
 	 *
 	 * @param string $url The API call we'd like to make.
 	 * @param array  $args The arguents of the API call.
-	 * @return get_transient $cachekey
+	 * @return $this->sfwp_transients->get $cachekey
 	 */
 	public function cache_get( $url, $args ) {
 		if ( is_array( $args ) ) {
@@ -365,8 +367,9 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			$args .= $url;
 		}
+
 		$cachekey = md5( wp_json_encode( $args ) );
-		return get_transient( $cachekey );
+		return $this->sfwp_transients->get( $cachekey );
 	}
 
 	/**
@@ -377,7 +380,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param array  $data The data received.
 	 * @param string $cache_expiration How long to keep the cache result around for.
 	 * @return Bool whether or not the value was set
-	 * @link https://developer.wordpress.org/reference/functions/set_transient/
+	 * @link https://wordpress.stackexchange.com/questions/174330/transient-storage-location-database-xcache-w3total-cache
 	 */
 	public function cache_set( $url, $args, $data, $cache_expiration = '' ) {
 		if ( is_array( $args ) ) {
@@ -392,7 +395,7 @@ class Object_Sync_Sf_WordPress {
 		if ( '' === $cache_expiration ) {
 			$cache_expiration = $this->options['cache_expiration'];
 		}
-		return set_transient( $cachekey, $data, $cache_expiration );
+		return $this->sfwp_transients->set( $cachekey, $data, $cache_expiration );
 	}
 
 	/**
@@ -2380,4 +2383,91 @@ class Object_Sync_Sf_WordPress {
  * WordpressException is a placeholder class in the event that we want to modify Exception for our own purposes.
  */
 class WordpressException extends Exception {
+}
+
+/**
+ * Class to store all theme/plugin transients as an array in one WordPress transient
+ **/
+class Object_Sync_Sf_WordPress_Transient {
+
+	protected $name;
+
+	/**
+	 * Constructor which sets cache options and the name of the field that lists this plugin's cache keys.
+	 *
+	 * @param string $name The name of the field that lists all cache keys.
+	 */
+	public function __construct( $name ) {
+		$this->name = $name;
+		$this->cache_prefix = esc_sql( 'sfwp_' );
+	}
+
+	/**
+	 * Get the transient that lists all the other transients for this plugin.
+	 *
+	 * @return mixed value of transient. False of empty, otherwise array.
+	 */
+	public function all_keys() {
+		return get_transient( $this->name );
+	}
+
+	/**
+	 * Set individual transient, and add its key to the list of this plugin's transients.
+	 *
+	 * @param string $cachekey the key for this cache item
+	 * @param mixed $value the value of the cache item
+	 * @param int $cache_expiration. How long the plugin key cache, and this individual item cache, should last before expiring.
+	 * @return mixed value of transient. False of empty, otherwise array.
+	 */
+	public function set( $cachekey, $value, $cache_expiration = 0 ) {
+
+		$prefix = $this->cache_prefix;
+		$cachekey = $prefix . $cachekey;
+
+		$keys = $this->all_keys();
+		$keys[] = $cachekey;
+		set_transient( $this->name, $keys, $cache_expiration );
+
+		return set_transient( $cachekey, $value, $cache_expiration );
+	}
+
+	/**
+	 * Get the individual cache value
+	 *
+	 * @param string $cachekey the key for this cache item
+	 * @return mixed value of transient. False of empty, otherwise array.
+	 */
+	public function get( $cachekey ) {
+		$prefix = $this->cache_prefix;
+		$cachekey = $prefix . $cachekey;
+		return get_transient( $cachekey );
+	}
+
+	/**
+	 * Delete the individual cache value
+	 *
+	 * @param string $cachekey the key for this cache item
+	 * @return bool True if successful, false otherwise.
+	 */
+	public function delete( $cachekey ) {
+		$prefix = $this->cache_prefix;
+		$cachekey = $prefix . $cachekey;
+		return delete_transient( $cachekey );
+	}
+
+	/**
+	 * Delete the entire cache for this plugin
+	 *
+	 * @return bool True if successful, false otherwise.
+	 */
+	public function flush() {
+		$keys = $this->all_keys();
+		$result = true;
+		foreach ( $keys as $key ) {
+			$result = delete_transient( $key );
+		}
+		$result = delete_transient( $this->name );
+		return $result;
+	}
+
 }
