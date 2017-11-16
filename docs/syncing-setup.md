@@ -34,4 +34,4 @@ It's important to note a [GitHub issue](https://github.com/MinnPost/object-sync-
 
 There is also a built in method for manually creating an object map on WordPress user edit screens. You can use `https://<your site>/wp-admin/user-edit.php?user_id=[desired user id]` as a URL setup to see how this works.
 
-![Image of WordPress user edit screen](./assets/img/screenshots/06-manually-map-user-to-salesforce.png)
+![Image of WordPress user edit screen](./assets/img/screenshots/07-manually-map-user-to-salesforce.png)
