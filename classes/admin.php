@@ -1659,7 +1659,6 @@ class Object_Sync_Sf_Admin {
 		$callback_url = $this->login_credentials['callback_url'];
 
 		$current_tab = $tab;
-		screen_icon();
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab_key => $tab_caption ) {
 			$active = $current_tab === $tab_key ? ' nav-tab-active' : '';
