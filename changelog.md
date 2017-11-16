@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.1.1 (2017-11-17)
+	* This release removes the `screen_icon()` method from admin.php. It has been deprecated apparently since 3.8, but in 4.9 it officially throws PHP Notice messages in `WP_DEBUG` mode.
+
 * 1.1.0 (2017-11-10)
 	* This release gives users a way to clear the cached data for this plugin only, even if they are using an object cache method. Most importantly this resolves the problem of new fields being available in Salesforce or WordPress and not being visible in the list of mappable fields when creating or updating a fieldmap.
 
