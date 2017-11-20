@@ -372,6 +372,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				$title,
 				print_r( $object, true ), // print this array because if this happens, something weird has happened and we want to log whatever we have
 				$sf_sync_trigger,
+				0, // parent id goes here but we don't have one, so make it 0
 				$status
 			);
 			return;
