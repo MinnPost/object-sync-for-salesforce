@@ -64,33 +64,30 @@ class Object_Sync_Sf_WordPress {
 		 * Here's an example of filters to add/remove types:
 		 *
 			add_filter( 'object_sync_for_salesforce_add_more_wordpress_types', 'add_more_types', 10, 1 );
-			function add_more_types( $more_types ) {
-				$more_types = array( 'foo' );
-				// or $more_types[] = 'foo';
-				return $more_types;
+			function add_more_types( $wordpress_object_types ) {
+				$wordpress_object_types[] = 'foo'; // this will add to the existing types.
+				return $wordpress_object_types;
 			}
 
-			add_filter( 'object_sync_for_salesforce_remove_wordpress_types', 'remove_types', 10, 1 );
+			add_filter( 'object_sync_for_salesforce_remove_wordpress_types', 'wordpress_object_types', 10, 1 );
 			function remove_types( $types_to_remove ) {
-				$types_to_remove = array( 'acme_product' );
-				// or $types_to_remove[] = 'acme_product';
+				$types_to_remove[] = 'revision'; // this adds to the array of types to ignore
 				return $types_to_remove;
 			}
 		*/
-		$wordpress_types_not_posts_include = apply_filters( 'object_sync_for_salesforce_add_more_wordpress_types', array() );
-		$wordpress_types_ignore = apply_filters( 'object_sync_for_salesforce_remove_wordpress_types', array( 'wp_log' ) );
 
-		$wordpress_objects = array();
+		// this should include the available object types and send them to the hook
+		$wordpress_types_not_posts_include = array( 'user', 'comment', 'category', 'tag' );
+		$wordpress_objects = array_merge( get_post_types(), $wordpress_types_not_posts_include );
+		// this should be all the objects
+		$wordpress_objects = apply_filters( 'object_sync_for_salesforce_add_more_wordpress_types', $wordpress_objects );
 
-		if ( empty( $wordpress_types_not_posts_include ) ) {
-			$wordpress_types_not_posts_include = array( 'user', 'comment', 'category', 'tag' );
-		}
+		// by default, only remove the log type we use in this plugin
+		$types_to_remove = apply_filters( 'object_sync_for_salesforce_remove_wordpress_types', array( 'wp_log' ) );
 
-		$wordpress_objects = get_post_types();
-		$wordpress_objects = array_merge( $wordpress_objects, $wordpress_types_not_posts_include );
-
-		if ( ! empty( $wordpress_types_ignore ) ) {
-			$wordpress_objects = array_diff( $wordpress_objects, $wordpress_types_ignore );
+		// if the hook filters out any types, remove them from the visible list
+		if ( ! empty( $types_to_remove ) ) {
+			$wordpress_objects = array_diff( $wordpress_objects, $types_to_remove );
 		}
 
 		sort( $wordpress_objects );
@@ -342,10 +339,19 @@ class Object_Sync_Sf_WordPress {
 			$wordpress_object[ $field ] = $data->{$field};
 		}
 
-		// Developers can use this hook to change the WordPress object,
-		// including any formatting that needs to happen to the data.
-		// The returned $wordpress_object needs to be an array like described above.
-		// This is useful for custom objects or custom formatting.
+		/*
+		 * Allow developers to change the WordPress object, including any formatting that needs to happen to the data.
+		 * The returned $wordpress_object needs to be an array like described above.
+		 * This is useful for custom objects, hidden fields, or custom formatting.
+		 * Here's an example of filters to add/modify data:
+		 *
+			add_filter( 'object_sync_for_salesforce_wordpress_object_data', 'modify_data', 10, 1 );
+			function modify_data( $wordpress_object ) {
+				$wordpress_object['field_a'] = 'i am a field value that salesforce wants to store but WordPress does not care about';
+				return $wordpress_object;
+			}
+		*/
+
 		$wordpress_object = apply_filters( 'object_sync_for_salesforce_wordpress_object_data', $wordpress_object );
 
 		return $wordpress_object;
