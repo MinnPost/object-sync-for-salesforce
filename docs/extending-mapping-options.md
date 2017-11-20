@@ -8,14 +8,13 @@ There are many ways of adding custom WordPress objects, and there are also somet
 
 ### Add more objects
 
-The `object_sync_for_salesforce_add_more_wordpress_types` hook populates an array which is then added to the list in the dropdown.
+The `object_sync_for_salesforce_add_more_wordpress_types` hook populates the array which is added to the list in the dropdown.
 
 ```
 add_filter( 'object_sync_for_salesforce_add_more_wordpress_types', 'add_more_types', 10, 1 );
-function add_more_types( $more_types ) {
-    $more_types = array( 'foo' );
-    // or $more_types[] = 'foo';
-    return $more_types;
+function add_more_types( $wordpress_object_types ) {
+    $wordpress_object_types[] = 'foo'; // this will add to the existing types.
+    return $wordpress_object_types; // this returns all wordpress object types to the plugin
 }
 ```
 
@@ -24,8 +23,7 @@ The `object_sync_for_salesforce_remove_wordpress_types` hook populates an array 
 ```
 add_filter( 'object_sync_for_salesforce_remove_wordpress_types', 'remove_types', 10, 1 );
 function remove_types( $types_to_remove ) {
-    $types_to_remove = array( 'acme_product' );
-    // or $types_to_remove[] = 'acme_product';
+    $types_to_remove[] = 'acme_product'; // this adds to the array of types to ignore
     return $types_to_remove;
 }
 ```
@@ -124,7 +122,7 @@ Code example:
 ```
 add_filter( 'object_sync_for_salesforce_wordpress_object_fields', 'add_field', 10, 2 );
 function add_field( $object_fields, $wordpress_object ) {
-    $object_fields[] = array(
+    $object_fields['data'][] = array(
         'key' => 'field_foo',
         'table' => 'table_foo',
         'methods' => array (
@@ -140,4 +138,46 @@ function add_field( $object_fields, $wordpress_object ) {
 
 ## WordPress object data
 
-`object_sync_for_salesforce_wordpress_object_data`
+The `object_sync_for_salesforce_wordpress_object_data` hook populates an array which retrieves the data about the WordPress item. You can modify this array, which allows you to add data to the item, for example from other sources or your own custom methods, which will then be available to be sent to Salesforce.
+
+When you use this hook, the field needs to exist in WordPress, and already be mapped to a Salesforce field, but this hook allows you to set the data, or modify it (for example with custom formatting or validation or processing) for the WordPress field without it needing to exist in the WordPress interface. For example, you could use this to set the value of a hidden meta field that was mapped using the `object_sync_for_salesforce_wordpress_object_fields` hook.
+
+Example of unaltered `$wordpress_object` array (in this case, for a user):
+
+```
+$wordpress_object = array(
+    'ID' => 8675309,
+    'user_login' => 'testuser@test.com',
+    'user_nicename' => 'testuser@test.com',
+    'user_email' => 'testuser@test.com',
+    'user_url' => '',
+    'user_registered' => '2017-11-20 15:58:07',
+    'user_status' => 0,
+    'display_name' => 'test user',
+    'nickname' => 'testuser@test.com',
+    'first_name' => 'test',
+    'last_name' => 'user',
+    'description' => '',
+    'rich_editing' => true,
+    'comment_shortcuts' => false,
+    'admin_color' => 'fresh',
+    'use_ssl' => 0,
+    'show_admin_bar_front' => true,
+    'locale' => '',
+    'wp_capabilities' => array(
+        'subscriber' => 1,
+    ),
+);
+```
+
+To modify the array, you can use the `object_sync_for_salesforce_wordpress_object_data` hook.
+
+Code example:
+
+```
+add_filter( 'object_sync_for_salesforce_wordpress_object_data', 'add_data', 10, 1 );
+function add_data( $wordpress_object ) {
+    $wordpress_object['field_a'] = 'i am a field value that salesforce wants to store but WordPress does not care about';
+    return $wordpress_object;
+}
+```
