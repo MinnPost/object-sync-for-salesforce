@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -124,6 +124,13 @@ Steps:
 There is extensive documentation of the plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md). You can find a detailed [initial setup instruction](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md) document there as well.
 
 == Changelog ==
+
+* 1.1.2 (2017-11-20)
+	* Clarify the documentation, and the code, for the following developer hooks:
+		* `object_sync_for_salesforce_add_more_wordpress_types`
+		* `object_sync_for_salesforce_remove_wordpress_types`
+		* `object_sync_for_salesforce_wordpress_object_data`
+	* Thanks to WordPress user @justanothercoder for asking about this, leading to the fix.
 
 * 1.1.1 (2017-11-17)
 	* This release removes the `screen_icon()` method from admin.php. It has been deprecated apparently since 3.8, but in 4.9 it officially throws PHP Notice messages in `WP_DEBUG` mode.

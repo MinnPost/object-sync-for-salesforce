@@ -1,6 +1,13 @@
 Changelog
 =========
 
+* 1.1.2 (2017-11-20)
+	* Clarify the documentation, and the code, for the following developer hooks:
+		* `object_sync_for_salesforce_add_more_wordpress_types`
+		* `object_sync_for_salesforce_remove_wordpress_types`
+		* `object_sync_for_salesforce_wordpress_object_data`
+	* Thanks to WordPress user @justanothercoder for asking about this, leading to the fix.
+
 * 1.1.1 (2017-11-17)
 	* This release removes the `screen_icon()` method from admin.php. It has been deprecated apparently since 3.8, but in 4.9 it officially throws PHP Notice messages in `WP_DEBUG` mode.
 

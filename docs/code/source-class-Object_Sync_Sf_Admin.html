@@ -1744,100 +1744,99 @@
 </span><span id="1659" class="l"><a href="#1659">1659: </a>        <span class="php-var">$callback_url</span> = <span class="php-var">$this</span>-&gt;login_credentials[<span class="php-quote">'callback_url'</span>];
 </span><span id="1660" class="l"><a href="#1660">1660: </a>
 </span><span id="1661" class="l"><a href="#1661">1661: </a>        <span class="php-var">$current_tab</span> = <span class="php-var">$tab</span>;
-</span><span id="1662" class="l"><a href="#1662">1662: </a>        screen_icon();
-</span><span id="1663" class="l"><a href="#1663">1663: </a>        <span class="php-keyword1">echo</span> <span class="php-quote">'&lt;h2 class=&quot;nav-tab-wrapper&quot;&gt;'</span>;
-</span><span id="1664" class="l"><a href="#1664">1664: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$tabs</span> <span class="php-keyword1">as</span> <span class="php-var">$tab_key</span> =&gt; <span class="php-var">$tab_caption</span> ) {
-</span><span id="1665" class="l"><a href="#1665">1665: </a>            <span class="php-var">$active</span> = <span class="php-var">$current_tab</span> === <span class="php-var">$tab_key</span> ? <span class="php-quote">' nav-tab-active'</span> : <span class="php-quote">''</span>;
-</span><span id="1666" class="l"><a href="#1666">1666: </a>            <span class="php-keyword1">if</span> ( <span class="php-quote">'settings'</span> === <span class="php-var">$tab_key</span> || ( <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_key</span> ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_secret</span> ) &amp;&amp; ! <span class="php-keyword1">empty</span>( <span class="php-var">$consumer_key</span> ) &amp;&amp; ! <span class="php-keyword1">empty</span>( <span class="php-var">$consumer_secret</span> ) ) ) {
-</span><span id="1667" class="l"><a href="#1667">1667: </a>                <span class="php-keyword1">echo</span> <span class="php-keyword2">sprintf</span>( <span class="php-quote">'&lt;a class=&quot;nav-tab%1$s&quot; href=&quot;%2$s&quot;&gt;%3$s&lt;/a&gt;'</span>,
-</span><span id="1668" class="l"><a href="#1668">1668: </a>                    esc_attr( <span class="php-var">$active</span> ),
-</span><span id="1669" class="l"><a href="#1669">1669: </a>                    esc_url( <span class="php-quote">'?page=object-sync-salesforce-admin&amp;tab='</span> . <span class="php-var">$tab_key</span> ),
-</span><span id="1670" class="l"><a href="#1670">1670: </a>                    esc_html( <span class="php-var">$tab_caption</span> )
-</span><span id="1671" class="l"><a href="#1671">1671: </a>                );
-</span><span id="1672" class="l"><a href="#1672">1672: </a>            }
-</span><span id="1673" class="l"><a href="#1673">1673: </a>        }
-</span><span id="1674" class="l"><a href="#1674">1674: </a>        <span class="php-keyword1">echo</span> <span class="php-quote">'&lt;/h2&gt;'</span>;
-</span><span id="1675" class="l"><a href="#1675">1675: </a>
-</span><span id="1676" class="l"><a href="#1676">1676: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$get_data</span>[<span class="php-quote">'tab'</span>] ) ) {
-</span><span id="1677" class="l"><a href="#1677">1677: </a>            <span class="php-var">$tab</span> = sanitize_key( <span class="php-var">$get_data</span>[<span class="php-quote">'tab'</span>] );
-</span><span id="1678" class="l"><a href="#1678">1678: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1679" class="l"><a href="#1679">1679: </a>            <span class="php-var">$tab</span> = <span class="php-quote">''</span>;
-</span><span id="1680" class="l"><a href="#1680">1680: </a>        }
-</span><span id="1681" class="l"><a href="#1681">1681: </a>    }
-</span><span id="1682" class="l"><a href="#1682">1682: </a>
-</span><span id="1683" class="l"><a href="#1683">1683: </a>    <span class="php-comment">/**
-</span></span><span id="1684" class="l"><a href="#1684">1684: </a><span class="php-comment">    * Clear schedule
-</span></span><span id="1685" class="l"><a href="#1685">1685: </a><span class="php-comment">    * This clears the schedule if the user clicks the button
-</span></span><span id="1686" class="l"><a href="#1686">1686: </a><span class="php-comment">    */</span>
-</span><span id="1687" class="l"><a href="#1687">1687: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> clear_schedule( <span class="php-var">$schedule_name</span> = <span class="php-quote">''</span> ) {
-</span><span id="1688" class="l"><a href="#1688">1688: </a>        <span class="php-keyword1">if</span> ( <span class="php-quote">''</span> !== <span class="php-var">$schedule_name</span> ) {
-</span><span id="1689" class="l"><a href="#1689">1689: </a>            <span class="php-var">$schedule</span> = <span class="php-var">$this</span>-&gt;schedule( <span class="php-var">$schedule_name</span> );
-</span><span id="1690" class="l"><a href="#1690">1690: </a>            <span class="php-var">$schedule</span>-&gt;cancel_by_name( <span class="php-var">$schedule_name</span> );
-</span><span id="1691" class="l"><a href="#1691">1691: </a>            <span class="php-comment">// translators: $schedule_name is the name of the current queue. Defaults: salesforce_pull, salesforce_push, salesforce</span>
-</span><span id="1692" class="l"><a href="#1692">1692: </a>            <span class="php-keyword1">echo</span> <span class="php-keyword2">sprintf</span>( esc_html__( <span class="php-quote">'You have cleared the %s schedule.'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ), esc_html( <span class="php-var">$schedule_name</span> ) );
-</span><span id="1693" class="l"><a href="#1693">1693: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1694" class="l"><a href="#1694">1694: </a>            <span class="php-keyword1">echo</span> esc_html__( <span class="php-quote">'You need to specify the name of the schedule you want to clear.'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> );
-</span><span id="1695" class="l"><a href="#1695">1695: </a>        }
-</span><span id="1696" class="l"><a href="#1696">1696: </a>    }
-</span><span id="1697" class="l"><a href="#1697">1697: </a>
-</span><span id="1698" class="l"><a href="#1698">1698: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> get_schedule_count( <span class="php-var">$schedule_name</span> = <span class="php-quote">''</span> ) {
-</span><span id="1699" class="l"><a href="#1699">1699: </a>        <span class="php-keyword1">if</span> ( <span class="php-quote">''</span> !== <span class="php-var">$schedule_name</span> ) {
-</span><span id="1700" class="l"><a href="#1700">1700: </a>            <span class="php-var">$schedule</span> = <span class="php-var">$this</span>-&gt;schedule( <span class="php-var">$schedule_name</span> );
-</span><span id="1701" class="l"><a href="#1701">1701: </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;schedule-&gt;count_queue_items( <span class="php-var">$schedule_name</span> );
-</span><span id="1702" class="l"><a href="#1702">1702: </a>        } <span class="php-keyword1">else</span> {
-</span><span id="1703" class="l"><a href="#1703">1703: </a>            <span class="php-keyword1">return</span> <span class="php-quote">'unknown'</span>;
-</span><span id="1704" class="l"><a href="#1704">1704: </a>        }
-</span><span id="1705" class="l"><a href="#1705">1705: </a>    }
-</span><span id="1706" class="l"><a href="#1706">1706: </a>
-</span><span id="1707" class="l"><a href="#1707">1707: </a>    <span class="php-comment">/**
-</span></span><span id="1708" class="l"><a href="#1708">1708: </a><span class="php-comment">    * Load the schedule class
-</span></span><span id="1709" class="l"><a href="#1709">1709: </a><span class="php-comment">    */</span>
-</span><span id="1710" class="l"><a href="#1710">1710: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> schedule( <span class="php-var">$schedule_name</span> ) {
-</span><span id="1711" class="l"><a href="#1711">1711: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Schedule'</span> ) &amp;&amp; <span class="php-keyword2">file_exists</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span> ) ) {
-</span><span id="1712" class="l"><a href="#1712">1712: </a>            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span>;
-</span><span id="1713" class="l"><a href="#1713">1713: </a>            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'../classes/schedule.php'</span>;
-</span><span id="1714" class="l"><a href="#1714">1714: </a>        }
-</span><span id="1715" class="l"><a href="#1715">1715: </a>        <span class="php-var">$schedule</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Schedule( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;slug, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$schedule_name</span>, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
-</span><span id="1716" class="l"><a href="#1716">1716: </a>        <span class="php-var">$this</span>-&gt;schedule = <span class="php-var">$schedule</span>;
-</span><span id="1717" class="l"><a href="#1717">1717: </a>        <span class="php-keyword1">return</span> <span class="php-var">$schedule</span>;
-</span><span id="1718" class="l"><a href="#1718">1718: </a>    }
-</span><span id="1719" class="l"><a href="#1719">1719: </a>
-</span><span id="1720" class="l"><a href="#1720">1720: </a>    <span class="php-comment">/**
-</span></span><span id="1721" class="l"><a href="#1721">1721: </a><span class="php-comment">    * Create an object map between a WordPress object and a Salesforce object
-</span></span><span id="1722" class="l"><a href="#1722">1722: </a><span class="php-comment">    *
-</span></span><span id="1723" class="l"><a href="#1723">1723: </a><span class="php-comment">    * @param int $wordpress_id
-</span></span><span id="1724" class="l"><a href="#1724">1724: </a><span class="php-comment">    *   Unique identifier for the WordPress object
-</span></span><span id="1725" class="l"><a href="#1725">1725: </a><span class="php-comment">    * @param string $wordpress_object
-</span></span><span id="1726" class="l"><a href="#1726">1726: </a><span class="php-comment">    *   What kind of object is it?
-</span></span><span id="1727" class="l"><a href="#1727">1727: </a><span class="php-comment">    * @param string $salesforce_id
-</span></span><span id="1728" class="l"><a href="#1728">1728: </a><span class="php-comment">    *   Unique identifier for the Salesforce object
-</span></span><span id="1729" class="l"><a href="#1729">1729: </a><span class="php-comment">    * @param string $action
-</span></span><span id="1730" class="l"><a href="#1730">1730: </a><span class="php-comment">    *   Did we push or pull?
-</span></span><span id="1731" class="l"><a href="#1731">1731: </a><span class="php-comment">    *
-</span></span><span id="1732" class="l"><a href="#1732">1732: </a><span class="php-comment">    * @return int $wpdb-&gt;insert_id
-</span></span><span id="1733" class="l"><a href="#1733">1733: </a><span class="php-comment">    *   This is the database row for the map object
-</span></span><span id="1734" class="l"><a href="#1734">1734: </a><span class="php-comment">    *
-</span></span><span id="1735" class="l"><a href="#1735">1735: </a><span class="php-comment">    */</span>
-</span><span id="1736" class="l"><a href="#1736">1736: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> create_object_map( <span class="php-var">$wordpress_id</span>, <span class="php-var">$wordpress_object</span>, <span class="php-var">$salesforce_id</span>, <span class="php-var">$action</span> = <span class="php-quote">''</span> ) {
-</span><span id="1737" class="l"><a href="#1737">1737: </a>        <span class="php-comment">// Create object map and save it</span>
-</span><span id="1738" class="l"><a href="#1738">1738: </a>        <span class="php-var">$mapping_object</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;create_object_map(
-</span><span id="1739" class="l"><a href="#1739">1739: </a>            <span class="php-keyword1">array</span>(
-</span><span id="1740" class="l"><a href="#1740">1740: </a>                <span class="php-quote">'wordpress_id'</span> =&gt; <span class="php-var">$wordpress_id</span>, <span class="php-comment">// wordpress unique id</span>
-</span><span id="1741" class="l"><a href="#1741">1741: </a>                <span class="php-quote">'salesforce_id'</span> =&gt; <span class="php-var">$salesforce_id</span>, <span class="php-comment">// salesforce unique id. we don't care what kind of object it is at this point</span>
-</span><span id="1742" class="l"><a href="#1742">1742: </a>                <span class="php-quote">'wordpress_object'</span> =&gt; <span class="php-var">$wordpress_object</span>, <span class="php-comment">// keep track of what kind of wp object this is</span>
-</span><span id="1743" class="l"><a href="#1743">1743: </a>                <span class="php-quote">'last_sync'</span> =&gt; current_time( <span class="php-quote">'mysql'</span> ),
-</span><span id="1744" class="l"><a href="#1744">1744: </a>                <span class="php-quote">'last_sync_action'</span> =&gt; <span class="php-var">$action</span>,
-</span><span id="1745" class="l"><a href="#1745">1745: </a>                <span class="php-quote">'last_sync_status'</span> =&gt; <span class="php-var">$this</span>-&gt;mappings-&gt;status_success,
-</span><span id="1746" class="l"><a href="#1746">1746: </a>                <span class="php-quote">'last_sync_message'</span> =&gt; __( <span class="php-quote">'Mapping object updated via function: '</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ) . __FUNCTION__,
-</span><span id="1747" class="l"><a href="#1747">1747: </a>            )
-</span><span id="1748" class="l"><a href="#1748">1748: </a>        );
-</span><span id="1749" class="l"><a href="#1749">1749: </a>
-</span><span id="1750" class="l"><a href="#1750">1750: </a>        <span class="php-keyword1">return</span> <span class="php-var">$mapping_object</span>;
-</span><span id="1751" class="l"><a href="#1751">1751: </a>
-</span><span id="1752" class="l"><a href="#1752">1752: </a>    }
-</span><span id="1753" class="l"><a href="#1753">1753: </a>
-</span><span id="1754" class="l"><a href="#1754">1754: </a>}
-</span><span id="1755" class="l"><a href="#1755">1755: </a></span></code></pre>
+</span><span id="1662" class="l"><a href="#1662">1662: </a>        <span class="php-keyword1">echo</span> <span class="php-quote">'&lt;h2 class=&quot;nav-tab-wrapper&quot;&gt;'</span>;
+</span><span id="1663" class="l"><a href="#1663">1663: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$tabs</span> <span class="php-keyword1">as</span> <span class="php-var">$tab_key</span> =&gt; <span class="php-var">$tab_caption</span> ) {
+</span><span id="1664" class="l"><a href="#1664">1664: </a>            <span class="php-var">$active</span> = <span class="php-var">$current_tab</span> === <span class="php-var">$tab_key</span> ? <span class="php-quote">' nav-tab-active'</span> : <span class="php-quote">''</span>;
+</span><span id="1665" class="l"><a href="#1665">1665: </a>            <span class="php-keyword1">if</span> ( <span class="php-quote">'settings'</span> === <span class="php-var">$tab_key</span> || ( <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_key</span> ) &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$consumer_secret</span> ) &amp;&amp; ! <span class="php-keyword1">empty</span>( <span class="php-var">$consumer_key</span> ) &amp;&amp; ! <span class="php-keyword1">empty</span>( <span class="php-var">$consumer_secret</span> ) ) ) {
+</span><span id="1666" class="l"><a href="#1666">1666: </a>                <span class="php-keyword1">echo</span> <span class="php-keyword2">sprintf</span>( <span class="php-quote">'&lt;a class=&quot;nav-tab%1$s&quot; href=&quot;%2$s&quot;&gt;%3$s&lt;/a&gt;'</span>,
+</span><span id="1667" class="l"><a href="#1667">1667: </a>                    esc_attr( <span class="php-var">$active</span> ),
+</span><span id="1668" class="l"><a href="#1668">1668: </a>                    esc_url( <span class="php-quote">'?page=object-sync-salesforce-admin&amp;tab='</span> . <span class="php-var">$tab_key</span> ),
+</span><span id="1669" class="l"><a href="#1669">1669: </a>                    esc_html( <span class="php-var">$tab_caption</span> )
+</span><span id="1670" class="l"><a href="#1670">1670: </a>                );
+</span><span id="1671" class="l"><a href="#1671">1671: </a>            }
+</span><span id="1672" class="l"><a href="#1672">1672: </a>        }
+</span><span id="1673" class="l"><a href="#1673">1673: </a>        <span class="php-keyword1">echo</span> <span class="php-quote">'&lt;/h2&gt;'</span>;
+</span><span id="1674" class="l"><a href="#1674">1674: </a>
+</span><span id="1675" class="l"><a href="#1675">1675: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$get_data</span>[<span class="php-quote">'tab'</span>] ) ) {
+</span><span id="1676" class="l"><a href="#1676">1676: </a>            <span class="php-var">$tab</span> = sanitize_key( <span class="php-var">$get_data</span>[<span class="php-quote">'tab'</span>] );
+</span><span id="1677" class="l"><a href="#1677">1677: </a>        } <span class="php-keyword1">else</span> {
+</span><span id="1678" class="l"><a href="#1678">1678: </a>            <span class="php-var">$tab</span> = <span class="php-quote">''</span>;
+</span><span id="1679" class="l"><a href="#1679">1679: </a>        }
+</span><span id="1680" class="l"><a href="#1680">1680: </a>    }
+</span><span id="1681" class="l"><a href="#1681">1681: </a>
+</span><span id="1682" class="l"><a href="#1682">1682: </a>    <span class="php-comment">/**
+</span></span><span id="1683" class="l"><a href="#1683">1683: </a><span class="php-comment">    * Clear schedule
+</span></span><span id="1684" class="l"><a href="#1684">1684: </a><span class="php-comment">    * This clears the schedule if the user clicks the button
+</span></span><span id="1685" class="l"><a href="#1685">1685: </a><span class="php-comment">    */</span>
+</span><span id="1686" class="l"><a href="#1686">1686: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> clear_schedule( <span class="php-var">$schedule_name</span> = <span class="php-quote">''</span> ) {
+</span><span id="1687" class="l"><a href="#1687">1687: </a>        <span class="php-keyword1">if</span> ( <span class="php-quote">''</span> !== <span class="php-var">$schedule_name</span> ) {
+</span><span id="1688" class="l"><a href="#1688">1688: </a>            <span class="php-var">$schedule</span> = <span class="php-var">$this</span>-&gt;schedule( <span class="php-var">$schedule_name</span> );
+</span><span id="1689" class="l"><a href="#1689">1689: </a>            <span class="php-var">$schedule</span>-&gt;cancel_by_name( <span class="php-var">$schedule_name</span> );
+</span><span id="1690" class="l"><a href="#1690">1690: </a>            <span class="php-comment">// translators: $schedule_name is the name of the current queue. Defaults: salesforce_pull, salesforce_push, salesforce</span>
+</span><span id="1691" class="l"><a href="#1691">1691: </a>            <span class="php-keyword1">echo</span> <span class="php-keyword2">sprintf</span>( esc_html__( <span class="php-quote">'You have cleared the %s schedule.'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ), esc_html( <span class="php-var">$schedule_name</span> ) );
+</span><span id="1692" class="l"><a href="#1692">1692: </a>        } <span class="php-keyword1">else</span> {
+</span><span id="1693" class="l"><a href="#1693">1693: </a>            <span class="php-keyword1">echo</span> esc_html__( <span class="php-quote">'You need to specify the name of the schedule you want to clear.'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> );
+</span><span id="1694" class="l"><a href="#1694">1694: </a>        }
+</span><span id="1695" class="l"><a href="#1695">1695: </a>    }
+</span><span id="1696" class="l"><a href="#1696">1696: </a>
+</span><span id="1697" class="l"><a href="#1697">1697: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> get_schedule_count( <span class="php-var">$schedule_name</span> = <span class="php-quote">''</span> ) {
+</span><span id="1698" class="l"><a href="#1698">1698: </a>        <span class="php-keyword1">if</span> ( <span class="php-quote">''</span> !== <span class="php-var">$schedule_name</span> ) {
+</span><span id="1699" class="l"><a href="#1699">1699: </a>            <span class="php-var">$schedule</span> = <span class="php-var">$this</span>-&gt;schedule( <span class="php-var">$schedule_name</span> );
+</span><span id="1700" class="l"><a href="#1700">1700: </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;schedule-&gt;count_queue_items( <span class="php-var">$schedule_name</span> );
+</span><span id="1701" class="l"><a href="#1701">1701: </a>        } <span class="php-keyword1">else</span> {
+</span><span id="1702" class="l"><a href="#1702">1702: </a>            <span class="php-keyword1">return</span> <span class="php-quote">'unknown'</span>;
+</span><span id="1703" class="l"><a href="#1703">1703: </a>        }
+</span><span id="1704" class="l"><a href="#1704">1704: </a>    }
+</span><span id="1705" class="l"><a href="#1705">1705: </a>
+</span><span id="1706" class="l"><a href="#1706">1706: </a>    <span class="php-comment">/**
+</span></span><span id="1707" class="l"><a href="#1707">1707: </a><span class="php-comment">    * Load the schedule class
+</span></span><span id="1708" class="l"><a href="#1708">1708: </a><span class="php-comment">    */</span>
+</span><span id="1709" class="l"><a href="#1709">1709: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> schedule( <span class="php-var">$schedule_name</span> ) {
+</span><span id="1710" class="l"><a href="#1710">1710: </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword2">class_exists</span>( <span class="php-quote">'Object_Sync_Sf_Schedule'</span> ) &amp;&amp; <span class="php-keyword2">file_exists</span>( plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span> ) ) {
+</span><span id="1711" class="l"><a href="#1711">1711: </a>            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span>;
+</span><span id="1712" class="l"><a href="#1712">1712: </a>            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'../classes/schedule.php'</span>;
+</span><span id="1713" class="l"><a href="#1713">1713: </a>        }
+</span><span id="1714" class="l"><a href="#1714">1714: </a>        <span class="php-var">$schedule</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Schedule( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;slug, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$schedule_name</span>, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
+</span><span id="1715" class="l"><a href="#1715">1715: </a>        <span class="php-var">$this</span>-&gt;schedule = <span class="php-var">$schedule</span>;
+</span><span id="1716" class="l"><a href="#1716">1716: </a>        <span class="php-keyword1">return</span> <span class="php-var">$schedule</span>;
+</span><span id="1717" class="l"><a href="#1717">1717: </a>    }
+</span><span id="1718" class="l"><a href="#1718">1718: </a>
+</span><span id="1719" class="l"><a href="#1719">1719: </a>    <span class="php-comment">/**
+</span></span><span id="1720" class="l"><a href="#1720">1720: </a><span class="php-comment">    * Create an object map between a WordPress object and a Salesforce object
+</span></span><span id="1721" class="l"><a href="#1721">1721: </a><span class="php-comment">    *
+</span></span><span id="1722" class="l"><a href="#1722">1722: </a><span class="php-comment">    * @param int $wordpress_id
+</span></span><span id="1723" class="l"><a href="#1723">1723: </a><span class="php-comment">    *   Unique identifier for the WordPress object
+</span></span><span id="1724" class="l"><a href="#1724">1724: </a><span class="php-comment">    * @param string $wordpress_object
+</span></span><span id="1725" class="l"><a href="#1725">1725: </a><span class="php-comment">    *   What kind of object is it?
+</span></span><span id="1726" class="l"><a href="#1726">1726: </a><span class="php-comment">    * @param string $salesforce_id
+</span></span><span id="1727" class="l"><a href="#1727">1727: </a><span class="php-comment">    *   Unique identifier for the Salesforce object
+</span></span><span id="1728" class="l"><a href="#1728">1728: </a><span class="php-comment">    * @param string $action
+</span></span><span id="1729" class="l"><a href="#1729">1729: </a><span class="php-comment">    *   Did we push or pull?
+</span></span><span id="1730" class="l"><a href="#1730">1730: </a><span class="php-comment">    *
+</span></span><span id="1731" class="l"><a href="#1731">1731: </a><span class="php-comment">    * @return int $wpdb-&gt;insert_id
+</span></span><span id="1732" class="l"><a href="#1732">1732: </a><span class="php-comment">    *   This is the database row for the map object
+</span></span><span id="1733" class="l"><a href="#1733">1733: </a><span class="php-comment">    *
+</span></span><span id="1734" class="l"><a href="#1734">1734: </a><span class="php-comment">    */</span>
+</span><span id="1735" class="l"><a href="#1735">1735: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> create_object_map( <span class="php-var">$wordpress_id</span>, <span class="php-var">$wordpress_object</span>, <span class="php-var">$salesforce_id</span>, <span class="php-var">$action</span> = <span class="php-quote">''</span> ) {
+</span><span id="1736" class="l"><a href="#1736">1736: </a>        <span class="php-comment">// Create object map and save it</span>
+</span><span id="1737" class="l"><a href="#1737">1737: </a>        <span class="php-var">$mapping_object</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;create_object_map(
+</span><span id="1738" class="l"><a href="#1738">1738: </a>            <span class="php-keyword1">array</span>(
+</span><span id="1739" class="l"><a href="#1739">1739: </a>                <span class="php-quote">'wordpress_id'</span> =&gt; <span class="php-var">$wordpress_id</span>, <span class="php-comment">// wordpress unique id</span>
+</span><span id="1740" class="l"><a href="#1740">1740: </a>                <span class="php-quote">'salesforce_id'</span> =&gt; <span class="php-var">$salesforce_id</span>, <span class="php-comment">// salesforce unique id. we don't care what kind of object it is at this point</span>
+</span><span id="1741" class="l"><a href="#1741">1741: </a>                <span class="php-quote">'wordpress_object'</span> =&gt; <span class="php-var">$wordpress_object</span>, <span class="php-comment">// keep track of what kind of wp object this is</span>
+</span><span id="1742" class="l"><a href="#1742">1742: </a>                <span class="php-quote">'last_sync'</span> =&gt; current_time( <span class="php-quote">'mysql'</span> ),
+</span><span id="1743" class="l"><a href="#1743">1743: </a>                <span class="php-quote">'last_sync_action'</span> =&gt; <span class="php-var">$action</span>,
+</span><span id="1744" class="l"><a href="#1744">1744: </a>                <span class="php-quote">'last_sync_status'</span> =&gt; <span class="php-var">$this</span>-&gt;mappings-&gt;status_success,
+</span><span id="1745" class="l"><a href="#1745">1745: </a>                <span class="php-quote">'last_sync_message'</span> =&gt; __( <span class="php-quote">'Mapping object updated via function: '</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ) . __FUNCTION__,
+</span><span id="1746" class="l"><a href="#1746">1746: </a>            )
+</span><span id="1747" class="l"><a href="#1747">1747: </a>        );
+</span><span id="1748" class="l"><a href="#1748">1748: </a>
+</span><span id="1749" class="l"><a href="#1749">1749: </a>        <span class="php-keyword1">return</span> <span class="php-var">$mapping_object</span>;
+</span><span id="1750" class="l"><a href="#1750">1750: </a>
+</span><span id="1751" class="l"><a href="#1751">1751: </a>    }
+</span><span id="1752" class="l"><a href="#1752">1752: </a>
+</span><span id="1753" class="l"><a href="#1753">1753: </a>}
+</span><span id="1754" class="l"><a href="#1754">1754: </a></span></code></pre>
 
 	<div id="footer">
 		Object Sync for Salesforce API documentation generated by <a href="http://apigen.org">ApiGen</a>
