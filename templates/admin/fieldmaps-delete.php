@@ -14,5 +14,5 @@
 		);
 	?>
 	</p>
-	<?php submit_button( 'Confirm deletion' ); ?>
+	<?php submit_button( esc_html__( 'Confirm deletion', 'object-sync-for-salesforce' ) ); ?>
 </form>

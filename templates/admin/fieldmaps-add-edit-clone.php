@@ -413,5 +413,10 @@
 			<p class="description"><?php echo sprintf( 'For example, if you map WordPress users to Salesforce Contacts, and then map the users to Salesforce Leads as well, you could assign a numeric weight to indicate which one gets processed first. Otherwise, you can safely leave it blank. If present, sorting occurs in ascending order.' ); ?></p>
 		</div>
 	</fieldset>
-	<?php submit_button( ucfirst( $method ) . ' fieldmap' ); ?>
+	<?php
+		submit_button(
+			// translators: the placeholder refers to the currently selected method (add, edit, or clone)
+			sprintf( esc_html__( '%1$s fieldmap', 'object-sync-for-salesforce' ), ucfirst( $method ) )
+		);
+	?>
 </form>
