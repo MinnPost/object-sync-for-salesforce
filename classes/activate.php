@@ -73,7 +73,7 @@ class Object_Sync_Sf_Activate {
 			PRIMARY KEY  (id),
 			UNIQUE KEY name (name),
 			KEY name_sf_type_wordpress_type (wordpress_object,salesforce_object)
-		) $charset_collate";
+		) ENGINE=InnoDB $charset_collate";
 
 		$object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 		$object_map_sql = "CREATE TABLE $object_map_table (
