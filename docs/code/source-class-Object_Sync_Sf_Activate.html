@@ -158,7 +158,7 @@
 </span></span><span id="73" class="l"><a href="#73"> 73: </a><span class="php-quote">            PRIMARY KEY  (id),
 </span></span><span id="74" class="l"><a href="#74"> 74: </a><span class="php-quote">            UNIQUE KEY name (name),
 </span></span><span id="75" class="l"><a href="#75"> 75: </a><span class="php-quote">            KEY name_sf_type_wordpress_type (wordpress_object,salesforce_object)
-</span></span><span id="76" class="l"><a href="#76"> 76: </a><span class="php-quote">        ) </span><span class="php-var">$charset_collate</span><span class="php-quote">&quot;</span>;
+</span></span><span id="76" class="l"><a href="#76"> 76: </a><span class="php-quote">        ) ENGINE=InnoDB </span><span class="php-var">$charset_collate</span><span class="php-quote">&quot;</span>;
 </span><span id="77" class="l"><a href="#77"> 77: </a>
 </span><span id="78" class="l"><a href="#78"> 78: </a>        <span class="php-var">$object_map_table</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;prefix . <span class="php-quote">'object_sync_sf_object_map'</span>;
 </span><span id="79" class="l"><a href="#79"> 79: </a>        <span class="php-var">$object_map_sql</span> = <span class="php-quote">&quot;CREATE TABLE </span><span class="php-var">$object_map_table</span><span class="php-quote"> (
