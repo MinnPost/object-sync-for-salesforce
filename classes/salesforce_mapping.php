@@ -292,6 +292,7 @@ class Object_Sync_Sf_Mapping {
 						),
 						'salesforce_field' => array(
 							'label' => sanitize_text_field( $posted['salesforce_field'][ $key ] ),
+							'type' => $salesforce_fields[ $updateable_key ]['type'],
 							'updateable' => $salesforce_fields[ $updateable_key ]['updateable'],
 						),
 						'is_prematch' => sanitize_text_field( $posted['is_prematch'][ $key ] ),
