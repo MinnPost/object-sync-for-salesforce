@@ -284,17 +284,26 @@ class Object_Sync_Sf_Mapping {
 					$posted['is_delete'][ $key ] = false;
 				}
 				if ( false === $posted['is_delete'][ $key ] ) {
+
 					$updateable_key = array_search( $posted['salesforce_field'][ $key ], array_column( $salesforce_fields, 'name' ), true );
+
+					$salesforce_field_attributes = array();
+					foreach ( $salesforce_fields[ $updateable_key ] as $sf_key => $sf_value ) {
+						if ( isset( $sf_value ) && ! is_array( $sf_value ) ) {
+							$salesforce_field_attributes[ $sf_key ] = esc_attr( $sf_value );
+						} elseif ( ! empty( $sf_value ) && is_array( $sf_value ) ) {
+							$salesforce_field_attributes[ $sf_key ] = maybe_unserialize( $sf_value );
+						} else {
+							$salesforce_field_attributes[ $sf_key ] = '';
+						}
+					}
+
 					$setup['fields'][ $key ] = array(
 						'wordpress_field' => array(
 							'label' => sanitize_text_field( $posted['wordpress_field'][ $key ] ),
 							'methods' => maybe_unserialize( $wordpress_fields[ $method_key ]['methods'] ),
 						),
-						'salesforce_field' => array(
-							'label' => sanitize_text_field( $posted['salesforce_field'][ $key ] ),
-							'type' => $salesforce_fields[ $updateable_key ]['type'],
-							'updateable' => $salesforce_fields[ $updateable_key ]['updateable'],
-						),
+						'salesforce_field' => $salesforce_field_attributes,
 						'is_prematch' => sanitize_text_field( $posted['is_prematch'][ $key ] ),
 						'is_key' => sanitize_text_field( $posted['is_key'][ $key ] ),
 						'direction' => sanitize_text_field( $posted['direction'][ $key ] ),
