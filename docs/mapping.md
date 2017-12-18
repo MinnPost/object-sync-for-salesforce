@@ -43,15 +43,28 @@ The date fields to trigger a pull request are how the plugin finds Salesforce re
 
 ![WordPress fieldmap](./assets/img/screenshots/05-wordpress-fieldmap.png)
 
-#### Wordpress fields
+#### WordPress fields
 
 WordPress does not currently have a way to get all fields from an object. This plugin attempts to do this by combining the fields from an object's main table (`wp_posts`, `wp_users`, etc.) with the metadata for that object (`wp_postmeta`, `wp_usermeta`, etc.). This isn't perfect, but it gets most fields.
+
+**Note:** these fields will not show up in the list until they have values. This is because they aren't placed into the meta tables until they have values.
 
 The plugin also has a hook to modify what fields are included for an object. You can read more about this in the [extending mapping options documentation](./extending-mapping-options.md#available-wordpress-fields).
 
 #### Salesforce fields
 
-Salesforce fields come from the `object_describe` API method.
+Salesforce fields come from the `object_describe` API method. This plugin supports syncing (at least) the following Salesforce field types:
+
+- Picklist
+- Picklist (Multi-Select)
+- Date
+- Date/Time
+- Text
+- URL
+
+**Note:** How well these fields sync may vary if your method of storing WordPress fields differs greatly from the default meta system.
+
+If you determine that you need to sync a field that is not yet supported, you can consider [creating an issue](https://github.com/minnpost/object-sync-for-salesforce/issues), or use the developer hooks to [extend mapping parameters](./extending-parameters.md)
 
 #### Other configuration
 
