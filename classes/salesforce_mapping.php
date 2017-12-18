@@ -42,6 +42,9 @@ class Object_Sync_Sf_Mapping {
 	public $salesforce_default_record_type;
 
 	public $array_delimiter;
+	public $array_types_from_salesforce;
+	public $date_types_from_salesforce;
+	public $int_types_from_salesforce;
 
 	public $name_length;
 
@@ -96,6 +99,12 @@ class Object_Sync_Sf_Mapping {
 
 		// Salesforce has multipicklists and they have a delimiter.
 		$this->array_delimiter = ';';
+		// What data types in Salesforce should be an array?
+		$this->array_types_from_salesforce = array( 'multipicklist' );
+		// What data types in Salesforce should be a date field?
+		$this->date_types_from_salesforce = array( 'date', 'datetime' );
+		// What data types in Salesforce should be an integer?
+		$this->int_types_from_salesforce = array( 'integer', 'boolean' );
 
 		// Max length for a mapping field.
 		$this->name_length = 128;
@@ -198,12 +207,12 @@ class Object_Sync_Sf_Mapping {
 		foreach ( $mapping['fields'] as $fields ) {
 			if ( empty( $directions ) || in_array( $fields['direction'], $directions, true ) ) {
 				// Some field map types (Relation) store a collection of SF objects.
-				if ( is_array( $fields['salesforce_field'] ) && ! isset( $fields['salesforce_field']['label'] ) ) {
+				if ( is_array( $fields['salesforce_field'] ) && ! isset( $fields['salesforce_field']['name'] ) ) {
 					foreach ( $fields['salesforce_field'] as $sf_field ) {
-						$mapped_fields[ $sf_field['label'] ] = $sf_field['label'];
+						$mapped_fields[ $sf_field['name'] ] = $sf_field['name'];
 					}
 				} else { // The rest are just a name/value pair.
-					$mapped_fields[ $fields['salesforce_field']['label'] ] = $fields['salesforce_field']['label'];
+					$mapped_fields[ $fields['salesforce_field']['name'] ] = $fields['salesforce_field']['name'];
 				}
 			}
 		}
@@ -284,16 +293,26 @@ class Object_Sync_Sf_Mapping {
 					$posted['is_delete'][ $key ] = false;
 				}
 				if ( false === $posted['is_delete'][ $key ] ) {
+
 					$updateable_key = array_search( $posted['salesforce_field'][ $key ], array_column( $salesforce_fields, 'name' ), true );
+
+					$salesforce_field_attributes = array();
+					foreach ( $salesforce_fields[ $updateable_key ] as $sf_key => $sf_value ) {
+						if ( isset( $sf_value ) && ! is_array( $sf_value ) ) {
+							$salesforce_field_attributes[ $sf_key ] = esc_attr( $sf_value );
+						} elseif ( ! empty( $sf_value ) && is_array( $sf_value ) ) {
+							$salesforce_field_attributes[ $sf_key ] = maybe_unserialize( $sf_value );
+						} else {
+							$salesforce_field_attributes[ $sf_key ] = '';
+						}
+					}
+
 					$setup['fields'][ $key ] = array(
 						'wordpress_field' => array(
 							'label' => sanitize_text_field( $posted['wordpress_field'][ $key ] ),
 							'methods' => maybe_unserialize( $wordpress_fields[ $method_key ]['methods'] ),
 						),
-						'salesforce_field' => array(
-							'label' => sanitize_text_field( $posted['salesforce_field'][ $key ] ),
-							'updateable' => $salesforce_fields[ $updateable_key ]['updateable'],
-						),
+						'salesforce_field' => $salesforce_field_attributes,
 						'is_prematch' => sanitize_text_field( $posted['is_prematch'][ $key ] ),
 						'is_key' => sanitize_text_field( $posted['is_key'][ $key ] ),
 						'direction' => sanitize_text_field( $posted['direction'][ $key ] ),
@@ -305,7 +324,7 @@ class Object_Sync_Sf_Mapping {
 					if (
 						empty( $setup['fields'][ $key ]['wordpress_field']['label'] )
 						||
-						empty( $setup['fields'][ $key ]['salesforce_field']['label'] )
+						empty( $setup['fields'][ $key ]['salesforce_field']['name'] )
 					) {
 						unset( $setup['fields'][ $key ] );
 					}
@@ -656,8 +675,11 @@ class Object_Sync_Sf_Mapping {
 				continue;
 			}
 
-			$salesforce_field = $fieldmap['salesforce_field']['label'];
 			$wordpress_field = $fieldmap['wordpress_field']['label'];
+			$salesforce_field = $fieldmap['salesforce_field']['name'];
+
+			// Load the type of the Salesforce field. We can use this to handle Salesforce field value issues that come up based on what the field sends into WordPress or expects from WordPress.
+			$salesforce_field_type = $fieldmap['salesforce_field']['type'];
 
 			// A WordPress event caused this.
 			if ( in_array( $trigger, array_values( $wordpress_haystack ), true ) ) {
@@ -667,7 +689,32 @@ class Object_Sync_Sf_Mapping {
 					continue;
 				}
 
-				$params[ $fieldmap['salesforce_field']['label'] ] = $object[ $fieldmap['wordpress_field']['label'] ];
+				// Is the field in WordPress an array, if we unserialize it? Salesforce wants it to be an imploded string.
+				if ( is_array( maybe_unserialize( $object[ $wordpress_field ] ) ) ) {
+					$object[ $wordpress_field ] = implode( $this->array_delimiter, $object[ $wordpress_field ] );
+				}
+
+				// Is the Salesforce field a date, and is the WordPress value a valid date?
+				// According to https://salesforce.stackexchange.com/questions/57032/date-format-with-salesforce-rest-api
+				if ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ) {
+					if ( false !== strtotime( $object[ $wordpress_field ] ) ) {
+						$timestamp = strtotime( $object[ $wordpress_field ] );
+					} else {
+						$timestamp = $object[ $wordpress_field ];
+					}
+					if ( 'datetime' === $salesforce_field_type ) {
+						$object[ $wordpress_field ] = date_i18n( 'c', $timestamp );
+					} else {
+						$object[ $wordpress_field ] = date_i18n( 'Y-m-d', $timestamp );
+					}
+				}
+
+				// Boolean SF fields only want real boolean values. NULL is also not allowed.
+				if ( 'boolean' === $salesforce_field_type ) {
+					$object[ $wordpress_field ] = (bool) $object[ $wordpress_field ];
+				}
+
+				$params[ $salesforce_field ] = $object[ $wordpress_field ];
 
 				// If the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce,
 				// but still put its name in the params array so we can check for it later.
@@ -678,7 +725,7 @@ class Object_Sync_Sf_Mapping {
 					$params['key'] = array(
 						'salesforce_field' => $salesforce_field,
 						'wordpress_field' => $wordpress_field,
-						'value' => $object[ $fieldmap['wordpress_field']['label'] ],
+						'value' => $object[ $wordpress_field ],
 					);
 				}
 
@@ -687,26 +734,51 @@ class Object_Sync_Sf_Mapping {
 					$params['prematch'] = array(
 						'salesforce_field' => $salesforce_field,
 						'wordpress_field' => $wordpress_field,
-						'value' => $object[ $fieldmap['wordpress_field']['label'] ],
+						'value' => $object[ $wordpress_field ],
 					);
 				}
 			} elseif ( in_array( $trigger, $salesforce_haystack, true ) ) {
 
 				// A salesforce event caused this.
+
+				// Salesforce provides multipicklist values as a delimited string. If the
+				// destination field in WordPress accepts multiple values, explode the string
+				// into an array and then serialize it.
+				if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce ) ) {
+					$object[ $salesforce_field ] = explode( $this->array_delimiter, $object[ $salesforce_field ] );
+				}
+
+				// Handle specific data types from Salesforce.
+				switch ( $salesforce_field_type ) {
+					case ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ):
+						$format = get_option( 'date_format', 'U' );
+						$object[ $salesforce_field ] = date_i18n( $format, strtotime( $object[ $salesforce_field ] ) );
+						break;
+					case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce ) ):
+						$object[ $salesforce_field ] = isset( $object[ $salesforce_field ] ) ? (int) $object[ $salesforce_field ] : 0;
+						break;
+					case 'text':
+						$object[ $salesforce_field ] = (string) $object[ $salesforce_field ];
+						break;
+					case 'url':
+						$object[ $salesforce_field ] = esc_url_raw( $object[ $salesforce_field ] );
+						break;
+				}
+
 				// Make an array because we need to store the methods for each field as well.
-				$params[ $fieldmap['wordpress_field']['label'] ] = array();
-				$params[ $wordpress_field ]['value'] = $object[ $fieldmap['salesforce_field']['label'] ];
+				$params[ $wordpress_field ] = array();
+				$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
 
 				// If the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce,
 				// but still put its name in the params array so we can check for it later.
 				if ( '1' === $fieldmap['is_key'] ) {
 					if ( ! $use_soap ) {
-						unset( $params[ $fieldmap['wordpress_field']['label'] ] );
+						unset( $params[ $wordpress_field ] );
 					}
 					$params['key'] = array(
 						'salesforce_field' => $salesforce_field,
 						'wordpress_field' => $wordpress_field,
-						'value' => $object[ $fieldmap['salesforce_field']['label'] ],
+						'value' => $object[ $salesforce_field ],
 						'method_read' => $fieldmap['wordpress_field']['methods']['read'],
 						'method_create' => $fieldmap['wordpress_field']['methods']['create'],
 						'method_update' => $fieldmap['wordpress_field']['methods']['update'],
@@ -718,7 +790,7 @@ class Object_Sync_Sf_Mapping {
 					$params['prematch'] = array(
 						'salesforce_field' => $salesforce_field,
 						'wordpress_field' => $wordpress_field,
-						'value' => $object[ $fieldmap['salesforce_field']['label'] ],
+						'value' => $object[ $salesforce_field ],
 						'method_read' => $fieldmap['wordpress_field']['methods']['read'],
 						'method_create' => $fieldmap['wordpress_field']['methods']['create'],
 						'method_update' => $fieldmap['wordpress_field']['methods']['update'],

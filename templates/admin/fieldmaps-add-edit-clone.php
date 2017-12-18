@@ -208,7 +208,10 @@
 								)
 							);
 							foreach ( $salesforce_fields as $salesforce_field ) {
-								if ( isset( $value['salesforce_field']['label'] ) && $value['salesforce_field']['label'] === $salesforce_field['name'] ) {
+								if ( isset( $value['salesforce_field']['name'] ) && $value['salesforce_field']['name'] === $salesforce_field['name'] ) {
+									$selected = ' selected';
+								} elseif ( isset( $value['salesforce_field']['label'] ) && $value['salesforce_field']['label'] === $salesforce_field['name'] ) {
+									// this conditional is for versions up to 1.1.2, but i think it's fine to leave it for now. if we remove it, people's fieldmaps will not show correctly in the admin.
 									$selected = ' selected';
 								} else {
 									$selected = '';
