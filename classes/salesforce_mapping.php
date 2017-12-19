@@ -676,10 +676,14 @@ class Object_Sync_Sf_Mapping {
 			}
 
 			$wordpress_field = $fieldmap['wordpress_field']['label'];
-			$salesforce_field = $fieldmap['salesforce_field']['name'];
 
-			// Load the type of the Salesforce field. We can use this to handle Salesforce field value issues that come up based on what the field sends into WordPress or expects from WordPress.
-			$salesforce_field_type = $fieldmap['salesforce_field']['type'];
+			if ( version_compare( $this->version, '1.3.0', '>' ) ) {
+				$salesforce_field = $fieldmap['salesforce_field']['name'];
+				// Load the type of the Salesforce field. We can use this to handle Salesforce field value issues that come up based on what the field sends into WordPress or expects from WordPress.
+				$salesforce_field_type = $fieldmap['salesforce_field']['type'];
+			} else {
+				$salesforce_field = $fieldmap['salesforce_field']['label'];
+			}
 
 			// A WordPress event caused this.
 			if ( in_array( $trigger, array_values( $wordpress_haystack ), true ) ) {
@@ -694,24 +698,26 @@ class Object_Sync_Sf_Mapping {
 					$object[ $wordpress_field ] = implode( $this->array_delimiter, $object[ $wordpress_field ] );
 				}
 
-				// Is the Salesforce field a date, and is the WordPress value a valid date?
-				// According to https://salesforce.stackexchange.com/questions/57032/date-format-with-salesforce-rest-api
-				if ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ) {
-					if ( false !== strtotime( $object[ $wordpress_field ] ) ) {
-						$timestamp = strtotime( $object[ $wordpress_field ] );
-					} else {
-						$timestamp = $object[ $wordpress_field ];
+				if ( isset( $salesforce_field_type ) ) {
+					// Is the Salesforce field a date, and is the WordPress value a valid date?
+					// According to https://salesforce.stackexchange.com/questions/57032/date-format-with-salesforce-rest-api
+					if ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ) {
+						if ( false !== strtotime( $object[ $wordpress_field ] ) ) {
+							$timestamp = strtotime( $object[ $wordpress_field ] );
+						} else {
+							$timestamp = $object[ $wordpress_field ];
+						}
+						if ( 'datetime' === $salesforce_field_type ) {
+							$object[ $wordpress_field ] = date_i18n( 'c', $timestamp );
+						} else {
+							$object[ $wordpress_field ] = date_i18n( 'Y-m-d', $timestamp );
+						}
 					}
-					if ( 'datetime' === $salesforce_field_type ) {
-						$object[ $wordpress_field ] = date_i18n( 'c', $timestamp );
-					} else {
-						$object[ $wordpress_field ] = date_i18n( 'Y-m-d', $timestamp );
-					}
-				}
 
-				// Boolean SF fields only want real boolean values. NULL is also not allowed.
-				if ( 'boolean' === $salesforce_field_type ) {
-					$object[ $wordpress_field ] = (bool) $object[ $wordpress_field ];
+					// Boolean SF fields only want real boolean values. NULL is also not allowed.
+					if ( 'boolean' === $salesforce_field_type ) {
+						$object[ $wordpress_field ] = (bool) $object[ $wordpress_field ];
+					}
 				}
 
 				$params[ $salesforce_field ] = $object[ $wordpress_field ];
@@ -741,28 +747,30 @@ class Object_Sync_Sf_Mapping {
 
 				// A salesforce event caused this.
 
-				// Salesforce provides multipicklist values as a delimited string. If the
-				// destination field in WordPress accepts multiple values, explode the string
-				// into an array and then serialize it.
-				if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce ) ) {
-					$object[ $salesforce_field ] = explode( $this->array_delimiter, $object[ $salesforce_field ] );
-				}
+				if ( isset( $salesforce_field_type ) ) {
+					// Salesforce provides multipicklist values as a delimited string. If the
+					// destination field in WordPress accepts multiple values, explode the string
+					// into an array and then serialize it.
+					if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce ) ) {
+						$object[ $salesforce_field ] = explode( $this->array_delimiter, $object[ $salesforce_field ] );
+					}
 
-				// Handle specific data types from Salesforce.
-				switch ( $salesforce_field_type ) {
-					case ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ):
-						$format = get_option( 'date_format', 'U' );
-						$object[ $salesforce_field ] = date_i18n( $format, strtotime( $object[ $salesforce_field ] ) );
-						break;
-					case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce ) ):
-						$object[ $salesforce_field ] = isset( $object[ $salesforce_field ] ) ? (int) $object[ $salesforce_field ] : 0;
-						break;
-					case 'text':
-						$object[ $salesforce_field ] = (string) $object[ $salesforce_field ];
-						break;
-					case 'url':
-						$object[ $salesforce_field ] = esc_url_raw( $object[ $salesforce_field ] );
-						break;
+					// Handle specific data types from Salesforce.
+					switch ( $salesforce_field_type ) {
+						case ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ):
+							$format = get_option( 'date_format', 'U' );
+							$object[ $salesforce_field ] = date_i18n( $format, strtotime( $object[ $salesforce_field ] ) );
+							break;
+						case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce ) ):
+							$object[ $salesforce_field ] = isset( $object[ $salesforce_field ] ) ? (int) $object[ $salesforce_field ] : 0;
+							break;
+						case 'text':
+							$object[ $salesforce_field ] = (string) $object[ $salesforce_field ];
+							break;
+						case 'url':
+							$object[ $salesforce_field ] = esc_url_raw( $object[ $salesforce_field ] );
+							break;
+					}
 				}
 
 				// Make an array because we need to store the methods for each field as well.
