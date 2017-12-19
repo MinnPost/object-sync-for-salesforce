@@ -206,13 +206,20 @@ class Object_Sync_Sf_Mapping {
 		$mapped_fields = array();
 		foreach ( $mapping['fields'] as $fields ) {
 			if ( empty( $directions ) || in_array( $fields['direction'], $directions, true ) ) {
+
+				if ( version_compare( $this->version, '1.3.0', '>' ) && isset( $fields['salesforce_field']['name'] ) ) {
+					$array_key = 'name';
+				} else {
+					$array_key = 'label';
+				}
+
 				// Some field map types (Relation) store a collection of SF objects.
-				if ( is_array( $fields['salesforce_field'] ) && ! isset( $fields['salesforce_field']['name'] ) ) {
+				if ( is_array( $fields['salesforce_field'] ) && ! isset( $fields['salesforce_field'][ $array_key ] ) ) {
 					foreach ( $fields['salesforce_field'] as $sf_field ) {
-						$mapped_fields[ $sf_field['name'] ] = $sf_field['name'];
+						$mapped_fields[ $sf_field[ $array_key ] ] = $sf_field[ $array_key ];
 					}
 				} else { // The rest are just a name/value pair.
-					$mapped_fields[ $fields['salesforce_field']['name'] ] = $fields['salesforce_field']['name'];
+					$mapped_fields[ $fields['salesforce_field'][ $array_key ] ] = $fields['salesforce_field'][ $array_key ];
 				}
 			}
 		}
@@ -677,7 +684,7 @@ class Object_Sync_Sf_Mapping {
 
 			$wordpress_field = $fieldmap['wordpress_field']['label'];
 
-			if ( version_compare( $this->version, '1.3.0', '>' ) ) {
+			if ( version_compare( $this->version, '1.3.0', '>' ) && isset( $fieldmap['salesforce_field']['name'] ) ) {
 				$salesforce_field = $fieldmap['salesforce_field']['name'];
 				// Load the type of the Salesforce field. We can use this to handle Salesforce field value issues that come up based on what the field sends into WordPress or expects from WordPress.
 				$salesforce_field_type = $fieldmap['salesforce_field']['type'];
