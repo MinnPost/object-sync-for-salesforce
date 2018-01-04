@@ -283,7 +283,7 @@ class Object_Sync_Salesforce {
 	 * @param string $slug
 	 *
 	 * @return object
-	 *   Instance of Wordpress_Salesforce_Activate
+	 *   Instance of Object_Sync_Sf_Activate
 	 */
 	private function activate( $wpdb, $version, $slug ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
@@ -300,7 +300,7 @@ class Object_Sync_Salesforce {
 	 * @param array $schedulable_classes
 	 *
 	 * @return object
-	 *   Instance of Wordpress_Salesforce_Deactivate
+	 *   Instance of Object_Sync_Sf_Deactivate
 	 */
 	private function deactivate( $wpdb, $version, $slug, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
@@ -367,7 +367,7 @@ class Object_Sync_Salesforce {
 	* @param object $logging
 	* @param array $schedulable_classes
 	* @return object $admin
-	*   Instance of Wordpress_Salesforce_Admin
+	*   Instance of Object_Sync_Sf_Admin
 	*
 	*/
 	private function load_admin( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes ) {
