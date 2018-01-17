@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.2.2 (2018-12-19)
+	* This release fixes a bug in which an object map could not be created if the Salesforce ID was the same, with case insensitivity, as another Salesforce ID. Salesforce, however, is case sensitive with these IDs and can occasionally create IDs like this. Thanks to WordPress user @pavelwld for reporting this.
+
 * 1.2.1 (2017-12-19)
 	* This release fixes a bug caused in 1.2.0. Users were unable to sync data without re-saving fieldmaps. This does a version checker and uses previous data structures until users re-save.
 	* Make sure you update your plugin fieldmaps.

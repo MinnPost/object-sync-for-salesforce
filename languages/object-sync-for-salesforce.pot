@@ -1,4 +1,4 @@
-# Copyright (C) 2017 object-sync-for-salesforce
+# Copyright (C) 2018 object-sync-for-salesforce
 # This file is distributed under the same license as the object-sync-for-salesforce package.
 msgid ""
 msgstr ""
@@ -131,12 +131,16 @@ msgid "Notice: Mapping: there is more than one mapped WordPress object for the S
 msgstr ""
 
 #. translators: placeholders are: 1) the server error code, and 2) the name of the Salesforce object
-#: classes/salesforce_pull.php:299
+#: classes/salesforce_pull.php:299, classes/salesforce_pull.php:1003
 msgid "Error: %1$s %2$s"
 msgstr ""
 
 #: classes/salesforce_pull.php:580
 msgid "Error: Salesforce Pull: unable to process queue item because it has no Salesforce Id."
+msgstr ""
+
+#: classes/salesforce_pull.php:649
+msgid "Error: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)"
 msgstr ""
 
 #: classes/salesforce_pull.php:691
@@ -182,6 +186,10 @@ msgstr ""
 msgid "The WordPress %1$s with %2$s of %3$s is already mapped to the Salesforce %4$s with Id of %5$s in the mapping object with id of %6$s. The Salesforce %4$s with Id of %5$s was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing data unintentionally."
 msgstr ""
 
+#: classes/salesforce_pull.php:1013
+msgid " (Salesforce %1$s with Id of %2$s)"
+msgstr ""
+
 #: classes/salesforce_pull.php:1077, classes/salesforce_pull.php:1180
 msgid "Success: %1$s %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)"
 msgstr ""
@@ -198,12 +206,20 @@ msgstr ""
 msgid "Message: "
 msgstr ""
 
+#: classes/salesforce_pull.php:1210
+msgid "Error: %1$s %2$s with %3$s of %4$s (Salesforce %5$s with Id of %6$s)"
+msgstr ""
+
 #: classes/salesforce_pull.php:1299
 msgid "Mapping object created via function: "
 msgstr ""
 
 #: classes/salesforce_push.php:367
 msgid "Error: Salesforce Push: unable to process queue item because it has no WordPress %1$s."
+msgstr ""
+
+#: classes/salesforce_push.php:519, classes/salesforce_push.php:760, classes/salesforce_push.php:961
+msgid "Error: %1$s %2$s %3$s (WordPress %4$s with %5$s of %6$s)"
 msgstr ""
 
 #: classes/salesforce_push.php:551, classes/salesforce_push.php:803, classes/salesforce_push.php:931
