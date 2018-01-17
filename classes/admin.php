@@ -538,6 +538,18 @@ class Object_Sync_Sf_Admin {
 					'constant' => '',
 				),
 			),
+			'delete_data_on_uninstall' => array(
+				'title' => 'Delete plugin data on uninstall?',
+				'callback' => $callbacks['text'],
+				'page' => $page,
+				'section' => $section,
+				'args' => array(
+					'type' => 'checkbox',
+					'validate' => 'sanitize_text_field',
+					'desc' => 'If checked, the plugin will delete the tables and other data it creates when you uninstall it. Unchecking this field can be useful if you need to reactivate the plugin for any reason without losing data.',
+					'constant' => '',
+				),
+			),
 		);
 
 		if ( true === is_object( $this->salesforce['sfapi'] ) && true === $this->salesforce['sfapi']->is_authorized() ) {

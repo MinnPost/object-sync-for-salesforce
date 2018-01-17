@@ -29,11 +29,16 @@ class Object_Sync_Sf_Deactivate {
 		$this->wpdb = $wpdb;
 		$this->version = $version;
 		$this->schedulable_classes = $schedulable_classes;
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'clear_schedule' ) );
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'delete_log_post_type' ) );
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'remove_roles_capabilities' ) );
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'flush_plugin_cache' ) );
+		$delete_data = (int) get_option( 'object_sync_for_salesforce_delete_data_on_uninstall', 0 );
+		if ( 1 === $delete_data ) {
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'clear_schedule' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'delete_log_post_type' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'remove_roles_capabilities' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'flush_plugin_cache' )
+			);
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'delete_plugin_options' ) );
+		}
 	}
 
 	/**
@@ -101,6 +106,17 @@ class Object_Sync_Sf_Deactivate {
 	public function flush_plugin_cache() {
 		$sfwp_transients = new Object_Sync_Sf_WordPress_Transient( 'sfwp_transients' );
 		$sfwp_transients->flush();
+	}
+
+	/**
+	* Clear the plugin options
+	*
+	*/
+	public function delete_plugin_options() {
+		$plugin_options = $wpdb->get_results( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE 'object_sync_for_salesforce_%'" );
+		foreach ( $plugin_options as $option ) {
+			delete_option( $option->option_name );
+		}
 	}
 
 }
