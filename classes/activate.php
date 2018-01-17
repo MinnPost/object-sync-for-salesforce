@@ -79,7 +79,7 @@ class Object_Sync_Sf_Activate {
 		$object_map_sql = "CREATE TABLE $object_map_table (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			wordpress_id varchar(32) NOT NULL,
-			salesforce_id varchar(32) NOT NULL DEFAULT '',
+			salesforce_id varbinary(32) NOT NULL DEFAULT '',
 			wordpress_object varchar(128) NOT NULL DEFAULT '',
 			created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 			object_updated datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
