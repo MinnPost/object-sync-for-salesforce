@@ -175,6 +175,7 @@
 				<?php
 				if ( isset( $fieldmap_fields ) && null !== $fieldmap_fields && is_array( $fieldmap_fields ) ) {
 					foreach ( $fieldmap_fields as $key => $value ) {
+						$key = md5( $key . time() );
 				?>
 				<tr>
 					<td class="column-wordpress_field">
