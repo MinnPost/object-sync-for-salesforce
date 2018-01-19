@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,7 +125,11 @@ There is extensive documentation of the plugin, including its developer hooks, [
 
 == Changelog ==
 
-* 1.2.2 (2018-12-19)
+* 1.2.3 (2018-01-19)
+	* This release fixes a bug in which deleting field pairs from an existing fieldmap, saving, and then adding more field pairs could result in data not being saved. Thanks to WordPress user @pavelwld for reporting this.
+	* This release also adds a Settings tab field to choose whether or not the plugin should delete its data when it is deactivated.
+
+* 1.2.2 (2018-01-17)
 	* This release fixes a bug in which an object map could not be created if the Salesforce ID was the same, with case insensitivity, as another Salesforce ID. Salesforce, however, is case sensitive with these IDs and can occasionally create IDs like this. Thanks to WordPress user @pavelwld for reporting this.
 
 * 1.2.1 (2017-12-19)

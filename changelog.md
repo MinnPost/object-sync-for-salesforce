@@ -1,7 +1,11 @@
 Changelog
 =========
 
-* 1.2.2 (2018-12-19)
+* 1.2.3 (2018-01-19)
+	* This release fixes a bug in which deleting field pairs from an existing fieldmap, saving, and then adding more field pairs could result in data not being saved. Thanks to WordPress user @pavelwld for reporting this.
+	* This release also adds a Settings tab field to choose whether or not the plugin should delete its data when it is deactivated.
+
+* 1.2.2 (2018-01-17)
 	* This release fixes a bug in which an object map could not be created if the Salesforce ID was the same, with case insensitivity, as another Salesforce ID. Salesforce, however, is case sensitive with these IDs and can occasionally create IDs like this. Thanks to WordPress user @pavelwld for reporting this.
 
 * 1.2.1 (2017-12-19)
