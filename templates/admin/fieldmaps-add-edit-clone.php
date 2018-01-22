@@ -410,12 +410,19 @@
 			<label><input type="checkbox" name="push_drafts" id="push-drafts" value="1" <?php echo isset( $push_drafts ) && '1' === $push_drafts ? ' checked' : ''; ?>><?php echo esc_html__( 'Push drafts', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description"><?php echo esc_html__( 'If selected, WordPress will send drafts of this object type (if it creates drafts for it) to Salesforce.', 'object-sync-for-salesforce' ); ?></p>
 		</div>
+		<?php
+		/*
+		// we should make this visible when we can successfully sync multiple WordPress objects to the same Salesforce object.
+		See this support issue: https://wordpress.org/support/topic/cant-map-multiple-wordpress-objects-to-the-same-salesforce-object/
+		And this GitHub issue: https://github.com/MinnPost/object-sync-for-salesforce/issues/135
 		<div class="fieldmap_label">
 			<label for="label"><?php echo esc_html__( 'Weight', 'object-sync-for-salesforce' ); ?>: </label>
 			<input type="number" id="weight" name="weight" value="<?php echo isset( $weight ) ? esc_html( $weight ) : ''; ?>" />
 			<p class="description"><?php echo esc_html__( 'Weight is intended for use when you have multiple fieldmaps for the same object, either in WordPress or Salesforce.', 'object-sync-for-salesforce' ); ?></p>
 			<p class="description"><?php echo sprintf( 'For example, if you map WordPress users to Salesforce Contacts, and then map the users to Salesforce Leads as well, you could assign a numeric weight to indicate which one gets processed first. Otherwise, you can safely leave it blank. If present, sorting occurs in ascending order.' ); ?></p>
 		</div>
+		*/
+		?>
 	</fieldset>
 	<?php
 		submit_button(
