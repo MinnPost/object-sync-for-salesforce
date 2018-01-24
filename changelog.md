@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 1.2.4 (2018-01-24)
+	* This release fixes a rare bug in which Salesforce changes that occur between a query and the completion of the pull operation would not sync to WordPress. Thanks to GitHub user @charmoney for the report and the fix.
+	* This release also removes the "weight" field from the screen that adds and edits fieldmaps. This field should have been removed in the past, as it doesn't currently do anything, although in the future we'd like to investigate the ability to map multiple WordPress objects to the same Salesforce object and sync them using the weight field.
+
 * 1.2.3 (2018-01-19)
 	* This release fixes a bug in which deleting field pairs from an existing fieldmap, saving, and then adding more field pairs could result in data not being saved. Thanks to WordPress user @pavelwld for reporting this.
 	* This release also adds a Settings tab field to choose whether or not the plugin should delete its data when it is deactivated.
