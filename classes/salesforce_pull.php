@@ -288,9 +288,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : false;
 				}
-
-				update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, current_time( 'timestamp', true ) );
-
 			} else {
 
 				// create log entry for failed pull
