@@ -171,6 +171,21 @@
 					<th class="column-is_delete"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></th>
 				</tr>
 			</thead>
+			<tfoot>
+				<tr>
+					<td colspan="6">
+						<p><small>
+							<?php
+							// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
+							echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' to map a custom meta field (such as wp_postmeta, wp_usermeta, wp_termmeta, etc.), WordPress must have at least one value for that field. If you add a new meta field and want to map it, make sure to add a value for it and ', 'object-sync-for-salesforce' ) . '<a href="%1$s" id="clear-sfwp-cache">%2$s</a>' . esc_html__( ' to see the field listed here', 'object-sync-for-salesforce' ),
+								esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=clear_cache' ) ),
+								esc_html__( 'clear the plugin cache' )
+							);
+							?>
+						</small></p>
+					</td>
+				</tr>
+			</tfoot>
 			<tbody>
 				<?php
 				if ( isset( $fieldmap_fields ) && null !== $fieldmap_fields && is_array( $fieldmap_fields ) ) {
