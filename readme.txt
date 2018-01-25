@@ -138,6 +138,7 @@ There is extensive documentation of the plugin, including its developer hooks, [
 
 * 1.2.1 (2017-12-19)
 	* This release fixes a bug caused in 1.2.0. Users were unable to sync data without re-saving fieldmaps. This does a version checker and uses previous data structures until users re-save.
+	* Make sure you update your plugin fieldmaps.
 
 * 1.2.0 (2017-12-18)
 	* This release provides basic support for additional field types in Salesforce, including: multipicklist, picklist, date, datetime, and URL (results may vary depending on how WordPress plugins handle their custom field equivalents). Thanks to WordPress user @ilanabit for reporting this.
@@ -154,11 +155,11 @@ There is extensive documentation of the plugin, including its developer hooks, [
 	* This release removes the `screen_icon()` method from admin.php. It has been deprecated apparently since 3.8, but in 4.9 it officially throws PHP Notice messages in `WP_DEBUG` mode.
 
 * 1.1.0 (2017-11-10)
-	* This release gives users a way to clear the cached data for this plugin only, even if they are using an object cache method. Most importantly this resolves the problem of new fields being available in Salesforce or WordPress and not being visible in the list of mappable fields when creating or updating a fieldmap.
+	* This release gives users a way to clear the cached data for this plugin only, even if they are using an object cache method. Most importantly this resolves the problem of new fields being available in Salesforce or WordPress and not being visible in the list of mappable fields when creating or updating a fieldmap. This is partly related to GitHub user @prowp's initial report of missing metadata.
 
 * 1.0.11 (2017-11-06)
 	* Fixed a bug in which a blank `post` object was created in the event that `pull` calls were blocked, then unblocked. Thanks to GitHub user @charmoney for the report and much of the fix.
-	* Fixed a bug in which `post` meta fields were not pushed to Salesforce. Also as part of this, added basic support for WooCommerce `order` post types. Thanks to WordPress user @ratputin for the report.
+	* Fixed a bug in which `post` meta fields were not pushed to Salesforce. Also as part of this, added basic support for WooCommerce `order` post types. Thanks to WordPress user @ratputin and GitHub user @prowp for the report.
 
 * 1.0.10 (2017-10-10)
 
@@ -168,7 +169,7 @@ There is extensive documentation of the plugin, including its developer hooks, [
 
 * 1.0.9 (2017-10-03)
 
-	* This fixes a bug in which upserting a custom post type would incorrectly create a standard post, rather than the desired custom post object.
+	* This fixes a bug in which upserting a custom post type would incorrectly create a standard post, rather than the desired custom post object. Thanks to GitHub user @prowp for the report.
 
 * 1.0.8 (2017-08-14)
 
@@ -201,9 +202,9 @@ There is extensive documentation of the plugin, including its developer hooks, [
 
 	* Fix the tested version again, as it was reverted
 
-* 1.0.3 (2017-06-12)
+* 1.0.3 (2017-06-09)
 
-	* Update the deploy file so it keeps more unneeded items, especially from Composer libraries, out of the deployed plugin
+	* Update the deploy file so it keeps .git, .gitignore, etc. items out of the deployed plugin
 
 * 1.0.2 (2017-06-09)
 
