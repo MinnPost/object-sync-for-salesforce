@@ -125,6 +125,9 @@ class Object_Sync_Sf_Mapping {
 	 */
 	public function create_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array() ) {
 		$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
+		if ( version_compare( $this->version, '1.2.5', '>=' ) ) {
+			$data['version'] = $this->version;
+		}
 		$insert = $this->wpdb->insert( $this->fieldmap_table, $data );
 		if ( 1 === $insert ) {
 			return $this->wpdb->insert_id;
@@ -183,7 +186,12 @@ class Object_Sync_Sf_Mapping {
 
 		} else { // get all of the mappings. ALL THE MAPPINGS.
 
-			$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table" , ARRAY_A );
+			// if the version is greater than or equal to 1.2.5, the fieldmap table has created and updated columns
+			if ( version_compare( $this->version, '1.2.5', '>=' ) ) {
+				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight`, `version` FROM $table" , ARRAY_A );
+			} else {
+				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table" , ARRAY_A );
+			}
 
 			if ( ! empty( $mappings ) ) {
 				$mappings = $this->prepare_fieldmap_data( $mappings );
@@ -253,6 +261,9 @@ class Object_Sync_Sf_Mapping {
 	 */
 	public function update_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array(), $id = '' ) {
 		$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
+		if ( version_compare( $this->version, '1.2.5', '>=' ) && ! isset( $data['updated'] ) ) {
+			$data['version'] = $this->version;
+		}
 		$update = $this->wpdb->update(
 			$this->fieldmap_table,
 			$data,

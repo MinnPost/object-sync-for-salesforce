@@ -70,6 +70,7 @@ class Object_Sync_Sf_Activate {
 			push_async tinyint(1) NOT NULL DEFAULT '0',
 			push_drafts tinyint(1) NOT NULL DEFAULT '0',
 			weight tinyint(1) NOT NULL DEFAULT '0',
+			version varchar(255) NOT NULL DEFAULT '',
 			PRIMARY KEY  (id),
 			UNIQUE KEY name (name),
 			KEY name_sf_type_wordpress_type (wordpress_object,salesforce_object)
