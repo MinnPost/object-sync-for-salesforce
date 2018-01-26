@@ -64,7 +64,7 @@ class Object_Sync_Sf_Activate {
 			salesforce_object varchar(255) NOT NULL DEFAULT '',
 			salesforce_record_types_allowed longblob,
 			salesforce_record_type_default varchar(255) NOT NULL DEFAULT '',
-			fields text NOT NULL,
+			fields longtext NOT NULL,
 			pull_trigger_field varchar(128) NOT NULL DEFAULT 'LastModifiedDate',
 			sync_triggers text NOT NULL,
 			push_async tinyint(1) NOT NULL DEFAULT '0',
