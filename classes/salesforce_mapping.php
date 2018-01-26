@@ -186,7 +186,7 @@ class Object_Sync_Sf_Mapping {
 
 		} else { // get all of the mappings. ALL THE MAPPINGS.
 
-			// if the version is greater than or equal to 1.2.5, the fieldmap table has created and updated columns
+			// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column
 			if ( version_compare( $this->version, '1.2.5', '>=' ) ) {
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight`, `version` FROM $table" , ARRAY_A );
 			} else {
