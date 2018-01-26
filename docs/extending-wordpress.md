@@ -23,7 +23,7 @@ Each object's hook takes the object's ID, the `$params`, and what action was jus
 #### Code examples
 
 ```
-add_action( 'salesforce_rest_api_set_more_user_data', 'save_more_my_user', 10, 3 );
+add_action( 'object_sync_for_salesforce_set_more_user_data', 'save_more_my_user', 10, 3 );
 function save_more_my_user( $user_id, $params, $action ) {
     // run code to save any param data for this $user_id
 }
@@ -31,28 +31,28 @@ function save_more_my_user( $user_id, $params, $action ) {
 ```
 
 ```
-add_action( 'salesforce_rest_api_set_more_post_data', 'save_more_my_post', 10, 3 );
+add_action( 'object_sync_for_salesforce_set_more_post_data', 'save_more_my_post', 10, 3 );
 function save_more_my_post( $post_id, $params, $action ) {
     // run code to save any param data for this $post_id
 }
 ```
 
 ```
-add_action( 'salesforce_rest_api_set_more_attachment_data', 'save_more_my_attachment', 10, 3 );
+add_action( 'object_sync_for_salesforce_set_more_attachment_data', 'save_more_my_attachment', 10, 3 );
 function save_more_my_post( $attachment_id, $params, $action ) {
     // run code to save any param data for this $attachment_id
 }
 ```
 
 ```
-add_action( 'salesforce_rest_api_set_more_term_data', 'save_more_my_term', 10, 3 );
+add_action( 'object_sync_for_salesforce_set_more_term_data', 'save_more_my_term', 10, 3 );
 function save_more_my_post( $term_id, $params, $action ) {
     // run code to save any param data for this $term_id
 }
 ```
 
 ```
-add_action( 'salesforce_rest_api_set_more_comment_data', 'save_more_my_comment', 10, 3 );
+add_action( 'object_sync_for_salesforce_set_more_comment_data', 'save_more_my_comment', 10, 3 );
 function save_more_my_post( $comment_id, $params, $action ) {
     // run code to save any param data for this $comment_id
 }
@@ -73,12 +73,12 @@ If you need to work with objects that aren't any of these, you can use these hoo
 
 ### Create
 
-Developers can use the `salesforce_rest_api_create_custom_wordpress_item` hook to create objects with their own methods.
+Developers can use the `object_sync_for_salesforce_create_custom_wordpress_item` hook to create objects with their own methods.
 
 #### Code example
 
 ```
-add_filter( 'salesforce_rest_api_create_custom_wordpress_item', add_object, 10, 1 );
+add_filter( 'object_sync_for_salesforce_create_custom_wordpress_item', add_object, 10, 1 );
 function add_object( $create_data ) {
     // $create_data is array( 'name' => objecttype, 'params' => array_of_params, 'id_field' => idfield )
     // run methods here to add the record to the database
@@ -101,12 +101,12 @@ $result = array(
 
 ### Upsert
 
-Developers can use the `salesforce_rest_api_upsert_custom_wordpress_item` hook to upsert objects with their own methods.
+Developers can use the `object_sync_for_salesforce_upsert_custom_wordpress_item` hook to upsert objects with their own methods.
 
 #### Code example
 
 ```
-add_filter( 'salesforce_rest_api_upsert_custom_wordpress_item', add_object, 10, 1 );
+add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', add_object, 10, 1 );
 function upsert_object( $create_data ) {
     /* $upsert_data is like this:
     array(
@@ -116,7 +116,8 @@ function upsert_object( $create_data ) {
         'params' => $params,
         'id_field' => $id_field,
         'push_drafts' => $push_drafts,
-        'name' => $name 
+        'name' => $name,
+        'check_only' => $check_only,
     );
     */
     // run methods here to upsert record in the database
@@ -139,12 +140,12 @@ $result = array(
 
 ### Update
 
-Developers can use the `salesforce_rest_api_update_custom_wordpress_item` hook to update objects with their own methods.
+Developers can use the `object_sync_for_salesforce_update_custom_wordpress_item` hook to update objects with their own methods.
 
 #### Code example
 
 ```
-add_filter( 'salesforce_rest_api_update_custom_wordpress_item', update_object, 10, 1 );
+add_filter( 'object_sync_for_salesforce_update_custom_wordpress_item', update_object, 10, 1 );
 function update_object( $update_data ) {
     // $update_data is array( 'name' => objecttype, 'params' => array_of_params, 'id_field' => idfield )
     // run methods here to update the record in the database
@@ -167,12 +168,12 @@ $result = array(
 
 ### Delete
 
-Developers can use the `salesforce_rest_api_delete_custom_wordpress_item` hook to update objects with their own methods.
+Developers can use the `object_sync_for_salesforce_delete_custom_wordpress_item` hook to update objects with their own methods.
 
 #### Code example
 
 ```
-add_filter( 'salesforce_rest_api_delete_custom_wordpress_item', delete_object, 10, 1 );
+add_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item', delete_object, 10, 1 );
 function delete_object( $delete_data ) {
     // $delete_data is array( 'name' => objecttype, 'id_field' => idfield )
     // run methods here to delete the record from the database
@@ -196,17 +197,17 @@ $result = array(
 
 If you are adding attachments to WordPress that come from Salesforce, you may need to do more than the default behavior, depending on exactly what data you have stored in Salesforce already.
 
-To facilitate this, there is the `salesforce_rest_api_set_initial_attachment_data` hook.
+To facilitate this, there is the `object_sync_for_salesforce_set_initial_attachment_data` hook.
 
 #### Code example:
 
 ```
-add_filter( 'salesforce_rest_api_set_initial_attachment_data', set_attachment, 10, 1 );
+add_filter( 'object_sync_for_salesforce_set_initial_attachment_data', set_attachment, 10, 1 );
 function set_attachment( $params ) {
     // set up the parameters available for an attachment
     // the parameters will be stored based on the methods they use
     // ex:
-    $params[$key] = array(
+    $params[ $key ] = array(
         'value' => $value,
         'method_modify' => $method_modify,
         'method_create' => $method_create,

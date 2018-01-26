@@ -90,8 +90,8 @@ function add_field_mapping_row() {
 		var salesforce_object = $('#salesforce_object').val();
 		var wordpress_object = $('#wordpress_object').val();
 		if (wordpress_object !== '' && salesforce_object !== '') {
-			var row_count = $('table.fields tbody tr').length;				
-			fieldmap_fields(wordpress_object, salesforce_object, row_count);
+			var row_key = Math.floor(Date.now() / 1000);
+			fieldmap_fields(wordpress_object, salesforce_object, row_key);
 			$(this).parent().find('.missing-object').remove();
 		} else {
 			$(this).parent().prepend('<div class="error missing-object"><span>You have to pick a WordPress object and a Salesforce object to add field mapping.</span></div>');
@@ -101,7 +101,7 @@ function add_field_mapping_row() {
 }
 
 
-function fieldmap_fields(wordpress_object, salesforce_object, row_count) {
+function fieldmap_fields(wordpress_object, salesforce_object, row_key) {
 	var data = {
 		'action' : 'get_wp_sf_object_fields',
 		'wordpress_object' : wordpress_object,
@@ -110,7 +110,7 @@ function fieldmap_fields(wordpress_object, salesforce_object, row_count) {
 	$.post(ajaxurl, data, function(response) {
 
 		var wordpress = '';
-		wordpress += '<select name="wordpress_field[' + row_count + ']" id="wordpress_field-' + row_count + '">'
+		wordpress += '<select name="wordpress_field[' + row_key + ']" id="wordpress_field-' + row_key + '">'
 		wordpress += '<option value="">- Select WordPress field -</option>';
 		$.each(response.data.wordpress, function(index, value) {
 			wordpress += '<option value="' + value.key + '">' + value.key + '</option>';
@@ -118,14 +118,14 @@ function fieldmap_fields(wordpress_object, salesforce_object, row_count) {
 		wordpress += '</select>';
 
 		var salesforce = '';
-		salesforce += '<select name="salesforce_field[' + row_count + ']" id="salesforce_field-' + row_count + '">'
+		salesforce += '<select name="salesforce_field[' + row_key + ']" id="salesforce_field-' + row_key + '">'
 		salesforce += '<option value="">- Select Salesforce field -</option>';
 		$.each(response.data.salesforce, function(index, value) {
 			salesforce += '<option value="' + value.name + '">' + value.label + '</option>';
 		});
 		salesforce += '</select>';
 
-		var markup = '<tr><td class="column-wordpress_field">' + wordpress + '</td><td class="column-salesforce_field">' + salesforce + '</td><td class="column-is_prematch"><input type="checkbox" name="is_prematch[' + row_count + ']" id="is_prematch-' + row_count + '" value="1" /><td class="column-is_key"><input type="checkbox" name="is_key[' + row_count + ']" id="is_key-' + row_count + '" value="1" /></td><td class="column-direction"><div class="radios"><label><input type="radio" value="sf_wp" name="direction[' + row_count + ']" id="direction-' + row_count + '-sf-wp">  Salesforce to WordPress</label><label><input type="radio" value="wp_sf" name="direction[' + row_count + ']" id="direction-' + row_count + '-wp-sf">  WordPress to Salesforce</label><label><input type="radio" value="sync" name="direction[' + row_count + ']" id="direction-' + row_count + '-sync" checked>  Sync</label></div></td><td class="column-is_delete"><input type="checkbox" name="is_delete[' + row_count + ']" id="is_delete-' + row_count + '" value="1" /></td></tr>';
+		var markup = '<tr><td class="column-wordpress_field">' + wordpress + '</td><td class="column-salesforce_field">' + salesforce + '</td><td class="column-is_prematch"><input type="checkbox" name="is_prematch[' + row_key + ']" id="is_prematch-' + row_key + '" value="1" /><td class="column-is_key"><input type="checkbox" name="is_key[' + row_key + ']" id="is_key-' + row_key + '" value="1" /></td><td class="column-direction"><div class="radios"><label><input type="radio" value="sf_wp" name="direction[' + row_key + ']" id="direction-' + row_key + '-sf-wp">  Salesforce to WordPress</label><label><input type="radio" value="wp_sf" name="direction[' + row_key + ']" id="direction-' + row_key + '-wp-sf">  WordPress to Salesforce</label><label><input type="radio" value="sync" name="direction[' + row_key + ']" id="direction-' + row_key + '-sync" checked>  Sync</label></div></td><td class="column-is_delete"><input type="checkbox" name="is_delete[' + row_key + ']" id="is_delete-' + row_key + '" value="1" /></td></tr>';
 		$('table.fields tbody').append(markup);
 
 	});
@@ -190,13 +190,28 @@ function update_salesforce_user_summary() {
 	});
 }
 
+function clear_sfwp_cache_link() {
+	$('#clear-sfwp-cache').click(function() {
+		var data = {
+			'action' : 'clear_sfwp_cache'
+		}
+		var that = $(this);
+		$.post(ajaxurl, data, function(response) {
+			if (response.success === true && response.data.success === true) {
+				that.parent().html(response.data.message).fadeIn();
+			}
+		});
+		return false;
+	});
+}
+
 // as the drupal plugin does, we only allow one field to be a prematch or key
 $(document).on('click', '.column-is_prematch input', function() {
-	$('.column-is_prematch input').not(this).prop('checked', false);  
+	$('.column-is_prematch input').not(this).prop('checked', false);
 });
 
 $(document).on('click', '.column-is_key input', function() {
-	$('.column-is_key input').not(this).prop('checked', false);  
+	$('.column-is_key input').not(this).prop('checked', false);
 });
 
 $(document).ready(function() {
@@ -219,4 +234,5 @@ $(document).ready(function() {
 	salesforce_object_fields();
 	add_field_mapping_row();
 	push_and_pull_objects();
+	clear_sfwp_cache_link();
 });

@@ -10,6 +10,8 @@ Together, these mappings determine what the plugin should do when [`push`](./pus
 
 Use the Fieldmaps tab of the plugin settings, and click Add New to create a new fieldmap. This initial load can take a while, if the plugin needs to refresh its cached Salesforce data. The screen is the same if you edit an existing fieldmap, but it will already have data.
 
+**Note:** If your data structure in Salesforce or WordPress changes, the fieldmap list page will allow you to clear the plugin's cached data. This does not affect any cached data you may have for other plugins or functionality on your site.
+
 ![WordPress Create New Fieldmap screen](./assets/img/screenshots/03-wordpress-create-fieldmap.png)
 
 The settings for a WordPress fieldmap work like this:
@@ -41,15 +43,28 @@ The date fields to trigger a pull request are how the plugin finds Salesforce re
 
 ![WordPress fieldmap](./assets/img/screenshots/05-wordpress-fieldmap.png)
 
-#### Wordpress fields
+#### WordPress fields
 
 WordPress does not currently have a way to get all fields from an object. This plugin attempts to do this by combining the fields from an object's main table (`wp_posts`, `wp_users`, etc.) with the metadata for that object (`wp_postmeta`, `wp_usermeta`, etc.). This isn't perfect, but it gets most fields.
+
+**Note:** these fields will not show up in the list until they have values. This is because they aren't placed into the meta tables until they have values.
 
 The plugin also has a hook to modify what fields are included for an object. You can read more about this in the [extending mapping options documentation](./extending-mapping-options.md#available-wordpress-fields).
 
 #### Salesforce fields
 
-Salesforce fields come from the `object_describe` API method.
+Salesforce fields come from the `object_describe` API method. This plugin supports syncing (at least) the following Salesforce field types:
+
+- Picklist
+- Picklist (Multi-Select)
+- Date
+- Date/Time
+- Text
+- URL
+
+**Note:** How well these fields sync may vary if your method of storing WordPress fields differs greatly from the default meta system.
+
+If you determine that you need to sync a field that is not yet supported, you can consider [creating an issue](https://github.com/minnpost/object-sync-for-salesforce/issues), or use the developer hooks to [extend mapping parameters](./extending-parameters.md)
 
 #### Other configuration
 

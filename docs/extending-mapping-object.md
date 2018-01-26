@@ -29,7 +29,7 @@ $mapping_object = array(
 
 ### Hook
 
-`salesforce_rest_api_push_mapping_object` allows you to change any of the items in the `$mapping_object` array. Make sure to pay attention to the note above, as the items may be overwritten as the plugin progresses.
+`object_sync_for_salesforce_push_mapping_object` allows you to change any of the items in the `$mapping_object` array. Make sure to pay attention to the note above, as the items may be overwritten as the plugin progresses.
 
 ## Salesforce Push
 
@@ -46,10 +46,10 @@ $mapping_object = array(
     'last_sync' => '2017-03-06 11:58:31',
     'last_sync_action' => 'push',
     'last_sync_status' => 1,
-    'last_sync_message' => 'Mapping object created via function: salesforce_push_sync_rest'
+    'last_sync_message' => 'Mapping object created via function: salesforce_push_sync'
 );
 ```
 
 ### Hook
 
-`salesforce_rest_api_pull_mapping_object` allows you to change any of the items in the `$mapping_object` array. Make sure to pay attention to the note above, as the items may be overwritten as the plugin progresses.
+`object_sync_for_salesforce_pull_mapping_object` allows you to change any of the items in the `$mapping_object` array. Make sure to pay attention to the note above, as the items may be overwritten as the plugin progresses.

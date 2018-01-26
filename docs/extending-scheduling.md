@@ -6,17 +6,21 @@ This plugin starts with an array of what classes can be scheduled with the [`sch
 
 ```
 $this->schedulable_classes = array(
-    'salesforce_push' => array(
-        'label' => 'Push to Salesforce',
-        'class' => 'Salesforce_Push',
-        'callback' => 'salesforce_push_sync_rest',
-    ),
-    'salesforce_pull' => array(
-        'label' => 'Pull from Salesforce',
-        'class' => 'Salesforce_Pull',
-        'initializer' => 'salesforce_pull',
-        'callback' => 'salesforce_pull_process_records'
-    )
+	'salesforce_push' => array(
+	    'label' => 'Push to Salesforce',
+	    'class' => 'Object_Sync_Sf_Salesforce_Push',
+	    'callback' => 'salesforce_push_sync_rest',
+	),
+	'salesforce_pull' => array(
+	    'label' => 'Pull from Salesforce',
+	    'class' => 'Object_Sync_Sf_Salesforce_Pull',
+	    'initializer' => 'salesforce_pull',
+	    'callback' => 'salesforce_pull_process_records',
+	),
+	'salesforce' => array(
+	    'label' => 'Salesforce Authorization',
+	    'class' => 'Object_Sync_Sf_Salesforce',
+	),
 );
 ```
 
@@ -24,24 +28,29 @@ This defines the `push` and `pull` classes as schedulable items, and sets the me
 
 ## Hook
 
-If you'd like to schedule other things to happen with this plugin, or remove defaults from the schedule, you can do that with the `salesforce_rest_api_modify_schedulable_classes` hook.
+If you'd like to schedule other things to happen with this plugin, or remove defaults from the schedule, you can do that with the `object_sync_for_salesforce_modify_schedulable_classes` hook.
 
 ### Code example
 
 ```
 // example to modify the array of classes by adding one and removing one
-add_filter( 'salesforce_rest_api_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
+add_filter( 'object_sync_for_salesforce_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
 function modify_schedulable_classes( $schedulable_classes ) {
     $schedulable_classes = array(
-        array(
-            'name' => 'salesforce_push',
-            'label' => 'Push to Salesforce'
-        ),
-        array(
-            'name' => 'wordpress',
-            'label' => 'WordPress'
-        )
-    );
+		'salesforce_push' => array(
+		    'label' => 'Push to Salesforce',
+		    'class' => 'Object_Sync_Sf_Salesforce_Push',
+		    'callback' => 'salesforce_push_sync_rest',
+		),
+		'wordpress' => array(
+		    'label' => 'WordPress',
+		    'class' => 'Object_Sync_Sf_WordPress',
+		),
+		'salesforce' => array(
+		    'label' => 'Salesforce Authorization',
+		    'class' => 'Object_Sync_Sf_Salesforce',
+		),
+	);
     return $schedulable_classes;
 }
 ```
