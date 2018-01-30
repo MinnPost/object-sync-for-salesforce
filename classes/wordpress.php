@@ -440,6 +440,7 @@ class Object_Sync_Sf_WordPress {
 		// Maybe a box for a custom query, since custom fields get done in so many ways.
 		// Eventually this would be the kind of thing we could use fields api for, if it ever gets done.
 		$data_fields = $this->wpdb->get_col( "DESC {$content_table}", 0 );
+		$data_field_types = $this->wpdb->get_col( "DESC {$content_table}", 1 ); // get the database field types
 
 		if ( is_array( $meta_table ) ) {
 			$tax_table = $meta_table[1];
@@ -463,6 +464,7 @@ class Object_Sync_Sf_WordPress {
 					'key' => $value,
 					'table' => $content_table,
 					'methods' => serialize( $content_methods ),
+					'type' => $data_field_types[ $key ],
 				);
 			}
 		}

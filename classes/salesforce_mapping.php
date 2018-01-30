@@ -329,6 +329,7 @@ class Object_Sync_Sf_Mapping {
 						'wordpress_field' => array(
 							'label' => sanitize_text_field( $posted['wordpress_field'][ $key ] ),
 							'methods' => maybe_unserialize( $wordpress_fields[ $method_key ]['methods'] ),
+							'type' => sanitize_text_field( $wordpress_fields[ $method_key ]['type'] ),
 						),
 						'salesforce_field' => $salesforce_field_attributes,
 						'is_prematch' => sanitize_text_field( $posted['is_prematch'][ $key ] ),
@@ -777,6 +778,9 @@ class Object_Sync_Sf_Mapping {
 					switch ( $salesforce_field_type ) {
 						case ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ):
 							$format = get_option( 'date_format', 'U' );
+							if ( isset( $fieldmap['wordpress_field']['type'] ) && 'datetime' === $fieldmap['wordpress_field']['type'] ) {
+								$format = 'Y-m-d H:i:s';
+							}
 							$object[ $salesforce_field ] = date_i18n( $format, strtotime( $object[ $salesforce_field ] ) );
 							break;
 						case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce ) ):
