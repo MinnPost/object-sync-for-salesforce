@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 1.2.6 (2018-01-30)
+	* Bug fix: in some cases, date fields coming from Salesforce were not correctly formatted for use in WordPress. This release causes any core date fields to be formatted as WordPress expects them. Thanks to GitHub user @prowp for the report on this.
+	* Note: to apply this fix, you need to clear the plugin cache, and then re-save any the fieldmap(s) that need it.
+	* This release also includes a small documentation update about restricted picklist fields.
+
 * 1.2.5 (2018-01-26)
 	* Bug fix: trying to save a high number of fields in a single fieldmap was failing. Thanks to GitHub user @prowp for the report.
 	* New: some in-page help to users who may be missing meta fields when trying to add them to a fieldmap. This happens if these meta fields are new fields without data, and thus cannot be found in the database by the plugin.

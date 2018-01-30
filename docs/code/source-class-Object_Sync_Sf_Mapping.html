@@ -271,7 +271,7 @@
 </span><span id="186" class="l"><a href="#186">186: </a>
 </span><span id="187" class="l"><a href="#187">187: </a>        } <span class="php-keyword1">else</span> { <span class="php-comment">// get all of the mappings. ALL THE MAPPINGS.</span>
 </span><span id="188" class="l"><a href="#188">188: </a>
-</span><span id="189" class="l"><a href="#189">189: </a>            <span class="php-comment">// if the version is greater than or equal to 1.2.5, the fieldmap table has created and updated columns</span>
+</span><span id="189" class="l"><a href="#189">189: </a>            <span class="php-comment">// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column</span>
 </span><span id="190" class="l"><a href="#190">190: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">version_compare</span>( <span class="php-var">$this</span>-&gt;version, <span class="php-quote">'1.2.5'</span>, <span class="php-quote">'&gt;='</span> ) ) {
 </span><span id="191" class="l"><a href="#191">191: </a>                <span class="php-var">$mappings</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;get_results( <span class="php-quote">&quot;SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight`, `version` FROM </span><span class="php-var">$table</span><span class="php-quote">&quot;</span> , ARRAY_A );
 </span><span id="192" class="l"><a href="#192">192: </a>            } <span class="php-keyword1">else</span> {
