@@ -66,6 +66,19 @@ Salesforce fields come from the `object_describe` API method. This plugin suppor
 
 If you determine that you need to sync a field that is not yet supported, you can consider [creating an issue](https://github.com/minnpost/object-sync-for-salesforce/issues), or use the developer hooks to [extend mapping parameters](./extending-parameters.md)
 
+#### Restricted Picklist note
+
+If you use a restricted picklist field type in Salesforce, the Salesforce API does not currently provide a way to tell whether the picklist is configured correctly, so the plugin is unable to check for this. If you use a restricted picklist in which the expected Selected Values are not set up in Salesforce, the API will return an error.
+
+If you encounter this issue, first try these steps in Salesforce:
+
+1. Go to Setup
+2. Customize -> Opportunities (or whatever the object type is that contains the picklist)
+3. Click Record Types under Opportunities (if applicable)
+4. Click the name of the desired record type (ex: Default, but don't forget to repeat the steps for every relevant record type). Clicking Edit does not work for this; only clicking the name. So the URL ends up being like this: /setup/ui/recordtypefields.jsp?id=012F00000013Gkq&type=Opportunity&setupid=OpportunityRecords
+5. Scroll down to the desired picklist and click Edit
+6. Move the values from Available Values to Selected Values and Save
+
 #### Other configuration
 
 Prematch determines whether the field should be used to match objects. If it is checked, the plugin will see objects that share a value in that pair to be matched.
