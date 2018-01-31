@@ -215,3 +215,7 @@ If you'd like to contribute to this project, please see our [contributing guidel
 ## Changelog
 
 We maintain a separate [changelog](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/changelog.md) document.
+
+## Donate
+
+If you'd like to support this project, MinnPost is a 501(c)(3) nonprofit news organization in Minnesota. You can make a tax-deductible donation, and we'll attach it to our open source development work, at [https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY](https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY).
