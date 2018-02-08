@@ -850,6 +850,7 @@ class Object_Sync_Sf_WordPress {
 				$errors = array();
 				foreach ( $params as $key => $value ) {
 					$method = $value['method_modify'];
+					// we need to provide a way for passing the values in a custom order here
 					$meta_id = $method( $user_id, $key, $value['value'] );
 					if ( false === $meta_id ) {
 						$success = false;
