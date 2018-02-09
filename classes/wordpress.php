@@ -631,7 +631,7 @@ class Object_Sync_Sf_WordPress {
 				 * $success should be a boolean value
 				 *     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
 				 * Use hook like this:
-				 *     add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', add_object, 10, 1 );
+				 *     add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', upsert_object, 10, 1 );
 				 * The one param is:
 				 *     array( 'key' => key, 'value' => value, 'methods' => methods, 'params' => array_of_params, 'id_field' => idfield, 'push_drafts' => pushdrafts, 'name' => name, 'check_only' => $check_only )
 				*/
@@ -706,7 +706,7 @@ class Object_Sync_Sf_WordPress {
 				 * $success should be a boolean value
 				 *     $result = array( 'data' => array( $id_field => $post_id, 'success' => $success ), 'errors' => $errors );
 				 * Use hook like this:
-				 *     add_filter( 'object_sync_for_salesforce_update_custom_wordpress_item', add_object, 10, 1 );
+				 *     add_filter( 'object_sync_for_salesforce_update_custom_wordpress_item', update_object, 10, 1 );
 				 * The one param is:
 				 *     array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
 				 */
@@ -767,7 +767,7 @@ class Object_Sync_Sf_WordPress {
 				 * Developers can use this hook to delete objects with their own methods.
 				 * The returned $success is an object of the correct type, or a FALSE
 				 * Use hook like:
-				 *     add_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item', add_object, 10, 1 );
+				 *     add_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item', delete_object, 10, 1 );
 				 * The one param is:
 				 *     array( 'id' => id, 'name' => objecttype )
 				 */
