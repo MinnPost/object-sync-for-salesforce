@@ -106,7 +106,7 @@ Developers can use the `object_sync_for_salesforce_upsert_custom_wordpress_item`
 #### Code example
 
 ```
-add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', add_object, 10, 1 );
+add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', upsert_object, 10, 1 );
 function upsert_object( $create_data ) {
     /* $upsert_data is like this:
     array(
