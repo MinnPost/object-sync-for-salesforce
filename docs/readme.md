@@ -46,6 +46,7 @@ This is the full documentation for this plugin, extending the information in [th
     - [Extending push parameters](./extending-parameters.md#salesforce-push)
     - [Extending mapping object](./extending-mapping-object.md#salesforce-push)
     - [Extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
+    - [Extending sync allowed](./extending-sync-allowed.md#push)
 
 6. [Pulling from Salesforce to WordPress](./pull.md)
 
@@ -58,6 +59,7 @@ This is the full documentation for this plugin, extending the information in [th
     - [Extending pull parameters](./extending-parameters.md#salesforce-pull)
     - [Extending mapping object](./extending-mapping-object.md#salesforce-pull)
     - [Extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
+    - [Extending sync allowed](./extending-sync-allowed.md#pull)
 
 7. [Logging](./logging.md)
 
