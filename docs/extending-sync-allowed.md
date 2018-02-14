@@ -1,1 +1,57 @@
 # Extending the sync allowed setting
+
+By default, all objects that match a fieldmap's criteria after it is set up will be synced according to its rules. But there are times when developers may want to keep a specific object, type of object, or set of objects, from being saved in either WordPress or Salesforce if it matches their own criteria.
+
+While this plugin doesn't affect individual records in this way through the interface, you can use a hook to prevent a push or pull from occuring in this way.
+
+## Push
+
+### Hook
+
+The `object_sync_for_salesforce_pull_object_allowed` filter allows you to stop any Salesforce object from being saved in WordPress based on data about the object. By default, it returns a `true` value, in which case the data will be saved in WordPress. If you return `false`, it will skip that particular object.
+
+This hook has access to the following variables:
+
+- `$object_type`: what kind of Salesforce object it is
+- `$object` - the object's data as it comes from Salesforce
+- `$sf_sync_trigger` - what action has occurred (a Salesforce create, update, or delete)
+- `$salesforce_mapping` - the fieldmap between the WordPress and Salesforce object types
+
+### Code example
+
+```
+// example to keep from pushing the WordPress user with id of 1
+add_filter( 'object_sync_for_salesforce_push_object_allowed', 'check_user', 10, 5 );
+// can always reduce this number if all the arguments are not necessary
+function check_user( $push_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
+	if ( $object_type === 'user' && $object['Id'] === 1 ) {
+		return FALSE;
+	}
+}
+```
+
+## Pull
+
+### Hook
+
+The `object_sync_for_salesforce_push_object_allowed` filter allows you to stop any WordPress object from being sent to Salesforce based on data about the object. By default, it returns a `true` value, in which case the data will be sent to Salesforce. If you return `false`, it will skip that particular object.
+
+This hook has access to the following variables:
+
+- `$object_type`: what kind of WordPress object it is
+- `$object` - the object's data as it is in WordPress
+- `$sf_sync_trigger` - what action has occurred (a WordPress create, update, or delete)
+- `$salesforce_mapping` - the fieldmap between the WordPress and Salesforce object types
+
+### Code example
+
+```
+// example to keep from pulling the Salesforce Contact with id of abcdef
+add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
+// can always reduce this number if all the arguments are not necessary
+function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
+	if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
+		return false;
+	}
+}
+```
