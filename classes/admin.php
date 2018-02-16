@@ -445,7 +445,7 @@ class Object_Sync_Sf_Admin {
 				'args' => array(
 					'type' => 'url',
 					'validate' => 'sanitize_text_field',
-					'desc' => '',
+					'desc' => 'For most Salesforce setups, you should use https://login.salesforce.com for production and https://test.salesforce.com for sandbox.',
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL',
 				),
 			),
