@@ -329,7 +329,7 @@ class Object_Sync_Sf_Mapping {
 						'wordpress_field' => array(
 							'label' => sanitize_text_field( $posted['wordpress_field'][ $key ] ),
 							'methods' => maybe_unserialize( $wordpress_fields[ $method_key ]['methods'] ),
-							'type' => sanitize_text_field( $wordpress_fields[ $method_key ]['type'] ),
+							'type' => isset( $wordpress_fields[ $method_key ]['type'] ) ? sanitize_text_field( $wordpress_fields[ $method_key ]['type'] ) : 'text',
 						),
 						'salesforce_field' => $salesforce_field_attributes,
 						'is_prematch' => sanitize_text_field( $posted['is_prematch'][ $key ] ),
