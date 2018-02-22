@@ -167,7 +167,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	private function get_updated_records() {
 		$sfapi = $this->salesforce['sfapi'];
 		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
-			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which SalesForce triggers are allowed for the mapping
+			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping
 			$type = $salesforce_mapping['salesforce_object']; // this sets the salesfore object type for the SOQL query
 
 			$soql = $this->get_pull_query( $type, $salesforce_mapping );
