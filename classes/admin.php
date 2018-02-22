@@ -1565,7 +1565,7 @@ class Object_Sync_Sf_Admin {
 	* This uses the flush method contained in the WordPress cache to clear all of this plugin's cached data.
 	*/
 	private function clear_cache( $ajax = false ) {
-		$result = $this->wordpress->sfwp_transients->flush();
+		$result = (bool) $this->wordpress->sfwp_transients->flush();
 		if ( true === $result ) {
 			$message = 'The plugin cache has been cleared.';
 		} else {
