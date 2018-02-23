@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.2.6
+Stable tag: 1.2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,10 @@ Object Sync for Salesforce, however, cannot see meta fields before there is at l
 If you load Object Sync for Salesforce and then store data for a new meta field after this load, make sure you click the "Clear the plugin cache" link on the Fieldmaps tab.
 
 == Changelog ==
+
+* 1.2.7 (2018-02-23)
+	* Bug fix: in some cases, a fieldmap with the Salesforce update trigger checked, but not the Salesforce create trigger, it would still create data in WordPress. This data should, rather, be skipped.
+	* There are also a number of small tweaks to documentation and code comments.
 
 * 1.2.6 (2018-01-30)
 	* Bug fix: in some cases, date fields coming from Salesforce were not correctly formatted for use in WordPress. This release causes any core date fields to be formatted as WordPress expects them. Thanks to GitHub user @prowp for the report on this.
