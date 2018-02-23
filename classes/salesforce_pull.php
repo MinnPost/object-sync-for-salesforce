@@ -167,7 +167,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	private function get_updated_records() {
 		$sfapi = $this->salesforce['sfapi'];
 		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
-			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which SalesForce triggers are allowed for the mapping
+			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping
 			$type = $salesforce_mapping['salesforce_object']; // this sets the salesfore object type for the SOQL query
 
 			$soql = $this->get_pull_query( $type, $salesforce_mapping );
@@ -214,9 +214,20 @@ class Object_Sync_Sf_Salesforce_Pull {
 							'sf_sync_trigger' => $sf_sync_trigger, // use the appropriate trigger based on when this was created
 						);
 
+						// default is pull is allowed
+						$pull_allowed = true;
+
+						// if the current fieldmap does not allow create, we need to check if there is a fieldmap for the Salesforce object Id. if not, set pull_allowed to false.
+						if ( isset( $map_sync_triggers ) && ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
+							$object_map = $this->mappings->load_by_salesforce( $result['Id'] );
+							if ( empty( $object_map ) ) {
+								$pull_allowed = false;
+							}
+						}
+
 						// Hook to allow other plugins to prevent a pull per-mapping.
 						// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
-						$pull_allowed = apply_filters( 'object_sync_for_salesforce_pull_object_allowed', true, $type, $result, $sf_sync_trigger, $salesforce_mapping );
+						$pull_allowed = apply_filters( 'object_sync_for_salesforce_pull_object_allowed', $pull_allowed, $type, $result, $sf_sync_trigger, $salesforce_mapping );
 
 						// example to keep from pulling the Contact with id of abcdef
 						/*
@@ -230,6 +241,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						*/
 
 						if ( false === $pull_allowed ) {
+							update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, current_time( 'timestamp', true ) );
 							continue;
 						}
 
