@@ -1650,7 +1650,7 @@
 </span></span><span id="1565" class="l"><a href="#1565">1565: </a><span class="php-comment">    * This uses the flush method contained in the WordPress cache to clear all of this plugin's cached data.
 </span></span><span id="1566" class="l"><a href="#1566">1566: </a><span class="php-comment">    */</span>
 </span><span id="1567" class="l"><a href="#1567">1567: </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> clear_cache( <span class="php-var">$ajax</span> = <span class="php-keyword1">false</span> ) {
-</span><span id="1568" class="l"><a href="#1568">1568: </a>        <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;wordpress-&gt;sfwp_transients-&gt;<span class="php-keyword2">flush</span>();
+</span><span id="1568" class="l"><a href="#1568">1568: </a>        <span class="php-var">$result</span> = (bool) <span class="php-var">$this</span>-&gt;wordpress-&gt;sfwp_transients-&gt;<span class="php-keyword2">flush</span>();
 </span><span id="1569" class="l"><a href="#1569">1569: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">true</span> === <span class="php-var">$result</span> ) {
 </span><span id="1570" class="l"><a href="#1570">1570: </a>            <span class="php-var">$message</span> = <span class="php-quote">'The plugin cache has been cleared.'</span>;
 </span><span id="1571" class="l"><a href="#1571">1571: </a>        } <span class="php-keyword1">else</span> {

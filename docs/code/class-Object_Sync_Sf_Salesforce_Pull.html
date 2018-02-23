@@ -104,7 +104,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#12-1305" title="Go to source code">salesforce_pull.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#12-1317" title="Go to source code">salesforce_pull.php</a>
 		<br>
 	</div>
 
@@ -343,7 +343,7 @@ This loads the schedule class</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_updated_records">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#158-317" title="Go to source code">get_updated_records</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#158-329" title="Go to source code">get_updated_records</a>( )</code>
 
 		<div class="description short">
 			<p>Pull updated records from Salesforce and place them in the queue.</p>
@@ -378,7 +378,7 @@ and places each updated SF object into the queue for later processing.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_pull_query">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#319-410" title="Go to source code">get_pull_query</a>( <span>string <var>$type</var></span>, <span> <var>$salesforce_mapping</var> = <span class="php-keyword1">array</span>() </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#331-422" title="Go to source code">get_pull_query</a>( <span>string <var>$type</var></span>, <span> <var>$salesforce_mapping</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 		<div class="description short">
 			<p>Given a SObject type name, build an SOQL query to include all fields for all
@@ -427,7 +427,7 @@ SalesforceMappings mapped to that SObject.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_deleted_records">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#412-505" title="Go to source code">get_deleted_records</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#424-517" title="Go to source code">get_deleted_records</a>( )</code>
 
 		<div class="description short">
 			<p>Get deleted records from salesforce.
@@ -459,7 +459,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_manual_pull">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#507-526" title="Go to source code">manual_pull</a>( <span>string <var>$object_type</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$wordpress_object</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#519-538" title="Go to source code">manual_pull</a>( <span>string <var>$object_type</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$wordpress_object</var></span> )</code>
 
 		<div class="description short">
 			<p>Method for ajax hooks to call for pulling manually</p>
@@ -498,7 +498,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_pull_process_records">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#528-1270" title="Go to source code">salesforce_pull_process_records</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#540-1282" title="Go to source code">salesforce_pull_process_records</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
 
 		<div class="description short">
 			<p>Sync WordPress objects and Salesforce objects from the queue using the REST API.</p>
@@ -543,7 +543,7 @@ Note that deletions can only be queried via REST with an API version >= 29.0.</p
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_object_map">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#1272-1303" title="Go to source code">create_object_map</a>( <span>array <var>$salesforce_object</var></span>, <span>string <var>$wordpress_id</var></span>, <span>array <var>$field_mapping</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Pull.html#1284-1315" title="Go to source code">create_object_map</a>( <span>array <var>$salesforce_object</var></span>, <span>string <var>$wordpress_id</var></span>, <span>array <var>$field_mapping</var></span> )</code>
 
 		<div class="description short">
 			<p>Create an object map between a Salesforce object and a WordPress object</p>
