@@ -8,7 +8,7 @@ Both directions have a hook that can be called to adjust the array.
 
 ### Array example
 
-```
+```php
 $params = array(
     'email' => 'test@test.com', // salesforce field => wordpress value
     'prematch' => array ( // the prematch field is used to identify pre-existing records that haven't yet been mapped
@@ -27,7 +27,7 @@ The `push` method doesn't need to keep track of what methods are used to modify 
 
 #### Code example
 
-```
+```php
 // example to remove the prematch check
 * @param array $mapping
 *   Mapping object.
@@ -54,7 +54,7 @@ function change_push_params( $params, $mapping, $object, $sf_sync_trigger, $use_
 
 ### Array example
 
-```
+```php
 $params = array(
     'user_email' => array ( // wordpress field name
         'value' => 'test@test.com', // salesforce value
@@ -93,7 +93,7 @@ The `pull` direction needs a method to read and modify the data in WordPress, an
 
 #### Code example
 
-```
+```php
 // example to remove fields and change methods
 * @param array $mapping
 *   Mapping object.
