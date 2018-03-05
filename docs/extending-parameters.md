@@ -30,16 +30,16 @@ The `push` method doesn't need to keep track of what methods are used to modify 
 ```
 // example to remove the prematch check
 * @param array $mapping
-+   Mapping object.
-+ @param array $object
-+   WordPress or Salesforce object data.
-+ @param array $trigger
-+   What triggered this mapping?
-+ @param bool $use_soap
-+   Flag to enforce use of the SOAP API.
-+ @param bool $is_new
-+   Indicates whether a mapping object for this entity already exists.
-add_filter( 'object_sync_for_salesforce_push_params_modify', change_push_params', 10, 6 );
+*   Mapping object.
+* @param array $object
+*   WordPress or Salesforce object data.
+* @param array $trigger
+*   What triggered this mapping?
+* @param bool $use_soap
+*   Flag to enforce use of the SOAP API.
+* @param bool $is_new
+*   Indicates whether a mapping object for this entity already exists.
+add_filter( 'object_sync_for_salesforce_push_params_modify', 'change_push_params', 10, 6 );
 function change_push_params( $params, $mapping, $object, $sf_sync_trigger, $use_soap, $is_new ) {
     $params = array(
         'email' => 'test@test.com',
@@ -96,16 +96,16 @@ The `pull` direction needs a method to read and modify the data in WordPress, an
 ```
 // example to remove fields and change methods
 * @param array $mapping
-+   Mapping object.
-+ @param array $object
-+   WordPress or Salesforce object data.
-+ @param array $trigger
-+   What triggered this mapping?
-+ @param bool $use_soap
-+   Flag to enforce use of the SOAP API.
-+ @param bool $is_new
-+   Indicates whether a mapping object for this entity already exists.
-add_filter( 'object_sync_for_salesforce_pull_params_modify', change_pull_params', 10, 6 );
+*   Mapping object.
+* @param array $object
+*   WordPress or Salesforce object data.
+* @param array $trigger
+*   What triggered this mapping?
+* @param bool $use_soap
+*   Flag to enforce use of the SOAP API.
+* @param bool $is_new
+*   Indicates whether a mapping object for this entity already exists.
+add_filter( 'object_sync_for_salesforce_pull_params_modify', 'change_pull_params', 10, 6 );
 function change_pull_params( $params, $mapping, $object, $sf_sync_trigger, $use_soap, $is_new ) {
     $params = array(
         'first_name' => array ( // wordpress field name
