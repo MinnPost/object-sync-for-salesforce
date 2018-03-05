@@ -319,8 +319,8 @@ class Object_Sync_Sf_Salesforce_Push {
 	*
 	* @param string $object_type
 	*   Type of WordPress object.
-	* @param object $object
-	*   The object object.
+	* @param array $object
+	*   The WordPress data that needs to be sent to Salesforce.
 	* @param int $sf_sync_trigger
 	*   The trigger being responded to.
 	* @param bool $manual

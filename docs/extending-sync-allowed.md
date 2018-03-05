@@ -19,8 +19,20 @@ This hook has access to the following variables:
 
 ### Code example
 
-```
+```php
 // example to keep from pushing the WordPress user with id of 1
+/**
+* @param bool $push_allowed
+*   Whether this object can be pushed
+* @param string $object_type
+*   WordPress object type.
+* @param array $object
+*   The WordPress data that needs to be sent to Salesforce.
+* @param string $sf_sync_trigger
+*   What type of event has happened
+* @param array $mapping
+*   The map between the WordPress and Salesforce object types
+*/
 add_filter( 'object_sync_for_salesforce_push_object_allowed', 'check_user', 10, 5 );
 // can always reduce this number if all the arguments are not necessary
 function check_user( $push_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
@@ -45,8 +57,20 @@ This hook has access to the following variables:
 
 ### Code example
 
-```
+```php
 // example to keep from pulling the Salesforce Contact with id of abcdef
+/**
+* @param bool $pull_allowed
+*   Whether this object can be pulled
+* @param string $object_type
+*   Salesforce object type
+* @param array $object
+*   The Salesforce data that needs to be sent to WordPress.
+* @param string $sf_sync_trigger
+*   What type of event has happened
+* @param array $salesforce_mapping
+*   The map between the WordPress and Salesforce object types
+*/
 add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
 // can always reduce this number if all the arguments are not necessary
 function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
