@@ -142,7 +142,7 @@ function install_update_dependencies() {
 	if [[ -f composer.json ]]
 	then
 		echo " - installing composer dependencies";
-		composer install --no-dev;
+		composer install --no-dev --prefer-dist;
 	fi
 
 	# If package.json exists, run npm install
