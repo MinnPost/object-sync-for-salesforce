@@ -36,7 +36,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: change what parameters are being sent to Salesforce before syncing occurs
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extend parameters](extending-parameters.md#salesforce-push)
-- `salesforce_push_mapping_object`:
+- `object_sync_for_salesforce_push_mapping_object`:
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-push)
