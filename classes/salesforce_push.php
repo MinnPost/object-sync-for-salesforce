@@ -693,9 +693,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				// hook to allow other plugins to change params on update actions only
 				// use hook to map fields between the WordPress and Salesforce objects
 				// returns $params.
-				if ( null !== $salesforce_id ) {
-					$params = apply_filters( 'object_sync_for_salesforce_push_update_params_modify', $params, $salesforce_id, $mapping, $object );
-				}
+				$params = apply_filters( 'object_sync_for_salesforce_push_update_params_modify', $params, $salesforce_id, $mapping, $object );
 
 				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || null !== $salesforce_id ) {
 
