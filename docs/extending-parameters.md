@@ -25,6 +25,8 @@ $params = array(
 
 The `push` method doesn't need to keep track of what methods are used to modify the data, since it is all being sent to the Salesforce API itself. The `object_sync_for_salesforce_push_params_modify` can modify the array as needed.
 
+In addition, after the plugin checks to see whether it is updating an already existing object in Salesforce, there is another hook that allows the data to be modified again.
+
 #### Code example
 
 ```php
@@ -52,6 +54,31 @@ function change_push_params( $params, $mapping, $object, $sf_sync_trigger, $use_
 }
 ```
 
+```php
+/**
+* Set contact name fields if this is a new Contact being added to Salesforce
+* This runs before the user has been pushed to Salesforce, but we have data for it, which may have a Salesforce ID
+* @param array $params
+*   Params mapping the fields to their values
+* @param string $salesforce_id
+*   Salesforce ID if there is a matched object
+* @param array $mapping
+*   Mapping object.
+* @param array $object
+*   WordPress object data.
+*
+*/
+add_filter( 'object_sync_for_salesforce_push_update_params_modify', 'set_names_if_missing' ), 10, 4 );
+public function set_names_if_missing( $params, $salesforce_id, $mapping, $object ) {
+	if ( null === $salesforce_id ) {
+		$params['FirstName'] = $object['first_name'];
+		$params['LastName']  = $object['last_name'];
+	}
+	return $params;
+
+}
+```
+
 ## Salesforce pull
 
 ### Array example
@@ -63,7 +90,7 @@ $params = array(
         'method_modify' => 'wp_insert_user', // if we are adding a new wordpress record, it's part of this method
         'method_read' => 'get_user_by' // how to get the value in wordpress
     ),
-    'prematch' => array ( // the prematch field is used to identify pre-existing records that 
+    'prematch' => array ( // the prematch field is used to identify pre-existing records that
         'salesforce_field' => 'Email', // for the value of this salesforce field
         'wordpress_field' => 'user_email', // check this wordpress field
         'value' => 'test@test.com', // which is this
