@@ -865,6 +865,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				return;
 			} // End if().
 		} else {
+			// $is_new is false here; we are updating an already mapped object
 
 			// right here we should set the pushing transient
 			set_transient( 'salesforce_pushing_' . $mapping_object['id'], 1, $seconds );
