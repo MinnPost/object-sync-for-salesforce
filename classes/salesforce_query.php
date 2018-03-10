@@ -15,7 +15,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 class Object_Sync_Sf_Salesforce_Select_Query {
 
 	public $fields = array();
-	public $order = array();
+	public $order  = array();
 	public $object_type;
 	public $limit;
 	public $offset;
@@ -53,9 +53,9 @@ class Object_Sync_Sf_Salesforce_Select_Query {
 			}
 		}
 		$this->conditions[] = array(
-			'field' => $field,
+			'field'    => $field,
 			'operator' => $operator,
-			'value' => $value,
+			'value'    => $value,
 		);
 	}
 
@@ -69,7 +69,7 @@ class Object_Sync_Sf_Salesforce_Select_Query {
 	*/
 	public function __toString() {
 
-		$query = 'SELECT ';
+		$query  = 'SELECT ';
 		$query .= implode( ', ', $this->fields );
 		$query .= ' FROM ' . $this->object_type;
 

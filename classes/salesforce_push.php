@@ -43,18 +43,18 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @throws \Object_Sync_Sf_Exception
 	*/
 	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
-		$this->wpdb = $wpdb;
-		$this->version = $version;
-		$this->login_credentials = $login_credentials;
-		$this->slug = $slug;
-		$this->wordpress = $wordpress;
-		$this->salesforce = $salesforce;
-		$this->mappings = $mappings;
-		$this->logging = $logging;
+		$this->wpdb                = $wpdb;
+		$this->version             = $version;
+		$this->login_credentials   = $login_credentials;
+		$this->slug                = $slug;
+		$this->wordpress           = $wordpress;
+		$this->salesforce          = $salesforce;
+		$this->mappings            = $mappings;
+		$this->logging             = $logging;
 		$this->schedulable_classes = $schedulable_classes;
 
 		$this->schedule_name = 'salesforce_push';
-		$this->schedule = $this->schedule();
+		$this->schedule      = $this->schedule();
 		$this->add_actions();
 
 		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
@@ -253,7 +253,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	*/
 	public function delete_term( $term, $tt_id, $taxonomy, $deleted_term ) {
 		$deleted_term = (array) $deleted_term;
-		$type = $deleted_term['taxonomy'];
+		$type         = $deleted_term['taxonomy'];
 		$this->object_delete( $deleted_term, $type );
 	}
 
@@ -329,7 +329,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	*/
 	private function salesforce_push_object_crud( $object_type, $object, $sf_sync_trigger, $manual = false ) {
 
-		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
+		$structure       = $this->wordpress->get_wordpress_table_structure( $object_type );
 		$object_id_field = $structure['id_field'];
 
 		// there is a WordPress object to push
@@ -420,9 +420,9 @@ class Object_Sync_Sf_Salesforce_Push {
 				if ( isset( $mapping['push_async'] ) && ( '1' === $mapping['push_async'] ) && false === $manual ) {
 					// this item is async and we want to save it to the queue
 					$data = array(
-						'object_type' => $object_type,
-						'object' => $object,
-						'mapping' => $mapping,
+						'object_type'     => $object_type,
+						'object'          => $object,
+						'mapping'         => $mapping,
 						'sf_sync_trigger' => $sf_sync_trigger,
 					);
 
@@ -445,7 +445,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
 			require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
 		}
-		$schedule = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging, $this->schedulable_classes );
+		$schedule       = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging, $this->schedulable_classes );
 		$this->schedule = $schedule;
 		return $schedule;
 	}
@@ -488,9 +488,9 @@ class Object_Sync_Sf_Salesforce_Push {
 		// we already have the data from WordPress at this point; we just need to work with it in Salesforce
 		$synced_object = array(
 			'wordpress_object' => $object,
-			'mapping_object' => $mapping_object,
-			'queue_item' => false,
-			'mapping' => $mapping,
+			'mapping_object'   => $mapping_object,
+			'queue_item'       => false,
+			'mapping'          => $mapping,
 		);
 
 		$op = '';
@@ -570,7 +570,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					}
 				} else {
 					$more_ids = '<p>The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are: ';
-					$i = 0;
+					$i        = 0;
 					foreach ( $salesforce_check as $match ) {
 						$i++;
 						$more_ids .= $match['wordpress_id'];
@@ -640,17 +640,17 @@ class Object_Sync_Sf_Salesforce_Push {
 
 		// if there is a prematch WordPress field - ie email - on the fieldmap object
 		if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
-			$prematch_field_wordpress = $params['prematch']['wordpress_field'];
+			$prematch_field_wordpress  = $params['prematch']['wordpress_field'];
 			$prematch_field_salesforce = $params['prematch']['salesforce_field'];
-			$prematch_value = $params['prematch']['value'];
+			$prematch_value            = $params['prematch']['value'];
 			unset( $params['prematch'] );
 		}
 
 		// if there is an external key field in Salesforce - ie mailchimp user id - on the fieldmap object
 		if ( isset( $params['key'] ) && is_array( $params['key'] ) ) {
-			$key_field_wordpress = $params['key']['wordpress_field'];
+			$key_field_wordpress  = $params['key']['wordpress_field'];
 			$key_field_salesforce = $params['key']['salesforce_field'];
-			$key_value = $params['key']['value'];
+			$key_value            = $params['key']['value'];
 			unset( $params['key'] );
 		}
 
@@ -718,15 +718,15 @@ class Object_Sync_Sf_Salesforce_Push {
 					}
 
 					if ( isset( $prematch_field_wordpress ) ) {
-						$upsert_key = $prematch_field_salesforce;
+						$upsert_key   = $prematch_field_salesforce;
 						$upsert_value = $encoded_prematch_value;
 					} elseif ( isset( $key_field_wordpress ) ) {
-						$upsert_key = $key_field_salesforce;
+						$upsert_key   = $key_field_salesforce;
 						$upsert_value = $encoded_key_value;
 					}
 
 					if ( null !== $salesforce_id ) {
-						$upsert_key = 'Id';
+						$upsert_key   = 'Id';
 						$upsert_value = $salesforce_id;
 					}
 
@@ -738,7 +738,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					switch ( $sfapi->response['code'] ) {
 						// On Upsert:update retrieved object.
 						case '204':
-							$sf_object = $sfapi->object_readby_external_id( $mapping['salesforce_object'], $upsert_key, $upsert_value );
+							$sf_object             = $sfapi->object_readby_external_id( $mapping['salesforce_object'], $upsert_key, $upsert_value );
 							$salesforce_data['id'] = $sf_object['data']['Id'];
 							break;
 						// Handle duplicate records.
@@ -748,7 +748,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					}
 				} else {
 					// No key or prematch field exists on this field map object, create a new object in Salesforce.
-					$op = 'Create';
+					$op     = 'Create';
 					$result = $sfapi->object_create( $mapping['salesforce_object'], $params );
 				} // End if().
 			} catch ( Object_Sync_Sf_Exception $e ) {
@@ -796,7 +796,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 			if ( empty( $result['errorCode'] ) ) {
 				$salesforce_id = $salesforce_data['id'];
-				$status = 'success';
+				$status        = 'success';
 
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
@@ -823,9 +823,9 @@ class Object_Sync_Sf_Salesforce_Push {
 				);
 
 				// update that mapping object
-				$mapping_object['salesforce_id'] = $salesforce_id;
+				$mapping_object['salesforce_id']     = $salesforce_id;
 				$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
-				$mapping_object = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+				$mapping_object                      = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 				// hook for push success
 				do_action( 'object_sync_for_salesforce_push_success', $op, $sfapi->response, $synced_object, $object_id );
@@ -925,10 +925,10 @@ class Object_Sync_Sf_Salesforce_Push {
 				// returns $params.
 				$params = apply_filters( 'object_sync_for_salesforce_push_update_params_modify', $params, $mapping_object['salesforce_id'], $mapping, $object );
 
-				$op = 'Update';
+				$op     = 'Update';
 				$result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );
 
-				$mapping_object['last_sync_status'] = $this->mappings->status_success;
+				$mapping_object['last_sync_status']  = $this->mappings->status_success;
 				$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
 
 				$status = 'success';
@@ -986,7 +986,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					$status
 				);
 
-				$mapping_object['last_sync_status'] = $this->mappings->status_error;
+				$mapping_object['last_sync_status']  = $this->mappings->status_error;
 				$mapping_object['last_sync_message'] = $e->getMessage();
 
 				// hook for push fail
@@ -996,7 +996,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 			// tell the mapping object - whether it is new or already existed - how we just used it
 			$mapping_object['last_sync_action'] = 'push';
-			$mapping_object['last_sync'] = current_time( 'mysql' );
+			$mapping_object['last_sync']        = current_time( 'mysql' );
 
 			// update that mapping object
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
@@ -1032,17 +1032,17 @@ class Object_Sync_Sf_Salesforce_Push {
 		// Create object map and save it
 		$mapping_object = $this->mappings->create_object_map(
 			array(
-				'wordpress_id' => $wordpress_object[ $id_field_name ], // wordpress unique id
-				'salesforce_id' => $salesforce_id, // salesforce unique id. we don't care what kind of object it is at this point
-				'wordpress_object' => $field_mapping['wordpress_object'], // keep track of what kind of wp object this is
-				'last_sync' => current_time( 'mysql' ),
-				'last_sync_action' => 'push',
-				'last_sync_status' => $this->mappings->status_success,
+				'wordpress_id'      => $wordpress_object[ $id_field_name ], // wordpress unique id
+				'salesforce_id'     => $salesforce_id, // salesforce unique id. we don't care what kind of object it is at this point
+				'wordpress_object'  => $field_mapping['wordpress_object'], // keep track of what kind of wp object this is
+				'last_sync'         => current_time( 'mysql' ),
+				'last_sync_action'  => 'push',
+				'last_sync_status'  => $this->mappings->status_success,
 				// translators: placeholder is for the action that occurred on the mapping object (pending or created)
 				'last_sync_message' => sprintf( esc_html__( 'Mapping object %1$s via function', 'object-sync-for-salesforce' ) . __FUNCTION__,
 					esc_attr( $action )
 				),
-				'action' => $action,
+				'action'            => $action,
 			)
 		);
 

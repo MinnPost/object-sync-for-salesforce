@@ -29,10 +29,10 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @throws \Exception
 	 */
 	public function __construct( $wpdb, $version ) {
-		$this->wpdb = $wpdb;
+		$this->wpdb    = $wpdb;
 		$this->version = $version;
 
-		$this->enabled = get_option( 'object_sync_for_salesforce_enable_logging', false );
+		$this->enabled         = get_option( 'object_sync_for_salesforce_enable_logging', false );
 		$this->statuses_to_log = get_option( 'object_sync_for_salesforce_statuses_to_log', array() );
 
 		$this->schedule_name = 'wp_logging_prune_routine';
@@ -70,7 +70,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		// set public to true overrides the WP_DEBUG setting that is the default on the class
 		// capabilities makes it so (currently) only admin users can see the log posts in their admin view
 		// note: there is no actual "public" view for this post type
-		$log_args['public'] = true;
+		$log_args['public']       = true;
 		$log_args['capabilities'] = array(
 			'edit_post'          => 'configure_salesforce',
 			'read_post'          => 'configure_salesforce',
@@ -95,15 +95,15 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 */
 	public function add_prune_interval( $schedules ) {
 
-		$schedule_unit = get_option( 'object_sync_for_salesforce_logs_how_often_unit', '' );
+		$schedule_unit   = get_option( 'object_sync_for_salesforce_logs_how_often_unit', '' );
 		$schedule_number = get_option( 'object_sync_for_salesforce_logs_how_often_number', '' );
-		$frequency = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
-		$key = $frequency['key'];
-		$seconds = $frequency['seconds'];
+		$frequency       = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
+		$key             = $frequency['key'];
+		$seconds         = $frequency['seconds'];
 
 		$schedules[ $key ] = array(
 			'interval' => $seconds * $schedule_number,
-			'display' => 'Every ' . $schedule_number . ' ' . $schedule_unit,
+			'display'  => 'Every ' . $schedule_number . ' ' . $schedule_unit,
 		);
 
 		return $schedules;
@@ -137,7 +137,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		$key = $unit . '_' . $number;
 
 		return array(
-			'key' => $key,
+			'key'     => $key,
 			'seconds' => $seconds,
 		);
 
@@ -273,8 +273,8 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		return self::get_connected_logs(
 			array(
 				'post_parent' => (int) $object_id,
-				'paged' => (int) $paged,
-				'log_type' => (string) $type,
+				'paged'       => (int) $paged,
+				'log_type'    => (string) $type,
 			)
 		);
 	}

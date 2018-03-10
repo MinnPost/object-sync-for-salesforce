@@ -31,20 +31,20 @@ class Object_Sync_Sf_WordPress {
 	 * @throws \Exception
 	 */
 	public function __construct( $wpdb, $version, $slug, $mappings, $logging ) {
-		$this->wpdb = $wpdb;
-		$this->version = $version;
-		$this->slug = $slug;
+		$this->wpdb     = $wpdb;
+		$this->version  = $version;
+		$this->slug     = $slug;
 		$this->mappings = $mappings;
-		$this->logging = $logging;
+		$this->logging  = $logging;
 
 		add_action( 'admin_init', function() {
 			$this->wordpress_objects = $this->get_object_types();
 		} );
 
 		$this->options = array(
-			'cache' => true,
+			'cache'            => true,
 			'cache_expiration' => $this->cache_expiration( 'wordpress_data_cache', 86400 ),
-			'type' => 'read',
+			'type'             => 'read',
 		);
 
 		$this->sfwp_transients = new Object_Sync_Sf_WordPress_Transient( 'sfwp_transients' );
@@ -78,7 +78,7 @@ class Object_Sync_Sf_WordPress {
 
 		// this should include the available object types and send them to the hook
 		$wordpress_types_not_posts_include = array( 'user', 'comment', 'category', 'tag' );
-		$wordpress_objects = array_merge( get_post_types(), $wordpress_types_not_posts_include );
+		$wordpress_objects                 = array_merge( get_post_types(), $wordpress_types_not_posts_include );
 		// this should be all the objects
 		$wordpress_objects = apply_filters( 'object_sync_for_salesforce_add_more_wordpress_types', $wordpress_objects );
 
@@ -103,48 +103,48 @@ class Object_Sync_Sf_WordPress {
 	public function get_wordpress_table_structure( $object_type ) {
 		if ( 'attachment' === $object_type ) {
 			$object_table_structure = array(
-				'object_name' => 'post',
+				'object_name'     => 'post',
 				'content_methods' => array(
 					'create' => 'wp_insert_attachment',
-					'read' => 'get_posts',
+					'read'   => 'get_posts',
 					'update' => 'wp_insert_attachment',
 					'delete' => 'wp_delete_attachment',
 				),
-				'meta_methods' => array(
+				'meta_methods'    => array(
 					'create' => 'wp_generate_attachment_metadata',
-					'read' => 'wp_get_attachment_metadata',
+					'read'   => 'wp_get_attachment_metadata',
 					'update' => 'wp_update_attachment_metadata',
 					'delete' => '',
 				),
-				'content_table' => $this->wpdb->prefix . 'posts',
-				'id_field' => 'ID',
-				'meta_table' => $this->wpdb->prefix . 'postmeta',
+				'content_table'   => $this->wpdb->prefix . 'posts',
+				'id_field'        => 'ID',
+				'meta_table'      => $this->wpdb->prefix . 'postmeta',
 				'meta_join_field' => 'post_id',
-				'where' => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
-				'ignore_keys' => array(),
+				'where'           => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
+				'ignore_keys'     => array(),
 			);
 		} elseif ( 'user' === $object_type ) {
 			// User meta fields need to use update_user_meta for create as well, otherwise it'll just get created twice because apparently when the post is created it's already there.
 			$object_table_structure = array(
-				'object_name' => 'user',
+				'object_name'     => 'user',
 				'content_methods' => array(
 					'create' => 'wp_insert_user',
-					'read' => 'get_user_by',
+					'read'   => 'get_user_by',
 					'update' => 'wp_update_user',
 					'delete' => 'wp_delete_user',
 				),
-				'meta_methods' => array(
+				'meta_methods'    => array(
 					'create' => 'update_user_meta',
-					'read' => 'get_user_meta',
+					'read'   => 'get_user_meta',
 					'update' => 'update_user_meta',
 					'delete' => 'delete_user_meta',
 				),
-				'content_table' => $this->wpdb->prefix . 'users',
-				'id_field' => 'ID',
-				'meta_table' => $this->wpdb->prefix . 'usermeta',
+				'content_table'   => $this->wpdb->prefix . 'users',
+				'id_field'        => 'ID',
+				'meta_table'      => $this->wpdb->prefix . 'usermeta',
 				'meta_join_field' => 'user_id',
-				'where' => '',
-				'ignore_keys' => array( // Keep it simple and avoid security risks.
+				'where'           => '',
+				'ignore_keys'     => array( // Keep it simple and avoid security risks.
 					'user_pass',
 					'user_activation_key',
 					'session_tokens',
@@ -152,92 +152,92 @@ class Object_Sync_Sf_WordPress {
 			);
 		} elseif ( 'post' === $object_type ) {
 			$object_table_structure = array(
-				'object_name' => 'post',
+				'object_name'     => 'post',
 				'content_methods' => array(
 					'create' => 'wp_insert_post',
-					'read' => 'get_posts',
+					'read'   => 'get_posts',
 					'update' => 'wp_update_post',
 					'delete' => 'wp_delete_post',
 				),
-				'meta_methods' => array(
+				'meta_methods'    => array(
 					'create' => 'add_post_meta',
-					'read' => 'get_post_meta',
+					'read'   => 'get_post_meta',
 					'update' => 'update_post_meta',
 					'delete' => 'delete_post_meta',
 				),
-				'content_table' => $this->wpdb->prefix . 'posts',
-				'id_field' => 'ID',
-				'meta_table' => $this->wpdb->prefix . 'postmeta',
+				'content_table'   => $this->wpdb->prefix . 'posts',
+				'id_field'        => 'ID',
+				'meta_table'      => $this->wpdb->prefix . 'postmeta',
 				'meta_join_field' => 'post_id',
-				'where' => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
-				'ignore_keys' => array(),
+				'where'           => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
+				'ignore_keys'     => array(),
 			);
 		} elseif ( 'category' === $object_type || 'tag' === $object_type || 'post_tag' === $object_type ) {
 			// I am unsure why post_tag wasn't here for so long, but i figure it probably needs to be there.
 			$object_table_structure = array(
-				'object_name' => 'term',
+				'object_name'     => 'term',
 				'content_methods' => array(
 					'create' => 'wp_insert_term',
-					'read' => 'get_term_by',
+					'read'   => 'get_term_by',
 					'update' => 'wp_update_term',
 					'delete' => 'wp_delete_term',
 				),
-				'meta_methods' => array(
+				'meta_methods'    => array(
 					'create' => 'add_term_meta',
-					'read' => 'get_term_meta',
+					'read'   => 'get_term_meta',
 					'update' => 'update_term_meta',
 					'delete' => 'delete_metadata',
 				),
-				'content_table' => $this->wpdb->prefix . 'terms',
-				'id_field' => 'term_id',
-				'meta_table' => array( $this->wpdb->prefix . 'termmeta', $this->wpdb->prefix . 'term_taxonomy' ),
+				'content_table'   => $this->wpdb->prefix . 'terms',
+				'id_field'        => 'term_id',
+				'meta_table'      => array( $this->wpdb->prefix . 'termmeta', $this->wpdb->prefix . 'term_taxonomy' ),
 				'meta_join_field' => 'term_id',
-				'where' => '',
-				'ignore_keys' => array(),
+				'where'           => '',
+				'ignore_keys'     => array(),
 			);
 		} elseif ( 'comment' === $object_type ) {
 			$object_table_structure = array(
-				'object_name' => 'comment',
+				'object_name'     => 'comment',
 				'content_methods' => array(
 					'create' => 'wp_new_comment',
-					'read' => 'get_comments',
+					'read'   => 'get_comments',
 					'update' => 'wp_update_comment',
 					'delete' => 'wp_delete_comment',
 				),
-				'meta_methods' => array(
+				'meta_methods'    => array(
 					'create' => 'add_comment_meta',
-					'read' => 'get_comment_meta',
+					'read'   => 'get_comment_meta',
 					'update' => 'update_comment_meta',
 					'delete' => 'delete_comment_metadata',
 				),
-				'content_table' => $this->wpdb->prefix . 'comments',
-				'id_field' => 'comment_ID',
-				'meta_table' => $this->wpdb->prefix . 'commentmeta',
+				'content_table'   => $this->wpdb->prefix . 'comments',
+				'id_field'        => 'comment_ID',
+				'meta_table'      => $this->wpdb->prefix . 'commentmeta',
 				'meta_join_field' => 'comment_id',
-				'where' => '',
-				'ignore_keys' => array(),
+				'where'           => '',
+				'ignore_keys'     => array(),
 			);
 		} else { // This is for custom post types.
 			$object_table_structure = array(
-				'object_name' => 'post',
+				'object_name'     => 'post',
 				'content_methods' => array(
 					'create' => 'wp_insert_post',
-					'read' => 'get_posts',
+					'read'   => 'get_posts',
 					'update' => 'wp_update_post',
 					'delete' => 'wp_delete_post',
 				),
-				'meta_methods' => array(
+				'meta_methods'    => array(
 					'create' => 'add_post_meta',
-					'read' => 'get_post_meta',
+					'read'   => 'get_post_meta',
 					'update' => 'update_post_meta',
 					'delete' => 'delete_post_meta',
 				),
-				'content_table' => $this->wpdb->prefix . 'posts',
-				'id_field' => 'ID',
-				'meta_table' => $this->wpdb->prefix . 'postmeta',
+				'content_table'   => $this->wpdb->prefix . 'posts',
+				'id_field'        => 'ID',
+				'meta_table'      => $this->wpdb->prefix . 'postmeta',
 				'meta_join_field' => 'post_id',
-				'where' => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
-				'ignore_keys' => array(),
+				'where'           => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
+				'ignore_keys'     => array(),
 			);
 		} // End if().
 
@@ -255,14 +255,14 @@ class Object_Sync_Sf_WordPress {
 
 		$object_table_structure = $this->get_wordpress_table_structure( $wordpress_object );
 
-		$meta_table = $object_table_structure['meta_table'];
-		$meta_methods = maybe_unserialize( $object_table_structure['meta_methods'] );
-		$content_table = $object_table_structure['content_table'];
+		$meta_table      = $object_table_structure['meta_table'];
+		$meta_methods    = maybe_unserialize( $object_table_structure['meta_methods'] );
+		$content_table   = $object_table_structure['content_table'];
 		$content_methods = maybe_unserialize( $object_table_structure['content_methods'] );
-		$id_field = $object_table_structure['id_field'];
-		$object_name = $object_table_structure['object_name'];
-		$where = $object_table_structure['where'];
-		$ignore_keys = $object_table_structure['ignore_keys'];
+		$id_field        = $object_table_structure['id_field'];
+		$object_name     = $object_table_structure['object_name'];
+		$where           = $object_table_structure['where'];
+		$ignore_keys     = $object_table_structure['ignore_keys'];
 
 		$object_fields = array();
 
@@ -270,9 +270,9 @@ class Object_Sync_Sf_WordPress {
 		if ( true === $this->options['cache'] && 'write' !== $this->options['cache'] ) {
 			$cached = $this->cache_get( $wordpress_object, array( 'data', 'meta' ) );
 			if ( is_array( $cached ) ) {
-				$object_fields['data'] = $cached;
+				$object_fields['data']       = $cached;
 				$object_fields['from_cache'] = true;
-				$object_fields['cached'] = true;
+				$object_fields['cached']     = true;
 			} else {
 				$object_fields['data'] = $this->object_fields( $object_name, $id_field, $content_table, $content_methods, $meta_table, $meta_methods, $where, $ignore_keys );
 				if ( ! empty( $object_fields['data'] ) ) {
@@ -283,9 +283,9 @@ class Object_Sync_Sf_WordPress {
 				$object_fields['from_cache'] = false;
 			}
 		} else {
-			$object_fields['data'] = $this->object_fields( $object_name, $id_field, $content_table, $content_methods, $meta_table, $meta_methods, $where, $ignore_keys );
+			$object_fields['data']       = $this->object_fields( $object_name, $id_field, $content_table, $content_methods, $meta_table, $meta_methods, $where, $ignore_keys );
 			$object_fields['from_cache'] = false;
-			$object_fields['cached'] = false;
+			$object_fields['cached']     = false;
 		}
 
 		/*
@@ -309,17 +309,17 @@ class Object_Sync_Sf_WordPress {
 	 */
 	public function get_wordpress_object_data( $object_type, $object_id ) {
 
-		$wordpress_object = array();
+		$wordpress_object       = array();
 		$object_table_structure = $this->get_wordpress_table_structure( $object_type );
 
-		$meta_table = $object_table_structure['meta_table'];
-		$meta_methods = maybe_unserialize( $object_table_structure['meta_methods'] );
-		$content_table = $object_table_structure['content_table'];
+		$meta_table      = $object_table_structure['meta_table'];
+		$meta_methods    = maybe_unserialize( $object_table_structure['meta_methods'] );
+		$content_table   = $object_table_structure['content_table'];
 		$content_methods = maybe_unserialize( $object_table_structure['content_methods'] );
-		$id_field = $object_table_structure['id_field'];
-		$object_name = $object_table_structure['object_name'];
-		$where = $object_table_structure['where'];
-		$ignore_keys = $object_table_structure['ignore_keys'];
+		$id_field        = $object_table_structure['id_field'];
+		$object_name     = $object_table_structure['object_name'];
+		$where           = $object_table_structure['where'];
+		$ignore_keys     = $object_table_structure['ignore_keys'];
 
 		if ( 'user' === $object_type ) {
 			$data = get_userdata( $object_id );
@@ -335,7 +335,7 @@ class Object_Sync_Sf_WordPress {
 
 		$fields = $this->get_wordpress_object_fields( $object_type );
 		foreach ( $fields as $key => $value ) {
-			$field = $value['key'];
+			$field                      = $value['key'];
 			$wordpress_object[ $field ] = $data->{$field};
 		}
 
@@ -439,11 +439,11 @@ class Object_Sync_Sf_WordPress {
 		// They also load the fields that are meta_keys from the specified object's meta table.
 		// Maybe a box for a custom query, since custom fields get done in so many ways.
 		// Eventually this would be the kind of thing we could use fields api for, if it ever gets done.
-		$data_fields = $this->wpdb->get_col( "DESC {$content_table}", 0 );
+		$data_fields      = $this->wpdb->get_col( "DESC {$content_table}", 0 );
 		$data_field_types = $this->wpdb->get_col( "DESC {$content_table}", 1 ); // get the database field types
 
 		if ( is_array( $meta_table ) ) {
-			$tax_table = $meta_table[1];
+			$tax_table  = $meta_table[1];
 			$meta_table = $meta_table[0];
 		}
 		$select_meta = '
@@ -455,16 +455,15 @@ class Object_Sync_Sf_WordPress {
 		' . $where . '
 		';
 		$meta_fields = $this->wpdb->get_results( $select_meta );
-
-		$all_fields = array();
+		$all_fields  = array();
 
 		foreach ( $data_fields as $key => $value ) {
 			if ( ! in_array( $value, $ignore_keys, true ) ) {
 				$all_fields[] = array(
-					'key' => $value,
-					'table' => $content_table,
+					'key'     => $value,
+					'table'   => $content_table,
 					'methods' => serialize( $content_methods ),
-					'type' => $data_field_types[ $key ],
+					'type'    => $data_field_types[ $key ],
 				);
 			}
 		}
@@ -472,8 +471,8 @@ class Object_Sync_Sf_WordPress {
 		foreach ( $meta_fields as $key => $value ) {
 			if ( ! in_array( $value->meta_key, $ignore_keys, true ) ) {
 				$all_fields[] = array(
-					'key' => $value->meta_key,
-					'table' => $meta_table,
+					'key'     => $value->meta_key,
+					'table'   => $meta_table,
 					'methods' => serialize( $meta_methods ),
 				);
 			}
@@ -485,8 +484,8 @@ class Object_Sync_Sf_WordPress {
 				$exists = array_search( $value, array_column( $all_fields, 'key' ), true );
 				if ( 0 !== $exists ) {
 					$all_fields[] = array(
-						'key' => $value,
-						'table' => $tax_table,
+						'key'     => $value,
+						'table'   => $tax_table,
 						'methods' => serialize( $content_methods ),
 					);
 				}
@@ -517,7 +516,7 @@ class Object_Sync_Sf_WordPress {
 	public function object_create( $name, $params ) {
 
 		$structure = $this->get_wordpress_table_structure( $name );
-		$id_field = $structure['id_field'];
+		$id_field  = $structure['id_field'];
 
 		switch ( $name ) {
 			case 'user':
@@ -552,8 +551,8 @@ class Object_Sync_Sf_WordPress {
 					$result = $this->post_create( $params, $id_field, $name );
 				} else {
 					$result = apply_filters( 'object_sync_for_salesforce_create_custom_wordpress_item', array(
-						'params' => $params,
-						'name' => $name,
+						'params'   => $params,
+						'name'     => $name,
 						'id_field' => $id_field,
 					) );
 				}
@@ -594,7 +593,7 @@ class Object_Sync_Sf_WordPress {
 	public function object_upsert( $name, $key, $value, $methods = array(), $params, $push_drafts = false, $check_only = false ) {
 
 		$structure = $this->get_wordpress_table_structure( $name );
-		$id_field = $structure['id_field'];
+		$id_field  = $structure['id_field'];
 
 		// If key is set, remove from $params to avoid SQL errors.
 		if ( isset( $params[ $key ] ) ) {
@@ -602,7 +601,7 @@ class Object_Sync_Sf_WordPress {
 		}
 
 		// Allow developers to change both the key and value by which objects should be matched.
-		$key = apply_filters( 'object_sync_for_salesforce_modify_upsert_key', $key );
+		$key   = apply_filters( 'object_sync_for_salesforce_modify_upsert_key', $key );
 		$value = apply_filters( 'object_sync_for_salesforce_modify_upsert_value', $value );
 
 		switch ( $name ) {
@@ -640,14 +639,14 @@ class Object_Sync_Sf_WordPress {
 					$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name, $check_only );
 				} else {
 					$result = apply_filters( 'object_sync_for_salesforce_upsert_custom_wordpress_item', array(
-						'key' => $key,
-						'value' => $value,
-						'methods' => $methods,
-						'params' => $params,
-						'id_field' => $id_field,
+						'key'         => $key,
+						'value'       => $value,
+						'methods'     => $methods,
+						'params'      => $params,
+						'id_field'    => $id_field,
 						'push_drafts' => $push_drafts,
-						'name' => $name,
-						'check_only' => $check_only,
+						'name'        => $name,
+						'check_only'  => $check_only,
 					) );
 				}
 				break;
@@ -677,7 +676,7 @@ class Object_Sync_Sf_WordPress {
 	public function object_update( $name, $id, $params ) {
 
 		$structure = $this->get_wordpress_table_structure( $name );
-		$id_field = $structure['id_field'];
+		$id_field  = $structure['id_field'];
 
 		switch ( $name ) {
 			case 'user':
@@ -715,9 +714,9 @@ class Object_Sync_Sf_WordPress {
 					$result = $this->post_update( $id, $params, $id_field, $name );
 				} else {
 					$result = apply_filters( 'object_sync_for_salesforce_update_custom_wordpress_item', array(
-						'id' => $id,
-						'params' => $params,
-						'name' => $name,
+						'id'       => $id,
+						'params'   => $params,
+						'name'     => $name,
 						'id_field' => $id_field,
 					) );
 				}
@@ -742,7 +741,7 @@ class Object_Sync_Sf_WordPress {
 	 */
 	public function object_delete( $name, $id ) {
 		$structure = $this->get_wordpress_table_structure( $name );
-		$id_field = $structure['id_field'];
+		$id_field  = $structure['id_field'];
 
 		switch ( $name ) {
 			case 'user':
@@ -776,7 +775,7 @@ class Object_Sync_Sf_WordPress {
 					$success = $this->post_delete( $id );
 				} else {
 					$success = apply_filters( 'object_sync_for_salesforce_delete_custom_wordpress_item', array(
-						'id' => $id,
+						'id'   => $id,
 						'name' => $name,
 					) );
 				}
@@ -786,7 +785,7 @@ class Object_Sync_Sf_WordPress {
 		} // End switch().
 
 		$result = array(
-			'data' => array(
+			'data'   => array(
 				'success' => $success,
 			),
 			'errors' => array(),
@@ -810,15 +809,15 @@ class Object_Sync_Sf_WordPress {
 
 		// Allow username to be email address or username.
 		// The username could be autogenerated before this point for the sake of URLs.
-		$username = $params['user_email']['value'];
+		$username      = $params['user_email']['value'];
 		$email_address = $params['user_email']['value'];
 		if ( isset( $params['user_login']['value'] ) ) { // User_login is used by username_exists.
 			$username = $params['user_login']['value'];
 		} else {
 			$params['user_login'] = array(
-				'value' => $username,
+				'value'         => $username,
 				'method_modify' => 'wp_insert_user',
-				'method_read' => 'get_user_by',
+				'method_read'   => 'get_user_by',
 			);
 		}
 
@@ -828,9 +827,9 @@ class Object_Sync_Sf_WordPress {
 			// Create the user
 			// WordPress sends a password reset link so this password doesn't get used, but it does exist in the database, which is helpful to prevent access before the user uses their password reset email.
 			$params['user_pass'] = array(
-				'value' => wp_generate_password( 12, false ),
+				'value'         => wp_generate_password( 12, false ),
 				'method_modify' => 'wp_insert_user',
-				'method_read' => 'get_user_by',
+				'method_read'   => 'get_user_by',
 			);
 
 			foreach ( $params as $key => $value ) {
@@ -844,24 +843,24 @@ class Object_Sync_Sf_WordPress {
 
 			if ( is_wp_error( $user_id ) ) {
 				$success = false;
-				$errors = $user_id;
+				$errors  = $user_id;
 			} else {
 				$success = true;
-				$errors = array();
+				$errors  = array();
 				foreach ( $params as $key => $value ) {
 					$method = $value['method_modify'];
 					// we need to provide a way for passing the values in a custom order here
 					$meta_id = $method( $user_id, $key, $value['value'] );
 					if ( false === $meta_id ) {
-						$success = false;
+						$success  = false;
 						$errors[] = array(
 							'message' => sprintf(
 								// translators: %1$s is a method name.
 								esc_html__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
 								esc_html( $method )
 							),
-							'key' => $key,
-							'value' => $value,
+							'key'     => $key,
+							'value'   => $value,
 						);
 					}
 				}
@@ -880,14 +879,14 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $user_id ) ) {
 			$success = false;
-			$errors = $user_id;
+			$errors  = $user_id;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 		}
 
 		$result = array(
-			'data' => array(
+			'data'   => array(
 				$id_field => $user_id,
 				'success' => $success,
 			),
@@ -938,9 +937,9 @@ class Object_Sync_Sf_WordPress {
 					$method = $methods['method_modify'];
 				}
 				$params[ $key ] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
 			} elseif ( false === $check_only ) {
 				// User does not exist after checking the matching value. create it.
@@ -951,11 +950,11 @@ class Object_Sync_Sf_WordPress {
 					$method = $methods['method_modify'];
 				}
 				$params[ $key ] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
-				$result = $this->user_create( $params );
+				$result         = $this->user_create( $params );
 				return $result;
 			} else {
 				// Check only is true but there's not a user yet.
@@ -964,15 +963,15 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			// There is no method by which to check the user. we can check other ways here.
 			$params[ $key ] = array(
-				'value' => $value,
+				'value'         => $value,
 				'method_modify' => $methods['method_modify'],
-				'method_read' => $methods['method_read'],
+				'method_read'   => $methods['method_read'],
 			);
 
 			// Allow username to be email address or username.
 			// The username could be autogenerated before this point for the sake of URLs.
 			if ( isset( $params['user_email']['value'] ) ) {
-				$username = $params['user_email']['value'];
+				$username      = $params['user_email']['value'];
 				$email_address = $params['user_email']['value'];
 			}
 			if ( isset( $params['user_login']['value'] ) ) { // user_login is used by username_exists.
@@ -1032,7 +1031,7 @@ class Object_Sync_Sf_WordPress {
 	 *   "errors" : [ ],
 	 */
 	private function user_update( $user_id, $params, $id_field = 'ID' ) {
-		$content = array();
+		$content              = array();
 		$content[ $id_field ] = $user_id;
 		foreach ( $params as $key => $value ) {
 			if ( 'wp_update_user' === $value['method_modify'] ) {
@@ -1045,17 +1044,17 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $user_id ) ) {
 			$success = false;
-			$errors = $user_id;
+			$errors  = $user_id;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 			foreach ( $params as $key => $value ) {
-				$method = $value['method_modify'];
+				$method  = $value['method_modify'];
 				$meta_id = $method( $user_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
-					$success = false;
+					$success  = false;
 					$errors[] = array(
-						'key' => $key,
+						'key'   => $key,
 						'value' => $value,
 					);
 				}
@@ -1067,7 +1066,7 @@ class Object_Sync_Sf_WordPress {
 		}
 
 		$result = array(
-			'data' => array(
+			'data'   => array(
 				$id_field => $user_id,
 				'success' => $success,
 			),
@@ -1106,7 +1105,7 @@ class Object_Sync_Sf_WordPress {
 	 */
 	private function post_create( $params, $id_field = 'ID', $post_type = 'post' ) {
 		// Load all params with a method_modify of the object structure's content_method into $content
-		$content = array();
+		$content   = array();
 		$structure = $this->get_wordpress_table_structure( $post_type );
 		foreach ( $params as $key => $value ) {
 			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
@@ -1134,23 +1133,23 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
-			$errors = $post_id;
+			$errors  = $post_id;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 			// If it's a custom post type, fix the methods.
 			if ( isset( $params['RecordTypeId']['value'] ) ) {
 				$params['RecordTypeId']['method_modify'] = 'update_post_meta';
-				$params['RecordTypeId']['method_read'] = 'get_post_meta';
+				$params['RecordTypeId']['method_read']   = 'get_post_meta';
 			}
 			if ( is_array( $params ) && ! empty( $params ) ) {
 				foreach ( $params as $key => $value ) {
-					$method = $value['method_modify'];
+					$method  = $value['method_modify'];
 					$meta_id = $method( $post_id, $key, $value['value'] );
 					if ( false === $meta_id ) {
-						$success = false;
+						$success  = false;
 						$errors[] = array(
-							'key' => $key,
+							'key'   => $key,
 							'value' => $value,
 						);
 					}
@@ -1164,14 +1163,14 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
-			$errors = $post_id;
+			$errors  = $post_id;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 		}
 
 		$result = array(
-			'data' => array(
+			'data'   => array(
 				$id_field => $post_id,
 				'success' => $success,
 			),
@@ -1211,16 +1210,16 @@ class Object_Sync_Sf_WordPress {
 			$args = array();
 			if ( 'post_title' === $key ) {
 				$params['post_title'] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
-				$args['name'] = sanitize_title( $value );
+				$args['name']         = sanitize_title( $value );
 			} else {
 				$args[ $key ] = $value;
 			}
 			$args['post_type'] = $post_type;
-			$post_statuses = array( 'publish' );
+			$post_statuses     = array( 'publish' );
 			if ( true === $push_drafts ) {
 				$post_statuses[] = 'draft';
 			}
@@ -1244,9 +1243,9 @@ class Object_Sync_Sf_WordPress {
 					$method = $methods['method_modify'];
 				}
 				$params[ $key ] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
 			} elseif ( false === $check_only ) {
 				// Post does not exist after checking the matching value. create it.
@@ -1257,11 +1256,11 @@ class Object_Sync_Sf_WordPress {
 					$method = $methods['method_modify'];
 				}
 				$params[ $key ] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
-				$result = $this->post_create( $params, $id_field, $post_type );
+				$result         = $this->post_create( $params, $id_field, $post_type );
 				return $result;
 			} else {
 				// Check only is true but there's not a post yet.
@@ -1270,9 +1269,9 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			// There is no method by which to check the post. we can check other ways here.
 			$params[ $key ] = array(
-				'value' => $value,
+				'value'         => $value,
 				'method_modify' => $methods['method_modify'],
-				'method_read' => $methods['method_read'],
+				'method_read'   => $methods['method_read'],
 			);
 
 			// If we have a title, use it to check for existing post.
@@ -1350,7 +1349,7 @@ class Object_Sync_Sf_WordPress {
 	 *   "errors" : [ ],
 	 */
 	private function post_update( $post_id, $params, $id_field = 'ID', $post_type = '' ) {
-		$content = array();
+		$content              = array();
 		$content[ $id_field ] = $post_id;
 		foreach ( $params as $key => $value ) {
 			if ( 'wp_update_post' === $value['method_modify'] ) {
@@ -1367,23 +1366,23 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
-			$errors = $post_id;
+			$errors  = $post_id;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 			// If it's a custom post type, fix the methods.
 			if ( isset( $params['RecordTypeId']['value'] ) ) {
 				$params['RecordTypeId']['method_modify'] = 'update_post_meta';
-				$params['RecordTypeId']['method_read'] = 'get_post_meta';
+				$params['RecordTypeId']['method_read']   = 'get_post_meta';
 			}
 			if ( is_array( $params ) && ! empty( $params ) ) {
 				foreach ( $params as $key => $value ) {
-					$method = $value['method_modify'];
+					$method  = $value['method_modify'];
 					$meta_id = $method( $post_id, $key, $value['value'] );
 					if ( false === $meta_id ) {
-						$success = false;
+						$success  = false;
 						$errors[] = array(
-							'key' => $key,
+							'key'   => $key,
 							'value' => $value,
 						);
 					}
@@ -1396,7 +1395,7 @@ class Object_Sync_Sf_WordPress {
 		}
 
 		$result = array(
-			'data' => array(
+			'data'   => array(
 				$id_field => $post_id,
 				'success' => $success,
 			),
@@ -1432,7 +1431,7 @@ class Object_Sync_Sf_WordPress {
 	 */
 	private function attachment_create( $params, $id_field = 'ID' ) {
 		// Load all params with a method_modify of the object structure's content_method into $content
-		$content = array();
+		$content   = array();
 		$structure = $this->get_wordpress_table_structure( 'attachment' );
 		// WP requires post_title, post_content (can be empty), post_status, and post_mime_type to create an attachment.
 		foreach ( $params as $key => $value ) {
@@ -1461,10 +1460,10 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $attachment_id ) ) {
 			$success = false;
-			$errors = $attachment_id;
+			$errors  = $attachment_id;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 
 			if ( false !== $filename ) {
 				// According to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file.
@@ -1484,7 +1483,7 @@ class Object_Sync_Sf_WordPress {
 		}
 
 		$result = array(
-			'data' => array(
+			'data'   => array(
 				$id_field => $attachment_id,
 				'success' => $success,
 			),
@@ -1523,11 +1522,11 @@ class Object_Sync_Sf_WordPress {
 			$args = array();
 			if ( 'post_title' === $key ) {
 				$params['post_title'] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
-				$args['name'] = sanitize_title( $value );
+				$args['name']         = sanitize_title( $value );
 			} else {
 				$args[ $key ] = $value;
 			}
@@ -1551,9 +1550,9 @@ class Object_Sync_Sf_WordPress {
 					$method = $methods['method_modify'];
 				}
 				$params[ $key ] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
 			} elseif ( false === $check_only ) {
 				// Attachment does not exist after checking the matching value. create it.
@@ -1564,11 +1563,11 @@ class Object_Sync_Sf_WordPress {
 					$method = $methods['method_modify'];
 				}
 				$params[ $key ] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
-				$result = $this->attachment_create( $params );
+				$result         = $this->attachment_create( $params );
 				return $result;
 			} else {
 				// Check only is true but there's not an attachment yet.
@@ -1577,9 +1576,9 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			// There is no method by which to check the post. we can check other ways here.
 			$params[ $key ] = array(
-				'value' => $value,
+				'value'         => $value,
 				'method_modify' => $methods['method_modify'],
-				'method_read' => $methods['method_read'],
+				'method_read'   => $methods['method_read'],
 			);
 
 			// If we have a title, use it to check for existing post.
@@ -1660,7 +1659,7 @@ class Object_Sync_Sf_WordPress {
 	 * Developers should use hooks to change this, if it does not meet their needs.
 	 */
 	private function attachment_update( $attachment_id, $params, $id_field = 'ID' ) {
-		$content = array();
+		$content              = array();
 		$content[ $id_field ] = $attachment_id;
 		foreach ( $params as $key => $value ) {
 			if ( 'wp_insert_attachment' === $value['method_modify'] ) { // Should also be insert attachment maybe.
@@ -1685,10 +1684,10 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $attachment_id ) ) {
 			$success = false;
-			$errors = $attachment_id;
+			$errors  = $attachment_id;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 
 			if ( false !== $filename ) {
 				// According to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file.
@@ -1700,7 +1699,7 @@ class Object_Sync_Sf_WordPress {
 			// Put the data from salesforce into the meta array.
 			$attach_new_data = array();
 			foreach ( $params as $key => $value ) {
-				$method = $value['method_modify'];
+				$method                  = $value['method_modify'];
 				$attach_new_data[ $key ] = $value['value'];
 			}
 
@@ -1713,9 +1712,9 @@ class Object_Sync_Sf_WordPress {
 			$meta_updated = wp_update_attachment_metadata( $attachment_id, $attach_data );
 
 			if ( false === $meta_updated ) {
-				$success = false;
+				$success  = false;
 				$errors[] = array(
-					'key' => $key,
+					'key'   => $key,
 					'value' => $value,
 				);
 			}
@@ -1730,7 +1729,7 @@ class Object_Sync_Sf_WordPress {
 		} // End if().
 
 		$result = array(
-			'data' => array(
+			'data'   => array(
 				$id_field => $attachment_id,
 				'success' => $success,
 			),
@@ -1771,9 +1770,9 @@ class Object_Sync_Sf_WordPress {
 			$taxonomy = 'post_tag';
 		}
 		// Load all params with a method_modify of the object structure's content_method into $content
-		$content = array();
+		$content   = array();
 		$structure = $this->get_wordpress_table_structure( $taxonomy );
-		$args = array();
+		$args      = array();
 		foreach ( $params as $key => $value ) {
 			if ( 'name' === $key ) {
 				$name = $value['value'];
@@ -1790,24 +1789,24 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $term ) ) {
 			$success = false;
-			$errors = $term;
+			$errors  = $term;
 		} else {
 			$term_id = $term[ "$id_field" ];
 			$success = true;
-			$errors = array();
+			$errors  = array();
 			foreach ( $params as $key => $value ) {
-				$method = $value['method_modify'];
+				$method  = $value['method_modify'];
 				$meta_id = $method( $term_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
-					$success = false;
+					$success  = false;
 					$errors[] = array(
 						'message' => sprintf(
 							// translators: %1$s is a method name.
 							esc_html__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
 							esc_html( $method )
 						),
-						'key' => $key,
-						'value' => $value,
+						'key'     => $key,
+						'value'   => $value,
 					);
 				}
 			}
@@ -1819,14 +1818,14 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $term ) ) {
 			$success = false;
-			$errors = $term;
+			$errors  = $term;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 		}
 
 		$result = array(
-			'data' => array(
+			'data'   => array(
 				$id_field => $term_id,
 				'success' => $success,
 			),
@@ -1879,9 +1878,9 @@ class Object_Sync_Sf_WordPress {
 					$method = $methods['method_modify'];
 				}
 				$params[ $key ] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
 			} elseif ( false === $check_only ) {
 				// Term does not exist after checking the matching value. Create it.
@@ -1892,11 +1891,11 @@ class Object_Sync_Sf_WordPress {
 					$method = $methods['method_modify'];
 				}
 				$params[ $key ] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
-				$result = $this->term_create( $params, $taxonomy, $id_field );
+				$result         = $this->term_create( $params, $taxonomy, $id_field );
 				return $result;
 			} else {
 				// Check only is true but there's not a term yet.
@@ -1905,9 +1904,9 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			// There is no method by which to check the term. we can check other ways here.
 			$params[ $key ] = array(
-				'value' => $value,
+				'value'         => $value,
 				'method_modify' => $methods['method_modify'],
-				'method_read' => $methods['method_read'],
+				'method_read'   => $methods['method_read'],
 			);
 
 			if ( isset( $params['name']['value'] ) ) {
@@ -1992,24 +1991,24 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $term ) ) {
 			$success = false;
-			$errors = $term;
+			$errors  = $term;
 		} else {
 			$term_id = $term[ "$id_field" ];
 			$success = true;
-			$errors = array();
+			$errors  = array();
 			foreach ( $params as $key => $value ) {
-				$method = $value['method_modify'];
+				$method  = $value['method_modify'];
 				$meta_id = $method( $term_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
-					$success = false;
+					$success  = false;
 					$errors[] = array(
 						'message' => sprintf(
 							// translators: %1$s is a method name.
 							esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
 							esc_html( $method )
 						),
-						'key' => $key,
-						'value' => $value,
+						'key'     => $key,
+						'value'   => $value,
 					);
 				}
 			}
@@ -2021,14 +2020,14 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $term ) ) {
 			$success = false;
-			$errors = $term;
+			$errors  = $term;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 		}
 
 		$result = array(
-			'data' => array(
+			'data'   => array(
 				$id_field => $term_id,
 				'success' => $success,
 			),
@@ -2069,7 +2068,7 @@ class Object_Sync_Sf_WordPress {
 	 */
 	private function comment_create( $params, $id_field = 'comment_ID' ) {
 		// Load all params with a method_modify of the object structure's content_method into $content
-		$content = array();
+		$content   = array();
 		$structure = $this->get_wordpress_table_structure( 'comment' );
 		foreach ( $params as $key => $value ) {
 			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
@@ -2099,23 +2098,23 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $comment_id ) ) {
 			$success = false;
-			$errors = $comment_id;
+			$errors  = $comment_id;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 			foreach ( $params as $key => $value ) {
-				$method = $value['method_modify'];
+				$method  = $value['method_modify'];
 				$meta_id = $method( $comment_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
-					$success = false;
+					$success  = false;
 					$errors[] = array(
 						'message' => sprintf(
 							// translators: %1$s is a method name.
 							esc_html__( 'Tried to add meta with method %1$s.', 'object-sync-for-salesforce' ),
 							esc_html( $method )
 						),
-						'key' => $key,
-						'value' => $value,
+						'key'     => $key,
+						'value'   => $value,
 					);
 				}
 			}
@@ -2127,14 +2126,14 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $comment_id ) ) {
 			$success = false;
-			$errors = $comment_id;
+			$errors  = $comment_id;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 		}
 
 		$result = array(
-			'data' => array(
+			'data'   => array(
 				$id_field => $comment_id,
 				'success' => $success,
 			),
@@ -2173,7 +2172,7 @@ class Object_Sync_Sf_WordPress {
 			if ( 'comment_author' === $key ) {
 				$match['author__in'] = array( $value );
 			} else {
-				$key = str_replace( 'comment_', '', $key );
+				$key           = str_replace( 'comment_', '', $key );
 				$match[ $key ] = $value;
 			}
 			$comments = $method( $match );
@@ -2195,9 +2194,9 @@ class Object_Sync_Sf_WordPress {
 					$method = $methods['method_modify'];
 				}
 				$params[ $key ] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
 			} elseif ( count( $comments ) > 1 ) {
 				$status = 'error';
@@ -2230,11 +2229,11 @@ class Object_Sync_Sf_WordPress {
 					$method = $methods['method_modify'];
 				}
 				$params[ $key ] = array(
-					'value' => $value,
+					'value'         => $value,
 					'method_modify' => $method,
-					'method_read' => $methods['method_read'],
+					'method_read'   => $methods['method_read'],
 				);
-				$result = $this->comment_create( $params, $id_field );
+				$result         = $this->comment_create( $params, $id_field );
 				return $result;
 			} else {
 				// Check only is true but there's not a comment yet.
@@ -2243,9 +2242,9 @@ class Object_Sync_Sf_WordPress {
 		} else {
 			// There is no method by which to check the comment. We can check other ways here.
 			$params[ $key ] = array(
-				'value' => $value,
+				'value'         => $value,
 				'method_modify' => $methods['method_modify'],
-				'method_read' => $methods['method_read'],
+				'method_read'   => $methods['method_read'],
 			);
 
 			if ( isset( $params['comment_author']['value'] ) ) {
@@ -2314,7 +2313,7 @@ class Object_Sync_Sf_WordPress {
 	 *   "errors" : [ ],
 	 */
 	private function comment_update( $comment_id, $params, $id_field = 'comment_ID' ) {
-		$content = array();
+		$content              = array();
 		$content[ $id_field ] = $comment_id;
 		foreach ( $params as $key => $value ) {
 			if ( 'wp_update_comment' === $value['method_modify'] ) {
@@ -2327,23 +2326,23 @@ class Object_Sync_Sf_WordPress {
 
 		if ( 0 === $updated ) {
 			$success = false;
-			$errors = $updated;
+			$errors  = $updated;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 			foreach ( $params as $key => $value ) {
-				$method = $value['method_modify'];
+				$method  = $value['method_modify'];
 				$meta_id = $method( $comment_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
-					$success = false;
+					$success  = false;
 					$errors[] = array(
 						'message' => sprintf(
 							// Translators: %1$s is a method name.
 							esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
 							esc_html( $method )
 						),
-						'key' => $key,
-						'value' => $value,
+						'key'     => $key,
+						'value'   => $value,
 					);
 				}
 			}
@@ -2355,14 +2354,14 @@ class Object_Sync_Sf_WordPress {
 
 		if ( is_wp_error( $updated ) ) {
 			$success = false;
-			$errors = $updated;
+			$errors  = $updated;
 		} else {
 			$success = true;
-			$errors = array();
+			$errors  = array();
 		}
 
 		$result = array(
-			'data' => array(
+			'data'   => array(
 				$id_field => $comment_id,
 				'success' => $success,
 			),
@@ -2407,7 +2406,7 @@ class Object_Sync_Sf_WordPress_Transient {
 	 * @param string $name The name of the field that lists all cache keys.
 	 */
 	public function __construct( $name ) {
-		$this->name = $name;
+		$this->name         = $name;
 		$this->cache_prefix = esc_sql( 'sfwp_' );
 	}
 
@@ -2430,10 +2429,10 @@ class Object_Sync_Sf_WordPress_Transient {
 	 */
 	public function set( $cachekey, $value, $cache_expiration = 0 ) {
 
-		$prefix = $this->cache_prefix;
+		$prefix   = $this->cache_prefix;
 		$cachekey = $prefix . $cachekey;
 
-		$keys = $this->all_keys();
+		$keys   = $this->all_keys();
 		$keys[] = $cachekey;
 		set_transient( $this->name, $keys, $cache_expiration );
 
@@ -2447,7 +2446,7 @@ class Object_Sync_Sf_WordPress_Transient {
 	 * @return mixed value of transient. False of empty, otherwise array.
 	 */
 	public function get( $cachekey ) {
-		$prefix = $this->cache_prefix;
+		$prefix   = $this->cache_prefix;
 		$cachekey = $prefix . $cachekey;
 		return get_transient( $cachekey );
 	}
@@ -2459,7 +2458,7 @@ class Object_Sync_Sf_WordPress_Transient {
 	 * @return bool True if successful, false otherwise.
 	 */
 	public function delete( $cachekey ) {
-		$prefix = $this->cache_prefix;
+		$prefix   = $this->cache_prefix;
 		$cachekey = $prefix . $cachekey;
 		return delete_transient( $cachekey );
 	}
@@ -2470,7 +2469,7 @@ class Object_Sync_Sf_WordPress_Transient {
 	 * @return bool True if successful, false otherwise.
 	 */
 	public function flush() {
-		$keys = $this->all_keys();
+		$keys   = $this->all_keys();
 		$result = true;
 		foreach ( $keys as $key ) {
 			$result = delete_transient( $key );

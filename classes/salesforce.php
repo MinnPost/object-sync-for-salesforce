@@ -43,25 +43,26 @@ class Object_Sync_Sf_Salesforce {
 	*   array of classes that can have scheduled tasks specific to them
 	*/
 	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes ) {
-		$this->consumer_key = $consumer_key;
-		$this->consumer_secret = $consumer_secret;
-		$this->login_url = $login_url;
-		$this->callback_url = $callback_url;
-		$this->authorize_path = $authorize_path;
-		$this->token_path = $token_path;
-		$this->rest_api_version = $rest_api_version;
-		$this->wordpress = $wordpress;
-		$this->slug = $slug;
-		$this->logging = $logging;
+		$this->consumer_key        = $consumer_key;
+		$this->consumer_secret     = $consumer_secret;
+		$this->login_url           = $login_url;
+		$this->callback_url        = $callback_url;
+		$this->authorize_path      = $authorize_path;
+		$this->token_path          = $token_path;
+		$this->rest_api_version    = $rest_api_version;
+		$this->wordpress           = $wordpress;
+		$this->slug                = $slug;
+		$this->logging             = $logging;
 		$this->schedulable_classes = $schedulable_classes;
-		$this->options = array(
-			'cache' => true,
+		$this->options             = array(
+			'cache'            => true,
 			'cache_expiration' => $this->cache_expiration(),
-			'type' => 'read',
+			'type'             => 'read',
 		);
-		$this->success_codes = array( 200, 201, 204 );
-		$this->refresh_code = 401;
-		$this->success_or_refresh_codes = $this->success_codes;
+
+		$this->success_codes              = array( 200, 201, 204 );
+		$this->refresh_code               = 401;
+		$this->success_or_refresh_codes   = $this->success_codes;
 		$this->success_or_refresh_codes[] = $this->refresh_code;
 
 		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
@@ -82,14 +83,14 @@ class Object_Sync_Sf_Salesforce {
 			return $sf_id_15;
 		}
 		$chunks = str_split( $sf_id_15, 5 );
-		$extra = '';
+		$extra  = '';
 		foreach ( $chunks as $chunk ) {
 			$chars = str_split( $chunk, 1 );
-			$bits = '';
+			$bits  = '';
 			foreach ( $chars as $char ) {
 				$bits .= ( ! is_numeric( $char ) && strtoupper( $char ) === $char ) ? '1' : '0';
 			}
-			$map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345';
+			$map    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345';
 			$extra .= substr( $map, base_convert( strrev( $bits ), 2, 10 ), 1 );
 		}
 		return $sf_id_15 . $extra;
@@ -137,7 +138,7 @@ class Object_Sync_Sf_Salesforce {
 	public function get_api_versions() {
 		$options = array(
 			'authenticated' => false,
-			'full_url' => true,
+			'full_url'      => true,
 		);
 		return $this->api_call( $this->get_instance_url() . '/services/data', [], 'GET', $options );
 	}
@@ -181,7 +182,7 @@ class Object_Sync_Sf_Salesforce {
 				$this->refresh_token();
 				// Rebuild our request and repeat request.
 				$options['is_redo'] = true;
-				$this->response = $this->api_http_request( $path, $params, $method, $options, $type );
+				$this->response     = $this->api_http_request( $path, $params, $method, $options, $type );
 				// Throw an error if we still have bad response.
 				if ( ! in_array( $this->response['code'], $this->success_codes, true ) ) {
 					throw new Object_Sync_Sf_Exception( $this->response['data'][0]['message'], $this->response['code'] );
@@ -234,12 +235,12 @@ class Object_Sync_Sf_Salesforce {
 	*/
 	protected function api_http_request( $path, $params, $method, $options = array(), $type = 'rest' ) {
 		$options = array_merge( $this->options, $options ); // this will override a value in $this->options with the one in $options if there is a matching key
-		$url = $this->get_api_endpoint( $type ) . $path;
+		$url     = $this->get_api_endpoint( $type ) . $path;
 		if ( isset( $options['full_url'] ) && true === $options['full_url'] ) {
 			$url = $path;
 		}
 		$headers = array(
-			'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
+			'Authorization'   => 'Authorization: OAuth ' . $this->get_access_token(),
 			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
 		);
 		if ( 'POST' === $method || 'PATCH' === $method ) {
@@ -255,11 +256,11 @@ class Object_Sync_Sf_Salesforce {
 			$cached = $this->wordpress->cache_get( $url, $params );
 			// some api calls can send a reset option, in which case we should redo the request anyway
 			if ( is_array( $cached ) && ( ! isset( $options['reset'] ) || true !== $options['reset'] ) ) {
-				$result = $cached;
+				$result               = $cached;
 				$result['from_cache'] = true;
-				$result['cached'] = true;
+				$result['cached']     = true;
 			} else {
-				$data = wp_json_encode( $params );
+				$data   = wp_json_encode( $params );
 				$result = $this->http_request( $url, $data, $headers, $method, $options );
 				if ( in_array( $result['code'], $this->success_codes, true ) ) {
 					$result['cached'] = $this->wordpress->cache_set( $url, $params, $result, $options['cache_expiration'] );
@@ -269,10 +270,10 @@ class Object_Sync_Sf_Salesforce {
 				$result['from_cache'] = false;
 			}
 		} else {
-			$data = wp_json_encode( $params );
-			$result = $this->http_request( $url, $data, $headers, $method, $options );
+			$data                 = wp_json_encode( $params );
+			$result               = $this->http_request( $url, $data, $headers, $method, $options );
 			$result['from_cache'] = false;
-			$result['cached'] = false;
+			$result['cached']     = false;
 		}
 
 		if ( isset( $options['is_redo'] ) && true === $options['is_redo'] ) {
@@ -351,13 +352,13 @@ class Object_Sync_Sf_Salesforce {
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
 		}
 		$json_response = curl_exec( $curl ); // this is possibly gzipped json data
-		$code = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+		$code          = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
 
 		if ( ( 'PATCH' === $method || 'DELETE' === $method ) && '' === $json_response && 204 === $code ) {
 			// delete and patch requests return a 204 with an empty body upon success for whatever reason
 			$data = array(
 				'success' => true,
-				'body' => '',
+				'body'    => '',
 			);
 			curl_close( $curl );
 			return array(
@@ -473,7 +474,7 @@ class Object_Sync_Sf_Salesforce {
 			$url = $this->get_instance_url() . '/services/apexrest/';
 		} else {
 			$identity = $this->get_identity();
-			$url = str_replace( '{version}', $this->rest_api_version, $identity['urls'][ $api_type ] );
+			$url      = str_replace( '{version}', $this->rest_api_version, $identity['urls'][ $api_type ] );
 			if ( '' === $identity ) {
 				$url = $this->get_instance_url() . '/services/data/v' . $this->rest_api_version . '/';
 			}
@@ -550,20 +551,20 @@ class Object_Sync_Sf_Salesforce {
 		}
 
 		$data = array(
-			'grant_type' => 'refresh_token',
+			'grant_type'    => 'refresh_token',
 			'refresh_token' => $refresh_token,
-			'client_id' => $this->consumer_key,
+			'client_id'     => $this->consumer_key,
 			'client_secret' => $this->consumer_secret,
 		);
 
-		$url = $this->login_url . $this->token_path;
-		$headers = array(
+		$url      = $this->login_url . $this->token_path;
+		$headers  = array(
 			// This is an undocumented requirement on Salesforce's end.
-			'Content-Type' => 'Content-Type: application/x-www-form-urlencoded',
+			'Content-Type'    => 'Content-Type: application/x-www-form-urlencoded',
 			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
-			'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
+			'Authorization'   => 'Authorization: OAuth ' . $this->get_access_token(),
 		);
-		$headers = false;
+		$headers  = false;
 		$response = $this->http_request( $url, $data, $headers, 'POST' );
 
 		if ( 200 !== $response['code'] ) {
@@ -597,9 +598,9 @@ class Object_Sync_Sf_Salesforce {
 	* @throws Object_Sync_Sf_Exception
 	*/
 	protected function set_identity( $id ) {
-		$headers = array(
-			'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
-			//'Content-type' => 'application/json',
+		$headers  = array(
+			'Authorization'   => 'Authorization: OAuth ' . $this->get_access_token(),
+			//'Content-type'  => 'application/json',
 			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
 		);
 		$response = $this->http_request( $id, null, $headers );
@@ -627,8 +628,8 @@ class Object_Sync_Sf_Salesforce {
 		$url = add_query_arg(
 			array(
 				'response_type' => 'code',
-				'client_id' => $this->consumer_key,
-				'redirect_uri' => $this->callback_url,
+				'client_id'     => $this->consumer_key,
+				'redirect_uri'  => $this->callback_url,
 			),
 			$this->login_url . $this->authorize_path
 		);
@@ -643,17 +644,17 @@ class Object_Sync_Sf_Salesforce {
 	*/
 	public function request_token( $code ) {
 		$data = array(
-			'code' => $code,
-			'grant_type' => 'authorization_code',
-			'client_id' => $this->consumer_key,
+			'code'          => $code,
+			'grant_type'    => 'authorization_code',
+			'client_id'     => $this->consumer_key,
 			'client_secret' => $this->consumer_secret,
-			'redirect_uri' => $this->callback_url,
+			'redirect_uri'  => $this->callback_url,
 		);
 
-		$url = $this->login_url . $this->token_path;
-		$headers = array(
+		$url      = $this->login_url . $this->token_path;
+		$headers  = array(
 			// This is an undocumented requirement on SF's end.
-			//'Content-Type' => 'application/x-www-form-urlencoded',
+			//'Content-Type'  => 'application/x-www-form-urlencoded',
 			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
 		);
 		$response = $this->http_request( $url, $data, $headers, 'POST' );
@@ -703,7 +704,7 @@ class Object_Sync_Sf_Salesforce {
 	*/
 	public function objects(
 		$conditions = array(
-			'updateable' => true,
+			'updateable'  => true,
 			'triggerable' => true,
 		),
 		$reset = false
@@ -712,7 +713,7 @@ class Object_Sync_Sf_Salesforce {
 		$options = array(
 			'reset' => $reset,
 		);
-		$result = $this->api_call( 'sobjects', array(), 'GET', $options );
+		$result  = $this->api_call( 'sobjects', array(), 'GET', $options );
 
 		if ( ! empty( $conditions ) ) {
 			foreach ( $result['data']['sobjects'] as $key => $object ) {
@@ -785,7 +786,7 @@ class Object_Sync_Sf_Salesforce {
 		$options = array(
 			'reset' => $reset,
 		);
-		$object = $this->api_call( "sobjects/{$name}/describe", array(), 'GET', $options );
+		$object  = $this->api_call( "sobjects/{$name}/describe", array(), 'GET', $options );
 		// Sort field properties, because salesforce API always provides them in a
 		// random order. We sort them so that stored and exported data are
 		// standardized and predictable.
@@ -829,7 +830,7 @@ class Object_Sync_Sf_Salesforce {
 		$options = array(
 			'type' => 'write',
 		);
-		$result = $this->api_call( "sobjects/{$name}", $params, 'POST', $options );
+		$result  = $this->api_call( "sobjects/{$name}", $params, 'POST', $options );
 		return $result;
 	}
 
@@ -872,7 +873,7 @@ class Object_Sync_Sf_Salesforce {
 		}
 
 		// allow developers to change both the key and value by which objects should be matched
-		$key = apply_filters( 'object_sync_for_salesforce_modify_upsert_key', $key );
+		$key   = apply_filters( 'object_sync_for_salesforce_modify_upsert_key', $key );
 		$value = apply_filters( 'object_sync_for_salesforce_modify_upsert_value', $value );
 
 		$data = $this->api_call( "sobjects/{$name}/{$key}/{$value}", $params, 'PATCH', $options );
@@ -908,7 +909,7 @@ class Object_Sync_Sf_Salesforce {
 		$options = array(
 			'type' => 'write',
 		);
-		$result = $this->api_call( "sobjects/{$name}/{$id}", $params, 'PATCH', $options );
+		$result  = $this->api_call( "sobjects/{$name}/{$id}", $params, 'PATCH', $options );
 		return $result;
 	}
 
@@ -970,7 +971,8 @@ class Object_Sync_Sf_Salesforce {
 	* part of core API calls
 	*/
 	public function run_analytics_report( $id, $async = true, $clear_cache = false, $params = array(), $method = 'GET', $report_cache_expiration = '', $cache_instance = true, $instance_cache_expiration = '' ) {
-		$id = $this->convert_id( $id );
+
+		$id         = $this->convert_id( $id );
 		$report_url = 'analytics/reports/' . $id . '/' . 'instances';
 
 		if ( true === $clear_cache ) {
@@ -1087,7 +1089,7 @@ class Object_Sync_Sf_Salesforce {
 		$options = array(
 			'type' => 'write',
 		);
-		$result = $this->api_call( "sobjects/{$name}/{$id}", array(), 'DELETE', $options );
+		$result  = $this->api_call( "sobjects/{$name}/{$id}", array(), 'DELETE', $options );
 		return $result;
 	}
 
@@ -1194,10 +1196,10 @@ class Object_Sync_Sf_Salesforce {
 			return ! empty( $cached[ $name ][ $devname ] ) ? $cached[ $name ][ $devname ]['Id'] : null;
 		}
 
-		$query = new Object_Sync_Sf_Salesforce_Select_Query( 'RecordType' );
+		$query         = new Object_Sync_Sf_Salesforce_Select_Query( 'RecordType' );
 		$query->fields = array( 'Id', 'Name', 'DeveloperName', 'SobjectType' );
 
-		$result = $this->query( $query );
+		$result       = $this->query( $query );
 		$record_types = array();
 
 		foreach ( $result['data']['records'] as $record_type ) {

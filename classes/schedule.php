@@ -40,15 +40,15 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 
 	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $schedule_name, $logging, $schedulable_classes ) {
 
-		$this->wpdb = $wpdb;
-		$this->version = $version;
-		$this->login_credentials = $login_credentials;
-		$this->slug = $slug;
-		$this->wordpress = $wordpress;
-		$this->salesforce = $salesforce;
-		$this->mappings = $mappings;
-		$this->schedule_name = $schedule_name;
-		$this->logging = $logging;
+		$this->wpdb                = $wpdb;
+		$this->version             = $version;
+		$this->login_credentials   = $login_credentials;
+		$this->slug                = $slug;
+		$this->wordpress           = $wordpress;
+		$this->salesforce          = $salesforce;
+		$this->mappings            = $mappings;
+		$this->schedule_name       = $schedule_name;
+		$this->logging             = $logging;
 		$this->schedulable_classes = $schedulable_classes;
 
 		$this->identifier = $this->schedule_name;
@@ -76,7 +76,7 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 		// create an option in the core schedules array for each one the plugin defines
 		foreach ( $this->schedulable_classes as $key => $value ) {
 			$schedule_number = absint( get_option( 'object_sync_for_salesforce_' . $key . '_schedule_number', '' ) );
-			$schedule_unit = get_option( 'object_sync_for_salesforce_' . $key . '_schedule_unit', '' );
+			$schedule_unit   = get_option( 'object_sync_for_salesforce_' . $key . '_schedule_unit', '' );
 
 			switch ( $schedule_unit ) {
 				case 'minutes':
@@ -96,7 +96,7 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 
 			$schedules[ $key ] = array(
 				'interval' => $seconds * $schedule_number,
-				'display' => 'Every ' . $schedule_number . ' ' . $schedule_unit,
+				'display'  => 'Every ' . $schedule_number . ' ' . $schedule_unit,
 			);
 
 			$this->schedule_frequency = $key;
@@ -115,7 +115,7 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 	public function get_schedule_frequency_key( $name = '' ) {
 
 		$schedule_number = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' );
-		$schedule_unit = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
+		$schedule_unit   = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
 
 		switch ( $schedule_unit ) {
 			case 'minutes':
@@ -144,7 +144,7 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 	public function get_schedule_frequency_seconds( $name = '' ) {
 
 		$schedule_number = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' );
-		$schedule_unit = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
+		$schedule_unit   = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
 
 		switch ( $schedule_unit ) {
 			case 'minutes':
@@ -204,9 +204,9 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 		if ( is_array( $this->schedulable_classes[ $this->schedule_name ] ) ) {
 			$schedule = $this->schedulable_classes[ $this->schedule_name ];
 			if ( isset( $schedule['class'] ) ) {
-				$class = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
+				$class  = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 				$method = $schedule['callback'];
-				$task = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
+				$task   = $class->$method( $data['object_type'], $data['object'], $data['mapping'], $data['sf_sync_trigger'] );
 			}
 		}
 		return false;
@@ -225,9 +225,9 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 		if ( is_array( $this->schedulable_classes[ $this->schedule_name ] ) ) {
 			$schedule = $this->schedulable_classes[ $this->schedule_name ];
 			if ( isset( $schedule['class'] ) ) {
-				$class = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
+				$class  = new $schedule['class']( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
 				$method = $schedule['initializer'];
-				$task = $class->$method();
+				$task   = $class->$method();
 			}
 		}
 		// we have checked for data and it's in the queue if it exists
