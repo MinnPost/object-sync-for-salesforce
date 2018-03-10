@@ -1300,6 +1300,13 @@ class Object_Sync_Sf_Admin {
 	*
 	*/
 	public function export_json_file() {
+
+		if ( ! wp_verify_nonce( $_POST['object_sync_for_salesforce_nonce_export'], 'object_sync_for_salesforce_nonce_export' ) ) {
+			return;
+		}
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		$export    = array();
 		if ( in_array( 'fieldmaps', $post_data['export'] ) ) {
