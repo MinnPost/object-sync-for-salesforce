@@ -913,12 +913,18 @@ class Object_Sync_Sf_Admin {
 				'type' => 'error',
 				'dismissible' => true,
 			),
+			'data_saved' => array(
+				'condition' => isset( $get_data['data_saved'] ),
+				'message' => 'This data was successfully saved.',
+				'type' => 'success',
+				'dismissible' => true,
+			),
 		);
 
 		foreach ( $notices as $key => $value ) {
 
 			$condition = $value['condition'];
-			$message = $value['message'];
+			$message   = $value['message'];
 
 			if ( isset( $value['dismissible'] ) ) {
 				$dismissible = $value['dismissible'];
