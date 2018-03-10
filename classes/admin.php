@@ -109,6 +109,8 @@ class Object_Sync_Sf_Admin {
 		$this->default_triggerable = true;
 		// default setting for updateable items
 		$this->default_updateable = true;
+		// default option prefix
+		$this->option_prefix = 'object_sync_for_salesforce_';
 
 		$this->add_actions();
 
@@ -138,6 +140,10 @@ class Object_Sync_Sf_Admin {
 
 		add_action( 'admin_post_delete_object_map', array( $this, 'delete_object_map' ) );
 		add_action( 'admin_post_post_object_map', array( $this, 'prepare_object_map_data' ) );
+
+		// import and export plugin data
+		add_action( 'admin_post_object_sync_for_salesforce_import', array( $this, 'import_json_file' ) );
+		add_action( 'admin_post_object_sync_for_salesforce_export', array( $this, 'export_json_file' ) );
 
 	}
 
@@ -170,10 +176,11 @@ class Object_Sync_Sf_Admin {
 			'authorize' => 'Authorize',
 			'fieldmaps' => 'Fieldmaps',
 			'schedule' => 'Scheduling',
+			'import-export' => 'Import &amp; Export',
 		); // this creates the tabs for the admin
 
 		// optionally make tab(s) for logging and log settings
-		$logging_enabled = get_option( 'object_sync_for_salesforce_enable_logging', false );
+		$logging_enabled = get_option( $this->option_prefix . 'enable_logging', false );
 		$tabs['log_settings'] = 'Log Settings';
 
 		$mapping_errors = $this->mappings->get_failed_object_maps();
@@ -206,10 +213,10 @@ class Object_Sync_Sf_Admin {
 			require( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
 		}
 
-		$push_schedule_number = get_option( 'object_sync_for_salesforce_salesforce_push_schedule_number', '' );
-		$push_schedule_unit = get_option( 'object_sync_for_salesforce_salesforce_push_schedule_unit', '' );
-		$pull_schedule_number = get_option( 'object_sync_for_salesforce_salesforce_pull_schedule_number', '' );
-		$pull_schedule_unit = get_option( 'object_sync_for_salesforce_salesforce_pull_schedule_unit', '' );
+		$push_schedule_number = get_option( $this->option_prefix . 'salesforce_push_schedule_number', '' );
+		$push_schedule_unit = get_option( $this->option_prefix . 'salesforce_push_schedule_unit', '' );
+		$pull_schedule_number = get_option( $this->option_prefix . 'salesforce_pull_schedule_number', '' );
+		$pull_schedule_unit = get_option( $this->option_prefix . 'salesforce_pull_schedule_unit', '' );
 
 		if ( '' === $push_schedule_number && '' === $push_schedule_unit && '' === $pull_schedule_number && '' === $pull_schedule_unit ) {
 			$url = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=schedule' ) );
@@ -331,6 +338,9 @@ class Object_Sync_Sf_Admin {
 					} else {
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors.php' );
 					}
+					break;
+				case 'import-export':
+					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/import-export.php' );
 					break;
 				default:
 					$include_settings = apply_filters( 'object_sync_for_salesforce_settings_tab_include_settings', true, $tab );
@@ -569,8 +579,8 @@ class Object_Sync_Sf_Admin {
 		}
 
 		foreach ( $salesforce_settings as $key => $attributes ) {
-			$id = 'object_sync_for_salesforce_' . $key;
-			$name = 'object_sync_for_salesforce_' . $key;
+			$id = $this->option_prefix . $key;
+			$name = $this->option_prefix . $key;
 			$title = $attributes['title'];
 			$callback = $attributes['callback'];
 			$validate = $attributes['args']['validate'];
@@ -672,8 +682,8 @@ class Object_Sync_Sf_Admin {
 				),
 			);
 			foreach ( $schedule_settings as $key => $attributes ) {
-				$id = 'object_sync_for_salesforce_' . $key;
-				$name = 'object_sync_for_salesforce_' . $key;
+				$id = $this->option_prefix . $key;
+				$name = $this->option_prefix . $key;
 				$title = $attributes['title'];
 				$callback = $attributes['callback'];
 				$page = $attributes['page'];
@@ -857,8 +867,8 @@ class Object_Sync_Sf_Admin {
 			),
 		);
 		foreach ( $log_settings as $key => $attributes ) {
-			$id = 'object_sync_for_salesforce_' . $key;
-			$name = 'object_sync_for_salesforce_' . $key;
+			$id = $this->option_prefix . $key;
+			$name = $this->option_prefix . $key;
 			$title = $attributes['title'];
 			$callback = $attributes['callback'];
 			$page = $attributes['page'];
@@ -905,12 +915,24 @@ class Object_Sync_Sf_Admin {
 				'type' => 'error',
 				'dismissible' => true,
 			),
+			'data_saved' => array(
+				'condition' => isset( $get_data['data_saved'] ) && 'true' === $get_data['data_saved'],
+				'message' => 'This data was successfully saved.',
+				'type' => 'success',
+				'dismissible' => true,
+			),
+			'data_save_error' => array(
+				'condition' => isset( $get_data['data_saved'] ) && 'false' === $get_data['data_saved'],
+				'message' => 'This data was not successfully saved. Try again.',
+				'type' => 'error',
+				'dismissible' => true,
+			),
 		);
 
 		foreach ( $notices as $key => $value ) {
 
 			$condition = $value['condition'];
-			$message = $value['message'];
+			$message   = $value['message'];
 
 			if ( isset( $value['dismissible'] ) ) {
 				$dismissible = $value['dismissible'];
@@ -1290,6 +1312,124 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
+	* Import a json file and use it for plugin data
+	*
+	*/
+	public function import_json_file() {
+
+		if ( ! wp_verify_nonce( $_POST['object_sync_for_salesforce_nonce_import'], 'object_sync_for_salesforce_nonce_import' ) ) {
+			return;
+		}
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$path      = $_FILES['import_file']['name'];
+		$extension = pathinfo( $path, PATHINFO_EXTENSION );
+		if ( 'json' !== $extension ) {
+			wp_die( __( 'Please upload a valid .json file' ) );
+		}
+
+		$import_file = $_FILES['import_file']['tmp_name'];
+		if ( empty( $import_file ) ) {
+			wp_die( __( 'Please upload a file to import' ) );
+		}
+
+		// Retrieve the data from the file and convert the json object to an array.
+		$data = (array) json_decode( file_get_contents( $import_file ), true );
+
+		$overwrite = isset( $_POST['overwrite'] ) ? esc_attr( $_POST['overwrite'] ) : '';
+		if ( '1' === $overwrite ) {
+			if ( isset( $data['fieldmaps'] ) ) {
+				$fieldmaps = $this->mappings->get_fieldmaps();
+				foreach ( $fieldmaps as $fieldmap ) {
+					$id     = $fieldmap['id'];
+					$delete = $this->mappings->delete_fieldmap( $id );
+				}
+			}
+			if ( isset( $data['object_maps'] ) ) {
+				$fieldmaps = $this->mappings->get_object_maps();
+				foreach ( $fieldmaps as $fieldmap ) {
+					$id     = $fieldmap['id'];
+					$delete = $this->mappings->delete_object_map( $id );
+				}
+			}
+			if ( isset( $data['plugin_settings'] ) ) {
+				foreach ( $data['plugin_settings'] as $key => $value ) {
+					delete_option( $value['option_name'] );
+				}
+			}
+		}
+
+		$success = true;
+
+		if ( isset( $data['fieldmaps'] ) ) {
+			foreach ( $data['fieldmaps'] as $fieldmap ) {
+				unset( $fieldmap['id'] );
+				$create = $this->mappings->create_fieldmap( $fieldmap );
+				if ( false === $create ) {
+					$success = false;
+				}
+			}
+		}
+
+		if ( isset( $data['object_maps'] ) ) {
+			foreach ( $data['object_maps'] as $object_map ) {
+				unset( $object_map['id'] );
+				$create = $this->mappings->create_object_map( $object_map );
+				if ( false === $create ) {
+					$success = false;
+				}
+			}
+		}
+
+		if ( isset( $data['plugin_settings'] ) ) {
+			foreach ( $data['plugin_settings'] as $key => $value ) {
+				update_option( $value['option_name'], maybe_unserialize( $value['option_value'] ), $value['autoload'] );
+			}
+		}
+
+		if ( true === $success ) {
+			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=import-export&data_saved=true' ) );
+			exit;
+		} else {
+			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=import-export&data_saved=false' ) );
+			exit;
+		}
+
+	}
+
+	/**
+	* Create a json file for exporting
+	*
+	*/
+	public function export_json_file() {
+
+		if ( ! wp_verify_nonce( $_POST['object_sync_for_salesforce_nonce_export'], 'object_sync_for_salesforce_nonce_export' ) ) {
+			return;
+		}
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$export    = array();
+		if ( in_array( 'fieldmaps', $post_data['export'] ) ) {
+			$export['fieldmaps'] = $this->mappings->get_fieldmaps();
+		}
+		if ( in_array( 'object_maps', $post_data['export'] ) ) {
+			$export['object_maps'] = $this->mappings->get_object_maps();
+		}
+		if ( in_array( 'plugin_settings', $post_data['export'] ) ) {
+			$export['plugin_settings'] = $this->wpdb->get_results( 'SELECT * FROM ' . $this->wpdb->prefix . 'options' . ' WHERE option_name like "' . $this->option_prefix . '%"', ARRAY_A );
+		}
+		nocache_headers();
+		header( 'Content-Type: application/json; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename=object-sync-for-salesforce-data-export-' . date( 'm-d-Y' ) . '.json' );
+		header( "Expires: 0" );
+		echo wp_json_encode( $export );
+		exit;
+	}
+
+	/**
 	* Default display for <input> fields
 	*
 	* @param array $args
@@ -1539,9 +1679,9 @@ class Object_Sync_Sf_Admin {
 	* For this plugin at this time, that is the decision we are making: don't do any kind of authorization stuff inside Salesforce
 	*/
 	private function logout() {
-		$this->access_token = delete_option( 'object_sync_for_salesforce_access_token' );
-		$this->instance_url = delete_option( 'object_sync_for_salesforce_instance_url' );
-		$this->refresh_token = delete_option( 'object_sync_for_salesforce_refresh_token' );
+		$this->access_token = delete_option( $this->option_prefix . 'access_token' );
+		$this->instance_url = delete_option( $this->option_prefix . 'instance_url' );
+		$this->refresh_token = delete_option( $this->option_prefix . 'refresh_token' );
 		echo sprintf( '<p>You have been logged out. You can use the <a href="%1$s">%2$s</a> tab to log in again.</p>',
 			esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=authorize' ) ),
 			esc_html__( 'Authorize', 'object-sync-for-salesforce' )
