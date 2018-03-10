@@ -139,6 +139,8 @@ class Object_Sync_Sf_Admin {
 		add_action( 'admin_post_delete_object_map', array( $this, 'delete_object_map' ) );
 		add_action( 'admin_post_post_object_map', array( $this, 'prepare_object_map_data' ) );
 
+		add_action( 'admin_post_object_sync_for_salesforce_export', array( $this, 'export_json_file' ) );
+
 	}
 
 	/**
@@ -170,6 +172,7 @@ class Object_Sync_Sf_Admin {
 			'authorize' => 'Authorize',
 			'fieldmaps' => 'Fieldmaps',
 			'schedule' => 'Scheduling',
+			'import-export' => 'Import &amp; Export',
 		); // this creates the tabs for the admin
 
 		// optionally make tab(s) for logging and log settings
@@ -331,6 +334,9 @@ class Object_Sync_Sf_Admin {
 					} else {
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors.php' );
 					}
+					break;
+				case 'import-export':
+					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/import-export.php' );
 					break;
 				default:
 					$include_settings = apply_filters( 'object_sync_for_salesforce_settings_tab_include_settings', true, $tab );
@@ -1287,6 +1293,21 @@ class Object_Sync_Sf_Admin {
 			wp_safe_redirect( $url );
 			exit();
 		}
+	}
+
+	/**
+	* Create a json file for exporting
+	*
+	*/
+	public function export_json_file() {
+		$data = get_option( 'object_sync_for_salesforce_access_token' );
+
+		nocache_headers();
+		header( 'Content-Type: application/json; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename=object-sync-for-salesforce-data-export-' . date( 'm-d-Y' ) . '.json' );
+		header( "Expires: 0" );
+		echo json_encode( $data );
+		exit;
 	}
 
 	/**
