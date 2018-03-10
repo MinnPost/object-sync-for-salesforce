@@ -2,7 +2,7 @@
   "name": "object-sync-for-salesforce",
   "title": "Object Sync for Salesforce",
   "description": "WordPress plugin that implements mapping and syncing between Salesforce objects and WordPress objects",
-  "version": "1.2.8",
+  "version": "1.3.0",
   "main": "index.js",
   "repository": "https://github.com/MinnPost/object-sync-for-salesforce.git",
   "author": "MinnPost",
@@ -39,6 +39,7 @@
     "gulp-uglify": "~3",
     "gulp-util": "~3",
     "gulp-wp-pot": "^2.2.0",
+    "npm": "^5.7.1",
     "npm-check-updates": "^2.14.1",
     "webpack": "^4.1.1"
   }

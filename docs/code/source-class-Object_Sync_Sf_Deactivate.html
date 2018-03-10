@@ -112,10 +112,10 @@
 </span></span><span id="26" class="l"><span class="php-comment">    *
 </span></span><span id="27" class="l"><span class="php-comment">    */</span>
 </span><span id="28" class="l">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$slug</span>, <span class="php-var">$schedulable_classes</span> ) {
-</span><span id="29" class="l">        <span class="php-var">$this</span>-&gt;wpdb = <span class="php-var">$wpdb</span>;
-</span><span id="30" class="l">        <span class="php-var">$this</span>-&gt;version = <span class="php-var">$version</span>;
+</span><span id="29" class="l">        <span class="php-var">$this</span>-&gt;wpdb                = <span class="php-var">$wpdb</span>;
+</span><span id="30" class="l">        <span class="php-var">$this</span>-&gt;version             = <span class="php-var">$version</span>;
 </span><span id="31" class="l">        <span class="php-var">$this</span>-&gt;schedulable_classes = <span class="php-var">$schedulable_classes</span>;
-</span><span id="32" class="l">        <span class="php-var">$delete_data</span> = (int) get_option( <span class="php-quote">'object_sync_for_salesforce_delete_data_on_uninstall'</span>, <span class="php-num">0</span> );
+</span><span id="32" class="l">        <span class="php-var">$delete_data</span>               = (int) get_option( <span class="php-quote">'object_sync_for_salesforce_delete_data_on_uninstall'</span>, <span class="php-num">0</span> );
 </span><span id="33" class="l">        <span class="php-keyword1">if</span> ( <span class="php-num">1</span> === <span class="php-var">$delete_data</span> ) {
 </span><span id="34" class="l">            register_deactivation_hook( <span class="php-keyword2">dirname</span>( __DIR__ ) . <span class="php-quote">'/'</span> . <span class="php-var">$slug</span> . <span class="php-quote">'.php'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'wordpress_salesforce_drop_tables'</span> ) );
 </span><span id="35" class="l">            register_deactivation_hook( <span class="php-keyword2">dirname</span>( __DIR__ ) . <span class="php-quote">'/'</span> . <span class="php-var">$slug</span> . <span class="php-quote">'.php'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'clear_schedule'</span> ) );
@@ -133,7 +133,7 @@
 </span></span><span id="47" class="l"><span class="php-comment">    *
 </span></span><span id="48" class="l"><span class="php-comment">    */</span>
 </span><span id="49" class="l">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> wordpress_salesforce_drop_tables() {
-</span><span id="50" class="l">        <span class="php-var">$field_map_table</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;prefix . <span class="php-quote">'object_sync_sf_field_map'</span>;
+</span><span id="50" class="l">        <span class="php-var">$field_map_table</span>  = <span class="php-var">$this</span>-&gt;wpdb-&gt;prefix . <span class="php-quote">'object_sync_sf_field_map'</span>;
 </span><span id="51" class="l">        <span class="php-var">$object_map_table</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;prefix . <span class="php-quote">'object_sync_sf_object_map'</span>;
 </span><span id="52" class="l">        <span class="php-var">$this</span>-&gt;wpdb-&gt;query( <span class="php-quote">'DROP TABLE IF EXISTS '</span> . <span class="php-var">$field_map_table</span> );
 </span><span id="53" class="l">        <span class="php-var">$this</span>-&gt;wpdb-&gt;query( <span class="php-quote">'DROP TABLE IF EXISTS '</span> . <span class="php-var">$object_map_table</span> );
@@ -199,7 +199,7 @@
 </span></span><span id="113" class="l"><span class="php-comment">    *
 </span></span><span id="114" class="l"><span class="php-comment">    */</span>
 </span><span id="115" class="l">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> delete_plugin_options() {
-</span><span id="116" class="l">        <span class="php-var">$table</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;prefix . <span class="php-quote">'options'</span>;
+</span><span id="116" class="l">        <span class="php-var">$table</span>          = <span class="php-var">$this</span>-&gt;wpdb-&gt;prefix . <span class="php-quote">'options'</span>;
 </span><span id="117" class="l">        <span class="php-var">$plugin_options</span> = <span class="php-var">$this</span>-&gt;wpdb-&gt;get_results( <span class="php-quote">'SELECT option_name FROM '</span> . <span class="php-var">$table</span> . <span class="php-quote">' WHERE option_name LIKE &quot;object_sync_for_salesforce_%&quot;'</span>, ARRAY_A );
 </span><span id="118" class="l">        <span class="php-keyword1">foreach</span> ( <span class="php-var">$plugin_options</span> <span class="php-keyword1">as</span> <span class="php-var">$option</span> ) {
 </span><span id="119" class="l">            delete_option( <span class="php-var">$option</span>[<span class="php-quote">'option_name'</span>] );

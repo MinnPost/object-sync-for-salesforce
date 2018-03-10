@@ -101,7 +101,7 @@
 </span><span id="15" class="l"><span class="php-keyword1">class</span> Object_Sync_Sf_Salesforce_Select_Query {
 </span><span id="16" class="l">
 </span><span id="17" class="l">    <span class="php-keyword1">public</span> <span class="php-var">$fields</span> = <span class="php-keyword1">array</span>();
-</span><span id="18" class="l">    <span class="php-keyword1">public</span> <span class="php-var">$order</span> = <span class="php-keyword1">array</span>();
+</span><span id="18" class="l">    <span class="php-keyword1">public</span> <span class="php-var">$order</span>  = <span class="php-keyword1">array</span>();
 </span><span id="19" class="l">    <span class="php-keyword1">public</span> <span class="php-var">$object_type</span>;
 </span><span id="20" class="l">    <span class="php-keyword1">public</span> <span class="php-var">$limit</span>;
 </span><span id="21" class="l">    <span class="php-keyword1">public</span> <span class="php-var">$offset</span>;
@@ -139,9 +139,9 @@
 </span><span id="53" class="l">            }
 </span><span id="54" class="l">        }
 </span><span id="55" class="l">        <span class="php-var">$this</span>-&gt;conditions[] = <span class="php-keyword1">array</span>(
-</span><span id="56" class="l">            <span class="php-quote">'field'</span> =&gt; <span class="php-var">$field</span>,
+</span><span id="56" class="l">            <span class="php-quote">'field'</span>    =&gt; <span class="php-var">$field</span>,
 </span><span id="57" class="l">            <span class="php-quote">'operator'</span> =&gt; <span class="php-var">$operator</span>,
-</span><span id="58" class="l">            <span class="php-quote">'value'</span> =&gt; <span class="php-var">$value</span>,
+</span><span id="58" class="l">            <span class="php-quote">'value'</span>    =&gt; <span class="php-var">$value</span>,
 </span><span id="59" class="l">        );
 </span><span id="60" class="l">    }
 </span><span id="61" class="l">
@@ -155,7 +155,7 @@
 </span></span><span id="69" class="l"><span class="php-comment">    */</span>
 </span><span id="70" class="l">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __toString() {
 </span><span id="71" class="l">
-</span><span id="72" class="l">        <span class="php-var">$query</span> = <span class="php-quote">'SELECT '</span>;
+</span><span id="72" class="l">        <span class="php-var">$query</span>  = <span class="php-quote">'SELECT '</span>;
 </span><span id="73" class="l">        <span class="php-var">$query</span> .= <span class="php-keyword2">implode</span>( <span class="php-quote">', '</span>, <span class="php-var">$this</span>-&gt;fields );
 </span><span id="74" class="l">        <span class="php-var">$query</span> .= <span class="php-quote">' FROM '</span> . <span class="php-var">$this</span>-&gt;object_type;
 </span><span id="75" class="l">

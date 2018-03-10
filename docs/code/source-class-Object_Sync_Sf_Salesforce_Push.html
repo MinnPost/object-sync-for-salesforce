@@ -129,18 +129,18 @@
 </span></span><span id="43" class="l"><span class="php-comment">    * @throws \Object_Sync_Sf_Exception
 </span></span><span id="44" class="l"><span class="php-comment">    */</span>
 </span><span id="45" class="l">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct( <span class="php-var">$wpdb</span>, <span class="php-var">$version</span>, <span class="php-var">$login_credentials</span>, <span class="php-var">$slug</span>, <span class="php-var">$wordpress</span>, <span class="php-var">$salesforce</span>, <span class="php-var">$mappings</span>, <span class="php-var">$logging</span>, <span class="php-var">$schedulable_classes</span> ) {
-</span><span id="46" class="l">        <span class="php-var">$this</span>-&gt;wpdb = <span class="php-var">$wpdb</span>;
-</span><span id="47" class="l">        <span class="php-var">$this</span>-&gt;version = <span class="php-var">$version</span>;
-</span><span id="48" class="l">        <span class="php-var">$this</span>-&gt;login_credentials = <span class="php-var">$login_credentials</span>;
-</span><span id="49" class="l">        <span class="php-var">$this</span>-&gt;slug = <span class="php-var">$slug</span>;
-</span><span id="50" class="l">        <span class="php-var">$this</span>-&gt;wordpress = <span class="php-var">$wordpress</span>;
-</span><span id="51" class="l">        <span class="php-var">$this</span>-&gt;salesforce = <span class="php-var">$salesforce</span>;
-</span><span id="52" class="l">        <span class="php-var">$this</span>-&gt;mappings = <span class="php-var">$mappings</span>;
-</span><span id="53" class="l">        <span class="php-var">$this</span>-&gt;logging = <span class="php-var">$logging</span>;
+</span><span id="46" class="l">        <span class="php-var">$this</span>-&gt;wpdb                = <span class="php-var">$wpdb</span>;
+</span><span id="47" class="l">        <span class="php-var">$this</span>-&gt;version             = <span class="php-var">$version</span>;
+</span><span id="48" class="l">        <span class="php-var">$this</span>-&gt;login_credentials   = <span class="php-var">$login_credentials</span>;
+</span><span id="49" class="l">        <span class="php-var">$this</span>-&gt;slug                = <span class="php-var">$slug</span>;
+</span><span id="50" class="l">        <span class="php-var">$this</span>-&gt;wordpress           = <span class="php-var">$wordpress</span>;
+</span><span id="51" class="l">        <span class="php-var">$this</span>-&gt;salesforce          = <span class="php-var">$salesforce</span>;
+</span><span id="52" class="l">        <span class="php-var">$this</span>-&gt;mappings            = <span class="php-var">$mappings</span>;
+</span><span id="53" class="l">        <span class="php-var">$this</span>-&gt;logging             = <span class="php-var">$logging</span>;
 </span><span id="54" class="l">        <span class="php-var">$this</span>-&gt;schedulable_classes = <span class="php-var">$schedulable_classes</span>;
 </span><span id="55" class="l">
 </span><span id="56" class="l">        <span class="php-var">$this</span>-&gt;schedule_name = <span class="php-quote">'salesforce_push'</span>;
-</span><span id="57" class="l">        <span class="php-var">$this</span>-&gt;schedule = <span class="php-var">$this</span>-&gt;schedule();
+</span><span id="57" class="l">        <span class="php-var">$this</span>-&gt;schedule      = <span class="php-var">$this</span>-&gt;schedule();
 </span><span id="58" class="l">        <span class="php-var">$this</span>-&gt;add_actions();
 </span><span id="59" class="l">
 </span><span id="60" class="l">        <span class="php-var">$this</span>-&gt;debug = get_option( <span class="php-quote">'object_sync_for_salesforce_debug_mode'</span>, <span class="php-keyword1">false</span> );
@@ -339,7 +339,7 @@
 </span></span><span id="253" class="l"><span class="php-comment">    */</span>
 </span><span id="254" class="l">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> delete_term( <span class="php-var">$term</span>, <span class="php-var">$tt_id</span>, <span class="php-var">$taxonomy</span>, <span class="php-var">$deleted_term</span> ) {
 </span><span id="255" class="l">        <span class="php-var">$deleted_term</span> = (<span class="php-keyword1">array</span>) <span class="php-var">$deleted_term</span>;
-</span><span id="256" class="l">        <span class="php-var">$type</span> = <span class="php-var">$deleted_term</span>[<span class="php-quote">'taxonomy'</span>];
+</span><span id="256" class="l">        <span class="php-var">$type</span>         = <span class="php-var">$deleted_term</span>[<span class="php-quote">'taxonomy'</span>];
 </span><span id="257" class="l">        <span class="php-var">$this</span>-&gt;object_delete( <span class="php-var">$deleted_term</span>, <span class="php-var">$type</span> );
 </span><span id="258" class="l">    }
 </span><span id="259" class="l">
@@ -415,7 +415,7 @@
 </span></span><span id="329" class="l"><span class="php-comment">    */</span>
 </span><span id="330" class="l">    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> salesforce_push_object_crud( <span class="php-var">$object_type</span>, <span class="php-var">$object</span>, <span class="php-var">$sf_sync_trigger</span>, <span class="php-var">$manual</span> = <span class="php-keyword1">false</span> ) {
 </span><span id="331" class="l">
-</span><span id="332" class="l">        <span class="php-var">$structure</span> = <span class="php-var">$this</span>-&gt;wordpress-&gt;get_wordpress_table_structure( <span class="php-var">$object_type</span> );
+</span><span id="332" class="l">        <span class="php-var">$structure</span>       = <span class="php-var">$this</span>-&gt;wordpress-&gt;get_wordpress_table_structure( <span class="php-var">$object_type</span> );
 </span><span id="333" class="l">        <span class="php-var">$object_id_field</span> = <span class="php-var">$structure</span>[<span class="php-quote">'id_field'</span>];
 </span><span id="334" class="l">
 </span><span id="335" class="l">        <span class="php-comment">// there is a WordPress object to push</span>
@@ -506,9 +506,9 @@
 </span><span id="420" class="l">                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$mapping</span>[<span class="php-quote">'push_async'</span>] ) &amp;&amp; ( <span class="php-quote">'1'</span> === <span class="php-var">$mapping</span>[<span class="php-quote">'push_async'</span>] ) &amp;&amp; <span class="php-keyword1">false</span> === <span class="php-var">$manual</span> ) {
 </span><span id="421" class="l">                    <span class="php-comment">// this item is async and we want to save it to the queue</span>
 </span><span id="422" class="l">                    <span class="php-var">$data</span> = <span class="php-keyword1">array</span>(
-</span><span id="423" class="l">                        <span class="php-quote">'object_type'</span> =&gt; <span class="php-var">$object_type</span>,
-</span><span id="424" class="l">                        <span class="php-quote">'object'</span> =&gt; <span class="php-var">$object</span>,
-</span><span id="425" class="l">                        <span class="php-quote">'mapping'</span> =&gt; <span class="php-var">$mapping</span>,
+</span><span id="423" class="l">                        <span class="php-quote">'object_type'</span>     =&gt; <span class="php-var">$object_type</span>,
+</span><span id="424" class="l">                        <span class="php-quote">'object'</span>          =&gt; <span class="php-var">$object</span>,
+</span><span id="425" class="l">                        <span class="php-quote">'mapping'</span>         =&gt; <span class="php-var">$mapping</span>,
 </span><span id="426" class="l">                        <span class="php-quote">'sf_sync_trigger'</span> =&gt; <span class="php-var">$sf_sync_trigger</span>,
 </span><span id="427" class="l">                    );
 </span><span id="428" class="l">
@@ -531,7 +531,7 @@
 </span><span id="445" class="l">            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'../vendor/autoload.php'</span>;
 </span><span id="446" class="l">            <span class="php-keyword1">require_once</span> plugin_dir_path( __FILE__ ) . <span class="php-quote">'../classes/schedule.php'</span>;
 </span><span id="447" class="l">        }
-</span><span id="448" class="l">        <span class="php-var">$schedule</span> = <span class="php-keyword1">new</span> Object_Sync_Sf_Schedule( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;slug, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;schedule_name, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
+</span><span id="448" class="l">        <span class="php-var">$schedule</span>       = <span class="php-keyword1">new</span> Object_Sync_Sf_Schedule( <span class="php-var">$this</span>-&gt;wpdb, <span class="php-var">$this</span>-&gt;version, <span class="php-var">$this</span>-&gt;login_credentials, <span class="php-var">$this</span>-&gt;slug, <span class="php-var">$this</span>-&gt;wordpress, <span class="php-var">$this</span>-&gt;salesforce, <span class="php-var">$this</span>-&gt;mappings, <span class="php-var">$this</span>-&gt;schedule_name, <span class="php-var">$this</span>-&gt;logging, <span class="php-var">$this</span>-&gt;schedulable_classes );
 </span><span id="449" class="l">        <span class="php-var">$this</span>-&gt;schedule = <span class="php-var">$schedule</span>;
 </span><span id="450" class="l">        <span class="php-keyword1">return</span> <span class="php-var">$schedule</span>;
 </span><span id="451" class="l">    }
@@ -574,9 +574,9 @@
 </span><span id="488" class="l">        <span class="php-comment">// we already have the data from WordPress at this point; we just need to work with it in Salesforce</span>
 </span><span id="489" class="l">        <span class="php-var">$synced_object</span> = <span class="php-keyword1">array</span>(
 </span><span id="490" class="l">            <span class="php-quote">'wordpress_object'</span> =&gt; <span class="php-var">$object</span>,
-</span><span id="491" class="l">            <span class="php-quote">'mapping_object'</span> =&gt; <span class="php-var">$mapping_object</span>,
-</span><span id="492" class="l">            <span class="php-quote">'queue_item'</span> =&gt; <span class="php-keyword1">false</span>,
-</span><span id="493" class="l">            <span class="php-quote">'mapping'</span> =&gt; <span class="php-var">$mapping</span>,
+</span><span id="491" class="l">            <span class="php-quote">'mapping_object'</span>   =&gt; <span class="php-var">$mapping_object</span>,
+</span><span id="492" class="l">            <span class="php-quote">'queue_item'</span>       =&gt; <span class="php-keyword1">false</span>,
+</span><span id="493" class="l">            <span class="php-quote">'mapping'</span>          =&gt; <span class="php-var">$mapping</span>,
 </span><span id="494" class="l">        );
 </span><span id="495" class="l">
 </span><span id="496" class="l">        <span class="php-var">$op</span> = <span class="php-quote">''</span>;
@@ -656,7 +656,7 @@
 </span><span id="570" class="l">                    }
 </span><span id="571" class="l">                } <span class="php-keyword1">else</span> {
 </span><span id="572" class="l">                    <span class="php-var">$more_ids</span> = <span class="php-quote">'&lt;p&gt;The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are: '</span>;
-</span><span id="573" class="l">                    <span class="php-var">$i</span> = <span class="php-num">0</span>;
+</span><span id="573" class="l">                    <span class="php-var">$i</span>        = <span class="php-num">0</span>;
 </span><span id="574" class="l">                    <span class="php-keyword1">foreach</span> ( <span class="php-var">$salesforce_check</span> <span class="php-keyword1">as</span> <span class="php-var">$match</span> ) {
 </span><span id="575" class="l">                        <span class="php-var">$i</span>++;
 </span><span id="576" class="l">                        <span class="php-var">$more_ids</span> .= <span class="php-var">$match</span>[<span class="php-quote">'wordpress_id'</span>];
@@ -726,17 +726,17 @@
 </span><span id="640" class="l">
 </span><span id="641" class="l">        <span class="php-comment">// if there is a prematch WordPress field - ie email - on the fieldmap object</span>
 </span><span id="642" class="l">        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>] ) &amp;&amp; <span class="php-keyword2">is_array</span>( <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>] ) ) {
-</span><span id="643" class="l">            <span class="php-var">$prematch_field_wordpress</span> = <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>][<span class="php-quote">'wordpress_field'</span>];
+</span><span id="643" class="l">            <span class="php-var">$prematch_field_wordpress</span>  = <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>][<span class="php-quote">'wordpress_field'</span>];
 </span><span id="644" class="l">            <span class="php-var">$prematch_field_salesforce</span> = <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>][<span class="php-quote">'salesforce_field'</span>];
-</span><span id="645" class="l">            <span class="php-var">$prematch_value</span> = <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>][<span class="php-quote">'value'</span>];
+</span><span id="645" class="l">            <span class="php-var">$prematch_value</span>            = <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>][<span class="php-quote">'value'</span>];
 </span><span id="646" class="l">            <span class="php-keyword1">unset</span>( <span class="php-var">$params</span>[<span class="php-quote">'prematch'</span>] );
 </span><span id="647" class="l">        }
 </span><span id="648" class="l">
 </span><span id="649" class="l">        <span class="php-comment">// if there is an external key field in Salesforce - ie mailchimp user id - on the fieldmap object</span>
 </span><span id="650" class="l">        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$params</span>[<span class="php-quote">'key'</span>] ) &amp;&amp; <span class="php-keyword2">is_array</span>( <span class="php-var">$params</span>[<span class="php-quote">'key'</span>] ) ) {
-</span><span id="651" class="l">            <span class="php-var">$key_field_wordpress</span> = <span class="php-var">$params</span>[<span class="php-quote">'key'</span>][<span class="php-quote">'wordpress_field'</span>];
+</span><span id="651" class="l">            <span class="php-var">$key_field_wordpress</span>  = <span class="php-var">$params</span>[<span class="php-quote">'key'</span>][<span class="php-quote">'wordpress_field'</span>];
 </span><span id="652" class="l">            <span class="php-var">$key_field_salesforce</span> = <span class="php-var">$params</span>[<span class="php-quote">'key'</span>][<span class="php-quote">'salesforce_field'</span>];
-</span><span id="653" class="l">            <span class="php-var">$key_value</span> = <span class="php-var">$params</span>[<span class="php-quote">'key'</span>][<span class="php-quote">'value'</span>];
+</span><span id="653" class="l">            <span class="php-var">$key_value</span>            = <span class="php-var">$params</span>[<span class="php-quote">'key'</span>][<span class="php-quote">'value'</span>];
 </span><span id="654" class="l">            <span class="php-keyword1">unset</span>( <span class="php-var">$params</span>[<span class="php-quote">'key'</span>] );
 </span><span id="655" class="l">        }
 </span><span id="656" class="l">
@@ -804,15 +804,15 @@
 </span><span id="718" class="l">                    }
 </span><span id="719" class="l">
 </span><span id="720" class="l">                    <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$prematch_field_wordpress</span> ) ) {
-</span><span id="721" class="l">                        <span class="php-var">$upsert_key</span> = <span class="php-var">$prematch_field_salesforce</span>;
+</span><span id="721" class="l">                        <span class="php-var">$upsert_key</span>   = <span class="php-var">$prematch_field_salesforce</span>;
 </span><span id="722" class="l">                        <span class="php-var">$upsert_value</span> = <span class="php-var">$encoded_prematch_value</span>;
 </span><span id="723" class="l">                    } <span class="php-keyword1">elseif</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$key_field_wordpress</span> ) ) {
-</span><span id="724" class="l">                        <span class="php-var">$upsert_key</span> = <span class="php-var">$key_field_salesforce</span>;
+</span><span id="724" class="l">                        <span class="php-var">$upsert_key</span>   = <span class="php-var">$key_field_salesforce</span>;
 </span><span id="725" class="l">                        <span class="php-var">$upsert_value</span> = <span class="php-var">$encoded_key_value</span>;
 </span><span id="726" class="l">                    }
 </span><span id="727" class="l">
 </span><span id="728" class="l">                    <span class="php-keyword1">if</span> ( <span class="php-keyword1">null</span> !== <span class="php-var">$salesforce_id</span> ) {
-</span><span id="729" class="l">                        <span class="php-var">$upsert_key</span> = <span class="php-quote">'Id'</span>;
+</span><span id="729" class="l">                        <span class="php-var">$upsert_key</span>   = <span class="php-quote">'Id'</span>;
 </span><span id="730" class="l">                        <span class="php-var">$upsert_value</span> = <span class="php-var">$salesforce_id</span>;
 </span><span id="731" class="l">                    }
 </span><span id="732" class="l">
@@ -824,7 +824,7 @@
 </span><span id="738" class="l">                    <span class="php-keyword1">switch</span> ( <span class="php-var">$sfapi</span>-&gt;response[<span class="php-quote">'code'</span>] ) {
 </span><span id="739" class="l">                        <span class="php-comment">// On Upsert:update retrieved object.</span>
 </span><span id="740" class="l">                        <span class="php-keyword1">case</span> <span class="php-quote">'204'</span>:
-</span><span id="741" class="l">                            <span class="php-var">$sf_object</span> = <span class="php-var">$sfapi</span>-&gt;object_readby_external_id( <span class="php-var">$mapping</span>[<span class="php-quote">'salesforce_object'</span>], <span class="php-var">$upsert_key</span>, <span class="php-var">$upsert_value</span> );
+</span><span id="741" class="l">                            <span class="php-var">$sf_object</span>             = <span class="php-var">$sfapi</span>-&gt;object_readby_external_id( <span class="php-var">$mapping</span>[<span class="php-quote">'salesforce_object'</span>], <span class="php-var">$upsert_key</span>, <span class="php-var">$upsert_value</span> );
 </span><span id="742" class="l">                            <span class="php-var">$salesforce_data</span>[<span class="php-quote">'id'</span>] = <span class="php-var">$sf_object</span>[<span class="php-quote">'data'</span>][<span class="php-quote">'Id'</span>];
 </span><span id="743" class="l">                            <span class="php-keyword1">break</span>;
 </span><span id="744" class="l">                        <span class="php-comment">// Handle duplicate records.</span>
@@ -834,7 +834,7 @@
 </span><span id="748" class="l">                    }
 </span><span id="749" class="l">                } <span class="php-keyword1">else</span> {
 </span><span id="750" class="l">                    <span class="php-comment">// No key or prematch field exists on this field map object, create a new object in Salesforce.</span>
-</span><span id="751" class="l">                    <span class="php-var">$op</span> = <span class="php-quote">'Create'</span>;
+</span><span id="751" class="l">                    <span class="php-var">$op</span>     = <span class="php-quote">'Create'</span>;
 </span><span id="752" class="l">                    <span class="php-var">$result</span> = <span class="php-var">$sfapi</span>-&gt;object_create( <span class="php-var">$mapping</span>[<span class="php-quote">'salesforce_object'</span>], <span class="php-var">$params</span> );
 </span><span id="753" class="l">                } <span class="php-comment">// End if().</span>
 </span><span id="754" class="l">            } <span class="php-keyword1">catch</span> ( Object_Sync_Sf_Exception <span class="php-var">$e</span> ) {
@@ -882,7 +882,7 @@
 </span><span id="796" class="l">
 </span><span id="797" class="l">            <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$result</span>[<span class="php-quote">'errorCode'</span>] ) ) {
 </span><span id="798" class="l">                <span class="php-var">$salesforce_id</span> = <span class="php-var">$salesforce_data</span>[<span class="php-quote">'id'</span>];
-</span><span id="799" class="l">                <span class="php-var">$status</span> = <span class="php-quote">'success'</span>;
+</span><span id="799" class="l">                <span class="php-var">$status</span>        = <span class="php-quote">'success'</span>;
 </span><span id="800" class="l">
 </span><span id="801" class="l">                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;logging ) ) {
 </span><span id="802" class="l">                    <span class="php-var">$logging</span> = <span class="php-var">$this</span>-&gt;logging;
@@ -909,9 +909,9 @@
 </span><span id="823" class="l">                );
 </span><span id="824" class="l">
 </span><span id="825" class="l">                <span class="php-comment">// update that mapping object</span>
-</span><span id="826" class="l">                <span class="php-var">$mapping_object</span>[<span class="php-quote">'salesforce_id'</span>] = <span class="php-var">$salesforce_id</span>;
+</span><span id="826" class="l">                <span class="php-var">$mapping_object</span>[<span class="php-quote">'salesforce_id'</span>]     = <span class="php-var">$salesforce_id</span>;
 </span><span id="827" class="l">                <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync_message'</span>] = esc_html__( <span class="php-quote">'Mapping object updated via function: '</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ) . __FUNCTION__;
-</span><span id="828" class="l">                <span class="php-var">$mapping_object</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;update_object_map( <span class="php-var">$mapping_object</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] );
+</span><span id="828" class="l">                <span class="php-var">$mapping_object</span>                      = <span class="php-var">$this</span>-&gt;mappings-&gt;update_object_map( <span class="php-var">$mapping_object</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] );
 </span><span id="829" class="l">
 </span><span id="830" class="l">                <span class="php-comment">// hook for push success</span>
 </span><span id="831" class="l">                do_action( <span class="php-quote">'object_sync_for_salesforce_push_success'</span>, <span class="php-var">$op</span>, <span class="php-var">$sfapi</span>-&gt;response, <span class="php-var">$synced_object</span>, <span class="php-var">$object_id</span> );
@@ -1011,10 +1011,10 @@
 </span><span id="925" class="l">                <span class="php-comment">// returns $params.</span>
 </span><span id="926" class="l">                <span class="php-var">$params</span> = apply_filters( <span class="php-quote">'object_sync_for_salesforce_push_update_params_modify'</span>, <span class="php-var">$params</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'salesforce_id'</span>], <span class="php-var">$mapping</span>, <span class="php-var">$object</span> );
 </span><span id="927" class="l">
-</span><span id="928" class="l">                <span class="php-var">$op</span> = <span class="php-quote">'Update'</span>;
+</span><span id="928" class="l">                <span class="php-var">$op</span>     = <span class="php-quote">'Update'</span>;
 </span><span id="929" class="l">                <span class="php-var">$result</span> = <span class="php-var">$sfapi</span>-&gt;object_update( <span class="php-var">$mapping</span>[<span class="php-quote">'salesforce_object'</span>], <span class="php-var">$mapping_object</span>[<span class="php-quote">'salesforce_id'</span>], <span class="php-var">$params</span> );
 </span><span id="930" class="l">
-</span><span id="931" class="l">                <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync_status'</span>] = <span class="php-var">$this</span>-&gt;mappings-&gt;status_success;
+</span><span id="931" class="l">                <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync_status'</span>]  = <span class="php-var">$this</span>-&gt;mappings-&gt;status_success;
 </span><span id="932" class="l">                <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync_message'</span>] = esc_html__( <span class="php-quote">'Mapping object updated via function: '</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ) . __FUNCTION__;
 </span><span id="933" class="l">
 </span><span id="934" class="l">                <span class="php-var">$status</span> = <span class="php-quote">'success'</span>;
@@ -1072,7 +1072,7 @@
 </span><span id="986" class="l">                    <span class="php-var">$status</span>
 </span><span id="987" class="l">                );
 </span><span id="988" class="l">
-</span><span id="989" class="l">                <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync_status'</span>] = <span class="php-var">$this</span>-&gt;mappings-&gt;status_error;
+</span><span id="989" class="l">                <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync_status'</span>]  = <span class="php-var">$this</span>-&gt;mappings-&gt;status_error;
 </span><span id="990" class="l">                <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync_message'</span>] = <span class="php-var">$e</span>-&gt;getMessage();
 </span><span id="991" class="l">
 </span><span id="992" class="l">                <span class="php-comment">// hook for push fail</span>
@@ -1082,7 +1082,7 @@
 </span><span id="996" class="l">
 </span><span id="997" class="l">            <span class="php-comment">// tell the mapping object - whether it is new or already existed - how we just used it</span>
 </span><span id="998" class="l">            <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync_action'</span>] = <span class="php-quote">'push'</span>;
-</span><span id="999" class="l">            <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync'</span>] = current_time( <span class="php-quote">'mysql'</span> );
+</span><span id="999" class="l">            <span class="php-var">$mapping_object</span>[<span class="php-quote">'last_sync'</span>]        = current_time( <span class="php-quote">'mysql'</span> );
 </span><span id="1000" class="l">
 </span><span id="1001" class="l">            <span class="php-comment">// update that mapping object</span>
 </span><span id="1002" class="l">            <span class="php-var">$result</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;update_object_map( <span class="php-var">$mapping_object</span>, <span class="php-var">$mapping_object</span>[<span class="php-quote">'id'</span>] );
@@ -1118,17 +1118,17 @@
 </span><span id="1032" class="l">        <span class="php-comment">// Create object map and save it</span>
 </span><span id="1033" class="l">        <span class="php-var">$mapping_object</span> = <span class="php-var">$this</span>-&gt;mappings-&gt;create_object_map(
 </span><span id="1034" class="l">            <span class="php-keyword1">array</span>(
-</span><span id="1035" class="l">                <span class="php-quote">'wordpress_id'</span> =&gt; <span class="php-var">$wordpress_object</span>[ <span class="php-var">$id_field_name</span> ], <span class="php-comment">// wordpress unique id</span>
-</span><span id="1036" class="l">                <span class="php-quote">'salesforce_id'</span> =&gt; <span class="php-var">$salesforce_id</span>, <span class="php-comment">// salesforce unique id. we don't care what kind of object it is at this point</span>
-</span><span id="1037" class="l">                <span class="php-quote">'wordpress_object'</span> =&gt; <span class="php-var">$field_mapping</span>[<span class="php-quote">'wordpress_object'</span>], <span class="php-comment">// keep track of what kind of wp object this is</span>
-</span><span id="1038" class="l">                <span class="php-quote">'last_sync'</span> =&gt; current_time( <span class="php-quote">'mysql'</span> ),
-</span><span id="1039" class="l">                <span class="php-quote">'last_sync_action'</span> =&gt; <span class="php-quote">'push'</span>,
-</span><span id="1040" class="l">                <span class="php-quote">'last_sync_status'</span> =&gt; <span class="php-var">$this</span>-&gt;mappings-&gt;status_success,
+</span><span id="1035" class="l">                <span class="php-quote">'wordpress_id'</span>      =&gt; <span class="php-var">$wordpress_object</span>[ <span class="php-var">$id_field_name</span> ], <span class="php-comment">// wordpress unique id</span>
+</span><span id="1036" class="l">                <span class="php-quote">'salesforce_id'</span>     =&gt; <span class="php-var">$salesforce_id</span>, <span class="php-comment">// salesforce unique id. we don't care what kind of object it is at this point</span>
+</span><span id="1037" class="l">                <span class="php-quote">'wordpress_object'</span>  =&gt; <span class="php-var">$field_mapping</span>[<span class="php-quote">'wordpress_object'</span>], <span class="php-comment">// keep track of what kind of wp object this is</span>
+</span><span id="1038" class="l">                <span class="php-quote">'last_sync'</span>         =&gt; current_time( <span class="php-quote">'mysql'</span> ),
+</span><span id="1039" class="l">                <span class="php-quote">'last_sync_action'</span>  =&gt; <span class="php-quote">'push'</span>,
+</span><span id="1040" class="l">                <span class="php-quote">'last_sync_status'</span>  =&gt; <span class="php-var">$this</span>-&gt;mappings-&gt;status_success,
 </span><span id="1041" class="l">                <span class="php-comment">// translators: placeholder is for the action that occurred on the mapping object (pending or created)</span>
 </span><span id="1042" class="l">                <span class="php-quote">'last_sync_message'</span> =&gt; <span class="php-keyword2">sprintf</span>( esc_html__( <span class="php-quote">'Mapping object %1$s via function'</span>, <span class="php-quote">'object-sync-for-salesforce'</span> ) . __FUNCTION__,
 </span><span id="1043" class="l">                    esc_attr( <span class="php-var">$action</span> )
 </span><span id="1044" class="l">                ),
-</span><span id="1045" class="l">                <span class="php-quote">'action'</span> =&gt; <span class="php-var">$action</span>,
+</span><span id="1045" class="l">                <span class="php-quote">'action'</span>            =&gt; <span class="php-var">$action</span>,
 </span><span id="1046" class="l">            )
 </span><span id="1047" class="l">        );
 </span><span id="1048" class="l">
