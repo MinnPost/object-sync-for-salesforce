@@ -4,7 +4,7 @@ This plugin starts with an array of what classes can be scheduled with the [`sch
 
 ## Default:
 
-```
+```php
 $this->schedulable_classes = array(
 	'salesforce_push' => array(
 	    'label' => 'Push to Salesforce',
@@ -32,7 +32,7 @@ If you'd like to schedule other things to happen with this plugin, or remove def
 
 ### Code example
 
-```
+```php
 // example to modify the array of classes by adding one and removing one
 add_filter( 'object_sync_for_salesforce_modify_schedulable_classes', 'modify_schedulable_classes', 10, 1 );
 function modify_schedulable_classes( $schedulable_classes ) {

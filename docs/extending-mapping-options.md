@@ -10,7 +10,7 @@ There are many ways of adding custom WordPress objects, and there are also somet
 
 The `object_sync_for_salesforce_add_more_wordpress_types` hook populates the array which is added to the list in the dropdown.
 
-```
+```php
 add_filter( 'object_sync_for_salesforce_add_more_wordpress_types', 'add_more_types', 10, 1 );
 function add_more_types( $wordpress_object_types ) {
     $wordpress_object_types[] = 'foo'; // this will add to the existing types.
@@ -20,7 +20,7 @@ function add_more_types( $wordpress_object_types ) {
 
 The `object_sync_for_salesforce_remove_wordpress_types` hook populates an array which is used to remove objects from the list in the dropdown.
 
-```
+```php
 add_filter( 'object_sync_for_salesforce_remove_wordpress_types', 'remove_types', 10, 1 );
 function remove_types( $types_to_remove ) {
     $types_to_remove[] = 'acme_product'; // this adds to the array of types to ignore
@@ -36,7 +36,7 @@ The `object_sync_for_salesforce_wordpress_object_fields` hook populates an array
 
 Example of `$object_fields` array:
 
-```
+```php
 $object_fields = array(
     'data' => array ( // this array determines what methods each field uses to deal with its data
         array (
@@ -119,7 +119,7 @@ To modify the array, you can use the `object_sync_for_salesforce_wordpress_objec
 
 Code example:
 
-```
+```php
 add_filter( 'object_sync_for_salesforce_wordpress_object_fields', 'add_field', 10, 2 );
 function add_field( $object_fields, $wordpress_object ) {
     $object_fields['data'][] = array(
@@ -144,7 +144,7 @@ When you use this hook, the field needs to exist in WordPress, and already be ma
 
 Example of unaltered `$wordpress_object` array (in this case, for a user):
 
-```
+```php
 $wordpress_object = array(
     'ID' => 8675309,
     'user_login' => 'testuser@test.com',
@@ -174,7 +174,7 @@ To modify the array, you can use the `object_sync_for_salesforce_wordpress_objec
 
 Code example:
 
-```
+```php
 add_filter( 'object_sync_for_salesforce_wordpress_object_data', 'add_data', 10, 1 );
 function add_data( $wordpress_object ) {
     $wordpress_object['field_a'] = 'i am a field value that salesforce wants to store but WordPress does not care about';
