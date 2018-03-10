@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "22e9662d57873237fdd018a8e5d29ed6",
+    "content-hash": "1ce03961566913f692a8bed19b61e8d3",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
@@ -3452,7 +3452,8 @@
     "stability-flags": {
         "pippinsplugins/wp-logging": 20,
         "a5hleyrich/wp-background-processing": 20,
-        "developerforce/force.com-toolkit-for-php": 20
+        "developerforce/force.com-toolkit-for-php": 20,
+        "phpunit/phpunit": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
