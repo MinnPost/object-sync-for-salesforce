@@ -109,6 +109,8 @@ class Object_Sync_Sf_Admin {
 		$this->default_triggerable = true;
 		// default setting for updateable items
 		$this->default_updateable = true;
+		// default option prefix
+		$this->option_prefix = 'object_sync_for_salesforce_';
 
 		$this->add_actions();
 
@@ -178,7 +180,7 @@ class Object_Sync_Sf_Admin {
 		); // this creates the tabs for the admin
 
 		// optionally make tab(s) for logging and log settings
-		$logging_enabled = get_option( 'object_sync_for_salesforce_enable_logging', false );
+		$logging_enabled = get_option( $this->option_prefix . 'enable_logging', false );
 		$tabs['log_settings'] = 'Log Settings';
 
 		$mapping_errors = $this->mappings->get_failed_object_maps();
@@ -211,10 +213,10 @@ class Object_Sync_Sf_Admin {
 			require( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
 		}
 
-		$push_schedule_number = get_option( 'object_sync_for_salesforce_salesforce_push_schedule_number', '' );
-		$push_schedule_unit = get_option( 'object_sync_for_salesforce_salesforce_push_schedule_unit', '' );
-		$pull_schedule_number = get_option( 'object_sync_for_salesforce_salesforce_pull_schedule_number', '' );
-		$pull_schedule_unit = get_option( 'object_sync_for_salesforce_salesforce_pull_schedule_unit', '' );
+		$push_schedule_number = get_option( $this->option_prefix . 'salesforce_push_schedule_number', '' );
+		$push_schedule_unit = get_option( $this->option_prefix . 'salesforce_push_schedule_unit', '' );
+		$pull_schedule_number = get_option( $this->option_prefix . 'salesforce_pull_schedule_number', '' );
+		$pull_schedule_unit = get_option( $this->option_prefix . 'salesforce_pull_schedule_unit', '' );
 
 		if ( '' === $push_schedule_number && '' === $push_schedule_unit && '' === $pull_schedule_number && '' === $pull_schedule_unit ) {
 			$url = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=schedule' ) );
@@ -577,8 +579,8 @@ class Object_Sync_Sf_Admin {
 		}
 
 		foreach ( $salesforce_settings as $key => $attributes ) {
-			$id = 'object_sync_for_salesforce_' . $key;
-			$name = 'object_sync_for_salesforce_' . $key;
+			$id = $this->option_prefix . $key;
+			$name = $this->option_prefix . $key;
 			$title = $attributes['title'];
 			$callback = $attributes['callback'];
 			$validate = $attributes['args']['validate'];
@@ -680,8 +682,8 @@ class Object_Sync_Sf_Admin {
 				),
 			);
 			foreach ( $schedule_settings as $key => $attributes ) {
-				$id = 'object_sync_for_salesforce_' . $key;
-				$name = 'object_sync_for_salesforce_' . $key;
+				$id = $this->option_prefix . $key;
+				$name = $this->option_prefix . $key;
 				$title = $attributes['title'];
 				$callback = $attributes['callback'];
 				$page = $attributes['page'];
@@ -865,8 +867,8 @@ class Object_Sync_Sf_Admin {
 			),
 		);
 		foreach ( $log_settings as $key => $attributes ) {
-			$id = 'object_sync_for_salesforce_' . $key;
-			$name = 'object_sync_for_salesforce_' . $key;
+			$id = $this->option_prefix . $key;
+			$name = $this->option_prefix . $key;
 			$title = $attributes['title'];
 			$callback = $attributes['callback'];
 			$page = $attributes['page'];
@@ -1351,6 +1353,11 @@ class Object_Sync_Sf_Admin {
 					$delete = $this->mappings->delete_object_map( $id );
 				}
 			}
+			if ( isset( $data['plugin_settings'] ) ) {
+				foreach ( $data['plugin_settings'] as $key => $value ) {
+					delete_option( $value['option_name'] );
+				}
+			}
 		}
 
 		$success = true;
@@ -1372,6 +1379,12 @@ class Object_Sync_Sf_Admin {
 				if ( false === $create ) {
 					$success = false;
 				}
+			}
+		}
+
+		if ( isset( $data['plugin_settings'] ) ) {
+			foreach ( $data['plugin_settings'] as $key => $value ) {
+				update_option( $value['option_name'], maybe_unserialize( $value['option_value'] ), $value['autoload'] );
 			}
 		}
 
@@ -1405,11 +1418,14 @@ class Object_Sync_Sf_Admin {
 		if ( in_array( 'object_maps', $post_data['export'] ) ) {
 			$export['object_maps'] = $this->mappings->get_object_maps();
 		}
+		if ( in_array( 'plugin_settings', $post_data['export'] ) ) {
+			$export['plugin_settings'] = $this->wpdb->get_results( 'SELECT * FROM ' . $this->wpdb->prefix . 'options' . ' WHERE option_name like "' . $this->option_prefix . '%"', ARRAY_A );
+		}
 		nocache_headers();
 		header( 'Content-Type: application/json; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename=object-sync-for-salesforce-data-export-' . date( 'm-d-Y' ) . '.json' );
 		header( "Expires: 0" );
-		echo json_encode( $export );
+		echo wp_json_encode( $export );
 		exit;
 	}
 
@@ -1663,9 +1679,9 @@ class Object_Sync_Sf_Admin {
 	* For this plugin at this time, that is the decision we are making: don't do any kind of authorization stuff inside Salesforce
 	*/
 	private function logout() {
-		$this->access_token = delete_option( 'object_sync_for_salesforce_access_token' );
-		$this->instance_url = delete_option( 'object_sync_for_salesforce_instance_url' );
-		$this->refresh_token = delete_option( 'object_sync_for_salesforce_refresh_token' );
+		$this->access_token = delete_option( $this->option_prefix . 'access_token' );
+		$this->instance_url = delete_option( $this->option_prefix . 'instance_url' );
+		$this->refresh_token = delete_option( $this->option_prefix . 'refresh_token' );
 		echo sprintf( '<p>You have been logged out. You can use the <a href="%1$s">%2$s</a> tab to log in again.</p>',
 			esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=authorize' ) ),
 			esc_html__( 'Authorize', 'object-sync-for-salesforce' )

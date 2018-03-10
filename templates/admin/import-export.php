@@ -25,5 +25,9 @@
 		<input type="checkbox" value="object_maps" name="export[]" id="object-sync-for-salesforce-export-object-maps" />
 		<label for="object-sync-for-salesforce-export-object-maps"><?php _e( 'Include Object Maps', 'object-sync-for-salesforce' ); ?></label>
 	</p>
+	<p>
+		<input type="checkbox" value="plugin_settings" name="export[]" id="object-sync-for-salesforce-export-plugin-settings" />
+		<label for="object-sync-for-salesforce-export-plugin-settings"><?php _e( 'Include Plugin Settings', 'object-sync-for-salesforce' ); ?></label>
+	</p>
 	<input type="submit" class="button button-primary" value="<?php _e( 'Export', 'object-sync-for-salesforce' ); ?>" />
 </form>
