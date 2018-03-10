@@ -1300,13 +1300,19 @@ class Object_Sync_Sf_Admin {
 	*
 	*/
 	public function export_json_file() {
-		$data = get_option( 'object_sync_for_salesforce_access_token' );
-
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$export    = array();
+		if ( in_array( 'fieldmaps', $post_data['export'] ) ) {
+			$export['fieldmaps'] = $this->mappings->get_fieldmaps();
+		}
+		if ( in_array( 'object_maps', $post_data['export'] ) ) {
+			$export['object_maps'] = $this->mappings->get_object_maps();
+		}
 		nocache_headers();
 		header( 'Content-Type: application/json; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename=object-sync-for-salesforce-data-export-' . date( 'm-d-Y' ) . '.json' );
 		header( "Expires: 0" );
-		echo json_encode( $data );
+		echo json_encode( $export );
 		exit;
 	}
 
