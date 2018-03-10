@@ -1,6 +1,13 @@
 Changelog
 =========
 
+* 1.3.0 (2018-03-10)
+	* New: this release adds an interface for importing and exporting plugin data. It includes fieldmaps (which map object types to each other), object maps (individual objects mapped to each other) and plugin settings. Data is exported to a single JSON file that can be imported.
+	* Bug fix: this release supports a datetime change in MySQL versions newer than 5.7.4 in which default values can no longer be 0000-00-00. See this [StackOverflow page](https://stackoverflow.com/questions/25349126/how-can-i-set-the-default-value-of-a-field-as-0000-00-00-000000) for details.
+	* Bug fix: this release fixes an issue where admin notices for this plugin would sometimes be empty.
+	* Also fixed a ton of code formatting stuff, including translation spots.
+	* This release also fixes the previously broken Travis CI build's issues with older PHP versions.
+
 * 1.2.8 (2018-03-09)
 	* New: this release adds a new developer hook, `object_sync_for_salesforce_push_update_params_modify`, which allows the data being pushed to Salesforce to be modified in the event that an existing Salesforce object is being updated.
 	* Bug fix: the install script adds `--prefer-dist` to the `composer install` to hopefully prevent issues on Pantheon. Thanks to WordPress user @joepahl for reporting this.
