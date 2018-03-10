@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 1.2.8 (2018-03-09)
+	* New: this release adds a new developer hook, `object_sync_for_salesforce_push_update_params_modify`, which allows the data being pushed to Salesforce to be modified in the event that an existing Salesforce object is being updated.
+	* Bug fix: the install script adds `--prefer-dist` to the `composer install` to hopefully prevent issues on Pantheon. Thanks to WordPress user @joepahl for reporting this.
+	* This releasse also makes a number of corrections and clarifications to the plugin documentation.
+
 * 1.2.7 (2018-02-23)
 	* Bug fix: in some cases, a fieldmap with the Salesforce update trigger checked, but not the Salesforce create trigger, it would still create data in WordPress. This data should, rather, be skipped.
 	* New: there are also a number of small tweaks to in-page help, documentation and code comments.
