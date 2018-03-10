@@ -26,7 +26,8 @@
         "developerforce/force.com-toolkit-for-php": "^1.0@dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.8.*"
+        "phpunit/phpunit": "4.8.*",
+        "apigen/apigen": "4.1.2"
     },
     "autoload": {
         "classmap": ["vendor/pippinsplugins/wp-logging/"]

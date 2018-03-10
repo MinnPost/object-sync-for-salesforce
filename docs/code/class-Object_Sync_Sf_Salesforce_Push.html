@@ -5,7 +5,7 @@
 
 	<title>Class Object_Sync_Sf_Salesforce_Push | Object Sync for Salesforce</title>
 
-	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -104,7 +104,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Salesforce_Push.html#12-1042" title="Go to source code">salesforce_push.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Salesforce_Push.html#12-1053" title="Go to source code">salesforce_push.php</a>
 		<br>
 	</div>
 
@@ -821,7 +821,7 @@ This calls the overall push crud method, which controls queuing and sending data
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_push_object_crud">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#316-441" title="Go to source code">salesforce_push_object_crud</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>integer <var>$sf_sync_trigger</var></span>, <span>boolean <var>$manual</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#316-441" title="Go to source code">salesforce_push_object_crud</a>( <span>string <var>$object_type</var></span>, <span>array <var>$object</var></span>, <span>integer <var>$sf_sync_trigger</var></span>, <span>boolean <var>$manual</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Push objects to Salesforce.
@@ -838,7 +838,7 @@ This method decides whether to do the processing immediately or queue it to the 
 					<dt><var>$object_type</var></dt>
 					<dd>Type of WordPress object.</dd>
 					<dt><var>$object</var></dt>
-					<dd>The object object.</dd>
+					<dd>The WordPress data that needs to be sent to Salesforce.</dd>
 					<dt><var>$sf_sync_trigger</var></dt>
 					<dd>The trigger being responded to.</dd>
 					<dt><var>$manual</var></dt>
@@ -894,7 +894,7 @@ This method decides whether to do the processing immediately or queue it to the 
 
 		<td class="name"><div>
 		<a class="anchor" href="#_salesforce_push_sync_rest">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#453-995" title="Go to source code">salesforce_push_sync_rest</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#453-1006" title="Go to source code">salesforce_push_sync_rest</a>( <span>string <var>$object_type</var></span>, <span>object <var>$object</var></span>, <span>object <var>$mapping</var></span>, <span>integer <var>$sf_sync_trigger</var></span> )</code>
 
 		<div class="description short">
 			<p>Sync WordPress objects and Salesforce objects using the REST API.</p>
@@ -939,7 +939,7 @@ This method decides whether to do the processing immediately or queue it to the 
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_object_map">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#997-1040" title="Go to source code">create_object_map</a>( <span>array <var>$wordpress_object</var></span>, <span>string <var>$id_field_name</var></span>, <span>string <var>$salesforce_id</var></span>, <span>array <var>$field_mapping</var></span>, <span> <var>$pending</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Salesforce_Push.html#1008-1051" title="Go to source code">create_object_map</a>( <span>array <var>$wordpress_object</var></span>, <span>string <var>$id_field_name</var></span>, <span>string <var>$salesforce_id</var></span>, <span>array <var>$field_mapping</var></span>, <span> <var>$pending</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create an object map between a WordPress object and a Salesforce object</p>
