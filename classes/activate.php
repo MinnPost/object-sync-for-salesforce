@@ -27,8 +27,8 @@ class Object_Sync_Sf_Activate {
 	*
 	*/
 	public function __construct( $wpdb, $version, $slug ) {
-		$this->wpdb = $wpdb;
-		$this->version = $version;
+		$this->wpdb              = $wpdb;
+		$this->version           = $version;
 		$this->installed_version = get_option( 'object_sync_for_salesforce_db_version', '' );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'php_requirements' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'wordpress_salesforce_tables' ) );
@@ -56,7 +56,7 @@ class Object_Sync_Sf_Activate {
 		$charset_collate = $this->wpdb->get_charset_collate();
 
 		$field_map_table = $this->wpdb->prefix . 'object_sync_sf_field_map';
-		$field_map_sql = "CREATE TABLE $field_map_table (
+		$field_map_sql   = "CREATE TABLE $field_map_table (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			label varchar(64) NOT NULL DEFAULT '',
 			name varchar(64) NOT NULL DEFAULT '',
@@ -77,14 +77,14 @@ class Object_Sync_Sf_Activate {
 		) ENGINE=InnoDB $charset_collate";
 
 		$object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
-		$object_map_sql = "CREATE TABLE $object_map_table (
+		$object_map_sql   = "CREATE TABLE $object_map_table (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			wordpress_id varchar(32) NOT NULL,
 			salesforce_id varbinary(32) NOT NULL DEFAULT '',
 			wordpress_object varchar(128) NOT NULL DEFAULT '',
-			created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			object_updated datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			last_sync datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			object_updated datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			last_sync datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			last_sync_action varchar(128) DEFAULT NULL,
 			last_sync_status tinyint(1) NOT NULL DEFAULT '0',
 			last_sync_message varchar(255) DEFAULT NULL,
