@@ -139,6 +139,8 @@ class Object_Sync_Sf_Admin {
 		add_action( 'admin_post_delete_object_map', array( $this, 'delete_object_map' ) );
 		add_action( 'admin_post_post_object_map', array( $this, 'prepare_object_map_data' ) );
 
+		// import and export plugin data
+		add_action( 'admin_post_object_sync_for_salesforce_import', array( $this, 'import_json_file' ) );
 		add_action( 'admin_post_object_sync_for_salesforce_export', array( $this, 'export_json_file' ) );
 
 	}
@@ -1293,6 +1295,69 @@ class Object_Sync_Sf_Admin {
 			wp_safe_redirect( $url );
 			exit();
 		}
+	}
+
+	/**
+	* Import a json file and use it for plugin data
+	*
+	*/
+	public function import_json_file() {
+
+		if ( ! wp_verify_nonce( $_POST['object_sync_for_salesforce_nonce_import'], 'object_sync_for_salesforce_nonce_import' ) ) {
+			return;
+		}
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$path      = $_FILES['import_file']['name'];
+		$extension = pathinfo( $path, PATHINFO_EXTENSION );
+		if ( 'json' !== $extension ) {
+			wp_die( __( 'Please upload a valid .json file' ) );
+		}
+
+		$import_file = $_FILES['import_file']['tmp_name'];
+		if ( empty( $import_file ) ) {
+			wp_die( __( 'Please upload a file to import' ) );
+		}
+
+		// Retrieve the data from the file and convert the json object to an array.
+		$data = (array) json_decode( file_get_contents( $import_file ), true );
+
+		$overwrite = isset( $_POST['overwrite'] ) ? esc_attr( $_POST['overwrite'] ) : '';
+		if ( '1' === $overwrite ) {
+			if ( isset( $data['fieldmaps'] ) ) {
+				$fieldmaps = $this->mappings->get_fieldmaps();
+				foreach ( $fieldmaps as $fieldmap ) {
+					$id     = $fieldmap['id'];
+					$delete = $this->mappings->delete_fieldmap( $id );
+				}
+			}
+			if ( isset( $data['object_maps'] ) ) {
+				$fieldmaps = $this->mappings->get_object_maps();
+				foreach ( $fieldmaps as $fieldmap ) {
+					$id     = $fieldmap['id'];
+					$delete = $this->mappings->delete_object_map( $id );
+				}
+			}
+		}
+
+		if ( isset( $data['fieldmaps'] ) ) {
+			foreach ( $data['fieldmaps'] as $fieldmap ) {
+				unset( $fieldmap['id'] );
+				$create = $this->mappings->create_fieldmap( $fieldmap );
+			}
+		}
+
+		if ( isset( $data['object_maps'] ) ) {
+			foreach ( $data['object_maps'] as $object_map ) {
+				unset( $object_map['id'] );
+				$create = $this->mappings->create_object_map( $object_map );
+			}
+		}
+
+		wp_safe_redirect( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=import-export&data_saved=true' ) );
+		exit;
+
 	}
 
 	/**
