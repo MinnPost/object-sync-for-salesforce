@@ -914,9 +914,15 @@ class Object_Sync_Sf_Admin {
 				'dismissible' => true,
 			),
 			'data_saved' => array(
-				'condition' => isset( $get_data['data_saved'] ),
+				'condition' => isset( $get_data['data_saved'] ) && 'true' === $get_data['data_saved'],
 				'message' => 'This data was successfully saved.',
 				'type' => 'success',
+				'dismissible' => true,
+			),
+			'data_save_error' => array(
+				'condition' => isset( $get_data['data_saved'] ) && 'false' === $get_data['data_saved'],
+				'message' => 'This data was not successfully saved. Try again.',
+				'type' => 'error',
 				'dismissible' => true,
 			),
 		);
@@ -1347,10 +1353,15 @@ class Object_Sync_Sf_Admin {
 			}
 		}
 
+		$success = true;
+
 		if ( isset( $data['fieldmaps'] ) ) {
 			foreach ( $data['fieldmaps'] as $fieldmap ) {
 				unset( $fieldmap['id'] );
 				$create = $this->mappings->create_fieldmap( $fieldmap );
+				if ( false === $create ) {
+					$success = false;
+				}
 			}
 		}
 
@@ -1358,11 +1369,19 @@ class Object_Sync_Sf_Admin {
 			foreach ( $data['object_maps'] as $object_map ) {
 				unset( $object_map['id'] );
 				$create = $this->mappings->create_object_map( $object_map );
+				if ( false === $create ) {
+					$success = false;
+				}
 			}
 		}
 
-		wp_safe_redirect( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=import-export&data_saved=true' ) );
-		exit;
+		if ( true === $success ) {
+			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=import-export&data_saved=true' ) );
+			exit;
+		} else {
+			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=import-export&data_saved=false' ) );
+			exit;
+		}
 
 	}
 
