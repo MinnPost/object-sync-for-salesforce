@@ -176,7 +176,7 @@
 </span><span id="90" class="l">                    add_action( <span class="php-quote">'edit_comment'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'edit_comment'</span> ) );
 </span><span id="91" class="l">                    add_action( <span class="php-quote">'delete_comment'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'delete_comment'</span> ) ); <span class="php-comment">// to be clear: this only runs when the comment gets deleted from the trash, either manually or automatically</span>
 </span><span id="92" class="l">                } <span class="php-keyword1">else</span> { <span class="php-comment">// this is for custom post types</span>
-</span><span id="93" class="l">                    add_action( <span class="php-quote">'save_post_'</span> . <span class="php-var">$object_type</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'post_actions'</span> ), <span class="php-num">11</span>, <span class="php-num">2</span> );
+</span><span id="93" class="l">                    add_action( <span class="php-quote">'save_post_{'</span> . <span class="php-var">$object_type</span> . <span class="php-quote">'}'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'post_actions'</span> ), <span class="php-num">11</span>, <span class="php-num">2</span> );
 </span><span id="94" class="l">                }
 </span><span id="95" class="l">            }
 </span><span id="96" class="l">        }
