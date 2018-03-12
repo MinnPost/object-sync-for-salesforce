@@ -351,6 +351,9 @@ class Object_Sync_Sf_Mapping {
 				}
 			} // End foreach() on WordPress fields.
 			$data['fields'] = maybe_serialize( $setup['fields'] );
+		} elseif ( isset( $posted['fields'] ) && is_array( $posted['fields'] ) ) {
+			// if $posted['fields'] is already set, use that
+			$data['fields'] = maybe_serialize( $posted['fields'] );
 		} // End if() WordPress fields are present.
 
 		if ( isset( $posted['salesforce_record_types_allowed'] ) ) {
