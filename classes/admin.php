@@ -897,6 +897,11 @@ class Object_Sync_Sf_Admin {
 	*/
 	public function notices() {
 
+		// every plugin action should have this
+		if ( ! isset( $_GET['page'] ) || 'object-sync-salesforce-admin' !== $_GET['page'] ) {
+			return;
+		}
+
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
 		require_once plugin_dir_path( __FILE__ ) . '../classes/admin-notice.php';
 
@@ -1341,6 +1346,13 @@ class Object_Sync_Sf_Admin {
 		// Retrieve the data from the file and convert the json object to an array.
 		$data = (array) json_decode( file_get_contents( $import_file ), true );
 
+		// if there is only one object map, fix the array
+		if ( isset( $data['object_maps'] ) ) {
+			if ( count( $data['object_maps'] ) === count( $data['object_maps'], COUNT_RECURSIVE ) ) {
+				$data['object_maps'] = array( 0 => $data['object_maps'] );
+			}
+		}
+
 		$overwrite = isset( $_POST['overwrite'] ) ? esc_attr( $_POST['overwrite'] ) : '';
 		if ( '1' === $overwrite ) {
 			if ( isset( $data['fieldmaps'] ) ) {
@@ -1351,9 +1363,15 @@ class Object_Sync_Sf_Admin {
 				}
 			}
 			if ( isset( $data['object_maps'] ) ) {
-				$fieldmaps = $this->mappings->get_object_maps();
-				foreach ( $fieldmaps as $fieldmap ) {
-					$id     = $fieldmap['id'];
+				$object_maps = $this->mappings->get_object_maps();
+
+				// if there is only one existing object map, fix the array
+				if ( count( $object_maps ) === count( $object_maps, COUNT_RECURSIVE ) ) {
+					$object_maps = array( 0 => $object_maps );
+				}
+
+				foreach ( $object_maps as $object_map ) {
+					$id     = $object_map['id'];
 					$delete = $this->mappings->delete_object_map( $id );
 				}
 			}
