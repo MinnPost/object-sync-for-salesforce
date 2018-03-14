@@ -404,7 +404,7 @@ class Object_Sync_Salesforce {
 	* @return void
 	*/
 	public function admin_scripts_and_styles() {
-		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/object-sync-for-salesforce-admin.min.js', __FILE__ ), array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/object-sync-for-salesforce-admin.min.js', __FILE__ ), array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/object-sync-for-salesforce-admin.js' ), true );
 		wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/object-sync-for-salesforce-admin.min.css', __FILE__ ), array(), $this->version, 'all' );
 	}
 
