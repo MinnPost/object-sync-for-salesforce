@@ -727,15 +727,19 @@ class Object_Sync_Sf_Mapping {
 					// Is the Salesforce field a date, and is the WordPress value a valid date?
 					// According to https://salesforce.stackexchange.com/questions/57032/date-format-with-salesforce-rest-api
 					if ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ) {
-						if ( false !== strtotime( $object[ $wordpress_field ] ) ) {
-							$timestamp = strtotime( $object[ $wordpress_field ] );
+						if ( '' === $object[ $wordpress_field ] ) {
+							$object[ $wordpress_field ] = null;
 						} else {
-							$timestamp = $object[ $wordpress_field ];
-						}
-						if ( 'datetime' === $salesforce_field_type ) {
-							$object[ $wordpress_field ] = date_i18n( 'c', $timestamp );
-						} else {
-							$object[ $wordpress_field ] = date_i18n( 'Y-m-d', $timestamp );
+							if ( false !== strtotime( $object[ $wordpress_field ] ) ) {
+								$timestamp = strtotime( $object[ $wordpress_field ] );
+							} else {
+								$timestamp = $object[ $wordpress_field ];
+							}
+							if ( 'datetime' === $salesforce_field_type ) {
+								$object[ $wordpress_field ] = date_i18n( 'c', $timestamp );
+							} else {
+								$object[ $wordpress_field ] = date_i18n( 'Y-m-d', $timestamp );
+							}
 						}
 					}
 
