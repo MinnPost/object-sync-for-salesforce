@@ -897,6 +897,11 @@ class Object_Sync_Sf_Admin {
 	*/
 	public function notices() {
 
+		// before a notice is displayed, we should make sure we are on a page related to this plugin
+		if ( ! isset( $_GET['page'] ) || 'object-sync-salesforce-admin' !== $_GET['page'] ) {
+			return;
+		}
+
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
 		require_once plugin_dir_path( __FILE__ ) . '../classes/admin-notice.php';
 
