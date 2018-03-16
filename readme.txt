@@ -141,7 +141,6 @@ Things to know:
 
 1. See the answer above about custom fields. Any ACF field must have at least one value in the database before Object Sync for Salesforce can map it.
 2. When you try to map an ACF field, you'll see one that has an underscore in front of it, and one that does not. This is because ACF uses both for its own purposes. As long as you map the ACF field that **does not** have the underscore in front of it, you should be able to get data to and from Salesforce. For example, you could map a `test_field` to a `Contact_description` field. The fieldmap screen will show a `_test_field` in the dropdown, but you should be able to safely ignore that, and only map `test_field`.
-3. If you are mapping `post` fields, it seems that when a `post` is saved, the ACF fields will have no values. Immediately after the first save (within the same milisecond), ACF runs a post update to add the values for its own fields. This can cause issues if you are working with required fields in Salesforce, and you may need to compensate for that with default values in a developer hook, for example.
 
 While we will not include code that only runs for ACF in this plugin, we would happily point to any add-on plugin that uses Object Sync for Salesforce hooks to build a more comprehensive integration with ACF for all users who install this plugin while they're running ACF.
 
