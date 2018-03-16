@@ -1,6 +1,12 @@
 Changelog
 =========
 
+* 1.3.2 (2018-03-16)
+	* Bug fix: this plugin would sometimes conflict with jQuery from other plugins, especially older ones. This puts the object into an enclosure instead.
+	* Bug fix: allow mapped date fields to be empty without causing a push error.
+	* Bug fix: make sure plugin notices only appear on pages related to this plugin.
+	* Bug fix: doing an import with only one object map would fail.
+
 * 1.3.1 (2018-03-11)
 	* Bug fix: this release fixes an issue in which a custom post object with custom fields was not sending its custom fields on the first save, causing it to fail if the fields were required in Salesforce. Thanks to WordPress user @rtd2 for reporting this.
 	* Bug fix: this release makes the data import preserve the field structure.
