@@ -768,7 +768,8 @@ class Object_Sync_Sf_Mapping {
 					);
 				}
 
-				// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise. This happens after dealing with the field types because key and prematch should still be available to the plugin, even if the values are not updateable in Salesforce.
+				// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise.
+				// This happens after dealing with the field types because key and prematch should still be available to the plugin, even if the values are not updateable in Salesforce.
 				if ( 1 !== (int) $fieldmap['salesforce_field']['updateable'] ) {
 					continue;
 				}
