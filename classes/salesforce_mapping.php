@@ -713,11 +713,6 @@ class Object_Sync_Sf_Mapping {
 			// A WordPress event caused this.
 			if ( in_array( $trigger, array_values( $wordpress_haystack ), true ) ) {
 
-				// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise.
-				if ( 1 !== (int) $fieldmap['salesforce_field']['updateable'] ) {
-					continue;
-				}
-
 				// Is the field in WordPress an array, if we unserialize it? Salesforce wants it to be an imploded string.
 				if ( is_array( maybe_unserialize( $object[ $wordpress_field ] ) ) ) {
 					$object[ $wordpress_field ] = implode( $this->array_delimiter, $object[ $wordpress_field ] );
@@ -771,6 +766,11 @@ class Object_Sync_Sf_Mapping {
 						'wordpress_field'  => $wordpress_field,
 						'value'            => $object[ $wordpress_field ],
 					);
+				}
+
+				// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise. This happens after dealing with the field types because key and prematch should still be available to the plugin, even if the values are not updateable in Salesforce.
+				if ( 1 !== (int) $fieldmap['salesforce_field']['updateable'] ) {
+					continue;
 				}
 			} elseif ( in_array( $trigger, $salesforce_haystack, true ) ) {
 
