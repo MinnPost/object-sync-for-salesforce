@@ -312,7 +312,7 @@ class Object_Sync_Sf_Mapping {
 					$posted['is_delete'][ $key ] = false;
 				}
 				if ( false === $posted['is_delete'][ $key ] ) {
-
+					// I think it's good to over-mention that updateable is really how the Salesforce api spells it, even though that is wrong.
 					$updateable_key = array_search( $posted['salesforce_field'][ $key ], array_column( $salesforce_fields, 'name' ), true );
 
 					$salesforce_field_attributes = array();
@@ -768,6 +768,7 @@ class Object_Sync_Sf_Mapping {
 					);
 				}
 
+				// I think it's good to over-mention that updateable is really how the Salesforce api spells it, even though that is wrong.
 				// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise.
 				// This happens after dealing with the field types because key and prematch should still be available to the plugin, even if the values are not updateable in Salesforce.
 				if ( 1 !== (int) $fieldmap['salesforce_field']['updateable'] ) {
