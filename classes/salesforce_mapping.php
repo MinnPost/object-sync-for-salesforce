@@ -688,6 +688,7 @@ class Object_Sync_Sf_Mapping {
 
 			$fieldmap['wordpress_field']['methods'] = maybe_unserialize( $fieldmap['wordpress_field']['methods'] );
 
+			// todo: we should think about whether this needs to be moved to after the key/prematching?
 			// skip fields that aren't being pushed to Salesforce.
 			if ( in_array( $trigger, $wordpress_haystack, true ) && ! in_array( $fieldmap['direction'], array_values( $this->direction_wordpress ), true ) ) {
 				// The trigger is a WordPress trigger, but the fieldmap direction is not a WordPress direction.
