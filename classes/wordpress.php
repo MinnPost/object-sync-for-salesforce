@@ -833,7 +833,7 @@ class Object_Sync_Sf_WordPress {
 			);
 
 			foreach ( $params as $key => $value ) {
-				if ( 'wp_insert_user' === $value['method_modify'] ) {
+				if ( 'wp_insert_user' === $value['method_modify'] || 'wp_update_user' === $value['method_modify'] ) {
 					$content[ $key ] = $value['value'];
 					unset( $params[ $key ] );
 				}
