@@ -831,7 +831,8 @@ class Object_Sync_Sf_WordPress {
 				'method_modify' => 'wp_insert_user',
 				'method_read'   => 'get_user_by',
 			);
-
+			// Load all params with a method_modify of the object structure's content_method into $content
+			$content   = array();
 			$structure = $this->get_wordpress_table_structure( 'user' );
 			foreach ( $params as $key => $value ) {
 				if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
