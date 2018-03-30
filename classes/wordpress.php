@@ -832,8 +832,9 @@ class Object_Sync_Sf_WordPress {
 				'method_read'   => 'get_user_by',
 			);
 
+			$structure = $this->get_wordpress_table_structure( 'user' );
 			foreach ( $params as $key => $value ) {
-				if ( 'wp_insert_user' === $value['method_modify'] || 'wp_update_user' === $value['method_modify'] ) {
+				if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
 					$content[ $key ] = $value['value'];
 					unset( $params[ $key ] );
 				}
