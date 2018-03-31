@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,11 @@ This doesn't mean you can't use them together, but it does mean this plugin is n
 Object Sync for Salesforce does have abundant developer hooks, and WooCommerce has its own API, and it would be possible to build an add-on plugin to provide full support by integrating these (we would happily point to it for all users who install this plugin while they're running WooCommerce).
 
 == Changelog ==
+
+* 1.3.3 (2018-03-30)
+	* Bug fix: a modified Salesforce Contact, which is not mapped to a user in WordPress but when the fieldmap does exist, would try to create a new user in WordPress but fail to add the email address to the email field.
+	* Bug fix: the key and prematch fields were ignored if their Salesforce status was not updateable, so this broke prematch checking in those cases.
+	* New: small tweaks to plugin readme, inline form text.
 
 * 1.3.2 (2018-03-16)
 	* Bug fix: this plugin would sometimes conflict with jQuery from other plugins, especially older ones. This puts the object into an enclosure instead.

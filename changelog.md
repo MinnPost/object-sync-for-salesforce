@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 1.3.3 (2018-03-30)
+	* Bug fix: a modified Salesforce Contact, which is not mapped to a user in WordPress but when the fieldmap does exist, would try to create a new user in WordPress but fail to add the email address to the email field.
+	* Bug fix: the key and prematch fields were ignored if their Salesforce status was not updateable, so this broke prematch checking in those cases.
+	* New: small tweaks to plugin readme, inline form text.
+
 * 1.3.2 (2018-03-16)
 	* Bug fix: this plugin would sometimes conflict with jQuery from other plugins, especially older ones. This puts the object into an enclosure instead.
 	* Bug fix: allow mapped date fields to be empty without causing a push error.
