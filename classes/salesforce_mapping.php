@@ -688,19 +688,6 @@ class Object_Sync_Sf_Mapping {
 
 			$fieldmap['wordpress_field']['methods'] = maybe_unserialize( $fieldmap['wordpress_field']['methods'] );
 
-			// todo: we should think about whether this needs to be moved to after the key/prematching?
-			// skip fields that aren't being pushed to Salesforce.
-			if ( in_array( $trigger, $wordpress_haystack, true ) && ! in_array( $fieldmap['direction'], array_values( $this->direction_wordpress ), true ) ) {
-				// The trigger is a WordPress trigger, but the fieldmap direction is not a WordPress direction.
-				continue;
-			}
-
-			// skip fields that aren't being pulled from Salesforce.
-			if ( in_array( $trigger, $salesforce_haystack, true ) && ! in_array( $fieldmap['direction'], array_values( $this->direction_salesforce ), true ) ) {
-				// The trigger is a Salesforce trigger, but the fieldmap direction is not a Salesforce direction.
-				continue;
-			}
-
 			$wordpress_field = $fieldmap['wordpress_field']['label'];
 
 			if ( version_compare( $this->version, '1.2.0', '>=' ) && isset( $fieldmap['salesforce_field']['name'] ) ) {
@@ -767,6 +754,12 @@ class Object_Sync_Sf_Mapping {
 						'wordpress_field'  => $wordpress_field,
 						'value'            => $object[ $wordpress_field ],
 					);
+				}
+
+				// Skip fields that aren't being pushed to Salesforce.
+				if ( ! in_array( $fieldmap['direction'], array_values( $this->direction_wordpress ), true ) ) {
+					// The trigger is a WordPress trigger, but the fieldmap direction is not a WordPress direction.
+					unset( $params[ $salesforce_field ] );
 				}
 
 				// I think it's good to over-mention that updateable is really how the Salesforce api spells it.
@@ -838,6 +831,12 @@ class Object_Sync_Sf_Mapping {
 						'method_create'    => $fieldmap['wordpress_field']['methods']['create'],
 						'method_update'    => $fieldmap['wordpress_field']['methods']['update'],
 					);
+				}
+
+				// Skip fields that aren't being pulled from Salesforce.
+				if ( ! in_array( $fieldmap['direction'], array_values( $this->direction_salesforce ), true ) ) {
+					// The trigger is a Salesforce trigger, but the fieldmap direction is not a Salesforce direction.
+					unset( $params[ $wordpress_field ] );
 				}
 
 				switch ( $trigger ) {
