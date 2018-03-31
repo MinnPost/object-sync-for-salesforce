@@ -163,7 +163,7 @@
 				}
 				?>
 				</select>
-				<p class="description">When the plugin checks for data to bring from Salesforce into WordPress, it will use the selected field to determine what relevant changes have occurred in Salesforce.</p>
+				<p class="description"><?php echo esc_html__( 'When the plugin checks for data to bring from Salesforce into WordPress, it will use the selected field to determine what relevant changes have occurred in Salesforce.', 'object-sync-for-salesforce' ); ?></p>
 			<?php endif; ?>
 		</div>
 	</fieldset>
