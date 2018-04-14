@@ -90,7 +90,8 @@ class Object_Sync_Sf_Salesforce_Push {
 					add_action( 'edit_comment', array( $this, 'edit_comment' ) );
 					add_action( 'delete_comment', array( $this, 'delete_comment' ) ); // to be clear: this only runs when the comment gets deleted from the trash, either manually or automatically
 				} else { // this is for custom post types
-					add_action( 'save_post_' . $object_type, array( $this, 'post_actions' ), 11, 2 );
+					// we still have to use save_post because save_post_type fails to pull in the metadata
+					add_action( 'save_post', array( $this, 'post_actions' ), 11, 2 );
 				}
 			}
 		}
