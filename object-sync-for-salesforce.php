@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Object Sync for Salesforce
-Description: WordPress plugin that implements mapping and syncing between Salesforce objects and WordPress objects
+Description: Object Sync for Salesforce maps and syncs data between Salesforce objects and WordPress objects.
 Version: 1.3.4
 Author: MinnPost
 Author URI: http://code.minnpost.com
