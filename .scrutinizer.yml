@@ -1,0 +1,17 @@
+filter:
+    excluded_paths:
+        - 'bin/*'
+        - 'docs/*'
+        - '*.min.js'
+        - '*.min.css'
+        - tests/**/*
+        - 'Gulpfile.js'
+    dependency_paths:
+        - wordpress/
+tools:
+    php_code_sniffer:
+        config:
+            standard: WordPress
+    external_code_coverage:
+        timeout: 1200
+        runs: 1
