@@ -1,3 +1,6 @@
+checks:
+    php: true
+    javascript: false
 filter:
     excluded_paths:
         - 'bin/*'
