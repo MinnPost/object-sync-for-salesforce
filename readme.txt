@@ -154,6 +154,15 @@ This doesn't mean you can't use them together, but it does mean this plugin is n
 
 Object Sync for Salesforce does have abundant developer hooks, and WooCommerce has its own API, and it would be possible to build an add-on plugin to provide full support by integrating these (we would happily point to it for all users who install this plugin while they're running WooCommerce).
 
+### Troubleshooting
+
+If you have a fieldmap that is not passing data, there are several ways to troubleshoot.
+
+1. Plugin configuration
+2. Plugin logs
+3. Plugin mapping errors
+4. Server logs
+
 == Changelog ==
 
 * 1.3.4 (2018-04-14)
