@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.3.5 (2018-04-25)
+	* Bug fix: this release fixes an issue where the plugin can fail to map certain fields in certain cases when the Salesforce value it is attempting to save in WordPress is empty.
+
 * 1.3.4 (2018-04-14)
 	* Bug fix: this release refixes an issue in which a custom post object with custom fields was not sending its custom fields on the first save, causing it to fail if the fields were required in Salesforce. Thanks to WordPress users @rtd2 and @bill5roses for reporting that the previous fix was not sufficient.
 
