@@ -734,7 +734,7 @@ class Object_Sync_Sf_Mapping {
 
 				$params[ $salesforce_field ] = $object[ $wordpress_field ];
 
-				// If the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce,
+				// If the field is a key in Salesforce, remove it from $params to avoid upsert errors from Salesforce,
 				// but still put its name in the params array so we can check for it later.
 				if ( '1' === $fieldmap['is_key'] ) {
 					if ( ! $use_soap ) {
@@ -747,7 +747,7 @@ class Object_Sync_Sf_Mapping {
 					);
 				}
 
-				// If the field is a prematch in salesforce, put its name in the params array so we can check for it later.
+				// If the field is a prematch in Salesforce, put its name in the params array so we can check for it later.
 				if ( '1' === $fieldmap['is_prematch'] ) {
 					$params['prematch'] = array(
 						'salesforce_field' => $salesforce_field,
@@ -768,14 +768,15 @@ class Object_Sync_Sf_Mapping {
 				if ( 1 !== (int) $fieldmap['salesforce_field']['updateable'] ) {
 					unset( $params[ $salesforce_field ] );
 				}
+
+				// we don't need a continue with the unset methods because there's no array being created down here
 			} elseif ( in_array( $trigger, $salesforce_haystack, true ) ) {
 
-				// A salesforce event caused this.
+				// A Salesforce event caused this.
 
 				if ( isset( $salesforce_field_type ) ) {
 					// Salesforce provides multipicklist values as a delimited string. If the
-					// destination field in WordPress accepts multiple values, explode the string
-					// into an array and then serialize it.
+					// destination field in WordPress accepts multiple values, explode the string into an array and then serialize it.
 					if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce ) ) {
 						$object[ $salesforce_field ] = explode( $this->array_delimiter, $object[ $salesforce_field ] );
 					}
@@ -802,14 +803,20 @@ class Object_Sync_Sf_Mapping {
 				}
 
 				// Make an array because we need to store the methods for each field as well.
-				$params[ $wordpress_field ]          = array();
-				$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
+				if ( '' !== $object[ $salesforce_field ] ) {
+					$params[ $wordpress_field ]          = array();
+					$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
+				} else {
+					// If we try to save certain fields with empty values, WordPress will silently start skipping stuff. This keeps that from happening.
+					continue;
+				}
 
-				// If the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce,
+				// If the field is a key in Salesforce, remove it from $params to avoid upsert errors from Salesforce,
 				// but still put its name in the params array so we can check for it later.
 				if ( '1' === $fieldmap['is_key'] ) {
 					if ( ! $use_soap ) {
 						unset( $params[ $wordpress_field ] );
+						continue;
 					}
 					$params['key'] = array(
 						'salesforce_field' => $salesforce_field,
@@ -821,7 +828,7 @@ class Object_Sync_Sf_Mapping {
 					);
 				}
 
-				// If the field is a prematch in salesforce, put its name in the params array so we can check for it later.
+				// If the field is a prematch in Salesforce, put its name in the params array so we can check for it later.
 				if ( '1' === $fieldmap['is_prematch'] ) {
 					$params['prematch'] = array(
 						'salesforce_field' => $salesforce_field,
@@ -837,6 +844,8 @@ class Object_Sync_Sf_Mapping {
 				if ( ! in_array( $fieldmap['direction'], array_values( $this->direction_salesforce ), true ) ) {
 					// The trigger is a Salesforce trigger, but the fieldmap direction is not a Salesforce direction.
 					unset( $params[ $wordpress_field ] );
+					// we also need to continue here, so it doesn't create an empty array below for fields that are WordPress -> Salesforce only
+					continue;
 				}
 
 				switch ( $trigger ) {
