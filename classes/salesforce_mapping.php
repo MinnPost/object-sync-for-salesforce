@@ -805,6 +805,9 @@ class Object_Sync_Sf_Mapping {
 				if ( '' !== $object[ $salesforce_field ] ) {
 					$params[ $wordpress_field ]          = array();
 					$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
+				} else {
+					// If we try to save certain fields with empty values, WordPress will silently start skipping stuff. this keeps this from happening.
+					continue;
 				}
 
 				// If the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce,
