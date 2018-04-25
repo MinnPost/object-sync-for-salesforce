@@ -806,7 +806,7 @@ class Object_Sync_Sf_Mapping {
 					$params[ $wordpress_field ]          = array();
 					$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
 				} else {
-					// If we try to save certain fields with empty values, WordPress will silently start skipping stuff. this keeps this from happening.
+					// If we try to save certain fields with empty values, WordPress will silently start skipping stuff. This keeps this from happening.
 					continue;
 				}
 
