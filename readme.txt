@@ -156,7 +156,6 @@ This doesn't mean you can't use them together, but it does mean this plugin is n
 
 Object Sync for Salesforce does have abundant developer hooks, and WooCommerce has its own API, and it would be possible to build an add-on plugin to provide full support by integrating these (we would happily point to it for all users who install this plugin while they're running WooCommerce).
 
-=======
 ### Troubleshooting
 
 If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. More information is available in the plugin documentation.
@@ -172,8 +171,6 @@ If you are successfully authenticated with Salesforce, but you have a fieldmap t
 - If the plugin fails in the middle of creating a map between two objects, a row may be created on the Mapping Errors screen. If it is a push error, it will tell you the WordPress object ID it was trying to map. If it is a pull error, it will tell you the Salesforce ID. **You should not leave these entries.**
 4. Server logs
 - If you don't see any error logs in WordPress, it is always a good idea to check your server's error logs and see if PHP is encountering errors.
-
-== Changelog ==
 
 == Changelog ==
 
