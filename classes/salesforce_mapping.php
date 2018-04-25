@@ -802,8 +802,10 @@ class Object_Sync_Sf_Mapping {
 				}
 
 				// Make an array because we need to store the methods for each field as well.
-				$params[ $wordpress_field ]          = array();
-				$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
+				if ( '' !== $object[ $salesforce_field ] ) {
+					$params[ $wordpress_field ]          = array();
+					$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
+				}
 
 				// If the field is a key in salesforce, remove it from $params to avoid upsert errors from salesforce,
 				// but still put its name in the params array so we can check for it later.
