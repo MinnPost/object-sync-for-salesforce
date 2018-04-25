@@ -69,14 +69,22 @@ This is the full documentation for this plugin, extending the information in [th
 
     - [Extending logging](./extending-logging.md)
 
-8. [All developer hooks](./all-developer-hooks.md)
+8. [Mapping errors](./mapping-errors.md)
+
+	When the plugin encounters errors, it creates a Mapping Errors tab in the admin settings and populates it with some information. You can review this to see what records need to be addressed.
+
+9. [Troubleshooting](./troubleshooting.md)
+
+	There are several ways to troubleshoot when the plugin has errors, including but not limited to the above log entries and the mapping errors.
+
+10. [All developer hooks](./all-developer-hooks.md)
 
     This is a full list of all the developer hooks in the plugin. Each hook indicates what file contains it, and where the documentation for it resides.
 
     We've also created a document where we'd like to list plugins that use these hooks. [Take a look](./example-extending-plugins.md), and/or submit others that you know about.
 
-9. [Code documentation](./code/index.html)
+11. [Code documentation](./code/index.html)
 
     This is an auto generated system that documents all of the PHP classes in the plugin. This is a good way for PHP developers to look through what the code is doing.
 
-    If you've downloaded the plugin, you can browse this code documentation at `https://<your site>/wp-content/plugins/object-sync-for-salesforce/docs/code`.
+    If you've installed the plugin, you can browse this code documentation at `https://<your site>/wp-content/plugins/object-sync-for-salesforce/docs/code`.
