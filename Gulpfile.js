@@ -35,7 +35,8 @@ const paths = {
 	'php': [ './*.php', './**/*.php' ],
 	'sass': 'assets/sass/**/*.scss',
 	'concat_scripts': 'assets/js/src/*.js',
-	'scripts': [ 'assets/js/*.js', '!assets/js/*.min.js' ]
+	'scripts': [ 'assets/js/*.js', '!assets/js/*.min.js' ],
+	'changelog': 'changelog.md'
 };
 
 /**
@@ -235,7 +236,7 @@ gulp.task( 'uglify', [ 'concat' ], () =>
 );
 
 /**
- * Delete the theme's .pot before we create a new one.
+ * Delete the plugin's .pot before we create a new one.
  */
 gulp.task( 'clean:pot', () =>
 	del( [ 'languages/object-sync-for-salesforce.pot' ] )
@@ -255,6 +256,22 @@ gulp.task( 'wp-pot', [ 'clean:pot' ], () =>
 			'package': 'object-sync-for-salesforce',
 		} ) )
 		.pipe( gulp.dest( 'languages/object-sync-for-salesforce.pot' ) )
+);
+
+/**
+ * Delete the plugin's changelog.txt before making another one
+ */
+gulp.task( 'clean:changelog', () =>
+	del( [ 'changelog.txt' ] )
+);
+
+/**
+ * Create a changelog.txt from the changelog.md
+ */
+gulp.task( 'wp-changelog', [ 'clean:changelog' ], () =>
+    gulp.src( paths.changelog )
+        .pipe( rename( 'changelog.txt') )
+      	.pipe( gulp.dest( '.' ) )
 );
 
 /**
@@ -340,8 +357,9 @@ gulp.task( 'watch', function () {
  */
 gulp.task( 'markup', browserSync.reload );
 gulp.task( 'i18n', [ 'wp-pot' ] );
+gulp.task( 'changelog', [ 'wp-changelog' ] );
 gulp.task( 'icons', [ 'svg' ] );
 gulp.task( 'scripts', [ 'uglify' ] );
 gulp.task( 'styles', [ 'cssnano' ] );
 gulp.task( 'lint', [ 'sass:lint', 'js:lint' ] );
-gulp.task( 'default', [ 'i18n', 'icons', 'styles', 'scripts', 'imagemin'] );
+gulp.task( 'default', [ 'i18n', 'changelog', 'icons', 'styles', 'scripts', 'imagemin'] );
