@@ -417,7 +417,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'text',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => '',
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY',
 				),
@@ -430,7 +430,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'text',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => '',
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET',
 				),
@@ -442,7 +442,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'url',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => '',
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL',
 				),
@@ -454,7 +454,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'url',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					// translators: 1) production salesforce login, 2) sandbox salesforce login
 					'desc'     => sprintf( __( 'For most Salesforce setups, you should use %1$s for production and %2$s for sandbox.', 'object-sync-for-salesforce' ),
 						esc_url( 'https://login.salesforce.com' ),
@@ -470,7 +470,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'text',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => __( 'For most Salesforce installs, this should not be changed.', 'object-sync-for-salesforce' ),
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH',
 					'default'  => $this->default_authorize_url_path,
@@ -483,7 +483,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'text',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => __( 'For most Salesforce installs, this should not be changed.', 'object-sync-for-salesforce' ),
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH',
 					'default'  => $this->default_token_url_path,
@@ -496,7 +496,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'text',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => '',
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION',
 					'default'  => $this->default_api_version,
@@ -509,7 +509,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'checkboxes',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => __( 'Allows you to limit which Salesforce objects can be mapped', 'object-sync-for-salesforce' ),
 					'items'    => array(
 						'triggerable' => array(
@@ -534,7 +534,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'number',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => __( 'Number of seconds to wait between repeated salesforce pulls. Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 					'default'  => $this->default_pull_throttle,
@@ -547,7 +547,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'checkbox',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => __( 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
@@ -559,7 +559,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'checkbox',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => __( 'If checked, the plugin will delete the tables and other data it creates when you uninstall it. Unchecking this field can be useful if you need to reactivate the plugin for any reason without losing data.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
@@ -574,7 +574,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'select',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => '',
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION',
 					'items'    => $this->version_options(),
@@ -606,7 +606,7 @@ class Object_Sync_Sf_Admin {
 			}
 
 			add_settings_field( $id, $title, $callback, $page, $section, $args );
-			register_setting( $page, $id, array( $this, $validate ) );
+			register_setting( $page, $id, $validate );
 		}
 	}
 
@@ -653,7 +653,7 @@ class Object_Sync_Sf_Admin {
 					'section'  => $key,
 					'args'     => array(
 						'type'     => 'select',
-						'validate' => 'sanitize_text_field',
+						'validate' => 'sanitize_validate_text',
 						'desc'     => '',
 						'items'    => array(
 							'minutes' => array(
@@ -737,7 +737,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'checkboxes',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => __( 'these are the statuses to log', 'object-sync-for-salesforce' ),
 					'items'    => array(
 						'error'   => array(
@@ -782,7 +782,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'text',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => __( 'If automatic deleting is enabled, it will affect logs this old.', 'object-sync-for-salesforce' ),
 					'default'  => '2 weeks',
 					'constant' => '',
@@ -808,7 +808,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'select',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => __( 'These two fields are how often the site will check for logs to delete.', 'object-sync-for-salesforce' ),
 					'items'    => array(
 						'minutes' => array(
@@ -833,7 +833,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'checkboxes',
-					'validate' => 'sanitize_text_field',
+					'validate' => 'sanitize_validate_text',
 					'desc'     => __( 'these are the triggers to log', 'object-sync-for-salesforce' ),
 					'items'    => array(
 						$this->mappings->sync_wordpress_create => array(
@@ -1631,6 +1631,17 @@ class Object_Sync_Sf_Admin {
 			);
 		}
 
+	}
+
+	/**
+	* Allow for a standard sanitize/validate method. We could use more specific ones if need be, but this one provides a baseline.
+	*
+	* @param string $option
+	* @return string $option
+	*/
+	private function sanitize_validate_text( $option ) {
+		$option = sanitize_text_field( $option );
+		return $option;
 	}
 
 	/**
