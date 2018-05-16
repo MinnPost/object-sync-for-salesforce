@@ -606,7 +606,7 @@ class Object_Sync_Sf_Admin {
 			}
 
 			add_settings_field( $id, $title, $callback, $page, $section, $args );
-			register_setting( $page, $id, $validate );
+			register_setting( $page, $id, array( $this, $validate ) );
 		}
 	}
 
@@ -1639,7 +1639,14 @@ class Object_Sync_Sf_Admin {
 	* @param string $option
 	* @return string $option
 	*/
-	private function sanitize_validate_text( $option ) {
+	public function sanitize_validate_text( $option ) {
+		if ( is_array( $option ) ) {
+			$options = array();
+			foreach ( $option as $key => $value ) {
+				$options[ $key ] = sanitize_text_field( $value );
+			}
+			return $options;
+		}
 		$option = sanitize_text_field( $option );
 		return $option;
 	}
