@@ -104,7 +104,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Admin.html#12-1928" title="Go to source code">admin.php</a>
+			<b>Located at</b> <a href="source-class-Object_Sync_Sf_Admin.html#12-1946" title="Go to source code">admin.php</a>
 		<br>
 	</div>
 
@@ -1156,6 +1156,45 @@ Above method can handle a single checkbox as it is</p>
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="sanitize_validate_text" id="_sanitize_validate_text">
+
+		<td class="attributes"><code>
+			 public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_sanitize_validate_text">#</a>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1636-1652" title="Go to source code">sanitize_validate_text</a>( <span>string <var>$option</var></span> )</code>
+
+		<div class="description short">
+			<p>Allow for a standard sanitize/validate method. We could use more specific ones if need be, but this one provides a baseline.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Allow for a standard sanitize/validate method. We could use more specific ones if need be, but this one provides a baseline.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$option</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>$option
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="status" id="_status">
 
 		<td class="attributes"><code>
@@ -1168,7 +1207,7 @@ Above method can handle a single checkbox as it is</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_status">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1636-1696" title="Go to source code">status</a>( <span>object <var>$sfapi</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1654-1714" title="Go to source code">status</a>( <span>object <var>$sfapi</var></span> )</code>
 
 		<div class="description short">
 			<p>Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it</p>
@@ -1203,7 +1242,7 @@ Above method can handle a single checkbox as it is</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_logout">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1698-1711" title="Go to source code">logout</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1716-1729" title="Go to source code">logout</a>( )</code>
 
 		<div class="description short">
 			<p>Deauthorize WordPress from Salesforce.
@@ -1237,7 +1276,7 @@ For this plugin at this time, that is the decision we are making: don't do any k
 
 		<td class="name"><div>
 		<a class="anchor" href="#_clear_sfwp_cache">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1713-1723" title="Go to source code">clear_sfwp_cache</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1731-1741" title="Go to source code">clear_sfwp_cache</a>( )</code>
 
 		<div class="description short">
 			<p>Ajax call to clear the plugin cache.</p>
@@ -1267,7 +1306,7 @@ For this plugin at this time, that is the decision we are making: don't do any k
 
 		<td class="name"><div>
 		<a class="anchor" href="#_clear_cache">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1725-1745" title="Go to source code">clear_cache</a>( <span> <var>$ajax</var> = <span class="php-keyword1">false</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1743-1763" title="Go to source code">clear_cache</a>( <span> <var>$ajax</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 		<div class="description short">
 			<p>Clear the plugin's cache.
@@ -1299,7 +1338,7 @@ This uses the flush method contained in the WordPress cache to clear all of this
 
 		<td class="name"><div>
 		<a class="anchor" href="#_check_wordpress_admin_permissions">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1747-1767" title="Go to source code">check_wordpress_admin_permissions</a>( )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1765-1785" title="Go to source code">check_wordpress_admin_permissions</a>( )</code>
 
 		<div class="description short">
 			<p>Check WordPress Admin permissions
@@ -1331,7 +1370,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_show_salesforce_user_fields">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1769-1794" title="Go to source code">show_salesforce_user_fields</a>( <span>object <var>$user</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1787-1812" title="Go to source code">show_salesforce_user_fields</a>( <span>object <var>$user</var></span> )</code>
 
 		<div class="description short">
 			<p>Show what we know about this user's relationship to a Salesforce object, if any</p>
@@ -1366,7 +1405,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save_salesforce_user_fields">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1796-1822" title="Go to source code">save_salesforce_user_fields</a>( <span>integer <var>$user_id</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1814-1840" title="Go to source code">save_salesforce_user_fields</a>( <span>integer <var>$user_id</var></span> )</code>
 
 		<div class="description short">
 			<p>If the user profile has been mapped to Salesforce, do it</p>
@@ -1401,7 +1440,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_tabs">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1824-1855" title="Go to source code">tabs</a>( <span>array <var>$tabs</var></span>, <span>string <var>$tab</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1842-1873" title="Go to source code">tabs</a>( <span>array <var>$tabs</var></span>, <span>string <var>$tab</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Render tabs for settings pages in admin</p>
@@ -1438,7 +1477,7 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_clear_schedule">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1857-1870" title="Go to source code">clear_schedule</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1875-1888" title="Go to source code">clear_schedule</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Clear schedule
@@ -1470,7 +1509,7 @@ This clears the schedule if the user clicks the button</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_schedule_count">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1872-1879" title="Go to source code">get_schedule_count</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1890-1897" title="Go to source code">get_schedule_count</a>( <span> <var>$schedule_name</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			
@@ -1500,7 +1539,7 @@ This clears the schedule if the user clicks the button</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_schedule">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1881-1892" title="Go to source code">schedule</a>( <span> <var>$schedule_name</var></span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1899-1910" title="Go to source code">schedule</a>( <span> <var>$schedule_name</var></span> )</code>
 
 		<div class="description short">
 			<p>Load the schedule class</p>
@@ -1530,7 +1569,7 @@ This clears the schedule if the user clicks the button</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_object_map">#</a>
-		<code><a href="source-class-Object_Sync_Sf_Admin.html#1894-1926" title="Go to source code">create_object_map</a>( <span>integer <var>$wordpress_id</var></span>, <span>string <var>$wordpress_object</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$action</var> = <span class="php-quote">''</span> </span> )</code>
+		<code><a href="source-class-Object_Sync_Sf_Admin.html#1912-1944" title="Go to source code">create_object_map</a>( <span>integer <var>$wordpress_id</var></span>, <span>string <var>$wordpress_object</var></span>, <span>string <var>$salesforce_id</var></span>, <span>string <var>$action</var> = <span class="php-quote">''</span> </span> )</code>
 
 		<div class="description short">
 			<p>Create an object map between a WordPress object and a Salesforce object</p>
