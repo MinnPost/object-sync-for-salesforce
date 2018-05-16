@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.3.5
+Stable tag: 1.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -177,5 +177,5 @@ If you are successfully authenticated with Salesforce, but you have a fieldmap t
 
 == Changelog ==
 
-* 1.3.5 (2018-04-25)
-	* Bug fix: this release fixes an issue where the plugin can fail to map certain fields in certain cases when the Salesforce value it is attempting to save in WordPress is empty.
+* 1.3.6 (2018-05-16)
+	* Bug fix: this release fixes an issue where the plugin can fail to save setting values in older WordPress versions, which keeps it from ever being activated. Thanks to WordPress user @amstertam for bringing this to our attention.
