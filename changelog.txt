@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.3.6 (2018-05-16)
+	* Bug fix: this release fixes an issue where the plugin can fail to save setting values in older WordPress versions, which keeps it from ever being activated. Thanks to WordPress user @amstertam for bringing this to our attention.
+
 * 1.3.5 (2018-04-25)
 	* Bug fix: this release fixes an issue where the plugin can fail to map certain fields in certain cases when the Salesforce value it is attempting to save in WordPress is empty.
 
