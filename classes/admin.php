@@ -443,7 +443,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'url',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => '',
+					'desc'     => 'In most cases, you will want to use ' . get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=authorize' ) . ' for this value.',
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL',
 				),
 			),
