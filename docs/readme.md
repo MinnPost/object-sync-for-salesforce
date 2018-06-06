@@ -61,7 +61,10 @@ This is the full documentation for this plugin, extending the information in [th
     - [Extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
     - [Extending sync allowed](./extending-sync-allowed.md#pull)
 
-7. [Logging](./logging.md)
+7. [Import & Export](./import-export.md)
+	Some of the data used by this plugin can be imported and exported.
+
+8. [Logging](./logging.md)
 
     When enabled, the plugin will create log entries for various events it completes, both from the Salesforce API and from WordPress object modification.
 
@@ -69,21 +72,21 @@ This is the full documentation for this plugin, extending the information in [th
 
     - [Extending logging](./extending-logging.md)
 
-8. [Mapping errors](./mapping-errors.md)
+9. [Mapping errors](./mapping-errors.md)
 
 	When the plugin encounters errors, it creates a Mapping Errors tab in the admin settings and populates it with some information. You can review this to see what records need to be addressed.
 
-9. [Troubleshooting](./troubleshooting.md)
+10. [Troubleshooting](./troubleshooting.md)
 
 	There are several ways to troubleshoot when the plugin has errors, including but not limited to the above log entries and the mapping errors.
 
-10. [All developer hooks](./all-developer-hooks.md)
+11. [All developer hooks](./all-developer-hooks.md)
 
     This is a full list of all the developer hooks in the plugin. Each hook indicates what file contains it, and where the documentation for it resides.
 
     We've also created a document where we'd like to list plugins that use these hooks. [Take a look](./example-extending-plugins.md), and/or submit others that you know about.
 
-11. [Code documentation](./code/index.html)
+12. [Code documentation](./code/index.html)
 
     This is an auto generated system that documents all of the PHP classes in the plugin. This is a good way for PHP developers to look through what the code is doing.
 
