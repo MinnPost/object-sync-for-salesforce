@@ -443,7 +443,10 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'url',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => 'In most cases, you will want to use ' . get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=authorize' ) . ' for this value.',
+					// translators: %1$s is the admin URL for the Authorize tab
+					'desc'     => sprintf( __( 'In most cases, you will want to use %1$s for this value.', 'object-sync-for-salesforce' ),
+						get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=authorize' )
+					),
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL',
 				),
 			),
@@ -657,15 +660,15 @@ class Object_Sync_Sf_Admin {
 						'desc'     => '',
 						'items'    => array(
 							'minutes' => array(
-								'text'  => 'Minutes',
+								'text'  => __( 'Minutes', 'object-sync-for-salesforce' ),
 								'value' => 'minutes',
 							),
 							'hours'   => array(
-								'text'  => 'Hours',
+								'text'  => __( 'Hours', 'object-sync-for-salesforce' ),
 								'value' => 'hours',
 							),
 							'days'    => array(
-								'text'  => 'Days',
+								'text'  => __( 'Days', 'object-sync-for-salesforce' ),
 								'value' => 'days',
 							),
 						),
@@ -678,7 +681,7 @@ class Object_Sync_Sf_Admin {
 					'page'     => $page,
 					'section'  => $key,
 					'args'     => array(
-						'label'      => 'Clear this queue',
+						'label'      => __( 'Clear this queue', 'object-sync-for-salesforce' ),
 						'desc'       => '',
 						'url'        => esc_url( '?page=object-sync-salesforce-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key ),
 						'link_class' => 'button button-secondary',
