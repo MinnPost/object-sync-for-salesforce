@@ -2196,6 +2196,18 @@ msgstr ""
 msgid "Last Sync"
 msgstr ""
 
+#: wordpress/wp-content/themes/twentyeleven/showcase.php:3
+msgid "Showcase Template"
+msgstr ""
+
+#: wordpress/wp-content/themes/twentyeleven/sidebar-page.php:3
+msgid "Sidebar Template"
+msgstr ""
+
+#: wordpress/wp-content/themes/twentyten/onecolumn-page.php:3
+msgid "One column, no sidebar"
+msgstr ""
+
 #. translators: %1$s is the name of a WordPress object. %2$s is the id of that object.
 #. translators: %1$s is the name of a WordPress object. %2$s is the id of that object.
 #. translators: %1$s is the name of a WordPress object. %2$s is the id of that object.
@@ -2225,6 +2237,22 @@ msgstr ""
 #. translators: placeholder is for the action that occurred on the mapping object (pending or created)
 #: release/svn/tags/1.0.0/classes/salesforce_push.php:1016, release/svn/tags/1.0.1/classes/salesforce_push.php:1016, release/svn/tags/1.0.10/classes/salesforce_push.php:1016, release/svn/tags/1.0.11/classes/salesforce_push.php:1030, release/svn/tags/1.0.3/classes/salesforce_push.php:1016, release/svn/tags/1.0.5/classes/salesforce_push.php:1016, release/svn/tags/1.0.6/classes/salesforce_push.php:1016, release/svn/tags/1.0.8/classes/salesforce_push.php:1016, release/svn/tags/1.0.9/classes/salesforce_push.php:1016, release/svn/tags/1.1.0/classes/salesforce_push.php:1030, release/svn/tags/1.1.1/classes/salesforce_push.php:1030, release/svn/tags/1.1.2/classes/salesforce_push.php:1031, release/svn/tags/1.2.0/classes/salesforce_push.php:1031, release/svn/tags/1.2.1/classes/salesforce_push.php:1031, release/svn/tags/1.2.2/classes/salesforce_push.php:1031, release/svn/tags/1.2.3/classes/salesforce_push.php:1031, release/svn/tags/1.2.4/classes/salesforce_push.php:1031, release/svn/tags/1.2.8/classes/salesforce_push.php:1042, release/svn/tags/1.3.0/classes/salesforce_push.php:1042, release/svn/tags/1.3.1/classes/salesforce_push.php:1042
 msgid "Mapping object %1$s via function"
+msgstr ""
+
+#: wordpress/wp-content/themes/twentyfourteen/page-templates/contributors.php:3
+msgid "Contributor Page"
+msgstr ""
+
+#: wordpress/wp-content/themes/twentyfourteen/page-templates/full-width.php:3
+msgid "Full Width Page"
+msgstr ""
+
+#: wordpress/wp-content/themes/twentytwelve/page-templates/front-page.php:3
+msgid "Front Page Template"
+msgstr ""
+
+#: wordpress/wp-content/themes/twentytwelve/page-templates/full-width.php:3
+msgid "Full-width Page Template, No Sidebar"
 msgstr ""
 
 #: release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:409, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:409, release/svn/tags/1.0.10/templates/admin/fieldmaps-add-edit-clone.php:410, release/svn/tags/1.0.11/templates/admin/fieldmaps-add-edit-clone.php:410, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:409, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:409, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:409, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:410, release/svn/tags/1.0.9/templates/admin/fieldmaps-add-edit-clone.php:410, release/svn/tags/1.1.0/templates/admin/fieldmaps-add-edit-clone.php:410, release/svn/tags/1.1.1/templates/admin/fieldmaps-add-edit-clone.php:410, release/svn/tags/1.1.2/templates/admin/fieldmaps-add-edit-clone.php:410, release/svn/tags/1.2.0/templates/admin/fieldmaps-add-edit-clone.php:413, release/svn/tags/1.2.1/templates/admin/fieldmaps-add-edit-clone.php:413, release/svn/tags/1.2.2/templates/admin/fieldmaps-add-edit-clone.php:413, release/svn/tags/1.2.3/templates/admin/fieldmaps-add-edit-clone.php:414
