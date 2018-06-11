@@ -232,6 +232,8 @@
 									'salesforce_object' => $salesforce_object,
 								)
 							);
+							// allow for api name or field label to be the display value in the <select>
+							$display_value = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
 							foreach ( $salesforce_fields as $salesforce_field ) {
 								if ( isset( $value['salesforce_field']['name'] ) && $value['salesforce_field']['name'] === $salesforce_field['name'] ) {
 									$selected = ' selected';
@@ -241,6 +243,11 @@
 								} else {
 									$selected = '';
 								}
+
+								if ( 'api_name' === $display_value ) {
+									$salesforce_field['label'] = $salesforce_field['name'];
+								}
+
 								echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
 									esc_attr( $salesforce_field['name'] ),
 									esc_attr( $selected ),
