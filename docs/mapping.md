@@ -35,7 +35,7 @@ The plugin also has hooks to modify what objects are included. You can read more
 
 ### More on Salesforce object
 
-What is contained in this list depends partly on the authenticated Salesforce user's permissions, and partly on what the plugin's settings do with objects that can't be triggered and/or updated (see the [setup documentation](./setup.md) for more. This list is not currently able to be modified by developer hooks.
+What is contained in this list depends partly on the authenticated Salesforce user's permissions, and partly on what the plugin's settings do with objects that can't be triggered and/or updated (see the [setup documentation](./initial-setup.md) for more. This list is not currently able to be modified by developer hooks.
 
 The date fields to trigger a pull request are how the plugin finds Salesforce records in mapped objects that have been updated since the last `wp_cron` run. For example, if you map WordPress users to Salesforce Contacts, this date field will allow the plugin to get all Contacts that have been updated since that last run.
 
