@@ -81,6 +81,12 @@
 					} else {
 						$( '.pull_trigger_field' ).hide();
 					}
+
+					if ( jQuery.fn.select2 ) {
+						$( 'select#salesforce_record_type_default' ).select2();
+						$( 'select#pull_trigger_field' ).select2();
+					}
+
 				});
 			}, delay_time );
 		});
@@ -129,6 +135,11 @@
 
 			var markup = '<tr><td class="column-wordpress_field">' + wordpress + '</td><td class="column-salesforce_field">' + salesforce + '</td><td class="column-is_prematch"><input type="checkbox" name="is_prematch[' + row_key + ']" id="is_prematch-' + row_key + '" value="1" /><td class="column-is_key"><input type="checkbox" name="is_key[' + row_key + ']" id="is_key-' + row_key + '" value="1" /></td><td class="column-direction"><div class="radios"><label><input type="radio" value="sf_wp" name="direction[' + row_key + ']" id="direction-' + row_key + '-sf-wp">  Salesforce to WordPress</label><label><input type="radio" value="wp_sf" name="direction[' + row_key + ']" id="direction-' + row_key + '-wp-sf">  WordPress to Salesforce</label><label><input type="radio" value="sync" name="direction[' + row_key + ']" id="direction-' + row_key + '-sync" checked>  Sync</label></div></td><td class="column-is_delete"><input type="checkbox" name="is_delete[' + row_key + ']" id="is_delete-' + row_key + '" value="1" /></td></tr>';
 			$( 'table.fields tbody' ).append( markup );
+
+			if ( jQuery.fn.select2 ) {
+				$( '.column-wordpress_field select' ).select2();
+				$( '.column-salesforce_field select' ).select2();
+			}
 
 		});
 	}
@@ -217,6 +228,15 @@
 	});
 
 	$( document ).ready( function() {
+
+		if ( jQuery.fn.select2 ) {
+			$( 'select#wordpress_object' ).select2();
+			$( 'select#salesforce_object' ).select2();
+			$( 'select#salesforce_record_type_default' ).select2();
+			$( 'select#pull_trigger_field' ).select2();
+			$( '.column-wordpress_field select' ).select2();
+			$( '.column-salesforce_field select' ).select2();
+		}
 
 		var timeout;
 		$( '#wordpress_object, #salesforce_object' ).on( 'change', function() {
