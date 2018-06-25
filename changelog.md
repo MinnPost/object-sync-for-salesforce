@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 1.3.7 (2018-)
+	* Bug fix: non-required date fields in Salesforce, if blank, would set the corresponding WordPress field to today's date. Thanks to GitHub user @synthetiv for the report and the fix.
+	* Update some documentation and documentation formatting, including new documentation for importing and exporting.
+
 * 1.3.6 (2018-05-16)
 	* Bug fix: this release fixes an issue where the plugin can fail to save setting values in older WordPress versions, which keeps it from ever being activated. Thanks to WordPress user @amstertam for bringing this to our attention.
 
