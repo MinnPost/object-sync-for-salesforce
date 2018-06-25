@@ -160,7 +160,7 @@ Object Sync for Salesforce does have abundant developer hooks, and WooCommerce h
 
 ### Troubleshooting
 
-If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. More information is available in the plugin documentation.
+If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. More information may be available in the plugin documentation.
 
 **Plugin configuration**
 
