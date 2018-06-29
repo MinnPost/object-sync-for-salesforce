@@ -25,7 +25,7 @@ The settings for a WordPress fieldmap work like this:
 7. Push drafts: many WordPress objects create and save drafts while editing is happening. By default, this data is not sent to Salesforce. Checking the box causes it to be synced equally to live items.
 8. Weight: if the same object is mapped multiple times, the weight will determine what happens first. This is in ascending order, so objects with higher numerical values will be mapped after objects with lower numerical values.
 
-Several hooks exist for modifying these options. See the [extending mapping options documentation](./extending-mapping-options.md).
+Several hooks exist for modifying these options, including whether a the combo search/dropdown field library is used. See the [extending mapping options documentation](./extending-mapping-options.md).
 
 ### More on WordPress object
 

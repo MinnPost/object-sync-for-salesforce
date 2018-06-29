@@ -188,7 +188,7 @@ Because there can be many fields in a WordPress or Salesforce installation, it c
 
 ### Changing or disabling this feature
 
-This plugin also includes the [Select2](https://select2.org/) library without any additional configuration, and if you'd rather, you can use a developer hook to choose it instead.
+This plugin also includes the [Select2](https://select2.org/) library without requiring any additional files or configuration, and if you'd rather, you can use a developer hook to choose it instead.
 
 You can also choose not to use a library at all, and the plugin will revert to the browser's default `select` tag behavior.
 
