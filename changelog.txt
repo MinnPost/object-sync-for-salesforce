@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 1.3.7 (2018-06-29)
+	* New: modifications to dropdown fields when creating or editing fieldmaps allow users to pick whether to use the API name from Salesforce, and also allow for searching in a dropdown's contents. A developer hook allows some modification of the search/dropdown combo.
+	* Bug fix: non-required date fields in Salesforce, if blank, would set the corresponding WordPress field to today's date. Thanks to GitHub user @synthetiv for the report and the fix.
+	* Update some documentation and documentation formatting, including new documentation for importing and exporting.
+
 * 1.3.6 (2018-05-16)
 	* Bug fix: this release fixes an issue where the plugin can fail to save setting values in older WordPress versions, which keeps it from ever being activated. Thanks to WordPress user @amstertam for bringing this to our attention.
 
