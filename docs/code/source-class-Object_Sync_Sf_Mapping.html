@@ -860,7 +860,7 @@
 </span><span id="774" class="l">
 </span><span id="775" class="l">                <span class="php-comment">// A Salesforce event caused this.</span>
 </span><span id="776" class="l">
-</span><span id="777" class="l">                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$salesforce_field_type</span> ) ) {
+</span><span id="777" class="l">                <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$salesforce_field_type</span> ) &amp;&amp; ! <span class="php-keyword2">is_null</span>( <span class="php-var">$object</span>[ <span class="php-var">$salesforce_field</span> ] ) ) {
 </span><span id="778" class="l">                    <span class="php-comment">// Salesforce provides multipicklist values as a delimited string. If the</span>
 </span><span id="779" class="l">                    <span class="php-comment">// destination field in WordPress accepts multiple values, explode the string into an array and then serialize it.</span>
 </span><span id="780" class="l">                    <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( <span class="php-var">$salesforce_field_type</span>, <span class="php-var">$this</span>-&gt;array_types_from_salesforce ) ) {
