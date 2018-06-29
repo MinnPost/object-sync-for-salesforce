@@ -181,3 +181,24 @@ function add_data( $wordpress_object ) {
     return $wordpress_object;
 }
 ```
+
+## Administration interface
+
+Because there can be many fields in a WordPress or Salesforce installation, it can become difficult to find the correct fields for a fieldmap. To make this easier, we've included the [selectWoo](https://woocommerce.wordpress.com/2017/08/08/selectwoo-an-accessible-replacement-for-select2/) library from WooCommerce.
+
+### Changing or disabling this feature
+
+This plugin also includes the [Select2](https://select2.org/) library without any additional configuration, and if you'd rather, you can use a developer hook to choose it instead.
+
+You can also choose not to use a library at all, and the plugin will revert to the browser's default `select` tag behavior.
+
+Code example:
+
+```php
+add_filter( 'object_sync_for_salesforce_select_library', 'change_select_library', 10, 1 );
+function select_library( $select_library ) {
+	$select_library = 'select2';
+	// this could also be empty; in that case we would just use default browser select
+	return $select_library;
+}
+```
