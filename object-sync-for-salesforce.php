@@ -404,10 +404,33 @@ class Object_Sync_Salesforce {
 	* @return void
 	*/
 	public function admin_scripts_and_styles() {
-		wp_enqueue_script( 'select2js', plugins_url( 'assets/js/select2.min.js', __FILE__ ), array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/select2.min.js' ), true );
-		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/object-sync-for-salesforce-admin.min.js', __FILE__ ), array( 'jquery', 'select2js' ), filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/object-sync-for-salesforce-admin.min.js' ), true );
-		wp_enqueue_style( 'select2css', plugins_url( 'assets/css/select2.min.css', __FILE__ ), array(), filemtime( plugin_dir_path( __FILE__ ) . 'assets/css/select2.min.css' ), 'all' );
-		wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/object-sync-for-salesforce-admin.min.css', __FILE__ ), array( 'select2css' ), filemtime( plugin_dir_path( __FILE__ ) . 'assets/css/object-sync-for-salesforce-admin.min.css' ), 'all' );
+
+		// I think some developers might not want to bother with select2 or selectwoo, so let's allow that to be changeable
+		$select_library = apply_filters( 'object_sync_for_salesforce_select_library', 'selectwoo' );
+
+		/*
+		 * example to modify the select library
+		 * add_filter( 'object_sync_for_salesforce_select_library', 'select_library', 10, 1 );
+		 * function select_library( $select_library ) {
+		 * 	$select_library = 'select2';
+		 *  // this could also be empty; in that case we would just use default browser select
+		 * 	return $select_library;
+		 * }
+		*/
+
+		$javascript_dependencies = array( 'jquery' );
+		$css_dependencies        = array();
+		if ( '' !== $select_library ) {
+			wp_enqueue_script( $select_library . 'js', plugins_url( 'assets/js/' . $select_library . '.min.js', __FILE__ ), array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/' . $select_library . '.min.js' ), true );
+			$javascript_dependencies[] = $select_library . 'js';
+
+			wp_enqueue_style( $select_library . 'css', plugins_url( 'assets/css/' . $select_library . '.min.css', __FILE__ ), array(), filemtime( plugin_dir_path( __FILE__ ) . 'assets/css/' . $select_library . '.min.css' ), 'all' );
+			$css_dependencies[] = $select_library . 'css';
+		}
+
+		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/object-sync-for-salesforce-admin.min.js', __FILE__ ), $javascript_dependencies, filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/object-sync-for-salesforce-admin.min.js' ), true );
+
+		wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/object-sync-for-salesforce-admin.min.css', __FILE__ ), $css_dependencies, filemtime( plugin_dir_path( __FILE__ ) . 'assets/css/object-sync-for-salesforce-admin.min.css' ), 'all' );
 	}
 
 	/**
