@@ -20,6 +20,7 @@ release/\*
 test/\*
 tests/\*
 _sourcefiles/\*
+./\*\*/.\*
 );
 
 function ensure_release_dir() {
