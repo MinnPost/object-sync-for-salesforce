@@ -181,6 +181,10 @@ If you are successfully authenticated with Salesforce, but you have a fieldmap t
 
 - If you don't see any error logs in WordPress, it is always a good idea to check your server's error logs and see if PHP is encountering errors.
 
+### Plugin documentation
+
+There is extensive documentation of this plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
+
 == Changelog ==
 
 * 1.3.7 (2018-06-29)
