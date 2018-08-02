@@ -72,7 +72,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			foreach ( $this->mappings->get_fieldmaps() as $mapping ) {
 				$object_type = $mapping['wordpress_object'];
 				if ( 'user' === $object_type ) {
-					add_action( 'user_register', array( $this, 'add_user' ), 11, 1 );
+					add_action( 'um_user_register', array( $this, 'add_user' ), 11, 2 );
 					add_action( 'profile_update', array( $this, 'edit_user' ), 11, 2 );
 					add_action( 'delete_user', array( $this, 'delete_user' ) );
 				} elseif ( 'post' === $object_type ) {
@@ -113,9 +113,9 @@ class Object_Sync_Sf_Salesforce_Push {
 	*
 	* @param string $user_id
 	*/
-	public function add_user( $user_id ) {
+	public function add_user( $user_id, $form_data ) {
 		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id );
-		$this->object_insert( $user, 'user' );
+		$this->object_insert( $form_data, 'user' );
 	}
 
 	/**
