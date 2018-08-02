@@ -2,13 +2,6 @@
 
 If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot.
 
-## Authentication issues
-
-### Connect to Salesforce button does not go away
-
-- database tables cannot be created
--
-
 ## Fieldmaps cannot be created
 
 There appear to be some server configurations that have trouble creating the required database tables for this plugin to run. If you are unable to create fieldmaps, check to see if the `wp_object_sync_sf_field_map` table exists.
