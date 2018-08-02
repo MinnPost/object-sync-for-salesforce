@@ -56,6 +56,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		$this->schedule_name = 'salesforce_push';
 		$this->schedule      = $this->schedule();
 
+		// Create action hooks for WordPress objects. We run this after plugins are loaded in case something depends on another plugin.
 		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
 
 		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
