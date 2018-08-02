@@ -124,7 +124,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	}
 
 	/**
-	* Callback method for adding a user
+	* Callback method for adding a user via the Ultimate Member plugin
 	*
 	* @param string $user_id
 	*/
