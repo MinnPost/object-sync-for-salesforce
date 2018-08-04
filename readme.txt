@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.3.7
+Stable tag: 1.3.8
 Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -187,7 +187,5 @@ There is extensive documentation of this plugin, including its developer hooks, 
 
 == Changelog ==
 
-* 1.3.7 (2018-06-29)
-	* New: modifications to dropdown fields when creating or editing fieldmaps allow users to pick whether to use the API name from Salesforce, and also allow for searching in a dropdown's contents. A developer hook allows some modification of the search/dropdown combo.
-	* Bug fix: non-required date fields in Salesforce, if blank, would set the corresponding WordPress field to today's date. Thanks to GitHub user @synthetiv for the report and the fix.
-	* Update some documentation and documentation formatting, including new documentation for importing and exporting.
+* 1.3.8 (2018-08-03)
+	* New: basic support for the Ultimate Member plugin. Users created by its registration form can be pushed to Salesforce. Thanks to @atomicjack for the report and assistance testing.
