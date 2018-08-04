@@ -55,7 +55,9 @@ class Object_Sync_Sf_Salesforce_Push {
 
 		$this->schedule_name = 'salesforce_push';
 		$this->schedule      = $this->schedule();
-		$this->add_actions();
+
+		// Create action hooks for WordPress objects. We run this after plugins are loaded in case something depends on another plugin.
+		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
 
 		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
 
@@ -66,13 +68,17 @@ class Object_Sync_Sf_Salesforce_Push {
 	* We do not have any actions for blogroll at this time.
 	*
 	*/
-	private function add_actions() {
+	public function add_actions() {
 		$db_version = get_option( 'object_sync_for_salesforce_db_version', false );
 		if ( $db_version === $this->version ) {
 			foreach ( $this->mappings->get_fieldmaps() as $mapping ) {
 				$object_type = $mapping['wordpress_object'];
 				if ( 'user' === $object_type ) {
-					add_action( 'user_register', array( $this, 'add_user' ), 11, 1 );
+					if ( defined( 'ultimatemember_plugin_name' ) ) {
+						add_action( 'um_user_register', array( $this, 'um_add_user' ), 11, 2 );
+					} else {
+						add_action( 'user_register', array( $this, 'add_user' ), 11, 1 );
+					}
 					add_action( 'profile_update', array( $this, 'edit_user' ), 11, 2 );
 					add_action( 'delete_user', array( $this, 'delete_user' ) );
 				} elseif ( 'post' === $object_type ) {
@@ -116,6 +122,15 @@ class Object_Sync_Sf_Salesforce_Push {
 	public function add_user( $user_id ) {
 		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id );
 		$this->object_insert( $user, 'user' );
+	}
+
+	/**
+	* Callback method for adding a user via the Ultimate Member plugin
+	*
+	* @param string $user_id
+	*/
+	public function um_add_user( $user_id, $form_data = array() ) {
+		$this->object_insert( $form_data, 'user' );
 	}
 
 	/**

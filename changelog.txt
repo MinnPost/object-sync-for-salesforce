@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.3.8 (2018-08-03)
+	* New: basic support for the Ultimate Member plugin. Users created by its registration form can be pushed to Salesforce. Thanks to @atomicjack for the report and assistance testing.
+
 * 1.3.7 (2018-06-29)
 	* New: modifications to dropdown fields when creating or editing fieldmaps allow users to pick whether to use the API name from Salesforce, and also allow for searching in a dropdown's contents. A developer hook allows some modification of the search/dropdown combo.
 	* Bug fix: non-required date fields in Salesforce, if blank, would set the corresponding WordPress field to today's date. Thanks to GitHub user @synthetiv for the report and the fix.

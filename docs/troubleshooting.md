@@ -10,23 +10,23 @@ If this table does not exist, and you have access to create database tables dire
 
 ```sql
 CREATE TABLE `wp_object_sync_sf_field_map` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `label` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-  `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-  `wordpress_object` varchar(128) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-  `salesforce_object` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-  `salesforce_record_types_allowed` longblob,
-  `salesforce_record_type_default` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-  `fields` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `pull_trigger_field` varchar(128) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'LastModifiedDate',
-  `sync_triggers` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `push_async` tinyint(1) NOT NULL DEFAULT '0',
-  `push_drafts` tinyint(1) NOT NULL DEFAULT '0',
-  `weight` tinyint(1) NOT NULL DEFAULT '0',
-  `version` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  KEY `name_sf_type_wordpress_type` (`wordpress_object`,`salesforce_object`)
+	`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+	`label` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+	`name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+	`wordpress_object` varchar(128) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+	`salesforce_object` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+	`salesforce_record_types_allowed` longblob,
+	`salesforce_record_type_default` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+	`fields` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+	`pull_trigger_field` varchar(128) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'LastModifiedDate',
+	`sync_triggers` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+	`push_async` tinyint(1) NOT NULL DEFAULT '0',
+	`push_drafts` tinyint(1) NOT NULL DEFAULT '0',
+	`weight` tinyint(1) NOT NULL DEFAULT '0',
+	`version` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `name` (`name`),
+	KEY `name_sf_type_wordpress_type` (`wordpress_object`,`salesforce_object`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 ```
 
