@@ -947,7 +947,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 								esc_attr( $salesforce_mapping['wordpress_object'] ),
 								esc_attr( $structure['id_field'] ),
 								absint( $wordpress_id ),
-								esc_attr( $salesforce_mapping['salesforce_object'] ),
+								esc_attr( $mapping_object['salesforce_object'] ),
 								esc_attr( $object['Id'] ),
 								absint( $mapping_object['id'] )
 							);
