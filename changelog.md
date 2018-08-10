@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.3.9 (2018-08-10)
+	* Bug fix: when Salesforce Key was selected on a fieldmap's field, it was incorrectly being ignored when saving a record's data in WordPress after a Salesforce pull. Thanks to WordPress user @ken-nguyen for reporting this.
+
 * 1.3.8 (2018-08-03)
 	* New: basic support for the Ultimate Member plugin. Users created by its registration form can be pushed to Salesforce. Thanks to @atomicjack for the report and assistance testing.
 
