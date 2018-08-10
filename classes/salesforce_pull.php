@@ -793,19 +793,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				unset( $params['prematch'] );
 			}
 
-			// if there is an external key field in salesforce - ie mailchimp user id - on the fieldmap object
-			if ( isset( $params['key'] ) && is_array( $params['key'] ) ) {
-				$key_field_wordpress  = $params['key']['wordpress_field'];
-				$key_field_salesforce = $params['key']['salesforce_field'];
-				$key_value            = $params['key']['value'];
-				$key_methods          = array(
-					'method_match'  => $params['prematch']['method_read'],
-					'method_create' => $params['prematch']['method_create'],
-					'method_update' => $params['prematch']['method_update'],
-					'method_read'   => $params['key']['method_read'],
-				);
-				unset( $params['key'] );
-			}
+			// if there is an external key field in Salesforce - ie a Mailchimp user id - on the fieldmap object, this should not affect how WordPress handles it so we have removed it from the pull parameters.
 
 			// methods to run the wp create or update operations
 
@@ -841,7 +829,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't
 					do_action( 'object_sync_for_salesforce_pre_pull', $wordpress_id, $mapping, $object, $object_id, $params );
 
-					if ( isset( $prematch_field_salesforce ) || isset( $key_field_salesforce ) || null !== $wordpress_id ) {
+					if ( isset( $prematch_field_salesforce ) || null !== $wordpress_id ) {
 
 						$op = 'Upsert';
 
@@ -850,10 +838,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$upsert_key     = $prematch_field_wordpress;
 							$upsert_value   = $prematch_value;
 							$upsert_methods = $prematch_methods;
-						} elseif ( isset( $key_field_salesforce ) ) {
-							$upsert_key     = $key_field_wordpress;
-							$upsert_value   = $key_value;
-							$upsert_methods = $key_methods;
 						}
 
 						if ( null !== $wordpress_id ) {

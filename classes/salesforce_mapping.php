@@ -811,22 +811,7 @@ class Object_Sync_Sf_Mapping {
 					continue;
 				}
 
-				// If the field is a key in Salesforce, remove it from $params to avoid upsert errors from Salesforce,
-				// but still put its name in the params array so we can check for it later.
-				if ( '1' === $fieldmap['is_key'] ) {
-					if ( ! $use_soap ) {
-						unset( $params[ $wordpress_field ] );
-						continue;
-					}
-					$params['key'] = array(
-						'salesforce_field' => $salesforce_field,
-						'wordpress_field'  => $wordpress_field,
-						'value'            => $object[ $salesforce_field ],
-						'method_read'      => $fieldmap['wordpress_field']['methods']['read'],
-						'method_create'    => $fieldmap['wordpress_field']['methods']['create'],
-						'method_update'    => $fieldmap['wordpress_field']['methods']['update'],
-					);
-				}
+				// If the field is a key in Salesforce, disregard since this is caused by a Salesforce event. We're setting up data to be stored in WordPress here, and WordPress is not concerned with external key designations in Salesforce.
 
 				// If the field is a prematch in Salesforce, put its name in the params array so we can check for it later.
 				if ( '1' === $fieldmap['is_prematch'] ) {
