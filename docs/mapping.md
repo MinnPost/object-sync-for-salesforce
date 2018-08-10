@@ -89,9 +89,9 @@ If you encounter this issue, first try these steps in Salesforce:
 
 Prematch determines whether the field should be used to match objects. If it is checked, the plugin will see objects that share a value in that pair to be matched.
 
-A Salesforce Key is a flag in Salesforce that determines whether a field is another system's external ID.
+A Salesforce Key is a flag in Salesforce that determines whether a field is another system's external ID. Salesforce uses this to keep data from being overwritten.
 
-A checked Prematch or Salesforce Key will cause the plugin to try to "upsert" the data, which checks to see if there is a match before creating a new record. You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
+A checked Prematch (when saving data in WordPress or Salesforce) or Salesforce Key (when saving data in Salesforce) will cause the plugin to try to "upsert" the data to its destination. This means it checks to see if there is a match before creating a new record. You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
 
 Direction chooses what to do with the field's data. If you select Salesforce to WordPress, this field won't be sent to Salesforce. If you select WordPress to Salesforce, this field won't be sent to Wordpress. If you choose Sync, it will go from one system to the other whenever it changes.
 
@@ -111,7 +111,7 @@ Individual object map rows - a WordPress user to a Salesforce Contact, for examp
 
     When a WordPress object type that is already mapped to a Salesforce object type has an event that is an active trigger (as defined above).
 
-    - Create: if a new WordPress item is created, it will attempt to `insert` or `upsert` it into Salesforce. Upsert is used with the Prematch field defined above. You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
+    - Create: if a new WordPress item is created, it will attempt to `insert` or `upsert` it into Salesforce. Upsert is used with the Prematch and Salesforce Key fields defined above. You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
     - Update: if there is already an object map between two objects, the plugin will attempt to update the out of date item.
     - Delete: if there is already an object map between two objects, the plugin will attempt to delete the remaining item.
 
@@ -119,7 +119,7 @@ Individual object map rows - a WordPress user to a Salesforce Contact, for examp
 
     When a Salesforce object type that is already mapped to a WordPress object type has an event that is an active trigger (as defined above).
 
-    - Create: if a new Salesforce item is created, it will attempt to `insert` or `upsert` it into WordPress. Upsert is used with the Prematch field defined above. You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
+    - Create: if a new Salesforce item is created, it will attempt to `insert` or `upsert` it into WordPress. Upsert is used with the Prematch field defined above (the Salesforce Key field is ignored on pull operations). You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
     - Update: if there is already an object map between two objects, the plugin will attempt to update the out of date item.
     - Delete: if there is already an object map between two objects, the plugin will attempt to delete the remaining item.
 
