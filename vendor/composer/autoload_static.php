@@ -6,16 +6,6 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit258a02242ea9a0000a7e219d56217e81
 {
-    public static $prefixesPsr0 = array (
-        'C' => 
-        array (
-            'Composer\\Installers\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/composer/installers/src',
-            ),
-        ),
-    );
-
     public static $classMap = array (
         'AllowFieldTruncationHeader' => __DIR__ . '/..' . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
         'AssignmentRuleHeader' => __DIR__ . '/..' . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
@@ -51,7 +41,6 @@ class ComposerStaticInit258a02242ea9a0000a7e219d56217e81
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixesPsr0 = ComposerStaticInit258a02242ea9a0000a7e219d56217e81::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit258a02242ea9a0000a7e219d56217e81::$classMap;
 
         }, null, ClassLoader::class);

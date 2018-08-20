@@ -123,6 +123,8 @@ class Object_Sync_Salesforce {
 		$this->login_credentials = $this->get_login_credentials();
 		$this->slug              = 'object-sync-for-salesforce';
 
+		require_once( plugin_dir_path( __FILE__ ) . '/vendor/prospress/action-scheduler/action-scheduler.php' );
+
 		$this->schedulable_classes = array(
 			'salesforce_push' => array(
 				'label'    => 'Push to Salesforce',

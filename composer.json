@@ -21,7 +21,6 @@
         }
     ],
     "require": {
-        "composer/installers": "v1.0.6",
         "pippinsplugins/wp-logging": "dev-master",
         "developerforce/force.com-toolkit-for-php": "^1.0@dev",
         "prospress/action-scheduler": "dev-master"
