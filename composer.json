@@ -23,7 +23,8 @@
     "require": {
         "pippinsplugins/wp-logging": "dev-master",
         "A5hleyRich/wp-background-processing": "dev-master",
-        "developerforce/force.com-toolkit-for-php": "^1.0@dev"
+        "developerforce/force.com-toolkit-for-php": "^1.0@dev",
+        "prospress/action-scheduler": "dev-master"
     },
     "autoload": {
         "classmap": ["vendor/pippinsplugins/wp-logging/"]
