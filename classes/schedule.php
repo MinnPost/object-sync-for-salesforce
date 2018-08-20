@@ -12,7 +12,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Schedule events in a queue in WordPress
  */
-class Object_Sync_Sf_Schedule extends WP_Background_Process {
+class Object_Sync_Sf_Schedule {
 
 	protected $wpdb;
 	protected $version;
@@ -51,19 +51,19 @@ class Object_Sync_Sf_Schedule extends WP_Background_Process {
 		$this->logging             = $logging;
 		$this->schedulable_classes = $schedulable_classes;
 
-		$this->identifier = $this->schedule_name;
+		//$this->identifier = $this->schedule_name;
 
-		$this->add_filters();
-		add_action( $this->schedule_name, array( $this, 'maybe_handle' ) ); // run the handle method
+		$this->add_actions();
+		//add_action( $this->schedule_name, array( $this, 'maybe_handle' ) ); // run the handle method
 
 	}
 
 	/**
-	* Create the filters we need to run
+	* Create the actions to run
 	*
 	*/
-	public function add_filters() {
-		add_filter( 'cron_schedules', array( $this, 'set_schedule_frequency' ) );
+	public function add_actions() {
+		//add_filter( 'cron_schedules', array( $this, 'set_schedule_frequency' ) );
 	}
 
 	/**
