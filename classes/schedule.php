@@ -53,8 +53,9 @@ class Object_Sync_Sf_Schedule {
 
 		//$this->identifier = $this->schedule_name;
 
-		$this->add_actions();
+		//$this->add_actions();
 		//add_action( $this->schedule_name, array( $this, 'maybe_handle' ) ); // run the handle method
+		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
 
 	}
 
@@ -64,6 +65,13 @@ class Object_Sync_Sf_Schedule {
 	*/
 	public function add_actions() {
 		//require_once( '')
+		/**
+		 * Library
+		 */
+		require_once plugin_dir_path( __FILE__ ) . '../vendor/prospress/action-scheduler/action-scheduler.php';
+
+		echo 'exists? ' . function_exists( 'as_schedule_recurring_action' );
+
 		// create a recurring action for each schedulable item
 		foreach ( $this->schedulable_classes as $key => $value ) {
 
@@ -86,7 +94,7 @@ class Object_Sync_Sf_Schedule {
 
 			$key = $schedule_unit . '_' . $schedule_number;
 
-			as_schedule_recurring_action( current_time( 'timestamp' ), $seconds, array( $value['class'], $value['initializer'] ), array(), '' );
+			//as_schedule_recurring_action( current_time( 'timestamp' ), $seconds, array( $value['class'], $value['initializer'] ), array(), '' );
 		}
 	}
 

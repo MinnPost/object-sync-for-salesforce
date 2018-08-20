@@ -27,8 +27,7 @@
         "prospress/action-scheduler": "dev-master"
     },
     "autoload": {
-        "classmap": ["vendor/pippinsplugins/wp-logging/"],
-        "psr-4": {"ActionScheduler\\": "vendor/prospress/action-scheduler/"}
+        "classmap": ["vendor/pippinsplugins/wp-logging/"]
     },
     "require-dev": {
         "apigen/apigen": "^4.1",

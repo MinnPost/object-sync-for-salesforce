@@ -6,20 +6,6 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit258a02242ea9a0000a7e219d56217e81
 {
-    public static $prefixLengthsPsr4 = array (
-        'A' => 
-        array (
-            'ActionScheduler\\' => 16,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'ActionScheduler\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/prospress/action-scheduler',
-        ),
-    );
-
     public static $prefixesPsr0 = array (
         'C' => 
         array (
@@ -65,8 +51,6 @@ class ComposerStaticInit258a02242ea9a0000a7e219d56217e81
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit258a02242ea9a0000a7e219d56217e81::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit258a02242ea9a0000a7e219d56217e81::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit258a02242ea9a0000a7e219d56217e81::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit258a02242ea9a0000a7e219d56217e81::$classMap;
 
