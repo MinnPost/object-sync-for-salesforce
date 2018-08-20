@@ -34,7 +34,5 @@ return array(
     'SforceSoapClient' => $vendorDir . '/developerforce/force.com-toolkit-for-php/soapclient/SforcePartnerClient.php',
     'SingleEmailMessage' => $vendorDir . '/developerforce/force.com-toolkit-for-php/soapclient/SforceEmail.php',
     'UserTerritoryDeleteHeader' => $vendorDir . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
-    'WP_Async_Request' => $vendorDir . '/a5hleyrich/wp-background-processing/classes/wp-async-request.php',
-    'WP_Background_Process' => $vendorDir . '/a5hleyrich/wp-background-processing/classes/wp-background-process.php',
     'WP_Logging' => $vendorDir . '/pippinsplugins/wp-logging/WP_Logging.php',
 );
