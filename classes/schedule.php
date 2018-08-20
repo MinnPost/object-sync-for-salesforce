@@ -63,7 +63,31 @@ class Object_Sync_Sf_Schedule {
 	*
 	*/
 	public function add_actions() {
-		//add_filter( 'cron_schedules', array( $this, 'set_schedule_frequency' ) );
+		//require_once( '')
+		// create a recurring action for each schedulable item
+		foreach ( $this->schedulable_classes as $key => $value ) {
+
+			$schedule_number = absint( get_option( 'object_sync_for_salesforce_' . $key . '_schedule_number', '' ) );
+			$schedule_unit   = get_option( 'object_sync_for_salesforce_' . $key . '_schedule_unit', '' );
+
+			switch ( $schedule_unit ) {
+				case 'minutes':
+					$seconds = 60;
+					break;
+				case 'hours':
+					$seconds = 3600;
+					break;
+				case 'days':
+					$seconds = 86400;
+					break;
+				default:
+					$seconds = 0;
+			}
+
+			$key = $schedule_unit . '_' . $schedule_number;
+
+			as_schedule_recurring_action( current_time( 'timestamp' ), $seconds, array( $value['class'], $value['initializer'] ), array(), '' );
+		}
 	}
 
 	/**

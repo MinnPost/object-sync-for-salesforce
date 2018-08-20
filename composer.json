@@ -16,17 +16,19 @@
             "type": "git"
         },
         {
-            "url": "https://github.com/prospress/action-scheduler",
+            "url": "https://github.com/prospress/action-scheduler.git",
             "type": "git"
         }
     ],
     "require": {
+        "composer/installers": "v1.0.6",
         "pippinsplugins/wp-logging": "dev-master",
         "developerforce/force.com-toolkit-for-php": "^1.0@dev",
         "prospress/action-scheduler": "dev-master"
     },
     "autoload": {
-        "classmap": ["vendor/pippinsplugins/wp-logging/"]
+        "classmap": ["vendor/pippinsplugins/wp-logging/"],
+        "psr-4": {"ActionScheduler\\": "vendor/prospress/action-scheduler/"}
     },
     "require-dev": {
         "apigen/apigen": "^4.1",
