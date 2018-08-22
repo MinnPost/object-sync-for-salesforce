@@ -20,7 +20,7 @@ class Object_Sync_Sf_Action_Scheduler {
 	}
 
 	public function add_actions() {
-		as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $group );
+		//as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $group );
 	}
 
 	public function get_frequency( $name, $unit ) {

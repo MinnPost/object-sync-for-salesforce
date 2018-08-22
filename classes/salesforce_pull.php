@@ -22,6 +22,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	protected $mappings;
 	protected $logging;
 	protected $schedulable_classes;
+	protected $queue;
 
 	/**
 	* @var string
@@ -40,9 +41,10 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* @param object $mappings
 	* @param object $logging
 	* @param array $schedulable_classes
+	* @param object $queue
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $queue ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->login_credentials   = $login_credentials;
@@ -52,6 +54,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$this->mappings            = $mappings;
 		$this->logging             = $logging;
 		$this->schedulable_classes = $schedulable_classes;
+		$this->queue               = $queue;
 
 		$this->schedule_name = 'salesforce_pull';
 		$this->schedule      = $this->schedule();

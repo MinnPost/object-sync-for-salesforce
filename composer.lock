@@ -74,7 +74,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/prospress/action-scheduler.git",
-                "reference": "e8d9073208156a1d172f20bdbce466d1487be991"
+                "reference": "959c95112acc1b09f5ebe303b19b3c1aa3935498"
             },
             "require-dev": {
                 "wp-cli/wp-cli": "^1.3"
@@ -84,7 +84,7 @@
                 "GPL-3.0"
             ],
             "description": "Action Scheduler for WordPress and WooCommerce",
-            "time": "2018-08-17T00:18:42+00:00"
+            "time": "2018-08-21T13:18:32+00:00"
         }
     ],
     "packages-dev": [
@@ -1711,12 +1711,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "36ef9b8829305b0ae92f3f5177c5d23a8f84348b"
+                "reference": "97adf71c690c81b7017ae322a900013abee8bd87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/36ef9b8829305b0ae92f3f5177c5d23a8f84348b",
-                "reference": "36ef9b8829305b0ae92f3f5177c5d23a8f84348b",
+                "url": "https://api.github.com/repos/nette/utils/zipball/97adf71c690c81b7017ae322a900013abee8bd87",
+                "reference": "97adf71c690c81b7017ae322a900013abee8bd87",
                 "shasum": ""
             },
             "require": {
@@ -1785,7 +1785,7 @@
                 "utility",
                 "validation"
             ],
-            "time": "2018-08-07T16:14:59+00:00"
+            "time": "2018-08-21T11:20:46+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",

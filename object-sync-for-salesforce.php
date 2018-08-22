@@ -172,6 +172,7 @@ class Object_Sync_Salesforce {
 
 		$this->action_scheduler = $this->action_scheduler( $this->wpdb, $this->version, $this->slug );
 
+		$this->queue = Object_Sync_Sf_Queue::instance();
 		$this->logging = $this->logging( $this->wpdb, $this->version );
 
 		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->slug, $this->logging );
@@ -179,9 +180,9 @@ class Object_Sync_Salesforce {
 		$this->wordpress  = $this->wordpress( $this->wpdb, $this->version, $this->slug, $this->mappings, $this->logging );
 		$this->salesforce = $this->salesforce_get_api();
 
-		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
+		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes, $this->queue );
 
-		$this->pull = $this->pull( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes );
+		$this->pull = $this->pull( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes, $this->queue );
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull, $this->logging, $this->schedulable_classes );
 
@@ -197,10 +198,23 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *   Instance of Object_Sync_Sf_Action_Scheduler
 	 */
-	private function action_scheduler( $wpdb, $version ) {
-		require_once( plugin_dir_path( __FILE__ ) . 'classes/action_scheduler.php' );
-		$action_scheduler = new Object_Sync_Sf_Mapping( $wpdb, $version, $slug );
-		return $action_scheduler;
+	private function action_scheduler( $wpdb, $version, $slug ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'vendor/prospress/action-scheduler/action-scheduler.php' );
+		require_once plugin_dir_path( __FILE__ ) . 'classes/class-object-sync-sf-queue-interface.php';
+		require_once plugin_dir_path( __FILE__ ) . 'classes/class-object-sync-sf-action-queue.php';
+		require_once plugin_dir_path( __FILE__ ) . 'classes/class-object-sync-sf-queue.php';
+		//require_once( plugin_dir_path( __FILE__ ) . 'classes/action_scheduler.php' );
+		//$action_scheduler = new Object_Sync_Sf_Action_Scheduler( $wpdb, $version, $slug );
+		//return $action_scheduler;
+	}
+
+	/**
+	 * Get queue instance.
+	 *
+	 * @return WC_Queue_Interface
+	 */
+	public function queue() {
+		return Object_Sync_Sf_Queue::instance();
 	}
 
 	/**
@@ -342,9 +356,9 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *   Instance of Object_Sync_Sf_Salesforce_Push
 	 */
-	private function push( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $action_scheduler ) {
+	private function push( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $queue ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
-		$push = new Object_Sync_Sf_Salesforce_Push( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $action_scheduler );
+		$push = new Object_Sync_Sf_Salesforce_Push( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $queue );
 		return $push;
 	}
 
@@ -363,9 +377,9 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *   Instance of Object_Sync_Sf_Salesforce_Pull
 	 */
-	private function pull( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
+	private function pull( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $queue ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_pull.php';
-		$pull = new Object_Sync_Sf_Salesforce_Pull( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
+		$pull = new Object_Sync_Sf_Salesforce_Pull( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $queue );
 		return $pull;
 	}
 

@@ -22,7 +22,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	protected $mappings;
 	protected $logging;
 	protected $schedulable_classes;
-	protected $action_scheduler;
+	protected $queue;
 
 	/**
 	* @var string
@@ -41,10 +41,10 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @param object $mappings
 	* @param object $logging
 	* @param array $schedulable_classes
-	* @param object $action_scheduler
+	* @param object $queue
 	* @throws \Object_Sync_Sf_Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $action_scheduler ) {
+	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $queue ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->login_credentials   = $login_credentials;
@@ -54,7 +54,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		$this->mappings            = $mappings;
 		$this->logging             = $logging;
 		$this->schedulable_classes = $schedulable_classes;
-		$this->action_scheduler    = $action_scheduler;
+		$this->queue               = $queue;
 
 		$this->schedule_name = 'salesforce_push';
 
@@ -435,60 +435,72 @@ class Object_Sync_Sf_Salesforce_Push {
 					// skip this object if it is a draft and the fieldmap settings told us to ignore it
 					continue;
 				}
+
+				$data = array(
+					'object_type'     => $object_type,
+					'object'          => $object,
+					'mapping'         => $mapping,
+					'sf_sync_trigger' => $sf_sync_trigger,
+				);
+
 				if ( isset( $mapping['push_async'] ) && ( '1' === $mapping['push_async'] ) && false === $manual ) {
 					// this item is async and we want to save it to the queue
-					$data = array(
-						'object_type'     => $object_type,
-						'object'          => $object,
-						'mapping'         => $mapping,
-						'sf_sync_trigger' => $sf_sync_trigger,
+					$this->queue->add(
+						$this->schedulable_classes[ $this->schedule_name ]['callback'],
+						array(
+							'data' => $data,
+						),
+						'salesforce_push'
 					);
-
-					// create new schedule based on the options for this current class
-					// this will use the existing schedule if it already exists; otherwise it'll create one
-					/*$this->schedule->use_schedule( $this->schedule_name );
-					$this->schedule->push_to_queue( $data );
-					$this->schedule->save()->dispatch();*/
-					// Initialize the queue with the data for this record and save
-					$action_args = array(
-						'version'           => $this->version,
-						'login_credentials' => $this->login_credentials,
-						'slug'              => $this->slug,
-						'wordpress'         => $this->wordpress,
-						'salesforce'        => $this->salesforce,
-						'mappings'          => $this->mappings,
-						'logging'           => $this->logging,
-						'schedule_name'     => $this->schedule_name,
-						'classes'           => $this->schedulable_classes,
-						'queue'             => $this->queue,
-					);
-						// Initialize the queue with the data for this record and save
-					$this->action_scheduler->save_to_queue( $data, $action_args );
-
 				} else {
 					// this one is not async. do it immediately.
-					$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
+					$push = $this->salesforce_push_sync_rest( $data );
 				} // End if().
 			} // End if(). if the trigger does not match our requirements, skip it
 		} // End foreach().
 	}
 
+	// temporary
+	public function get_frequency( $name, $unit ) {
+		$schedule_number = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' );
+		$schedule_unit   = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
+
+		switch ( $schedule_unit ) {
+			case 'minutes':
+				$seconds = 60;
+				$minutes = 1;
+				break;
+			case 'hours':
+				$seconds = 3600;
+				$minutes = 60;
+				break;
+			case 'days':
+				$seconds = 86400;
+				$minutes = 1440;
+				break;
+			default:
+				$seconds = 0;
+				$minutes = 0;
+		}
+
+		$total = ${$unit} * $schedule_number;
+
+		return $total;
+	}
+
 	/**
 	* Sync WordPress objects and Salesforce objects using the REST API.
 	*
-	* @param string $object_type
-	*   Type of WordPress object.
-	* @param object $object
-	*   The object object.
-	* @param object $mapping
-	*   Salesforce mapping object.
-	* @param int $sf_sync_trigger
-	*   Trigger for this sync.
-	*
+	* @param array $data
 	* @return true or exit the method
 	*
 	*/
-	public function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
+	public function salesforce_push_sync_rest( $data ) {
+
+		$object_type     = $data['object_type'];
+		$object          = $data['object'];
+		$mapping         = $data['mapping'];
+		$sf_sync_trigger = $data['sf_sync_trigger'];
 
 		// If Salesforce is not authorized, don't do anything.
 		// it's unclear to me if we need to do something else here or if this is sufficient. This is all Drupal does.
@@ -677,7 +689,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			unset( $params['key'] );
 		}
 
-		$seconds = $this->action_scheduler->get_frequency( $this->schedule_name, 'seconds' ) + 60;
+		$seconds = $this->get_frequency( $this->schedule_name, 'seconds' ) + 60;
 
 		if ( true === $is_new ) {
 
