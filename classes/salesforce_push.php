@@ -22,6 +22,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	protected $mappings;
 	protected $logging;
 	protected $schedulable_classes;
+	protected $action_scheduler;
 
 	/**
 	* @var string
@@ -40,9 +41,10 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @param object $mappings
 	* @param object $logging
 	* @param array $schedulable_classes
+	* @param object $action_scheduler
 	* @throws \Object_Sync_Sf_Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $action_scheduler ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->login_credentials   = $login_credentials;
@@ -52,9 +54,9 @@ class Object_Sync_Sf_Salesforce_Push {
 		$this->mappings            = $mappings;
 		$this->logging             = $logging;
 		$this->schedulable_classes = $schedulable_classes;
+		$this->action_scheduler    = $action_scheduler;
 
 		$this->schedule_name = 'salesforce_push';
-
 
 		// Create action hooks for WordPress objects. We run this after plugins are loaded in case something depends on another plugin.
 		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
@@ -444,9 +446,24 @@ class Object_Sync_Sf_Salesforce_Push {
 
 					// create new schedule based on the options for this current class
 					// this will use the existing schedule if it already exists; otherwise it'll create one
-					$this->schedule->use_schedule( $this->schedule_name );
+					/*$this->schedule->use_schedule( $this->schedule_name );
 					$this->schedule->push_to_queue( $data );
-					$this->schedule->save()->dispatch();
+					$this->schedule->save()->dispatch();*/
+					// Initialize the queue with the data for this record and save
+					$action_args = array(
+						'version'           => $this->version,
+						'login_credentials' => $this->login_credentials,
+						'slug'              => $this->slug,
+						'wordpress'         => $this->wordpress,
+						'salesforce'        => $this->salesforce,
+						'mappings'          => $this->mappings,
+						'logging'           => $this->logging,
+						'schedule_name'     => $this->schedule_name,
+						'classes'           => $this->schedulable_classes,
+						'queue'             => $this->queue,
+					);
+						// Initialize the queue with the data for this record and save
+					$this->action_scheduler->save_to_queue( $data, $action_args );
 
 				} else {
 					// this one is not async. do it immediately.
@@ -454,16 +471,6 @@ class Object_Sync_Sf_Salesforce_Push {
 				} // End if().
 			} // End if(). if the trigger does not match our requirements, skip it
 		} // End foreach().
-	}
-
-	private function schedule() {
-		if ( ! class_exists( 'Object_Sync_Sf_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
-			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
-			require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
-		}
-		$schedule       = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging, $this->schedulable_classes );
-		$this->schedule = $schedule;
-		return $schedule;
 	}
 
 	/**
@@ -670,7 +677,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			unset( $params['key'] );
 		}
 
-		$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name ) + 60;
+		$seconds = $this->action_scheduler->get_frequency( $this->schedule_name, 'seconds' ) + 60;
 
 		if ( true === $is_new ) {
 

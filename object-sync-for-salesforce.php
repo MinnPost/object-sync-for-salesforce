@@ -123,8 +123,6 @@ class Object_Sync_Salesforce {
 		$this->login_credentials = $this->get_login_credentials();
 		$this->slug              = 'object-sync-for-salesforce';
 
-		require_once( plugin_dir_path( __FILE__ ) . '/vendor/prospress/action-scheduler/action-scheduler.php' );
-
 		$this->schedulable_classes = array(
 			'salesforce_push' => array(
 				'label'    => 'Push to Salesforce',
@@ -172,6 +170,8 @@ class Object_Sync_Salesforce {
 		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug );
 		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->schedulable_classes );
 
+		$this->action_scheduler = $this->action_scheduler( $this->wpdb, $this->version, $this->slug );
+
 		$this->logging = $this->logging( $this->wpdb, $this->version );
 
 		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->slug, $this->logging );
@@ -185,6 +185,22 @@ class Object_Sync_Salesforce {
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull, $this->logging, $this->schedulable_classes );
 
+	}
+
+	/**
+	 * Action scheduler
+	 *
+	 * @param object $wpdb
+	 * @param string $version
+	 * @param string $slug
+	 *
+	 * @return object
+	 *   Instance of Object_Sync_Sf_Action_Scheduler
+	 */
+	private function action_scheduler( $wpdb, $version ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/action_scheduler.php' );
+		$action_scheduler = new Object_Sync_Sf_Mapping( $wpdb, $version, $slug );
+		return $action_scheduler;
 	}
 
 	/**
@@ -326,9 +342,9 @@ class Object_Sync_Salesforce {
 	 * @return object
 	 *   Instance of Object_Sync_Sf_Salesforce_Push
 	 */
-	private function push( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes ) {
+	private function push( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $action_scheduler ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_push.php';
-		$push = new Object_Sync_Sf_Salesforce_Push( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes );
+		$push = new Object_Sync_Sf_Salesforce_Push( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $action_scheduler );
 		return $push;
 	}
 
