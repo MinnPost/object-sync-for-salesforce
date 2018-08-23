@@ -34,10 +34,22 @@ class Object_Sync_Sf_Activate {
 		$this->slug    = $slug;
 
 		$this->installed_version = get_option( 'object_sync_for_salesforce_db_version', '' );
-		register_activation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'php_requirements' ) );
-		register_activation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'wordpress_salesforce_tables' ) );
-		register_activation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'add_roles_capabilities' ) );
-		add_action( 'plugins_loaded', array( $this, 'wordpress_salesforce_update_db_check' ) );
+
+		$this->add_actions();
+	}
+
+	/**
+	* Activation hooks
+	*/
+	private function add_actions() {
+
+		// on initial activation, run these hooks
+		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'php_requirements' ) );
+		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'wordpress_salesforce_tables' ) );
+		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'add_roles_capabilities' ) );
+
+		// when users upgrade the plugin, run these hooks
+		add_action( 'upgrader_process_complete', array( $this, 'wordpress_salesforce_update_db_check' ), 10, 2 );
 	}
 
 	/**
@@ -144,8 +156,13 @@ class Object_Sync_Sf_Activate {
 	* Check for database version on plugin upgrade
 	* When the plugin is upgraded, if the database version does not match the current version, perform these methods
 	*
+	* @param object $upgrader_object
+	* @param array $hook_extra
+	*
+	* See https://developer.wordpress.org/reference/hooks/upgrader_process_complete/
+	*
 	*/
-	public function wordpress_salesforce_update_db_check() {
+	public function wordpress_salesforce_update_db_check( $upgrader_object, $hook_extra ) {
 		if ( get_site_option( 'object_sync_for_salesforce_db_version' ) !== $this->version ) {
 			$this->wordpress_salesforce_tables();
 		}
