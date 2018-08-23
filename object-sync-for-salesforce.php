@@ -172,7 +172,8 @@ class Object_Sync_Salesforce {
 
 		$this->action_scheduler = $this->action_scheduler( $this->wpdb, $this->version, $this->slug );
 
-		$this->queue = Object_Sync_Sf_Queue::instance();
+		$this->queue = $this->queue();
+
 		$this->logging = $this->logging( $this->wpdb, $this->version );
 
 		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->slug, $this->logging );
