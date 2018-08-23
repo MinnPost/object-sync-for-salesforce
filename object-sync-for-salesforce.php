@@ -169,8 +169,8 @@ class Object_Sync_Salesforce {
 
 		$this->load = $this->load( $this->wpdb, $this->version, $this->slug );
 
+		$this->queue = $this->queue( $this->wpdb, $this->version, $this->slug );
 
-		$this->queue = $this->queue();
 		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug );
 		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->schedulable_classes );
 
@@ -204,10 +204,15 @@ class Object_Sync_Salesforce {
 	/**
 	 * Get queue instance.
 	 *
+	 * @param object $wpdb
+	 * @param string $version
+	 * @param string $slug
 	 * @return Object_Sync_Sf_Queue
 	 */
-	public function queue() {
-		return Object_Sync_Sf_Queue::instance();
+	public function queue( $wpdb, $version, $slug ) {
+		require_once plugin_dir_path( __FILE__ ) . 'classes/class-object-sync-sf-queue.php';
+		$queue = new Object_Sync_Sf_Queue( $wpdb, $version, $slug );
+		return $queue;
 	}
 
 	/**
@@ -221,9 +226,7 @@ class Object_Sync_Salesforce {
 	 *   Instance of Object_Sync_Sf_Logging
 	 */
 	private function logging( $wpdb, $version ) {
-		if ( ! class_exists( 'WP_Logging' ) ) {
-			require_once plugin_dir_path( __FILE__ ) . 'classes/logging.php';
-		}
+		require_once plugin_dir_path( __FILE__ ) . 'classes/logging.php';
 		$logging = new Object_Sync_Sf_Logging( $wpdb, $version );
 		return $logging;
 	}
