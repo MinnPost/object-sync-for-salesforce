@@ -461,7 +461,7 @@ class Object_Sync_Sf_Salesforce_Push {
 							'mapping'         => filter_var( $mapping['id'], FILTER_VALIDATE_INT ),
 							'sf_sync_trigger' => $sf_sync_trigger,
 						),
-						'salesforce_push'
+						$this->schedule_name
 					);
 				} else {
 					// this one is not async. do it immediately.
