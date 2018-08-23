@@ -132,8 +132,8 @@ class Object_Sync_Salesforce {
 			'salesforce_pull' => array(
 				'label'       => 'Pull from Salesforce',
 				'class'       => 'Object_Sync_Sf_Salesforce_Pull',
-				'initializer' => 'salesforce_pull',
-				'callback'    => 'salesforce_pull_process_records',
+				'initializer' => 'object_sync_for_salesforce_pull_check_records',
+				'callback'    => 'object_sync_for_salesforce_pull_process_records',
 			),
 			'salesforce'      => array(
 				'label' => 'Salesforce Authorization',

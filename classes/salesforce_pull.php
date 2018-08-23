@@ -58,7 +58,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$this->schedule_name = 'salesforce_pull';
 
-		$this->add_actions();
+		// Create action hooks for WordPress objects. We run this after plugins are loaded in case something depends on another plugin.
+		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
 
 		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
 
@@ -68,8 +69,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* Create the action hooks based on what object maps exist from the admin settings
 	*
 	*/
-	private function add_actions() {
+	public function add_actions() {
+
+		// ajax hook
 		add_action( 'wp_ajax_salesforce_pull_webhook', array( $this, 'salesforce_pull_webhook' ) );
+
+		// action-scheduler needs two hooks: one to check for records, and one to process them
+		add_action( 'object_sync_for_salesforce_pull_check_records', array( $this, 'salesforce_pull' ), 10 );
+		add_action( 'object_sync_for_salesforce_pull_process_records', array( $this, 'salesforce_pull_process_records' ), 10, 4 );
 	}
 
 	/**
@@ -82,6 +89,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		if ( true === $this->salesforce_pull() ) {
 			$code = '200';
+
+			// single task for action-scheduler to check for data
+			$this->queue->add(
+				$this->schedulable_classes[ $this->schedule_name ]['initializer'],
+				array(),
+				$this->schedule_name
+			);
 
 		} else {
 			$code = '403';
@@ -225,6 +239,18 @@ class Object_Sync_Sf_Salesforce_Pull {
 							continue;
 						}
 
+						// add a queue action to save data from salesforce
+						$this->queue->add(
+							$this->schedulable_classes[ $this->schedule_name ]['callback'],
+							array(
+								'object_type'     => $type,
+								'object'          => $result['Id'],
+								'mapping'         => filter_var( $salesforce_mapping['id'], FILTER_VALIDATE_INT ),
+								'sf_sync_trigger' => $sf_sync_trigger,
+							),
+							$this->schedule_name
+						);
+
 						// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
 						$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
 						update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
@@ -263,6 +289,18 @@ class Object_Sync_Sf_Salesforce_Pull {
 									'object'          => $result,
 									'mapping'         => $salesforce_mapping,
 									'sf_sync_trigger' => $sf_sync_trigger, // use the appropriate trigger based on when this was created
+								);
+
+								// add a queue action to save data from salesforce
+								$this->queue->add(
+									$this->schedulable_classes[ $this->schedule_name ]['callback'],
+									array(
+										'object_type'     => $type,
+										'object'          => $result['Id'],
+										'mapping'         => filter_var( $salesforce_mapping['id'], FILTER_VALIDATE_INT ),
+										'sf_sync_trigger' => $sf_sync_trigger,
+									),
+									$this->schedule_name
 								);
 
 								// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
@@ -479,6 +517,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 						continue;
 					}
 
+					// add a queue action to save data from salesforce
+					$this->queue->add(
+						$this->schedulable_classes[ $this->schedule_name ]['callback'],
+						array(
+							'object_type'     => $type,
+							'object'          => $result['Id'],
+							'mapping'         => filter_var( $salesforce_mapping['id'], FILTER_VALIDATE_INT ),
+							'sf_sync_trigger' => $sf_sync_trigger,
+						),
+						$this->schedule_name
+					);
 
 				}
 
@@ -514,10 +563,10 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*
 	* @param string $object_type
 	*   Type of Salesforce object.
-	* @param object $object
-	*   The Salesforce object.
-	* @param object $mapping
-	*   Salesforce/WP mapping object.
+	* @param array|string $object
+	*   The Salesforce data or its Id value.
+	* @param array|int $mapping
+	*   Salesforce/WP mapping data or its id.
 	* @param int $sf_sync_trigger
 	*   Trigger for this sync.
 	*
@@ -525,6 +574,19 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*
 	*/
 	public function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
+
+		$sfapi = $this->salesforce['sfapi'];
+
+		if ( is_string( $object ) ) {
+			$object_id = $object;
+			$object    = $sfapi->object_read( $object_type, $object_id )['data'];
+		}
+
+		if ( is_int( $mapping ) ) {
+			$mapping_id = $mapping;
+			$mapping    = $this->mappings->get_fieldmaps( $mapping_id );
+		}
+
 		$mapping_conditions = array(
 			'salesforce_object' => $object_type,
 		);
