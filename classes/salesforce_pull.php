@@ -57,14 +57,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$this->queue               = $queue;
 
 		$this->schedule_name = 'salesforce_pull';
-		$this->schedule      = $this->schedule();
-
-		// load the schedule class
-		// the schedule needs to just run all the time at its configured intervals because WordPress will never trigger it on its own, ie by creating an object
-		$schedule = $this->schedule;
-		// create new schedule based on the options for this current class
-		// this will use the existing schedule if it already exists; otherwise it'll create one
-		$schedule->use_schedule( $this->schedule_name );
 
 		$this->add_actions();
 
@@ -90,8 +82,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		if ( true === $this->salesforce_pull() ) {
 			$code = '200';
-			// check to see if anything is in the queue and handle it if it is
-			$this->schedule->maybe_handle();
+
 		} else {
 			$code = '403';
 		}
@@ -123,20 +114,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// No pull happened.
 			return false;
 		}
-	}
-
-	/**
-	* Load schedule
-	* This loads the schedule class
-	*/
-	private function schedule() {
-		if ( ! class_exists( 'Object_Sync_Sf_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
-			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
-			require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
-		}
-		$schedule       = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->schedule_name, $this->logging, $this->schedulable_classes );
-		$this->schedule = $schedule;
-		return $schedule;
 	}
 
 	/**
@@ -248,9 +225,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 							continue;
 						}
 
-						// Initialize the queue with the data for this record and save
-						$this->schedule->data( array( $data ) );
-						$this->schedule->save()->dispatch();
 						// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
 						$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
 						update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
@@ -291,9 +265,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 									'sf_sync_trigger' => $sf_sync_trigger, // use the appropriate trigger based on when this was created
 								);
 
-								// Initialize the queue with the data for this record and save
-								$this->schedule->data( array( $data ) );
-								$this->schedule->save()->dispatch();
 								// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
 								$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
 								update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
@@ -508,8 +479,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 						continue;
 					}
 
-					$this->schedule->push_to_queue( $data );
-					$this->schedule->save()->dispatch();
 
 				}
 
