@@ -141,6 +141,12 @@ class Object_Sync_Sf_Admin {
 		add_action( 'personal_options_update', array( $this, 'save_salesforce_user_fields' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'save_salesforce_user_fields' ) );
 
+		// when either field for schedule settings changes
+		foreach ( $this->schedulable_classes as $key => $value ) {
+			add_filter( 'update_option_' . $this->option_prefix . $key . '_schedule_number', array( $this, 'change_action_schedule' ), 10, 3 );
+			add_filter( 'update_option_' . $this->option_prefix . $key . '_schedule_unit', array( $this, 'change_action_schedule' ), 10, 3 );
+		}
+
 		add_action( 'admin_post_delete_object_map', array( $this, 'delete_object_map' ) );
 		add_action( 'admin_post_post_object_map', array( $this, 'prepare_object_map_data' ) );
 
@@ -148,6 +154,44 @@ class Object_Sync_Sf_Admin {
 		add_action( 'admin_post_object_sync_for_salesforce_import', array( $this, 'import_json_file' ) );
 		add_action( 'admin_post_object_sync_for_salesforce_export', array( $this, 'export_json_file' ) );
 
+	}
+
+	/**
+	* Recurring task to check Salesforce for data
+	*
+	*/
+	public function change_action_schedule( $old_schedule, $new_schedule, $option_name ) {
+
+		// exit if nothing changed
+		if ( $old_schedule === $new_schedule ) {
+			return;
+		}
+
+		// get the current schedule name from the task, based on pattern in the foreach
+		preg_match( '/' . $this->option_prefix . '(.*)_schedule/', $option_name, $matches );
+		$schedule_name     = $matches[1];
+		$action_group_name = $schedule_name . '_check_records';
+
+		// exit if there is no initializer property on this schedule
+		if ( ! isset( $this->schedulable_classes[ $schedule_name ]['initializer'] ) ) {
+			return;
+		}
+
+		// cancel previous task
+		$this->queue->cancel(
+			$this->schedulable_classes[ $schedule_name ]['initializer'],
+			array(),
+			$action_group_name
+		);
+
+		// create new recurring task for action-scheduler to check for data to pull from salesforce
+		$this->queue->schedule_recurring(
+			current_time( 'timestamp', true ), // plugin seems to expect UTC
+			$this->queue->get_frequency( $schedule_name, 'seconds' ),
+			$this->schedulable_classes[ $schedule_name ]['initializer'],
+			array(),
+			$action_group_name
+		);
 	}
 
 	/**
