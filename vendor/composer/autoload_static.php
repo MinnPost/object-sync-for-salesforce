@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit258a02242ea9a0000a7e219d56217e81
+class ComposerStaticInit9c397e0930797621ed4c4fa10b188a3a
 {
     public static $classMap = array (
         'AllowFieldTruncationHeader' => __DIR__ . '/..' . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
@@ -41,7 +41,7 @@ class ComposerStaticInit258a02242ea9a0000a7e219d56217e81
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit258a02242ea9a0000a7e219d56217e81::$classMap;
+            $loader->classMap = ComposerStaticInit9c397e0930797621ed4c4fa10b188a3a::$classMap;
 
         }, null, ClassLoader::class);
     }
