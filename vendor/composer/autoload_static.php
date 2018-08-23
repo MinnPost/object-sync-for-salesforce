@@ -6,6 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit9c397e0930797621ed4c4fa10b188a3a
 {
+    public static $files = array (
+        '712263cd6b22ec9ea795d59ae1ebda80' => __DIR__ . '/..' . '/prospress/action-scheduler/action-scheduler.php',
+    );
+
     public static $classMap = array (
         'AllowFieldTruncationHeader' => __DIR__ . '/..' . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
         'AssignmentRuleHeader' => __DIR__ . '/..' . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',

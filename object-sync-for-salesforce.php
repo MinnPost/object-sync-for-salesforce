@@ -198,10 +198,7 @@ class Object_Sync_Salesforce {
 	 *
 	 */
 	private function load( $wpdb, $version, $slug ) {
-		require_once( plugin_dir_path( __FILE__ ) . 'vendor/prospress/action-scheduler/action-scheduler.php' );
-		if ( file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
-			require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
-		}
+		require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 	}
 
 	/**
