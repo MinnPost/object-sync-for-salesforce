@@ -18,13 +18,49 @@ class Object_Sync_Sf_Queue {
 	protected $wpdb;
 	protected $version;
 	protected $slug;
+	protected $schedulable_classes;
 
-	public function __construct( $wpdb, $version, $slug ) {
-		$this->wpdb    = $wpdb;
-		$this->version = $version;
-		$this->slug    = $slug;
+	public function __construct( $wpdb, $version, $slug, $schedulable_classes ) {
+		$this->wpdb                = $wpdb;
+		$this->version             = $version;
+		$this->slug                = $slug;
+		$this->schedulable_classes = $schedulable_classes;
 	}
 
+	/**
+	 * Get all the schedules with their frequencies, sorted
+	 *
+	 * @param string  $unit The unit of time
+	 * @param string  $sort Which direction to sort
+	 * @return array $this->schedulable_classes
+	 */
+	public function get_frequencies( $unit = 'seconds', $sort = 'asc' ) {
+
+		foreach ( $this->schedulable_classes as $key => $schedule ) {
+			$this->schedulable_classes[ $key ]['frequency'] = $this->get_frequency( $key, 'seconds' );
+		}
+
+		if ( 'asc' === $sort ) {
+			uasort( $this->schedulable_classes, function( $a, $b ) {
+				return $a['frequency'] - $b['frequency'];
+			});
+		} else {
+			uasort( $this->schedulable_classes, function( $a, $b ) {
+				return $b['frequency'] - $a['frequency'];
+			});
+		}
+
+		return $this->schedulable_classes;
+
+	}
+
+	/**
+	 * Get a single schedule item's frequency
+	 *
+	 * @param string $name The name of the schedule
+	 * @param string  $unit The unit of time
+	 * @return int How often it runs in that unit of time
+	 */
 	public function get_frequency( $name, $unit ) {
 		$schedule_number = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' );
 		$schedule_unit   = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );

@@ -685,7 +685,8 @@ class Object_Sync_Sf_Salesforce_Push {
 			unset( $params['key'] );
 		}
 
-		$seconds = $this->queue->get_frequency( $this->schedule_name, 'seconds' ) + 60;
+		$frequencies = $this->queue->get_frequencies();
+		$seconds     = reset( $frequencies )['frequency'] + 60;
 
 		if ( true === $is_new ) {
 

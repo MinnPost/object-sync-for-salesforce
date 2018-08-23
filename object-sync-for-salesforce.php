@@ -169,7 +169,7 @@ class Object_Sync_Salesforce {
 
 		$this->load = $this->load( $this->wpdb, $this->version, $this->slug );
 
-		$this->queue = $this->queue( $this->wpdb, $this->version, $this->slug );
+		$this->queue = $this->queue( $this->wpdb, $this->version, $this->slug, $this->schedulable_classes );
 
 		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug );
 		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->schedulable_classes );
@@ -207,11 +207,12 @@ class Object_Sync_Salesforce {
 	 * @param object $wpdb
 	 * @param string $version
 	 * @param string $slug
+	 * @param array $schedulable_classes
 	 * @return Object_Sync_Sf_Queue
 	 */
-	public function queue( $wpdb, $version, $slug ) {
+	public function queue( $wpdb, $version, $slug, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/class-object-sync-sf-queue.php';
-		$queue = new Object_Sync_Sf_Queue( $wpdb, $version, $slug );
+		$queue = new Object_Sync_Sf_Queue( $wpdb, $version, $slug, $schedulable_classes );
 		return $queue;
 	}
 
