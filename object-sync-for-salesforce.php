@@ -167,8 +167,8 @@ class Object_Sync_Salesforce {
 		 * }
 		*/
 
+		$this->load = $this->load( $this->wpdb, $this->version, $this->slug );
 
-		$this->action_scheduler = $this->action_scheduler( $this->wpdb, $this->version, $this->slug );
 
 		$this->queue = $this->queue();
 		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug );
@@ -190,23 +190,18 @@ class Object_Sync_Salesforce {
 	}
 
 	/**
-	 * Action scheduler
+	 * Load immediately required things
 	 *
 	 * @param object $wpdb
 	 * @param string $version
 	 * @param string $slug
 	 *
-	 * @return object
-	 *   Instance of Object_Sync_Sf_Action_Scheduler
 	 */
-	private function action_scheduler( $wpdb, $version, $slug ) {
+	private function load( $wpdb, $version, $slug ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'vendor/prospress/action-scheduler/action-scheduler.php' );
-		require_once plugin_dir_path( __FILE__ ) . 'classes/class-object-sync-sf-queue-interface.php';
-		require_once plugin_dir_path( __FILE__ ) . 'classes/class-object-sync-sf-action-queue.php';
-		require_once plugin_dir_path( __FILE__ ) . 'classes/class-object-sync-sf-queue.php';
-		//require_once( plugin_dir_path( __FILE__ ) . 'classes/action_scheduler.php' );
-		//$action_scheduler = new Object_Sync_Sf_Action_Scheduler( $wpdb, $version, $slug );
-		//return $action_scheduler;
+		if ( file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
+			require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+		}
 	}
 
 	/**
@@ -229,8 +224,7 @@ class Object_Sync_Salesforce {
 	 *   Instance of Object_Sync_Sf_Logging
 	 */
 	private function logging( $wpdb, $version ) {
-		if ( ! class_exists( 'WP_Logging' ) && file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
-			require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+		if ( ! class_exists( 'WP_Logging' ) ) {
 			require_once plugin_dir_path( __FILE__ ) . 'classes/logging.php';
 		}
 		$logging = new Object_Sync_Sf_Logging( $wpdb, $version );
