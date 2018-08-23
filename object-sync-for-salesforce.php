@@ -167,12 +167,12 @@ class Object_Sync_Salesforce {
 		 * }
 		*/
 
-		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug );
-		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->schedulable_classes );
 
 		$this->action_scheduler = $this->action_scheduler( $this->wpdb, $this->version, $this->slug );
 
 		$this->queue = $this->queue();
+		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug );
+		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->schedulable_classes );
 
 		$this->logging = $this->logging( $this->wpdb, $this->version );
 
