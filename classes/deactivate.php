@@ -16,6 +16,8 @@ class Object_Sync_Sf_Deactivate {
 
 	protected $wpdb;
 	protected $version;
+	protected $slug;
+	protected $schedulable_classes;
 
 	/**
 	* Constructor which sets up deactivate hooks
@@ -28,6 +30,7 @@ class Object_Sync_Sf_Deactivate {
 	public function __construct( $wpdb, $version, $slug, $schedulable_classes ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
+		$this->slug                = $slug;
 		$this->schedulable_classes = $schedulable_classes;
 		$delete_data               = (int) get_option( 'object_sync_for_salesforce_delete_data_on_uninstall', 0 );
 		if ( 1 === $delete_data ) {
@@ -57,6 +60,7 @@ class Object_Sync_Sf_Deactivate {
 	/**
 	* Clear the scheduled tasks
 	* This removes all the scheduled tasks that are included in the plugin's $schedulable_classes array
+	// todo: fix this so it uses action scheduler's scheduled tasks instead
 	*
 	*/
 	public function clear_schedule() {

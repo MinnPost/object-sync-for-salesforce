@@ -16,7 +16,9 @@ class Object_Sync_Sf_Activate {
 
 	protected $wpdb;
 	protected $version;
-	protected $installed_version;
+	protected $slug;
+
+	private $installed_version;
 
 	/**
 	* Constructor which sets up activate hooks
@@ -27,8 +29,10 @@ class Object_Sync_Sf_Activate {
 	*
 	*/
 	public function __construct( $wpdb, $version, $slug ) {
-		$this->wpdb              = $wpdb;
-		$this->version           = $version;
+		$this->wpdb    = $wpdb;
+		$this->version = $version;
+		$this->slug    = $slug;
+
 		$this->installed_version = get_option( 'object_sync_for_salesforce_db_version', '' );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'php_requirements' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'wordpress_salesforce_tables' ) );
@@ -111,17 +115,6 @@ class Object_Sync_Sf_Activate {
 	}
 
 	/**
-	* Check for database version on plugin upgrade
-	* When the plugin is upgraded, if the database version does not match the current version, perform these methods
-	*
-	*/
-	public function wordpress_salesforce_update_db_check() {
-		if ( get_site_option( 'object_sync_for_salesforce_db_version' ) !== $this->version ) {
-			$this->wordpress_salesforce_tables();
-		}
-	}
-
-	/**
 	* Add roles and capabilities
 	* This adds the configure_salesforce capability to the admin role
 	*
@@ -145,6 +138,17 @@ class Object_Sync_Sf_Activate {
 			}
 		}
 
+	}
+
+	/**
+	* Check for database version on plugin upgrade
+	* When the plugin is upgraded, if the database version does not match the current version, perform these methods
+	*
+	*/
+	public function wordpress_salesforce_update_db_check() {
+		if ( get_site_option( 'object_sync_for_salesforce_db_version' ) !== $this->version ) {
+			$this->wordpress_salesforce_tables();
+		}
 	}
 
 }
