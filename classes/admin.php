@@ -105,7 +105,7 @@ class Object_Sync_Sf_Admin {
 		// default token url path
 		$this->default_token_url_path = '/services/oauth2/token';
 		// what Salesforce API version to start the settings with. This is only used in the settings form
-		$this->default_api_version = '42.0';
+		$this->default_api_version = '43.0';
 		// default pull throttle for avoiding going over api limits
 		$this->default_pull_throttle = 5;
 		// default setting for triggerable items

@@ -626,6 +626,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$title,
 					print_r( $object, true ), // log whatever we have in the event of this error, so print the array
 					$sf_sync_trigger,
+					0, // parent id goes here but we don't have one, so make it 0
 					$status
 				);
 				return;
