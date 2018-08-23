@@ -4,7 +4,9 @@ filter:
         - 'docs/*'
         - '*.min.js'
         - '*.min.css'
+        - node_modules/**/*
         - tests/**/*
+        - vendor/**/*
         - 'Gulpfile.js'
     dependency_paths:
         - wordpress/
