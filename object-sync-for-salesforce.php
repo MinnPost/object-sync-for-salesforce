@@ -127,7 +127,7 @@ class Object_Sync_Salesforce {
 			'salesforce_push' => array(
 				'label'    => 'Push to Salesforce',
 				'class'    => 'Object_Sync_Sf_Salesforce_Push',
-				'callback' => 'salesforce_push_sync_rest',
+				'callback' => 'object_sync_for_salesforce_push_record',
 			),
 			'salesforce_pull' => array(
 				'label'       => 'Pull from Salesforce',
@@ -211,7 +211,7 @@ class Object_Sync_Salesforce {
 	/**
 	 * Get queue instance.
 	 *
-	 * @return WC_Queue_Interface
+	 * @return Object_Sync_Sf_Queue
 	 */
 	public function queue() {
 		return Object_Sync_Sf_Queue::instance();

@@ -103,6 +103,10 @@ class Object_Sync_Sf_Salesforce_Push {
 				}
 			}
 		}
+
+		// hook that action-scheduler can call
+		add_action( 'object_sync_for_salesforce_push_record', array( $this, 'salesforce_push_sync_rest' ), 10, 4 );
+
 	}
 
 	/**
@@ -436,25 +440,32 @@ class Object_Sync_Sf_Salesforce_Push {
 					continue;
 				}
 
-				$data = array(
-					'object_type'     => $object_type,
-					'object'          => $object,
-					'mapping'         => $mapping,
-					'sf_sync_trigger' => $sf_sync_trigger,
-				);
-
 				if ( isset( $mapping['push_async'] ) && ( '1' === $mapping['push_async'] ) && false === $manual ) {
 					// this item is async and we want to save it to the queue
+
+					// if we determine that the above does not perform well, worst case scenario is we could save $data to a custom table, and pass the id to the callback method.
+					/*$data = array(
+						'object_type'     => $object_type,
+						'object'          => $object,
+						'mapping'         => $mapping['id'],
+						'sf_sync_trigger' => $sf_sync_trigger,
+					);*/
+
+					// add a queue action to push data to salesforce
+					// this means we don't need the frequency for this method anymore, i think
 					$this->queue->add(
 						$this->schedulable_classes[ $this->schedule_name ]['callback'],
 						array(
-							'data' => $data,
+							'object_type'     => $object_type,
+							'object'          => filter_var( $object[ $object_id_field ], FILTER_VALIDATE_INT ),
+							'mapping'         => filter_var( $mapping['id'], FILTER_VALIDATE_INT ),
+							'sf_sync_trigger' => $sf_sync_trigger,
 						),
 						'salesforce_push'
 					);
 				} else {
 					// this one is not async. do it immediately.
-					$push = $this->salesforce_push_sync_rest( $data );
+					$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
 				} // End if().
 			} // End if(). if the trigger does not match our requirements, skip it
 		} // End foreach().
@@ -491,16 +502,29 @@ class Object_Sync_Sf_Salesforce_Push {
 	/**
 	* Sync WordPress objects and Salesforce objects using the REST API.
 	*
-	* @param array $data
+	* @param string $object_type
+	*   Type of WordPress object.
+	* @param array|int $object|$object_id
+	*   The WordPress object data or its ID.
+	* @param array $mapping|$mapping_id
+	*   Salesforce field mapping data array or ID.
+	* @param int $sf_sync_trigger
+	*   Trigger for this sync.
+	*
 	* @return true or exit the method
 	*
 	*/
-	public function salesforce_push_sync_rest( $data ) {
+	public function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
-		$object_type     = $data['object_type'];
-		$object          = $data['object'];
-		$mapping         = $data['mapping'];
-		$sf_sync_trigger = $data['sf_sync_trigger'];
+		if ( is_int( $object ) ) {
+			$object_id = $object;
+			$object    = $this->wordpress->get_wordpress_object_data( $object_type, $object_id );
+		}
+
+		if ( is_int( $mapping ) ) {
+			$mapping_id = $mapping;
+			$mapping    = $this->mappings->get_fieldmaps( $mapping_id );
+		}
 
 		// If Salesforce is not authorized, don't do anything.
 		// it's unclear to me if we need to do something else here or if this is sufficient. This is all Drupal does.
