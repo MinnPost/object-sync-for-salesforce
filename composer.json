@@ -26,6 +26,7 @@
         "prospress/action-scheduler": "dev-master"
     },
     "autoload": {
+        "files": ["vendor/prospress/action-scheduler/action-scheduler.php"],
         "classmap": ["vendor/pippinsplugins/wp-logging/"]
     },
     "require-dev": {
