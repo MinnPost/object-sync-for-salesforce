@@ -571,7 +571,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$hold_exceptions = count( $salesforce_mappings ) > 1;
 		$exception       = false;
 
-		$seconds = $this->schedule->get_schedule_frequency_seconds( $this->schedule_name ) + 60;
+		$seconds = $this->queue->get_frequency( $this->schedule_name, 'seconds' ) + 60;
 
 		$transients_to_delete = array();
 

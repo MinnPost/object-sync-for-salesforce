@@ -471,34 +471,6 @@ class Object_Sync_Sf_Salesforce_Push {
 		} // End foreach().
 	}
 
-	// temporary
-	public function get_frequency( $name, $unit ) {
-		$schedule_number = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' );
-		$schedule_unit   = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
-
-		switch ( $schedule_unit ) {
-			case 'minutes':
-				$seconds = 60;
-				$minutes = 1;
-				break;
-			case 'hours':
-				$seconds = 3600;
-				$minutes = 60;
-				break;
-			case 'days':
-				$seconds = 86400;
-				$minutes = 1440;
-				break;
-			default:
-				$seconds = 0;
-				$minutes = 0;
-		}
-
-		$total = ${$unit} * $schedule_number;
-
-		return $total;
-	}
-
 	/**
 	* Sync WordPress objects and Salesforce objects using the REST API.
 	*
@@ -713,7 +685,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			unset( $params['key'] );
 		}
 
-		$seconds = $this->get_frequency( $this->schedule_name, 'seconds' ) + 60;
+		$seconds = $this->queue->get_frequency( $this->schedule_name, 'seconds' ) + 60;
 
 		if ( true === $is_new ) {
 
