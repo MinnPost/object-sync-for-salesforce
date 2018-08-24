@@ -14,11 +14,6 @@
         "files": ["vendor/prospress/action-scheduler/action-scheduler.php"],
         "classmap": ["vendor/pippinsplugins/wp-logging/"]
     },
-    "config": {
-        "platform": {
-            "php": "5.5"
-        }
-    },
     "repositories": [
         {
             "url": "https://github.com/pippinsplugins/wp-logging.git",
