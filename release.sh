@@ -4,7 +4,6 @@ SVN_PATH=$RELEASE_DIR/svn;
 SVN_REPO="https://plugins.svn.wordpress.org/object-sync-for-salesforce/";
 BLACKLIST=(
 .\*
-apigen.neon
 assets/js/src/\*
 assets/sass/\*
 bin/*
@@ -14,6 +13,7 @@ Gulpfile.js
 node_modules/\*
 package-lock.json
 package.json
+phpdoc.dist.xml
 phpunit.xml
 release.sh
 release/\*

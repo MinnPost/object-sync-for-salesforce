@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit302cdaa4af9e51fa355523ce909cfb17
+class ComposerStaticInit1ec2939dc0ec03857c433336fcdb1c12
 {
     public static $files = array (
         '712263cd6b22ec9ea795d59ae1ebda80' => __DIR__ . '/..' . '/prospress/action-scheduler/action-scheduler.php',
@@ -45,7 +45,7 @@ class ComposerStaticInit302cdaa4af9e51fa355523ce909cfb17
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit302cdaa4af9e51fa355523ce909cfb17::$classMap;
+            $loader->classMap = ComposerStaticInit1ec2939dc0ec03857c433336fcdb1c12::$classMap;
 
         }, null, ClassLoader::class);
     }

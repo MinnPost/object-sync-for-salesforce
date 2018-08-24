@@ -36,7 +36,6 @@
         "prospress/action-scheduler": "dev-master"
     },
     "require-dev": {
-        "apigen/apigen": "^4.1",
         "phpunit/phpunit": "4.8.x-dev"
     }
 }
