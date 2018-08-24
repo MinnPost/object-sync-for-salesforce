@@ -1991,7 +1991,7 @@ class Object_Sync_Sf_Admin {
 			$count = count( $this->queue->search( $args, 'ARRAY_A' ) );
 			return $count;
 		} else {
-			return 'unknown';
+			return 0;
 		}
 	}
 
