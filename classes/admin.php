@@ -709,8 +709,9 @@ class Object_Sync_Sf_Admin {
 	private function fields_scheduling( $page, $section, $callbacks ) {
 		foreach ( $this->schedulable_classes as $key => $value ) {
 			add_settings_section( $key, $value['label'], null, $page );
-			$schedule_settings = array(
-				$key . '_schedule_number' => array(
+			$schedule_settings = array();
+			if ( isset( $value['initializer'] ) ) {
+				$schedule_settings[ $key . '_schedule_number' ] = array(
 					'title'    => __( 'Run schedule every', 'object-sync-for-salesforce' ),
 					'callback' => $callbacks['text'],
 					'page'     => $page,
@@ -721,8 +722,8 @@ class Object_Sync_Sf_Admin {
 						'desc'     => '',
 						'constant' => '',
 					),
-				),
-				$key . '_schedule_unit'   => array(
+				);
+				$schedule_settings[ $key . '_schedule_unit' ]   = array(
 					'title'    => __( 'Time unit', 'object-sync-for-salesforce' ),
 					'callback' => $callbacks['select'],
 					'page'     => $page,
@@ -746,8 +747,8 @@ class Object_Sync_Sf_Admin {
 							),
 						),
 					),
-				),
-				$key . '_clear_button'    => array(
+				);
+				$schedule_settings[ $key . '_clear_button' ]    = array(
 					// translators: $this->get_schedule_count is an integer showing how many items are in the current queue
 					'title'    => sprintf( 'This queue has ' . _n( '%s item', '%s items', $this->get_schedule_count( $key ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key ) ),
 					'callback' => $callbacks['link'],
@@ -759,6 +760,19 @@ class Object_Sync_Sf_Admin {
 						'url'        => esc_url( '?page=object-sync-salesforce-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key ),
 						'link_class' => 'button button-secondary',
 					),
+				);
+			}
+			$schedule_settings[ $key . '_clear_button' ] = array(
+				// translators: $this->get_schedule_count is an integer showing how many items are in the current queue
+				'title'    => sprintf( 'This queue has ' . _n( '%s item', '%s items', $this->get_schedule_count( $key ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key ) ),
+				'callback' => $callbacks['link'],
+				'page'     => $page,
+				'section'  => $key,
+				'args'     => array(
+					'label'      => __( 'Clear this queue', 'object-sync-for-salesforce' ),
+					'desc'       => '',
+					'url'        => esc_url( '?page=object-sync-salesforce-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key ),
+					'link_class' => 'button button-secondary',
 				),
 			);
 			foreach ( $schedule_settings as $key => $attributes ) {
@@ -1951,11 +1965,11 @@ class Object_Sync_Sf_Admin {
 	/**
 	* Clear schedule
 	* This clears the schedule if the user clicks the button
+	* @param string $schedule_name
 	*/
 	private function clear_schedule( $schedule_name = '' ) {
 		if ( '' !== $schedule_name ) {
-			$schedule = $this->schedule( $schedule_name );
-			$schedule->cancel_by_name( $schedule_name );
+			$this->queue->cancel( $schedule_name );
 			// translators: $schedule_name is the name of the current queue. Defaults: salesforce_pull, salesforce_push, salesforce
 			echo sprintf( esc_html__( 'You have cleared the %s schedule.', 'object-sync-for-salesforce' ), esc_html( $schedule_name ) );
 		} else {
@@ -1963,26 +1977,22 @@ class Object_Sync_Sf_Admin {
 		}
 	}
 
+	/**
+	* Get count of schedule items
+	* @param string $schedule_name
+	* @return int $count
+	*/
 	private function get_schedule_count( $schedule_name = '' ) {
 		if ( '' !== $schedule_name ) {
-			$schedule = $this->schedule( $schedule_name );
-			return $this->schedule->count_queue_items( $schedule_name );
+			$args  = array(
+				'group'  => $schedule_name,
+				'status' => ActionScheduler_Store::STATUS_PENDING,
+			);
+			$count = count( $this->queue->search( $args, 'ARRAY_A' ) );
+			return $count;
 		} else {
 			return 'unknown';
 		}
-	}
-
-	/**
-	* Load the schedule class
-	*/
-	private function schedule( $schedule_name ) {
-		if ( ! class_exists( 'Object_Sync_Sf_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
-			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
-			require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
-		}
-		$schedule       = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $schedule_name, $this->logging, $this->schedulable_classes );
-		$this->schedule = $schedule;
-		return $schedule;
 	}
 
 	/**

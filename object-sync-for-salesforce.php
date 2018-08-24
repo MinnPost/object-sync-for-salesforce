@@ -135,10 +135,6 @@ class Object_Sync_Salesforce {
 				'initializer' => 'object_sync_for_salesforce_pull_check_records',
 				'callback'    => 'object_sync_for_salesforce_pull_process_records',
 			),
-			'salesforce'      => array(
-				'label' => 'Salesforce Authorization',
-				'class' => 'Object_Sync_Sf_Salesforce',
-			),
 		);
 
 		// users can modify the list of schedulable classes
