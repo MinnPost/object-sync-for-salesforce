@@ -443,7 +443,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				if ( isset( $mapping['push_async'] ) && ( '1' === $mapping['push_async'] ) && false === $manual ) {
 					// this item is async and we want to save it to the queue
 
-					// if we determine that the above does not perform well, worst case scenario is we could save $data to a custom table, and pass the id to the callback method.
+					// if we determine that the below code does not perform well, worst case scenario is we could save $data to a custom table, and pass the id to the callback method.
 					/*$data = array(
 						'object_type'     => $object_type,
 						'object'          => $object,
