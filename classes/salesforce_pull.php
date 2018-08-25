@@ -211,7 +211,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						// default is pull is allowed
 						$pull_allowed = true;
 
-						// if the current fieldmap does not allow create, we need to check if there is a fieldmap for the Salesforce object Id. if not, set pull_allowed to false.
+						// if the current fieldmap does not allow create, we need to check if there is an object map for the Salesforce object Id. if not, set pull_allowed to false.
 						if ( isset( $map_sync_triggers ) && ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
 							$object_map = $this->mappings->load_by_salesforce( $result['Id'] );
 							if ( empty( $object_map ) ) {
