@@ -42,6 +42,13 @@ class Object_Sync_Sf_Queue {
 
 		if ( 'asc' === $sort ) {
 			uasort( $this->schedulable_classes, function( $a, $b ) {
+				// we want zero values at the top of an ascending sort
+				if ( 0 === $a ) {
+					return 1;
+				}
+				if ( 0 === $b ) {
+					return -1;
+				}
 				return $a['frequency'] - $b['frequency'];
 			});
 		} else {
@@ -62,7 +69,7 @@ class Object_Sync_Sf_Queue {
 	 * @return int How often it runs in that unit of time
 	 */
 	public function get_frequency( $name, $unit ) {
-		$schedule_number = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' );
+		$schedule_number = filter_var( get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' ), FILTER_VALIDATE_INT );
 		$schedule_unit   = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
 
 		switch ( $schedule_unit ) {
