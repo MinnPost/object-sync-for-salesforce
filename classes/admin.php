@@ -750,6 +750,20 @@ class Object_Sync_Sf_Admin {
 				);
 				$schedule_settings[ $key . '_clear_button' ]    = array(
 					// translators: $this->get_schedule_count is an integer showing how many items are in the current queue
+					'title'    => sprintf( 'This queue has ' . _n( '%s item', '%s items', $this->get_schedule_count( $key . '_check_records' ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key . '_check_records' ) ),
+					'callback' => $callbacks['link'],
+					'page'     => $page,
+					'section'  => $key,
+					'args'     => array(
+						'label'      => __( 'Clear this queue', 'object-sync-for-salesforce' ),
+						'desc'       => '',
+						'url'        => esc_url( '?page=object-sync-salesforce-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key ),
+						'link_class' => 'button button-secondary',
+					),
+				);
+			} else {
+				$schedule_settings[ $key . '_clear_button' ] = array(
+					// translators: $this->get_schedule_count is an integer showing how many items are in the current queue
 					'title'    => sprintf( 'This queue has ' . _n( '%s item', '%s items', $this->get_schedule_count( $key ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key ) ),
 					'callback' => $callbacks['link'],
 					'page'     => $page,
@@ -762,19 +776,6 @@ class Object_Sync_Sf_Admin {
 					),
 				);
 			}
-			$schedule_settings[ $key . '_clear_button' ] = array(
-				// translators: $this->get_schedule_count is an integer showing how many items are in the current queue
-				'title'    => sprintf( 'This queue has ' . _n( '%s item', '%s items', $this->get_schedule_count( $key ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key ) ),
-				'callback' => $callbacks['link'],
-				'page'     => $page,
-				'section'  => $key,
-				'args'     => array(
-					'label'      => __( 'Clear this queue', 'object-sync-for-salesforce' ),
-					'desc'       => '',
-					'url'        => esc_url( '?page=object-sync-salesforce-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key ),
-					'link_class' => 'button button-secondary',
-				),
-			);
 			foreach ( $schedule_settings as $key => $attributes ) {
 				$id       = $this->option_prefix . $key;
 				$name     = $this->option_prefix . $key;
