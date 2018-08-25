@@ -25,6 +25,37 @@ class Object_Sync_Sf_Queue {
 		$this->version             = $version;
 		$this->slug                = $slug;
 		$this->schedulable_classes = $schedulable_classes;
+
+		$this->add_actions();
+	}
+
+	/**
+	 * Add actions
+	 *
+	 */
+	private function add_actions() {
+		add_filter( 'action_scheduler_queue_runner_batch_size', array( $this, 'action_scheduler_batch_size' ) );
+		add_filter( 'action_scheduler_queue_runner_concurrent_batches', array( $this, 'action_scheduler_concurrent_batches' ) );
+	}
+
+	/**
+	 * Set the batch size. Todo: we should maybe make this a configurable option.
+	 *
+	 * @param int  $batch_size
+	 * @return int  $batch_size
+	 */
+	public function action_scheduler_batch_size( $batch_size ) {
+		return 10;
+	}
+
+	/**
+	 * Set the number of concurrent batches that can run. Todo: we should maybe make this a configurable option.
+	 *
+	 * @param int  $concurrent_batches
+	 * @return int  $concurrent_batches
+	 */
+	public function action_scheduler_concurrent_batches( $concurrent_batches ) {
+		return 5;
 	}
 
 	/**
