@@ -18,6 +18,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	protected $version;
 	protected $login_credentials;
 	protected $slug;
+	protected $option_prefix;
 	protected $salesforce;
 	protected $mappings;
 	protected $logging;
@@ -36,6 +37,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @param string $version
 	* @param array $login_credentials
 	* @param string $slug
+	* @param string $option_prefix
 	* @param object $wordpress
 	* @param object $salesforce
 	* @param object $mappings
@@ -44,11 +46,12 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @param object $queue
 	* @throws \Object_Sync_Sf_Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $queue ) {
+	public function __construct( $wpdb, $version, $login_credentials, $slug, $option_prefix, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $queue ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->login_credentials   = $login_credentials;
 		$this->slug                = $slug;
+		$this->option_prefix       = $option_prefix;
 		$this->wordpress           = $wordpress;
 		$this->salesforce          = $salesforce;
 		$this->mappings            = $mappings;
