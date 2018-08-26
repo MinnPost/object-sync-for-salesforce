@@ -64,7 +64,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// Create action hooks for WordPress objects. We run this after plugins are loaded in case something depends on another plugin.
 		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
 
-		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
+		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
 
 	}
 
@@ -78,8 +78,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 		add_action( 'wp_ajax_salesforce_pull_webhook', array( $this, 'salesforce_pull_webhook' ) );
 
 		// action-scheduler needs two hooks: one to check for records, and one to process them
-		add_action( 'object_sync_for_salesforce_pull_check_records', array( $this, 'salesforce_pull' ), 10 );
-		add_action( 'object_sync_for_salesforce_pull_process_records', array( $this, 'salesforce_pull_process_records' ), 10, 4 );
+		add_action( $this->option_prefix . 'pull_check_records', array( $this, 'salesforce_pull' ), 10 );
+		add_action( $this->option_prefix . 'pull_process_records', array( $this, 'salesforce_pull_process_records' ), 10, 4 );
 	}
 
 	/**
@@ -124,7 +124,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$this->get_deleted_records();
 
 			// Store this request time for the throttle check.
-			update_option( 'object_sync_for_salesforce_pull_last_sync', current_time( 'timestamp', true ) );
+			update_option( $this->option_prefix . 'pull_last_sync', current_time( 'timestamp', true ) );
 			return true;
 
 		} else {
@@ -142,8 +142,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*    Returns false if the time elapsed between recent pulls is too short.
 	*/
 	private function check_throttle() {
-		$pull_throttle = get_option( 'object_sync_for_salesforce_pull_throttle', 5 );
-		$last_sync     = get_option( 'object_sync_for_salesforce_pull_last_sync', 0 );
+		$pull_throttle = get_option( $this->option_prefix . 'pull_throttle', 5 );
+		$last_sync     = get_option( $this->option_prefix . 'pull_last_sync', 0 );
 
 		if ( current_time( 'timestamp', true ) > ( $last_sync + $pull_throttle ) ) {
 			return true;
@@ -187,7 +187,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$response     = $results['data'];
 			$version_path = wp_parse_url( $sfapi->get_api_endpoint(), PHP_URL_PATH );
 
-			$sf_last_sync = get_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, null );
+			$sf_last_sync = get_option( $this->option_prefix . 'pull_last_sync_' . $type, null );
 			$last_sync    = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
 
 			if ( ! isset( $response['errorCode'] ) ) {
@@ -224,7 +224,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 						// Hook to allow other plugins to prevent a pull per-mapping.
 						// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
-						$pull_allowed = apply_filters( 'object_sync_for_salesforce_pull_object_allowed', $pull_allowed, $type, $result, $sf_sync_trigger, $salesforce_mapping );
+						$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', $pull_allowed, $type, $result, $sf_sync_trigger, $salesforce_mapping );
 
 						// example to keep from pulling the Contact with id of abcdef
 						/*
@@ -238,7 +238,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						*/
 
 						if ( false === $pull_allowed ) {
-							update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, current_time( 'timestamp', true ) );
+							update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
 							continue;
 						}
 
@@ -256,7 +256,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 						// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
 						$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
-						update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
+						update_option( $this->option_prefix . 'pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
 					}
 				}
 
@@ -308,7 +308,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 								// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
 								$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
-								update_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
+								update_option( $this->option_prefix . 'pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
 							}
 						}
 					}
@@ -416,8 +416,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// this should be what keeps it from getting all the records, whether or not they've ever been updated
 		// we also use the option for when the plugin was installed, and don't go back further than that by default
 
-		$sf_activate_time = get_option( 'object_sync_for_salesforce_activate_time', '' );
-		$sf_last_sync     = get_option( 'object_sync_for_salesforce_pull_last_sync_' . $type, null );
+		$sf_activate_time = get_option( $this->option_prefix . 'activate_time', '' );
+		$sf_last_sync     = get_option( $this->option_prefix . 'pull_last_sync_' . $type, null );
 		if ( $sf_last_sync ) {
 			$last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
 			$soql->add_condition( $salesforce_mapping['pull_trigger_field'], $last_sync, '>' );
@@ -463,9 +463,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// Iterate over each field mapping to determine our query parameters.
 			foreach ( $mappings as $mapping ) {
 
-				$last_delete_sync = get_option( 'object_sync_for_salesforce_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
+				$last_delete_sync = get_option( $this->option_prefix . 'pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 				$now              = current_time( 'timestamp', true );
-				update_option( 'object_sync_for_salesforce_pull_delete_last_' . $type, $now );
+				update_option( $this->option_prefix . 'pull_delete_last_' . $type, $now );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
 				// (using an incompatible date may lead to exceptions).
@@ -503,7 +503,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					// Hook to allow other plugins to prevent a pull per-mapping.
 					// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
-					$pull_allowed = apply_filters( 'object_sync_for_salesforce_pull_object_allowed', true, $type, $result, $sf_sync_trigger, $salesforce_mapping );
+					$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', true, $type, $result, $sf_sync_trigger, $salesforce_mapping );
 
 					// example to keep from pulling the Contact with id of abcdef
 					/*
@@ -534,7 +534,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				}
 
-				update_option( 'object_sync_for_salesforce_pull_delete_last_' . $type, current_time( 'timestamp', true ) );
+				update_option( $this->option_prefix . 'pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 
 			} // End foreach().
 		} // End foreach().
@@ -640,7 +640,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// if it's not already connected (ie on create), the array will be empty
 
 			// hook to allow other plugins to define or alter the mapping object
-			$mapping_object = apply_filters( 'object_sync_for_salesforce_pull_mapping_object', $mapping_object, $object, $mapping );
+			$mapping_object = apply_filters( $this->option_prefix . 'pull_mapping_object', $mapping_object, $object, $mapping );
 
 			// we already have the data from Salesforce at this point; we just need to work with it in WordPress
 			$synced_object = array(
@@ -722,7 +722,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							}
 
 							// hook for pull fail
-							do_action( 'object_sync_for_salesforce_pull_fail', $op, $result, $synced_object );
+							do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
 
 						} // End try().
 
@@ -754,7 +754,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							);
 
 							// hook for pull success
-							do_action( 'object_sync_for_salesforce_pull_success', $op, $result, $synced_object );
+							do_action( $this->option_prefix . 'pull_success', $op, $result, $synced_object );
 						}
 					} else {
 						$more_ids = sprintf( '<p>' . esc_html__( 'The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress ID. They are:', 'object-sync-for-salesforce' ) );
@@ -811,7 +811,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// hook to allow other plugins to modify the $params array
 			// use hook to map fields between the WordPress and Salesforce objects
 			// returns $params.
-			$params = apply_filters( 'object_sync_for_salesforce_pull_params_modify', $params, $mapping, $object, $sf_sync_trigger, false, $is_new );
+			$params = apply_filters( $this->option_prefix . 'pull_params_modify', $params, $mapping, $object, $sf_sync_trigger, false, $is_new );
 
 			// if we don't get any params, there are no fields that should be sent to WordPress
 			if ( empty( $params ) ) {
@@ -862,11 +862,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// returns a $salesforce_id.
 					// it should keep NULL if there is no match
 					// the function that calls this hook needs to check the mapping to make sure the WordPress object is the right type
-					$wordpress_id = apply_filters( 'object_sync_for_salesforce_find_wp_object_match', null, $object, $mapping, 'pull' );
+					$wordpress_id = apply_filters( $this->option_prefix . 'find_wp_object_match', null, $object, $mapping, 'pull' );
 
 					// hook to allow other plugins to do something right before WordPress data is saved
 					// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't
-					do_action( 'object_sync_for_salesforce_pre_pull', $wordpress_id, $mapping, $object, $object_id, $params );
+					do_action( $this->option_prefix . 'pre_pull', $wordpress_id, $mapping, $object, $object_id, $params );
 
 					if ( isset( $prematch_field_salesforce ) || null !== $wordpress_id ) {
 
@@ -1079,7 +1079,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					}
 
 					// hook for pull fail
-					do_action( 'object_sync_for_salesforce_pull_fail', $op, $result, $synced_object );
+					do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
 
 					return;
 				} // End try().
@@ -1128,7 +1128,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$mapping_object                 = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 					// hook for pull success
-					do_action( 'object_sync_for_salesforce_pull_success', $op, $result, $synced_object );
+					do_action( $this->option_prefix . 'pull_success', $op, $result, $synced_object );
 				} else {
 
 					// create log entry for failed create or upsert
@@ -1170,7 +1170,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					);
 
 					// hook for pull fail
-					do_action( 'object_sync_for_salesforce_pull_fail', $op, $result, $synced_object );
+					do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
 
 					return;
 				} // End if().
@@ -1193,7 +1193,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					// hook to allow other plugins to do something right before WordPress data is saved
 					// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't
-					do_action( 'object_sync_for_salesforce_pre_pull', $mapping_object['wordpress_id'], $mapping, $object, $object_id, $params );
+					do_action( $this->option_prefix . 'pre_pull', $mapping_object['wordpress_id'], $mapping, $object, $object_id, $params );
 
 					$op     = 'Update';
 					$result = $this->wordpress->object_update( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'], $params );
@@ -1227,7 +1227,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					);
 
 					// hook for pull success
-					do_action( 'object_sync_for_salesforce_pull_success', $op, $result, $synced_object );
+					do_action( $this->option_prefix . 'pull_success', $op, $result, $synced_object );
 
 				} catch ( WordpressException $e ) {
 					// create log entry for failed update
@@ -1270,7 +1270,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					}
 
 					// hook for pull fail
-					do_action( 'object_sync_for_salesforce_pull_fail', $op, $result, $synced_object );
+					do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
 
 				} // End try().
 
