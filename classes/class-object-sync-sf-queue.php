@@ -41,23 +41,27 @@ class Object_Sync_Sf_Queue {
 	}
 
 	/**
-	 * Set the batch size. Todo: we should maybe make this a configurable option.
+	 * Set the batch size.
 	 *
 	 * @param int  $batch_size
 	 * @return int  $batch_size
 	 */
 	public function action_scheduler_batch_size( $batch_size ) {
-		return 10;
+		// default for this library is 20 so that is where we start
+		$batch_size = filter_var( get_option( $this->option_prefix . 'action_scheduler_batch_size', 20 ), FILTER_VALIDATE_INT );
+		return $batch_size;
 	}
 
 	/**
-	 * Set the number of concurrent batches that can run. Todo: we should maybe make this a configurable option.
+	 * Set the number of concurrent batches that can run.
 	 *
 	 * @param int  $concurrent_batches
 	 * @return int  $concurrent_batches
 	 */
 	public function action_scheduler_concurrent_batches( $concurrent_batches ) {
-		return 5;
+		// default for this library is 5 so that is where we start
+		$concurrent_batches = filter_var( get_option( $this->option_prefix . 'action_scheduler_concurrent_batches', 5 ), FILTER_VALIDATE_INT );
+		return $concurrent_batches;
 	}
 
 	/**

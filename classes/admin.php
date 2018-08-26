@@ -715,9 +715,38 @@ class Object_Sync_Sf_Admin {
 	* @param string $input_callback
 	*/
 	private function fields_scheduling( $page, $section, $callbacks ) {
+
+		add_settings_section( $page, ucwords( $page ), null, $page );
+		$schedule_settings = array(
+			'action_scheduler_batch_size'         => array(
+				'title'    => __( 'Batch size', 'object-sync-for-salesforce' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'text',
+					'validate' => 'sanitize_validate_text',
+					'desc'     => '',
+					'constant' => '',
+				),
+
+			),
+			'action_scheduler_concurrent_batches' => array(
+				'title'    => __( 'Concurrent batches', 'object-sync-for-salesforce' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'text',
+					'validate' => 'sanitize_validate_text',
+					'desc'     => '',
+					'constant' => '',
+				),
+			),
+		);
+
 		foreach ( $this->schedulable_classes as $key => $value ) {
 			add_settings_section( $key, $value['label'], null, $page );
-			$schedule_settings = array();
 			if ( isset( $value['initializer'] ) ) {
 				$schedule_settings[ $key . '_schedule_number' ] = array(
 					'title'    => __( 'Run schedule every', 'object-sync-for-salesforce' ),
