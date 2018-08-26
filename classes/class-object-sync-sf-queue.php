@@ -18,12 +18,14 @@ class Object_Sync_Sf_Queue {
 	protected $wpdb;
 	protected $version;
 	protected $slug;
+	protected $option_prefix;
 	protected $schedulable_classes;
 
-	public function __construct( $wpdb, $version, $slug, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->slug                = $slug;
+		$this->option_prefix       = $option_prefix;
 		$this->schedulable_classes = $schedulable_classes;
 
 		$this->add_actions();
@@ -100,8 +102,8 @@ class Object_Sync_Sf_Queue {
 	 * @return int How often it runs in that unit of time
 	 */
 	public function get_frequency( $name, $unit ) {
-		$schedule_number = filter_var( get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' ), FILTER_VALIDATE_INT );
-		$schedule_unit   = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
+		$schedule_number = filter_var( get_option( $this->option_prefix . $name . '_schedule_number', '' ), FILTER_VALIDATE_INT );
+		$schedule_unit   = get_option( $this->option_prefix . $name . '_schedule_unit', '' );
 
 		switch ( $schedule_unit ) {
 			case 'minutes':

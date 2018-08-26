@@ -18,6 +18,7 @@ class Object_Sync_Sf_Admin {
 	protected $version;
 	protected $login_credentials;
 	protected $slug;
+	protected $option_prefix;
 	protected $salesforce;
 	protected $wordpress;
 	protected $mappings;
@@ -47,6 +48,13 @@ class Object_Sync_Sf_Admin {
 	public $default_api_version;
 
 	/**
+	* @var int
+	* Default pull throttle for how often Salesforce can pull
+	* Users can edit this
+	*/
+	public $default_pull_throttle;
+
+	/**
 	* @var bool
 	* Default for whether to limit to triggerable items
 	* Users can edit this
@@ -61,11 +69,10 @@ class Object_Sync_Sf_Admin {
 	public $default_updateable;
 
 	/**
-	* @var int
-	* Default pull throttle for how often Salesforce can pull
-	* Users can edit this
+	* @var string
+	* Suffix for action group name
 	*/
-	public $default_pull_throttle;
+	public $action_group_suffix;
 
 	/**
 	* Constructor which sets up admin pages
@@ -84,11 +91,12 @@ class Object_Sync_Sf_Admin {
 	* @param object $queue
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes, $queue ) {
+	public function __construct( $wpdb, $version, $login_credentials, $slug, $option_prefix, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes, $queue ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->login_credentials   = $login_credentials;
 		$this->slug                = $slug;
+		$this->option_prefix       = $option_prefix;
 		$this->wordpress           = $wordpress;
 		$this->salesforce          = $salesforce;
 		$this->mappings            = $mappings;
@@ -112,8 +120,8 @@ class Object_Sync_Sf_Admin {
 		$this->default_triggerable = true;
 		// default setting for updateable items
 		$this->default_updateable = true;
-		// default option prefix
-		$this->option_prefix = 'object_sync_for_salesforce_';
+		// suffix for action groups
+		$this->action_group_suffix = '_check_records';
 
 		$this->add_actions();
 
@@ -170,7 +178,7 @@ class Object_Sync_Sf_Admin {
 		// get the current schedule name from the task, based on pattern in the foreach
 		preg_match( '/' . $this->option_prefix . '(.*)_schedule/', $option_name, $matches );
 		$schedule_name     = $matches[1];
-		$action_group_name = $schedule_name . '_check_records';
+		$action_group_name = $schedule_name . $this->action_group_suffix;
 
 		// exit if there is no initializer property on this schedule
 		if ( ! isset( $this->schedulable_classes[ $schedule_name ]['initializer'] ) ) {
