@@ -39,7 +39,11 @@ class Object_Sync_Sf_Activate {
 		$this->option_prefix       = $option_prefix;
 		$this->schedulable_classes = $schedulable_classes;
 
-		$this->installed_version = get_option( $this->option_prefix . 'db_version', '' );
+		$this->action_group_suffix = '_check_records';
+		$this->installed_version   = get_option( $this->option_prefix . 'db_version', '' );
+
+		// Save the current plugin version in a transient
+		set_transient( $this->option_prefix . 'installed_version', $this->installed_version );
 
 		$this->add_actions();
 	}
@@ -170,8 +174,56 @@ class Object_Sync_Sf_Activate {
 	*
 	*/
 	public function wordpress_salesforce_update_db_check( $upgrader_object, $hook_extra ) {
-		if ( get_site_option( $this->option_prefix . 'db_version' ) !== $this->version ) {
+		// user is running a version less than the current one
+		$previous_version = get_transient( $this->option_prefix . 'installed_version' );
+		if ( version_compare( $previous_version, $this->version, '<' ) ) {
 			$this->wordpress_salesforce_tables();
+			delete_transient( $this->option_prefix . 'installed_version' );
+		}
+	}
+
+	/**
+	* Check whether the user has action scheduler tasks when they upgrade
+	*
+	* @param object $upgrader_object
+	* @param array $hook_extra
+	*
+	* See https://developer.wordpress.org/reference/hooks/upgrader_process_complete/
+	*
+	*/
+	public function check_for_action_scheduler( $upgrader_object, $hook_extra ) {
+
+		// skip if this action isn't this plugin being updated
+		if ( 'plugin' !== $extras['type'] && 'update' !== $extras['action'] && $extras['plugin'] !== $this->slug ) {
+			return;
+		}
+
+		// user is running a version less than 1.4.0
+		$action_scheduler_version = '1.4.0';
+		$previous_version         = get_transient( $this->option_prefix . 'installed_version' );
+		if ( version_compare( $previous_version, $action_scheduler_version, '<' ) ) {
+			// delete old options
+			delete_option( $this->option_prefix . 'push_schedule_number' );
+			delete_option( $this->option_prefix . 'push_schedule_unit' );
+			delete_option( $this->option_prefix . 'salesforce_schedule_number' );
+			delete_option( $this->option_prefix . 'salesforce_schedule_unit' );
+			foreach ( $this->schedulable_classes as $key => $schedule ) {
+				$schedule_name     = $key;
+				$action_group_name = $schedule_name . $this->action_group_suffix;
+				// exit if there is no initializer property on this schedule
+				if ( ! isset( $this->schedulable_classes[ $schedule_name ]['initializer'] ) ) {
+					continue;
+				}
+				// create new recurring task for action-scheduler to check for data to pull from salesforce
+				$this->queue->schedule_recurring(
+					current_time( 'timestamp', true ), // plugin seems to expect UTC
+					$this->queue->get_frequency( $schedule_name, 'seconds' ),
+					$this->schedulable_classes[ $schedule_name ]['initializer'],
+					array(),
+					$action_group_name
+				);
+			}
+			delete_transient( $this->option_prefix . 'installed_version' );
 		}
 	}
 
