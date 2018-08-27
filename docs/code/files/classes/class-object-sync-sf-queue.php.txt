@@ -18,13 +18,50 @@ class Object_Sync_Sf_Queue {
 	protected $wpdb;
 	protected $version;
 	protected $slug;
+	protected $option_prefix;
 	protected $schedulable_classes;
 
-	public function __construct( $wpdb, $version, $slug, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->slug                = $slug;
+		$this->option_prefix       = $option_prefix;
 		$this->schedulable_classes = $schedulable_classes;
+
+		$this->add_actions();
+	}
+
+	/**
+	 * Add actions
+	 *
+	 */
+	private function add_actions() {
+		add_filter( 'action_scheduler_queue_runner_batch_size', array( $this, 'action_scheduler_batch_size' ) );
+		add_filter( 'action_scheduler_queue_runner_concurrent_batches', array( $this, 'action_scheduler_concurrent_batches' ) );
+	}
+
+	/**
+	 * Set the batch size.
+	 *
+	 * @param int  $batch_size
+	 * @return int  $batch_size
+	 */
+	public function action_scheduler_batch_size( $batch_size ) {
+		// default for this library is 20 so that is where we start
+		$batch_size = filter_var( get_option( $this->option_prefix . 'action_scheduler_batch_size', 20 ), FILTER_VALIDATE_INT );
+		return $batch_size;
+	}
+
+	/**
+	 * Set the number of concurrent batches that can run.
+	 *
+	 * @param int  $concurrent_batches
+	 * @return int  $concurrent_batches
+	 */
+	public function action_scheduler_concurrent_batches( $concurrent_batches ) {
+		// default for this library is 5 so that is where we start
+		$concurrent_batches = filter_var( get_option( $this->option_prefix . 'action_scheduler_concurrent_batches', 5 ), FILTER_VALIDATE_INT );
+		return $concurrent_batches;
 	}
 
 	/**
@@ -42,6 +79,13 @@ class Object_Sync_Sf_Queue {
 
 		if ( 'asc' === $sort ) {
 			uasort( $this->schedulable_classes, function( $a, $b ) {
+				// we want zero values at the top of an ascending sort
+				if ( 0 === $a ) {
+					return 1;
+				}
+				if ( 0 === $b ) {
+					return -1;
+				}
 				return $a['frequency'] - $b['frequency'];
 			});
 		} else {
@@ -62,8 +106,8 @@ class Object_Sync_Sf_Queue {
 	 * @return int How often it runs in that unit of time
 	 */
 	public function get_frequency( $name, $unit ) {
-		$schedule_number = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_number', '' );
-		$schedule_unit   = get_option( 'object_sync_for_salesforce_' . $name . '_schedule_unit', '' );
+		$schedule_number = filter_var( get_option( $this->option_prefix . $name . '_schedule_number', '' ), FILTER_VALIDATE_INT );
+		$schedule_unit   = get_option( $this->option_prefix . $name . '_schedule_unit', '' );
 
 		switch ( $schedule_unit ) {
 			case 'minutes':

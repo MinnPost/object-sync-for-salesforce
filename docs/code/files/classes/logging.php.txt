@@ -16,24 +16,30 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 
 	protected $wpdb;
 	protected $version;
+	protected $slug;
+	protected $option_prefix;
 
 	public $enabled;
 	public $statuses_to_log;
 
 
 	/**
-	 * Constructor which sets content type and pruning
+	 * Constructor which sets content type and pruning for logs
 	 *
 	 * @param object $wpdb An instance of the wpdb class.
 	 * @param string $version The version of this plugin.
+	 * @param string $slug The plugin slug
+	 * @param string $option_prefix The plugin's option prefix
 	 * @throws \Exception
 	 */
-	public function __construct( $wpdb, $version ) {
-		$this->wpdb    = $wpdb;
-		$this->version = $version;
+	public function __construct( $wpdb, $version, $slug, $option_prefix ) {
+		$this->wpdb          = $wpdb;
+		$this->version       = $version;
+		$this->slug          = $slug;
+		$this->option_prefix = $option_prefix;
 
-		$this->enabled         = get_option( 'object_sync_for_salesforce_enable_logging', false );
-		$this->statuses_to_log = get_option( 'object_sync_for_salesforce_statuses_to_log', array() );
+		$this->enabled         = get_option( $this->option_prefix . 'enable_logging', false );
+		$this->statuses_to_log = get_option( $this->option_prefix . 'statuses_to_log', array() );
 
 		$this->schedule_name = 'wp_logging_prune_routine';
 
@@ -55,10 +61,10 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			add_filter( 'wp_logging_prune_query_args', array( $this, 'set_prune_args' ), 10, 1 );
 			add_filter( 'wp_logging_post_type_args', array( $this, 'set_log_visibility' ), 10, 1 );
 
-			$schedule_unit = get_option( 'object_sync_for_salesforce_logs_how_often_unit', '' );
-			$schedule_number = get_option( 'object_sync_for_salesforce_logs_how_often_number', '' );
-			$frequency = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
-			$key = $frequency['key'];
+			$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
+			$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
+			$frequency       = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
+			$key             = $frequency['key'];
 
 			if ( ! wp_next_scheduled( $this->schedule_name ) ) {
 				wp_schedule_event( time(), $key, $this->schedule_name );
@@ -82,7 +88,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			'read_private_posts' => 'configure_salesforce',
 		);
 
-		$log_args = apply_filters( 'object_sync_for_salesforce_logging_post_type_args', $log_args );
+		$log_args = apply_filters( $this->option_prefix . 'logging_post_type_args', $log_args );
 
 		return $log_args;
 	}
@@ -95,8 +101,8 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 */
 	public function add_prune_interval( $schedules ) {
 
-		$schedule_unit   = get_option( 'object_sync_for_salesforce_logs_how_often_unit', '' );
-		$schedule_number = get_option( 'object_sync_for_salesforce_logs_how_often_number', '' );
+		$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
+		$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
 		$frequency       = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
 		$key             = $frequency['key'];
 		$seconds         = $frequency['seconds'];
@@ -161,7 +167,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @return string $should_we_prune Whether to prune old log items.
 	 */
 	public function set_prune_option( $should_we_prune ) {
-		$should_we_prune = get_option( 'object_sync_for_salesforce_prune_logs', $should_we_prune );
+		$should_we_prune = get_option( $this->option_prefix . 'prune_logs', $should_we_prune );
 		if ( '1' === $should_we_prune ) {
 			$should_we_prune = true;
 		}
@@ -175,7 +181,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @return string $how_old
 	 */
 	public function set_prune_age( $how_old ) {
-		$value = get_option( 'object_sync_for_salesforce_logs_how_old', '' ) . ' ago';
+		$value = get_option( $this->option_prefix . 'logs_how_old', '' ) . ' ago';
 		if ( '' !== $value ) {
 			return $value;
 		} else {
@@ -215,7 +221,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 */
 	public function setup( $title, $message, $trigger = 0, $parent = 0, $status ) {
 		if ( '1' === $this->enabled && in_array( $status, maybe_unserialize( $this->statuses_to_log ), true ) ) {
-			$triggers_to_log = get_option( 'object_sync_for_salesforce_triggers_to_log', array() );
+			$triggers_to_log = get_option( $this->option_prefix . 'triggers_to_log', array() );
 			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in Object_Sync_Sf_Mapping class's method __construct()
 			if ( in_array( $trigger, maybe_unserialize( $triggers_to_log ) ) || 0 === $trigger ) {
 				$this->add( $title, $message, $parent );

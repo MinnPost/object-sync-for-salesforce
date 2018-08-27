@@ -17,6 +17,7 @@ class Object_Sync_Sf_WordPress {
 	protected $wpdb;
 	protected $version;
 	protected $slug;
+	protected $option_prefix;
 	protected $mappings;
 	protected $logging;
 
@@ -26,16 +27,18 @@ class Object_Sync_Sf_WordPress {
 	 * @param object $wpdb A wpdb object.
 	 * @param string $version The plugin version.
 	 * @param string $slug The plugin slug.
+	 * @param string $option_prefix The plugin's option prefix
 	 * @param object $mappings Mapping objects.
 	 * @param object $logging a Object_Sync_Sf_Logging instance.
 	 * @throws \Exception
 	 */
-	public function __construct( $wpdb, $version, $slug, $mappings, $logging ) {
-		$this->wpdb     = $wpdb;
-		$this->version  = $version;
-		$this->slug     = $slug;
-		$this->mappings = $mappings;
-		$this->logging  = $logging;
+	public function __construct( $wpdb, $version, $slug, $option_prefix, $mappings, $logging ) {
+		$this->wpdb          = $wpdb;
+		$this->version       = $version;
+		$this->slug          = $slug;
+		$this->option_prefix = $option_prefix;
+		$this->mappings      = $mappings;
+		$this->logging       = $logging;
 
 		add_action( 'admin_init', function() {
 			$this->wordpress_objects = $this->get_object_types();
@@ -49,7 +52,7 @@ class Object_Sync_Sf_WordPress {
 
 		$this->sfwp_transients = new Object_Sync_Sf_WordPress_Transient( 'sfwp_transients' );
 
-		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
+		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
 
 	}
 
@@ -80,10 +83,10 @@ class Object_Sync_Sf_WordPress {
 		$wordpress_types_not_posts_include = array( 'user', 'comment', 'category', 'tag' );
 		$wordpress_objects                 = array_merge( get_post_types(), $wordpress_types_not_posts_include );
 		// this should be all the objects
-		$wordpress_objects = apply_filters( 'object_sync_for_salesforce_add_more_wordpress_types', $wordpress_objects );
+		$wordpress_objects = apply_filters( $this->option_prefix . 'add_more_wordpress_types', $wordpress_objects );
 
 		// by default, only remove the log type we use in this plugin
-		$types_to_remove = apply_filters( 'object_sync_for_salesforce_remove_wordpress_types', array( 'wp_log' ) );
+		$types_to_remove = apply_filters( $this->option_prefix . 'remove_wordpress_types', array( 'wp_log' ) );
 
 		// if the hook filters out any types, remove them from the visible list
 		if ( ! empty( $types_to_remove ) ) {
@@ -294,7 +297,7 @@ class Object_Sync_Sf_WordPress {
 		 *     $object_fields = array( 'data' => array(), 'from_cache' => bool, 'cached' => bool );
 		 * This is useful for custom objects that do not use the normal metadata table structure.
 		 */
-		$object_fields = apply_filters( 'object_sync_for_salesforce_wordpress_object_fields', $object_fields, $wordpress_object );
+		$object_fields = apply_filters( $this->option_prefix . 'wordpress_object_fields', $object_fields, $wordpress_object );
 
 		return $object_fields['data'];
 
@@ -352,7 +355,7 @@ class Object_Sync_Sf_WordPress {
 			}
 		*/
 
-		$wordpress_object = apply_filters( 'object_sync_for_salesforce_wordpress_object_data', $wordpress_object );
+		$wordpress_object = apply_filters( $this->option_prefix . 'wordpress_object_data', $wordpress_object );
 
 		return $wordpress_object;
 
@@ -547,10 +550,10 @@ class Object_Sync_Sf_WordPress {
 				 * the one param is: array( 'name' => objecttype, 'params' => array_of_params, 'id_field' => idfield )
 				 */
 				// Check to see if someone is calling the filter, and apply it if so.
-				if ( ! has_filter( 'object_sync_for_salesforce_create_custom_wordpress_item' ) ) {
+				if ( ! has_filter( $this->option_prefix . 'create_custom_wordpress_item' ) ) {
 					$result = $this->post_create( $params, $id_field, $name );
 				} else {
-					$result = apply_filters( 'object_sync_for_salesforce_create_custom_wordpress_item', array(
+					$result = apply_filters( $this->option_prefix . 'create_custom_wordpress_item', array(
 						'params'   => $params,
 						'name'     => $name,
 						'id_field' => $id_field,
@@ -601,8 +604,8 @@ class Object_Sync_Sf_WordPress {
 		}
 
 		// Allow developers to change both the key and value by which objects should be matched.
-		$key   = apply_filters( 'object_sync_for_salesforce_modify_upsert_key', $key );
-		$value = apply_filters( 'object_sync_for_salesforce_modify_upsert_value', $value );
+		$key   = apply_filters( $this->option_prefix . 'modify_upsert_key', $key );
+		$value = apply_filters( $this->option_prefix . 'modify_upsert_value', $value );
 
 		switch ( $name ) {
 			case 'user':
@@ -635,10 +638,10 @@ class Object_Sync_Sf_WordPress {
 				 *     array( 'key' => key, 'value' => value, 'methods' => methods, 'params' => array_of_params, 'id_field' => idfield, 'push_drafts' => pushdrafts, 'name' => name, 'check_only' => $check_only )
 				*/
 				// Check to see if someone is calling the filter, and apply it if so.
-				if ( ! has_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item' ) ) {
+				if ( ! has_filter( $this->option_prefix . 'upsert_custom_wordpress_item' ) ) {
 					$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name, $check_only );
 				} else {
-					$result = apply_filters( 'object_sync_for_salesforce_upsert_custom_wordpress_item', array(
+					$result = apply_filters( $this->option_prefix . 'upsert_custom_wordpress_item', array(
 						'key'         => $key,
 						'value'       => $value,
 						'methods'     => $methods,
@@ -710,10 +713,10 @@ class Object_Sync_Sf_WordPress {
 				 *     array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
 				 */
 				// Check to see if someone is calling the filter, and apply it if so.
-				if ( ! has_filter( 'object_sync_for_salesforce_update_custom_wordpress_item' ) ) {
+				if ( ! has_filter( $this->option_prefix . 'update_custom_wordpress_item' ) ) {
 					$result = $this->post_update( $id, $params, $id_field, $name );
 				} else {
-					$result = apply_filters( 'object_sync_for_salesforce_update_custom_wordpress_item', array(
+					$result = apply_filters( $this->option_prefix . 'update_custom_wordpress_item', array(
 						'id'       => $id,
 						'params'   => $params,
 						'name'     => $name,
@@ -771,10 +774,10 @@ class Object_Sync_Sf_WordPress {
 				 *     array( 'id' => id, 'name' => objecttype )
 				 */
 				// Check to see if someone is calling the filter, and apply it if so.
-				if ( ! has_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item' ) ) {
+				if ( ! has_filter( $this->option_prefix . 'delete_custom_wordpress_item' ) ) {
 					$success = $this->post_delete( $id );
 				} else {
-					$success = apply_filters( 'object_sync_for_salesforce_delete_custom_wordpress_item', array(
+					$success = apply_filters( $this->option_prefix . 'delete_custom_wordpress_item', array(
 						'id'   => $id,
 						'name' => $name,
 					) );
@@ -868,7 +871,7 @@ class Object_Sync_Sf_WordPress {
 				}
 
 				// Developers can use this hook to set any other user data - permissions, etc.
-				do_action( 'object_sync_for_salesforce_set_more_user_data', $user_id, $params, 'create' );
+				do_action( $this->option_prefix . 'set_more_user_data', $user_id, $params, 'create' );
 
 				// Send notification of new user.
 				// todo: Figure out what permissions ought to get notifications for this and make sure it works the right way.
@@ -1063,7 +1066,7 @@ class Object_Sync_Sf_WordPress {
 			}
 
 			// Developers can use this hook to set any other user data - permissions, etc.
-			do_action( 'object_sync_for_salesforce_set_more_user_data', $user_id, $params, 'update' );
+			do_action( $this->option_prefix . 'set_more_user_data', $user_id, $params, 'update' );
 
 		}
 
@@ -1159,7 +1162,7 @@ class Object_Sync_Sf_WordPress {
 			}
 
 			// Developers can use this hook to set any other post data.
-			do_action( 'object_sync_for_salesforce_set_more_post_data', $post_id, $params, 'create' );
+			do_action( $this->option_prefix . 'set_more_post_data', $post_id, $params, 'create' );
 
 		}
 
@@ -1392,7 +1395,7 @@ class Object_Sync_Sf_WordPress {
 			}
 
 			// Developers can use this hook to set any other post data.
-			do_action( 'object_sync_for_salesforce_set_more_post_data', $post_id, $params, 'update' );
+			do_action( $this->option_prefix . 'set_more_post_data', $post_id, $params, 'update' );
 
 		}
 
@@ -1444,7 +1447,7 @@ class Object_Sync_Sf_WordPress {
 		}
 
 		// Developers can use this hook to pass filename and parent data for the attachment.
-		$params = apply_filters( 'object_sync_for_salesforce_set_initial_attachment_data', $params );
+		$params = apply_filters( $this->option_prefix . 'set_initial_attachment_data', $params );
 
 		if ( isset( $params['filename']['value'] ) ) {
 			$filename = $params['filename']['value'];
@@ -1480,7 +1483,7 @@ class Object_Sync_Sf_WordPress {
 			}
 
 			// Developers can use this hook to set any other attachment data.
-			do_action( 'object_sync_for_salesforce_set_more_attachment_data', $attachment_id, $params, 'create' );
+			do_action( $this->option_prefix . 'set_more_attachment_data', $attachment_id, $params, 'create' );
 
 		}
 
@@ -1726,7 +1729,7 @@ class Object_Sync_Sf_WordPress {
 			}
 
 			// Developers can use this hook to set any other attachment data.
-			do_action( 'object_sync_for_salesforce_set_more_attachment_data', $attachment_id, $params, 'update' );
+			do_action( $this->option_prefix . 'set_more_attachment_data', $attachment_id, $params, 'update' );
 
 		} // End if().
 
@@ -1814,7 +1817,7 @@ class Object_Sync_Sf_WordPress {
 			}
 
 			// Developers can use this hook to set any other term data.
-			do_action( 'object_sync_for_salesforce_set_more_term_data', $term_id, $params, 'create' );
+			do_action( $this->option_prefix . 'set_more_term_data', $term_id, $params, 'create' );
 
 		}
 
@@ -2016,7 +2019,7 @@ class Object_Sync_Sf_WordPress {
 			}
 
 			// Developers can use this hook to set any other term data.
-			do_action( 'object_sync_for_salesforce_set_more_term_data', $term_id, $params, 'update' );
+			do_action( $this->option_prefix . 'set_more_term_data', $term_id, $params, 'update' );
 
 		}
 
@@ -2122,7 +2125,7 @@ class Object_Sync_Sf_WordPress {
 			}
 
 			// Developers can use this hook to set any other comment data.
-			do_action( 'object_sync_for_salesforce_set_more_comment_data', $comment_id, $params, 'create' );
+			do_action( $this->option_prefix . 'set_more_comment_data', $comment_id, $params, 'create' );
 
 		}
 
@@ -2350,7 +2353,7 @@ class Object_Sync_Sf_WordPress {
 			}
 
 			// Developers can use this hook to set any other comment data.
-			do_action( 'object_sync_for_salesforce_set_more_comment_data', $comment_id, $params, 'update' );
+			do_action( $this->option_prefix . 'set_more_comment_data', $comment_id, $params, 'update' );
 
 		}
 

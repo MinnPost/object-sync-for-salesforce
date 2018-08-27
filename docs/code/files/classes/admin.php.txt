@@ -18,6 +18,7 @@ class Object_Sync_Sf_Admin {
 	protected $version;
 	protected $login_credentials;
 	protected $slug;
+	protected $option_prefix;
 	protected $salesforce;
 	protected $wordpress;
 	protected $mappings;
@@ -47,6 +48,20 @@ class Object_Sync_Sf_Admin {
 	public $default_api_version;
 
 	/**
+	* @var int
+	* Default max number of pull records
+	* Users can edit this
+	*/
+	public $default_pull_limit;
+
+	/**
+	* @var int
+	* Default pull throttle for how often Salesforce can pull
+	* Users can edit this
+	*/
+	public $default_pull_throttle;
+
+	/**
 	* @var bool
 	* Default for whether to limit to triggerable items
 	* Users can edit this
@@ -61,11 +76,10 @@ class Object_Sync_Sf_Admin {
 	public $default_updateable;
 
 	/**
-	* @var int
-	* Default pull throttle for how often Salesforce can pull
-	* Users can edit this
+	* @var string
+	* Suffix for action group name
 	*/
-	public $default_pull_throttle;
+	public $action_group_suffix;
 
 	/**
 	* Constructor which sets up admin pages
@@ -84,11 +98,12 @@ class Object_Sync_Sf_Admin {
 	* @param object $queue
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes, $queue ) {
+	public function __construct( $wpdb, $version, $login_credentials, $slug, $option_prefix, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes, $queue ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->login_credentials   = $login_credentials;
 		$this->slug                = $slug;
+		$this->option_prefix       = $option_prefix;
 		$this->wordpress           = $wordpress;
 		$this->salesforce          = $salesforce;
 		$this->mappings            = $mappings;
@@ -106,14 +121,16 @@ class Object_Sync_Sf_Admin {
 		$this->default_token_url_path = '/services/oauth2/token';
 		// what Salesforce API version to start the settings with. This is only used in the settings form
 		$this->default_api_version = '43.0';
+		// default pull record limit
+		$this->default_pull_limit = 25;
 		// default pull throttle for avoiding going over api limits
 		$this->default_pull_throttle = 5;
 		// default setting for triggerable items
 		$this->default_triggerable = true;
 		// default setting for updateable items
 		$this->default_updateable = true;
-		// default option prefix
-		$this->option_prefix = 'object_sync_for_salesforce_';
+		// suffix for action groups
+		$this->action_group_suffix = '_check_records';
 
 		$this->add_actions();
 
@@ -170,7 +187,7 @@ class Object_Sync_Sf_Admin {
 		// get the current schedule name from the task, based on pattern in the foreach
 		preg_match( '/' . $this->option_prefix . '(.*)_schedule/', $option_name, $matches );
 		$schedule_name     = $matches[1];
-		$action_group_name = $schedule_name . '_check_records';
+		$action_group_name = $schedule_name . $this->action_group_suffix;
 
 		// exit if there is no initializer property on this schedule
 		if ( ! isset( $this->schedulable_classes[ $schedule_name ]['initializer'] ) ) {
@@ -603,6 +620,19 @@ class Object_Sync_Sf_Admin {
 					),
 				),
 			),
+			'pull_query_limit'               => array(
+				'title'    => 'Pull query record limit',
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'number',
+					'validate' => 'absint',
+					'desc'     => __( 'Limit the number of records that can be pulled from Salesforce in a single query.', 'object-sync-for-salesforce' ),
+					'constant' => '',
+					'default'  => $this->default_pull_limit,
+				),
+			),
 			'pull_throttle'                  => array(
 				'title'    => 'Pull throttle (seconds)',
 				'callback' => $callbacks['text'],
@@ -707,10 +737,40 @@ class Object_Sync_Sf_Admin {
 	* @param string $input_callback
 	*/
 	private function fields_scheduling( $page, $section, $callbacks ) {
+
+		add_settings_section( $page, ucwords( $page ), null, $page );
+		$schedule_settings = array(
+			'action_scheduler_batch_size'         => array(
+				'title'    => __( 'Batch size', 'object-sync-for-salesforce' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'number',
+					'validate' => 'absint',
+					'desc'     => 'Set how many actions (checking for data changes, syncing a record, etc. all count as individual actions) can be run in a batch.',
+					'constant' => '',
+				),
+
+			),
+			'action_scheduler_concurrent_batches' => array(
+				'title'    => __( 'Concurrent batches', 'object-sync-for-salesforce' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'number',
+					'validate' => 'absint',
+					'desc'     => 'Set how many batches of actions can be run at once.',
+					'constant' => '',
+				),
+			),
+		);
+
 		foreach ( $this->schedulable_classes as $key => $value ) {
 			add_settings_section( $key, $value['label'], null, $page );
-			$schedule_settings = array(
-				$key . '_schedule_number' => array(
+			if ( isset( $value['initializer'] ) ) {
+				$schedule_settings[ $key . '_schedule_number' ] = array(
 					'title'    => __( 'Run schedule every', 'object-sync-for-salesforce' ),
 					'callback' => $callbacks['text'],
 					'page'     => $page,
@@ -721,8 +781,8 @@ class Object_Sync_Sf_Admin {
 						'desc'     => '',
 						'constant' => '',
 					),
-				),
-				$key . '_schedule_unit'   => array(
+				);
+				$schedule_settings[ $key . '_schedule_unit' ]   = array(
 					'title'    => __( 'Time unit', 'object-sync-for-salesforce' ),
 					'callback' => $callbacks['select'],
 					'page'     => $page,
@@ -746,19 +806,19 @@ class Object_Sync_Sf_Admin {
 							),
 						),
 					),
-				),
-				$key . '_clear_button'    => array(
-					// translators: $this->get_schedule_count is an integer showing how many items are in the current queue
-					'title'    => sprintf( 'This queue has ' . _n( '%s item', '%s items', $this->get_schedule_count( $key ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key ) ),
-					'callback' => $callbacks['link'],
-					'page'     => $page,
-					'section'  => $key,
-					'args'     => array(
-						'label'      => __( 'Clear this queue', 'object-sync-for-salesforce' ),
-						'desc'       => '',
-						'url'        => esc_url( '?page=object-sync-salesforce-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key ),
-						'link_class' => 'button button-secondary',
-					),
+				);
+			}
+			$schedule_settings[ $key . '_clear_button' ] = array(
+				// translators: $this->get_schedule_count is an integer showing how many items are in the current queue
+				'title'    => sprintf( 'This queue has ' . _n( '%s item', '%s items', $this->get_schedule_count( $key ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key ) ),
+				'callback' => $callbacks['link'],
+				'page'     => $page,
+				'section'  => $key,
+				'args'     => array(
+					'label'      => __( 'Clear this queue', 'object-sync-for-salesforce' ),
+					'desc'       => '',
+					'url'        => esc_url( '?page=object-sync-salesforce-admin&amp;tab=clear_schedule&amp;schedule_name=' . $key ),
+					'link_class' => 'button button-secondary',
 				),
 			);
 			foreach ( $schedule_settings as $key => $attributes ) {
@@ -1951,11 +2011,11 @@ class Object_Sync_Sf_Admin {
 	/**
 	* Clear schedule
 	* This clears the schedule if the user clicks the button
+	* @param string $schedule_name
 	*/
 	private function clear_schedule( $schedule_name = '' ) {
 		if ( '' !== $schedule_name ) {
-			$schedule = $this->schedule( $schedule_name );
-			$schedule->cancel_by_name( $schedule_name );
+			$this->queue->cancel( $schedule_name );
 			// translators: $schedule_name is the name of the current queue. Defaults: salesforce_pull, salesforce_push, salesforce
 			echo sprintf( esc_html__( 'You have cleared the %s schedule.', 'object-sync-for-salesforce' ), esc_html( $schedule_name ) );
 		} else {
@@ -1963,26 +2023,31 @@ class Object_Sync_Sf_Admin {
 		}
 	}
 
+	/**
+	* Get count of schedule items
+	* @param string $schedule_name
+	* @return int $count
+	*/
 	private function get_schedule_count( $schedule_name = '' ) {
 		if ( '' !== $schedule_name ) {
-			$schedule = $this->schedule( $schedule_name );
-			return $this->schedule->count_queue_items( $schedule_name );
+			$count       = count( $this->queue->search(
+				array(
+					'group'  => $schedule_name,
+					'status' => ActionScheduler_Store::STATUS_PENDING,
+				),
+				'ARRAY_A'
+			) );
+			$group_count = count( $this->queue->search(
+				array(
+					'group'  => $schedule_name . $this->action_group_suffix,
+					'status' => ActionScheduler_Store::STATUS_PENDING,
+				),
+				'ARRAY_A'
+			) );
+			return $count + $group_count;
 		} else {
-			return 'unknown';
+			return 0;
 		}
-	}
-
-	/**
-	* Load the schedule class
-	*/
-	private function schedule( $schedule_name ) {
-		if ( ! class_exists( 'Object_Sync_Sf_Schedule' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
-			require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
-			require_once plugin_dir_path( __FILE__ ) . '../classes/schedule.php';
-		}
-		$schedule       = new Object_Sync_Sf_Schedule( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $schedule_name, $this->logging, $this->schedulable_classes );
-		$this->schedule = $schedule;
-		return $schedule;
 	}
 
 	/**
