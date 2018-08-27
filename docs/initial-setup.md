@@ -28,7 +28,7 @@ Most users should install the plugin from the [WordPress plugin directory](https
 4. Run `composer install`
 5. This will take a little while as Composer installs third-party libraries the plugin needs. You can then activate the plugin as you would a normal WordPress plugin.
 6. If you are doing interface or translation work, as defined above, run `npm install` to install the Gulp plugins. Run `gulp` when you make changes to Sass, JavaScript, or when you create new translations.
-7. If you intent to contribute PHP work, you may want to install [phpDocumentor](https://phpdoc.org/) to generate code documentation. You can use [this link](https://phpdoc.org) to set it up. At this time, it is not included with this plugin. We recommend that you use  `phpDocumentor.phar` and run it in the plugin's root directory when you make relevant changes. You can check these changes in to the Git repository.
+7. If you intent to contribute PHP work, you may want to install [phpDocumentor](https://phpdoc.org/) to generate code documentation. You can use [this link](https://phpdoc.org) to set it up. At this time, it is not included with this plugin. We recommend that you use  `phpDocumentor.phar` and run it in the plugin's root directory when you make relevant changes. For example, if you have this file installed in your `~/Sites` directory, you would run `php ~/Sites/phpDocumentor.phar`. You can check these changes in to the Git repository.
 
 ### Activate the plugin
 

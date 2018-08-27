@@ -22,7 +22,7 @@ You'll need to run `gulp` in the plugin's main directory if you make changes to 
 
 If your contribution is PHP work, it may be relevant to the [code documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/code/index.html). In that case, you may want to install [phpDocumentor](https://phpdoc.org/) to generate this documentation. You can use [this link](https://phpdoc.org) to set it up.
 
-Run `phpDocumentor.phar` (or however you call the file) in the plugin's root directory when you make relevant changes. You can check these changes in to the Git repository.
+Run `phpDocumentor.phar` (or however you call the file) in the plugin's root directory when you make relevant changes. For example, if you have this file installed in your `~/Sites` directory, you would run `php ~/Sites/phpDocumentor.phar`. You can check these changes in to the Git repository.
 
 ## Standards
 

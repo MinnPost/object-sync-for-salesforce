@@ -738,7 +738,8 @@ class Object_Sync_Sf_Admin {
 	*/
 	private function fields_scheduling( $page, $section, $callbacks ) {
 
-		add_settings_section( $page, ucwords( $page ), null, $page );
+		add_settings_section( 'batch', __( 'Batch Settings', 'object-sync-for-salesforce' ), null, $page );
+		$section           = 'batch';
 		$schedule_settings = array(
 			'action_scheduler_batch_size'         => array(
 				'title'    => __( 'Batch size', 'object-sync-for-salesforce' ),
@@ -748,7 +749,8 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'number',
 					'validate' => 'absint',
-					'desc'     => 'Set how many actions (checking for data changes, syncing a record, etc. all count as individual actions) can be run in a batch.',
+					'default'  => 5,
+					'desc'     => __( 'Set how many actions (checking for data changes, syncing a record, etc. all count as individual actions) can be run in a batch. Start with a low number here, like 5, if you are unsure.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
 
@@ -761,7 +763,8 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'number',
 					'validate' => 'absint',
-					'desc'     => 'Set how many batches of actions can be run at once.',
+					'default'  => 3,
+					'desc'     => __( 'Set how many batches of actions can be run at once. Start with a low number here, like 3, if you are unsure.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
 			),
