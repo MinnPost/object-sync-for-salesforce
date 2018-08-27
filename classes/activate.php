@@ -33,9 +33,11 @@ class Object_Sync_Sf_Activate {
 	*
 	*/
 	public function __construct( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
-		$this->wpdb    = $wpdb;
-		$this->version = $version;
-		$this->slug    = $slug;
+		$this->wpdb                = $wpdb;
+		$this->version             = $version;
+		$this->slug                = $slug;
+		$this->option_prefix       = $option_prefix;
+		$this->schedulable_classes = $schedulable_classes;
 
 		$this->installed_version = get_option( $this->option_prefix . 'db_version', '' );
 
