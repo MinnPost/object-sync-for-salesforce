@@ -627,7 +627,7 @@ class Object_Sync_Sf_Admin {
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'number',
-					'validate' => 'sanitize_validate_text',
+					'validate' => 'absint',
 					'desc'     => __( 'Limit the number of records that can be pulled from Salesforce in a single query.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 					'default'  => $this->default_pull_limit,
@@ -746,9 +746,9 @@ class Object_Sync_Sf_Admin {
 				'page'     => $page,
 				'section'  => $section,
 				'args'     => array(
-					'type'     => 'text',
-					'validate' => 'sanitize_validate_text',
-					'desc'     => 'Set how many actions (checking for data, syncing data, etc.) can be run in a batch.',
+					'type'     => 'number',
+					'validate' => 'absint',
+					'desc'     => 'Set how many actions (checking for data changes, syncing a record, etc. all count as individual actions) can be run in a batch.',
 					'constant' => '',
 				),
 
@@ -759,8 +759,8 @@ class Object_Sync_Sf_Admin {
 				'page'     => $page,
 				'section'  => $section,
 				'args'     => array(
-					'type'     => 'text',
-					'validate' => 'sanitize_validate_text',
+					'type'     => 'number',
+					'validate' => 'absint',
 					'desc'     => 'Set how many batches of actions can be run at once.',
 					'constant' => '',
 				),
