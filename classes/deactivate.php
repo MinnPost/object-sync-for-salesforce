@@ -17,6 +17,7 @@ class Object_Sync_Sf_Deactivate {
 	protected $wpdb;
 	protected $version;
 	protected $slug;
+	protected $option_prefix;
 	protected $schedulable_classes;
 
 	/**
@@ -24,15 +25,17 @@ class Object_Sync_Sf_Deactivate {
 	* @param object $wpdb
 	* @param string $version
 	* @param string $slug
+	* @param string $option_prefix
 	* @param array $schedulable_classes
 	*
 	*/
-	public function __construct( $wpdb, $version, $slug, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->slug                = $slug;
+		$this->option_prefix       = $option_prefix;
 		$this->schedulable_classes = $schedulable_classes;
-		$delete_data               = (int) get_option( 'object_sync_for_salesforce_delete_data_on_uninstall', 0 );
+		$delete_data               = (int) get_option( $this->option_prefix . 'delete_data_on_uninstall', 0 );
 		if ( 1 === $delete_data ) {
 			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
 			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'clear_schedule' ) );
@@ -54,7 +57,7 @@ class Object_Sync_Sf_Deactivate {
 		$object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 		$this->wpdb->query( 'DROP TABLE IF EXISTS ' . $field_map_table );
 		$this->wpdb->query( 'DROP TABLE IF EXISTS ' . $object_map_table );
-		delete_option( 'object_sync_for_salesforce_db_version' );
+		delete_option( $this->option_prefix . 'db_version' );
 	}
 
 	/**
@@ -92,7 +95,7 @@ class Object_Sync_Sf_Deactivate {
 		$role->remove_cap( 'configure_salesforce' );
 
 		// hook that allows other roles to configure the plugin as well
-		$roles = apply_filters( 'object_sync_for_salesforce_roles_configure_salesforce', null );
+		$roles = apply_filters( $this->option_prefix . 'roles_configure_salesforce', null );
 
 		// for each role that we have, remove the configure salesforce capability
 		if ( null !== $roles ) {

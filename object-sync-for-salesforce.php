@@ -174,8 +174,8 @@ class Object_Sync_Salesforce {
 
 		$this->queue = $this->queue( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
 
-		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug );
-		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->schedulable_classes );
+		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
+		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
 
 		$this->logging = $this->logging( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
 
@@ -318,13 +318,15 @@ class Object_Sync_Salesforce {
 	 * @param object $wpdb
 	 * @param string $version
 	 * @param string $slug
+	 * @param string $option_prefix
+	 * @param array $schedulable_classes
 	 *
 	 * @return object
 	 *   Instance of Object_Sync_Sf_Activate
 	 */
-	private function activate( $wpdb, $version, $slug ) {
+	private function activate( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
-		$activate = new Object_Sync_Sf_Activate( $wpdb, $version, $slug );
+		$activate = new Object_Sync_Sf_Activate( $wpdb, $version, $slug, $option_prefix, $schedulable_classes );
 		return $activate;
 	}
 
@@ -334,14 +336,15 @@ class Object_Sync_Salesforce {
 	 * @param object $wpdb
 	 * @param string $version
 	 * @param string $slug
+	 * @param string $option_prefix
 	 * @param array $schedulable_classes
 	 *
 	 * @return object
 	 *   Instance of Object_Sync_Sf_Deactivate
 	 */
-	private function deactivate( $wpdb, $version, $slug, $schedulable_classes ) {
+	private function deactivate( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
-		$deactivate = new Object_Sync_Sf_Deactivate( $wpdb, $version, $slug, $schedulable_classes );
+		$deactivate = new Object_Sync_Sf_Deactivate( $wpdb, $version, $slug, $option_prefix, $schedulable_classes );
 	}
 
 

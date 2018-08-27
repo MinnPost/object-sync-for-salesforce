@@ -17,6 +17,8 @@ class Object_Sync_Sf_Activate {
 	protected $wpdb;
 	protected $version;
 	protected $slug;
+	protected $option_prefix;
+	protected $schedulable_classes;
 
 	private $installed_version;
 
@@ -26,14 +28,16 @@ class Object_Sync_Sf_Activate {
 	* @param object $wpdb
 	* @param string $version
 	* @param string $slug
+	* @param string $option_prefix
+	* @param array $schedulable_classes
 	*
 	*/
-	public function __construct( $wpdb, $version, $slug ) {
+	public function __construct( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
 		$this->wpdb    = $wpdb;
 		$this->version = $version;
 		$this->slug    = $slug;
 
-		$this->installed_version = get_option( 'object_sync_for_salesforce_db_version', '' );
+		$this->installed_version = get_option( $this->option_prefix . 'db_version', '' );
 
 		$this->add_actions();
 	}
@@ -50,6 +54,7 @@ class Object_Sync_Sf_Activate {
 
 		// when users upgrade the plugin, run these hooks
 		add_action( 'upgrader_process_complete', array( $this, 'wordpress_salesforce_update_db_check' ), 10, 2 );
+		add_action( 'upgrader_process_complete', array( $this, 'check_for_action_scheduler' ), 10, 2 );
 	}
 
 	/**
@@ -119,10 +124,10 @@ class Object_Sync_Sf_Activate {
 		dbDelta( $field_map_sql );
 		dbDelta( $object_map_sql );
 
-		update_option( 'object_sync_for_salesforce_db_version', $this->version );
+		update_option( $this->option_prefix . 'db_version', $this->version );
 
 		// store right now as the time for the plugin's activation
-		update_option( 'object_sync_for_salesforce_activate_time', current_time( 'timestamp', true ) );
+		update_option( $this->option_prefix . 'activate_time', current_time( 'timestamp', true ) );
 
 	}
 
@@ -140,7 +145,7 @@ class Object_Sync_Sf_Activate {
 		$role->add_cap( 'configure_salesforce' );
 
 		// hook that allows other roles to configure the plugin as well
-		$roles = apply_filters( 'object_sync_for_salesforce_roles_configure_salesforce', null );
+		$roles = apply_filters( $this->option_prefix . 'roles_configure_salesforce', null );
 
 		// for each role that we have, give it the configure salesforce capability
 		if ( null !== $roles ) {
@@ -163,7 +168,7 @@ class Object_Sync_Sf_Activate {
 	*
 	*/
 	public function wordpress_salesforce_update_db_check( $upgrader_object, $hook_extra ) {
-		if ( get_site_option( 'object_sync_for_salesforce_db_version' ) !== $this->version ) {
+		if ( get_site_option( $this->option_prefix . 'db_version' ) !== $this->version ) {
 			$this->wordpress_salesforce_tables();
 		}
 	}
