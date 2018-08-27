@@ -748,7 +748,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'text',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => '',
+					'desc'     => 'Set how many actions (checking for data, syncing data, etc.) can be run in a batch.',
 					'constant' => '',
 				),
 
@@ -761,7 +761,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'text',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => '',
+					'desc'     => 'Set how many batches of actions can be run at once.',
 					'constant' => '',
 				),
 			),
