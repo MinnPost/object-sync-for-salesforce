@@ -22,12 +22,6 @@ class Object_Sync_Salesforce {
 	private $wpdb;
 
 	/**
-	* @var array
-	* Login credentials for the Salesforce API; comes from wp-config or from the plugin settings
-	*/
-	private $login_credentials;
-
-	/**
 	* @var string
 	* The plugin's slug so we can include it when necessary
 	*/
@@ -38,6 +32,12 @@ class Object_Sync_Salesforce {
 	* The plugin's option prefix
 	*/
 	private $option_prefix;
+
+	/**
+	* @var array
+	* Login credentials for the Salesforce API; comes from wp-config or from the plugin settings
+	*/
+	private $login_credentials;
 
 	/**
 	* @var array
@@ -126,9 +126,9 @@ class Object_Sync_Salesforce {
 
 		$this->wpdb              = $wpdb;
 		$this->version           = '1.3.9';
-		$this->login_credentials = $this->get_login_credentials();
 		$this->slug              = 'object-sync-for-salesforce';
 		$this->option_prefix     = 'object_sync_for_salesforce_';
+		$this->login_credentials = $this->get_login_credentials();
 
 		$this->schedulable_classes = array(
 			'salesforce_push' => array(
