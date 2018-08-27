@@ -189,3 +189,7 @@ There is extensive documentation of this plugin, including its developer hooks, 
 
 * 1.3.9 (2018-08-10)
 	* Bug fix: when Salesforce Key was selected on a fieldmap's field, it was incorrectly being ignored when saving a record's data in WordPress after a Salesforce pull. Thanks to WordPress user @ken-nguyen for reporting this.
+
+== Upgrade Notice ==
+= 1.4 =
+We have added a new method for scheduled actions, the Action Scheduler library from Prospress. When you upgrade, go to the Scheduling tab to save your settings.

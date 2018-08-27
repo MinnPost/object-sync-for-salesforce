@@ -160,6 +160,11 @@ class Object_Sync_Sf_Admin {
 
 		// when either field for schedule settings changes
 		foreach ( $this->schedulable_classes as $key => $value ) {
+			// if the user doesn't have any action schedule tasks, let's not leave them empty
+			add_filter( 'pre_update_option_' . $this->option_prefix . $key . '_schedule_number', array( $this, 'initial_action_schedule' ), 10, 3 );
+			add_filter( 'pre_update_option_' . $this->option_prefix . $key . '_schedule_unit', array( $this, 'initial_action_schedule' ), 10, 3 );
+
+			// this is if the user is changing their tasks
 			add_filter( 'update_option_' . $this->option_prefix . $key . '_schedule_number', array( $this, 'change_action_schedule' ), 10, 3 );
 			add_filter( 'update_option_' . $this->option_prefix . $key . '_schedule_unit', array( $this, 'change_action_schedule' ), 10, 3 );
 		}
@@ -174,21 +179,70 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-	* Recurring task to check Salesforce for data
+	* Set up recurring tasks if there are none
+	*
+	* @param string $new_schedule
+	* @param string $old_schedule
+	* @param string $option_name
+	* @return string $new_schedule
 	*
 	*/
-	public function change_action_schedule( $old_schedule, $new_schedule, $option_name ) {
-
-		// exit if nothing changed
-		if ( $old_schedule === $new_schedule ) {
-			return;
-		}
+	public function initial_action_schedule( $new_schedule, $old_schedule, $option_name ) {
 
 		// get the current schedule name from the task, based on pattern in the foreach
 		preg_match( '/' . $this->option_prefix . '(.*)_schedule/', $option_name, $matches );
 		$schedule_name     = $matches[1];
 		$action_group_name = $schedule_name . $this->action_group_suffix;
 
+		// make sure there are no tasks already
+		$current_tasks = as_get_scheduled_actions(
+			array(
+				'hook'  => $this->schedulable_classes[ $schedule_name ]['initializer'],
+				'group' => $action_group_name,
+			),
+			ARRAY_A
+		);
+
+		// exit if there are already tasks; they'll be saved if the option data changed
+		if ( ! empty( $current_tasks ) ) {
+			return $new_schedule;
+		}
+
+		$this->set_action_schedule( $schedule_name, $action_group_name );
+
+		return $new_schedule;
+
+	}
+
+	/**
+	* Change recurring tasks if options change
+	*
+	* @param string $old_schedule
+	* @param string $new_schedule
+	* @param string $option_name
+	*
+	*/
+	public function change_action_schedule( $old_schedule, $new_schedule, $option_name ) {
+
+		// this method does not run if the option's data is unchanged
+
+		// get the current schedule name from the task, based on pattern in the foreach
+		preg_match( '/' . $this->option_prefix . '(.*)_schedule/', $option_name, $matches );
+		$schedule_name     = $matches[1];
+		$action_group_name = $schedule_name . $this->action_group_suffix;
+
+		$this->set_action_schedule( $schedule_name, $action_group_name );
+
+	}
+
+	/**
+	* Set up recurring tasks
+	*
+	* @param string $schedule_name
+	* @param string $action_group_name
+	*
+	*/
+	private function set_action_schedule( $schedule_name, $action_group_name ) {
 		// exit if there is no initializer property on this schedule
 		if ( ! isset( $this->schedulable_classes[ $schedule_name ]['initializer'] ) ) {
 			return;
