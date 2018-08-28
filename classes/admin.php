@@ -18,7 +18,6 @@ class Object_Sync_Sf_Admin {
 	protected $version;
 	protected $login_credentials;
 	protected $slug;
-	protected $option_prefix;
 	protected $salesforce;
 	protected $wordpress;
 	protected $mappings;
@@ -26,6 +25,7 @@ class Object_Sync_Sf_Admin {
 	protected $pull;
 	protected $schedulable_classes;
 	protected $queue;
+	protected $option_prefix;
 
 	/**
 	* @var string
@@ -98,7 +98,7 @@ class Object_Sync_Sf_Admin {
 	* @param object $queue
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $slug, $option_prefix, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes, $queue ) {
+	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes, $queue = '', $option_prefix = '' ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->login_credentials   = $login_credentials;
