@@ -32,7 +32,7 @@ class Object_Sync_Sf_Activate {
 	* @param array $schedulable_classes
 	*
 	*/
-	public function __construct( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $slug, $option_prefix = '', $schedulable_classes = array() ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->slug                = $slug;

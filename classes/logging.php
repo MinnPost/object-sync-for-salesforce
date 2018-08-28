@@ -32,7 +32,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @param string $option_prefix The plugin's option prefix
 	 * @throws \Exception
 	 */
-	public function __construct( $wpdb, $version, $slug, $option_prefix ) {
+	public function __construct( $wpdb, $version, $slug = '', $option_prefix = '' ) {
 		$this->wpdb          = $wpdb;
 		$this->version       = $version;
 		$this->slug          = $slug;

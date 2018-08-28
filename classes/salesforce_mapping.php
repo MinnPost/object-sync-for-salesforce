@@ -17,8 +17,8 @@ class Object_Sync_Sf_Mapping {
 	protected $wpdb;
 	protected $version;
 	protected $slug;
-	protected $option_prefix;
 	protected $logging;
+	protected $option_prefix;
 
 	protected $fieldmap_table;
 	protected $object_map_table;
@@ -58,11 +58,11 @@ class Object_Sync_Sf_Mapping {
 	 * @param object $wpdb A WPDB object.
 	 * @param string $version The plugin version.
 	 * @param string $slug The plugin slug.
-	 * @param string $option_prefix The plugin option prefix
 	 * @param object $logging Object_Sync_Sf_Logging.
+	 * @param string $option_prefix The plugin option prefix
 	 * @throws \Exception
 	 */
-	public function __construct( $wpdb, $version, $slug, $option_prefix, $logging ) {
+	public function __construct( $wpdb, $version, $slug, $logging, $option_prefix = '' ) {
 		$this->wpdb          = $wpdb;
 		$this->version       = $version;
 		$this->slug          = $slug;

@@ -37,14 +37,14 @@ class Object_Sync_Sf_Salesforce {
 	*   Object for doing things to WordPress - retrieving data, cache, etc.
 	* @param string $slug
 	*   Slug for this plugin. Can be used for file including, especially
-	* @param string $option_prefix
-	*   Option prefix for this plugin. Used for getting and setting options, actions, etc.
 	* @param object $logging
 	*   Logging object for this plugin.
 	* @param array $schedulable_classes
 	*   array of classes that can have scheduled tasks specific to them
+	* @param string $option_prefix
+	*   Option prefix for this plugin. Used for getting and setting options, actions, etc.
 	*/
-	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $option_prefix, $logging, $schedulable_classes ) {
+	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes, $option_prefix = '' ) {
 		$this->consumer_key        = $consumer_key;
 		$this->consumer_secret     = $consumer_secret;
 		$this->login_url           = $login_url;

@@ -17,19 +17,19 @@ class Object_Sync_Sf_Deactivate {
 	protected $wpdb;
 	protected $version;
 	protected $slug;
-	protected $option_prefix;
 	protected $schedulable_classes;
+	protected $option_prefix;
 
 	/**
 	* Constructor which sets up deactivate hooks
 	* @param object $wpdb
 	* @param string $version
 	* @param string $slug
-	* @param string $option_prefix
 	* @param array $schedulable_classes
+	* @param string $option_prefix
 	*
 	*/
-	public function __construct( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $slug, $schedulable_classes, $option_prefix = '' ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->slug                = $slug;
