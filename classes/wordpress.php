@@ -17,9 +17,9 @@ class Object_Sync_Sf_WordPress {
 	protected $wpdb;
 	protected $version;
 	protected $slug;
-	protected $option_prefix;
 	protected $mappings;
 	protected $logging;
+	protected $option_prefix;
 
 	/**
 	 * Constructor which discovers objects in WordPress
@@ -27,12 +27,12 @@ class Object_Sync_Sf_WordPress {
 	 * @param object $wpdb A wpdb object.
 	 * @param string $version The plugin version.
 	 * @param string $slug The plugin slug.
-	 * @param string $option_prefix The plugin's option prefix
 	 * @param object $mappings Mapping objects.
 	 * @param object $logging a Object_Sync_Sf_Logging instance.
+	 * @param string $option_prefix The plugin's option prefix
 	 * @throws \Exception
 	 */
-	public function __construct( $wpdb, $version, $slug, $option_prefix, $mappings, $logging ) {
+	public function __construct( $wpdb, $version, $slug, $mappings, $logging, $option_prefix = '' ) {
 		$this->wpdb          = $wpdb;
 		$this->version       = $version;
 		$this->slug          = $slug;

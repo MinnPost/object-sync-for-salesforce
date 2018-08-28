@@ -276,7 +276,7 @@ class Object_Sync_Salesforce {
 	*/
 	private function wordpress( $wpdb, $version, $slug, $option_prefix, $mappings, $logging ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/wordpress.php';
-		$wordpress = new Object_Sync_Sf_WordPress( $wpdb, $version, $slug, $option_prefix, $mappings, $logging );
+		$wordpress = new Object_Sync_Sf_WordPress( $wpdb, $version, $slug, $mappings, $logging, $option_prefix );
 		return $wordpress;
 	}
 
