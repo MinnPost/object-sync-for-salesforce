@@ -106,12 +106,12 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">207</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">189</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-881211818"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1342666294"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-881211818" class="accordion-body collapse in">
+            <div id="namespace-1342666294" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -158,7 +158,6 @@
                                                     <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
                                                     <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
                                                     <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
-                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Schedule.html">Object_Sync_Sf_Schedule</a></li>
                                                     <li class="class"><a href="../classes/Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
                                                     <li class="class"><a href="../classes/Object_Sync_Sf_WordPress_Transient.html">Object_Sync_Sf_WordPress_Transient</a></li>
                                                     <li class="class"><a href="../classes/WordpressException.html">WordpressException</a></li>
@@ -200,7 +199,6 @@
                         <section class="row-fluid public">
                             <section class="span4">
                                                                     <a href="../classes/Object_Sync_Salesforce.html#method_get_instance" class="">get_instance()</a><br />
-                                                                    <a href="../classes/Object_Sync_Salesforce.html#method_queue" class="">queue()</a><br />
                                                                     <a href="../classes/Object_Sync_Salesforce.html#method_salesforce_get_api" class="">salesforce_get_api()</a><br />
                                                                     <a href="../classes/Object_Sync_Salesforce.html#method_plugin_action_links" class="">plugin_action_links()</a><br />
                                                                     <a href="../classes/Object_Sync_Salesforce.html#method_admin_scripts_and_styles" class="">admin_scripts_and_styles()</a><br />
@@ -229,6 +227,7 @@
                         <section class="row-fluid private">
                             <section class="span4">
                                                                     <a href="../classes/Object_Sync_Salesforce.html#method_load" class="">load()</a><br />
+                                                                    <a href="../classes/Object_Sync_Salesforce.html#method_queue" class="">queue()</a><br />
                                                                     <a href="../classes/Object_Sync_Salesforce.html#method_logging" class="">logging()</a><br />
                                                                     <a href="../classes/Object_Sync_Salesforce.html#method_mappings" class="">mappings()</a><br />
                                                                     <a href="../classes/Object_Sync_Salesforce.html#method_wordpress" class="">wordpress()</a><br />
@@ -245,6 +244,7 @@
                                                                     <a href="../classes/Object_Sync_Salesforce.html#property_option_prefix" class="">$option_prefix</a><br />
                                                                     <a href="../classes/Object_Sync_Salesforce.html#property_login_credentials" class="">$login_credentials</a><br />
                                                                     <a href="../classes/Object_Sync_Salesforce.html#property_version" class="">$version</a><br />
+                                                                    <a href="../classes/Object_Sync_Salesforce.html#property_queue" class="">$queue</a><br />
                                                                     <a href="../classes/Object_Sync_Salesforce.html#property_activated" class="">$activated</a><br />
                                                                     <a href="../classes/Object_Sync_Salesforce.html#property_logging" class="">$logging</a><br />
                                                                     <a href="../classes/Object_Sync_Salesforce.html#property_mappings" class="">$mappings</a><br />
@@ -487,6 +487,30 @@ This contains the Salesforce API methods                            </article>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="property_queue" name="property_queue" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$queue</h3>
+                <pre class="signature">$queue : object</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                object
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="property_activated" name="property_activated" class="anchor"></a>
             <article class="property">
                 <h3 class="private ">$activated</h3>
@@ -657,62 +681,6 @@ This contains the Salesforce API methods                            </article>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                             <span class="label label-info">static</span>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_queue" name="method_queue" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">queue()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">queue(object  <span class="argument">$wpdb</span>, string  <span class="argument">$version</span>, string  <span class="argument">$slug</span>, string  <span class="argument">$option_prefix</span>, array  <span class="argument">$schedulable_classes</span>) : \Object_Sync_Sf_Queue</pre>
-                <p><em>Get queue instance.</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>object</td>
-                                <td>$wpdb </td>
-                                <td></td>
-                            </tr>
-                                                    <tr>
-                                <td>string</td>
-                                <td>$version </td>
-                                <td></td>
-                            </tr>
-                                                    <tr>
-                                <td>string</td>
-                                <td>$slug </td>
-                                <td></td>
-                            </tr>
-                                                    <tr>
-                                <td>string</td>
-                                <td>$option_prefix </td>
-                                <td></td>
-                            </tr>
-                                                    <tr>
-                                <td>array</td>
-                                <td>$schedulable_classes </td>
-                                <td></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    <a href="../classes/Object_Sync_Sf_Queue.html">\Object_Sync_Sf_Queue</a>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
                                                                             </dl>
             <h2>Tags</h2>
@@ -909,6 +877,62 @@ These are the links that go with this plugin's entry</p>
                 
                 
                 				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_queue" name="method_queue" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">queue()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">queue(object  <span class="argument">$wpdb</span>, string  <span class="argument">$version</span>, string  <span class="argument">$slug</span>, string  <span class="argument">$option_prefix</span>, array  <span class="argument">$schedulable_classes</span>) : \Object_Sync_Sf_Queue</pre>
+                <p><em>Get queue instance.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>object</td>
+                                <td>$wpdb </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$version </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$slug </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$option_prefix </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$schedulable_classes </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Object_Sync_Sf_Queue.html">\Object_Sync_Sf_Queue</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1559,7 +1583,7 @@ Replaces settings options with wp-config.php values if they exist.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on August 27th, 2018 at 20:08.
+                    on August 28th, 2018 at 20:22.
                 </section>
             </section>
         </section>

@@ -32,7 +32,7 @@ class Object_Sync_Sf_Activate {
 	* @param array $schedulable_classes
 	*
 	*/
-	public function __construct( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
+	public function __construct( $wpdb, $version, $slug, $option_prefix = '', $schedulable_classes = array() ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->slug                = $slug;
@@ -194,7 +194,7 @@ class Object_Sync_Sf_Activate {
 	public function check_for_action_scheduler( $upgrader_object, $hook_extra ) {
 
 		// skip if this action isn't this plugin being updated
-		if ( 'plugin' !== $extras['type'] && 'update' !== $extras['action'] && $extras['plugin'] !== $this->slug ) {
+		if ( 'plugin' !== $hook_extra['type'] && 'update' !== $hook_extra['action'] && $hook_extra['plugin'] !== $this->slug ) {
 			return;
 		}
 
