@@ -194,7 +194,7 @@ class Object_Sync_Sf_Activate {
 	public function check_for_action_scheduler( $upgrader_object, $hook_extra ) {
 
 		// skip if this action isn't this plugin being updated
-		if ( 'plugin' !== $extras['type'] && 'update' !== $extras['action'] && $extras['plugin'] !== $this->slug ) {
+		if ( 'plugin' !== $hook_extra['type'] && 'update' !== $hook_extra['action'] && $hook_extra['plugin'] !== $this->slug ) {
 			return;
 		}
 
