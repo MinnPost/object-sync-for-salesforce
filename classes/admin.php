@@ -308,7 +308,7 @@ class Object_Sync_Sf_Admin {
 
 		// filter for extending the tabs available on the page
 		// currently it will go into the default switch case for $tab
-		$tabs = apply_filters( 'object_sync_for_salesforce_settings_tabs', $tabs );
+		$tabs = apply_filters( $this->option_prefix . 'settings_tabs', $tabs );
 
 		$tab = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'settings';
 		$this->tabs( $tabs, $tab );
@@ -328,18 +328,6 @@ class Object_Sync_Sf_Admin {
 			$url     = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps' ) );
 			$anchor  = esc_html__( 'Fieldmaps tab', 'object-sync-for-salesforce' );
 			$message = sprintf( 'No fieldmaps exist yet. Use the <a href="%s">%s</a> to map WordPress and Salesforce objects to each other.', $url, $anchor );
-			require( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
-		}
-
-		$push_schedule_number = get_option( $this->option_prefix . 'salesforce_push_schedule_number', '' );
-		$push_schedule_unit   = get_option( $this->option_prefix . 'salesforce_push_schedule_unit', '' );
-		$pull_schedule_number = get_option( $this->option_prefix . 'salesforce_pull_schedule_number', '' );
-		$pull_schedule_unit   = get_option( $this->option_prefix . 'salesforce_pull_schedule_unit', '' );
-
-		if ( '' === $push_schedule_number && '' === $push_schedule_unit && '' === $pull_schedule_number && '' === $pull_schedule_unit ) {
-			$url     = esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=schedule' ) );
-			$anchor  = esc_html__( 'Scheduling tab', 'object-sync-for-salesforce' );
-			$message = sprintf( 'Because the plugin schedule has not been saved, the plugin cannot run automatic operations. Use the <a href="%s">%s</a> to create schedules to run.', $url, $anchor );
 			require( plugin_dir_path( __FILE__ ) . '/../templates/admin/error.php' );
 		}
 
@@ -461,9 +449,9 @@ class Object_Sync_Sf_Admin {
 					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/import-export.php' );
 					break;
 				default:
-					$include_settings = apply_filters( 'object_sync_for_salesforce_settings_tab_include_settings', true, $tab );
-					$content_before   = apply_filters( 'object_sync_for_salesforce_settings_tab_content_before', null, $tab );
-					$content_after    = apply_filters( 'object_sync_for_salesforce_settings_tab_content_after', null, $tab );
+					$include_settings = apply_filters( $this->option_prefix . 'settings_tab_include_settings', true, $tab );
+					$content_before   = apply_filters( $this->option_prefix . 'settings_tab_content_before', null, $tab );
+					$content_after    = apply_filters( $this->option_prefix . 'settings_tab_content_after', null, $tab );
 					if ( null !== $content_before ) {
 						echo esc_html( $content_before );
 					}
