@@ -19,6 +19,7 @@ class Object_Sync_Sf_Activate {
 	protected $slug;
 	protected $option_prefix;
 	protected $schedulable_classes;
+	protected $queue;
 
 	private $installed_version;
 
@@ -30,14 +31,16 @@ class Object_Sync_Sf_Activate {
 	* @param string $slug
 	* @param string $option_prefix
 	* @param array $schedulable_classes
+	* @param object $queue
 	*
 	*/
-	public function __construct( $wpdb, $version, $slug, $option_prefix = '', $schedulable_classes = array() ) {
+	public function __construct( $wpdb, $version, $slug, $option_prefix = '', $schedulable_classes = array(), $queue = '' ) {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->slug                = $slug;
 		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->schedulable_classes = $schedulable_classes;
+		$this->queue               = $queue;
 
 		$this->action_group_suffix = '_check_records';
 		$this->installed_version   = get_option( $this->option_prefix . 'db_version', '' );
@@ -204,6 +207,10 @@ class Object_Sync_Sf_Activate {
 			delete_option( $this->option_prefix . 'push_schedule_unit' );
 			delete_option( $this->option_prefix . 'salesforce_schedule_number' );
 			delete_option( $this->option_prefix . 'salesforce_schedule_unit' );
+			if ( '' === $this->queue ) {
+				delete_transient( $this->option_prefix . 'installed_version' );
+				return;
+			}
 			foreach ( $this->schedulable_classes as $key => $schedule ) {
 				$schedule_name     = $key;
 				$action_group_name = $schedule_name . $this->action_group_suffix;

@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.4.2 (2018-08-29)
+	* Bug fix: ensure the queue functionality is present when activating the plugin.
+
 * 1.4.1 (2018-08-29)
 	* Bug fix: in some plugin update scenarios, the database version number checker was not running. It runs all the time, now.
 

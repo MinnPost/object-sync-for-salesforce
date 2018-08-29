@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">189</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">191</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-112042573"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1327211350"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-112042573" class="accordion-body collapse in">
+            <div id="namespace-1327211350" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -1123,7 +1123,7 @@ These are the links that go with this plugin's entry</p>
             <article class="method">
                 <h3 class="private ">activate()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">activate(object  <span class="argument">$wpdb</span>, string  <span class="argument">$version</span>, string  <span class="argument">$slug</span>, string  <span class="argument">$option_prefix</span>, array  <span class="argument">$schedulable_classes</span>) : object</pre>
+                <pre class="signature" style="margin-right: 54px;">activate(object  <span class="argument">$wpdb</span>, string  <span class="argument">$version</span>, string  <span class="argument">$slug</span>, string  <span class="argument">$option_prefix</span>, array  <span class="argument">$schedulable_classes</span>, object  <span class="argument">$queue</span>) : object</pre>
                 <p><em>What to do upon activation of the plugin</em></p>
                 
 
@@ -1154,6 +1154,11 @@ These are the links that go with this plugin's entry</p>
                                 <td>$schedulable_classes </td>
                                 <td></td>
                             </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$queue </td>
+                                <td></td>
+                            </tr>
                                             </table>
                 
                 
@@ -1180,7 +1185,7 @@ These are the links that go with this plugin's entry</p>
             <article class="method">
                 <h3 class="private ">deactivate()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">deactivate(object  <span class="argument">$wpdb</span>, string  <span class="argument">$version</span>, string  <span class="argument">$slug</span>, string  <span class="argument">$option_prefix</span>, array  <span class="argument">$schedulable_classes</span>) : object</pre>
+                <pre class="signature" style="margin-right: 54px;">deactivate(object  <span class="argument">$wpdb</span>, string  <span class="argument">$version</span>, string  <span class="argument">$slug</span>, string  <span class="argument">$option_prefix</span>, array  <span class="argument">$schedulable_classes</span>, object  <span class="argument">$queue</span>) : object</pre>
                 <p><em>What to do upon deactivation of the plugin</em></p>
                 
 
@@ -1209,6 +1214,11 @@ These are the links that go with this plugin's entry</p>
                                                     <tr>
                                 <td>array</td>
                                 <td>$schedulable_classes </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$queue </td>
                                 <td></td>
                             </tr>
                                             </table>
@@ -1583,7 +1593,7 @@ Replaces settings options with wp-config.php values if they exist.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on August 29th, 2018 at 16:58.
+                    on August 29th, 2018 at 17:19.
                 </section>
             </section>
         </section>

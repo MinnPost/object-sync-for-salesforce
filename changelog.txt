@@ -1,6 +1,12 @@
 Changelog
 =========
 
+* 1.4.2 (2018-08-29)
+	* Bug fix: ensure the queue functionality is present when activating the plugin.
+
+* 1.4.1 (2018-08-29)
+	* Bug fix: in some plugin update scenarios, the database version number checker was not running. It runs all the time, now.
+
 * 1.4.0 (2018-08-29)
 	* New: this plugin now uses the [Action Scheduler](https://github.com/Prospress/action-scheduler) library for scheduling tasks and queueing data in a more performant and scalable way. This removes the need for some of the administrative settings, but as long as you **resave from the plugin's Schedule tab**, it should not break any existing functionality.
 	* Bug fix: this release also stores composer library files in its Git repository. This *should* fix a deployment bug with some web hosts, such as Pantheon.

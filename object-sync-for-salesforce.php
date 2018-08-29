@@ -2,7 +2,7 @@
 /*
 Plugin Name: Object Sync for Salesforce
 Description: Object Sync for Salesforce maps and syncs data between Salesforce objects and WordPress objects.
-Version: 1.4.1
+Version: 1.4.2
 Author: MinnPost
 Author URI: https://code.minnpost.com
 License: GPL2+
@@ -130,7 +130,7 @@ class Object_Sync_Salesforce {
 		global $wpdb;
 
 		$this->wpdb              = $wpdb;
-		$this->version           = '1.4.1';
+		$this->version           = '1.4.2';
 		$this->slug              = 'object-sync-for-salesforce';
 		$this->option_prefix     = 'object_sync_for_salesforce_';
 		$this->login_credentials = $this->get_login_credentials();
@@ -179,8 +179,8 @@ class Object_Sync_Salesforce {
 
 		$this->queue = $this->queue( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
 
-		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
-		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
+		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
+		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
 
 		$this->logging = $this->logging( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
 
@@ -325,13 +325,14 @@ class Object_Sync_Salesforce {
 	 * @param string $slug
 	 * @param string $option_prefix
 	 * @param array $schedulable_classes
+	 * @param object $queue
 	 *
 	 * @return object
 	 *   Instance of Object_Sync_Sf_Activate
 	 */
-	private function activate( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
+	private function activate( $wpdb, $version, $slug, $option_prefix, $schedulable_classes, $queue ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/activate.php';
-		$activate = new Object_Sync_Sf_Activate( $wpdb, $version, $slug, $option_prefix, $schedulable_classes );
+		$activate = new Object_Sync_Sf_Activate( $wpdb, $version, $slug, $option_prefix, $schedulable_classes, $queue );
 		return $activate;
 	}
 
@@ -343,13 +344,14 @@ class Object_Sync_Salesforce {
 	 * @param string $slug
 	 * @param string $option_prefix
 	 * @param array $schedulable_classes
+	 * @param object $queue
 	 *
 	 * @return object
 	 *   Instance of Object_Sync_Sf_Deactivate
 	 */
-	private function deactivate( $wpdb, $version, $slug, $option_prefix, $schedulable_classes ) {
+	private function deactivate( $wpdb, $version, $slug, $option_prefix, $schedulable_classes, $queue ) {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/deactivate.php';
-		$deactivate = new Object_Sync_Sf_Deactivate( $wpdb, $version, $slug, $schedulable_classes, $option_prefix );
+		$deactivate = new Object_Sync_Sf_Deactivate( $wpdb, $version, $slug, $schedulable_classes, $option_prefix, $queue );
 	}
 
 
