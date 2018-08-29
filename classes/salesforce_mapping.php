@@ -18,6 +18,7 @@ class Object_Sync_Sf_Mapping {
 	protected $version;
 	protected $slug;
 	protected $logging;
+	protected $option_prefix;
 
 	protected $fieldmap_table;
 	protected $object_map_table;
@@ -58,13 +59,15 @@ class Object_Sync_Sf_Mapping {
 	 * @param string $version The plugin version.
 	 * @param string $slug The plugin slug.
 	 * @param object $logging Object_Sync_Sf_Logging.
+	 * @param string $option_prefix The plugin option prefix
 	 * @throws \Exception
 	 */
-	public function __construct( $wpdb, $version, $slug, $logging ) {
-		$this->wpdb    = $wpdb;
-		$this->version = $version;
-		$this->slug    = $slug;
-		$this->logging = $logging;
+	public function __construct( $wpdb, $version, $slug, $logging, $option_prefix = '' ) {
+		$this->wpdb          = $wpdb;
+		$this->version       = $version;
+		$this->slug          = $slug;
+		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
+		$this->logging       = $logging;
 
 		$this->fieldmap_table   = $this->wpdb->prefix . 'object_sync_sf_field_map';
 		$this->object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';

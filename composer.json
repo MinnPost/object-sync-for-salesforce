@@ -10,27 +10,32 @@
             "email": "tech@minnpost.com"
         }
     ],
+    "autoload": {
+        "files": ["vendor/prospress/action-scheduler/action-scheduler.php"],
+        "classmap": ["vendor/pippinsplugins/wp-logging/"]
+    },
+    "config": {
+        "platform": {
+            "php": "5.5"
+        }
+    },
     "repositories": [
         {
             "url": "https://github.com/pippinsplugins/wp-logging.git",
             "type": "git"
         },
         {
-            "url": "https://github.com/A5hleyRich/wp-background-processing",
+            "url": "https://github.com/prospress/action-scheduler.git",
             "type": "git"
         }
     ],
     "require": {
+        "php": ">=5.5",
         "pippinsplugins/wp-logging": "dev-master",
-        "A5hleyRich/wp-background-processing": "dev-master",
-        "developerforce/force.com-toolkit-for-php": "^1.0@dev"
-    },
-    "autoload": {
-        "classmap": ["vendor/pippinsplugins/wp-logging/"]
+        "developerforce/force.com-toolkit-for-php": "^1.0@dev",
+        "prospress/action-scheduler": "dev-master"
     },
     "require-dev": {
-        "apigen/apigen": "^4.1",
-        "phpunit/phpunit": "4.8.x-dev",
-        "johnpbloch/wordpress": "dev-master"
+        "phpunit/phpunit": "4.8.x-dev"
     }
 }

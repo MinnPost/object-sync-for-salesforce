@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+  <parser>
+    <target>docs/code</target>
+  </parser>
+  <transformer>
+    <target>docs/code</target>
+  </transformer>
+  <files>
+  	<file>object-sync-for-salesforce.php</file>
+    <directory>./classes</directory>
+  </files>
+</phpdoc>

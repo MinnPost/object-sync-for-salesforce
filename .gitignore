@@ -1,4 +1,5 @@
 .sass-cache
+phpdoc-cache-*
 /node_modules/
 /vendor/**/.git/
 # generated

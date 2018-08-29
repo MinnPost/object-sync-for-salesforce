@@ -41,8 +41,10 @@ class Object_Sync_Sf_Salesforce {
 	*   Logging object for this plugin.
 	* @param array $schedulable_classes
 	*   array of classes that can have scheduled tasks specific to them
+	* @param string $option_prefix
+	*   Option prefix for this plugin. Used for getting and setting options, actions, etc.
 	*/
-	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes ) {
+	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes, $option_prefix = '' ) {
 		$this->consumer_key        = $consumer_key;
 		$this->consumer_secret     = $consumer_secret;
 		$this->login_url           = $login_url;
@@ -52,6 +54,7 @@ class Object_Sync_Sf_Salesforce {
 		$this->rest_api_version    = $rest_api_version;
 		$this->wordpress           = $wordpress;
 		$this->slug                = $slug;
+		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->logging             = $logging;
 		$this->schedulable_classes = $schedulable_classes;
 		$this->options             = array(
@@ -65,7 +68,7 @@ class Object_Sync_Sf_Salesforce {
 		$this->success_or_refresh_codes   = $this->success_codes;
 		$this->success_or_refresh_codes[] = $this->refresh_code;
 
-		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
+		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
 
 	}
 
@@ -486,7 +489,7 @@ class Object_Sync_Sf_Salesforce {
 	* Get the SF instance URL. Useful for linking to objects.
 	*/
 	public function get_instance_url() {
-		return get_option( 'object_sync_for_salesforce_instance_url', '' );
+		return get_option( $this->option_prefix . 'instance_url', '' );
 	}
 
 	/**
@@ -496,14 +499,14 @@ class Object_Sync_Sf_Salesforce {
 	*   URL to set.
 	*/
 	protected function set_instance_url( $url ) {
-		update_option( 'object_sync_for_salesforce_instance_url', $url );
+		update_option( $this->option_prefix . 'instance_url', $url );
 	}
 
 	/**
 	* Get the access token.
 	*/
 	public function get_access_token() {
-		return get_option( 'object_sync_for_salesforce_access_token', '' );
+		return get_option( $this->option_prefix . 'access_token', '' );
 	}
 
 	/**
@@ -515,14 +518,14 @@ class Object_Sync_Sf_Salesforce {
 	*   Access token from Salesforce.
 	*/
 	protected function set_access_token( $token ) {
-		update_option( 'object_sync_for_salesforce_access_token', $token );
+		update_option( $this->option_prefix . 'access_token', $token );
 	}
 
 	/**
 	* Get refresh token.
 	*/
 	protected function get_refresh_token() {
-		return get_option( 'object_sync_for_salesforce_refresh_token', '' );
+		return get_option( $this->option_prefix . 'refresh_token', '' );
 	}
 
 	/**
@@ -532,7 +535,7 @@ class Object_Sync_Sf_Salesforce {
 	*   Refresh token from Salesforce.
 	*/
 	protected function set_refresh_token( $token ) {
-		update_option( 'object_sync_for_salesforce_refresh_token', $token );
+		update_option( $this->option_prefix . 'refresh_token', $token );
 	}
 
 	/**
@@ -608,7 +611,7 @@ class Object_Sync_Sf_Salesforce {
 			throw new Object_Sync_Sf_Exception( esc_html__( 'Unable to access identity service.', 'object-sync-for-salesforce' ), $response['code'] );
 		}
 		$data = $response['data'];
-		update_option( 'object_sync_for_salesforce_identity', $data );
+		update_option( $this->option_prefix . 'identity', $data );
 	}
 
 	/**
@@ -618,7 +621,7 @@ class Object_Sync_Sf_Salesforce {
 	*   Returns FALSE if no identity has been stored.
 	*/
 	public function get_identity() {
-		return get_option( 'object_sync_for_salesforce_identity', false );
+		return get_option( $this->option_prefix . 'identity', false );
 	}
 
 	/**
@@ -873,8 +876,8 @@ class Object_Sync_Sf_Salesforce {
 		}
 
 		// allow developers to change both the key and value by which objects should be matched
-		$key   = apply_filters( 'object_sync_for_salesforce_modify_upsert_key', $key );
-		$value = apply_filters( 'object_sync_for_salesforce_modify_upsert_value', $value );
+		$key   = apply_filters( $this->option_prefix . 'modify_upsert_key', $key );
+		$value = apply_filters( $this->option_prefix . 'modify_upsert_value', $value );
 
 		$data = $this->api_call( "sobjects/{$name}/{$key}/{$value}", $params, 'PATCH', $options );
 		if ( 300 === $this->response['code'] ) {
@@ -920,14 +923,16 @@ class Object_Sync_Sf_Salesforce {
 	*   Object type name, E.g., Contact, Account.
 	* @param string $id
 	*   Salesforce id of the object.
+	* @param array $options
+	*   Optional options to pass to the API call
 	*
 	* @return object
 	*   Object of the requested Salesforce object.
 	*
 	* part of core API calls
 	*/
-	public function object_read( $name, $id ) {
-		return $this->api_call( "sobjects/{$name}/{$id}", array(), 'GET' );
+	public function object_read( $name, $id, $options = array() ) {
+		return $this->api_call( "sobjects/{$name}/{$id}", array(), 'GET', $options );
 	}
 
 	/**
@@ -1218,7 +1223,7 @@ class Object_Sync_Sf_Salesforce {
 	*
 	*/
 	private function cache_expiration() {
-		$cache_expiration = $this->wordpress->cache_expiration( 'object_sync_for_salesforce_cache_expiration', 86400 );
+		$cache_expiration = $this->wordpress->cache_expiration( $this->option_prefix . 'cache_expiration', 86400 );
 		return $cache_expiration;
 	}
 

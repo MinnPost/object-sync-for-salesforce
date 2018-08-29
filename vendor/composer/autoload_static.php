@@ -4,8 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit258a02242ea9a0000a7e219d56217e81
+class ComposerStaticInit1ec2939dc0ec03857c433336fcdb1c12
 {
+    public static $files = array (
+        '712263cd6b22ec9ea795d59ae1ebda80' => __DIR__ . '/..' . '/prospress/action-scheduler/action-scheduler.php',
+    );
+
     public static $classMap = array (
         'AllowFieldTruncationHeader' => __DIR__ . '/..' . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
         'AssignmentRuleHeader' => __DIR__ . '/..' . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
@@ -35,15 +39,13 @@ class ComposerStaticInit258a02242ea9a0000a7e219d56217e81
         'SforceSoapClient' => __DIR__ . '/..' . '/developerforce/force.com-toolkit-for-php/soapclient/SforcePartnerClient.php',
         'SingleEmailMessage' => __DIR__ . '/..' . '/developerforce/force.com-toolkit-for-php/soapclient/SforceEmail.php',
         'UserTerritoryDeleteHeader' => __DIR__ . '/..' . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
-        'WP_Async_Request' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-async-request.php',
-        'WP_Background_Process' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-background-process.php',
         'WP_Logging' => __DIR__ . '/..' . '/pippinsplugins/wp-logging/WP_Logging.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit258a02242ea9a0000a7e219d56217e81::$classMap;
+            $loader->classMap = ComposerStaticInit1ec2939dc0ec03857c433336fcdb1c12::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -4,7 +4,11 @@ filter:
         - 'docs/*'
         - '*.min.js'
         - '*.min.css'
-        - tests/**/*
+        - 'assets/js/vendor/**/*.js'
+        - 'assets/js/vendor/**/*.css'
+        - 'node_modules/**/*'
+        - 'tests/**/*'
+        - 'vendor/**/*'
         - 'Gulpfile.js'
     dependency_paths:
         - wordpress/
@@ -16,3 +20,8 @@ build:
     environment:
       node: 'v10.0.0'
       php: '7.1.12'
+    nodes:
+        analysis:
+            dependencies:
+                before:
+                    - composer require --dev johnpbloch/wordpress
