@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 1.4.0 (2018-08-28)
+	* New: this plugin now uses the [Action Scheduler](https://github.com/Prospress/action-scheduler) library for scheduling tasks and queueing data in a more performant and scalable way. This removes the need for some of the administrative settings, but as long as you **resave from the plugin's Schedule tab**, it should not break any existing functionality.
+	* Bug fix: this release also stores composer library files in its Git repository. This *should* fix a deployment bug with some web hosts, such as Pantheon.
+	* This release also brings plugin JavaScript in line with WordPress code formatting guidelines.
+
 * 1.3.9 (2018-08-10)
 	* Bug fix: when Salesforce Key was selected on a fieldmap's field, it was incorrectly being ignored when saving a record's data in WordPress after a Salesforce pull. Thanks to WordPress user @ken-nguyen for reporting this.
 

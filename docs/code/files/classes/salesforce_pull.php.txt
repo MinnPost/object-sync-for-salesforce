@@ -585,7 +585,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		if ( is_string( $object ) ) {
 			$object_id = $object;
-			$object    = $sfapi->object_read( $object_type, $object_id )['data'];
+			// Load the Salesforce object data to save in WordPress. We need to make sure that this data does not get cached, which is consistent with other pull behavior as well as in other methods in this class.
+			$object = $sfapi->object_read(
+				$object_type,
+				$object_id,
+				array(
+					'cache' => false,
+				)
+			)['data'];
 		}
 
 		if ( is_int( $mapping ) ) {

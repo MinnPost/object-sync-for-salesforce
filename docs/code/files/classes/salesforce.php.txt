@@ -923,14 +923,16 @@ class Object_Sync_Sf_Salesforce {
 	*   Object type name, E.g., Contact, Account.
 	* @param string $id
 	*   Salesforce id of the object.
+	* @param array $options
+	*   Optional options to pass to the API call
 	*
 	* @return object
 	*   Object of the requested Salesforce object.
 	*
 	* part of core API calls
 	*/
-	public function object_read( $name, $id ) {
-		return $this->api_call( "sobjects/{$name}/{$id}", array(), 'GET' );
+	public function object_read( $name, $id, $options = array() ) {
+		return $this->api_call( "sobjects/{$name}/{$id}", array(), 'GET', $options );
 	}
 
 	/**

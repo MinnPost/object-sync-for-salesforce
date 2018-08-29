@@ -470,10 +470,10 @@ class Object_Sync_Salesforce {
 		$javascript_dependencies = array( 'jquery' );
 		$css_dependencies        = array();
 		if ( '' !== $select_library ) {
-			wp_enqueue_script( $select_library . 'js', plugins_url( 'assets/js/' . $select_library . '.min.js', __FILE__ ), array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/' . $select_library . '.min.js' ), true );
+			wp_enqueue_script( $select_library . 'js', plugins_url( 'assets/js/vendor/' . $select_library . '.min.js', __FILE__ ), array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/vendor/' . $select_library . '.min.js' ), true );
 			$javascript_dependencies[] = $select_library . 'js';
 
-			wp_enqueue_style( $select_library . 'css', plugins_url( 'assets/css/' . $select_library . '.min.css', __FILE__ ), array(), filemtime( plugin_dir_path( __FILE__ ) . 'assets/css/' . $select_library . '.min.css' ), 'all' );
+			wp_enqueue_style( $select_library . 'css', plugins_url( 'assets/css/vendor/' . $select_library . '.min.css', __FILE__ ), array(), filemtime( plugin_dir_path( __FILE__ ) . 'assets/css/vendor/' . $select_library . '.min.css' ), 'all' );
 			$css_dependencies[] = $select_library . 'css';
 		}
 
