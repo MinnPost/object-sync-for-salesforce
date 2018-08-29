@@ -36,7 +36,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		$this->wpdb          = $wpdb;
 		$this->version       = $version;
 		$this->slug          = $slug;
-		$this->option_prefix = $option_prefix;
+		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 
 		$this->enabled         = get_option( $this->option_prefix . 'enable_logging', false );
 		$this->statuses_to_log = get_option( $this->option_prefix . 'statuses_to_log', array() );

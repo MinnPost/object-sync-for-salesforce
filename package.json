@@ -38,7 +38,7 @@
     "gulp-sort": "~2",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-svgmin": "~1",
-    "gulp-svgstore": "^6.1.1",
+    "gulp-svgstore": "^7.0.0",
     "gulp-uglify": "^3.0.1",
     "gulp-util": "~3",
     "gulp-wp-pot": "^2.3.2",

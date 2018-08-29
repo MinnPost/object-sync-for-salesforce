@@ -36,7 +36,7 @@ class Object_Sync_Sf_WordPress {
 		$this->wpdb          = $wpdb;
 		$this->version       = $version;
 		$this->slug          = $slug;
-		$this->option_prefix = $option_prefix;
+		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->mappings      = $mappings;
 		$this->logging       = $logging;
 
