@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -187,6 +187,8 @@ There is extensive documentation of this plugin, including its developer hooks, 
 
 == Changelog ==
 
+* 1.4.1 (2018-08-29)
+	* Bug fix: in some plugin update scenarios, the database version number checker was not running. It runs all the time, now.
 * 1.4.0 (2018-08-29)
 	* New: this plugin now uses the [Action Scheduler](https://github.com/Prospress/action-scheduler) library for scheduling tasks and queueing data in a more performant and scalable way. This removes the need for some of the administrative settings, but as long as you **resave from the plugin's Schedule tab**, it should not break any existing functionality.
 	* Bug fix: this release also stores composer library files in its Git repository. This *should* fix a deployment bug with some web hosts, such as Pantheon.
@@ -194,5 +196,7 @@ There is extensive documentation of this plugin, including its developer hooks, 
 	* Thanks to GitHub user @charmoney for help reviewing this release.
 
 == Upgrade Notice ==
+= 1.4.1 =
+We have added a new method for scheduled actions, the Action Scheduler library from Prospress. When you upgrade, go to the Scheduling tab to save your settings.
 = 1.4.0 =
 We have added a new method for scheduled actions, the Action Scheduler library from Prospress. When you upgrade, go to the Scheduling tab to save your settings.

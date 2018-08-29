@@ -2,7 +2,7 @@
   "name": "object-sync-for-salesforce",
   "title": "Object Sync for Salesforce",
   "description": "Object Sync for Salesforce is a WordPress plugin that maps and syncs data between Salesforce objects and WordPress objects.",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "index.js",
   "repository": "https://github.com/MinnPost/object-sync-for-salesforce.git",
   "author": "MinnPost",
