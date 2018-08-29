@@ -103,7 +103,7 @@ class Object_Sync_Sf_Admin {
 		$this->version             = $version;
 		$this->login_credentials   = $login_credentials;
 		$this->slug                = $slug;
-		$this->option_prefix       = $option_prefix;
+		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->wordpress           = $wordpress;
 		$this->salesforce          = $salesforce;
 		$this->mappings            = $mappings;

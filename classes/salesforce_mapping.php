@@ -66,7 +66,7 @@ class Object_Sync_Sf_Mapping {
 		$this->wpdb          = $wpdb;
 		$this->version       = $version;
 		$this->slug          = $slug;
-		$this->option_prefix = $option_prefix;
+		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->logging       = $logging;
 
 		$this->fieldmap_table   = $this->wpdb->prefix . 'object_sync_sf_field_map';

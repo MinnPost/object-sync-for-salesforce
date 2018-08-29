@@ -33,7 +33,7 @@ class Object_Sync_Sf_Deactivate {
 		$this->wpdb                = $wpdb;
 		$this->version             = $version;
 		$this->slug                = $slug;
-		$this->option_prefix       = $option_prefix;
+		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->schedulable_classes = $schedulable_classes;
 		$delete_data               = (int) get_option( $this->option_prefix . 'delete_data_on_uninstall', 0 );
 		if ( 1 === $delete_data ) {

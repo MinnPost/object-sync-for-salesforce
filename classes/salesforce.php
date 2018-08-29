@@ -54,7 +54,7 @@ class Object_Sync_Sf_Salesforce {
 		$this->rest_api_version    = $rest_api_version;
 		$this->wordpress           = $wordpress;
 		$this->slug                = $slug;
-		$this->option_prefix       = $option_prefix;
+		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->logging             = $logging;
 		$this->schedulable_classes = $schedulable_classes;
 		$this->options             = array(
