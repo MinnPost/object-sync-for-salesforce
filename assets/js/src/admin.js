@@ -1,6 +1,14 @@
 ( function( $ ) {
 
-	function salesforce_object_fields() {
+	function salesforceObjectFields() {
+
+		var delay = ( function() {
+			var timer = 0;
+			return function( callback, ms ) {
+				clearTimeout ( timer );
+				timer = setTimeout( callback, ms );
+			};
+		}() );
 
 		if ( 0 === $( '.salesforce_record_types_allowed > *' ).length ) {
 			$( '.salesforce_record_types_allowed' ).hide();
@@ -13,17 +21,9 @@
 			$( '.pull_trigger_field' ).hide();
 		}
 
-		var delay = ( function() {
-			var timer = 0;
-			return function( callback, ms ) {
-				clearTimeout ( timer );
-				timer = setTimeout( callback, ms );
-			};
-		}() );
-
 		$( '#salesforce_object' ).on( 'change', function( el ) {
 			var that = this;
-			var delay_time = 1000;
+			var delayTime = 1000;
 			delay( function() {
 				var data = {
 					'action' : 'get_salesforce_object_description',
@@ -33,50 +33,50 @@
 				}
 				$.post( ajaxurl, data, function( response ) {
 
-					var record_types_allowed_markup = '', record_type_default_markup = '', date_markup = '';
+					var recordTypesAllowedMarkup = '', recordTypeDefaultMarkup = '', dateMarkup = '';
 
 					if ( 0 < $( response.data.recordTypeInfos ).length ) {
-						record_types_allowed_markup += '<label for="salesforce_record_types_allowed">Allowed Record Types:</label><div class="checkboxes">';
+						recordTypesAllowedMarkup += '<label for="salesforce_record_types_allowed">Allowed Record Types:</label><div class="checkboxes">';
 						$.each( response.data.recordTypeInfos, function( index, value ) {
-							record_types_allowed_markup += '<label><input type="checkbox" class="form-checkbox" value="' + index + '" name="salesforce_record_types_allowed[' + index + ']" id="salesforce_record_types_allowed-' + index + '"> ' + value + '</label>';
+							recordTypesAllowedMarkup += '<label><input type="checkbox" class="form-checkbox" value="' + index + '" name="salesforce_record_types_allowed[' + index + ']" id="salesforce_record_types_allowed-' + index + '"> ' + value + '</label>';
 						});
-						record_types_allowed_markup += '</div>';
+						recordTypesAllowedMarkup += '</div>';
 
 
-						record_type_default_markup += '<label for="salesforce_record_type_default">Default Record Type:</label>';
-						record_type_default_markup += '<select name="salesforce_record_type_default" id="salesforce_record_type_default"><option value="">- Select record type -</option>';
+						recordTypeDefaultMarkup += '<label for="salesforce_record_type_default">Default Record Type:</label>';
+						recordTypeDefaultMarkup += '<select name="salesforce_record_type_default" id="salesforce_record_type_default"><option value="">- Select record type -</option>';
 						$.each( response.data.recordTypeInfos, function( index, value ) {
-							record_type_default_markup += '<option value="' + index + '">' + value + '</option>';
+							recordTypeDefaultMarkup += '<option value="' + index + '">' + value + '</option>';
 						});
 					}
 
-					$( '.salesforce_record_types_allowed' ).html( record_types_allowed_markup );
-					$( '.salesforce_record_type_default' ).html( record_type_default_markup );
+					$( '.salesforce_record_types_allowed' ).html( recordTypesAllowedMarkup );
+					$( '.salesforce_record_type_default' ).html( recordTypeDefaultMarkup );
 
 					if ( 0 < $( response.data.fields ).length ) {
-						date_markup += '<label for="pull_trigger_field">Date field to trigger pull:</label>';
-						date_markup += '<select name="pull_trigger_field" id="pull_trigger_field"><option value="">- Select date field -</option>'
+						dateMarkup += '<label for="pull_trigger_field">Date field to trigger pull:</label>';
+						dateMarkup += '<select name="pull_trigger_field" id="pull_trigger_field"><option value="">- Select date field -</option>'
 						$.each( response.data.fields, function( index, value ) {
-							date_markup += '<option value="' + value.name + '">' + value.label + '</option>';
+							dateMarkup += '<option value="' + value.name + '">' + value.label + '</option>';
 						});
-						date_markup += '</select>';
-						date_markup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>'
+						dateMarkup += '</select>';
+						dateMarkup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>'
 					}
 
-					$( '.pull_trigger_field' ).html( date_markup );
+					$( '.pull_trigger_field' ).html( dateMarkup );
 
-					if ( '' !== record_types_allowed_markup ) {
+					if ( '' !== recordTypesAllowedMarkup ) {
 						$( '.salesforce_record_types_allowed' ).show();
 					} else {
 						$( '.salesforce_record_types_allowed' ).hide();
 					}
-					if ( '' !== record_type_default_markup ) {
+					if ( '' !== recordTypeDefaultMarkup ) {
 						$( '.salesforce_record_type_default' ).show();
 					} else {
 						$( '.salesforce_record_type_default' ).hide();
 					}
 
-					if ( '' !== date_markup ) {
+					if ( '' !== dateMarkup ) {
 						$( '.pull_trigger_field' ).show();
 					} else {
 						$( '.pull_trigger_field' ).hide();
@@ -88,18 +88,19 @@
 					}
 
 				});
-			}, delay_time );
+			}, delayTime );
 		});
 	}
 
-	function add_field_mapping_row() {
+	function addFieldMappingRow() {
 		$( '#add-field-mapping' ).click( function() {
+			var salesforceObject = $( '#salesforce_object' ).val();
+			var wordpressObject = $( '#wordpress_object' ).val();
+			var rowKey;
 			$( this ).text( 'Add another field mapping' );
-			var salesforce_object = $( '#salesforce_object' ).val();
-			var wordpress_object = $( '#wordpress_object' ).val();
-			if ( '' !== wordpress_object && '' !== salesforce_object ) {
-				var row_key = Math.floor( Date.now() / 1000 );
-				fieldmap_fields( wordpress_object, salesforce_object, row_key );
+			if ( '' !== wordpressObject && '' !== salesforceObject ) {
+				rowKey = Math.floor( Date.now() / 1000 );
+				fieldmapFields( wordpressObject, salesforceObject, rowKey );
 				$( this ).parent().find( '.missing-object' ).remove();
 			} else {
 				$( this ).parent().prepend( '<div class="error missing-object"><span>You have to pick a WordPress object and a Salesforce object to add field mapping.</span></div>' );
@@ -109,31 +110,32 @@
 	}
 
 
-	function fieldmap_fields( wordpress_object, salesforce_object, row_key ) {
+	function fieldmapFields( wordpressObject, salesforceObject, rowKey ) {
 		var data = {
 			'action' : 'get_wp_sf_object_fields',
-			'wordpress_object' : wordpress_object,
-			'salesforce_object' : salesforce_object
+			'wordpress_object' : wordpressObject,
+			'salesforce_object' : salesforceObject
 		}
 		$.post( ajaxurl, data, function( response ) {
-
 			var wordpress = '';
-			wordpress += '<select name="wordpress_field[' + row_key + ']" id="wordpress_field-' + row_key + '">'
+			var salesforce = '';
+			var markup = '';
+
+			wordpress += '<select name="wordpress_field[' + rowKey + ']" id="wordpress_field-' + rowKey + '">'
 			wordpress += '<option value="">- Select WordPress field -</option>';
 			$.each( response.data.wordpress, function( index, value ) {
 				wordpress += '<option value="' + value.key + '">' + value.key + '</option>';
 			});
 			wordpress += '</select>';
 
-			var salesforce = '';
-			salesforce += '<select name="salesforce_field[' + row_key + ']" id="salesforce_field-' + row_key + '">'
+			salesforce += '<select name="salesforce_field[' + rowKey + ']" id="salesforce_field-' + rowKey + '">'
 			salesforce += '<option value="">- Select Salesforce field -</option>';
 			$.each( response.data.salesforce, function( index, value ) {
 				salesforce += '<option value="' + value.name + '">' + value.label + '</option>';
 			});
 			salesforce += '</select>';
 
-			var markup = '<tr><td class="column-wordpress_field">' + wordpress + '</td><td class="column-salesforce_field">' + salesforce + '</td><td class="column-is_prematch"><input type="checkbox" name="is_prematch[' + row_key + ']" id="is_prematch-' + row_key + '" value="1" /><td class="column-is_key"><input type="checkbox" name="is_key[' + row_key + ']" id="is_key-' + row_key + '" value="1" /></td><td class="column-direction"><div class="radios"><label><input type="radio" value="sf_wp" name="direction[' + row_key + ']" id="direction-' + row_key + '-sf-wp">  Salesforce to WordPress</label><label><input type="radio" value="wp_sf" name="direction[' + row_key + ']" id="direction-' + row_key + '-wp-sf">  WordPress to Salesforce</label><label><input type="radio" value="sync" name="direction[' + row_key + ']" id="direction-' + row_key + '-sync" checked>  Sync</label></div></td><td class="column-is_delete"><input type="checkbox" name="is_delete[' + row_key + ']" id="is_delete-' + row_key + '" value="1" /></td></tr>';
+			markup = '<tr><td class="column-wordpress_field">' + wordpress + '</td><td class="column-salesforce_field">' + salesforce + '</td><td class="column-is_prematch"><input type="checkbox" name="is_prematch[' + rowKey + ']" id="is_prematch-' + rowKey + '" value="1" /><td class="column-is_key"><input type="checkbox" name="is_key[' + rowKey + ']" id="is_key-' + rowKey + '" value="1" /></td><td class="column-direction"><div class="radios"><label><input type="radio" value="sf_wp" name="direction[' + rowKey + ']" id="direction-' + rowKey + '-sf-wp">  Salesforce to WordPress</label><label><input type="radio" value="wp_sf" name="direction[' + rowKey + ']" id="direction-' + rowKey + '-wp-sf">  WordPress to Salesforce</label><label><input type="radio" value="sync" name="direction[' + rowKey + ']" id="direction-' + rowKey + '-sync" checked>  Sync</label></div></td><td class="column-is_delete"><input type="checkbox" name="is_delete[' + rowKey + ']" id="is_delete-' + rowKey + '" value="1" /></td></tr>';
 			$( 'table.fields tbody' ).append( markup );
 
 			if ( jQuery.fn.select2 ) {
@@ -144,20 +146,20 @@
 		});
 	}
 
-	function push_and_pull_objects() {
+	function pushAndPullObjects() {
 		$( '.salesforce_user_ajax_message' ).hide();
 		if ( 0 < $( '#wordpress_object_ajax' ).length ) {
 			$( '.push_to_salesforce_button' ).on( 'click', function() {
-				var wordpress_object = $( '#wordpress_object_ajax' ).val();
-				var wordpress_id = $( '#wordpress_id_ajax' ).val();
+				var wordpressObject = $( '#wordpress_object_ajax' ).val();
+				var wordpressId = $( '#wordpress_id_ajax' ).val();
 				var data = {
 					'action' : 'push_to_salesforce',
-					'wordpress_object' : wordpress_object,
-					'wordpress_id' : wordpress_id
+					'wordpress_object' : wordpressObject,
+					'wordpress_id' : wordpressId
 				}
 				$.post( ajaxurl, data, function( response ) {
 					if ( true === response.success ) {
-						update_salesforce_user_summary();
+						updateSalesforceUserSummary();
 						$( '.salesforce_user_ajax_message' ).width( $( '.mapped-salesforce-user' ).width() - 27 );
 						$( '.salesforce_user_ajax_message' ).html( '<p>This object has been pushed to Salesforce.</p>' ).fadeIn().delay( 4000 ).fadeOut();
 					}
@@ -166,16 +168,16 @@
 			});
 		}
 		$( '.pull_from_salesforce_button' ).on( 'click', function() {
-			var salesforce_id = $( '#salesforce_id_ajax' ).val();
-			var wordpress_object = $( '#wordpress_object_ajax' ).val();
+			var salesforceId = $( '#salesforce_id_ajax' ).val();
+			var wordpressObject = $( '#wordpress_object_ajax' ).val();
 			var data = {
 				'action' : 'pull_from_salesforce',
-				'salesforce_id' : salesforce_id,
-				'wordpress_object' : wordpress_object
+				'salesforce_id' : salesforceId,
+				'wordpress_object' : wordpressObject
 			}
 			$.post( ajaxurl, data, function( response ) {
 				if ( true === response.success ) {
-					update_salesforce_user_summary();
+					updateSalesforceUserSummary();
 					$( '.salesforce_user_ajax_message' ).width( $( '.mapped-salesforce-user' ).width() - 27 );
 					$( '.salesforce_user_ajax_message' ).html( '<p>This object has been pulled from Salesforce.</p>' ).fadeIn().delay( 4000 ).fadeOut();
 				}
@@ -184,11 +186,11 @@
 		});
 	}
 
-	function update_salesforce_user_summary() {
-		var mapping_id = $( '#mapping_id_ajax' ).val();
+	function updateSalesforceUserSummary() {
+		var mappingId = $( '#mapping_id_ajax' ).val();
 		var data = {
 			'action' : 'refresh_mapped_data',
-			'mapping_id' : mapping_id
+			'mapping_id' : mappingId
 		}
 		$.post( ajaxurl, data, function( response ) {
 			if ( true === response.success ) {
@@ -203,7 +205,7 @@
 		});
 	}
 
-	function clear_sfwp_cache_link() {
+	function clearSfwpCacheLink() {
 		$( '#clear-sfwp-cache' ).click( function() {
 			var data = {
 				'action' : 'clear_sfwp_cache'
@@ -229,6 +231,8 @@
 
 	$( document ).ready( function() {
 
+		var timeout;
+
 		if ( jQuery.fn.select2 ) {
 			$( 'select#wordpress_object' ).select2();
 			$( 'select#salesforce_object' ).select2();
@@ -238,7 +242,6 @@
 			$( '.column-salesforce_field select' ).select2();
 		}
 
-		var timeout;
 		$( '#wordpress_object, #salesforce_object' ).on( 'change', function() {
 			clearTimeout( timeout );
 			timeout = setTimeout( function() {
@@ -253,10 +256,10 @@
 		}).ajaxStop( function() {
 			$( '.spinner' ).removeClass( 'is-active' );
 		});
-		salesforce_object_fields();
-		add_field_mapping_row();
-		push_and_pull_objects();
-		clear_sfwp_cache_link();
+		salesforceObjectFields();
+		addFieldMappingRow();
+		pushAndPullObjects();
+		clearSfwpCacheLink();
 	});
 
 }( jQuery ) );
