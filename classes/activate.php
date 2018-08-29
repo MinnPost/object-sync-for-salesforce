@@ -58,8 +58,10 @@ class Object_Sync_Sf_Activate {
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'wordpress_salesforce_tables' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'add_roles_capabilities' ) );
 
+		// this should run when the user is in the admin area to make sure the database gets updated
+		add_action( 'admin_init', array( $this, 'wordpress_salesforce_update_db_check' ), 10 );
+
 		// when users upgrade the plugin, run these hooks
-		add_action( 'upgrader_process_complete', array( $this, 'wordpress_salesforce_update_db_check' ), 10, 2 );
 		add_action( 'upgrader_process_complete', array( $this, 'check_for_action_scheduler' ), 10, 2 );
 	}
 
@@ -164,16 +166,11 @@ class Object_Sync_Sf_Activate {
 	}
 
 	/**
-	* Check for database version on plugin upgrade
-	* When the plugin is upgraded, if the database version does not match the current version, perform these methods
-	*
-	* @param object $upgrader_object
-	* @param array $hook_extra
-	*
-	* See https://developer.wordpress.org/reference/hooks/upgrader_process_complete/
+	* Check for database version
+	* When the plugin is loaded in the admin, if the database version does not match the current version, perform these methods
 	*
 	*/
-	public function wordpress_salesforce_update_db_check( $upgrader_object, $hook_extra ) {
+	public function wordpress_salesforce_update_db_check() {
 		// user is running a version less than the current one
 		$previous_version = get_transient( $this->option_prefix . 'installed_version' );
 		if ( version_compare( $previous_version, $this->version, '<' ) ) {
