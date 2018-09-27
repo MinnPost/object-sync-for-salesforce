@@ -23,7 +23,7 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `object_sync_for_salesforce_pull_params_modify`:
     - description: change what parameters are being sent to WordPress before syncing occurs
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
-    - documentation: [extend parameters](extending-parameters.md#salesforce-push)
+    - documentation: [extend parameters](extending-parameters.md#salesforce-pull)
 - `object_sync_for_salesforce_pull_mapping_object`:
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
