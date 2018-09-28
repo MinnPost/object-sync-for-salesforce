@@ -190,8 +190,11 @@ class Object_Sync_Sf_Mapping {
 
 		} else { // get all of the mappings. ALL THE MAPPINGS.
 
+			// if the version is greater than or equal to 1.4.3, the fieldmap table has a pull_to_drafts column
+			if ( version_compare( $this->version, '1.4.3', '>=' ) ) {
+				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table", ARRAY_A );
 			// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column
-			if ( version_compare( $this->version, '1.2.5', '>=' ) ) {
+			} elseif ( version_compare( $this->version, '1.2.5', '>=' ) ) {
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight`, `version` FROM $table", ARRAY_A );
 			} else {
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table", ARRAY_A );
@@ -388,9 +391,10 @@ class Object_Sync_Sf_Mapping {
 		if ( isset( $posted['pull_trigger_field'] ) ) {
 			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
 		}
-		$data['push_async']  = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
-		$data['push_drafts'] = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
-		$data['weight']      = isset( $posted['weight'] ) ? $posted['weight'] : '';
+		$data['push_async']     = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
+		$data['push_drafts']    = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
+		$data['pull_to_drafts'] = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
+		$data['weight']         = isset( $posted['weight'] ) ? $posted['weight'] : '';
 		return $data;
 	}
 

@@ -101,6 +101,7 @@ class Object_Sync_Sf_Activate {
 			sync_triggers text NOT NULL,
 			push_async tinyint(1) NOT NULL DEFAULT '0',
 			push_drafts tinyint(1) NOT NULL DEFAULT '0',
+			pull_to_drafts tinyint(1) NOT NULL DEFAULT '0',
 			weight tinyint(1) NOT NULL DEFAULT '0',
 			version varchar(255) NOT NULL DEFAULT '',
 			PRIMARY KEY  (id),
