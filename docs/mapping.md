@@ -119,7 +119,7 @@ Individual object map rows - a WordPress user to a Salesforce Contact, for examp
 
     When a Salesforce object type that is already mapped to a WordPress object type has an event that is an active trigger (as defined above).
 
-    - Create: if a new Salesforce item is created, it will attempt to `insert` or `upsert` it into WordPress. Upsert is used with the Prematch field defined above (the Salesforce Key field is ignored on pull operations). You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
+    - Create: if a new Salesforce item is created, it will attempt to `insert` or `upsert` it into WordPress. Upsert is used with the Prematch field defined above (the Salesforce Key field is ignored on pull operations). Developers should know that if a fieldmap uses a meta field on as a prematch value, the plugin will use WP_Query (or WP_User_Query, WP_Term_Query, etc.) to attempt to match against that value. It only uses this when it tries to match against existing records, not when it loads the value of the meta field. You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
     - Update: if there is already an object map between two objects, the plugin will attempt to update the out of date item.
     - Delete: if there is already an object map between two objects, the plugin will attempt to delete the remaining item.
 

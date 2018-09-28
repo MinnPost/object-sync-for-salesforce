@@ -936,9 +936,28 @@ class Object_Sync_Sf_WordPress {
 		// If the key is user_email, we need to make it just email because that is how the WordPress method reads it.
 		$method = $methods['method_match'];
 		if ( '' !== $method ) {
-			// This should give us the user object.
-			$user = $method( str_replace( 'user_', '', $key ), $value );
-			if ( isset( $user->{$id_field} ) ) {
+			// These methods should give us the user object if we are matching for one.
+			if ( class_exists( $method ) ) {
+				$args = array(
+					'meta_query' => array(
+						array(
+							'key'     => $key,
+							'value'   => $value,
+							'compare' => 'LIKE',
+						),
+					),
+				);
+				// if we are trying to match to a meta field, it's an object
+				$match_query = new $method( $args );
+				$users       = $match_query->get_results();
+				if ( ! empty( $users ) ) {
+					$user = $users[0];
+				}
+			} else {
+				$user = $method( str_replace( 'user_', '', $key ), $value );
+			}
+
+			if ( isset( $user ) && isset( $user->{$id_field} ) ) {
 				// User does exist after checking the matching value. we want its id.
 				$user_id = $user->{$id_field};
 
@@ -1223,7 +1242,7 @@ class Object_Sync_Sf_WordPress {
 		if ( '' !== $method ) {
 			// By default, posts use get_posts as the method. args can be like this.
 			// The args don't really make sense, and are inconsistently documented.
-			// This should give us the post object.
+			// These methods should give us the post object.
 			$args = array();
 			if ( 'post_title' === $key ) {
 				$params['post_title'] = array(
@@ -1243,9 +1262,16 @@ class Object_Sync_Sf_WordPress {
 			}
 			$args['post_status'] = $post_statuses;
 
-			$posts = $method( $args );
-
-			if ( isset( $posts[0]->{$id_field} ) ) {
+			// if we are trying to match to a meta field, it's an object
+			if ( class_exists( $method ) ) {
+				$match_query = new $method( $args );
+				if ( $match_query->have_posts() ) {
+					$posts = $match_query->get_posts();
+				}
+			} else {
+				$posts = $method( $args );
+			}
+			if ( isset( $posts ) && isset( $posts[0]->{$id_field} ) ) {
 				// Post does exist after checking the matching value. We want its id.
 				$post_id = $posts[0]->{$id_field};
 
@@ -1536,7 +1562,7 @@ class Object_Sync_Sf_WordPress {
 			// Get_posts is more helpful here, so that is the method attachment uses for 'read'.
 			// By default, posts use get_posts as the method. args can be like this.
 			// The args don't really make sense, and are inconsistently documented.
-			// This should give us the post object.
+			// These methods should give us the post object.
 			$args = array();
 			if ( 'post_title' === $key ) {
 				$params['post_title'] = array(
@@ -1550,9 +1576,17 @@ class Object_Sync_Sf_WordPress {
 			}
 			$args['post_type'] = 'attachment';
 
-			$posts = $method( $args );
+			// if we are trying to match to a meta field, it's an object
+			if ( class_exists( $method ) ) {
+				$match_query = new $method( $args );
+				if ( $match_query->have_posts() ) {
+					$posts = $match_query->get_posts();
+				}
+			} else {
+				$posts = $method( $args );
+			}
 
-			if ( isset( $posts[0]->{$id_field} ) ) {
+			if ( isset( $posts ) && isset( $posts[0]->{$id_field} ) ) {
 				// Attachment does exist after checking the matching value. we want its id.
 				$attachment_id = $posts[0]->{$id_field};
 
@@ -1878,9 +1912,25 @@ class Object_Sync_Sf_WordPress {
 		}
 		$method = $methods['method_match'];
 		if ( '' !== $method ) {
-			// This should give us the term object.
-			$term = $method( $key, $value, $taxonomy ); // We need to put the taxonomy in there probably.
-			if ( isset( $term->{$id_field} ) ) {
+			// These methods should give us the term object if we are matching for one.
+			if ( class_exists( $method ) ) {
+				$args = array(
+					'taxonomy'   => $taxonomy,
+					'meta_key'   => $key,
+					'meta_value' => $value,
+				);
+
+				// if we are trying to match to a meta field, it's an object
+				$match_query = new $method( $args );
+				$terms       = $match_query->get_terms();
+				if ( ! empty( $terms ) ) {
+					$term = $terms[0];
+				}
+			} else {
+				$term = $method( $key, $value, $taxonomy ); // We need to put the taxonomy in there probably.
+			}
+
+			if ( isset( $term ) && isset( $term->{$id_field} ) ) {
 				// Term does exist after checking the matching value. we want its id.
 				$term_id = $term->{$id_field};
 
@@ -2185,17 +2235,36 @@ class Object_Sync_Sf_WordPress {
 			$method = 'get_comments';
 		}
 		if ( '' !== $method ) {
-			// This should give us the comment object.
-			$match = array();
-			if ( 'comment_author' === $key ) {
-				$match['author__in'] = array( $value );
-			} else {
-				$key           = str_replace( 'comment_', '', $key );
-				$match[ $key ] = $value;
-			}
-			$comments = $method( $match );
 
-			if ( 1 === count( $comments ) ) {
+			// These methods should give us the comment object if we are matching for one.
+			if ( class_exists( $method ) ) {
+				$args = array(
+					'meta_query' => array(
+						array(
+							'key'     => $key,
+							'value'   => $value,
+							'compare' => 'LIKE',
+						),
+					),
+				);
+				// if we are trying to match to a meta field, it's an object
+				$match_query = new $method( $args );
+				$comments    = $match_query->get_comments();
+				if ( ! empty( $comments ) ) {
+					$comment = $users[0];
+				}
+			} else {
+				$match = array();
+				if ( 'comment_author' === $key ) {
+					$match['author__in'] = array( $value );
+				} else {
+					$key           = str_replace( 'comment_', '', $key );
+					$match[ $key ] = $value;
+				}
+				$comments = $method( $match );
+			}
+
+			if ( 1 === count( $comments ) && isset( $comments ) && isset( $comments[0]->{$id_field} ) ) {
 				$comment = $comments[0];
 				// Comment does exist after checking the matching value. we want its id.
 				$comment_id = $comment->{$id_field};
