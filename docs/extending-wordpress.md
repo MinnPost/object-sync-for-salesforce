@@ -91,7 +91,7 @@ In the example above, the returned `$result` needs to be an array.
 
 ```php
 $result = array(
-    'data' => array(
+    'data'   => array(
         $id_field => $post_id, // example here is 'ID' => 867. $id_field is the key in the database; $post_id is the value
         'success' => $success // $success is a boolean value you should have already set
     ),
@@ -110,14 +110,14 @@ add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', 'upsert_o
 function upsert_object( $create_data ) {
     /* $upsert_data is like this:
     array(
-        'key' => $key,
-        'value' => $value,
-        'methods' => $methods,
-        'params' => $params,
-        'id_field' => $id_field,
-        'push_drafts' => $push_drafts,
-        'name' => $name,
-        'check_only' => $check_only,
+        'key'            => $key,
+        'value'          => $value,
+        'methods'        => $methods,
+        'params'         => $params,
+        'id_field'       => $id_field,
+        'pull_to_drafts' => $pull_to_drafts,
+        'name'           => $name,
+        'check_only'     => $check_only,
     );
     */
     // run methods here to upsert record in the database
@@ -208,10 +208,10 @@ function set_attachment( $params ) {
     // the parameters will be stored based on the methods they use
     // ex:
     $params[ $key ] = array(
-        'value' => $value,
+        'value'         => $value,
         'method_modify' => $method_modify,
         'method_create' => $method_create,
-        'method_read' => $methods['method_read']
+        'method_read'   => $methods['method_read']
     );
     return $params;
 }
