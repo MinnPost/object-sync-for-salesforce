@@ -899,7 +899,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						// we can then check to see if it has a mapping object
 						// we should only do this if the above hook didn't already set the $wordpress_id
 						if ( null === $wordpress_id ) {
-							$wordpress_id = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['push_drafts'], true );
+							$wordpress_id = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['pull_to_drafts'], true );
 						}
 
 						// find out if there is a mapping object for this WordPress object already
@@ -1021,7 +1021,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 						// now we can upsert the object in wp if we've gotten to this point
 						// this command will either create or update the object
-						$result = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['push_drafts'] );
+						$result = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['pull_to_drafts'] );
 
 					} else {
 						// No key or prematch field exists on this field map object, create a new object in WordPress.
