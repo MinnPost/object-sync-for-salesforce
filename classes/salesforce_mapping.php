@@ -222,6 +222,7 @@ class Object_Sync_Sf_Mapping {
 		foreach ( $mapping['fields'] as $fields ) {
 			if ( empty( $directions ) || in_array( $fields['direction'], $directions, true ) ) {
 
+				// in version 1.2.0, we provided an option for API name vs label for Salesforce fields
 				if ( version_compare( $this->version, '1.2.0', '>=' ) && isset( $fields['salesforce_field']['name'] ) ) {
 					$array_key = 'name';
 				} else {
