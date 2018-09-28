@@ -834,7 +834,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$prematch_field_salesforce = $params['prematch']['salesforce_field'];
 				$prematch_value            = $params['prematch']['value'];
 				$prematch_methods          = array(
-					'method_match'  => $params['prematch']['method_read'],
+					'method_match'  => isset( $params['prematch']['method_match'] ) ? $params['prematch']['method_match'] : $params['prematch']['method_read'],
 					'method_create' => $params['prematch']['method_create'],
 					'method_update' => $params['prematch']['method_update'],
 					'method_read'   => $params['prematch']['method_read'],

@@ -827,6 +827,7 @@ class Object_Sync_Sf_Mapping {
 						'salesforce_field' => $salesforce_field,
 						'wordpress_field'  => $wordpress_field,
 						'value'            => $object[ $salesforce_field ],
+						'method_match'     => $fieldmap['wordpress_field']['methods']['match'],
 						'method_read'      => $fieldmap['wordpress_field']['methods']['read'],
 						'method_create'    => $fieldmap['wordpress_field']['methods']['create'],
 						'method_update'    => $fieldmap['wordpress_field']['methods']['update'],
