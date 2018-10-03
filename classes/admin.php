@@ -442,6 +442,21 @@ class Object_Sync_Sf_Admin {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors-delete.php' );
 						}
 					} else {
+
+						if ( isset( $get_data['mapping_error_transient'] ) ) {
+							$transient = sanitize_key( $get_data['mapping_error_transient'] );
+							$posted    = $this->sfwp_transients->get( $transient );
+						}
+
+						$ids_string = '';
+						$ids        = array();
+						if ( isset( $posted['delete'] ) ) {
+							$ids_string = maybe_serialize( $posted['delete'] );
+							$ids        = $posted['delete'];
+						}
+
+						$error_url   = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&ids=' . $ids_string );
+						$success_url = get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors' );
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/mapping-errors.php' );
 					}
 					break;
@@ -1117,6 +1132,12 @@ class Object_Sync_Sf_Admin {
 				'type'        => 'error',
 				'dismissible' => true,
 			),
+			'mapping_error_transient' => array(
+				'condition'   => isset( $get_data['mapping_error_transient'] ),
+				'message'     => __( 'Errors kept these mapping errors from being deleted.', 'object-sync-for-salesforce' ),
+				'type'        => 'error',
+				'dismissible' => true,
+			),
 		);
 
 		foreach ( $notices as $key => $value ) {
@@ -1489,12 +1510,45 @@ class Object_Sync_Sf_Admin {
 	*/
 	public function delete_object_map() {
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-		if ( $post_data['id'] ) {
+		if ( isset( $post_data['id'] ) ) {
 			$result = $this->mappings->delete_object_map( $post_data['id'] );
 			if ( true === $result ) {
 				$url = esc_url_raw( $post_data['redirect_url_success'] );
 			} else {
 				$url = esc_url_raw( $post_data['redirect_url_error'] . '&id=' . $post_data['id'] );
+			}
+			wp_safe_redirect( $url );
+			exit();
+		} elseif ( $post_data['delete'] ) {
+			$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+			$cachekey  = md5( wp_json_encode( $post_data ) );
+			$error     = false;
+			if ( ! isset( $post_data['delete'] ) ) {
+				$error = true;
+			}
+			if ( true === $error ) {
+				$this->sfwp_transients->set( $cachekey, $post_data, $this->wordpress->options['cache_expiration'] );
+				if ( '' !== $cachekey ) {
+					$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&mapping_error_transient=' . $cachekey;
+				}
+			} else { // there are no errors
+				$result = $this->mappings->delete_object_map( array_keys( $post_data['delete'] ) );
+				if ( true === $result ) {
+					$url = esc_url_raw( $post_data['redirect_url_success'] );
+				}
+
+				if ( false === $result ) { // if the database didn't save, it's still an error
+					$this->sfwp_transients->set( $cachekey, $post_data, $this->wordpress->options['cache_expiration'] );
+					if ( '' !== $cachekey ) {
+						$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&mapping_error_transient=' . $cachekey;
+					}
+				} else {
+					if ( isset( $post_data['mapping_error_transient'] ) ) { // there was previously an error saved. can delete it now.
+						$this->sfwp_transients->delete( esc_attr( $post_data['mapping_error_transient'] ) );
+					}
+					// then send the user to the list of fieldmaps
+					$url = esc_url_raw( $post_data['redirect_url_success'] );
+				}
 			}
 			wp_safe_redirect( $url );
 			exit();
