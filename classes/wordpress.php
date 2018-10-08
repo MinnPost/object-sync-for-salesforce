@@ -937,17 +937,16 @@ class Object_Sync_Sf_WordPress {
 		$method = $methods['method_match'];
 		if ( '' !== $method ) {
 			// These methods should give us the user object if we are matching for one.
+			// if we are trying to match to a meta field, the method is an object
 			if ( class_exists( $method ) ) {
-				$args = array(
+				$args        = array(
 					'meta_query' => array(
 						array(
-							'key'     => $key,
-							'value'   => $value,
-							'compare' => 'LIKE',
+							'key'   => $key,
+							'value' => $value,
 						),
 					),
 				);
-				// if we are trying to match to a meta field, it's an object
 				$match_query = new $method( $args );
 				$users       = $match_query->get_results();
 				if ( ! empty( $users ) ) {
@@ -1262,15 +1261,21 @@ class Object_Sync_Sf_WordPress {
 			}
 			$args['post_status'] = $post_statuses;
 
-			// if we are trying to match to a meta field, it's an object
+			// if we are trying to match to a meta field, the method is an object
 			if ( class_exists( $method ) ) {
-				$match_query = new $method( $args );
-				if ( $match_query->have_posts() ) {
-					$posts = $match_query->get_posts();
-				}
+				unset( $args[ $key ] );
+				$args['meta_query'] = array(
+					array(
+						'key'   => $key,
+						'value' => $value,
+					),
+				);
+				$match_query        = new $method( $args );
+				$posts              = $match_query->get_results();
 			} else {
 				$posts = $method( $args );
 			}
+
 			if ( isset( $posts ) && isset( $posts[0]->{$id_field} ) ) {
 				// Post does exist after checking the matching value. We want its id.
 				$post_id = $posts[0]->{$id_field};
@@ -1576,12 +1581,17 @@ class Object_Sync_Sf_WordPress {
 			}
 			$args['post_type'] = 'attachment';
 
-			// if we are trying to match to a meta field, it's an object
+			// if we are trying to match to a meta field, the method is an object
 			if ( class_exists( $method ) ) {
-				$match_query = new $method( $args );
-				if ( $match_query->have_posts() ) {
-					$posts = $match_query->get_posts();
-				}
+				unset( $args[ $key ] );
+				$args['meta_query'] = array(
+					array(
+						'key'   => $key,
+						'value' => $value,
+					),
+				);
+				$match_query        = new $method( $args );
+				$posts              = $match_query->get_results();
 			} else {
 				$posts = $method( $args );
 			}
@@ -1913,14 +1923,13 @@ class Object_Sync_Sf_WordPress {
 		$method = $methods['method_match'];
 		if ( '' !== $method ) {
 			// These methods should give us the term object if we are matching for one.
+			// if we are trying to match to a meta field, the method is an object
 			if ( class_exists( $method ) ) {
-				$args = array(
+				$args        = array(
 					'taxonomy'   => $taxonomy,
 					'meta_key'   => $key,
 					'meta_value' => $value,
 				);
-
-				// if we are trying to match to a meta field, it's an object
 				$match_query = new $method( $args );
 				$terms       = $match_query->get_terms();
 				if ( ! empty( $terms ) ) {
@@ -2237,17 +2246,16 @@ class Object_Sync_Sf_WordPress {
 		if ( '' !== $method ) {
 
 			// These methods should give us the comment object if we are matching for one.
+			// if we are trying to match to a meta field, the method is an object
 			if ( class_exists( $method ) ) {
-				$args = array(
+				$args        = array(
 					'meta_query' => array(
 						array(
-							'key'     => $key,
-							'value'   => $value,
-							'compare' => 'LIKE',
+							'key'   => $key,
+							'value' => $value,
 						),
 					),
 				);
-				// if we are trying to match to a meta field, it's an object
 				$match_query = new $method( $args );
 				$comments    = $match_query->get_comments();
 				if ( ! empty( $comments ) ) {
