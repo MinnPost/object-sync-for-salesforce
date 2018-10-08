@@ -87,11 +87,11 @@ If you encounter this issue, first try these steps in Salesforce:
 
 #### Other configuration
 
-Prematch determines whether the field should be used to match objects. If it is checked, the plugin will see objects that share a value in that pair to be matched.
+Prematch determines whether the field should be used to match objects between Salesforce and WordPress, regardless of the direction. If it is checked, the plugin always will see objects that share a value in that pair to be matched.
 
 A Salesforce Key is a flag in Salesforce that determines whether a field is another system's external ID. Salesforce uses this to keep data from being overwritten.
 
-A checked Prematch (when saving data in WordPress or Salesforce) or Salesforce Key (when saving data in Salesforce) will cause the plugin to try to "upsert" the data to its destination. This means it checks to see if there is a match before creating a new record. You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
+A checked Prematch (when saving data in WordPress or Salesforce) or Salesforce Key (only when saving data from WordPress to Salesforce) will cause the plugin to try to "upsert" the data to its destination. This means it checks to see if there is a match before creating a new record. You can expand how upserting works with several hooks, which are [documented](./extending-upsert.md).
 
 Direction chooses what to do with the field's data. If you select Salesforce to WordPress, this field won't be sent to Salesforce. If you select WordPress to Salesforce, this field won't be sent to Wordpress. If you choose Sync, it will go from one system to the other whenever it changes.
 

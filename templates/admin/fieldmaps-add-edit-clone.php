@@ -378,7 +378,7 @@
 		}
 		?>
 		<p><button type="button" id="add-field-mapping" class="button button-secondary"><?php echo $add_button_label; ?></button></p>
-		<p class="description"><?php echo esc_html__( 'Prematch tells the plugin to match records that have the same value before sending data to Salesforce. Salesforce Key indicates the Salesforce field is an External ID. If either of these is checked, the plugin will do an UPSERT to avoid duplicate data when possible.', 'object-sync-for-salesforce' ); ?></p>
+		<p class="description"><?php echo esc_html__( 'A checked Prematch (when saving data in either WordPress or Salesforce) or Salesforce Key (only when saving data from WordPress to Salesforce) field will cause the plugin to check for a match on that value before creating new records.', 'object-sync-for-salesforce' ); ?></p>
 	</fieldset>
 	<fieldset class="sync_triggers">
 		<legend><?php echo esc_html__( 'Action triggers', 'object-sync-for-salesforce' ); ?></legend>

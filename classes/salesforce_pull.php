@@ -882,7 +882,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 						$op = 'Upsert';
 
-						// if either prematch criteria exists, make the values queryable
+						// if a prematch criteria exists, make the values queryable
 						if ( isset( $prematch_field_salesforce ) ) {
 							$upsert_key     = $prematch_field_wordpress;
 							$upsert_value   = $prematch_value;
