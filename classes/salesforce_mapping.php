@@ -569,7 +569,7 @@ class Object_Sync_Sf_Mapping {
 	 * @throws \Exception
 	 */
 	public function delete_object_map( $id = '' ) {
-		if ( is_int( $id ) ) {
+		if ( is_string( $id ) || is_int( $id ) ) {
 			$data   = array(
 				'id' => $id,
 			);
