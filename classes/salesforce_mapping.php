@@ -467,7 +467,7 @@ class Object_Sync_Sf_Mapping {
 					esc_attr( $data['salesforce_id'] ),
 					absint( $id )
 				),
-				'',
+				print_r( $mapping, true ), // log whatever we have for the mapping object, so print the array
 				0,
 				0,
 				$status
