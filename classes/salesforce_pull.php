@@ -192,7 +192,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			if ( ! isset( $response['errorCode'] ) ) {
 				// Write items to the queue.
-				foreach ( $response['records'] as $result ) {
+					$initial_size = count( $response['records'] );
+				foreach ( $response['records'] as $key => $result ) {
 
 					// if this record is new as of the last sync, use the create trigger
 					if ( isset( $result['CreatedDate'] ) && $result['CreatedDate'] > $last_sync ) {
@@ -242,6 +243,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 							continue;
 						}
 
+						// if the $key is greater than the limit
+						// ex: if $key is 25 and the limit is 24, stop looping
+						// the + 1 is because $key is zero based
+						error_log( 'limit is ' . $soql->limit . ' and key is ' . $key );
+						if ( $soql->limit < ( $key + 1 ) ) {
+							break;
+						}
+
 						// add a queue action to save data from salesforce
 						$this->queue->add(
 							$this->schedulable_classes[ $this->schedule_name ]['callback'],
@@ -260,60 +269,102 @@ class Object_Sync_Sf_Salesforce_Pull {
 					}
 				}
 
-				// Handle requests larger than the batch limit (usually 2000).
-				$next_records_url = isset( $response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $response['nextRecordsUrl'] ) : false;
+				// Handle requests larger than the batch limit
+				// we should only do this if the $soql->limit variable is bigger than the number of rows that came back
+				if ( $soql->limit > $initial_size ) {
+					$next_records_url = isset( $response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $response['nextRecordsUrl'] ) : false;
 
-				while ( $next_records_url ) {
-					// shouldn't cache this either. it's going into the queue if it exists anyway.
-					$new_results  = $sfapi->api_call(
-						$next_records_url,
-						array(),
-						'GET',
-						array(
-							'cache' => false,
-						)
-					);
-					$new_response = $new_results['data'];
-					if ( ! isset( $new_response['errorCode'] ) ) {
-						// Write items to the queue.
-						foreach ( $new_response['records'] as $result ) {
-							// if this record is new as of the last sync, use the create trigger
-							if ( isset( $result['CreatedDate'] ) && $result['CreatedDate'] > $last_sync ) {
-								$sf_sync_trigger = $this->mappings->sync_sf_create;
-							} else {
-								$sf_sync_trigger = $this->mappings->sync_sf_update;
-							}
+					while ( $next_records_url ) {
+						// shouldn't cache this either. it's going into the queue if it exists anyway.
+						$new_results  = $sfapi->api_call(
+							$next_records_url,
+							array(),
+							'GET',
+							array(
+								'cache' => false,
+							)
+						);
+						$new_response = $new_results['data'];
+						if ( ! isset( $new_response['errorCode'] ) ) {
+							// Write items to the queue.
+							foreach ( $new_response['records'] as $key => $result ) {
+								// if this record is new as of the last sync, use the create trigger
+								if ( isset( $result['CreatedDate'] ) && $result['CreatedDate'] > $last_sync ) {
+									$sf_sync_trigger = $this->mappings->sync_sf_create;
+								} else {
+									$sf_sync_trigger = $this->mappings->sync_sf_update;
+								}
 
-							// Only queue when the record's trigger is configured for the mapping
-							// these are bit operators, so we leave out the strict
-							if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
-								$data = array(
-									'object_type'     => $type,
-									'object'          => $result,
-									'mapping'         => $salesforce_mapping,
-									'sf_sync_trigger' => $sf_sync_trigger, // use the appropriate trigger based on when this was created
-								);
-
-								// add a queue action to save data from salesforce
-								$this->queue->add(
-									$this->schedulable_classes[ $this->schedule_name ]['callback'],
-									array(
+								// Only queue when the record's trigger is configured for the mapping
+								// these are bit operators, so we leave out the strict
+								if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
+									$data = array(
 										'object_type'     => $type,
-										'object'          => $result['Id'],
-										'mapping'         => filter_var( $salesforce_mapping['id'], FILTER_VALIDATE_INT ),
-										'sf_sync_trigger' => $sf_sync_trigger,
-									),
-									$this->schedule_name
-								);
+										'object'          => $result,
+										'mapping'         => $salesforce_mapping,
+										'sf_sync_trigger' => $sf_sync_trigger, // use the appropriate trigger based on when this was created
+									);
 
-								// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
-								$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
-								update_option( $this->option_prefix . 'pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
+									// default is pull is allowed
+									$pull_allowed = true;
+
+									// if the current fieldmap does not allow create, we need to check if there is an object map for the Salesforce object Id. if not, set pull_allowed to false.
+									if ( isset( $map_sync_triggers ) && ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
+										$object_map = $this->mappings->load_by_salesforce( $result['Id'] );
+										if ( empty( $object_map ) ) {
+											$pull_allowed = false;
+										}
+									}
+
+									// Hook to allow other plugins to prevent a pull per-mapping.
+									// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
+									$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', $pull_allowed, $type, $result, $sf_sync_trigger, $salesforce_mapping );
+
+									// example to keep from pulling the Contact with id of abcdef
+									/*
+									add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
+									// can always reduce this number if all the arguments are not necessary
+									function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
+										if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
+											return false;
+										}
+									}
+									*/
+
+									if ( false === $pull_allowed ) {
+										update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
+										continue;
+									}
+
+									// if the $key is greater than the limit
+									// ex: if $key is 25 and the limit is 24, stop looping
+									// the + 1 is because $key is zero based
+									error_log( 'limit is ' . $soql->limit . ' and key is ' . $key );
+									if ( $soql->limit < ( $initial_size + $key + 1 ) ) {
+										break;
+									}
+
+									// add a queue action to save data from salesforce
+									$this->queue->add(
+										$this->schedulable_classes[ $this->schedule_name ]['callback'],
+										array(
+											'object_type' => $type,
+											'object'      => $result['Id'],
+											'mapping'     => filter_var( $salesforce_mapping['id'], FILTER_VALIDATE_INT ),
+											'sf_sync_trigger' => $sf_sync_trigger,
+										),
+										$this->schedule_name
+									);
+
+									// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
+									$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
+									update_option( $this->option_prefix . 'pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
+								}
 							}
 						}
-					}
 
-					$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : false;
+						$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : false;
+					}
 				}
 			} else {
 
