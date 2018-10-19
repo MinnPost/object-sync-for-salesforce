@@ -246,7 +246,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 						// if the $key is greater than the limit
 						// ex: if $key is 25 and the limit is 24, stop looping
 						// the + 1 is because $key is zero based
-						error_log( 'limit is ' . $soql->limit . ' and key is ' . $key );
 						if ( $soql->limit < ( $key + 1 ) ) {
 							break;
 						}
@@ -339,7 +338,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 									// if the $key is greater than the limit
 									// ex: if $key is 25 and the limit is 24, stop looping
 									// the + 1 is because $key is zero based
-									error_log( 'limit is ' . $soql->limit . ' and key is ' . $key );
 									if ( $soql->limit < ( $initial_size + $key + 1 ) ) {
 										break;
 									}
