@@ -222,7 +222,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			if ( ! isset( $response['errorCode'] ) ) {
 				// Write items to the queue.
-
 				foreach ( $response['records'] as $result ) {
 
 					// if this record is new as of the last sync, use the create trigger
@@ -305,7 +304,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$new_response = $new_results['data'];
 					if ( ! isset( $new_response['errorCode'] ) ) {
 						// Write items to the queue.
-
 						foreach ( $new_response['records'] as $result ) {
 							// if this record is new as of the last sync, use the create trigger
 							if ( isset( $result['CreatedDate'] ) && $result['CreatedDate'] > $last_sync ) {
