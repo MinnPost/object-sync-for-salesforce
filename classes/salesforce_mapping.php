@@ -402,7 +402,7 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Delete a fieldmap row between a WordPress and Salesforce object
 	 *
-	 * @param array $id The ID of a field mapping.
+	 * @param int $id The ID of a field mapping.
 	 * @return Boolean
 	 * @throws \Exception
 	 */
@@ -472,7 +472,7 @@ class Object_Sync_Sf_Mapping {
 					esc_attr( $data['salesforce_id'] ),
 					absint( $id )
 				),
-				'',
+				print_r( $mapping, true ), // log whatever we have for the mapping object, so print the array
 				0,
 				0,
 				$status
@@ -570,18 +570,28 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Delete an object map row between a WordPress and Salesforce object
 	 *
-	 * @param array $id The ID of the object map row.
+	 * @param int|array $id The ID or IDs of the object map row(s).
 	 * @throws \Exception
 	 */
 	public function delete_object_map( $id = '' ) {
-		$data   = array(
-			'id' => $id,
-		);
-		$delete = $this->wpdb->delete( $this->object_map_table, $data );
-		if ( 1 === $delete ) {
-			return true;
-		} else {
-			return false;
+		if ( is_string( $id ) || is_int( $id ) ) {
+			$data   = array(
+				'id' => $id,
+			);
+			$delete = $this->wpdb->delete( $this->object_map_table, $data );
+			if ( 1 === $delete ) {
+				return true;
+			} else {
+				return false;
+			}
+		} elseif ( is_array( $id ) ) {
+			$ids    = implode( ',', array_map( 'absint', $id ) );
+			$delete = $this->wpdb->query( "DELETE FROM $this->object_map_table WHERE ID IN ($ids)" );
+			if ( false !== $delete ) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 

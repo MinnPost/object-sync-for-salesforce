@@ -227,7 +227,7 @@ class Object_Sync_Sf_Activate {
 				if ( ! isset( $this->schedulable_classes[ $schedule_name ]['initializer'] ) ) {
 					continue;
 				}
-				// create new recurring task for action-scheduler to check for data to pull from salesforce
+				// create new recurring task for action-scheduler to check for data to pull from Salesforce
 				$this->queue->schedule_recurring(
 					current_time( 'timestamp', true ), // plugin seems to expect UTC
 					$this->queue->get_frequency( $schedule_name, 'seconds' ),

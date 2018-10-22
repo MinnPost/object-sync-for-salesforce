@@ -38,6 +38,8 @@ class Object_Sync_Sf_Deactivate {
 		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->schedulable_classes = $schedulable_classes;
 		$this->queue               = $queue;
+
+		$this->action_group_suffix = '_check_records';
 		$delete_data               = (int) get_option( $this->option_prefix . 'delete_data_on_uninstall', 0 );
 		if ( 1 === $delete_data ) {
 			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
@@ -73,7 +75,9 @@ class Object_Sync_Sf_Deactivate {
 			return;
 		}
 		foreach ( $this->schedulable_classes as $key => $value ) {
-			$this->queue->cancel( $schedule_name );
+			$schedule_name     = $key;
+			$action_group_name = $schedule_name . $this->action_group_suffix;
+			$this->queue->cancel( $action_group_name );
 		}
 	}
 

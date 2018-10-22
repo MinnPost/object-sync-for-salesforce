@@ -365,7 +365,6 @@ class Object_Sync_Sf_Salesforce {
 			);
 			curl_close( $curl );
 			return array(
-				'json' => wp_json_encode( $data ),
 				'code' => $code,
 				'data' => $data,
 			);
@@ -456,7 +455,6 @@ class Object_Sync_Sf_Salesforce {
 		curl_close( $curl );
 
 		return array(
-			'json' => $json_response,
 			'code' => $code,
 			'data' => $data,
 		);
