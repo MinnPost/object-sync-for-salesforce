@@ -229,6 +229,10 @@ class Object_Sync_Sf_Activate {
 			}
 			delete_transient( $this->option_prefix . 'installed_version' );
 		}
+		// in version 1.5.0, we switched away from the pull_query_limit option
+		if ( version_compare( $previous_version, '1.5.0', '<' ) ) {
+			delete_option( $this->option_prefix . 'pull_query_limit' );
+		}
 	}
 
 }

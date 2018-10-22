@@ -174,14 +174,44 @@ class Object_Sync_Sf_Salesforce_Pull {
 				continue;
 			}
 
+			$options = array(
+				'cache' => false,
+			);
+
+			// as of version 34.0, the Salesforce REST API accepts a batchSize option on the Sforce-Call-Options header
+			if ( version_compare( $this->login_credentials['rest_api_version'], '34.0', '>=' ) ) {
+
+				// new pull query batch size option name
+				if ( '' !== get_option( $this->option_prefix . 'pull_query_batch_size', '' ) ) {
+					$batch_size = filter_var( get_option( $this->option_prefix . 'pull_query_batch_size', 200 ), FILTER_VALIDATE_INT );
+				} else {
+					// old limit value
+					$batch_size = filter_var( get_option( $this->option_prefix . 'pull_query_limit', 200 ), FILTER_VALIDATE_INT );
+				}
+
+				$batch_size = filter_var(
+					$batch_size,
+					FILTER_VALIDATE_INT,
+					array(
+						'options' => array(
+							'min_range' => 200,
+							'max_range' => 2000,
+						),
+					)
+				);
+
+				if ( false !== $batch_size ) {
+					// the Sforce-Query-Options header is a comma delimited string
+					$options['headers']['Sforce-Query-Options'] = 'batchSize=' . $batch_size;
+				}
+			}
+
 			// Execute query
 			// have to cast it to string to make sure it uses the magic method
 			// we don't want to cache this because timestamps
 			$results = $sfapi->query(
 				(string) $soql,
-				array(
-					'cache' => false,
-				)
+				$options
 			);
 
 			$response     = $results['data'];

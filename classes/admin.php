@@ -49,10 +49,10 @@ class Object_Sync_Sf_Admin {
 
 	/**
 	* @var int
-	* Default max number of pull records
+	* Default pull batch size
 	* Users can edit this
 	*/
-	public $default_pull_limit;
+	public $default_pull_batch_size;
 
 	/**
 	* @var int
@@ -120,9 +120,9 @@ class Object_Sync_Sf_Admin {
 		// default token url path
 		$this->default_token_url_path = '/services/oauth2/token';
 		// what Salesforce API version to start the settings with. This is only used in the settings form
-		$this->default_api_version = '43.0';
-		// default pull record limit
-		$this->default_pull_limit = 25;
+		$this->default_api_version = '44.0';
+		// default pull batch size
+		$this->default_pull_batch_size = 200;
 		// default pull throttle for avoiding going over api limits
 		$this->default_pull_throttle = 5;
 		// default setting for triggerable items
@@ -677,7 +677,7 @@ class Object_Sync_Sf_Admin {
 					),
 				),
 			),
-			'pull_query_limit'               => array(
+			'pull_query_batch_size'          => array(
 				'title'    => 'Pull query record limit',
 				'callback' => $callbacks['text'],
 				'page'     => $page,
@@ -685,9 +685,9 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'number',
 					'validate' => 'absint',
-					'desc'     => __( 'Limit the number of records that can be pulled from Salesforce in a single query.', 'object-sync-for-salesforce' ),
+					'desc'     => __( 'Set the batch size for pulling from Salesforce in a single query.', 'object-sync-for-salesforce' ),
 					'constant' => '',
-					'default'  => $this->default_pull_limit,
+					'default'  => $this->default_pull_batch_size,
 				),
 			),
 			'pull_throttle'                  => array(
