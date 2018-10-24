@@ -22,6 +22,8 @@ The plugin has methods for creating, updating, and deleting all of the supported
 
 This plugin also contains several hooks to do more with objects, including both default and custom objects, in WordPress. These are [documented](./extending-wordpress.md).
 
+The plugin additionally has a hook to modify the pull query itself before it is sent to Salesforce. This is [documented](./extending-pull.md).
+
 Finally, the plugin contains a few hooks to perform actions right before, and right after, data is saved in WordPress. These are [documented](./extending-before-and-after-saving.md#salesforce-pull).
 
 ### Preventing a pull

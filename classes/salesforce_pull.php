@@ -306,6 +306,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*
 	* @param string $type
 	*   e.g. "Contact", "Account", etc.
+	* @param array $salesforce_mapping
+	*   the fieldmap that maps the two object types
 	*
 	* @return Object_Sync_Sf_Salesforce_Select_Query or null if no mappings or no mapped fields
 	*   were found.
@@ -391,6 +393,20 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// Set a limit on the number of records that can be retrieved from the API at one time.
 		$soql->limit = filter_var( get_option( $this->option_prefix . 'pull_query_limit', 25 ), FILTER_VALIDATE_INT );
+
+		// add a filter here to modify the query
+		// Hook to allow other plugins to modify the SOQL query before it is sent to Salesforce
+		$soql = apply_filters( $this->option_prefix . 'pull_query_modify', $soql, $type, $salesforce_mapping, $mapped_fields );
+
+		// quick example to change the order to descending
+		/*
+		add_filter( 'object_sync_for_salesforce_pull_query_modify', 'change_pull_query', 10, 6 );
+		// can always reduce this number if all the arguments are not necessary
+		function change_pull_query( $soql, $type, $salesforce_mapping, $mapped_fields, $salesforce_mapping, $mapped_fields ) {
+			$soql->order = 'DESC';
+			return $soql;
+		}
+		*/
 
 		return $soql;
 

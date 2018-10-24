@@ -128,6 +128,24 @@ class Object_Sync_Sf_WordPress {
 			);
 		} elseif ( 'user' === $object_type ) {
 			// User meta fields need to use update_user_meta for create as well, otherwise it'll just get created twice because apparently when the post is created it's already there.
+
+			// if the user is on WordPress VIP, the meta method is get_user_attribute
+			if ( defined( 'IS_WPCOM' ) && IS_WPCOM ) {
+				$user_meta_methods = array(
+					'create' => 'update_user_attribute',
+					'read'   => 'get_user_attribute',
+					'update' => 'update_user_attribute',
+					'delete' => 'delete_user_attribute',
+				);
+			} else {
+				$user_meta_methods = array(
+					'create' => 'update_user_meta',
+					'read'   => 'get_user_meta',
+					'update' => 'update_user_meta',
+					'delete' => 'delete_user_meta',
+				);
+			}
+
 			$object_table_structure = array(
 				'object_name'     => 'user',
 				'content_methods' => array(
@@ -136,12 +154,7 @@ class Object_Sync_Sf_WordPress {
 					'update' => 'wp_update_user',
 					'delete' => 'wp_delete_user',
 				),
-				'meta_methods'    => array(
-					'create' => 'update_user_meta',
-					'read'   => 'get_user_meta',
-					'update' => 'update_user_meta',
-					'delete' => 'delete_user_meta',
-				),
+				'meta_methods'    => $user_meta_methods,
 				'content_table'   => $this->wpdb->prefix . 'users',
 				'id_field'        => 'ID',
 				'meta_table'      => $this->wpdb->prefix . 'usermeta',
