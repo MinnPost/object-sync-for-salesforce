@@ -192,7 +192,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$sf_last_sync = get_option( $this->option_prefix . 'pull_last_sync_' . $type, null );
 			$last_sync    = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
 
-			if ( ! isset( $response['errorCode'] ) ) {
+			if ( ! isset( $response['errorCode'] ) && 0 < count( $response['records'] ) ) {
 				// Write items to the queue.
 				foreach ( $response['records'] as $result ) {
 
@@ -240,7 +240,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 						*/
 
 						if ( false === $pull_allowed ) {
-							update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
 							continue;
 						}
 
@@ -255,10 +254,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 							),
 							$this->schedule_name
 						);
-
-						// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
-						$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
-						update_option( $this->option_prefix . 'pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
 					}
 				}
 
@@ -346,6 +341,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : false;
 				}
+			} elseif ( 0 === count( $response['records'] ) ) {
+				// update the last sync timestamp for this content type
+				update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
 			} else {
 
 				// create log entry for failed pull
