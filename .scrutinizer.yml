@@ -21,6 +21,11 @@ build:
     environment:
       node: 'v10.0.0'
       php: '7.1.12'
+      mysql: true
+      redis: true
+      apache2:
+        modules:
+          - rewrite
     nodes:
         analysis:
             dependencies:
