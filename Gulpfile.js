@@ -9,6 +9,7 @@ const cssnano = require( 'gulp-cssnano' );
 const del = require( 'del' );
 const eslint = require( 'gulp-eslint' );
 const gulp = require( 'gulp' );
+const gulpIf = require( 'gulp-if' );
 const gutil = require( 'gulp-util' );
 const globbing = require( 'gulp-css-globbing' );
 const imagemin = require( 'gulp-imagemin' );
@@ -55,6 +56,11 @@ function handleErrors () {
 
 	// Prevent the 'watch' task from stopping.
 	this.emit( 'end' );
+}
+
+function isFixed(file) {
+    // Has ESLint fixed the file contents?
+    return file.eslint != null && file.eslint.fixed;
 }
 
 /**
@@ -317,12 +323,12 @@ gulp.task('js:lint', () => {
     return gulp.src(['assets/js/*.js','!assets/js/vendor/**/*.js','!assets/js/**/*.min.js'])
         // eslint() attaches the lint output to the "eslint" property
         // of the file object so it can be used by other modules.
-        .pipe(eslint({
-        	fix: true
-        }))
+        .pipe(eslint({fix:true}))
         // eslint.format() outputs the lint results to the console.
         // Alternatively use eslint.formatEach() (see Docs).
         .pipe(eslint.format())
+        // if fixed, write the file to dest
+        .pipe(gulpIf(isFixed, gulp.dest( 'assets/js' )))
         // To have the process exit with an error code (1) on
         // lint error, return the stream and pipe to failAfterError last.
         .pipe(eslint.failAfterError());
@@ -360,7 +366,7 @@ gulp.task( 'markup', browserSync.reload );
 gulp.task( 'i18n', [ 'wp-pot' ] );
 gulp.task( 'changelog', [ 'wp-changelog' ] );
 gulp.task( 'icons', [ 'svg' ] );
-gulp.task( 'scripts', [ 'uglify' ] );
+gulp.task( 'scripts', [ 'uglify', 'js:lint' ] );
 gulp.task( 'styles', [ 'cssnano' ] );
 gulp.task( 'lint', [ 'sass:lint', 'js:lint' ] );
 gulp.task( 'default', [ 'i18n', 'changelog', 'icons', 'styles', 'scripts', 'imagemin'] );
