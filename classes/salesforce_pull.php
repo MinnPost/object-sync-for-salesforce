@@ -174,6 +174,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 				continue;
 			}
 
+			// check if we have a stored currently running query and if so, apply an offset
+			$pull_query_running = get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' );
+			if ( '' !== $pull_query_running ) {
+				$saved_query = maybe_unserialize( $pull_query_running );
+				// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
+				$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
+			}
+
 			$options = array(
 				'cache' => false,
 			);
@@ -256,9 +264,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 						);
 					}
 				}
+				// serialize the currently running soql query and store it for this type
+				$serialized_query = maybe_serialize( $soql );
+				update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
 			} elseif ( 0 === count( $response['records'] ) ) {
 				// update the last sync timestamp for this content type
 				update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
+				// delete the option value for the currently pulling query for this type
+				delete_option( $this->option_prefix . 'currently_pulling_query_' . $type );
 			} else {
 
 				// create log entry for failed pull
