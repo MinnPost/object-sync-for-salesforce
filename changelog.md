@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.5.0 (2018-10-)
+	* Developers: this release adds a new developer hook, `object_sync_for_salesforce_pull_query_modify`, which can modify the Salesforce API SOQL query before it pulls data from Salesforce. Thanks to WordPress user @yanlep for the suggestion.
+
 * 1.4.2 (2018-08-29)
 	* Bug fix: ensure the queue functionality is present when activating the plugin.
 
