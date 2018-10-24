@@ -376,6 +376,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$salesforce_mapping['pull_trigger_field'] => 'ASC',
 		);
 
+		// Set a limit on the number of records that can be retrieved from the API at one time.
+		$soql->limit = filter_var( get_option( $this->option_prefix . 'pull_query_limit', 25 ), FILTER_VALIDATE_INT );
+
 		return $soql;
 
 	}
