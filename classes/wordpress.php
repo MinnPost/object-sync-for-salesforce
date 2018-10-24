@@ -112,12 +112,14 @@ class Object_Sync_Sf_WordPress {
 					'read'   => 'get_posts',
 					'update' => 'wp_insert_attachment',
 					'delete' => 'wp_delete_attachment',
+					'match'  => 'get_posts',
 				),
 				'meta_methods'    => array(
 					'create' => 'wp_generate_attachment_metadata',
 					'read'   => 'wp_get_attachment_metadata',
 					'update' => 'wp_update_attachment_metadata',
 					'delete' => '',
+					'match'  => 'WP_Query',
 				),
 				'content_table'   => $this->wpdb->prefix . 'posts',
 				'id_field'        => 'ID',
@@ -153,6 +155,7 @@ class Object_Sync_Sf_WordPress {
 					'read'   => 'get_user_by',
 					'update' => 'wp_update_user',
 					'delete' => 'wp_delete_user',
+					'match'  => 'get_user_by',
 				),
 				'meta_methods'    => $user_meta_methods,
 				'content_table'   => $this->wpdb->prefix . 'users',
@@ -174,12 +177,14 @@ class Object_Sync_Sf_WordPress {
 					'read'   => 'get_posts',
 					'update' => 'wp_update_post',
 					'delete' => 'wp_delete_post',
+					'match'  => 'get_posts',
 				),
 				'meta_methods'    => array(
 					'create' => 'add_post_meta',
 					'read'   => 'get_post_meta',
 					'update' => 'update_post_meta',
 					'delete' => 'delete_post_meta',
+					'match'  => 'WP_Query',
 				),
 				'content_table'   => $this->wpdb->prefix . 'posts',
 				'id_field'        => 'ID',
@@ -197,12 +202,14 @@ class Object_Sync_Sf_WordPress {
 					'read'   => 'get_term_by',
 					'update' => 'wp_update_term',
 					'delete' => 'wp_delete_term',
+					'match'  => 'get_term_by',
 				),
 				'meta_methods'    => array(
 					'create' => 'add_term_meta',
 					'read'   => 'get_term_meta',
 					'update' => 'update_term_meta',
 					'delete' => 'delete_metadata',
+					'match'  => 'WP_Term_Query',
 				),
 				'content_table'   => $this->wpdb->prefix . 'terms',
 				'id_field'        => 'term_id',
@@ -219,12 +226,14 @@ class Object_Sync_Sf_WordPress {
 					'read'   => 'get_comments',
 					'update' => 'wp_update_comment',
 					'delete' => 'wp_delete_comment',
+					'match'  => 'get_comments',
 				),
 				'meta_methods'    => array(
 					'create' => 'add_comment_meta',
 					'read'   => 'get_comment_meta',
 					'update' => 'update_comment_meta',
 					'delete' => 'delete_comment_metadata',
+					'match'  => 'WP_Comment_Query',
 				),
 				'content_table'   => $this->wpdb->prefix . 'comments',
 				'id_field'        => 'comment_ID',
@@ -241,12 +250,14 @@ class Object_Sync_Sf_WordPress {
 					'read'   => 'get_posts',
 					'update' => 'wp_update_post',
 					'delete' => 'wp_delete_post',
+					'match'  => 'get_posts',
 				),
 				'meta_methods'    => array(
 					'create' => 'add_post_meta',
 					'read'   => 'get_post_meta',
 					'update' => 'update_post_meta',
 					'delete' => 'delete_post_meta',
+					'match'  => 'WP_Query',
 				),
 				'content_table'   => $this->wpdb->prefix . 'posts',
 				'id_field'        => 'ID',
@@ -592,7 +603,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param string $value The value for this record of the field specified for $key.
 	 * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 	 * @param array  $params Values of the fields to set for the object.
-	 * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
+	 * @param bool   $pull_to_drafts Whether to save to WordPress drafts when pulling from Salesforce.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
 	 *
 	 * @return array
@@ -606,7 +617,7 @@ class Object_Sync_Sf_WordPress {
 	 *
 	 * part of CRUD for WordPress objects
 	 */
-	public function object_upsert( $name, $key, $value, $methods = array(), $params, $push_drafts = false, $check_only = false ) {
+	public function object_upsert( $name, $key, $value, $methods = array(), $params, $pull_to_drafts = false, $check_only = false ) {
 
 		$structure = $this->get_wordpress_table_structure( $name );
 		$id_field  = $structure['id_field'];
@@ -622,10 +633,10 @@ class Object_Sync_Sf_WordPress {
 
 		switch ( $name ) {
 			case 'user':
-				$result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
+				$result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $check_only );
 				break;
 			case 'post':
-				$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name, $check_only );
+				$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $name, $check_only );
 				break;
 			case 'attachment':
 				$result = $this->attachment_upsert( $key, $value, $methods, $params, $id_field, $check_only );
@@ -633,10 +644,10 @@ class Object_Sync_Sf_WordPress {
 			case 'category':
 			case 'tag':
 			case 'post_tag':
-				$result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $push_drafts, $check_only );
+				$result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $check_only );
 				break;
 			case 'comment':
-				$result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $check_only );
+				$result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $check_only );
 				break;
 			default:
 				/*
@@ -648,21 +659,21 @@ class Object_Sync_Sf_WordPress {
 				 * Use hook like this:
 				 *     add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', upsert_object, 10, 1 );
 				 * The one param is:
-				 *     array( 'key' => key, 'value' => value, 'methods' => methods, 'params' => array_of_params, 'id_field' => idfield, 'push_drafts' => pushdrafts, 'name' => name, 'check_only' => $check_only )
+				 *     array( 'key' => key, 'value' => value, 'methods' => methods, 'params' => array_of_params, 'id_field' => idfield, 'pull_to_drafts' => pulltodrafts, 'name' => name, 'check_only' => $check_only )
 				*/
 				// Check to see if someone is calling the filter, and apply it if so.
 				if ( ! has_filter( $this->option_prefix . 'upsert_custom_wordpress_item' ) ) {
-					$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $push_drafts, $name, $check_only );
+					$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $name, $check_only );
 				} else {
 					$result = apply_filters( $this->option_prefix . 'upsert_custom_wordpress_item', array(
-						'key'         => $key,
-						'value'       => $value,
-						'methods'     => $methods,
-						'params'      => $params,
-						'id_field'    => $id_field,
-						'push_drafts' => $push_drafts,
-						'name'        => $name,
-						'check_only'  => $check_only,
+						'key'            => $key,
+						'value'          => $value,
+						'methods'        => $methods,
+						'params'         => $params,
+						'id_field'       => $id_field,
+						'pull_to_drafts' => $pull_to_drafts,
+						'name'           => $name,
+						'check_only'     => $check_only,
 					) );
 				}
 				break;
@@ -723,7 +734,7 @@ class Object_Sync_Sf_WordPress {
 				 * Use hook like this:
 				 *     add_filter( 'object_sync_for_salesforce_update_custom_wordpress_item', update_object, 10, 1 );
 				 * The one param is:
-				 *     array( 'key' => key, 'value' => value, 'name' => objecttype, 'params' => array_of_params, 'push_drafts' => pushdrafts, 'methods' => methods )
+				 *     array( 'id' => id, 'params' => array_of_params, 'name' => objecttype, 'id_field' => idfield )
 				 */
 				// Check to see if someone is calling the filter, and apply it if so.
 				if ( ! has_filter( $this->option_prefix . 'update_custom_wordpress_item' ) ) {
@@ -923,7 +934,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 	 * @param array  $params Array of user data params. This is generated by Object_Sync_Sf_Mapping::map_params().
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
-	 * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
+	 * @param bool   $pull_to_drafts Whether to save to WordPress drafts when pulling from Salesforce.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
 	 *
 	 * @return array
@@ -932,14 +943,32 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $check_only = false ) {
+	private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $pull_to_drafts = false, $check_only = false ) {
 
 		// If the key is user_email, we need to make it just email because that is how the WordPress method reads it.
 		$method = $methods['method_match'];
 		if ( '' !== $method ) {
-			// This should give us the user object.
-			$user = $method( str_replace( 'user_', '', $key ), $value );
-			if ( isset( $user->{$id_field} ) ) {
+			// These methods should give us the user object if we are matching for one.
+			// if we are trying to match to a meta field, the method is an object
+			if ( class_exists( $method ) ) {
+				$args        = array(
+					'meta_query' => array(
+						array(
+							'key'   => $key,
+							'value' => $value,
+						),
+					),
+				);
+				$match_query = new $method( $args );
+				$users       = $match_query->get_results();
+				if ( ! empty( $users ) ) {
+					$user = $users[0];
+				}
+			} else {
+				$user = $method( str_replace( 'user_', '', $key ), $value );
+			}
+
+			if ( isset( $user ) && isset( $user->{$id_field} ) ) {
 				// User does exist after checking the matching value. we want its id.
 				$user_id = $user->{$id_field};
 
@@ -1207,7 +1236,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 	 * @param array  $params Array of post data params.
 	 * @param string $id_field optional string of what the ID field is, if it is ever not ID.
-	 * @param bool   $push_drafts Indicates whether we should match against draft posts.
+	 * @param bool   $pull_to_drafts Whether to save to WordPress drafts when pulling from Salesforce.
 	 * @param string $post_type Optional string for custom post type, if applicable.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
 	 *
@@ -1217,14 +1246,14 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $push_drafts = false, $post_type = 'post', $check_only = false ) {
+	private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $pull_to_drafts = false, $post_type = 'post', $check_only = false ) {
 
 		$method = $methods['method_match'];
 
 		if ( '' !== $method ) {
 			// By default, posts use get_posts as the method. args can be like this.
 			// The args don't really make sense, and are inconsistently documented.
-			// This should give us the post object.
+			// These methods should give us the post object.
 			$args = array();
 			if ( 'post_title' === $key ) {
 				$params['post_title'] = array(
@@ -1238,14 +1267,28 @@ class Object_Sync_Sf_WordPress {
 			}
 			$args['post_type'] = $post_type;
 			$post_statuses     = array( 'publish' );
-			if ( true === $push_drafts ) {
+
+			if ( true === filter_var( $pull_to_drafts, FILTER_VALIDATE_BOOLEAN ) ) {
 				$post_statuses[] = 'draft';
 			}
 			$args['post_status'] = $post_statuses;
 
-			$posts = $method( $args );
+			// if we are trying to match to a meta field, the method is an object
+			if ( class_exists( $method ) ) {
+				unset( $args[ $key ] );
+				$args['meta_query'] = array(
+					array(
+						'key'   => $key,
+						'value' => $value,
+					),
+				);
+				$match_query        = new $method( $args );
+				$posts              = $match_query->get_results();
+			} else {
+				$posts = $method( $args );
+			}
 
-			if ( isset( $posts[0]->{$id_field} ) ) {
+			if ( isset( $posts ) && isset( $posts[0]->{$id_field} ) ) {
 				// Post does exist after checking the matching value. We want its id.
 				$post_id = $posts[0]->{$id_field};
 
@@ -1536,7 +1579,7 @@ class Object_Sync_Sf_WordPress {
 			// Get_posts is more helpful here, so that is the method attachment uses for 'read'.
 			// By default, posts use get_posts as the method. args can be like this.
 			// The args don't really make sense, and are inconsistently documented.
-			// This should give us the post object.
+			// These methods should give us the post object.
 			$args = array();
 			if ( 'post_title' === $key ) {
 				$params['post_title'] = array(
@@ -1550,9 +1593,22 @@ class Object_Sync_Sf_WordPress {
 			}
 			$args['post_type'] = 'attachment';
 
-			$posts = $method( $args );
+			// if we are trying to match to a meta field, the method is an object
+			if ( class_exists( $method ) ) {
+				unset( $args[ $key ] );
+				$args['meta_query'] = array(
+					array(
+						'key'   => $key,
+						'value' => $value,
+					),
+				);
+				$match_query        = new $method( $args );
+				$posts              = $match_query->get_results();
+			} else {
+				$posts = $method( $args );
+			}
 
-			if ( isset( $posts[0]->{$id_field} ) ) {
+			if ( isset( $posts ) && isset( $posts[0]->{$id_field} ) ) {
 				// Attachment does exist after checking the matching value. we want its id.
 				$attachment_id = $posts[0]->{$id_field};
 
@@ -1863,7 +1919,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param array  $params Array of term data params.
 	 * @param string $taxonomy The taxonomy to which to add the term. this is required..
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
-	 * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
+	 * @param bool   $pull_to_drafts Whether to save to WordPress drafts when pulling from Salesforce.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
 	 *
 	 * @return array
@@ -1872,15 +1928,30 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $push_drafts = false, $check_only = false ) {
+	private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $pull_to_drafts = false, $check_only = false ) {
 		if ( 'tag' === $taxonomy ) {
 			$taxonomy = 'post_tag';
 		}
 		$method = $methods['method_match'];
 		if ( '' !== $method ) {
-			// This should give us the term object.
-			$term = $method( $key, $value, $taxonomy ); // We need to put the taxonomy in there probably.
-			if ( isset( $term->{$id_field} ) ) {
+			// These methods should give us the term object if we are matching for one.
+			// if we are trying to match to a meta field, the method is an object
+			if ( class_exists( $method ) ) {
+				$args        = array(
+					'taxonomy'   => $taxonomy,
+					'meta_key'   => $key,
+					'meta_value' => $value,
+				);
+				$match_query = new $method( $args );
+				$terms       = $match_query->get_terms();
+				if ( ! empty( $terms ) ) {
+					$term = $terms[0];
+				}
+			} else {
+				$term = $method( $key, $value, $taxonomy ); // We need to put the taxonomy in there probably.
+			}
+
+			if ( isset( $term ) && isset( $term->{$id_field} ) ) {
 				// Term does exist after checking the matching value. we want its id.
 				$term_id = $term->{$id_field};
 
@@ -2170,7 +2241,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param array  $methods What WordPress methods do we use to get the data, if there are any. otherwise, maybe will have to do a wpdb query.
 	 * @param array  $params Array of comment data params.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not comment_ID.
-	 * @param bool   $push_drafts Whether to save WordPress drafts when pushing to Salesforce.
+	 * @param bool   $pull_to_drafts Whether to save to WordPress drafts when pulling from Salesforce.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
 	 *
 	 * @return array
@@ -2179,23 +2250,41 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $push_drafts = false, $check_only = false ) {
+	private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $pull_to_drafts = false, $check_only = false ) {
 		$method = $methods['method_match'];
 		if ( 'get_comment' === $method ) {
 			$method = 'get_comments';
 		}
 		if ( '' !== $method ) {
-			// This should give us the comment object.
-			$match = array();
-			if ( 'comment_author' === $key ) {
-				$match['author__in'] = array( $value );
-			} else {
-				$key           = str_replace( 'comment_', '', $key );
-				$match[ $key ] = $value;
-			}
-			$comments = $method( $match );
 
-			if ( 1 === count( $comments ) ) {
+			// These methods should give us the comment object if we are matching for one.
+			// if we are trying to match to a meta field, the method is an object
+			if ( class_exists( $method ) ) {
+				$args        = array(
+					'meta_query' => array(
+						array(
+							'key'   => $key,
+							'value' => $value,
+						),
+					),
+				);
+				$match_query = new $method( $args );
+				$comments    = $match_query->get_comments();
+				if ( ! empty( $comments ) ) {
+					$comment = $users[0];
+				}
+			} else {
+				$match = array();
+				if ( 'comment_author' === $key ) {
+					$match['author__in'] = array( $value );
+				} else {
+					$key           = str_replace( 'comment_', '', $key );
+					$match[ $key ] = $value;
+				}
+				$comments = $method( $match );
+			}
+
+			if ( 1 === count( $comments ) && isset( $comments ) && isset( $comments[0]->{$id_field} ) ) {
 				$comment = $comments[0];
 				// Comment does exist after checking the matching value. we want its id.
 				$comment_id = $comment->{$id_field};

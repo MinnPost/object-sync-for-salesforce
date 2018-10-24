@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="Object Sync for Salesforce">
-	<config name="minimum_supported_wp_version" value="4.5" />
+	<config name="minimum_supported_wp_version" value="4.6" />
 	<config name="testVersion" value="5.5-"/>
 
 	<rule ref="WordPress-Core" />

@@ -190,11 +190,14 @@ class Object_Sync_Sf_Mapping {
 
 		} else { // get all of the mappings. ALL THE MAPPINGS.
 
-			// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column
-			if ( version_compare( $this->version, '1.2.5', '>=' ) ) {
-				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight`, `version` FROM $table", ARRAY_A );
+			// if the version is greater than or equal to 1.5.0, the fieldmap table has a pull_to_drafts column
+			if ( version_compare( $this->version, '1.5.0', '>=' ) ) {
+				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
+			} elseif ( version_compare( $this->version, '1.2.5', '>=' ) ) {
+				// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column
+				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight`, `version` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
 			} else {
-				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table", ARRAY_A );
+				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
 			}
 
 			if ( ! empty( $mappings ) ) {
@@ -219,6 +222,7 @@ class Object_Sync_Sf_Mapping {
 		foreach ( $mapping['fields'] as $fields ) {
 			if ( empty( $directions ) || in_array( $fields['direction'], $directions, true ) ) {
 
+				// in version 1.2.0, we provided an option for API name vs label for Salesforce fields
 				if ( version_compare( $this->version, '1.2.0', '>=' ) && isset( $fields['salesforce_field']['name'] ) ) {
 					$array_key = 'name';
 				} else {
@@ -388,9 +392,10 @@ class Object_Sync_Sf_Mapping {
 		if ( isset( $posted['pull_trigger_field'] ) ) {
 			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
 		}
-		$data['push_async']  = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
-		$data['push_drafts'] = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
-		$data['weight']      = isset( $posted['weight'] ) ? $posted['weight'] : '';
+		$data['push_async']     = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
+		$data['push_drafts']    = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
+		$data['pull_to_drafts'] = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
+		$data['weight']         = isset( $posted['weight'] ) ? $posted['weight'] : '';
 		return $data;
 	}
 
@@ -832,6 +837,7 @@ class Object_Sync_Sf_Mapping {
 						'salesforce_field' => $salesforce_field,
 						'wordpress_field'  => $wordpress_field,
 						'value'            => $object[ $salesforce_field ],
+						'method_match'     => isset( $fieldmap['wordpress_field']['methods']['match'] ) ? $fieldmap['wordpress_field']['methods']['match'] : $fieldmap['wordpress_field']['methods']['read'],
 						'method_read'      => $fieldmap['wordpress_field']['methods']['read'],
 						'method_create'    => $fieldmap['wordpress_field']['methods']['create'],
 						'method_update'    => $fieldmap['wordpress_field']['methods']['update'],

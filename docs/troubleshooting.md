@@ -22,6 +22,7 @@ CREATE TABLE `wp_object_sync_sf_field_map` (
 	`sync_triggers` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
 	`push_async` tinyint(1) NOT NULL DEFAULT '0',
 	`push_drafts` tinyint(1) NOT NULL DEFAULT '0',
+	`pull_to_drafts` tinyint(1) NOT NULL DEFAULT '0',
 	`weight` tinyint(1) NOT NULL DEFAULT '0',
 	`version` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`),

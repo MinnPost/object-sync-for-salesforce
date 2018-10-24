@@ -2,9 +2,9 @@
 Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations, harmoney
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
-Requires at least: 4.5
+Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.4.2
+Stable tag: 1.5.0
 Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -187,20 +187,14 @@ There is extensive documentation of this plugin, including its developer hooks, 
 
 == Changelog ==
 
-* 1.4.2 (2018-08-29)
-	* Bug fix: ensure the queue functionality is present when activating the plugin.
-* 1.4.1 (2018-08-29)
-	* Bug fix: in some plugin update scenarios, the database version number checker was not running. It runs all the time, now.
-* 1.4.0 (2018-08-29)
-	* New: this plugin now uses the [Action Scheduler](https://github.com/Prospress/action-scheduler) library for scheduling tasks and queueing data in a more performant and scalable way. This removes the need for some of the administrative settings, but as long as you **resave from the plugin's Schedule tab**, it should not break any existing functionality.
-	* Bug fix: this release also stores composer library files in its Git repository. This *should* fix a deployment bug with some web hosts, such as Pantheon.
-	* This release also brings plugin JavaScript in line with WordPress code formatting guidelines.
-	* Thanks to GitHub user @charmoney for help reviewing this release.
+* 1.5.0 (2018-10-)
+	* New: the Mapping Errors tab supports deleting multiple error rows via checkboxes.
+	* New: when caching API responses, the plugin caches the full array rather than the full array and the JSON data. This reduces the memory usage for object caches a little.
+	* New: this plugin should be usable on WordPress VIP environments; it now checks for `user_attributes` instead of `user_meta` in those cases.
+	* Bug fix: this plugin can now be properly deployed on hosts like Pantheon. Thanks to WordPress user @joepahl and GitHub user @BrianBenninger for reporting this.
+	* Bug fix: when using meta fields for prematch, the plugin previously could fail to find a match even if the value existed. It now uses different matching for meta fields. **This requires that users resave their fieldmaps, and also that we end support for WordPress 4.5.**. Thanks to WordPress user @nodakjones for the bug report and testing assistance.
+	* Developers: this release adds a new developer hook, `object_sync_for_salesforce_pull_query_modify`, which can modify the Salesforce API SOQL query before it pulls data from Salesforce. Thanks to WordPress user @yanlep for the suggestion.
 
 == Upgrade Notice ==
-= 1.4.2 =
-We have added a new method for scheduled actions, the Action Scheduler library from Prospress. When you upgrade, go to the Scheduling tab to save your settings.
-= 1.4.1 =
-We have added a new method for scheduled actions, the Action Scheduler library from Prospress. When you upgrade, go to the Scheduling tab to save your settings.
-= 1.4.0 =
-We have added a new method for scheduled actions, the Action Scheduler library from Prospress. When you upgrade, go to the Scheduling tab to save your settings.
+= 1.5.0 =
+This plugin now uses a different matching techinque for meta fields. **This requires that you resave your existing fieldmaps, and also that we end support for WordPress 4.5.**.

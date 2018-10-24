@@ -2,10 +2,11 @@ Changelog
 =========
 
 * 1.5.0 (2018-10-)
-	* Bug fix: when using meta fields for prematch, the plugin previously could fail to find a match even if the value existed. It now uses different matching for meta fields. **This requires that users resave their fieldmaps, and also that we end support for WordPress 4.5.**. Thanks to WordPress user @nodakjones for the bug report and testing assistance.
-	* Bug fix: when using the ActionScheduler library, the plugin fails to process multiple rounds of pull requests. Now it uses the limit setting to page through all possible updated records. Thanks to WordPress user @jonsayer for the report.
 	* New: the Mapping Errors tab supports deleting multiple error rows via checkboxes.
 	* New: when caching API responses, the plugin caches the full array rather than the full array and the JSON data. This reduces the memory usage for object caches a little.
+	* New: this plugin should be usable on WordPress VIP environments; it now checks for `user_attributes` instead of `user_meta` in those cases.
+	* Bug fix: this plugin can now be properly deployed on hosts like Pantheon. Thanks to WordPress user @joepahl and GitHub user @BrianBenninger for reporting this.
+	* Bug fix: when using meta fields for prematch, the plugin previously could fail to find a match even if the value existed. It now uses different matching for meta fields. **This requires that users resave their fieldmaps, and also that we end support for WordPress 4.5.**. Thanks to WordPress user @nodakjones for the bug report and testing assistance.
 	* Developers: this release adds a new developer hook, `object_sync_for_salesforce_pull_query_modify`, which can modify the Salesforce API SOQL query before it pulls data from Salesforce. Thanks to WordPress user @yanlep for the suggestion.
 
 * 1.4.2 (2018-08-29)

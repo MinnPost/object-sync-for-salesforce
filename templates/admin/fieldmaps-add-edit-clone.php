@@ -378,7 +378,7 @@
 		}
 		?>
 		<p><button type="button" id="add-field-mapping" class="button button-secondary"><?php echo $add_button_label; ?></button></p>
-		<p class="description"><?php echo esc_html__( 'Prematch tells the plugin to match records that have the same value before sending data to Salesforce. Salesforce Key indicates the Salesforce field is an External ID. If either of these is checked, the plugin will do an UPSERT to avoid duplicate data when possible.', 'object-sync-for-salesforce' ); ?></p>
+		<p class="description"><?php echo esc_html__( 'A checked Prematch (when saving data in either WordPress or Salesforce) or Salesforce Key (only when saving data from WordPress to Salesforce) field will cause the plugin to check for a match on that value before creating new records.', 'object-sync-for-salesforce' ); ?></p>
 	</fieldset>
 	<fieldset class="sync_triggers">
 		<legend><?php echo esc_html__( 'Action triggers', 'object-sync-for-salesforce' ); ?></legend>
@@ -440,6 +440,10 @@
 		<div class="checkboxes">
 			<label><input type="checkbox" name="push_drafts" id="push-drafts" value="1" <?php echo isset( $push_drafts ) && '1' === $push_drafts ? ' checked' : ''; ?>><?php echo esc_html__( 'Push drafts', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description"><?php echo esc_html__( 'If selected, WordPress will send drafts of this object type (if it creates drafts for it) to Salesforce.', 'object-sync-for-salesforce' ); ?></p>
+		</div>
+		<div class="checkboxes">
+			<label><input type="checkbox" name="pull_to_drafts" id="pull-to-drafts" value="1" <?php echo isset( $pull_to_drafts ) && '1' === $pull_to_drafts ? ' checked' : ''; ?>><?php echo esc_html__( 'Pull to drafts', 'object-sync-for-salesforce' ); ?></label>
+			<p class="description"><?php echo esc_html__( 'If selected, WordPress will pull data into drafts of this object type (if it creates drafts for it) from Salesforce, including when it attempts to match records.', 'object-sync-for-salesforce' ); ?></p>
 		</div>
 		<?php
 		/*
