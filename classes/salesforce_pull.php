@@ -461,9 +461,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 						'sf_sync_trigger' => $sf_sync_trigger, // sf delete trigger
 					);
 
+					// if the current fieldmap does not allow delete, set pull_allowed to false.
+					if ( isset( $map_sync_triggers ) && ! in_array( $this->mappings->sync_sf_delete, $map_sync_triggers ) ) {
+						$pull_allowed = false;
+					}
+
 					// Hook to allow other plugins to prevent a pull per-mapping.
 					// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
-					$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', true, $type, $result, $sf_sync_trigger, $salesforce_mapping );
+					$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', $pull_allowed, $type, $result, $sf_sync_trigger, $salesforce_mapping );
 
 					// example to keep from pulling the Contact with id of abcdef
 					/*
