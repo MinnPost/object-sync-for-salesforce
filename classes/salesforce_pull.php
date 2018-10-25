@@ -268,10 +268,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$serialized_query = maybe_serialize( $soql );
 				update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
 			} elseif ( 0 === count( $response['records'] ) ) {
-				// update the last sync timestamp for this content type
-				update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
-				// delete the option value for the currently pulling query for this type
-				delete_option( $this->option_prefix . 'currently_pulling_query_' . $type );
+				// only update/clear these option values if we are currently still processing a query
+				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
+					// update the last sync timestamp for this content type
+					update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
+					// delete the option value for the currently pulling query for this type
+					delete_option( $this->option_prefix . 'currently_pulling_query_' . $type );
+				}
 			} else {
 
 				// create log entry for failed pull
@@ -476,6 +479,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 						'mapping'         => $mapping,
 						'sf_sync_trigger' => $sf_sync_trigger, // sf delete trigger
 					);
+
+					// default is pull is allowed
+					$pull_allowed = true;
 
 					// if the current fieldmap does not allow delete, set pull_allowed to false.
 					if ( isset( $map_sync_triggers ) && ! in_array( $this->mappings->sync_sf_delete, $map_sync_triggers ) ) {
