@@ -202,7 +202,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			if ( ! isset( $response['errorCode'] ) && 0 < count( $response['records'] ) ) {
 				// Write items to the queue.
-				foreach ( $response['records'] as $result ) {
+				foreach ( $response['records'] as $key => $result ) {
 
 					// if this record is new as of the last sync, use the create trigger
 					if ( isset( $result['CreatedDate'] ) && $result['CreatedDate'] > $last_sync ) {
@@ -247,7 +247,16 @@ class Object_Sync_Sf_Salesforce_Pull {
 						}
 						*/
 
+						// increment the SOQL offset by the current key
+						// the key is zero based, but that is fine for a SOQL offset value
+						$soql->offset = $soql->offset + $key;
+
+						// serialize the currently running SOQL query and store it for this type
+						$serialized_query = maybe_serialize( $soql );
+
 						if ( false === $pull_allowed ) {
+							// update the stored query so we don't end up on the same record again if the process fails
+							update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
 							continue;
 						}
 
@@ -262,11 +271,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 							),
 							$this->schedule_name
 						);
-					}
-				}
-				// serialize the currently running soql query and store it for this type
-				$serialized_query = maybe_serialize( $soql );
-				update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
+
+						// update the stored query so we don't end up on the same record again if the process fails
+						update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
+					} // end if
+				} // end foreach
 			} elseif ( 0 === count( $response['records'] ) ) {
 				// only update/clear these option values if we are currently still processing a query
 				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
