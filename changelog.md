@@ -1,7 +1,7 @@
 Changelog
 =========
 
-* 1.5.0 (2018-10-)
+* 1.5.0 (2018-10-26)
 	* New: the Mapping Errors tab supports deleting multiple error rows via checkboxes.
 	* New: when caching API responses, the plugin caches the full array rather than the full array and the JSON data. This reduces the memory usage for object caches a little.
 	* New: this plugin should be usable on WordPress VIP environments; it now checks for `user_attributes` instead of `user_meta` in those cases.
