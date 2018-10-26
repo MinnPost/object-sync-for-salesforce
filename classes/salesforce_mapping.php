@@ -430,7 +430,7 @@ class Object_Sync_Sf_Mapping {
 		$data['created'] = current_time( 'mysql' );
 		// Check to see if we don't know the salesforce id and it is not a temporary id, or if this is pending.
 		// If it is using a temporary id, the map will get updated after it finishes running; it won't call this method unless there's an error, which we should log.
-		if ( substr( $data['salesforce_id'], 0, 7 ) !== 'tmp_sf_' || 'pending' === $data['action'] ) {
+		if ( substr( $data['salesforce_id'], 0, 7 ) !== 'tmp_sf_' || ( isset( $data['action'] ) && 'pending' === $data['action'] ) ) {
 			unset( $data['action'] );
 			$insert = $this->wpdb->insert( $this->object_map_table, $data );
 		} else {

@@ -249,6 +249,12 @@ class Object_Sync_Sf_Salesforce {
 		if ( 'POST' === $method || 'PATCH' === $method ) {
 			$headers['Content-Type'] = 'Content-Type: application/json';
 		}
+
+		// if headers are being passed in the $options, use them.
+		if ( isset( $options['headers'] ) ) {
+			$headers = array_merge( $headers, $options['headers'] );
+		}
+
 		if ( isset( $options['authenticated'] ) && true === $options['authenticated'] ) {
 			$headers = false;
 		}
