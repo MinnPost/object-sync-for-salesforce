@@ -45,9 +45,6 @@ class Object_Sync_Sf_Activate {
 		$this->action_group_suffix = '_check_records';
 		$this->installed_version   = get_option( $this->option_prefix . 'db_version', '' );
 
-		// Save the current plugin version in a transient
-		set_transient( $this->option_prefix . 'installed_version', $this->installed_version );
-
 		$this->add_actions();
 	}
 
@@ -60,6 +57,9 @@ class Object_Sync_Sf_Activate {
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'php_requirements' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'wordpress_salesforce_tables' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'add_roles_capabilities' ) );
+
+		// make sure admin users have the installed version as a transient
+		add_action( 'admin_init', array( $this, 'set_installed_version' ), 10 );
 
 		// this should run when the user is in the admin area to make sure the database gets updated
 		add_action( 'admin_init', array( $this, 'wordpress_salesforce_update_db_check' ), 10 );
@@ -101,6 +101,7 @@ class Object_Sync_Sf_Activate {
 			sync_triggers text NOT NULL,
 			push_async tinyint(1) NOT NULL DEFAULT '0',
 			push_drafts tinyint(1) NOT NULL DEFAULT '0',
+			pull_to_drafts tinyint(1) NOT NULL DEFAULT '0',
 			weight tinyint(1) NOT NULL DEFAULT '0',
 			version varchar(255) NOT NULL DEFAULT '',
 			PRIMARY KEY  (id),
@@ -169,6 +170,14 @@ class Object_Sync_Sf_Activate {
 	}
 
 	/**
+	* Set the installed version
+	*/
+	public function set_installed_version() {
+		// Save the current plugin version in a transient
+		set_transient( $this->option_prefix . 'installed_version', $this->installed_version );
+	}
+
+	/**
 	* Check for database version
 	* When the plugin is loaded in the admin, if the database version does not match the current version, perform these methods
 	*
@@ -218,7 +227,7 @@ class Object_Sync_Sf_Activate {
 				if ( ! isset( $this->schedulable_classes[ $schedule_name ]['initializer'] ) ) {
 					continue;
 				}
-				// create new recurring task for action-scheduler to check for data to pull from salesforce
+				// create new recurring task for action-scheduler to check for data to pull from Salesforce
 				$this->queue->schedule_recurring(
 					current_time( 'timestamp', true ), // plugin seems to expect UTC
 					$this->queue->get_frequency( $schedule_name, 'seconds' ),

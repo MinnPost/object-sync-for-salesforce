@@ -75,9 +75,12 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public function set_log_visibility( $log_args ) {
 		// set public to true overrides the WP_DEBUG setting that is the default on the class
 		// capabilities makes it so (currently) only admin users can see the log posts in their admin view
-		// note: there is no actual "public" view for this post type
-		$log_args['public']       = true;
-		$log_args['capabilities'] = array(
+		// note: a public value of true is required to show Logs as a nav menu item on the admin.
+		// however, if we don't set exclude_from_search to true and publicly_queryable to false, logs *can* appear in search results
+		$log_args['public']              = true;
+		$log_args['publicly_queryable']  = false;
+		$log_args['exclude_from_search'] = true;
+		$log_args['capabilities']        = array(
 			'edit_post'          => 'configure_salesforce',
 			'read_post'          => 'configure_salesforce',
 			'delete_post'        => 'configure_salesforce',

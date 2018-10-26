@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">191</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">189</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-621865956"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-129656334"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-621865956" class="accordion-body collapse in">
+            <div id="namespace-129656334" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -882,7 +882,7 @@ and places each updated SF object into the queue for later processing.</p>
             <article class="method">
                 <h3 class="private ">get_pull_query()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_pull_query(string  <span class="argument">$type</span>,   <span class="argument">$salesforce_mapping = array()</span>) : \Object_Sync_Sf_Salesforce_Select_Query</pre>
+                <pre class="signature" style="margin-right: 54px;">get_pull_query(string  <span class="argument">$type</span>, array  <span class="argument">$salesforce_mapping = array()</span>) : \Object_Sync_Sf_Salesforce_Select_Query</pre>
                 <p><em>Given a SObject type name, build an SOQL query to include all fields for all
 SalesforceMappings mapped to that SObject.</em></p>
                 
@@ -895,9 +895,9 @@ SalesforceMappings mapped to that SObject.</em></p>
                                 <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>array</td>
                                 <td>$salesforce_mapping </td>
-                                <td></td>
+                                <td><p>the fieldmap that maps the two object types</p></td>
                             </tr>
                                             </table>
                 
@@ -1046,7 +1046,7 @@ This is the database row for the map object</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on August 29th, 2018 at 17:19.
+                    on October 26th, 2018 at 19:08.
                 </section>
             </section>
         </section>

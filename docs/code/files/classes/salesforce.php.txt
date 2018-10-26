@@ -249,6 +249,12 @@ class Object_Sync_Sf_Salesforce {
 		if ( 'POST' === $method || 'PATCH' === $method ) {
 			$headers['Content-Type'] = 'Content-Type: application/json';
 		}
+
+		// if headers are being passed in the $options, use them.
+		if ( isset( $options['headers'] ) ) {
+			$headers = array_merge( $headers, $options['headers'] );
+		}
+
 		if ( isset( $options['authenticated'] ) && true === $options['authenticated'] ) {
 			$headers = false;
 		}
@@ -365,7 +371,6 @@ class Object_Sync_Sf_Salesforce {
 			);
 			curl_close( $curl );
 			return array(
-				'json' => wp_json_encode( $data ),
 				'code' => $code,
 				'data' => $data,
 			);
@@ -456,7 +461,6 @@ class Object_Sync_Sf_Salesforce {
 		curl_close( $curl );
 
 		return array(
-			'json' => $json_response,
 			'code' => $code,
 			'data' => $data,
 		);

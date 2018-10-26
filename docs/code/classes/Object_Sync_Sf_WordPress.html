@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">191</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">189</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-321164028"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-423638124"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-321164028" class="accordion-body collapse in">
+            <div id="namespace-423638124" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -861,7 +861,7 @@ is_redo:</p>
             <article class="method">
                 <h3 class="public ">object_upsert()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">object_upsert(string  <span class="argument">$name</span>, string  <span class="argument">$key</span>, string  <span class="argument">$value</span>, array  <span class="argument">$methods = array()</span>, array  <span class="argument">$params</span>, boolean  <span class="argument">$push_drafts = false</span>, boolean  <span class="argument">$check_only = false</span>) : array</pre>
+                <pre class="signature" style="margin-right: 54px;">object_upsert(string  <span class="argument">$name</span>, string  <span class="argument">$key</span>, string  <span class="argument">$value</span>, array  <span class="argument">$methods = array()</span>, array  <span class="argument">$params</span>, boolean  <span class="argument">$pull_to_drafts = false</span>, boolean  <span class="argument">$check_only = false</span>) : array</pre>
                 <p><em>Create new records or update existing records.</em></p>
                 <p>The new records or updated records are based on the value of the specified
 field.  If the value is not unique, REST API returns a 300 response with
@@ -896,8 +896,8 @@ the list of matching records.</p>
                             </tr>
                                                     <tr>
                                 <td>boolean</td>
-                                <td>$push_drafts </td>
-                                <td><p>Whether to save WordPress drafts when pushing to Salesforce.</p></td>
+                                <td>$pull_to_drafts </td>
+                                <td><p>Whether to save to WordPress drafts when pulling from Salesforce.</p></td>
                             </tr>
                                                     <tr>
                                 <td>boolean</td>
@@ -1156,7 +1156,7 @@ success: 1
             <article class="method">
                 <h3 class="private ">user_upsert()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">user_upsert(string  <span class="argument">$key</span>, string  <span class="argument">$value</span>, array  <span class="argument">$methods = array()</span>, array  <span class="argument">$params</span>, string  <span class="argument">$id_field = &#039;ID&#039;</span>, boolean  <span class="argument">$push_drafts = false</span>, boolean  <span class="argument">$check_only = false</span>) : array</pre>
+                <pre class="signature" style="margin-right: 54px;">user_upsert(string  <span class="argument">$key</span>, string  <span class="argument">$value</span>, array  <span class="argument">$methods = array()</span>, array  <span class="argument">$params</span>, string  <span class="argument">$id_field = &#039;ID&#039;</span>, boolean  <span class="argument">$pull_to_drafts = false</span>, boolean  <span class="argument">$check_only = false</span>) : array</pre>
                 <p><em>Create a new WordPress user or update it if a match is found.</em></p>
                 
 
@@ -1189,8 +1189,8 @@ success: 1
                             </tr>
                                                     <tr>
                                 <td>boolean</td>
-                                <td>$push_drafts </td>
-                                <td><p>Whether to save WordPress drafts when pushing to Salesforce.</p></td>
+                                <td>$pull_to_drafts </td>
+                                <td><p>Whether to save to WordPress drafts when pulling from Salesforce.</p></td>
                             </tr>
                                                     <tr>
                                 <td>boolean</td>
@@ -1367,7 +1367,7 @@ success: 1
             <article class="method">
                 <h3 class="private ">post_upsert()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">post_upsert(string  <span class="argument">$key</span>, string  <span class="argument">$value</span>, array  <span class="argument">$methods = array()</span>, array  <span class="argument">$params</span>, string  <span class="argument">$id_field = &#039;ID&#039;</span>, boolean  <span class="argument">$push_drafts = false</span>, string  <span class="argument">$post_type = &#039;post&#039;</span>, boolean  <span class="argument">$check_only = false</span>) : array</pre>
+                <pre class="signature" style="margin-right: 54px;">post_upsert(string  <span class="argument">$key</span>, string  <span class="argument">$value</span>, array  <span class="argument">$methods = array()</span>, array  <span class="argument">$params</span>, string  <span class="argument">$id_field = &#039;ID&#039;</span>, boolean  <span class="argument">$pull_to_drafts = false</span>, string  <span class="argument">$post_type = &#039;post&#039;</span>, boolean  <span class="argument">$check_only = false</span>) : array</pre>
                 <p><em>Create a new WordPress post or update it if a match is found.</em></p>
                 
 
@@ -1400,8 +1400,8 @@ success: 1
                             </tr>
                                                     <tr>
                                 <td>boolean</td>
-                                <td>$push_drafts </td>
-                                <td><p>Indicates whether we should match against draft posts.</p></td>
+                                <td>$pull_to_drafts </td>
+                                <td><p>Whether to save to WordPress drafts when pulling from Salesforce.</p></td>
                             </tr>
                                                     <tr>
                                 <td>string</td>
@@ -1792,7 +1792,7 @@ success: 1
             <article class="method">
                 <h3 class="private ">term_upsert()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">term_upsert(string  <span class="argument">$key</span>, string  <span class="argument">$value</span>, array  <span class="argument">$methods = array()</span>, array  <span class="argument">$params</span>, string  <span class="argument">$taxonomy</span>, string  <span class="argument">$id_field = &#039;ID&#039;</span>, boolean  <span class="argument">$push_drafts = false</span>, boolean  <span class="argument">$check_only = false</span>) : array</pre>
+                <pre class="signature" style="margin-right: 54px;">term_upsert(string  <span class="argument">$key</span>, string  <span class="argument">$value</span>, array  <span class="argument">$methods = array()</span>, array  <span class="argument">$params</span>, string  <span class="argument">$taxonomy</span>, string  <span class="argument">$id_field = &#039;ID&#039;</span>, boolean  <span class="argument">$pull_to_drafts = false</span>, boolean  <span class="argument">$check_only = false</span>) : array</pre>
                 <p><em>Create a new WordPress term or update it if a match is found.</em></p>
                 
 
@@ -1830,8 +1830,8 @@ success: 1
                             </tr>
                                                     <tr>
                                 <td>boolean</td>
-                                <td>$push_drafts </td>
-                                <td><p>Whether to save WordPress drafts when pushing to Salesforce.</p></td>
+                                <td>$pull_to_drafts </td>
+                                <td><p>Whether to save to WordPress drafts when pulling from Salesforce.</p></td>
                             </tr>
                                                     <tr>
                                 <td>boolean</td>
@@ -2008,7 +2008,7 @@ success: 1
             <article class="method">
                 <h3 class="private ">comment_upsert()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">comment_upsert(string  <span class="argument">$key</span>, string  <span class="argument">$value</span>, array  <span class="argument">$methods</span>, array  <span class="argument">$params</span>, string  <span class="argument">$id_field = &#039;comment_ID&#039;</span>, boolean  <span class="argument">$push_drafts = false</span>, boolean  <span class="argument">$check_only = false</span>) : array</pre>
+                <pre class="signature" style="margin-right: 54px;">comment_upsert(string  <span class="argument">$key</span>, string  <span class="argument">$value</span>, array  <span class="argument">$methods</span>, array  <span class="argument">$params</span>, string  <span class="argument">$id_field = &#039;comment_ID&#039;</span>, boolean  <span class="argument">$pull_to_drafts = false</span>, boolean  <span class="argument">$check_only = false</span>) : array</pre>
                 <p><em>Create a new WordPress comment or update it if a match is found.</em></p>
                 
 
@@ -2041,8 +2041,8 @@ success: 1
                             </tr>
                                                     <tr>
                                 <td>boolean</td>
-                                <td>$push_drafts </td>
-                                <td><p>Whether to save WordPress drafts when pushing to Salesforce.</p></td>
+                                <td>$pull_to_drafts </td>
+                                <td><p>Whether to save to WordPress drafts when pulling from Salesforce.</p></td>
                             </tr>
                                                     <tr>
                                 <td>boolean</td>
@@ -2212,7 +2212,7 @@ success: 1
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on August 29th, 2018 at 17:19.
+                    on October 26th, 2018 at 19:08.
                 </section>
             </section>
         </section>
