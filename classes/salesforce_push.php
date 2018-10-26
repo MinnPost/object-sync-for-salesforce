@@ -691,6 +691,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		$frequencies = $this->queue->get_frequencies();
 		$seconds     = reset( $frequencies )['frequency'] + 60;
 
+		// start the is_new stuff
 		if ( true === $is_new ) {
 
 			// right here we should set the pushing transient
