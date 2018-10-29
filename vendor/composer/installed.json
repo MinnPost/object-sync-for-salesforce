@@ -72,12 +72,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/prospress/action-scheduler.git",
-            "reference": "959c95112acc1b09f5ebe303b19b3c1aa3935498"
+            "reference": "059f4494147b57f132cb52fa04633d552b83269d"
         },
         "require-dev": {
             "wp-cli/wp-cli": "^1.3"
         },
-        "time": "2018-08-21T13:18:32+00:00",
+        "time": "2018-10-12T05:18:01+00:00",
         "type": "wordpress-plugin",
         "installation-source": "source",
         "license": [

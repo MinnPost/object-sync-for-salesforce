@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "16da372190a5ab6d1959f4393ac265b4",
+    "content-hash": "6297167a59e47281a7d5ebb8b9293215",
     "packages": [
         {
             "name": "developerforce/force.com-toolkit-for-php",
@@ -74,7 +74,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/prospress/action-scheduler.git",
-                "reference": "959c95112acc1b09f5ebe303b19b3c1aa3935498"
+                "reference": "059f4494147b57f132cb52fa04633d552b83269d"
             },
             "require-dev": {
                 "wp-cli/wp-cli": "^1.3"
@@ -84,7 +84,7 @@
                 "GPL-3.0"
             ],
             "description": "Action Scheduler for WordPress and WooCommerce",
-            "time": "2018-08-21T13:18:32+00:00"
+            "time": "2018-10-12T05:18:01+00:00"
         }
     ],
     "packages-dev": [
@@ -94,12 +94,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d"
+                "reference": "83b5716aee90e1f733512942c635ac350cbd533c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/8e884e78f9f0eb1329e445619e04456e64d8051d",
-                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/83b5716aee90e1f733512942c635ac350cbd533c",
+                "reference": "83b5716aee90e1f733512942c635ac350cbd533c",
                 "shasum": ""
             },
             "require": {
@@ -140,7 +140,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14T21:17:01+00:00"
+            "time": "2018-09-01T02:07:49+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -1163,12 +1163,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "fbf876678e29dc634430dcf0096e216eb0004467"
+                "reference": "0e16589861f192dbffb19b06683ce3ef58f7f99d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/fbf876678e29dc634430dcf0096e216eb0004467",
-                "reference": "fbf876678e29dc634430dcf0096e216eb0004467",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/0e16589861f192dbffb19b06683ce3ef58f7f99d",
+                "reference": "0e16589861f192dbffb19b06683ce3ef58f7f99d",
                 "shasum": ""
             },
             "require": {
@@ -1205,7 +1205,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-07-26T09:03:18+00:00"
+            "time": "2018-10-02T16:27:16+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -1263,8 +1263,7 @@
     "stability-flags": {
         "pippinsplugins/wp-logging": 20,
         "developerforce/force.com-toolkit-for-php": 20,
-        "prospress/action-scheduler": 20,
-        "phpunit/phpunit": 20
+        "prospress/action-scheduler": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

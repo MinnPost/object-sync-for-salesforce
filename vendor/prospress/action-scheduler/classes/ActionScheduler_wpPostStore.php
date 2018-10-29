@@ -95,6 +95,12 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function make_action_from_post( $post ) {
 		$hook = $post->post_title;
 		$args = json_decode( $post->post_content, true );
+
+		// Handle args that do not decode properly.
+		if ( JSON_ERROR_NONE !== json_last_error() || ! is_array( $args ) ) {
+			throw ActionScheduler_InvalidActionException::from_decoding_args( $post->ID );
+		}
+
 		$schedule = get_post_meta( $post->ID, self::SCHEDULE_META_KEY, true );
 		if ( empty($schedule) ) {
 			$schedule = new ActionScheduler_NullSchedule();
@@ -414,18 +420,18 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @param string $action_id
 	 *
 	 * @throws InvalidArgumentException
-	 * @return DateTime The date the action is schedule to run, or the date that it ran.
+	 * @return ActionScheduler_DateTime The date the action is schedule to run, or the date that it ran.
 	 */
 	public function get_date( $action_id ) {
-		$date = $this->get_date_gmt( $action_id );
-		return $date->setTimezone( $this->get_local_timezone() );
+		$next = $this->get_date_gmt( $action_id );
+		return ActionScheduler_TimezoneHelper::set_local_timezone( $next );
 	}
 
 	/**
 	 * @param string $action_id
 	 *
 	 * @throws InvalidArgumentException
-	 * @return DateTime The date the action is schedule to run, or the date that it ran.
+	 * @return ActionScheduler_DateTime The date the action is schedule to run, or the date that it ran.
 	 */
 	public function get_date_gmt( $action_id ) {
 		$post = get_post($action_id);
