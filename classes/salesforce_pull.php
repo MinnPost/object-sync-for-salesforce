@@ -61,6 +61,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$this->schedule_name = 'salesforce_pull';
 
+		// Maximum offset size for a SOQL query to Salesforce
+		// See: https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_select_offset.htm
+		// "The maximum offset is 2,000 rows. Requesting an offset greater than 2,000 results in a NUMBER_OUTSIDE_VALID_RANGE error."
+		$this->max_soql_offset_size = 2000;
+
 		// Create action hooks for WordPress objects. We run this after plugins are loaded in case something depends on another plugin.
 		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
 
@@ -180,6 +185,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$saved_query = maybe_unserialize( $pull_query_running );
 				// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
 				$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
+				if ( $soql->offset > $this->max_soql_offset_size ) {
+					$this->clear_current_type_query( $type );
+				}
 			}
 
 			$options = array(
@@ -279,10 +287,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			} elseif ( 0 === count( $response['records'] ) ) {
 				// only update/clear these option values if we are currently still processing a query
 				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
-					// update the last sync timestamp for this content type
-					update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
-					// delete the option value for the currently pulling query for this type
-					delete_option( $this->option_prefix . 'currently_pulling_query_' . $type );
+					$this->clear_current_type_query( $type );
 				}
 			} else {
 
@@ -1305,6 +1310,20 @@ class Object_Sync_Sf_Salesforce_Pull {
 			throw $exception;
 		}
 
+	}
+
+	/**
+	* Clear the currently stored query for the specified content type
+	*
+	* @param string $type
+	*   e.g. "Contact", "Account", etc.
+	*
+	*/
+	private function clear_current_type_query( $type ) {
+		// update the last sync timestamp for this content type
+		update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
+		// delete the option value for the currently pulling query for this type
+		delete_option( $this->option_prefix . 'currently_pulling_query_' . $type );
 	}
 
 	/**
