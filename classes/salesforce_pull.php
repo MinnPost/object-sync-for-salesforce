@@ -61,16 +61,34 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$this->schedule_name = 'salesforce_pull';
 
+		$this->batch_soql_queries = $this->batch_soql_queries( false );
+
 		// Maximum offset size for a SOQL query to Salesforce
 		// See: https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_select_offset.htm
 		// "The maximum offset is 2,000 rows. Requesting an offset greater than 2,000 results in a NUMBER_OUTSIDE_VALID_RANGE error."
-		$this->max_soql_offset_size = 2000;
+		$this->min_soql_batch_size = 200; // batches cannot be smaller than 200 records
+		$this->max_soql_size       = 2000;
 
 		// Create action hooks for WordPress objects. We run this after plugins are loaded in case something depends on another plugin.
 		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
 
 		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
 
+	}
+
+	/**
+	* Whether to use the batchSize parameter on SOQL queries
+	*
+	* @param bool $batch_soql_queries
+	* @return bool $batch_soql_queries
+	*
+	*/
+	private function batch_soql_queries( $batch_soql_queries ) {
+		// as of version 34.0, the Salesforce REST API accepts a batchSize option on the Sforce-Call-Options header
+		if ( version_compare( $this->login_credentials['rest_api_version'], '34.0', '<' ) ) {
+			$batch_soql_queries = false;
+		}
+		return $batch_soql_queries;
 	}
 
 	/**
@@ -179,27 +197,52 @@ class Object_Sync_Sf_Salesforce_Pull {
 				continue;
 			}
 
-			// check if we have a stored currently running query and if so, apply an offset
-			$pull_query_running = get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' );
-			if ( '' !== $pull_query_running ) {
-				$saved_query = maybe_unserialize( $pull_query_running );
-				// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
-				$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
-				if ( $soql->offset > $this->max_soql_offset_size ) {
-					$this->clear_current_type_query( $type );
-				}
-			}
-
-			$options = array(
+			$query_options = array(
 				'cache' => false,
 			);
+
+			// if we are batching soql queries, let's do it
+			if ( true === $this->batch_soql_queries ) {
+				// pull query batch size option name
+				if ( '' !== get_option( $this->option_prefix . 'pull_query_batch_size', '' ) ) {
+					$batch_size = filter_var( get_option( $this->option_prefix . 'pull_query_batch_size', $this->min_soql_batch_size ), FILTER_VALIDATE_INT );
+				} else {
+					// old limit value
+					$batch_size = filter_var( get_option( $this->option_prefix . 'pull_query_limit', $this->min_soql_batch_size ), FILTER_VALIDATE_INT );
+				}
+				$batch_size = filter_var(
+					$batch_size,
+					FILTER_VALIDATE_INT,
+					array(
+						'options' => array(
+							'min_range' => $this->min_soql_batch_size,
+							'max_range' => $this->max_soql_size,
+						),
+					)
+				);
+				if ( false !== $batch_size ) {
+					// the Sforce-Query-Options header is a comma delimited string
+					$query_options['headers']['Sforce-Query-Options'] = 'batchSize=' . $batch_size;
+				}
+			} else {
+				// check if we have a stored currently running query and if so, apply an offset
+				$pull_query_running = get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' );
+				if ( '' !== $pull_query_running ) {
+					$saved_query = maybe_unserialize( $pull_query_running );
+					// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
+					$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
+					if ( $soql->offset > $this->max_soql_size ) {
+						$this->clear_current_type_query( $type );
+					}
+				}
+			}
 
 			// Execute query
 			// have to cast it to string to make sure it uses the magic method
 			// we don't want to cache this because timestamps
 			$results = $sfapi->query(
 				(string) $soql,
-				$options
+				$query_options
 			);
 
 			$response     = $results['data'];
@@ -255,16 +298,21 @@ class Object_Sync_Sf_Salesforce_Pull {
 						}
 						*/
 
-						// increment the SOQL offset by the current key
-						// the key is zero based, but that is fine for a SOQL offset value
-						$soql->offset = $soql->offset + $key;
-
-						// serialize the currently running SOQL query and store it for this type
-						$serialized_query = maybe_serialize( $soql );
+						if ( false === $this->batch_soql_queries ) {
+							// increment the SOQL offset by the current key
+							// the key is zero based, but that is fine for a SOQL offset value
+							$soql->offset = $soql->offset + $key;
+							// serialize the currently running SOQL query and store it for this type
+							$serialized_query = maybe_serialize( $soql );
+						}
 
 						if ( false === $pull_allowed ) {
-							// update the stored query so we don't end up on the same record again if the process fails
-							update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
+							// update the current state so we don't end up on the same record again if the process fails
+							if ( true === $this->batch_soql_queries ) {
+								update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
+							} else {
+								update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
+							}
 							continue;
 						}
 
@@ -280,11 +328,21 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$this->schedule_name
 						);
 
-						// update the stored query so we don't end up on the same record again if the process fails
-						update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
+						if ( true === $this->batch_soql_queries ) {
+							// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
+							$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
+							update_option( $this->option_prefix . 'pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
+						} else {
+							// update the stored query so we don't end up on the same record again if the process fails
+							update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
+						} // end if
 					} // end if
 				} // end foreach
-			} elseif ( 0 === count( $response['records'] ) ) {
+				if ( true === $this->batch_soql_queries ) {
+					// if applicable, process the next batch of records
+					$this->get_next_record_batch( $last_sync, $salesforce_mapping, $map_sync_triggers, $type, $version_path, $query_options, $response );
+				} // end if
+			} elseif ( 0 === count( $response['records'] ) && false === $this->batch_soql_queries ) {
 				// only update/clear these option values if we are currently still processing a query
 				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
 					$this->clear_current_type_query( $type );
@@ -315,6 +373,72 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			} // End if().
 		} // End foreach().
+	}
+
+	/**
+	* Pull the next batch of records from the Salesforce API, if applicable
+	*
+	* Executes a nextRecordsUrl SOQL query based on the previous result,
+	* and places each updated SF object into the queue for later processing.
+	*
+	* @param gmdate $last_sync
+	* @param array $salesforce_mapping
+	* @param array $map_sync_triggers
+	* @param string $type
+	* @param string $version_path
+	* @param array $query_options
+	* @param array $response
+	*
+	*/
+	private function get_next_record_batch( $last_sync, $salesforce_mapping, $map_sync_triggers, $type, $version_path, $query_options, $response ) {
+		// Handle next batch of records if it exists
+		$next_records_url = isset( $response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $response['nextRecordsUrl'] ) : false;
+		while ( $next_records_url ) {
+			// shouldn't cache this either. it's going into the queue if it exists anyway.
+			$new_results  = $sfapi->api_call(
+				$next_records_url,
+				array(),
+				'GET',
+				$query_options
+			);
+			$new_response = $new_results['data'];
+			if ( ! isset( $new_response['errorCode'] ) ) {
+				// Write items to the queue.
+				foreach ( $new_response['records'] as $result ) {
+					// if this record is new as of the last sync, use the create trigger
+					if ( isset( $result['CreatedDate'] ) && $result['CreatedDate'] > $last_sync ) {
+						$sf_sync_trigger = $this->mappings->sync_sf_create;
+					} else {
+						$sf_sync_trigger = $this->mappings->sync_sf_update;
+					}
+						// Only queue when the record's trigger is configured for the mapping
+					// these are bit operators, so we leave out the strict
+					if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
+						$data = array(
+							'object_type'     => $type,
+							'object'          => $result,
+							'mapping'         => $salesforce_mapping,
+							'sf_sync_trigger' => $sf_sync_trigger, // use the appropriate trigger based on when this was created
+						);
+							// add a queue action to save data from salesforce
+						$this->queue->add(
+							$this->schedulable_classes[ $this->schedule_name ]['callback'],
+							array(
+								'object_type'     => $type,
+								'object'          => $result['Id'],
+								'mapping'         => filter_var( $salesforce_mapping['id'], FILTER_VALIDATE_INT ),
+								'sf_sync_trigger' => $sf_sync_trigger,
+							),
+							$this->schedule_name
+						);
+						// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
+						$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
+						update_option( $this->option_prefix . 'pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
+					}
+				}
+			}
+			$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : false;
+		} // end while loop
 	}
 
 	/**
