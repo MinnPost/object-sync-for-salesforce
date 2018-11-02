@@ -2,5 +2,6 @@
 phpdoc-cache-*
 /node_modules/
 /vendor/**/.git/
+/vendor/**/.github/
 # generated
 release/
