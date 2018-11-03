@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-129656334"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1551681122"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-129656334" class="accordion-body collapse in">
+            <div id="namespace-1551681122" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -234,10 +234,14 @@
                         </section>
                         <section class="row-fluid private">
                             <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_batch_soql_queries" class="">batch_soql_queries()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_check_throttle" class="">check_throttle()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_updated_records" class="">get_updated_records()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_next_record_batch" class="">get_next_record_batch()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_pull_query" class="">get_pull_query()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_deleted_records" class="">get_deleted_records()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_increment_current_type_query" class="">increment_current_type_query()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_clear_current_type_query" class="">clear_current_type_query()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_create_object_map" class="">create_object_map()</a><br />
                                                             </section>
                             <section class="span4">
@@ -821,6 +825,43 @@ reached, etc.</em></p>
 
                                                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_batch_soql_queries" name="method_batch_soql_queries" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">batch_soql_queries()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">batch_soql_queries(boolean  <span class="argument">$batch_soql_queries</span>) : boolean</pre>
+                <p><em>Whether to use the batchSize parameter on SOQL queries</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$batch_soql_queries </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>$batch_soql_queries</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_check_throttle" name="method_check_throttle" class="anchor"></a>
             <article class="method">
                 <h3 class="private ">check_throttle()</h3>
@@ -860,6 +901,71 @@ reached, etc.</em></p>
 and places each updated SF object into the queue for later processing.</p>
 <p>We copy the convention from the Drupal module here, and run a separate SOQL query for each type of object in SF</p>
 
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_next_record_batch" name="method_get_next_record_batch" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_next_record_batch()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_next_record_batch(\gmdate  <span class="argument">$last_sync</span>, array  <span class="argument">$salesforce_mapping</span>, array  <span class="argument">$map_sync_triggers</span>, string  <span class="argument">$type</span>, string  <span class="argument">$version_path</span>, array  <span class="argument">$query_options</span>, array  <span class="argument">$response</span>) </pre>
+                <p><em>Pull the next batch of records from the Salesforce API, if applicable</em></p>
+                <p>Executes a nextRecordsUrl SOQL query based on the previous result,
+and places each updated SF object into the queue for later processing.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\gmdate</td>
+                                <td>$last_sync </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$salesforce_mapping </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$map_sync_triggers </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$version_path </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$query_options </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$response </td>
+                                <td></td>
+                            </tr>
+                                            </table>
                 
                 
                 				
@@ -933,6 +1039,82 @@ were found.</p>
                 <p><em>Get deleted records from salesforce.</em></p>
                 <p>Note that deletions can only be queried via REST with an API version &gt;= 29.0.</p>
 
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_increment_current_type_query" name="method_increment_current_type_query" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">increment_current_type_query()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">increment_current_type_query(string  <span class="argument">$type</span>, array  <span class="argument">$salesforce_mapping</span>) : object</pre>
+                <p><em>Increment the currently running query for the specified content type so it can go beyond 2000 records by updating the lastmodifieddate.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$salesforce_mapping </td>
+                                <td><p>the fieldmap that maps the two object types</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    object
+                                            &mdash; <p>$soql</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_clear_current_type_query" name="method_clear_current_type_query" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">clear_current_type_query()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">clear_current_type_query(string  <span class="argument">$type</span>) </pre>
+                <p><em>Clear the currently stored query for the specified content type</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
+                            </tr>
+                                            </table>
                 
                 
                 				
@@ -1046,7 +1228,7 @@ This is the database row for the map object</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on October 26th, 2018 at 19:08.
+                    on November 3rd, 2018 at 22:00.
                 </section>
             </section>
         </section>
