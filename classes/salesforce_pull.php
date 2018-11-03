@@ -227,14 +227,15 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$query_options['headers']['Sforce-Query-Options'] = 'batchSize=' . $batch_size;
 				}
 			} else {
-				// check if we have a stored currently running query and if so, apply an offset
+				// check if we have a stored currently running query and if so, apply an offset or regenerate the query
 				$pull_query_running = get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' );
 				if ( '' !== $pull_query_running ) {
 					$saved_query = maybe_unserialize( $pull_query_running );
 					// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
 					$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
 					if ( $soql->offset > $this->max_soql_size ) {
-						$this->clear_current_type_query( $type );
+						// regenerate the SOQL query so we can increment the last pull modified date value from Salesforce. This allows us to go beyond 2000 records as long as the records were modified at different times.
+						$soql = $this->increment_current_type_query( $type, $salesforce_mapping );
 					}
 				}
 			}
@@ -1438,6 +1439,26 @@ class Object_Sync_Sf_Salesforce_Pull {
 			throw $exception;
 		}
 
+	}
+
+	/**
+	* Increment the currently running query for the specified content type so it can go beyond 2000 records by updating the lastmodifieddate.
+	*
+	* @param string $type
+	*   e.g. "Contact", "Account", etc.
+	* @param array $salesforce_mapping
+	*   the fieldmap that maps the two object types
+	* @return object $soql
+	*
+	*/
+	private function increment_current_type_query( $type, $salesforce_mapping ) {
+		// get the last pull modified date
+		$last_pull_modified_date = get_option( $this->option_prefix . 'last_pull_modified_date_' . $type );
+		// update the last sync timestamp for this content type
+		update_option( $this->option_prefix . 'pull_last_sync_' . $type, strtotime( $last_pull_modified_date ) );
+		// having updated the last sync timestamp, regenerate the SOQL query object
+		$soql = $this->get_pull_query( $type, $salesforce_mapping );
+		return $soql;
 	}
 
 	/**
