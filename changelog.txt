@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 1.5.1 (2018-11-03)
+	* New: update to version 2.1.1 of the ActionScheduler library.
+	* Bug fix: when processing more than 2000 records, the offset and limit combination fails due to Salesforce API restrictions. In this release, the plugin changes the date parameter on the API query to the value for the last processed record.
+
 * 1.5.0 (2018-10-26)
 	* New: the Mapping Errors tab supports deleting multiple error rows via checkboxes.
 	* New: when caching API responses, the plugin caches the full array rather than the full array and the JSON data. This reduces the memory usage for object caches a little.

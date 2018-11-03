@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -198,6 +198,10 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
+* 1.5.1 (2018-11-03)
+	* New: update to version 2.1.1 of the ActionScheduler library.
+	* Bug fix: when processing more than 2000 records, the offset and limit combination fails due to Salesforce API restrictions. In this release, the plugin changes the date parameter on the API query to the value for the last processed record.
+
 * 1.5.0 (2018-10-26)
 	* New: the Mapping Errors tab supports deleting multiple error rows via checkboxes.
 	* New: when caching API responses, the plugin caches the full array rather than the full array and the JSON data. This reduces the memory usage for object caches a little.
@@ -208,5 +212,7 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 	* Developers: this release adds a new developer hook, `object_sync_for_salesforce_pull_query_modify`, which can modify the Salesforce API SOQL query before it pulls data from Salesforce. Thanks to WordPress user @yanlep for the suggestion.
 
 == Upgrade Notice ==
+= 1.5.1 =
+This plugin now uses a different matching techinque for meta fields. **This requires that you resave your existing fieldmaps, and also that we end support for WordPress 4.5.**.
 = 1.5.0 =
 This plugin now uses a different matching techinque for meta fields. **This requires that you resave your existing fieldmaps, and also that we end support for WordPress 4.5.**.
