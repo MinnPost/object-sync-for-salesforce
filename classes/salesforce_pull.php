@@ -314,6 +314,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 								update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
 							} else {
 								update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
+								update_option( $this->option_prefix . 'last_pull_modified_date_' . $type, $result[ $salesforce_mapping['pull_trigger_field'] ] );
 							}
 							continue;
 						}
@@ -337,6 +338,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						} else {
 							// update the stored query so we don't end up on the same record again if the process fails
 							update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
+							update_option( $this->option_prefix . 'last_pull_modified_date_' . $type, $result[ $salesforce_mapping['pull_trigger_field'] ] );
 						} // end if
 					} // end if
 				} // end foreach
@@ -1450,6 +1452,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 		update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
 		// delete the option value for the currently pulling query for this type
 		delete_option( $this->option_prefix . 'currently_pulling_query_' . $type );
+		// delete the option value for the last pull modified date
+		delete_option( $this->option_prefix . 'last_pull_modified_date_' . $type );
 	}
 
 	/**
