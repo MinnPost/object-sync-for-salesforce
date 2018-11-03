@@ -88,6 +88,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 		if ( version_compare( $this->login_credentials['rest_api_version'], '34.0', '<' ) ) {
 			$batch_soql_queries = false;
 		}
+		// otherwise, return whatever the plugin's default value is.
+		// this allows us to decide to support query batching if it is ever not absurdly bad.
 		return $batch_soql_queries;
 	}
 
