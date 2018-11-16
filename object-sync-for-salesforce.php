@@ -71,7 +71,7 @@ class Object_Sync_Salesforce {
 	* @var object
 	* Load and initialize the Object_Sync_Sf_Mapping class
 	*/
-	private $mappings;
+	public $mappings;
 
 	/**
 	* @var object
