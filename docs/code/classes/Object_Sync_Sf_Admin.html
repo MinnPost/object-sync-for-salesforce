@@ -1,0 +1,2444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">189</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-801106973"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-801106973" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Activate.html">Object_Sync_Sf_Activate</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Admin.html">Object_Sync_Sf_Admin</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Admin_Notice.html">Object_Sync_Sf_Admin_Notice</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Deactivate.html">Object_Sync_Sf_Deactivate</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Exception.html">Object_Sync_Sf_Exception</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Logging.html">Object_Sync_Sf_Logging</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Mapping.html">Object_Sync_Sf_Mapping</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Queue.html">Object_Sync_Sf_Queue</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce.html">Object_Sync_Sf_Salesforce</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_WordPress_Transient.html">Object_Sync_Sf_WordPress_Transient</a></li>
+                                                    <li class="class"><a href="../classes/WordpressException.html">WordpressException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>Object_Sync_Sf_Admin</h1>
+                    <p><em>Create default WordPress admin functionality to configure the plugin.</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_add_actions" class="">add_actions()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_initial_action_schedule" class="">initial_action_schedule()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_change_action_schedule" class="">change_action_schedule()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_create_admin_menu" class="">create_admin_menu()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_show_admin_page" class="">show_admin_page()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_salesforce_settings_forms" class="">salesforce_settings_forms()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_notices" class="">notices()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_get_salesforce_object_description" class="">get_salesforce_object_description()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_get_salesforce_object_fields" class="">get_salesforce_object_fields()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_get_wordpress_object_fields" class="">get_wordpress_object_fields()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_get_wp_sf_object_fields" class="">get_wp_sf_object_fields()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_push_to_salesforce" class="">push_to_salesforce()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_pull_from_salesforce" class="">pull_from_salesforce()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_refresh_mapped_data" class="">refresh_mapped_data()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_prepare_fieldmap_data" class="">prepare_fieldmap_data()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_delete_fieldmap" class="">delete_fieldmap()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_prepare_object_map_data" class="">prepare_object_map_data()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_delete_object_map" class="">delete_object_map()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_import_json_file" class="">import_json_file()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_export_json_file" class="">export_json_file()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_display_input_field" class="">display_input_field()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_display_checkboxes" class="">display_checkboxes()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_display_select" class="">display_select()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_display_link" class="">display_link()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_sanitize_validate_text" class="">sanitize_validate_text()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_clear_sfwp_cache" class="">clear_sfwp_cache()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_show_salesforce_user_fields" class="">show_salesforce_user_fields()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_save_salesforce_user_fields" class="">save_salesforce_user_fields()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_default_authorize_url_path" class="">$default_authorize_url_path</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_default_token_url_path" class="">$default_token_url_path</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_default_api_version" class="">$default_api_version</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_default_pull_limit" class="">$default_pull_limit</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_default_pull_throttle" class="">$default_pull_throttle</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_default_triggerable" class="">$default_triggerable</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_default_updateable" class="">$default_updateable</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_action_group_suffix" class="">$action_group_suffix</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_wpdb" class="">$wpdb</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_version" class="">$version</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_login_credentials" class="">$login_credentials</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_slug" class="">$slug</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_salesforce" class="">$salesforce</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_wordpress" class="">$wordpress</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_mappings" class="">$mappings</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_push" class="">$push</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_pull" class="">$pull</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_schedulable_classes" class="">$schedulable_classes</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_queue" class="">$queue</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#property_option_prefix" class="">$option_prefix</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_set_action_schedule" class="">set_action_schedule()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_fields_settings" class="">fields_settings()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_fields_fieldmaps" class="">fields_fieldmaps()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_fields_scheduling" class="">fields_scheduling()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_fields_log_settings" class="">fields_log_settings()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_version_options" class="">version_options()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_status" class="">status()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_logout" class="">logout()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_clear_cache" class="">clear_cache()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_check_wordpress_admin_permissions" class="">check_wordpress_admin_permissions()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_tabs" class="">tabs()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_clear_schedule" class="">clear_schedule()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_get_schedule_count" class="">get_schedule_count()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Admin.html#method_create_object_map" class="">create_object_map()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/classes.admin.html"><div class="path-wrapper">classes/admin.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Object_Sync_Sf_Admin</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_default_authorize_url_path" name="property_default_authorize_url_path" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$default_authorize_url_path</h3>
+                <pre class="signature">$default_authorize_url_path : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; Default path for the Salesforce authorize URL                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_default_token_url_path" name="property_default_token_url_path" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$default_token_url_path</h3>
+                <pre class="signature">$default_token_url_path : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; Default path for the Salesforce token URL                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_default_api_version" name="property_default_api_version" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$default_api_version</h3>
+                <pre class="signature">$default_api_version : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; What version of the Salesforce API should be the default on the settings screen.
+Users can edit this, but they won&#039;t see a correct list of all their available versions until WordPress has
+been authenticated with Salesforce.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_default_pull_limit" name="property_default_pull_limit" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$default_pull_limit</h3>
+                <pre class="signature">$default_pull_limit : integer</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                integer
+                &mdash; Default max number of pull records
+Users can edit this                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_default_pull_throttle" name="property_default_pull_throttle" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$default_pull_throttle</h3>
+                <pre class="signature">$default_pull_throttle : integer</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                integer
+                &mdash; Default pull throttle for how often Salesforce can pull
+Users can edit this                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_default_triggerable" name="property_default_triggerable" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$default_triggerable</h3>
+                <pre class="signature">$default_triggerable : boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                boolean
+                &mdash; Default for whether to limit to triggerable items
+Users can edit this                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_default_updateable" name="property_default_updateable" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$default_updateable</h3>
+                <pre class="signature">$default_updateable : boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                boolean
+                &mdash; Default for whether to limit to updateable items
+Users can edit this                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_action_group_suffix" name="property_action_group_suffix" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$action_group_suffix</h3>
+                <pre class="signature">$action_group_suffix : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; Suffix for action group name                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_wpdb" name="property_wpdb" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$wpdb</h3>
+                <pre class="signature">$wpdb : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_version" name="property_version" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$version</h3>
+                <pre class="signature">$version : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_login_credentials" name="property_login_credentials" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$login_credentials</h3>
+                <pre class="signature">$login_credentials : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_slug" name="property_slug" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$slug</h3>
+                <pre class="signature">$slug : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_salesforce" name="property_salesforce" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$salesforce</h3>
+                <pre class="signature">$salesforce : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_wordpress" name="property_wordpress" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$wordpress</h3>
+                <pre class="signature">$wordpress : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_mappings" name="property_mappings" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$mappings</h3>
+                <pre class="signature">$mappings : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_push" name="property_push" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$push</h3>
+                <pre class="signature">$push : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_pull" name="property_pull" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$pull</h3>
+                <pre class="signature">$pull : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_schedulable_classes" name="property_schedulable_classes" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$schedulable_classes</h3>
+                <pre class="signature">$schedulable_classes : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_queue" name="property_queue" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$queue</h3>
+                <pre class="signature">$queue : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_option_prefix" name="property_option_prefix" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$option_prefix</h3>
+                <pre class="signature">$option_prefix : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(object  <span class="argument">$wpdb</span>, string  <span class="argument">$version</span>, array  <span class="argument">$login_credentials</span>, string  <span class="argument">$slug</span>, object  <span class="argument">$wordpress</span>, object  <span class="argument">$salesforce</span>, object  <span class="argument">$mappings</span>, object  <span class="argument">$push</span>, object  <span class="argument">$pull</span>, object  <span class="argument">$logging</span>, array  <span class="argument">$schedulable_classes</span>, object  <span class="argument">$queue = &#039;&#039;</span>,   <span class="argument">$option_prefix = &#039;&#039;</span>) </pre>
+                <p><em>Constructor which sets up admin pages</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>object</td>
+                                <td>$wpdb </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$version </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$login_credentials </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$slug </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$wordpress </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$salesforce </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$mappings </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$push </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$pull </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$logging </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$schedulable_classes </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$queue </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$option_prefix </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_add_actions" name="method_add_actions" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">add_actions()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">add_actions() </pre>
+                <p><em>Create the action hooks to create the admin page(s)</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_initial_action_schedule" name="method_initial_action_schedule" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">initial_action_schedule()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">initial_action_schedule(string  <span class="argument">$new_schedule</span>, string  <span class="argument">$old_schedule</span>, string  <span class="argument">$option_name</span>) : string</pre>
+                <p><em>Set up recurring tasks if there are none</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$new_schedule </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$old_schedule </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$option_name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>$new_schedule</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_change_action_schedule" name="method_change_action_schedule" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">change_action_schedule()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">change_action_schedule(string  <span class="argument">$old_schedule</span>, string  <span class="argument">$new_schedule</span>, string  <span class="argument">$option_name</span>) </pre>
+                <p><em>Change recurring tasks if options change</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$old_schedule </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$new_schedule </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$option_name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_create_admin_menu" name="method_create_admin_menu" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">create_admin_menu()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">create_admin_menu() </pre>
+                <p><em>Create WordPress admin options page</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_show_admin_page" name="method_show_admin_page" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">show_admin_page()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">show_admin_page() </pre>
+                <p><em>Render full admin pages in WordPress
+This allows other plugins to add tabs to the Salesforce settings screen</em></p>
+                <p>todo: better front end: html, organization of html into templates, css, js</p>
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_salesforce_settings_forms" name="method_salesforce_settings_forms" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">salesforce_settings_forms()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">salesforce_settings_forms() </pre>
+                <p><em>Create default WordPress admin settings form for salesforce
+This is for the Settings page/tab</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_notices" name="method_notices" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">notices()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">notices() </pre>
+                <p><em>Create the notices, settings, and conditions by which admin notices should appear</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_salesforce_object_description" name="method_get_salesforce_object_description" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_salesforce_object_description()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_salesforce_object_description(array  <span class="argument">$data = array()</span>) : array</pre>
+                <p><em>Get all the Salesforce object settings for fieldmapping
+This takes either the $_POST array via ajax, or can be directly called with a $data array</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$data </td>
+                                <td><p>data must contain a salesforce_object
+can optionally contain a type</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$object_settings</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_salesforce_object_fields" name="method_get_salesforce_object_fields" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_salesforce_object_fields()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_salesforce_object_fields(array  <span class="argument">$data = array()</span>) : array</pre>
+                <p><em>Get Salesforce object fields for fieldmapping</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$data </td>
+                                <td><p>data must contain a salesforce_object
+can optionally contain a type for the field</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$object_fields</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_wordpress_object_fields" name="method_get_wordpress_object_fields" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_wordpress_object_fields()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_wordpress_object_fields(string  <span class="argument">$wordpress_object = &#039;&#039;</span>) : array</pre>
+                <p><em>Get WordPress object fields for fieldmapping
+This takes either the $_POST array via ajax, or can be directly called with a $wordpress_object field</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_object </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$object_fields</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_wp_sf_object_fields" name="method_get_wp_sf_object_fields" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_wp_sf_object_fields()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_wp_sf_object_fields(string  <span class="argument">$wordpress_object = &#039;&#039;</span>,   <span class="argument">$salesforce = &#039;&#039;</span>) : array</pre>
+                <p><em>Get WordPress and Salesforce object fields together for fieldmapping
+This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $salesforce_object fields</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_object </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$salesforce </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$object_fields</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_push_to_salesforce" name="method_push_to_salesforce" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">push_to_salesforce()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">push_to_salesforce(string  <span class="argument">$wordpress_object = &#039;&#039;</span>, integer  <span class="argument">$wordpress_id = &#039;&#039;</span>) </pre>
+                <p><em>Manually push the WordPress object to Salesforce
+This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $wordpress_id fields</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_object </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$wordpress_id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_pull_from_salesforce" name="method_pull_from_salesforce" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">pull_from_salesforce()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">pull_from_salesforce(string  <span class="argument">$salesforce_id = &#039;&#039;</span>, string  <span class="argument">$wordpress_object = &#039;&#039;</span>) </pre>
+                <p><em>Manually pull the Salesforce object into WordPress
+This takes either the $_POST array via ajax, or can be directly called with $salesforce_id fields</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$salesforce_id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_object </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_refresh_mapped_data" name="method_refresh_mapped_data" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">refresh_mapped_data()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">refresh_mapped_data(integer  <span class="argument">$mapping_id = &#039;&#039;</span>) </pre>
+                <p><em>Manually pull the Salesforce object into WordPress
+This takes an id for a mapping object row</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$mapping_id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_prepare_fieldmap_data" name="method_prepare_fieldmap_data" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">prepare_fieldmap_data()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">prepare_fieldmap_data() </pre>
+                <p><em>Prepare fieldmap data and redirect after processing
+This runs when the create or update forms are submitted
+It is public because it depends on an admin hook
+It then calls the Object_Sync_Sf_Mapping class and sends prepared data over to it, then redirects to the correct page
+This method does include error handling, by loading the submission in a transient if there is an error, and then deleting it upon success</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_delete_fieldmap" name="method_delete_fieldmap" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">delete_fieldmap()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">delete_fieldmap() </pre>
+                <p><em>Delete fieldmap data and redirect after processing
+This runs when the delete link is clicked, after the user confirms
+It is public because it depends on an admin hook
+It then calls the Object_Sync_Sf_Mapping class and the delete method</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_prepare_object_map_data" name="method_prepare_object_map_data" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">prepare_object_map_data()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">prepare_object_map_data() </pre>
+                <p><em>Prepare object data and redirect after processing
+This runs when the update form is submitted
+It is public because it depends on an admin hook
+It then calls the Object_Sync_Sf_Mapping class and sends prepared data over to it, then redirects to the correct page
+This method does include error handling, by loading the submission in a transient if there is an error, and then deleting it upon success</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_delete_object_map" name="method_delete_object_map" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">delete_object_map()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">delete_object_map() </pre>
+                <p><em>Delete object map data and redirect after processing
+This runs when the delete link is clicked on an error row, after the user confirms
+It is public because it depends on an admin hook
+It then calls the Object_Sync_Sf_Mapping class and the delete method</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_import_json_file" name="method_import_json_file" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">import_json_file()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">import_json_file() </pre>
+                <p><em>Import a json file and use it for plugin data</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_export_json_file" name="method_export_json_file" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">export_json_file()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">export_json_file() </pre>
+                <p><em>Create a json file for exporting</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_display_input_field" name="method_display_input_field" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">display_input_field()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">display_input_field(array  <span class="argument">$args</span>) </pre>
+                <p><em>Default display for &lt;input&gt; fields</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$args </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_display_checkboxes" name="method_display_checkboxes" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">display_checkboxes()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">display_checkboxes(array  <span class="argument">$args</span>) </pre>
+                <p><em>Display for multiple checkboxes
+Above method can handle a single checkbox as it is</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$args </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_display_select" name="method_display_select" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">display_select()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">display_select(array  <span class="argument">$args</span>) </pre>
+                <p><em>Display for a dropdown</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$args </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_display_link" name="method_display_link" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">display_link()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">display_link(array  <span class="argument">$args</span>) </pre>
+                <p><em>Default display for &lt;a href&gt; links</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$args </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_sanitize_validate_text" name="method_sanitize_validate_text" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">sanitize_validate_text()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">sanitize_validate_text(string  <span class="argument">$option</span>) : string</pre>
+                <p><em>Allow for a standard sanitize/validate method. We could use more specific ones if need be, but this one provides a baseline.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$option </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>$option</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_clear_sfwp_cache" name="method_clear_sfwp_cache" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">clear_sfwp_cache()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">clear_sfwp_cache() </pre>
+                <p><em>Ajax call to clear the plugin cache.</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_show_salesforce_user_fields" name="method_show_salesforce_user_fields" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">show_salesforce_user_fields()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">show_salesforce_user_fields(object  <span class="argument">$user</span>) </pre>
+                <p><em>Show what we know about this user&#039;s relationship to a Salesforce object, if any</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>object</td>
+                                <td>$user </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_save_salesforce_user_fields" name="method_save_salesforce_user_fields" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">save_salesforce_user_fields()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">save_salesforce_user_fields(integer  <span class="argument">$user_id</span>) </pre>
+                <p><em>If the user profile has been mapped to Salesforce, do it</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$user_id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_action_schedule" name="method_set_action_schedule" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">set_action_schedule()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_action_schedule(string  <span class="argument">$schedule_name</span>, string  <span class="argument">$action_group_name</span>) </pre>
+                <p><em>Set up recurring tasks</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$schedule_name </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$action_group_name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_fields_settings" name="method_fields_settings" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">fields_settings()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">fields_settings(string  <span class="argument">$page</span>, string  <span class="argument">$section</span>,   <span class="argument">$callbacks</span>) </pre>
+                <p><em>Fields for the Settings tab
+This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$page </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$section </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$callbacks </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_fields_fieldmaps" name="method_fields_fieldmaps" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">fields_fieldmaps()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">fields_fieldmaps(string  <span class="argument">$page</span>, string  <span class="argument">$section</span>, string  <span class="argument">$input_callback = &#039;&#039;</span>) </pre>
+                <p><em>Fields for the Fieldmaps tab
+This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$page </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$section </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$input_callback </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_fields_scheduling" name="method_fields_scheduling" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">fields_scheduling()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">fields_scheduling(string  <span class="argument">$page</span>, string  <span class="argument">$section</span>,   <span class="argument">$callbacks</span>) </pre>
+                <p><em>Fields for the Scheduling tab
+This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$page </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$section </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$callbacks </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_fields_log_settings" name="method_fields_log_settings" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">fields_log_settings()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">fields_log_settings(string  <span class="argument">$page</span>, string  <span class="argument">$section</span>, array  <span class="argument">$callbacks</span>) </pre>
+                <p><em>Fields for the Log Settings tab
+This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$page </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$section </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$callbacks </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_version_options" name="method_version_options" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">version_options()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">version_options() : array</pre>
+                <p><em>Dropdown formatted list of Salesforce API versions</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$args</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_status" name="method_status" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">status()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">status(object  <span class="argument">$sfapi</span>) </pre>
+                <p><em>Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>object</td>
+                                <td>$sfapi </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_logout" name="method_logout" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">logout()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">logout() </pre>
+                <p><em>Deauthorize WordPress from Salesforce.</em></p>
+                <p>This deletes the tokens from the database; it does not currently do anything in Salesforce
+For this plugin at this time, that is the decision we are making: don't do any kind of authorization stuff inside Salesforce</p>
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_clear_cache" name="method_clear_cache" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">clear_cache()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">clear_cache(  <span class="argument">$ajax = false</span>) </pre>
+                <p><em>Clear the plugin&#039;s cache.</em></p>
+                <p>This uses the flush method contained in the WordPress cache to clear all of this plugin's cached data.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$ajax </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_check_wordpress_admin_permissions" name="method_check_wordpress_admin_permissions" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">check_wordpress_admin_permissions()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check_wordpress_admin_permissions() </pre>
+                <p><em>Check WordPress Admin permissions
+Check if the current user is allowed to access the Salesforce plugin options</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_tabs" name="method_tabs" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">tabs()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">tabs(array  <span class="argument">$tabs</span>, string  <span class="argument">$tab = &#039;&#039;</span>) </pre>
+                <p><em>Render tabs for settings pages in admin</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$tabs </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$tab </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_clear_schedule" name="method_clear_schedule" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">clear_schedule()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">clear_schedule(string  <span class="argument">$schedule_name = &#039;&#039;</span>) </pre>
+                <p><em>Clear schedule
+This clears the schedule if the user clicks the button</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$schedule_name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_schedule_count" name="method_get_schedule_count" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_schedule_count()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_schedule_count(string  <span class="argument">$schedule_name = &#039;&#039;</span>) : integer</pre>
+                <p><em>Get count of schedule items</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$schedule_name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    integer
+                                            &mdash; <p>$count</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_create_object_map" name="method_create_object_map" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">create_object_map()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">create_object_map(integer  <span class="argument">$wordpress_id</span>, string  <span class="argument">$wordpress_object</span>, string  <span class="argument">$salesforce_id</span>, string  <span class="argument">$action = &#039;&#039;</span>) : integer</pre>
+                <p><em>Create an object map between a WordPress object and a Salesforce object</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$wordpress_id </td>
+                                <td><p>Unique identifier for the WordPress object</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_object </td>
+                                <td><p>What kind of object is it?</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$salesforce_id </td>
+                                <td><p>Unique identifier for the Salesforce object</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$action </td>
+                                <td><p>Did we push or pull?</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    integer
+                                            &mdash; <p>$wpdb-&gt;insert_id
+This is the database row for the map object</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">admin.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/classes/admin.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on November 3rd, 2018 at 22:00.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

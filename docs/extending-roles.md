@@ -8,7 +8,7 @@ This hook runs when the plugin is first activated, so you'll need to de/reactiva
 
 This example would give editor users the capability to configure Salesforce as well.
 
-```
+```php
 add_filter( 'object_sync_for_salesforce_roles_configure_salesforce', 'add_more_roles', 10, 1 );
 function add_more_roles( $roles ) {
     $roles = array( 'editor' );

@@ -10,7 +10,7 @@ There are many ways of adding custom WordPress objects, and there are also somet
 
 The `object_sync_for_salesforce_add_more_wordpress_types` hook populates the array which is added to the list in the dropdown.
 
-```
+```php
 add_filter( 'object_sync_for_salesforce_add_more_wordpress_types', 'add_more_types', 10, 1 );
 function add_more_types( $wordpress_object_types ) {
     $wordpress_object_types[] = 'foo'; // this will add to the existing types.
@@ -20,7 +20,7 @@ function add_more_types( $wordpress_object_types ) {
 
 The `object_sync_for_salesforce_remove_wordpress_types` hook populates an array which is used to remove objects from the list in the dropdown.
 
-```
+```php
 add_filter( 'object_sync_for_salesforce_remove_wordpress_types', 'remove_types', 10, 1 );
 function remove_types( $types_to_remove ) {
     $types_to_remove[] = 'acme_product'; // this adds to the array of types to ignore
@@ -36,7 +36,7 @@ The `object_sync_for_salesforce_wordpress_object_fields` hook populates an array
 
 Example of `$object_fields` array:
 
-```
+```php
 $object_fields = array(
     'data' => array ( // this array determines what methods each field uses to deal with its data
         array (
@@ -119,7 +119,7 @@ To modify the array, you can use the `object_sync_for_salesforce_wordpress_objec
 
 Code example:
 
-```
+```php
 add_filter( 'object_sync_for_salesforce_wordpress_object_fields', 'add_field', 10, 2 );
 function add_field( $object_fields, $wordpress_object ) {
     $object_fields['data'][] = array(
@@ -144,7 +144,7 @@ When you use this hook, the field needs to exist in WordPress, and already be ma
 
 Example of unaltered `$wordpress_object` array (in this case, for a user):
 
-```
+```php
 $wordpress_object = array(
     'ID' => 8675309,
     'user_login' => 'testuser@test.com',
@@ -174,10 +174,31 @@ To modify the array, you can use the `object_sync_for_salesforce_wordpress_objec
 
 Code example:
 
-```
+```php
 add_filter( 'object_sync_for_salesforce_wordpress_object_data', 'add_data', 10, 1 );
 function add_data( $wordpress_object ) {
     $wordpress_object['field_a'] = 'i am a field value that salesforce wants to store but WordPress does not care about';
     return $wordpress_object;
+}
+```
+
+## Administration interface
+
+Because there can be many fields in a WordPress or Salesforce installation, it can become difficult to find the correct fields for a fieldmap. To make this easier, we've included the [selectWoo](https://woocommerce.wordpress.com/2017/08/08/selectwoo-an-accessible-replacement-for-select2/) library from WooCommerce.
+
+### Changing or disabling this feature
+
+This plugin also includes the [Select2](https://select2.org/) library without requiring any additional files or configuration, and if you'd rather, you can use a developer hook to choose it instead.
+
+You can also choose not to use a library at all, and the plugin will revert to the browser's default `select` tag behavior.
+
+Code example:
+
+```php
+add_filter( 'object_sync_for_salesforce_select_library', 'change_select_library', 10, 1 );
+function select_library( $select_library ) {
+	$select_library = 'select2';
+	// this could also be empty; in that case we would just use default browser select
+	return $select_library;
 }
 ```

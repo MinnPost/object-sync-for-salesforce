@@ -12,7 +12,7 @@ Both directions, `push` and `pull`, allow for this mapping object to be extended
 
 ### Array example
 
-```
+```php
 $mapping_object = array(
     'id' => 244
     'wordpress_id' => a user id
@@ -35,7 +35,7 @@ $mapping_object = array(
 
 ### Array example
 
-```
+```php
 $mapping_object = array(
     'id' => 242,
     'wordpress_id' => a user id,

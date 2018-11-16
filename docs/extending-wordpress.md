@@ -22,7 +22,7 @@ Each object's hook takes the object's ID, the `$params`, and what action was jus
 
 #### Code examples
 
-```
+```php
 add_action( 'object_sync_for_salesforce_set_more_user_data', 'save_more_my_user', 10, 3 );
 function save_more_my_user( $user_id, $params, $action ) {
     // run code to save any param data for this $user_id
@@ -30,28 +30,28 @@ function save_more_my_user( $user_id, $params, $action ) {
 // after this runs, wordpress will also run `wp_new_user_notification`, which respects your settings
 ```
 
-```
+```php
 add_action( 'object_sync_for_salesforce_set_more_post_data', 'save_more_my_post', 10, 3 );
 function save_more_my_post( $post_id, $params, $action ) {
     // run code to save any param data for this $post_id
 }
 ```
 
-```
+```php
 add_action( 'object_sync_for_salesforce_set_more_attachment_data', 'save_more_my_attachment', 10, 3 );
 function save_more_my_post( $attachment_id, $params, $action ) {
     // run code to save any param data for this $attachment_id
 }
 ```
 
-```
+```php
 add_action( 'object_sync_for_salesforce_set_more_term_data', 'save_more_my_term', 10, 3 );
 function save_more_my_post( $term_id, $params, $action ) {
     // run code to save any param data for this $term_id
 }
 ```
 
-```
+```php
 add_action( 'object_sync_for_salesforce_set_more_comment_data', 'save_more_my_comment', 10, 3 );
 function save_more_my_post( $comment_id, $params, $action ) {
     // run code to save any param data for this $comment_id
@@ -77,8 +77,8 @@ Developers can use the `object_sync_for_salesforce_create_custom_wordpress_item`
 
 #### Code example
 
-```
-add_filter( 'object_sync_for_salesforce_create_custom_wordpress_item', add_object, 10, 1 );
+```php
+add_filter( 'object_sync_for_salesforce_create_custom_wordpress_item', 'add_object', 10, 1 );
 function add_object( $create_data ) {
     // $create_data is array( 'name' => objecttype, 'params' => array_of_params, 'id_field' => idfield )
     // run methods here to add the record to the database
@@ -89,9 +89,9 @@ function add_object( $create_data ) {
 
 In the example above, the returned `$result` needs to be an array.
 
-```
+```php
 $result = array(
-    'data' => array(
+    'data'   => array(
         $id_field => $post_id, // example here is 'ID' => 867. $id_field is the key in the database; $post_id is the value
         'success' => $success // $success is a boolean value you should have already set
     ),
@@ -105,19 +105,19 @@ Developers can use the `object_sync_for_salesforce_upsert_custom_wordpress_item`
 
 #### Code example
 
-```
-add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', add_object, 10, 1 );
+```php
+add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', 'upsert_object', 10, 1 );
 function upsert_object( $create_data ) {
     /* $upsert_data is like this:
     array(
-        'key' => $key,
-        'value' => $value,
-        'methods' => $methods,
-        'params' => $params,
-        'id_field' => $id_field,
-        'push_drafts' => $push_drafts,
-        'name' => $name,
-        'check_only' => $check_only,
+        'key'            => $key,
+        'value'          => $value,
+        'methods'        => $methods,
+        'params'         => $params,
+        'id_field'       => $id_field,
+        'pull_to_drafts' => $pull_to_drafts,
+        'name'           => $name,
+        'check_only'     => $check_only,
     );
     */
     // run methods here to upsert record in the database
@@ -128,7 +128,7 @@ function upsert_object( $create_data ) {
 
 In the example above, the returned `$result` needs to be an array.
 
-```
+```php
 $result = array(
     'data' => array(
         $id_field => $post_id, // example here is 'ID' => 867. $id_field is the key in the database; $post_id is the value
@@ -144,8 +144,8 @@ Developers can use the `object_sync_for_salesforce_update_custom_wordpress_item`
 
 #### Code example
 
-```
-add_filter( 'object_sync_for_salesforce_update_custom_wordpress_item', update_object, 10, 1 );
+```php
+add_filter( 'object_sync_for_salesforce_update_custom_wordpress_item', 'update_object', 10, 1 );
 function update_object( $update_data ) {
     // $update_data is array( 'name' => objecttype, 'params' => array_of_params, 'id_field' => idfield )
     // run methods here to update the record in the database
@@ -156,7 +156,7 @@ function update_object( $update_data ) {
 
 In the example above, the returned `$result` needs to be an array.
 
-```
+```php
 $result = array(
     'data' => array(
         $id_field => $post_id, // example here is 'ID' => 867. $id_field is the key in the database; $post_id is the value
@@ -172,8 +172,8 @@ Developers can use the `object_sync_for_salesforce_delete_custom_wordpress_item`
 
 #### Code example
 
-```
-add_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item', delete_object, 10, 1 );
+```php
+add_filter( 'object_sync_for_salesforce_delete_custom_wordpress_item', 'delete_object', 10, 1 );
 function delete_object( $delete_data ) {
     // $delete_data is array( 'name' => objecttype, 'id_field' => idfield )
     // run methods here to delete the record from the database
@@ -184,7 +184,7 @@ function delete_object( $delete_data ) {
 
 In the example above, the returned `$result` needs to be an array.
 
-```
+```php
 $result = array(
     'data' => array(
         'success' => $success // the returned $success is an object of the correct type, or a false
@@ -201,17 +201,17 @@ To facilitate this, there is the `object_sync_for_salesforce_set_initial_attachm
 
 #### Code example:
 
-```
-add_filter( 'object_sync_for_salesforce_set_initial_attachment_data', set_attachment, 10, 1 );
+```php
+add_filter( 'object_sync_for_salesforce_set_initial_attachment_data', 'set_attachment', 10, 1 );
 function set_attachment( $params ) {
     // set up the parameters available for an attachment
     // the parameters will be stored based on the methods they use
     // ex:
     $params[ $key ] = array(
-        'value' => $value,
+        'value'         => $value,
         'method_modify' => $method_modify,
         'method_create' => $method_create,
-        'method_read' => $methods['method_read']
+        'method_read'   => $methods['method_read']
     );
     return $params;
 }

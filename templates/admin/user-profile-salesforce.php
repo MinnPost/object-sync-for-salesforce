@@ -13,12 +13,12 @@
 		</tr>
 		<tr>
 			<th><?php echo esc_html__( 'Last Sync Message', 'object-sync-for-salesforce' ); ?></th>
-			<td class="last_sync_message"><?php echo isset( $mapping['last_sync_message'] ) ? esc_html( $mapping['last_sync_message'] ) : '' ?></td>
+			<td class="last_sync_message"><?php echo isset( $mapping['last_sync_message'] ) ? esc_html( $mapping['last_sync_message'] ) : ''; ?></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<th><?php echo esc_html__( 'Last Sync Action', 'object-sync-for-salesforce' ); ?></th>
-			<td class="last_sync_action"><?php echo isset( $mapping['last_sync_action'] ) ? esc_html( $mapping['last_sync_action'] ) : '' ?></td>
+			<td class="last_sync_action"><?php echo isset( $mapping['last_sync_action'] ) ? esc_html( $mapping['last_sync_action'] ) : ''; ?></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
@@ -28,7 +28,7 @@
 		</tr>
 		<tr>
 			<th><?php echo esc_html__( 'Last Sync', 'object-sync-for-salesforce' ); ?></th>
-			<td class="last_sync"><?php echo isset( $mapping['last_sync'] ) ? esc_html( $mapping['last_sync'] ) : '' ?></td>
+			<td class="last_sync"><?php echo isset( $mapping['last_sync'] ) ? esc_html( $mapping['last_sync'] ) : ''; ?></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr>

@@ -28,7 +28,7 @@ Most users should install the plugin from the [WordPress plugin directory](https
 4. Run `composer install`
 5. This will take a little while as Composer installs third-party libraries the plugin needs. You can then activate the plugin as you would a normal WordPress plugin.
 6. If you are doing interface or translation work, as defined above, run `npm install` to install the Gulp plugins. Run `gulp` when you make changes to Sass, JavaScript, or when you create new translations.
-7. If you intend to contribute PHP work, you may want to install [apigen](http://www.apigen.org/) to generate code documentation. You can use [this link](http://www.apigen.org/) to set it up. Run `apigen generate` when you make relevant changes. You can check these in to the Git repository.
+7. If you intent to contribute PHP work, you may want to install [phpDocumentor](https://phpdoc.org/) to generate code documentation. You can use [this link](https://phpdoc.org) to set it up. At this time, it is not included with this plugin. We recommend that you use  `phpDocumentor.phar` and run it in the plugin's root directory when you make relevant changes. For example, if you have this file installed in your `~/Sites` directory, you would run `php ~/Sites/phpDocumentor.phar`. You can check these changes in to the Git repository.
 
 ### Activate the plugin
 
@@ -84,10 +84,11 @@ Go to the Settings tab for the plugin. It is the default URL that opens when you
 4. Login Base URL: For most Salesforce environments, you can use `https://test.salesforce.com` for sandbox, and `https://login.salesforce.com` for production.
 5. Authorize URL Path: The plugin starts with a default of `/services/oauth2/authorize`. You should generally not have to change this.
 6. Token URL Path: The plugin starts with a default of `/services/oauth2/token`. You should generally not have to change this.
-7. Salesforce API Version: You should generally use the latest version your install has access to. This plugin starts with 39.0, but once it is authenticated the text field will be replaced with a dropdown of your available versions from which you can choose.
+7. Salesforce API Version: You should generally use the latest version your install has access to. This plugin starts with 42.0, but once it is authenticated the text field will be replaced with a dropdown of your available versions from which you can choose.
 8. Limit Salesforce Objects: These allow you to indicate whether Salesforce should relate to objects that can't be triggered or updated via the API. Generally it's a good idea to have these boxes checked to avoid errors.
-9. Pull Throttle (seconds): This plugin starts with 5 seconds, but you can change it based on your server's needs.
-10. Debug mode: This won't do anything until after the plugin has been authorized, but once it has you can use it to see more information about what the API is doing. **Don't check this in a production environment.**
+9. Salesforce Field Display Value: When mapping Salesforce fields, you can choose whether the plugin will display a field's Field Label (possibly a more user friendly value) or the API Name (which is always unique). Neither choice changes how the plugin functions on the back end, but making a choice can sometimes make the mapping choices easier to find.
+10. Pull Throttle (seconds): This plugin starts with 5 seconds, but you can change it based on your server's needs.
+11. Debug mode: This won't do anything until after the plugin has been authorized, but once it has you can use it to see more information about what the API is doing. **Don't check this in a production environment.**
 
 Save the settings. If the values required are set, you'll see a message that says "Salesforce needs to be authorized to connect to this website. Use the Authorize tab to connect." You can use that link for the next steps.
 
@@ -107,12 +108,12 @@ Supported constant names are:
 
 Set them in `wp-config.php` like this:
 
-```
+```php
 define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY', 'valuefromsalesforce');
 define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET', 'valuefromsalesforce');
 define('OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL', 'https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize');
 define('OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL', 'https://test.salesforce.com');
-define('OBJECT_SYNC_SF_SALESFORCE_API_VERSION', '38.0');
+define('OBJECT_SYNC_SF_SALESFORCE_API_VERSION', '42.0');
 define('OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH', '/services/oauth2/authorize');
 define('OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH', '/services/oauth2/token');
 ```

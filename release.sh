@@ -4,7 +4,6 @@ SVN_PATH=$RELEASE_DIR/svn;
 SVN_REPO="https://plugins.svn.wordpress.org/object-sync-for-salesforce/";
 BLACKLIST=(
 .\*
-apigen.neon
 assets/js/src/\*
 assets/sass/\*
 bin/*
@@ -14,12 +13,14 @@ Gulpfile.js
 node_modules/\*
 package-lock.json
 package.json
+phpdoc.dist.xml
 phpunit.xml
 release.sh
 release/\*
 test/\*
 tests/\*
 _sourcefiles/\*
+./\*\*/.\*
 );
 
 function ensure_release_dir() {
@@ -142,7 +143,7 @@ function install_update_dependencies() {
 	if [[ -f composer.json ]]
 	then
 		echo " - installing composer dependencies";
-		composer install --no-dev;
+		composer install --no-dev --prefer-dist;
 	fi
 
 	# If package.json exists, run npm install

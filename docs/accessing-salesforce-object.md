@@ -4,7 +4,7 @@ If you need to use the Salesforce API object outside this plugin, it is easily a
 
 ## Code example
 
-```
+```php
 if ( ! function_exists( 'is_plugin_active' ) ) {
     require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 }
