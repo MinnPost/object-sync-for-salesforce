@@ -107,21 +107,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		add_action( $this->option_prefix . 'pull_check_records', array( $this, 'salesforce_pull' ), 10 );
 		add_action( $this->option_prefix . 'pull_process_records', array( $this, 'salesforce_pull_process_records' ), 10, 4 );
 
-		add_action( 'rest_api_init', function () {
-			register_rest_route( $this->slug . '/v1', '/pull/',
-				array(
-					'methods'  => 'GET',
-					'callback' => array( $this, 'salesforce_pull_webhook' ),
-				)
-			);
-			register_rest_route( $this->slug . '/v1', '/pull/' . '/(?P<id>[\d]+)',
-				array(
-					'methods'  => 'POST',
-					'callback' => array( $this, 'manual_pull' ),
-				)
-			);
-		} );
-
 	}
 
 	/**
@@ -130,40 +115,21 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* reached, etc.
 	*
 	* @param object $request
-	*	This is a merged object of all the arguments from the API request
+	* This is a merged object of all the arguments from the API request
+	* @return array
+	* code: 201
+	* data:
+	*   success : true
 	*
 	*/
 	public function salesforce_pull_webhook( WP_REST_Request $request ) {
 
-		/* accessing params:
-
-		// You can access parameters via direct array access on the object:
-		$param = $request['some_param'];
-
-		// Or via the helper method:
-		$param = $request->get_param( 'some_param' );
-
-		// You can get the combined, merged set of parameters:
-		$parameters = $request->get_params();
-
-		// The individual sets of parameters are also available, if needed:
-		$parameters = $request->get_url_params();
-		$parameters = $request->get_query_params();
-		$parameters = $request->get_body_params();
-		$parameters = $request->get_json_params();
-		$parameters = $request->get_default_params();
-
-		// Uploads aren't merged in, but can be accessed separately:
-		$parameters = $request->get_file_params();
-
-		*/
 		// run a pull request and then run the schedule if anything is in there
 		$data = $this->salesforce_pull();
 
 		// salesforce_pull currently returns true if it runs successfully
 		if ( true === $data ) {
 			$code = '201';
-			error_log( 'run' );
 			// check to see if anything is in the queue and handle it if it is
 			// single task for action-scheduler to check for data
 			$this->queue->add(
@@ -171,19 +137,18 @@ class Object_Sync_Sf_Salesforce_Pull {
 				array(),
 				$this->schedule_name
 			);
-			error_log( 'ran' );
 		} else {
 			$code = '403';
 		}
 
-		// Create the response object
-		$response = new WP_REST_Response( $data );
-		$response->set_status( $code );
+		$result = array(
+			'code' => $code,
+			'data' => array(
+				'success' => $data,
+			),
+		);
 
-		print_r( $response );
-
-		// Add a custom header
-		//$response->header( 'Location', 'https://example.com/' );
+		return $result;
 
 	}
 
@@ -234,6 +199,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* and places each updated SF object into the queue for later processing.
 	*
 	* We copy the convention from the Drupal module here, and run a separate SOQL query for each type of object in SF
+	*
+	* If we return something here, it's because there is an error.
 	*
 	*/
 	private function get_updated_records() {
@@ -413,18 +380,22 @@ class Object_Sync_Sf_Salesforce_Pull {
 				);
 
 				if ( isset( $this->logging ) ) {
-					$logging = $this->logging;
+					$logging =$ $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 
-				$logging->setup(
-					$title,
-					$response['message'],
-					$sf_mapping['sync_triggers'],
-					'',
-					$status
+				$result = array(
+					'title'   => $title,
+					'message' => $response['message'],
+					'trigger' => $sf_mapping['sync_triggers'],
+					'parent'  => '',
+					'status'  => $status,
 				);
+
+				$logging->setup( $result );
+
+				return $result;
 
 			} // End if().
 		} // End foreach().
@@ -738,7 +709,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				'wordpress_object'  => $wordpress_object,
 			)
 		);
-		$this->salesforce_pull_process_records( $object_type, $object['data'], $mapping[0], $this->mappings->sync_sf_update );
+		return $this->salesforce_pull_process_records( $object_type, $object['data'], $mapping[0], $this->mappings->sync_sf_update );
 	}
 
 	/**
@@ -797,6 +768,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$transients_to_delete = array();
 
+		$results = array();
+
 		foreach ( $salesforce_mappings as $salesforce_mapping ) {
 
 			// this returns the row that maps the individual Salesforce row to the individual WordPress row
@@ -813,14 +786,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				$title = sprintf( esc_html__( 'Error: Salesforce Pull: unable to process queue item because it has no Salesforce Id.', 'object-sync-for-salesforce' ) );
 
-				$logging->setup(
-					$title,
-					print_r( $object, true ), // log whatever we have in the event of this error, so print the array
-					$sf_sync_trigger,
-					0, // parent id goes here but we don't have one, so make it 0
-					$status
+				$result = array(
+					'title'   => $title,
+					'message' => print_r( $object, true ), // log whatever we have in the event of this error, so print the array
+					'trigger' => $sf_sync_trigger,
+					'parent'  => 0, // parent id goes here but we don't have one, so make it 0
+					'status'  => $status,
 				);
-				return;
+
+				$logging->setup( $result );
+
+				$results[] = $result;
 			}
 
 			// if there's already a connection between the objects, $mapping_object will be an array
@@ -890,13 +866,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 								esc_attr( $mapping_object['salesforce_id'] )
 							);
 
-							$logging->setup(
-								$title,
-								$e->getMessage(),
-								$sf_sync_trigger,
-								$mapping_object['wordpress_id'],
-								$status
+							$result = array(
+								'title'   => $title,
+								'message' => $e->getMessage(),
+								'trigger' => $sf_sync_trigger,
+								'parent'  => $mapping_object['wordpress_id'],
+								'status'  => $status,
 							);
+
+							$logging->setup( $result );
+
+							$results[] = $result;
 
 							if ( false === $hold_exceptions ) {
 								throw $e;
@@ -932,13 +912,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 								esc_attr( $mapping_object['salesforce_id'] )
 							);
 
-							$logging->setup(
-								$title,
-								'',
-								$sf_sync_trigger,
-								$mapping_object['wordpress_id'],
-								$status
+							$result = array(
+								'title'   => $title,
+								'message' => '',
+								'trigger' => $sf_sync_trigger,
+								'parent'  => $mapping_object['wordpress_id'],
+								'status'  => $status,
 							);
+
+							$logging->setup( $result );
+
+							$results[] = $result;
 
 							// hook for pull success
 							do_action( $this->option_prefix . 'pull_success', $op, $result, $synced_object );
@@ -975,13 +959,18 @@ class Object_Sync_Sf_Salesforce_Pull {
 							esc_attr( $mapping_object['salesforce_id'] )
 						);
 
-						$logging->setup(
-							$title,
-							$more_ids,
-							$sf_sync_trigger,
-							$mapping_object['wordpress_id'],
-							$status
+						$result = array(
+							'title'   => $title,
+							'message' => $more_ids,
+							'trigger' => $sf_sync_trigger,
+							'parent'  => $mapping_object['wordpress_id'],
+							'status'  => $status,
 						);
+
+						$logging->setup( $result );
+
+						$results[] = $result;
+
 					} // End if().
 
 					// delete the map row from WordPress after the WordPress row has been deleted
@@ -989,7 +978,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$this->mappings->delete_object_map( $mapping_object['id'] );
 					// there is no map row if we end this if statement
 				} // End if().
-				return;
+				continue;
 			} // End if().
 
 			// map the Salesforce values to WordPress fields
@@ -1127,13 +1116,18 @@ class Object_Sync_Sf_Salesforce_Pull {
 									$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 								}
 								$parent = 0;
-								$logging->setup(
-									$title,
-									$body,
-									$sf_sync_trigger,
-									$parent,
-									$status
+
+								$result = array(
+									'title'   => $title,
+									'message' => $body,
+									'trigger' => $sf_sync_trigger,
+									'parent'  => $parent,
+									'status'  => $status,
 								);
+
+								$logging->setup( $result );
+
+								$results[] = $result;
 							} // End if().
 						} // End if().
 
@@ -1173,15 +1167,21 @@ class Object_Sync_Sf_Salesforce_Pull {
 							} else {
 								$parent = 0;
 							}
-							$logging->setup(
-								$title,
-								$body,
-								$sf_sync_trigger,
-								$parent,
-								$status
+
+							$result = array(
+								'title'   => $title,
+								'message' => $body,
+								'trigger' => $sf_sync_trigger,
+								'parent'  => $parent,
+								'status'  => $status,
 							);
+
+							$logging->setup( $result );
+
+							$results[] = $result;
+
 							// exit out of here without saving any data in WordPress
-							return;
+							continue;
 						} // End if().
 
 						// right here we should set the pulling transient
@@ -1247,13 +1247,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$parent = 0;
 					}
 
-					$logging->setup(
-						$title,
-						$e->getMessage(),
-						$sf_sync_trigger,
-						$parent,
-						$status
+					$result = array(
+						'title'   => $title,
+						'message' => $e->getMessage(),
+						'trigger' => $sf_sync_trigger,
+						'parent'  => $parent,
+						'status'  => $status,
 					);
+
+					$logging->setup( $result );
+
+					$results[] = $result;
 
 					if ( false === $hold_exceptions ) {
 						throw $e;
@@ -1268,7 +1272,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// hook for pull fail
 					do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
 
-					return;
+					continue;
 				} // End try().
 
 				// set $wordpress_data to the query result
@@ -1302,13 +1306,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 						esc_attr( $object['Id'] )
 					);
 
-					$logging->setup(
-						$title,
-						'',
-						$sf_sync_trigger,
-						$wordpress_id,
-						$status
+					$result = array(
+						'title'   => $title,
+						'message' => '',
+						'trigger' => $sf_sync_trigger,
+						'parent'  => $wordpress_id,
+						'status'  => $status,
 					);
+
+					$logging->setup( $result );
+
+					$results[] = $result;
 
 					// update that mapping object
 					$mapping_object['wordpress_id'] = $wordpress_id;
@@ -1348,18 +1356,22 @@ class Object_Sync_Sf_Salesforce_Pull {
 						print_r( $result['errors'], true ) // if we get this error, we need to know whatever we have
 					);
 
-					$logging->setup(
-						$title,
-						$body,
-						$sf_sync_trigger,
-						$wordpress_id,
-						$status
+					$result = array(
+						'title'   => $title,
+						'message' => $body,
+						'trigger' => $sf_sync_trigger,
+						'parent'  => $wordpress_id,
+						'status'  => $status,
 					);
+
+					$logging->setup( $result );
+
+					$results[] = $result;
 
 					// hook for pull fail
 					do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
 
-					return;
+					continue;
 				} // End if().
 			} elseif ( false === $is_new ) {
 
@@ -1405,13 +1417,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 						esc_attr( $object['Id'] )
 					);
 
-					$logging->setup(
-						$title,
-						'',
-						$sf_sync_trigger,
-						$mapping_object['wordpress_id'],
-						$status
+					$result = array(
+						'title'   => $title,
+						'message' => '',
+						'trigger' => $sf_sync_trigger,
+						'parent'  => $mapping_object['wordpress_id'],
+						'status'  => $status,
 					);
+
+					$logging->setup( $result );
+
+					$results[] = $result;
 
 					// hook for pull success
 					do_action( $this->option_prefix . 'pull_success', $op, $result, $synced_object );
@@ -1435,13 +1451,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 						esc_attr( $object['Id'] )
 					);
 
-					$logging->setup(
-						$title,
-						$e->getMessage(),
-						$sf_sync_trigger,
-						$mapping_object['wordpress_id'],
-						$status
+					$result = array(
+						'title'   => $title,
+						'message' => $e->getMessage(),
+						'trigger' => $sf_sync_trigger,
+						'parent'  => $mapping_object['wordpress_id'],
+						'status'  => $status,
 					);
+
+					$logging->setup( $result );
+
+					$results[] = $result;
 
 					$mapping_object['last_sync_status']  = $this->mappings->status_error;
 					$mapping_object['last_sync_message'] = $e->getMessage();
@@ -1488,6 +1508,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 		if ( ! empty( $exception ) ) {
 			throw $exception;
 		}
+
+		return $results;
 
 	}
 

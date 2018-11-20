@@ -63,21 +63,6 @@ class Object_Sync_Sf_Rest {
 	*/
 	public function add_actions() {
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
-
-		/*add_action( 'rest_api_init', function () {
-			register_rest_route( $this->slug . '/v1', '/pull/',
-				array(
-					'methods'  => 'GET',
-					'callback' => array( $this->pull, 'salesforce_pull_webhook' ),
-				)
-			);
-			register_rest_route( $this->slug . '/v1', '/pull/' . '/(?P<id>[\d]+)',
-				array(
-					'methods'  => 'POST',
-					'callback' => array( $this->pull, 'manual_pull' ),
-				)
-			);
-		} );*/
 	}
 
 	/**
@@ -92,13 +77,23 @@ class Object_Sync_Sf_Rest {
 		register_rest_route( $namespace, '/(?P<class>([\w-])+)/', array(
 			array(
 				'methods'             => $method_list,
-				'callback'            => array( $this, 'process' ),
 				'args'                => array(
-					'class' => array(
+					'class'                  => array(
 						'validate_callback' => array( $this, 'check_class' ),
+						'required'          => true,
+					),
+					'salesforce_object_type' => array(
+						'type' => 'string',
+					),
+					'salesforce_id'          => array(
+						'type' => 'string',
+					),
+					'wordpress_object_type'  => array(
+						'type' => 'string',
 					),
 				),
 				'permission_callback' => array( $this, 'can_process' ),
+				'callback'            => array( $this, 'process' ),
 			),
 		) );
 
@@ -111,6 +106,19 @@ class Object_Sync_Sf_Rest {
 	* @return bool
 	*/
 	public function check_class( $class ) {
+		if ( is_object( $this->{ $class } ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	* Check for a valid ID from the parameter
+	*
+	* @param string $id
+	* @return bool
+	*/
+	public function check_id( $id ) {
 		if ( is_object( $class ) ) {
 			return true;
 		}
@@ -120,13 +128,14 @@ class Object_Sync_Sf_Rest {
 	/**
 	* Check to see if the user has permission to do this
 	*
+	* @param WP_REST_Request $request
 	* @throws \Exception
 	*/
 	public function can_process( WP_REST_Request $request ) {
 		// unless we specify it here, the method will not be allowed unless the user has configure_salesforce capability
 		$http_method = $request->get_method();
-		$route       = $request->get_route();
-		switch ( $route ) {
+		$class       = $request->get_url_params()['class'];
+		switch ( $class ) {
 			case 'salesforce':
 				if ( ! in_array( $http_method, explode( ',', WP_REST_Server::ALLMETHODS ) ) ) {
 					return new WP_Error( 'rest_forbidden', esc_html__( 'This kind of request is not allowed.', 'object-sync-for-salesforce' ), array( 'status' => 401 ) );
@@ -156,26 +165,10 @@ class Object_Sync_Sf_Rest {
 		return true;
 	}
 
-	public function push_to_salesforce( $wordpress_object = '', $wordpress_id = '' ) {
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-		if ( empty( $wordpress_object ) && empty( $wordpress_id ) ) {
-			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
-			$wordpress_id     = isset( $post_data['wordpress_id'] ) ? absint( $post_data['wordpress_id'] ) : '';
-		}
-		$data   = $this->wordpress->get_wordpress_object_data( $wordpress_object, $wordpress_id );
-		$result = $this->push->manual_object_update( $data, $wordpress_object );
-
-		if ( ! empty( $post_data['wordpress_object'] ) && ! empty( $post_data['wordpress_id'] ) ) {
-			wp_send_json_success( $result );
-		} else {
-			return $result;
-		}
-
-	}
-
 	/**
 	* Process the REST API request
 	*
+	* @param WP_REST_Request $request
 	* @return $result
 	*/
 	public function process( WP_REST_Request $request ) {
@@ -185,8 +178,31 @@ class Object_Sync_Sf_Rest {
 		$route       = $request->get_route();
 		$url_params  = $request->get_url_params();
 		$body_params = $request->get_body_params();
-		$api_call    = str_replace( '/' . $this->namespace . $this->api_version . '/', '', $route );
+		$class       = $request->get_url_params()['class'];
+		$api_call    = str_replace( '/' . $this->namespace . $this->version . '/', '', $route );
 		//error_log( 'api call is ' . $api_call . ' and params are ' . print_r( $params, true ) );
+		$result = '';
+		switch ( $class ) {
+			case 'salesforce':
+
+				break;
+			case 'mappings':
+
+				break;
+			case 'pull':
+				if ( 'GET' === $http_method ) {
+					$result = $this->pull->salesforce_pull_webhook( $request );
+				}
+				if ( 'POST' === $http_method && isset( $body_params['salesforce_object_type'] ) && isset( $body_params['salesforce_id'] ) && isset( $body_params['wordpress_object_type'] ) ) {
+					$result = $this->pull->manual_pull( $body_params['salesforce_object_type'], $body_params['salesforce_id'], $body_params['wordpress_object_type'] );
+				}
+				break;
+			case 'push':
+
+				break;
+		}
+
+		return $result;
 
 		switch ( $http_method ) {
 			case 'GET':
@@ -215,6 +231,23 @@ class Object_Sync_Sf_Rest {
 				return;
 				break;
 		}
+	}
+
+	public function push_to_salesforce( $wordpress_object = '', $wordpress_id = '' ) {
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		if ( empty( $wordpress_object ) && empty( $wordpress_id ) ) {
+			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
+			$wordpress_id     = isset( $post_data['wordpress_id'] ) ? absint( $post_data['wordpress_id'] ) : '';
+		}
+		$data   = $this->wordpress->get_wordpress_object_data( $wordpress_object, $wordpress_id );
+		$result = $this->push->manual_object_update( $data, $wordpress_object );
+
+		if ( ! empty( $post_data['wordpress_object'] ) && ! empty( $post_data['wordpress_id'] ) ) {
+			wp_send_json_success( $result );
+		} else {
+			return $result;
+		}
+
 	}
 
 }
