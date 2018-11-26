@@ -198,6 +198,9 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
+* 1.5.2 (2018-11-)
+    * Developers: this release allows API calls that return data from Salesforce to return either json, the full PHP array (the default) or both, if the `$options` array is populated. Thanks to WordPress user @yanlep for the request.
+
 * 1.5.1 (2018-11-03)
 	* New: update to version 2.1.1 of the ActionScheduler library.
 	* Bug fix: when processing more than 2000 records, the offset and limit combination fails due to Salesforce API restrictions. In this release, the plugin changes the date parameter on the API query to the value for the last processed record.
