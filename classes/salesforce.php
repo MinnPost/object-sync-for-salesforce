@@ -370,10 +370,27 @@ class Object_Sync_Sf_Salesforce {
 				'body'    => '',
 			);
 			curl_close( $curl );
-			return array(
+
+			$result = array(
 				'code' => $code,
-				'data' => $data,
 			);
+
+			$return_format = isset( $options['return_format'] ) ? $options['return_format'] : 'array';
+
+			switch ( $return_format ) {
+				case 'array':
+					$result['data'] = $data;
+					break;
+				case 'json':
+					$result['json'] = wp_json_encode( $data );
+					break;
+				case 'both':
+					$result['json'] = wp_json_encode( $data );
+					$result['data'] = $data;
+					break;
+			}
+
+			return $result;
 		}
 
 		if ( ( ord( $json_response[0] ) == 0x1f ) && ( ord( $json_response[1] ) == 0x8b ) ) {
@@ -460,10 +477,27 @@ class Object_Sync_Sf_Salesforce {
 
 		curl_close( $curl );
 
-		return array(
+		$result = array(
 			'code' => $code,
-			'data' => $data,
 		);
+
+		$return_format = isset( $options['return_format'] ) ? $options['return_format'] : 'array';
+
+		switch ( $return_format ) {
+			case 'array':
+				$result['data'] = $data;
+				break;
+			case 'json':
+				$result['json'] = $json_response;
+				break;
+			case 'both':
+				$result['json'] = $json_response;
+				$result['data'] = $data;
+				break;
+		}
+
+		return $result;
+
 	}
 
 	/**
