@@ -57,7 +57,7 @@ For purposes of this documentation, we'll assume that your name, as defined in S
 - [https://help.salesforce.com/help/doc/en/remoteaccess_about.htm](https://help.salesforce.com/help/doc/en/remoteaccess_about.htm)
 - [https://developer.salesforce.com/page/Getting_Started_with_the_Force.com_REST_API?language=en#Setup](https://developer.salesforce.com/page/Getting_Started_with_the_Force.com_REST_API?language=en#Setup)
 - [http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php](http://developer.force.com/cookbook/recipe/interact-with-the-forcecom-rest-api-from-php)
-- [https://petewarden.com/2010/10/29/how-to-use-the-new-object-sync-for-salesforce-from-php/](https://petewarden.com/2010/10/29/how-to-use-the-new-object-sync-for-salesforce-from-php/)
+- [https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/](https://petewarden.com/2010/10/29/how-to-use-the-new-salesforce-rest-api-from-php/)
 
 #### Get the values for WordPress
 

@@ -158,9 +158,47 @@ This doesn't mean you can't use them together, but it does mean this plugin is n
 
 Object Sync for Salesforce does have abundant developer hooks, and WooCommerce has its own API, and it would be possible to build an add-on plugin to provide full support by integrating these (we would happily point to it for all users who install this plugin while they're running WooCommerce).
 
-### Troubleshooting
+### Troubleshooting connection and authorization issues
 
-If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. More information may be available in the plugin documentation.
+If you are having trouble connecting the plugin to Salesforce, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in [the plugin documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
+
+**Missing Authorize tab**
+
+If you load the plugin's Settings screen and you do not see an Authorize tab, this means there are required fields missing from your Settings tab. You must have (at least) accurate values for Consumer Key, Consumer Secret, Callback URL, Login Base URL, Authorize URL Path, Token URL Path, and Salesforce API Version.
+
+**Error: invalid_client_id**
+
+It can take a few minutes for a new app to be fully set up in Salesforce. If you get a `error=invalid_client_id&error_description=client%20identifier%20invalid` URL when you try to authorize with WordPress during the installation, wait a few minutes and then try again.
+
+This error can also happen if the Salesforce Consumer Key is entered incorrectly in the plugin settings.
+
+**Error: redirect_uri_mismatch**
+
+This error usually means the Callback URL in the plugin settings does not match the Callback URL for the app in Salesforce. Typically, the URL is something like this: https://yoursite/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize.
+
+**Error(0)**
+
+This error comes from Salesforce but the plugin is not able to detect it before the page loads. Usually it comes from one of these things:
+
+1. The connection is down
+2. The SSL is incorrect
+3. The login base URL is incorrect
+
+**Error: 400**
+
+Sometimes Salesforce returns an unhelpful 400 error (perhaps with a `grant type not supported` message). 400 errors from Salesforce mean that the request couldn't be understood. This can happen if the Login base URL setting is using your instance name (ex https://clientname.lightning.force.com) rather than the more generic https://test.salesforce.com for sandboxes and https://login.salesforce.com for production instances. Salesforce will handle redirecting the plugin to the proper instance; you should always be able to use the generic URLs.
+
+**Error: 401**
+
+Sometimes Salesforce returns a 401 error. This means the session ID or OAuth token has expired. This can mean that you've already tried to authorize, but it failed, or that too much time has passed. Try to disconnect and reconnect the plugin. Also, make sure your Salesforce app has the proper permissions: "Access and manage your data (api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)".
+
+**Plugin redirects after logging in, but does not authorize**
+
+If the plugin allows you to authorize in Salesforce, but does not activate in WordPress, the plugin may have been unable to create its required database tables.
+
+### Troubleshooting Fieldmaps
+
+If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in [the plugin documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
 
 **Plugin configuration**
 
@@ -176,10 +214,6 @@ If you are successfully authenticated with Salesforce, but you have a fieldmap t
 **Plugin mapping errors**
 
 - If the plugin fails in the middle of creating a map between two objects, a row may be created on the Mapping Errors screen. If it is a push error, it will tell you the WordPress object ID it was trying to map. If it is a pull error, it will tell you the Salesforce ID. **You should not leave these entries.**
-
-**Server logs**
-
-- If you don't see any error logs in WordPress, it is always a good idea to check your server's error logs and see if PHP is encountering errors.
 
 ### Plugin documentation
 
@@ -197,6 +231,9 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 - **Build other integrations in WordPress** this plugin focuses on the Salesforce REST API, as it covers the integration needs we have. Salesforce also has many other developer options: the SOAP API (we hope to incorporate this into Object Sync for Salesforce at some point), the Bulk API, and the Metadata API. Developers could extend this plugin to integrate with one of these. We would welcome any pull requests!
 
 == Changelog ==
+
+* 1.5.2 (2018-11-)
+    * Developers: this release allows API calls that return data from Salesforce to return either json, the full PHP array (the default) or both, if the `$options` array is populated. Thanks to WordPress user @yanlep for the request.
 
 * 1.5.1 (2018-11-03)
 	* New: update to version 2.1.1 of the ActionScheduler library.
