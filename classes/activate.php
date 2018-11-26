@@ -55,6 +55,7 @@ class Object_Sync_Sf_Activate {
 
 		// on initial activation, run these hooks
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'php_requirements' ) );
+		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'require_ssl' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'wordpress_salesforce_tables' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'add_roles_capabilities' ) );
 
@@ -76,6 +77,13 @@ class Object_Sync_Sf_Activate {
 			deactivate_plugins( plugin_basename( __FILE__ ) );
 			wp_die( '<strong>This plugin requires PHP Version 5.5</strong> <br />Please contact your host to upgrade PHP on your server, and then retry activating the plugin.' );
 		}
+	}
+
+	/**
+	* Require SSL because otherwise the plugin will not authorize
+	*/
+	public function require_ssl() {
+		// although we might instead have to run this on plugin initalization rather than activation.
 	}
 
 	/**
