@@ -3,6 +3,7 @@ Changelog
 
 * 1.5.2 (2018-11-)
 	* Bug fix: as of 1.5.0, when a Salesforce record is deleted, the corresponding WordPress record is not deleted. This release restores this functionality. Thanks to WordPress user @bswift for the report.
+	* Developers: this release allows API calls that return data from Salesforce to return either json, the full PHP array (the default) or both, if the `$options` array is populated. Thanks to WordPress user @yanlep for the request.
 
 * 1.5.1 (2018-11-03)
 	* New: update to version 2.1.1 of the ActionScheduler library.
