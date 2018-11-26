@@ -198,6 +198,9 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
+* 1.5.2 (2018-11-)
+	* Bug fix: as of 1.5.0, when a Salesforce record is deleted, the corresponding WordPress record is not deleted. This release restores this functionality. Thanks to WordPress user @bswift for the report.
+
 * 1.5.1 (2018-11-03)
 	* New: update to version 2.1.1 of the ActionScheduler library.
 	* Bug fix: when processing more than 2000 records, the offset and limit combination fails due to Salesforce API restrictions. In this release, the plugin changes the date parameter on the API query to the value for the last processed record.
