@@ -394,7 +394,7 @@ class Object_Sync_Sf_Salesforce {
 					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 
-				// translators: placeholder is the URL of the Salesforce API request
+				// translators: placeholder is the HTTP status code returned by the Salesforce API request
 				$title = sprintf( esc_html__( 'Error: %1$s: on Salesforce http request', 'object-sync-for-salesforce' ),
 					esc_attr( $code )
 				);
