@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -236,7 +236,8 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
-* 1.5.2 (2018-11-)
+* 1.5.2 (2018-11-27)
+	* Bug fix: as of 1.5.0, when a Salesforce record is deleted, the corresponding WordPress record is not deleted. This release restores this functionality. Thanks to WordPress user @bswift for the report.
     * Developers: this release allows API calls that return data from Salesforce to return either json, the full PHP array (the default) or both, if the `$options` array is populated. Thanks to WordPress user @yanlep for the request.
 
 * 1.5.1 (2018-11-03)
@@ -253,6 +254,8 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 	* Developers: this release adds a new developer hook, `object_sync_for_salesforce_pull_query_modify`, which can modify the Salesforce API SOQL query before it pulls data from Salesforce. Thanks to WordPress user @yanlep for the suggestion.
 
 == Upgrade Notice ==
+= 1.5.2 =
+This release fixes a bug preventing a WordPress record from deleting when a corresponding Salesforce record is deleted.
 = 1.5.1 =
 This plugin now uses a different matching techinque for meta fields. **This requires that you resave your existing fieldmaps, and also that we end support for WordPress 4.5.**.
 = 1.5.0 =
