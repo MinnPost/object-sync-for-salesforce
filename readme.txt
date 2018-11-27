@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -192,9 +192,13 @@ Sometimes Salesforce returns an unhelpful 400 error (perhaps with a `grant type 
 
 Sometimes Salesforce returns a 401 error. This means the session ID or OAuth token has expired. This can mean that you've already tried to authorize, but it failed, or that too much time has passed. Try to disconnect and reconnect the plugin. Also, make sure your Salesforce app has the proper permissions: "Access and manage your data (api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)".
 
-**Plugin redirects after logging in, but does not authorize**
+**Plugin redirects after logging in, but does not finish activating**
 
-If the plugin allows you to authorize in Salesforce, but does not activate in WordPress, the plugin may have been unable to create its required database tables.
+If the plugin allows you to authorize in Salesforce, but does not finish activating in WordPress, consider these possible issues:
+
+1. Insufficient app permissions in Salesforce. Make sure the app's permissions are at least "Perform requests on your behalf at any time" for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select "Access and manage your data (api)" as one of these scopes. If you change permissions, give Salesforce a few minutes before trying to connect again.
+2. The plugin may have been unable to create its required database tables.
+3. Mismatched settings between the plugin and the expected values in Salesforce.
 
 ### Troubleshooting Fieldmaps
 
@@ -232,7 +236,8 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
-* 1.5.2 (2018-11-)
+* 1.5.2 (2018-11-27)
+	* Bug fix: as of 1.5.0, when a Salesforce record is deleted, the corresponding WordPress record is not deleted. This release restores this functionality. Thanks to WordPress user @bswift for the report.
     * Developers: this release allows API calls that return data from Salesforce to return either json, the full PHP array (the default) or both, if the `$options` array is populated. Thanks to WordPress user @yanlep for the request.
 
 * 1.5.1 (2018-11-03)
@@ -249,6 +254,8 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 	* Developers: this release adds a new developer hook, `object_sync_for_salesforce_pull_query_modify`, which can modify the Salesforce API SOQL query before it pulls data from Salesforce. Thanks to WordPress user @yanlep for the suggestion.
 
 == Upgrade Notice ==
+= 1.5.2 =
+This release fixes a bug preventing a WordPress record from deleting when a corresponding Salesforce record is deleted.
 = 1.5.1 =
 This plugin now uses a different matching techinque for meta fields. **This requires that you resave your existing fieldmaps, and also that we end support for WordPress 4.5.**.
 = 1.5.0 =

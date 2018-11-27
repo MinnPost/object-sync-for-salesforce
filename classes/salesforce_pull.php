@@ -734,13 +734,20 @@ class Object_Sync_Sf_Salesforce_Pull {
 		if ( is_string( $object ) ) {
 			$object_id = $object;
 			// Load the Salesforce object data to save in WordPress. We need to make sure that this data does not get cached, which is consistent with other pull behavior as well as in other methods in this class.
-			$object = $sfapi->object_read(
-				$object_type,
-				$object_id,
-				array(
-					'cache' => false,
-				)
-			)['data'];
+			// We should only do this if we're not trying to delete data in WordPress - otherwise, we'll get a 404 from Salesforce and the delete will fail.
+			if ( $sf_sync_trigger != $this->mappings->sync_sf_delete ) { // trigger is a bit operator
+				$object = $sfapi->object_read(
+					$object_type,
+					$object_id,
+					array(
+						'cache' => false,
+					)
+				)['data'];
+			} else {
+				$object = array(
+					'Id' => $object,
+				);
+			} // gently handle deleted records
 		}
 
 		if ( is_int( $mapping ) ) {
