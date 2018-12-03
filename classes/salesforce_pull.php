@@ -804,6 +804,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$logging->setup( $result );
 
 				$results[] = $result;
+				continue;
 			}
 
 			// if there's already a connection between the objects, $mapping_object will be an array
