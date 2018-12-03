@@ -701,7 +701,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*/
 	public function manual_pull( $object_type, $salesforce_id, $wordpress_object ) {
 		$sfapi   = $this->salesforce['sfapi'];
-		$object  = $sfapi->api_call( 'sobjects/' . $object_type . '/' . $salesforce_id );
+		$object = $sfapi->object_read(
+			$object_type,
+			$salesforce_id,
+			array(
+				'cache' => false,
+			)
+		)['data'];
 		$mapping = $this->mappings->get_fieldmaps(
 			null,
 			array(
@@ -709,7 +715,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				'wordpress_object'  => $wordpress_object,
 			)
 		);
-		return $this->salesforce_pull_process_records( $object_type, $object['data'], $mapping[0], $this->mappings->sync_sf_update );
+		return $this->salesforce_pull_process_records( $object_type, $object, $mapping[0], $this->mappings->sync_sf_update );
 	}
 
 	/**
