@@ -51,7 +51,7 @@ class Object_Sync_Sf_Rest {
 
 		$this->sfwp_transients = $this->wordpress->sfwp_transients;
 
-		$this->namespace = $this->slug . '/v';
+		$this->namespace = $this->slug;
 
 		$this->add_actions();
 
@@ -71,9 +71,8 @@ class Object_Sync_Sf_Rest {
 	* @throws \Exception
 	*/
 	public function register_routes() {
-		$namespace   = $this->namespace . $this->version;
+		$namespace   = $this->namespace;
 		$method_list = WP_REST_Server::ALLMETHODS;
-
 		register_rest_route( $namespace, '/(?P<class>([\w-])+)/', array(
 			array(
 				'methods'             => $method_list,
