@@ -1576,7 +1576,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* Find out if pull is allowed for this record
 	*
 	* @param string $type
-	* 	Salesforce object type
+	*   Salesforce object type
 	* @param array $result
 	*   Array of the salesforce object's data
 	* @param string $sf_sync_trigger
