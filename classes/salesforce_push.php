@@ -115,12 +115,39 @@ class Object_Sync_Sf_Salesforce_Push {
 	/**
 	* Method for ajax hooks to call for pushing manually
 	*
-	* @param array $object
-	* @param string $type
+	* @param string $object_type
+	* @param int $wordpress_id
 	*
 	*/
-	public function manual_object_update( $object, $type ) {
-		$this->salesforce_push_object_crud( $type, $object, $this->mappings->sync_wordpress_update, true );
+	public function manual_push( $object_type, $wordpress_id ) {
+		$object = $this->wordpress->get_wordpress_object_data( $object_type, $wordpress_id );
+		// try to run each WordPress trigger until one is successful
+		$create = $this->salesforce_push_object_crud( $object_type, $object, $this->mappings->sync_wordpress_create );
+		if ( ! empty( $create ) ) {
+			$code = '201';
+			return $create;
+		} else {
+			$code   = '405';
+			$update = $this->salesforce_push_object_crud( $object_type, $object, $this->mappings->sync_wordpress_update );
+			if ( ! empty( $update ) ) {
+				$code = '201';
+				return $update;
+			} else {
+				$code   = '405';
+				$delete = $this->salesforce_push_object_crud( $object_type, $object, $this->mappings->sync_wordpress_delete );
+				if ( ! empty( $delete ) ) {
+					$code = '204';
+					return $delete;
+				}
+			}
+		}
+		$result = array(
+			'code' => $code,
+			'data' => array(
+				'success' => $result,
+			),
+		);
+		return $result;
 	}
 
 	/**
@@ -393,14 +420,16 @@ class Object_Sync_Sf_Salesforce_Push {
 				esc_attr( $object_id_field )
 			);
 
-			$logging->setup(
-				$title,
-				print_r( $object, true ), // print this array because if this happens, something weird has happened and we want to log whatever we have
-				$sf_sync_trigger,
-				0, // parent id goes here but we don't have one, so make it 0
-				$status
+			$result = array(
+				'title'   => $title,
+				'message' => print_r( $object, true ), // print this array because if this happens, something weird has happened and we want to log whatever we have
+				'trigger' => $sf_sync_trigger,
+				'parent'  => 0, // parent id goes here but we don't have one, so make it 0,
+				'status'  => $status,
 			);
-			return;
+
+			$logging->setup( $result );
+			return $result;
 		} // End if().
 
 		// load mappings that match this criteria
@@ -412,10 +441,12 @@ class Object_Sync_Sf_Salesforce_Push {
 			)
 		);
 
+		$results = array();
+
 		foreach ( $sf_mappings as $mapping ) { // for each mapping of this object
 			$map_sync_triggers = $mapping['sync_triggers'];
 
-			$push_allowed = $this->push_allowed( $object_type, $object, $sf_sync_trigger, $mapping, $map_sync_triggers );
+			$push_allowed = $this->is_push_allowed( $object_type, $object, $sf_sync_trigger, $mapping, $map_sync_triggers );
 
 			if ( false === $push_allowed ) {
 				continue;
@@ -451,11 +482,30 @@ class Object_Sync_Sf_Salesforce_Push {
 					),
 					$this->schedule_name
 				);
+
+				// translators: placeholders are: 1) the name of the WordPress object type, 2) the name of the WordPress ID field, 3) the value of the object's ID in WordPress, 4) the name of the Salesforce object
+				$title = sprintf( esc_html__( 'Success: Add to queue: Push WordPress %1$s with %2$s of %3$s to Salesforce %4$s.', 'object-sync-for-salesforce' ),
+					esc_attr( $mapping['wordpress_object'] ),
+					esc_attr( $object_id_field ),
+					esc_attr( $object[ $object_id_field ] ),
+					esc_attr( $mapping['salesforce_object'] )
+				);
+
+				$result    = array(
+					'title'   => $title,
+					'message' => '',
+					'trigger' => $sf_sync_trigger,
+					'parent'  => esc_attr( $object[ $object_id_field ] ),
+					'status'  => 'success',
+				);
+				$results[] = $result;
 			} else {
 				// this one is not async. do it immediately.
-				$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
+				$push      = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
+				$results[] = $push;
 			} // End if().
 		} // End foreach().
+		return $results;
 	}
 
 	/**
@@ -543,13 +593,15 @@ class Object_Sync_Sf_Salesforce_Push {
 							esc_attr( $object[ "$object_id" ] )
 						);
 
-						$logging->setup(
-							$title,
-							$e->getMessage(),
-							$sf_sync_trigger,
-							$object[ "$object_id" ],
-							$status
+						$result = array(
+							'title'   => $title,
+							'message' => $e->getMessage(),
+							'trigger' => $sf_sync_trigger,
+							'parent'  => $object[ "$object_id" ],
+							'status'  => $status,
 						);
+
+						$logging->setup( $result );
 
 						// hook for push fail
 						do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object, $object_id );
@@ -575,13 +627,15 @@ class Object_Sync_Sf_Salesforce_Push {
 							esc_attr( $object[ "$object_id" ] )
 						);
 
-						$logging->setup(
-							$title,
-							'',
-							$sf_sync_trigger,
-							$object[ "$object_id" ],
-							$status
+						$result = array(
+							'title'   => $title,
+							'message' => '',
+							'trigger' => $sf_sync_trigger,
+							'parent'  => $object[ "$object_id" ],
+							'status'  => $status,
 						);
+
+						$logging->setup( $result );
 
 						// hook for push success
 						do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $object_id );
@@ -618,13 +672,16 @@ class Object_Sync_Sf_Salesforce_Push {
 						esc_attr( $object[ "$object_id" ] )
 					);
 
-					$logging->setup(
-						$title,
-						$more_ids,
-						$sf_sync_trigger,
-						$object[ "$object_id" ],
-						$status
+					$result = array(
+						'title'   => $title,
+						'message' => $more_ids,
+						'trigger' => $sf_sync_trigger,
+						'parent'  => $object[ "$object_id" ],
+						'status'  => $status,
 					);
+
+					$logging->setup( $result );
+
 				} // End if().
 
 				// delete the map row from WordPress after the Salesforce row has been deleted
@@ -633,7 +690,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 			} // End if(). there is no map row
 
-			return;
+			return $result;
 		} // End if().
 
 		// are these objects already connected in WordPress?
@@ -791,13 +848,15 @@ class Object_Sync_Sf_Salesforce_Push {
 					esc_attr( $object[ "$object_id" ] )
 				);
 
-				$logging->setup(
-					$title,
-					$e->getMessage(),
-					$sf_sync_trigger,
-					$object[ "$object_id" ],
-					$status
+				$result = array(
+					'title'   => $title,
+					'message' => $e->getMessage(),
+					'trigger' => $sf_sync_trigger,
+					'parent'  => $object[ "$object_id" ],
+					'status'  => $status,
 				);
+
+				$logging->setup( $result );
 
 				// hook for push fail
 				do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object );
@@ -834,13 +893,15 @@ class Object_Sync_Sf_Salesforce_Push {
 					esc_attr( $object[ "$object_id" ] )
 				);
 
-				$logging->setup(
-					$title,
-					'',
-					$sf_sync_trigger,
-					$object[ "$object_id" ],
-					$status
+				$result = array(
+					'title'   => $title,
+					'message' => '',
+					'trigger' => $sf_sync_trigger,
+					'parent'  => $object[ "$object_id" ],
+					'status'  => $status,
 				);
+
+				$logging->setup( $result );
 
 				// update that mapping object
 				$mapping_object['salesforce_id']     = $salesforce_id;
@@ -876,18 +937,20 @@ class Object_Sync_Sf_Salesforce_Push {
 					esc_html( $salesforce_data['message'] )
 				);
 
-				$logging->setup(
-					$title,
-					$body,
-					$sf_sync_trigger,
-					$object[ "$object_id" ],
-					$status
+				$result = array(
+					'title'   => $title,
+					'message' => $body,
+					'trigger' => $sf_sync_trigger,
+					'parent'  => $object[ "$object_id" ],
+					'status'  => $status,
 				);
+
+				$logging->setup( $result );
 
 				// hook for push fail
 				do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object );
 
-				return;
+				return $result;
 			} // End if().
 		} else {
 			// $is_new is false here; we are updating an already mapped object
@@ -923,14 +986,16 @@ class Object_Sync_Sf_Salesforce_Push {
 					esc_html( $mapping_object['object_updated'] )
 				);
 
-				$logging->setup(
-					$title,
-					$body,
-					$sf_sync_trigger,
-					$object[ "$object_id" ],
-					$status
+				$result = array(
+					'title'   => $title,
+					'message' => $body,
+					'trigger' => $sf_sync_trigger,
+					'parent'  => 0, // parent id goes here but we don't have one, so make it 0,
+					'status'  => $status,
 				);
-				return;
+
+				$logging->setup( $result );
+				return $result;
 			}
 
 			// try to make a Salesforce update call
@@ -968,13 +1033,15 @@ class Object_Sync_Sf_Salesforce_Push {
 					esc_attr( $object[ "$object_id" ] )
 				);
 
-				$logging->setup(
-					$title,
-					'',
-					$sf_sync_trigger,
-					$object[ "$object_id" ],
-					$status
+				$result = array(
+					'title'   => $title,
+					'message' => '',
+					'trigger' => $sf_sync_trigger,
+					'parent'  => 0, // parent id goes here but we don't have one, so make it 0,
+					'status'  => $status,
 				);
+
+				$logging->setup( $result );
 
 				// hook for push success
 				do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $object_id );
@@ -998,13 +1065,15 @@ class Object_Sync_Sf_Salesforce_Push {
 					esc_attr( $object[ "$object_id" ] )
 				);
 
-				$logging->setup(
-					$title,
-					$e->getMessage(),
-					$sf_sync_trigger,
-					$object[ "$object_id" ],
-					$status
+				$result = array(
+					'title'   => $title,
+					'message' => $e->getMessage(),
+					'trigger' => $sf_sync_trigger,
+					'parent'  => $object[ "$object_id" ],
+					'status'  => $status,
 				);
+
+				$logging->setup( $result );
 
 				$mapping_object['last_sync_status']  = $this->mappings->status_error;
 				$mapping_object['last_sync_message'] = $e->getMessage();
@@ -1019,9 +1088,11 @@ class Object_Sync_Sf_Salesforce_Push {
 			$mapping_object['last_sync']        = current_time( 'mysql' );
 
 			// update that mapping object
-			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+			$map_result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 		} // End if(). this is the end of the if is_new stuff
+
+		return $result;
 
 	}
 
@@ -1100,7 +1171,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		// hook to allow other plugins to prevent a push per-mapping.
 		$push_allowed = apply_filters( $this->option_prefix . 'push_object_allowed', true, $object_type, $object, $sf_sync_trigger, $mapping );
 
-		return $pull_allowed;
+		return $push_allowed;
 	}
 
 }

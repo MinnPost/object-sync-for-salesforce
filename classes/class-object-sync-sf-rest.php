@@ -195,27 +195,13 @@ class Object_Sync_Sf_Rest {
 				}
 				break;
 			case 'push':
+				if ( 'POST' === $http_method && isset( $body_params['wordpress_object'] ) && isset( $body_params['wordpress_id'] ) ) {
+					$result = $this->push->manual_push( $body_params['wordpress_object'], $body_params['wordpress_id'] );
+				}
 				break;
 		}
 
 		return $result;
-	}
-
-	public function push_to_salesforce( $wordpress_object = '', $wordpress_id = '' ) {
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-		if ( empty( $wordpress_object ) && empty( $wordpress_id ) ) {
-			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
-			$wordpress_id     = isset( $post_data['wordpress_id'] ) ? absint( $post_data['wordpress_id'] ) : '';
-		}
-		$data   = $this->wordpress->get_wordpress_object_data( $wordpress_object, $wordpress_id );
-		$result = $this->push->manual_object_update( $data, $wordpress_object );
-
-		if ( ! empty( $post_data['wordpress_object'] ) && ! empty( $post_data['wordpress_id'] ) ) {
-			wp_send_json_success( $result );
-		} else {
-			return $result;
-		}
-
 	}
 
 }
