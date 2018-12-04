@@ -415,62 +415,46 @@ class Object_Sync_Sf_Salesforce_Push {
 		foreach ( $sf_mappings as $mapping ) { // for each mapping of this object
 			$map_sync_triggers = $mapping['sync_triggers'];
 
-			// these are bit operators, so we leave out the strict
-			if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
+			$push_allowed = $this->push_allowed( $object_type, $object, $sf_sync_trigger, $mapping, $map_sync_triggers );
 
-				// hook to allow other plugins to prevent a push per-mapping.
-				$push_allowed = apply_filters( $this->option_prefix . 'push_object_allowed', true, $object_type, $object, $sf_sync_trigger, $mapping );
+			if ( false === $push_allowed ) {
+				continue;
+			}
 
-				// example to keep from pushing the user with id of 1
-				/*
-				add_filter( 'object_sync_for_salesforce_push_object_allowed', 'check_user', 10, 5 );
-				// can always reduce this number if all the arguments are not necessary
-				function check_user( $push_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
-					if ( $object_type === 'user' && $object['Id'] === 1 ) {
-						return FALSE;
-					}
-				}
-				*/
+			// push drafts if the setting says so
+			// post status is draft, or post status is inherit and post type is not attachment
+			if ( ( ! isset( $mapping['push_drafts'] ) || '1' !== $mapping['push_drafts'] ) && isset( $object['post_status'] ) && ( 'draft' === $object['post_status'] || ( 'inherit' === $object['post_status'] && 'attachment' !== $object['post_type'] ) ) ) {
+				// skip this object if it is a draft and the fieldmap settings told us to ignore it
+				continue;
+			}
 
-				if ( false === $push_allowed ) {
-					continue;
-				}
+			if ( isset( $mapping['push_async'] ) && ( '1' === $mapping['push_async'] ) && false === $manual ) {
+				// this item is async and we want to save it to the queue
 
-				// push drafts if the setting says so
-				// post status is draft, or post status is inherit and post type is not attachment
-				if ( ( ! isset( $mapping['push_drafts'] ) || '1' !== $mapping['push_drafts'] ) && isset( $object['post_status'] ) && ( 'draft' === $object['post_status'] || ( 'inherit' === $object['post_status'] && 'attachment' !== $object['post_type'] ) ) ) {
-					// skip this object if it is a draft and the fieldmap settings told us to ignore it
-					continue;
-				}
+				// if we determine that the below code does not perform well, worst case scenario is we could save $data to a custom table, and pass the id to the callback method.
+				/*$data = array(
+					'object_type'     => $object_type,
+					'object'          => $object,
+					'mapping'         => $mapping['id'],
+					'sf_sync_trigger' => $sf_sync_trigger,
+				);*/
 
-				if ( isset( $mapping['push_async'] ) && ( '1' === $mapping['push_async'] ) && false === $manual ) {
-					// this item is async and we want to save it to the queue
-
-					// if we determine that the below code does not perform well, worst case scenario is we could save $data to a custom table, and pass the id to the callback method.
-					/*$data = array(
+				// add a queue action to push data to salesforce
+				// this means we don't need the frequency for this method anymore, i think
+				$this->queue->add(
+					$this->schedulable_classes[ $this->schedule_name ]['callback'],
+					array(
 						'object_type'     => $object_type,
-						'object'          => $object,
-						'mapping'         => $mapping['id'],
+						'object'          => filter_var( $object[ $object_id_field ], FILTER_VALIDATE_INT ),
+						'mapping'         => filter_var( $mapping['id'], FILTER_VALIDATE_INT ),
 						'sf_sync_trigger' => $sf_sync_trigger,
-					);*/
-
-					// add a queue action to push data to salesforce
-					// this means we don't need the frequency for this method anymore, i think
-					$this->queue->add(
-						$this->schedulable_classes[ $this->schedule_name ]['callback'],
-						array(
-							'object_type'     => $object_type,
-							'object'          => filter_var( $object[ $object_id_field ], FILTER_VALIDATE_INT ),
-							'mapping'         => filter_var( $mapping['id'], FILTER_VALIDATE_INT ),
-							'sf_sync_trigger' => $sf_sync_trigger,
-						),
-						$this->schedule_name
-					);
-				} else {
-					// this one is not async. do it immediately.
-					$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
-				} // End if().
-			} // End if(). if the trigger does not match our requirements, skip it
+					),
+					$this->schedule_name
+				);
+			} else {
+				// this one is not async. do it immediately.
+				$push = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
+			} // End if().
 		} // End foreach().
 	}
 
@@ -1084,6 +1068,39 @@ class Object_Sync_Sf_Salesforce_Push {
 
 		return $mapping_object;
 
+	}
+
+	/**
+	* Find out if push is allowed for this record
+	*
+	* @param string $type
+	*   WordPress object type
+	* @param array $object
+	*   Array of the WordPress object's data
+	* @param string $sf_sync_trigger
+	*   The current operation's trigger
+	* @param array $mapping
+	*   the fieldmap that maps the two object types
+	* @param array $map_sync_triggers
+	*
+	* @return bool $push_allowed
+	*   Whether all this stuff allows the $result to be pushed to Salesforce
+	*
+	*/
+	private function is_push_allowed( $object_type, $object, $sf_sync_trigger, $mapping, $map_sync_triggers ) {
+
+		// default is push is allowed
+		$push_allowed = true;
+
+		// these are bit operators, so we leave out the strict
+		if ( ! in_array( $sf_sync_trigger, $map_sync_triggers ) ) {
+			$push_allowed = false;
+		}
+
+		// hook to allow other plugins to prevent a push per-mapping.
+		$push_allowed = apply_filters( $this->option_prefix . 'push_object_allowed', true, $object_type, $object, $sf_sync_trigger, $mapping );
+
+		return $pull_allowed;
 	}
 
 }
