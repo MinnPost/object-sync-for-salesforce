@@ -183,53 +183,22 @@ class Object_Sync_Sf_Rest {
 		$result = '';
 		switch ( $class ) {
 			case 'salesforce':
-
 				break;
 			case 'mappings':
-
 				break;
 			case 'pull':
 				if ( 'GET' === $http_method ) {
 					$result = $this->pull->salesforce_pull_webhook( $request );
 				}
-				if ( 'POST' === $http_method && isset( $body_params['salesforce_object_type'] ) && isset( $body_params['salesforce_id'] ) && isset( $body_params['wordpress_object_type'] ) ) {
-					$result = $this->pull->manual_pull( $body_params['salesforce_object_type'], $body_params['salesforce_id'], $body_params['wordpress_object_type'] );
+				if ( 'POST' === $http_method && isset( $body_params['salesforce_object_type'] ) && isset( $body_params['salesforce_id'] ) ) {
+					$result = $this->pull->manual_pull( $body_params['salesforce_object_type'], $body_params['salesforce_id'] );
 				}
 				break;
 			case 'push':
-
 				break;
 		}
 
 		return $result;
-
-		switch ( $http_method ) {
-			case 'GET':
-				$result = $this->mailchimp->load( $api_call, $url_params );
-				return $result;
-				break;
-			case 'POST':
-				$result = $this->mailchimp->send( $api_call, $http_method, $body_params );
-				return $result;
-				break;
-			case 'PATCH':
-				return 'edit existing';
-				$result = $this->mailchimp->send( $api_call, $http_method, $body_params );
-				return $result;
-				break;
-			case 'PUT':
-				$result = $this->mailchimp->send( $api_call, $http_method, $body_params );
-				return $result;
-				break;
-			case 'DELETE':
-				return 'delete existing';
-				$result = $this->mailchimp->remove();
-				return $result;
-				break;
-			default:
-				return;
-				break;
-		}
 	}
 
 	public function push_to_salesforce( $wordpress_object = '', $wordpress_id = '' ) {
