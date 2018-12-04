@@ -292,31 +292,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							'sf_sync_trigger' => $sf_sync_trigger, // use the appropriate trigger based on when this was created
 						);
 
-						// default is pull is allowed
-						$pull_allowed = true;
-
-						// if the current fieldmap does not allow create, we need to check if there is an object map for the Salesforce object Id. if not, set pull_allowed to false.
-						if ( isset( $map_sync_triggers ) && ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
-							$object_map = $this->mappings->load_by_salesforce( $result['Id'] );
-							if ( empty( $object_map ) ) {
-								$pull_allowed = false;
-							}
-						}
-
-						// Hook to allow other plugins to prevent a pull per-mapping.
-						// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
-						$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', $pull_allowed, $type, $result, $sf_sync_trigger, $salesforce_mapping );
-
-						// example to keep from pulling the Contact with id of abcdef
-						/*
-						add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
-						// can always reduce this number if all the arguments are not necessary
-						function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
-							if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
-								return false;
-							}
-						}
-						*/
+						$pull_allowed = $this->is_pull_allowed( $type, $result, $sf_sync_trigger, $salesforce_mapping, $map_sync_triggers );
 
 						if ( false === $this->batch_soql_queries ) {
 							// increment the SOQL offset by the current key
@@ -1594,6 +1570,54 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		return $mapping_object;
 
+	}
+
+	/**
+	* Find out if pull is allowed for this record
+	*
+	* @param string $type
+	* 	Salesforce object type
+	* @param array $result
+	*   Array of the salesforce object's data
+	* @param string $sf_sync_trigger
+	*   The current operation's trigger
+	* @param array $salesforce_mapping
+	*   the fieldmap that maps the two object types
+	* @param array $map_sync_triggers
+	*
+	* @return bool $pull_allowed
+	*   Whether all this stuff allows the $result to be pulled into WordPress
+	*
+	*/
+	private function is_pull_allowed( $type, $result, $sf_sync_trigger, $salesforce_mapping, $map_sync_triggers ) {
+
+		// default is pull is allowed
+		$pull_allowed = true;
+
+		// if the current fieldmap does not allow create, we need to check if there is an object map for the Salesforce object Id. if not, set pull_allowed to false.
+		if ( isset( $map_sync_triggers ) && ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
+			$object_map = $this->mappings->load_by_salesforce( $result['Id'] );
+			if ( empty( $object_map ) ) {
+				$pull_allowed = false;
+			}
+		}
+
+		// Hook to allow other plugins to prevent a pull per-mapping.
+		// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
+		$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', $pull_allowed, $type, $result, $sf_sync_trigger, $salesforce_mapping );
+
+		// example to keep from pulling the Contact with id of abcdef
+		/*
+		add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
+		// can always reduce this number if all the arguments are not necessary
+		function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
+			if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
+				return false;
+			}
+		}
+		*/
+
+		return $pull_allowed;
 	}
 
 }
