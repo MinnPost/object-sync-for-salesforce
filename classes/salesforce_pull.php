@@ -380,7 +380,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				);
 
 				if ( isset( $this->logging ) ) {
-					$logging =$ $this->logging;
+					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
