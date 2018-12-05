@@ -41,8 +41,9 @@ add_filter( 'object_sync_for_salesforce_push_object_allowed', 'check_user', 10, 
 // can always reduce this number if all the arguments are not necessary
 function check_user( $push_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
 	if ( $object_type === 'user' && $object['Id'] === 1 ) {
-		return FALSE;
+		$push_allowed = false;
 	}
+	return $push_allowed;
 }
 ```
 

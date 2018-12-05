@@ -125,19 +125,22 @@ class Object_Sync_Sf_Salesforce_Push {
 		$create = $this->salesforce_push_object_crud( $object_type, $object, $this->mappings->sync_wordpress_create );
 		if ( ! empty( $create ) ) {
 			$code = '201';
-			return $create;
+			error_log( 'create? result is ' . print_r( $create, true ) );
+			$result = $create;
 		} else {
 			$code   = '405';
 			$update = $this->salesforce_push_object_crud( $object_type, $object, $this->mappings->sync_wordpress_update );
 			if ( ! empty( $update ) ) {
 				$code = '201';
-				return $update;
+				error_log( 'update? result is ' . print_r( $update, true ) );
+				$result = $update;
 			} else {
 				$code   = '405';
 				$delete = $this->salesforce_push_object_crud( $object_type, $object, $this->mappings->sync_wordpress_delete );
 				if ( ! empty( $delete ) ) {
 					$code = '204';
-					return $delete;
+					error_log( 'delete? result is ' . print_r( $delete, true ) );
+					$result = $delete;
 				}
 			}
 		}
@@ -449,6 +452,46 @@ class Object_Sync_Sf_Salesforce_Push {
 			$push_allowed = $this->is_push_allowed( $object_type, $object, $sf_sync_trigger, $mapping, $map_sync_triggers );
 
 			if ( false === $push_allowed ) {
+				$status = 'error';
+				// create log entry for not allowed manual pull
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+				}
+
+				$op = '';
+				switch ( $sf_sync_trigger ) {
+					case $this->mappings->sync_wordpress_create:
+						$op = 'Create';
+						break;
+					case $this->mappings->sync_wordpress_update:
+						$op = 'Update';
+						break;
+					case $this->mappings->sync_wordpress_delete:
+						$op = 'Delete';
+						break;
+				}
+
+				// translators: placeholders are: 1) the name of the current operation, 2) the name of the WordPress object type, 3) the name of the WordPress ID field, 4) the value of the object's ID in WordPress, 5) the name of the Salesforce object
+				$title = sprintf( esc_html__( 'Error: %1$s WordPress %2$s with %3$s of %4$s to Salesforce %5$s was not allowed by this fieldmap.', 'object-sync-for-salesforce' ),
+					esc_attr( $op ),
+					esc_attr( $mapping['wordpress_object'] ),
+					esc_attr( $object_id_field ),
+					esc_attr( $object[ $object_id_field ] ),
+					esc_attr( $mapping['salesforce_object'] )
+				);
+
+				$result    = array(
+					'title'   => $title,
+					'message' => '',
+					'trigger' => $sf_sync_trigger,
+					'parent'  => esc_attr( $object[ $object_id_field ] ),
+					'status'  => 'error',
+				);
+				$results[] = $result;
+
+				$logging->setup( $result );
 				continue;
 			}
 
@@ -1181,7 +1224,19 @@ class Object_Sync_Sf_Salesforce_Push {
 		// hook to allow other plugins to prevent a push per-mapping.
 		$push_allowed = apply_filters( $this->option_prefix . 'push_object_allowed', $push_allowed, $object_type, $object, $sf_sync_trigger, $mapping );
 
-		return (bool) $push_allowed;
+		// example to keep from pushing the user with ID of 1
+		/*
+		add_filter( 'object_sync_for_salesforce_push_object_allowed', 'check_user', 10, 5 );
+		// can always reduce this number if all the arguments are not necessary
+		function check_user( $push_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
+			if ( 'user' === $object_type && 1 === $object['ID'] ) { // do not add user 1 to salesforce
+				$push_allowed = false;
+			}
+			return $push_allowed;
+		}
+		*/
+
+		return $push_allowed;
 	}
 
 }
