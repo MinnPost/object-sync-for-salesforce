@@ -1167,7 +1167,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		if ( ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
 			$structure       = $this->wordpress->get_wordpress_table_structure( $object_type );
 			$object_id_field = $structure['id_field'];
-			$object_map      = $this->mappings->load_by_wordpress( $object[ $object_id_field ] );
+			$object_map      = $this->mappings->load_by_wordpress( $object_type, $object[ $object_id_field ] );
 			if ( empty( $object_map ) ) {
 				$push_allowed = false;
 			}
