@@ -81,7 +81,8 @@ add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 
 // can always reduce this number if all the arguments are not necessary
 function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
 	if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
-		return false;
+		$pull_allowed = false;
 	}
+	return $pull_allowed;
 }
 ```

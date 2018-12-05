@@ -1718,12 +1718,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// can always reduce this number if all the arguments are not necessary
 		function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
 			if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
-				return false;
+				$pull_allowed = false;
 			}
+			return $pull_allowed;
 		}
 		*/
 
-		return (bool) $pull_allowed;
+		return $pull_allowed;
 	}
 
 }
