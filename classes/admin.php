@@ -1325,9 +1325,18 @@ class Object_Sync_Sf_Admin {
 		if ( empty( $wordpress_object ) && empty( $wordpress_id ) ) {
 			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
 			$wordpress_id     = isset( $post_data['wordpress_id'] ) ? absint( $post_data['wordpress_id'] ) : '';
+			// when objects are already mapped, there is a salesforce id as well
+			$salesforce_id = isset( $post_data['salesforce_id'] ) ? sanitize_text_field( $post_data['salesforce_id'] ) : '';
 		}
+
 		$object_type = $wordpress_object;
-		$result      = $this->push->manual_push( $object_type, $wordpress_id );
+		if ( '' === $salesforce_id ) {
+			$method = 'POST';
+		} else {
+			$method = 'PUT';
+		}
+
+		$result = $this->push->manual_push( $object_type, $wordpress_id, $method );
 
 		if ( ! empty( $post_data['wordpress_object'] ) && ! empty( $post_data['wordpress_id'] ) ) {
 			wp_send_json_success( $result );
