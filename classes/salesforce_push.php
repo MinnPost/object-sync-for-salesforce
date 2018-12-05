@@ -482,14 +482,13 @@ class Object_Sync_Sf_Salesforce_Push {
 					esc_attr( $mapping['salesforce_object'] )
 				);
 
-				$result    = array(
+				$result = array(
 					'title'   => $title,
 					'message' => '',
 					'trigger' => $sf_sync_trigger,
 					'parent'  => esc_attr( $object[ $object_id_field ] ),
 					'status'  => 'error',
 				);
-				$results[] = $result;
 
 				$logging->setup( $result );
 				continue;
