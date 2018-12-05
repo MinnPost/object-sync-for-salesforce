@@ -139,19 +139,25 @@ class Object_Sync_Sf_Rest {
 				if ( ! in_array( $http_method, explode( ',', WP_REST_Server::ALLMETHODS ) ) ) {
 					return new WP_Error( 'rest_forbidden', esc_html__( 'This kind of request is not allowed.', 'object-sync-for-salesforce' ), array( 'status' => 401 ) );
 				}
+				if ( ! current_user_can( 'configure_salesforce' ) ) {
+					return new WP_Error( 'rest_forbidden', esc_html__( 'You do not have permissions to view this data.', 'object-sync-for-salesforce' ), array( 'status' => 401 ) );
+				}
 				break;
 			case 'mappings':
 				if ( ! in_array( $http_method, explode( ',', WP_REST_Server::ALLMETHODS ) ) ) {
 					return new WP_Error( 'rest_forbidden', esc_html__( 'This kind of request is not allowed.', 'object-sync-for-salesforce' ), array( 'status' => 401 ) );
 				}
+				if ( ! current_user_can( 'configure_salesforce' ) ) {
+					return new WP_Error( 'rest_forbidden', esc_html__( 'You do not have permissions to view this data.', 'object-sync-for-salesforce' ), array( 'status' => 401 ) );
+				}
 				break;
 			case 'pull':
-				if ( ! in_array( $http_method, array( 'GET', 'POST' ) ) ) {
+				if ( ! in_array( $http_method, array( 'GET', 'POST', 'PUT' ) ) ) {
 					return new WP_Error( 'rest_forbidden', esc_html__( 'This kind of request is not allowed.', 'object-sync-for-salesforce' ), array( 'status' => 401 ) );
 				}
 				break;
 			case 'push':
-				if ( 'POST' !== $http_method ) {
+				if ( ! in_array( $http_method, array( 'POST', 'PUT' ) ) ) {
 					return new WP_Error( 'rest_forbidden', esc_html__( 'This kind of request is not allowed.', 'object-sync-for-salesforce' ), array( 'status' => 401 ) );
 				}
 				break;
@@ -195,8 +201,8 @@ class Object_Sync_Sf_Rest {
 				}
 				break;
 			case 'push':
-				if ( 'POST' === $http_method && isset( $body_params['wordpress_object_type'] ) && isset( $body_params['wordpress_id'] ) ) {
-					$result = $this->push->manual_push( $body_params['wordpress_object_type'], $body_params['wordpress_id'] );
+				if ( ( 'POST' === $http_method || 'PUT' === $http_method || 'DELETE' === $http_method ) && isset( $body_params['wordpress_object_type'] ) && isset( $body_params['wordpress_id'] ) ) {
+					$result = $this->push->manual_push( $body_params['wordpress_object_type'], $body_params['wordpress_id'], $http_method );
 				}
 				break;
 		}

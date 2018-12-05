@@ -117,32 +117,37 @@ class Object_Sync_Sf_Salesforce_Push {
 	*
 	* @param string $object_type
 	* @param int $wordpress_id
+	* @param string $http_method
 	*
 	*/
-	public function manual_push( $object_type, $wordpress_id ) {
+	public function manual_push( $object_type, $wordpress_id, $http_method ) {
 		$object = $this->wordpress->get_wordpress_object_data( $object_type, $wordpress_id );
-		// try to run each WordPress trigger until one is successful
-		$create = $this->salesforce_push_object_crud( $object_type, $object, $this->mappings->sync_wordpress_create );
-		if ( ! empty( $create ) ) {
-			$code = '201';
-			error_log( 'create? result is ' . print_r( $create, true ) );
-			$result = $create;
+		// run the WordPress trigger that corresponds to the HTTP method
+		switch ( $http_method ) {
+			case 'POST':
+				$trigger = $this->mappings->sync_wordpress_create;
+				break;
+			case 'PUT':
+				$trigger = $this->mappings->sync_wordpress_update;
+				break;
+			case 'DELETE':
+				$trigger = $this->mappings->sync_wordpress_delete;
+				break;
+		}
+		if ( isset( $trigger ) ) {
+			$result = $this->salesforce_push_object_crud( $object_type, $object, $trigger );
+			if ( ! empty( $result ) ) {
+				if ( 'POST' === $http_method || 'PUT' === $http_method ) {
+					$code = '201';
+				} elseif ( 'DELETE' === $http_method ) {
+					$code = '204';
+				}
+			} else {
+				$code = '405';
+			}
 		} else {
 			$code   = '405';
-			$update = $this->salesforce_push_object_crud( $object_type, $object, $this->mappings->sync_wordpress_update );
-			if ( ! empty( $update ) ) {
-				$code = '201';
-				error_log( 'update? result is ' . print_r( $update, true ) );
-				$result = $update;
-			} else {
-				$code   = '405';
-				$delete = $this->salesforce_push_object_crud( $object_type, $object, $this->mappings->sync_wordpress_delete );
-				if ( ! empty( $delete ) ) {
-					$code = '204';
-					error_log( 'delete? result is ' . print_r( $delete, true ) );
-					$result = $delete;
-				}
-			}
+			$result = '';
 		}
 		$result = array(
 			'code' => $code,
@@ -469,7 +474,9 @@ class Object_Sync_Sf_Salesforce_Push {
 						$op = 'Update';
 						break;
 					case $this->mappings->sync_wordpress_delete:
-						$op = 'Delete';
+						if ( isset( $object[ $object_id_field ] ) ) {
+							$op = 'Delete';
+						}
 						break;
 				}
 
