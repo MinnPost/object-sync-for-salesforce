@@ -1723,7 +1723,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		}
 		*/
 
-		return $pull_allowed;
+		return (bool) $pull_allowed;
 	}
 
 }

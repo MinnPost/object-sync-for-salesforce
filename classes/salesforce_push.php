@@ -1179,9 +1179,9 @@ class Object_Sync_Sf_Salesforce_Push {
 		}
 
 		// hook to allow other plugins to prevent a push per-mapping.
-		$push_allowed = apply_filters( $this->option_prefix . 'push_object_allowed', true, $object_type, $object, $sf_sync_trigger, $mapping );
+		$push_allowed = apply_filters( $this->option_prefix . 'push_object_allowed', $push_allowed, $object_type, $object, $sf_sync_trigger, $mapping );
 
-		return $push_allowed;
+		return (bool) $push_allowed;
 	}
 
 }
