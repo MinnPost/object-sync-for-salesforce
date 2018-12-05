@@ -236,27 +236,9 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
-* 1.5.2 (2018-11-27)
-	* Bug fix: as of 1.5.0, when a Salesforce record is deleted, the corresponding WordPress record is not deleted. This release restores this functionality. Thanks to WordPress user @bswift for the report.
-    * Developers: this release allows API calls that return data from Salesforce to return either json, the full PHP array (the default) or both, if the `$options` array is populated. Thanks to WordPress user @yanlep for the request.
-
-* 1.5.1 (2018-11-03)
-	* New: update to version 2.1.1 of the ActionScheduler library.
-	* Bug fix: when processing more than 2000 records, the offset and limit combination fails due to Salesforce API restrictions. In this release, the plugin changes the date parameter on the API query to the value for the last processed record.
-
-* 1.5.0 (2018-10-26)
-	* New: the Mapping Errors tab supports deleting multiple error rows via checkboxes.
-	* New: when caching API responses, the plugin caches the full array rather than the full array and the JSON data. This reduces the memory usage for object caches a little.
-	* New: this plugin should be usable on WordPress VIP environments; it now checks for `user_attributes` instead of `user_meta` in those cases.
-	* Bug fix: this plugin can now be properly deployed on hosts like Pantheon. Thanks to WordPress user @joepahl and GitHub user @BrianBenninger for reporting this.
-	* Bug fix: when using meta fields for prematch, the plugin previously could fail to find a match even if the value existed. It now uses different matching for meta fields. **This requires that users resave their fieldmaps, and also that we end support for WordPress 4.5.**. Thanks to WordPress user @nodakjones for the bug report and testing assistance.
-	* Bug fix: when using the ActionScheduler library, the plugin fails to process multiple rounds of pull requests. Now it uses the limit setting to page through all possible updated records. Thanks to WordPress user @jonsayer for the report and WordPress user @harmoney for help testing.
-	* Developers: this release adds a new developer hook, `object_sync_for_salesforce_pull_query_modify`, which can modify the Salesforce API SOQL query before it pulls data from Salesforce. Thanks to WordPress user @yanlep for the suggestion.
+* 1.6.0 (2018-12-)
+	* Developers: the `object_sync_for_salesforce_pull_object_allowed` and `object_sync_for_salesforce_push_object_allowed` hooks now require that a value be returned, regardless of whether it is true or false. This was always the better way of handling these hook, but it was possible to use them without, and the documentation was incorrectly written.
 
 == Upgrade Notice ==
-= 1.5.2 =
-This release fixes a bug preventing a WordPress record from deleting when a corresponding Salesforce record is deleted.
-= 1.5.1 =
-This plugin now uses a different matching techinque for meta fields. **This requires that you resave your existing fieldmaps, and also that we end support for WordPress 4.5.**.
-= 1.5.0 =
-This plugin now uses a different matching techinque for meta fields. **This requires that you resave your existing fieldmaps, and also that we end support for WordPress 4.5.**.
+= 1.6.0
+The primary purpose of this update is to introduce REST API endpoints for developers to use. There are also some developer hook fixes.
