@@ -195,8 +195,8 @@ class Object_Sync_Sf_Rest {
 				}
 				break;
 			case 'push':
-				if ( 'POST' === $http_method && isset( $body_params['wordpress_object'] ) && isset( $body_params['wordpress_id'] ) ) {
-					$result = $this->push->manual_push( $body_params['wordpress_object'], $body_params['wordpress_id'] );
+				if ( 'POST' === $http_method && isset( $body_params['wordpress_object_type'] ) && isset( $body_params['wordpress_id'] ) ) {
+					$result = $this->push->manual_push( $body_params['wordpress_object_type'], $body_params['wordpress_id'] );
 				}
 				break;
 		}
