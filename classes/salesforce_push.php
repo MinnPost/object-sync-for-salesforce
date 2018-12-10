@@ -457,6 +457,24 @@ class Object_Sync_Sf_Salesforce_Push {
 			$push_allowed = $this->is_push_allowed( $object_type, $object, $sf_sync_trigger, $mapping, $map_sync_triggers );
 
 			if ( false === $push_allowed ) {
+
+				// we need to get the WordPress id here so we can check to see if the object already has a map
+				$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
+				$object_id = $structure['id_field'];
+
+				// this returns the row that maps the individual WordPress row to the individual Salesfoce row
+				$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object[ "$object_id" ] );
+
+				// hook to allow other plugins to define or alter the mapping object
+				$mapping_object = apply_filters( $this->option_prefix . 'push_mapping_object', $mapping_object, $object, $mapping );
+
+				// are these objects already connected in WordPress?
+				if ( isset( $mapping_object['id'] ) ) {
+					$is_new = false;
+				} else {
+					$is_new = true;
+				}
+
 				$status = 'error';
 				// create log entry for not allowed manual pull
 				if ( isset( $this->logging ) ) {
