@@ -1218,8 +1218,8 @@ class Object_Sync_Sf_Salesforce_Push {
 		// default is push is allowed
 		$push_allowed = true;
 
-		// if the current fieldmap does not allow create, we need to check if there is an object map for the WordPress object ID. if not, set push_allowed to false.
-		if ( ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
+		// if the current fieldmap does not allow the wp create trigger, we need to check if there is an object map for the WordPress object ID. if not, set push_allowed to false.
+		if ( ! in_array( $this->mappings->sync_wordpress_create, $map_sync_triggers ) ) {
 			$structure       = $this->wordpress->get_wordpress_table_structure( $object_type );
 			$object_id_field = $structure['id_field'];
 			$object_map      = $this->mappings->load_by_wordpress( $object_type, $object[ $object_id_field ] );
