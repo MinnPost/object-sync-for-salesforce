@@ -1325,11 +1325,13 @@ class Object_Sync_Sf_Admin {
 		if ( empty( $wordpress_object ) && empty( $wordpress_id ) ) {
 			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
 			$wordpress_id     = isset( $post_data['wordpress_id'] ) ? absint( $post_data['wordpress_id'] ) : '';
-			// when objects are already mapped, there is a salesforce id as well
-			$salesforce_id = isset( $post_data['salesforce_id'] ) ? sanitize_text_field( $post_data['salesforce_id'] ) : '';
 		}
 
+		// clarify what that variable is in this context.
 		$object_type = $wordpress_object;
+
+		// When objects are already mapped, there is a Salesforce id as well. Otherwise, it's blank.
+		$salesforce_id = isset( $post_data['salesforce_id'] ) ? sanitize_text_field( $post_data['salesforce_id'] ) : '';
 		if ( '' === $salesforce_id ) {
 			$method = 'POST';
 		} else {
