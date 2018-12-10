@@ -468,20 +468,24 @@ class Object_Sync_Sf_Salesforce_Push {
 				$op = '';
 				switch ( $sf_sync_trigger ) {
 					case $this->mappings->sync_wordpress_create:
-						$op = 'Create';
+						if ( true === $is_new ) {
+							$op = 'Create';
+						}
 						break;
 					case $this->mappings->sync_wordpress_update:
-						$op = 'Update';
+						if ( false === $is_new ) {
+							$op = 'Update';
+						}
 						break;
 					case $this->mappings->sync_wordpress_delete:
-						if ( isset( $object[ $object_id_field ] ) ) {
+						if ( false === $is_new ) {
 							$op = 'Delete';
 						}
 						break;
 				}
 
 				// translators: placeholders are: 1) the name of the current operation, 2) the name of the WordPress object type, 3) the name of the WordPress ID field, 4) the value of the object's ID in WordPress, 5) the name of the Salesforce object
-				$title = sprintf( esc_html__( 'Error: %1$s WordPress %2$s with %3$s of %4$s to Salesforce %5$s was not allowed by this fieldmap.', 'object-sync-for-salesforce' ),
+				$title = sprintf( esc_html__( 'Error: %1$s Salesforce %5$s with WordPress %2$s with %3$s of %4$s was not allowed by this fieldmap.', 'object-sync-for-salesforce' ),
 					esc_attr( $op ),
 					esc_attr( $mapping['wordpress_object'] ),
 					esc_attr( $object_id_field ),
@@ -496,8 +500,10 @@ class Object_Sync_Sf_Salesforce_Push {
 					'parent'  => esc_attr( $object[ $object_id_field ] ),
 					'status'  => 'error',
 				);
-
-				$logging->setup( $result );
+				if ( '' !== $op ) {
+					$logging->setup( $result );
+				}
+				$results[] = $result;
 				continue;
 			}
 
