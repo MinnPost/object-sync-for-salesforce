@@ -156,10 +156,8 @@
 				var data = {
 					'action' : 'push_to_salesforce',
 					'wordpress_object' : wordpressObject,
-					'wordpress_id' : wordpressId
-				}
-				if ( 0 < $( '#salesforce_id_ajax' ).length ) {
-					data.salesforce_id = salesforceId;
+					'wordpress_id' : wordpressId,
+					'salesforce_id' : salesforceId
 				}
 				$.post( ajaxurl, data, function( response ) {
 					if ( true === response.success ) {
