@@ -135,25 +135,25 @@ class Object_Sync_Sf_Salesforce_Push {
 				break;
 		}
 		if ( isset( $trigger ) ) {
-			$result = $this->salesforce_push_object_crud( $object_type, $object, $trigger );
-			if ( ! empty( $result ) ) {
-				if ( 'POST' === $http_method || 'PUT' === $http_method ) {
-					$code = '201';
-				} elseif ( 'DELETE' === $http_method ) {
-					$code = '204';
+			$results = $this->salesforce_push_object_crud( $object_type, $object, $trigger );
+			foreach ( $results as $result ) {
+				if ( 'success' === $result['status'] ) {
+					if ( 'POST' === $http_method || 'PUT' === $http_method ) {
+						$code = '201';
+					} elseif ( 'DELETE' === $http_method ) {
+						$code = '204';
+					}
+				} else {
+					$code = '405';
 				}
-			} else {
-				$code = '405';
 			}
 		} else {
 			$code   = '405';
 			$result = '';
 		}
 		$result = array(
-			'code' => $code,
-			'data' => array(
-				'success' => $result,
-			),
+			'code'   => $code,
+			'result' => $results,
 		);
 		return $result;
 	}
