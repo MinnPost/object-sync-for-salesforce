@@ -15,6 +15,7 @@ language: php
 #     - "7.0"
 #     - "7.1"
 #     - "7.2"
+#     - "7.3"
 
 # WordPress version used in first build configuration.
 # env:
@@ -39,33 +40,40 @@ matrix:
     include:
       # PHPunit 5
       - php: 5.6
-        env: WP_VERSION=4.6 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
+        env: WP_VERSION=4.6
       - php: 5.6
-        env: WP_VERSION=4.7 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
+        env: WP_VERSION=4.7
       - php: 5.6
-        env: WP_VERSION=4.8 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
+        env: WP_VERSION=4.8
       - php: 5.6
-        env: WP_VERSION=4.9 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
+        env: WP_VERSION=4.9
       # PHPUnit 6
       - php: 7.0
-        env: WP_VERSION=4.8 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
+        env: WP_VERSION=4.8
       - php: 7.0
-        env: WP_VERSION=4.9 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
+        env: WP_VERSION=4.9
       # PHPUnit 6
       - php: 7.1
-        env: WP_VERSION=4.9 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
+        env: WP_VERSION=4.9
       - php: 7.1
-        env: WP_VERSION=5.0 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
+        env: WP_VERSION=5.0
       # PHPUnit 7 support will come with https://core.trac.wordpress.org/ticket/43218
       # - php: 7.2
       #   env: WP_VERSION=4.9 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
       # - php: 7.2
-      #   env: WP_VERSION=5.0 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/word
+      #   env: WP_VERSION=5.0 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
+      # - php: 7.3
+      #   env: WP_VERSION=4.9 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
+      # - php: 7.3
+      #   env: WP_VERSION=5.0 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
 
 install:
   - composer install
 
+# Clones WordPress and configures our testing environment.
 before_script:
-  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+    - export WP_TESTS_DIR=/tmp/wordpress/tests/phpunit
+    - export WP_CORE_DIR=/tmp/wordpress/
+    - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 
 script: phpunit
