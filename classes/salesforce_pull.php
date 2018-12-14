@@ -61,6 +61,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$this->schedule_name = 'salesforce_pull';
 
+		// To be clear: we should only ever set this to true if Salesforce actually starts to reliably support it instead of generally ignoring it.
 		$this->batch_soql_queries = $this->batch_soql_queries( false );
 
 		// Maximum offset size for a SOQL query to Salesforce
