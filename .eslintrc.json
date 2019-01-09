@@ -1,3 +1,6 @@
 {
-    "extends": "wordpress"
+    "extends": "plugin:wordpress/recommended",
+    "plugins": [
+        "wordpress"
+    ]
 }
