@@ -276,6 +276,10 @@ class Object_Sync_Sf_Salesforce_Pull {
 				// Write items to the queue.
 				foreach ( $response['records'] as $key => $result ) {
 
+					if ( get_option( $this->option_prefix . 'last_pull_id', '' ) === $result['Id'] ) {
+						continue;
+					}
+
 					// if this record is new as of the last sync, use the create trigger
 					if ( isset( $result['CreatedDate'] ) && $result['CreatedDate'] > $last_sync ) {
 						$sf_sync_trigger = $this->mappings->sync_sf_create;
@@ -305,12 +309,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 						if ( false === $pull_allowed ) {
 							// update the current state so we don't end up on the same record again if the process fails
-							if ( true === $this->batch_soql_queries ) {
-								update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
-							} else {
-								update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
-								update_option( $this->option_prefix . 'last_pull_modified_date_' . $type, $result[ $salesforce_mapping['pull_trigger_field'] ] );
-							}
+							update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
 							continue;
 						}
 
@@ -326,15 +325,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$this->schedule_name
 						);
 
-						if ( true === $this->batch_soql_queries ) {
-							// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
-							$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
-							update_option( $this->option_prefix . 'pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
-						} else {
-							// update the stored query so we don't end up on the same record again if the process fails
-							update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
-							update_option( $this->option_prefix . 'last_pull_modified_date_' . $type, $result[ $salesforce_mapping['pull_trigger_field'] ] );
-						} // end if
+						update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
+
 					} // end if
 				} // end foreach
 				if ( true === $this->batch_soql_queries ) {
@@ -436,7 +428,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 						);
 						// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
 						$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
-						update_option( $this->option_prefix . 'pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
 					}
 				}
 			}
@@ -1624,7 +1615,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// get the last pull modified date
 		$last_pull_modified_date = get_option( $this->option_prefix . 'last_pull_modified_date_' . $type );
 		// update the last sync timestamp for this content type
-		update_option( $this->option_prefix . 'pull_last_sync_' . $type, strtotime( $last_pull_modified_date ) );
 		// having updated the last sync timestamp, regenerate the SOQL query object
 		$soql = $this->get_pull_query( $type, $salesforce_mapping );
 		return $soql;
@@ -1639,11 +1629,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*/
 	private function clear_current_type_query( $type ) {
 		// update the last sync timestamp for this content type
-		update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
+		$end_time = update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
 		// delete the option value for the currently pulling query for this type
 		delete_option( $this->option_prefix . 'currently_pulling_query_' . $type );
 		// delete the option value for the last pull modified date
-		delete_option( $this->option_prefix . 'last_pull_modified_date_' . $type );
+		//delete_option( $this->option_prefix . 'last_pull_modified_date_' . $type );
+		delete_option( $this->option_prefix . 'last_pull_id' );
 	}
 
 	/**
