@@ -20,10 +20,9 @@ tools:
             standard: WordPress
 build:
     environment:
-      node: 'v10.0.0'
-      php: '7.1.12'
+      node: 'v11.0.0'
+      php: '7.1.25'
       mysql: true
-      redis: true
       apache2:
         modules:
           - rewrite
