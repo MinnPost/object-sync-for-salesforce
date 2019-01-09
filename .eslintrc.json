@@ -1,6 +1,12 @@
 {
-    "extends": "plugin:wordpress/recommended",
-    "plugins": [
-        "wordpress"
-    ]
+    "env": {
+        "jest": true,
+        "node": true
+    },
+    "extends": [
+        "plugin:wordpress/recommended"
+    ],
+    "parserOptions": {
+        "sourceType": "module"
+    }
 }
