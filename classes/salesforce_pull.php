@@ -276,6 +276,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				// Write items to the queue.
 				foreach ( $response['records'] as $key => $result ) {
 
+					// if we've already pulled, or tried to pull, the current ID, don't do it again.
 					if ( get_option( $this->option_prefix . 'last_pull_id', '' ) === $result['Id'] ) {
 						continue;
 					}
@@ -308,7 +309,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						}
 
 						if ( false === $pull_allowed ) {
-							// update the current state so we don't end up on the same record again if the process fails
+							// update the current state so we don't end up on the same record again if the loop fails
 							update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
 							continue;
 						}
@@ -325,6 +326,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$this->schedule_name
 						);
 
+						// update the current state so we don't end up on the same record again if the loop fails
 						update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
 
 					} // end if
