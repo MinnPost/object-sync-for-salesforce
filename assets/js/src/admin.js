@@ -1,5 +1,7 @@
 ( function( $ ) {
-
+	/**
+	 * Generates the Salesforce object fields based on the dropdown activity and API results.
+	 */
 	function salesforceObjectFields() {
 
 		var delay = ( function() {
@@ -21,7 +23,7 @@
 			$( '.pull_trigger_field' ).hide();
 		}
 
-		$( '#salesforce_object' ).on( 'change', function( el ) {
+		$( '#salesforce_object' ).on( 'change', function() {
 			var that = this;
 			var delayTime = 1000;
 			delay( function() {
@@ -91,8 +93,10 @@
 			}, delayTime );
 		});
 	}
-
-	function addFieldMappingRow() {
+	/**
+	 * Duplicates the fields for a new row in the fieldmap options screen.
+	 */
+	 function addFieldMappingRow() {
 		$( '#add-field-mapping' ).click( function() {
 			var salesforceObject = $( '#salesforce_object' ).val();
 			var wordpressObject = $( '#wordpress_object' ).val();
@@ -108,8 +112,12 @@
 			return false;
 		});
 	}
-
-
+	/**
+	 * Gets the WordPress and Salesforce field results via an Ajax call
+	 * @param string wordpressObject the WordPress object type
+	 * @param string salesforceObject the Salesforce object type
+	 * @param int rowKey which row we're working on
+	 */
 	function fieldmapFields( wordpressObject, salesforceObject, rowKey ) {
 		var data = {
 			'action' : 'get_wp_sf_object_fields',
@@ -145,7 +153,9 @@
 
 		});
 	}
-
+	/**
+	 * Handle manual push and pull of objects
+	 */
 	function pushAndPullObjects() {
 		$( '.salesforce_user_ajax_message' ).hide();
 		if ( 0 < $( '#wordpress_object_ajax' ).length ) {
@@ -185,7 +195,9 @@
 			return false;
 		});
 	}
-
+	/**
+	 * Updates the user profile summary of Salesforce info.
+	 */
 	function updateSalesforceUserSummary() {
 		var mappingId = $( '#mapping_id_ajax' ).val();
 		var data = {
@@ -204,7 +216,9 @@
 			}
 		});
 	}
-
+	/**
+	 * Clear the plugin cache via Ajax request.
+	 */
 	function clearSfwpCacheLink() {
 		$( '#clear-sfwp-cache' ).click( function() {
 			var data = {
@@ -219,16 +233,27 @@
 			return false;
 		});
 	}
-
-	// as the drupal plugin does, we only allow one field to be a prematch or key
+	/**
+	 * As the Drupal plugin does, we only allow one field to be a prematch
+	 */
 	$( document ).on( 'click', '.column-is_prematch input', function() {
 		$( '.column-is_prematch input' ).not( this ).prop( 'checked', false );
 	});
-
+	/**
+	 * As the Drupal plugin does, we only allow one field to be a key
+	 */
 	$( document ).on( 'click', '.column-is_key input', function() {
 		$( '.column-is_key input' ).not( this ).prop( 'checked', false );
 	});
-
+	/**
+	 * When the plugin loads, initialize or enable things:
+	 * Select2 on select fields
+	 * Clear fields when the targeted WordPress or Salesforce object type changes
+	 * Add a spinner for Ajax requests
+	 * Manage the display for Salesforce object fields based on API reponse
+	 * Manual push and pull
+	 * Clearing the cache
+	 */
 	$( document ).ready( function() {
 
 		var timeout;
@@ -261,5 +286,4 @@
 		pushAndPullObjects();
 		clearSfwpCacheLink();
 	});
-
 }( jQuery ) );
