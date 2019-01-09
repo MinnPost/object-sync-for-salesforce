@@ -10,6 +10,8 @@ filter:
         - 'tests/**/*'
         - 'vendor/**/*'
         - 'Gulpfile.js'
+        - 'wordpress/**/*.js'
+        - 'wordpress/**/*.css'
     dependency_paths:
         - wordpress/
 tools:
