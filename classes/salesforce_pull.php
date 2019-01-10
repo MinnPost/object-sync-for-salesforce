@@ -1609,8 +1609,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*
 	*/
 	private function increment_current_type_query( $type, $salesforce_mapping ) {
-		// get the last pull modified date
-		$last_pull_modified_date = get_option( $this->option_prefix . 'last_pull_modified_date_' . $type );
 		// update the last sync timestamp for this content type
 		update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
 		// having updated the last sync timestamp, regenerate the SOQL query object
