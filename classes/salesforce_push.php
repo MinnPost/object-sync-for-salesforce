@@ -1135,6 +1135,18 @@ class Object_Sync_Sf_Salesforce_Push {
 
 			} // End try().
 
+			if ( ! isset( $salesforce_data ) ) {
+				// if we didn't set $salesforce_data already, set it now
+				$sf_object       = $sfapi->object_read(
+					$mapping['salesforce_object'],
+					$mapping_object['salesforce_id'],
+					array(
+						'cache' => false,
+					)
+				);
+				$salesforce_data = $sf_object['data'];
+			}
+
 			// tell the mapping object - whether it is new or already existed - how we just used it
 			$mapping_object['last_sync_action'] = 'push';
 			$mapping_object['last_sync']        = current_time( 'mysql' );
