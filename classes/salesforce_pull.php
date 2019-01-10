@@ -516,19 +516,15 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
 		$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
-		error_log( 'offset is ' . $soql->offset );
 		if ( $soql->offset > $this->max_soql_size ) {
-			error_log( 'offset is too high. regenerate' );
 			// regenerate the SOQL query so we can increment the last pull modified date value from Salesforce. This allows us to go beyond 2000 records as long as the records were modified at different times.
 			$soql = $this->increment_current_type_query( $type, $salesforce_mapping );
 		}
 
 		if ( false === $check ) {
-			error_log( 'just return the query' );
 			return $soql;
 		} else {
 			$does_next_offset_have_results = false;
-			error_log( 'offset soql query is ' . (string) $soql );
 			// Execute query
 			// have to cast it to string to make sure it uses the magic method
 			// we don't want to cache this because timestamps
