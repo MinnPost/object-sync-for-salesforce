@@ -873,8 +873,23 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$mapping_object_id_transient = get_transient( 'salesforce_pushing_object_id' );
 			}
 
-			// Drupal only does a salesforce_pull flag, but we might as well do push and pull because WordPress
-			$salesforce_pushing = (int) get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
+			// Here's where we check to see whether the current record was updated by a push from this plugin or not. Here's how it works:
+			// 1. A record gets pushed to Salesforce by this plugin.
+			// 2. We save the LastModifiedDate from the Salesforce result as a timestamp in the transient.
+			// 3. Below, in addition to checking the record Id, we check against $object's LastModifiedDate and if it's not later than the transient value, we skip it because it's still pushing from our activity.
+			$salesforce_pushing = get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
+
+			if ( '1' !== $salesforce_pushing ) {
+				//$salesforce_pushing = gmdate( 'Y-m-d\TH:i:s\Z', $salesforce_pushing );
+				if ( false === $salesforce_pushing || strtotime( $object['LastModifiedDate'] ) > $salesforce_pushing ) {
+					$salesforce_pushing = 0;
+				} else {
+					$salesforce_pushing = 1;
+				}
+			} else {
+				$salesforce_pushing = 1;
+			}
+
 			if ( 1 === $salesforce_pushing ) {
 				$transients_to_delete[] = $mapping_object_id_transient;
 				if ( 1 === (int) $this->debug ) {
