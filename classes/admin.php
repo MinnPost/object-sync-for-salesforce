@@ -1828,8 +1828,11 @@ class Object_Sync_Sf_Admin {
 	* @return array $args
 	*/
 	private function version_options() {
+		$args = array();
+		if ( defined( 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION' ) || ! isset( $_GET['page'] ) || 'object-sync-salesforce-admin' !== $_GET['page'] ) {
+			return $args;
+		}
 		$versions = $this->salesforce['sfapi']->get_api_versions();
-		$args     = array();
 		foreach ( $versions['data'] as $key => $value ) {
 			$args[] = array(
 				'value' => $value['version'],
