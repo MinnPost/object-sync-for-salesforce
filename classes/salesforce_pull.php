@@ -263,6 +263,32 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					// if we've already pulled, or tried to pull, the current ID, don't do it again.
 					if ( get_option( $this->option_prefix . 'last_pull_id', '' ) === $result['Id'] ) {
+
+						if ( 1 === (int) $this->debug ) {
+							// create log entry for failed pull
+							$status = 'debug';
+							// translators: placeholders are: 1) the Salesforce ID
+							$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s has already been attempted.', 'object-sync-for-salesforce' ),
+								absint( $result['Id'] )
+							);
+
+							if ( isset( $this->logging ) ) {
+								$logging = $this->logging;
+							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+							}
+
+							$result = array(
+								'title'   => $title,
+								'message' => esc_html__( 'This ID has already been attempted so it was not pulled again.', 'object-sync-for-salesforce' ),
+								'trigger' => $salesforce_mapping['sync_triggers'],
+								'parent'  => '',
+								'status'  => $status,
+							);
+
+							$logging->setup( $result );
+						}
+
 						continue;
 					}
 
@@ -296,6 +322,32 @@ class Object_Sync_Sf_Salesforce_Pull {
 						if ( false === $pull_allowed ) {
 							// update the current state so we don't end up on the same record again if the loop fails
 							update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
+
+							if ( 1 === (int) $this->debug ) {
+								// create log entry for failed pull
+								$status = 'debug';
+								// translators: placeholders are: 1) the Salesforce ID
+								$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s is not allowed.', 'object-sync-for-salesforce' ),
+									absint( $result['Id'] )
+								);
+
+								if ( isset( $this->logging ) ) {
+									$logging = $this->logging;
+								} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+									$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+								}
+
+								$result = array(
+									'title'   => $title,
+									'message' => esc_html__( 'This ID is not pullable so it was skipped.', 'object-sync-for-salesforce' ),
+									'trigger' => $salesforce_mapping['sync_triggers'],
+									'parent'  => '',
+									'status'  => $status,
+								);
+
+								$logging->setup( $result );
+							}
+
 							continue;
 						}
 
@@ -314,6 +366,30 @@ class Object_Sync_Sf_Salesforce_Pull {
 						// update the current state so we don't end up on the same record again if the loop fails
 						update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
 
+						if ( 1 === (int) $this->debug ) {
+							// create log entry for failed pull
+							$status = 'debug';
+							// translators: placeholders are: 1) the Salesforce ID
+							$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s has been successfully pulled.', 'object-sync-for-salesforce' ),
+								absint( $result['Id'] )
+							);
+
+							if ( isset( $this->logging ) ) {
+								$logging = $this->logging;
+							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+							}
+
+							$result = array(
+								'title'   => $title,
+								'message' => esc_html__( 'This ID has been successfully pulled. It cannot be pulled again.', 'object-sync-for-salesforce' ),
+								'trigger' => $salesforce_mapping['sync_triggers'],
+								'parent'  => '',
+								'status'  => $status,
+							);
+
+							$logging->setup( $result );
+						}
 					} // end if
 				} // end foreach
 				if ( true === $this->batch_soql_queries ) {
@@ -795,6 +871,31 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$salesforce_pushing = (int) get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
 			if ( 1 === $salesforce_pushing ) {
 				$transients_to_delete[] = $mapping_object_id_transient;
+				if ( 1 === (int) $this->debug ) {
+					// create log entry for failed pull
+					$status = 'debug';
+					// translators: placeholders are: 1) the mapping object ID transient
+					$title = sprintf( esc_html__( 'Debug: mapping object transient ID %1$s is currently pushing, so we do not pull it.', 'object-sync-for-salesforce' ),
+						$mapping_object_id_transient
+					);
+
+					if ( isset( $this->logging ) ) {
+						$logging = $this->logging;
+					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+					}
+
+					$result = array(
+						'title'   => $title,
+						'message' => '',
+						'trigger' => $salesforce_mapping['sync_triggers'],
+						'parent'  => '',
+						'status'  => $status,
+					);
+
+					$logging->setup( $result );
+				}
+
 				continue;
 			}
 
