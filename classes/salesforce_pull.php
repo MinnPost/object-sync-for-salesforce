@@ -391,6 +391,16 @@ class Object_Sync_Sf_Salesforce_Pull {
 				if ( true === $this->batch_soql_queries ) {
 					// if applicable, process the next batch of records
 					$this->get_next_record_batch( $last_sync, $salesforce_mapping, $map_sync_triggers, $type, $version_path, $query_options, $response );
+				} else {
+					// update or clear the stored query since the loop has successfully finished.
+					end( $response['records'] );
+					$last_record_key = key( $response['records'] );
+					// if we've just done the last item in the recordset, go ahead and clear the query. we don't need to offset.
+					if ( $last_record_key === $key ) {
+						$this->clear_current_type_query( $type );
+					} else {
+						update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
+					}
 				} // end if
 			} elseif ( 0 === count( $response['records'] ) && false === $this->batch_soql_queries ) {
 				// only update/clear these option values if we are currently still processing a query
