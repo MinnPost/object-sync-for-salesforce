@@ -955,6 +955,11 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				$logging->setup( $result );
 
+				// right here we should change the pushing transient to the LastModifiedDate for the Salesforce object.
+				if ( isset( $salesforce_data['LastModifiedDate'] ) ) {
+					set_transient( 'salesforce_pushing_' . $mapping_object['id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
+				}
+
 				// update that mapping object
 				$mapping_object['salesforce_id']     = $salesforce_id;
 				$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
@@ -1145,6 +1150,11 @@ class Object_Sync_Sf_Salesforce_Push {
 					)
 				);
 				$salesforce_data = $sf_object['data'];
+			}
+
+			// right here we should change the pushing transient to the LastModifiedDate for the Salesforce object.
+			if ( isset( $salesforce_data['LastModifiedDate'] ) ) {
+				set_transient( 'salesforce_pushing_' . $mapping_object['id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
 			}
 
 			// tell the mapping object - whether it is new or already existed - how we just used it
