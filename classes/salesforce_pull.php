@@ -229,18 +229,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// the Sforce-Query-Options header is a comma delimited string
 					$query_options['headers']['Sforce-Query-Options'] = 'batchSize=' . $batch_size;
 				}
-			} else {
-				// check if we have a stored currently running query and if so, apply an offset or regenerate the query
-				$pull_query_running = get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' );
-				if ( '' !== $pull_query_running ) {
-					$saved_query = maybe_unserialize( $pull_query_running );
-					// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
-					$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
-					if ( $soql->offset > $this->max_soql_size ) {
-						// regenerate the SOQL query so we can increment the last pull modified date value from Salesforce. This allows us to go beyond 2000 records as long as the records were modified at different times.
-						$soql = $this->increment_current_type_query( $type, $salesforce_mapping );
-					}
-				}
 			}
 
 			// Execute query
@@ -310,14 +298,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 						);
 
 						$pull_allowed = $this->is_pull_allowed( $type, $result, $sf_sync_trigger, $salesforce_mapping, $map_sync_triggers );
-
-						if ( false === $this->batch_soql_queries ) {
-							// increment the SOQL offset by the current key
-							// the key is zero based, but that is fine for a SOQL offset value
-							$soql->offset = $soql->offset + $key;
-							// serialize the currently running SOQL query and store it for this type
-							$serialized_query = maybe_serialize( $soql );
-						}
 
 						if ( false === $pull_allowed ) {
 							// update the current state so we don't end up on the same record again if the loop fails
@@ -392,14 +372,21 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// if applicable, process the next batch of records
 					$this->get_next_record_batch( $last_sync, $salesforce_mapping, $map_sync_triggers, $type, $version_path, $query_options, $response );
 				} else {
-					// update or clear the stored query since the loop has successfully finished.
+					// Here, we check and see if the query has results with an additional offset.
+					// If it does, we regenerate the query so it will have an offset next time it runs.
+					// If it does not, we clear the query if we've just processed the last row.
+					// this allows us to run an offset on the stored query instead of clearing it.
+					$does_next_offset_have_results = $this->get_offset_query( $type, $soql, true );
 					end( $response['records'] );
 					$last_record_key = key( $response['records'] );
-					// if we've just done the last item in the recordset, go ahead and clear the query. we don't need to offset.
-					if ( $last_record_key === $key ) {
+					if ( true === $does_next_offset_have_results ) {
+						// serialize the currently running SOQL query and store it for this type
+						$soql             = $this->get_offset_query( $type, $soql );
+						$serialized_query = maybe_serialize( $soql );
+						update_option( $this->option_prefix . 'next_query_' . $type, $serialized_query );
+					} elseif ( $last_record_key === $key ) {
+						// clear the stored query. we don't need to offset and we've finished the loop.
 						$this->clear_current_type_query( $type );
-					} else {
-						update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
 					}
 				} // end if
 			} elseif ( 0 === count( $response['records'] ) && false === $this->batch_soql_queries ) {
@@ -505,6 +492,59 @@ class Object_Sync_Sf_Salesforce_Pull {
 	}
 
 	/**
+	* Get the next offset query. If check is true, only see if that query would have results. Otherwise, return the SOQL object.
+	*
+	* When batchSize is not in use, run a check with an offset.
+	*
+	* @param string $type the Salesforce object type
+	* @param object $soql the SOQL object
+	* @param bool $check are we just checking?
+	* @return object|bool $soql|$does_next_offset_have_results
+	*
+	*/
+	private function get_offset_query( $type, $soql, $check = false ) {
+		$sfapi         = $this->salesforce['sfapi'];
+		$query_options = array(
+			'cache' => false,
+		);
+
+		// check if we have a stored currently running query and if so, apply an offset or regenerate the query
+		$pull_query_running = get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' );
+		if ( '' !== $pull_query_running ) {
+			$saved_query = maybe_unserialize( $pull_query_running );
+		}
+
+		// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
+		$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
+		error_log( 'offset is ' . $soql->offset );
+		if ( $soql->offset > $this->max_soql_size ) {
+			error_log( 'offset is too high. regenerate' );
+			// regenerate the SOQL query so we can increment the last pull modified date value from Salesforce. This allows us to go beyond 2000 records as long as the records were modified at different times.
+			$soql = $this->increment_current_type_query( $type, $salesforce_mapping );
+		}
+
+		if ( false === $check ) {
+			error_log( 'just return the query' );
+			return $soql;
+		} else {
+			$does_next_offset_have_results = false;
+			error_log( 'offset soql query is ' . (string) $soql );
+			// Execute query
+			// have to cast it to string to make sure it uses the magic method
+			// we don't want to cache this because timestamps
+			$results  = $sfapi->query(
+				(string) $soql,
+				$query_options
+			);
+			$response = $results['data'];
+			if ( ! isset( $response['errorCode'] ) && 0 < count( $response['records'] ) ) {
+				$does_next_offset_have_results = true;
+			}
+			return $does_next_offset_have_results;
+		}
+	}
+
+	/**
 	* Given a SObject type name, build an SOQL query to include all fields for all
 	* SalesforceMappings mapped to that SObject.
 	*
@@ -520,6 +560,15 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* @see Object_Sync_Sf_Mapping::get_mapped_record_types
 	*/
 	private function get_pull_query( $type, $salesforce_mapping = array() ) {
+
+		// check if we have a stored next query to run for this type. if so, clear and return it.
+		$next_query_saved = get_option( $this->option_prefix . 'next_query_' . $type, '' );
+		if ( '' !== $next_query_saved ) {
+			$next_query = maybe_unserialize( $next_query_saved );
+			delete_option( $this->option_prefix . 'next_query_' . $type );
+			return $next_query;
+		}
+
 		$mapped_fields       = array();
 		$mapped_record_types = array();
 
