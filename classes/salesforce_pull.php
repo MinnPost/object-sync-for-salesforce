@@ -344,7 +344,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$result = array(
 					'title'   => $title,
 					'message' => $response['message'],
-					'trigger' => $sf_mapping['sync_triggers'],
+					'trigger' => $salesforce_mapping['sync_triggers'],
 					'parent'  => '',
 					'status'  => $status,
 				);
