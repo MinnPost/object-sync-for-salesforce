@@ -381,9 +381,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$last_record_key = key( $response['records'] );
 					if ( true === $does_next_offset_have_results ) {
 						// serialize the currently running SOQL query and store it for this type
-						$soql             = $this->get_offset_query( $type, $soql );
-						$serialized_query = maybe_serialize( $soql );
-						update_option( $this->option_prefix . 'next_query_' . $type, $serialized_query );
+						$serialized_current_query = maybe_serialize( $soql );
+						update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query );
+
+						$soql                  = $this->get_offset_query( $type, $soql );
+						$serialized_next_query = maybe_serialize( $soql );
+						update_option( $this->option_prefix . 'next_query_' . $type, $serialized_next_query );
 					} elseif ( $last_record_key === $key ) {
 						// clear the stored query. we don't need to offset and we've finished the loop.
 						$this->clear_current_type_query( $type );
