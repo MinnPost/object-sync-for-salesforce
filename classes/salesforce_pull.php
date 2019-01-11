@@ -373,7 +373,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// If it does, we regenerate the query so it will have an offset next time it runs.
 					// If it does not, we clear the query if we've just processed the last row.
 					// this allows us to run an offset on the stored query instead of clearing it.
-					$does_next_offset_have_results = $this->get_offset_query( $type, $soql, true );
+					$does_next_offset_have_results = $this->get_offset_query( $type, $salesforce_mapping, $soql, true );
 					end( $response['records'] );
 					$last_record_key = key( $response['records'] );
 					if ( true === $does_next_offset_have_results ) {
@@ -381,7 +381,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$serialized_current_query = maybe_serialize( $soql );
 						update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query );
 
-						$soql                  = $this->get_offset_query( $type, $soql );
+						$soql                  = $this->get_offset_query( $type, $salesforce_mapping, $soql );
 						$serialized_next_query = maybe_serialize( $soql );
 						update_option( $this->option_prefix . 'next_query_' . $type, $serialized_next_query );
 					} elseif ( $last_record_key === $key ) {
@@ -497,12 +497,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* When batchSize is not in use, run a check with an offset.
 	*
 	* @param string $type the Salesforce object type
+	* @param array $salesforce_mapping the map between object types
 	* @param object $soql the SOQL object
 	* @param bool $check are we just checking?
 	* @return object|bool $soql|$does_next_offset_have_results
 	*
 	*/
-	private function get_offset_query( $type, $soql, $check = false ) {
+	private function get_offset_query( $type, $salesforce_mapping, $soql, $check = false ) {
 		$sfapi         = $this->salesforce['sfapi'];
 		$query_options = array(
 			'cache' => false,
