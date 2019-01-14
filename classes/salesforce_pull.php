@@ -699,7 +699,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// Load all unique SF record types that we have mappings for.
 		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
 
-			$type = $salesforce_mapping['salesforce_object'];
+			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping
+			$type              = $salesforce_mapping['salesforce_object']; // this sets the Salesforce object type for the SOQL query
 
 			$mappings = $this->mappings->get_fieldmaps(
 				null,
