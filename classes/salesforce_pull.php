@@ -61,6 +61,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$this->schedule_name = 'salesforce_pull';
 
+		// To be clear: we should only ever set this to true if Salesforce actually starts to reliably support it instead of generally ignoring it.
 		$this->batch_soql_queries = $this->batch_soql_queries( false );
 
 		// Maximum offset size for a SOQL query to Salesforce
@@ -185,6 +186,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*
 	* We copy the convention from the Drupal module here, and run a separate SOQL query for each type of object in SF
 	*
+	* If we return something here, it's because there is an error.
+	*
 	*/
 	private function get_updated_records() {
 		$sfapi = $this->salesforce['sfapi'];
@@ -226,18 +229,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// the Sforce-Query-Options header is a comma delimited string
 					$query_options['headers']['Sforce-Query-Options'] = 'batchSize=' . $batch_size;
 				}
-			} else {
-				// check if we have a stored currently running query and if so, apply an offset or regenerate the query
-				$pull_query_running = get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' );
-				if ( '' !== $pull_query_running ) {
-					$saved_query = maybe_unserialize( $pull_query_running );
-					// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
-					$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
-					if ( $soql->offset > $this->max_soql_size ) {
-						// regenerate the SOQL query so we can increment the last pull modified date value from Salesforce. This allows us to go beyond 2000 records as long as the records were modified at different times.
-						$soql = $this->increment_current_type_query( $type, $salesforce_mapping );
-					}
-				}
 			}
 
 			// Execute query
@@ -257,6 +248,35 @@ class Object_Sync_Sf_Salesforce_Pull {
 			if ( ! isset( $response['errorCode'] ) && 0 < count( $response['records'] ) ) {
 				// Write items to the queue.
 				foreach ( $response['records'] as $key => $result ) {
+					// if we've already pulled, or tried to pull, the current ID, don't do it again.
+					if ( get_option( $this->option_prefix . 'last_pull_id', '' ) === $result['Id'] ) {
+						if ( 1 === (int) $this->debug ) {
+							// create log entry for failed pull
+							$status = 'debug';
+							// translators: placeholders are: 1) the Salesforce ID
+							$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s has already been attempted.', 'object-sync-for-salesforce' ),
+								absint( $result['Id'] )
+							);
+
+							if ( isset( $this->logging ) ) {
+								$logging = $this->logging;
+							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+							}
+
+							$result = array(
+								'title'   => $title,
+								'message' => esc_html__( 'This ID has already been attempted so it was not pulled again.', 'object-sync-for-salesforce' ),
+								'trigger' => $salesforce_mapping['sync_triggers'],
+								'parent'  => '',
+								'status'  => $status,
+							);
+
+							$logging->setup( $result );
+						}
+
+						continue;
+					}
 
 					// if this record is new as of the last sync, use the create trigger
 					if ( isset( $result['CreatedDate'] ) && $result['CreatedDate'] > $last_sync ) {
@@ -275,47 +295,34 @@ class Object_Sync_Sf_Salesforce_Pull {
 							'sf_sync_trigger' => $sf_sync_trigger, // use the appropriate trigger based on when this was created
 						);
 
-						// default is pull is allowed
-						$pull_allowed = true;
-
-						// if the current fieldmap does not allow create, we need to check if there is an object map for the Salesforce object Id. if not, set pull_allowed to false.
-						if ( isset( $map_sync_triggers ) && ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
-							$object_map = $this->mappings->load_by_salesforce( $result['Id'] );
-							if ( empty( $object_map ) ) {
-								$pull_allowed = false;
-							}
-						}
-
-						// Hook to allow other plugins to prevent a pull per-mapping.
-						// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
-						$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', $pull_allowed, $type, $result, $sf_sync_trigger, $salesforce_mapping );
-
-						// example to keep from pulling the Contact with id of abcdef
-						/*
-						add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
-						// can always reduce this number if all the arguments are not necessary
-						function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
-							if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
-								return false;
-							}
-						}
-						*/
-
-						if ( false === $this->batch_soql_queries ) {
-							// increment the SOQL offset by the current key
-							// the key is zero based, but that is fine for a SOQL offset value
-							$soql->offset = $soql->offset + $key;
-							// serialize the currently running SOQL query and store it for this type
-							$serialized_query = maybe_serialize( $soql );
-						}
+						$pull_allowed = $this->is_pull_allowed( $type, $result, $sf_sync_trigger, $salesforce_mapping, $map_sync_triggers );
 
 						if ( false === $pull_allowed ) {
-							// update the current state so we don't end up on the same record again if the process fails
-							if ( true === $this->batch_soql_queries ) {
-								update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
-							} else {
-								update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
-								update_option( $this->option_prefix . 'last_pull_modified_date_' . $type, $result[ $salesforce_mapping['pull_trigger_field'] ] );
+							// update the current state so we don't end up on the same record again if the loop fails
+							update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
+							if ( 1 === (int) $this->debug ) {
+								// create log entry for failed pull
+								$status = 'debug';
+								// translators: placeholders are: 1) the Salesforce ID
+								$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s is not allowed.', 'object-sync-for-salesforce' ),
+									absint( $result['Id'] )
+								);
+
+								if ( isset( $this->logging ) ) {
+									$logging = $this->logging;
+								} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+									$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+								}
+
+								$result = array(
+									'title'   => $title,
+									'message' => esc_html__( 'This ID is not pullable so it was skipped.', 'object-sync-for-salesforce' ),
+									'trigger' => $salesforce_mapping['sync_triggers'],
+									'parent'  => '',
+									'status'  => $status,
+								);
+
+								$logging->setup( $result );
 							}
 							continue;
 						}
@@ -331,21 +338,59 @@ class Object_Sync_Sf_Salesforce_Pull {
 							),
 							$this->schedule_name
 						);
+						// update the current state so we don't end up on the same record again if the loop fails
+						update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
+						if ( 1 === (int) $this->debug ) {
+							// create log entry for failed pull
+							$status = 'debug';
+							// translators: placeholders are: 1) the Salesforce ID
+							$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s has been successfully pulled.', 'object-sync-for-salesforce' ),
+								absint( $result['Id'] )
+							);
 
-						if ( true === $this->batch_soql_queries ) {
-							// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
-							$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
-							update_option( $this->option_prefix . 'pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
-						} else {
-							// update the stored query so we don't end up on the same record again if the process fails
-							update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_query );
-							update_option( $this->option_prefix . 'last_pull_modified_date_' . $type, $result[ $salesforce_mapping['pull_trigger_field'] ] );
-						} // end if
+							if ( isset( $this->logging ) ) {
+								$logging = $this->logging;
+							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+							}
+
+							$result = array(
+								'title'   => $title,
+								'message' => esc_html__( 'This ID has been successfully pulled. It cannot be pulled again.', 'object-sync-for-salesforce' ),
+								'trigger' => $salesforce_mapping['sync_triggers'],
+								'parent'  => '',
+								'status'  => $status,
+							);
+							$logging->setup( $result );
+						} // end of debug
 					} // end if
 				} // end foreach
+
+				$next_query_modified_date = isset( $result['LastModifiedDate'] ) ? strtotime( $result['LastModifiedDate'] ) : current_time( 'timestamp', true );
+
 				if ( true === $this->batch_soql_queries ) {
 					// if applicable, process the next batch of records
 					$this->get_next_record_batch( $last_sync, $salesforce_mapping, $map_sync_triggers, $type, $version_path, $query_options, $response );
+				} else {
+					// Here, we check and see if the query has results with an additional offset.
+					// If it does, we regenerate the query so it will have an offset next time it runs.
+					// If it does not, we clear the query if we've just processed the last row.
+					// this allows us to run an offset on the stored query instead of clearing it.
+					$does_next_offset_have_results = $this->get_offset_query( $type, $salesforce_mapping, $soql, $next_query_modified_date, true );
+					end( $response['records'] );
+					$last_record_key = key( $response['records'] );
+					if ( true === $does_next_offset_have_results ) {
+						// serialize the currently running SOQL query and store it for this type
+						$serialized_current_query = maybe_serialize( $soql );
+						update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query );
+
+						$soql                  = $this->get_offset_query( $type, $salesforce_mapping, $soql, $next_query_modified_date );
+						$serialized_next_query = maybe_serialize( $soql );
+						update_option( $this->option_prefix . 'next_query_' . $type, $serialized_next_query );
+					} elseif ( $last_record_key === $key ) {
+						// clear the stored query. we don't need to offset and we've finished the loop.
+						$this->clear_current_type_query( $type );
+					}
 				} // end if
 			} elseif ( 0 === count( $response['records'] ) && false === $this->batch_soql_queries ) {
 				// only update/clear these option values if we are currently still processing a query
@@ -368,13 +413,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 
-				$logging->setup(
-					$title,
-					$response['message'],
-					$sf_mapping['sync_triggers'],
-					'',
-					$status
+				$result = array(
+					'title'   => $title,
+					'message' => $response['message'],
+					'trigger' => $salesforce_mapping['sync_triggers'],
+					'parent'  => '',
+					'status'  => $status,
 				);
+
+				$logging->setup( $result );
+
+				return $result;
 
 			} // End if().
 		} // End foreach().
@@ -438,12 +487,66 @@ class Object_Sync_Sf_Salesforce_Pull {
 						);
 						// Update the last pull sync timestamp for this record type to avoid re-processing in case of error
 						$last_sync_pull_trigger = DateTime::createFromFormat( 'Y-m-d\TH:i:s+', $result[ $salesforce_mapping['pull_trigger_field'] ], new DateTimeZone( 'UTC' ) );
-						update_option( $this->option_prefix . 'pull_last_sync_' . $type, $last_sync_pull_trigger->format( 'U' ) );
 					}
 				}
 			}
 			$next_records_url = isset( $new_response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $new_response['nextRecordsUrl'] ) : false;
 		} // end while loop
+	}
+
+	/**
+	* Get the next offset query. If check is true, only see if that query would have results. Otherwise, return the SOQL object.
+	*
+	* When batchSize is not in use, run a check with an offset.
+	*
+	* @param string $type the Salesforce object type
+	* @param array $salesforce_mapping the map between object types
+	* @param object $soql the SOQL object
+	* @param timestamp $next_query_modified_date the last record's modified datetime, or the current time if there isn't one
+	* @param bool $check are we just checking?
+	* @return object|bool $soql|$does_next_offset_have_results
+	*
+	*/
+	private function get_offset_query( $type, $salesforce_mapping, $soql, $next_query_modified_date, $check = false ) {
+		$sfapi         = $this->salesforce['sfapi'];
+		$query_options = array(
+			'cache' => false,
+		);
+
+		// check if we have a stored currently running query and if so, apply an offset or regenerate the query
+		$pull_query_running = get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' );
+		if ( '' !== $pull_query_running ) {
+			$saved_query = maybe_unserialize( $pull_query_running );
+		}
+
+		// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
+		$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
+		if ( $soql->offset > $this->max_soql_size ) {
+			$soql->offset             = 0;
+			$serialized_current_query = maybe_serialize( $soql );
+			update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query );
+			// regenerate the SOQL query so we can increment the last pull modified date value from Salesforce. This allows us to go beyond 2000 records as long as the records were modified at different times.
+			// we need to pass the last item's modified date here, if we have it.
+			$soql = $this->generate_next_current_type_query( $type, $soql, $salesforce_mapping, $next_query_modified_date );
+		}
+
+		if ( false === $check ) {
+			return $soql;
+		} else {
+			$does_next_offset_have_results = false;
+			// Execute query
+			// have to cast it to string to make sure it uses the magic method
+			// we don't want to cache this because timestamps
+			$results  = $sfapi->query(
+				(string) $soql,
+				$query_options
+			);
+			$response = $results['data'];
+			if ( ! isset( $response['errorCode'] ) && 0 < count( $response['records'] ) ) {
+				$does_next_offset_have_results = true;
+			}
+			return $does_next_offset_have_results;
+		}
 	}
 
 	/**
@@ -462,6 +565,15 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* @see Object_Sync_Sf_Mapping::get_mapped_record_types
 	*/
 	private function get_pull_query( $type, $salesforce_mapping = array() ) {
+
+		// check if we have a stored next query to run for this type. if so, clear and return it.
+		$next_query_saved = get_option( $this->option_prefix . 'next_query_' . $type, '' );
+		if ( '' !== $next_query_saved ) {
+			$next_query = maybe_unserialize( $next_query_saved );
+			delete_option( $this->option_prefix . 'next_query_' . $type );
+			return $next_query;
+		}
+
 		$mapped_fields       = array();
 		$mapped_record_types = array();
 
@@ -754,6 +866,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$transients_to_delete = array();
 
+		$results = array();
+
 		foreach ( $salesforce_mappings as $salesforce_mapping ) {
 
 			// this returns the row that maps the individual Salesforce row to the individual WordPress row
@@ -770,14 +884,18 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				$title = sprintf( esc_html__( 'Error: Salesforce Pull: unable to process queue item because it has no Salesforce Id.', 'object-sync-for-salesforce' ) );
 
-				$logging->setup(
-					$title,
-					print_r( $object, true ), // log whatever we have in the event of this error, so print the array
-					$sf_sync_trigger,
-					0, // parent id goes here but we don't have one, so make it 0
-					$status
+				$result = array(
+					'title'   => $title,
+					'message' => print_r( $object, true ), // log whatever we have in the event of this error, so print the array
+					'trigger' => $sf_sync_trigger,
+					'parent'  => 0, // parent id goes here but we don't have one, so make it 0
+					'status'  => $status,
 				);
-				return;
+
+				$logging->setup( $result );
+
+				$results[] = $result;
+				continue;
 			}
 
 			// if there's already a connection between the objects, $mapping_object will be an array
@@ -809,10 +927,50 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$mapping_object_id_transient = get_transient( 'salesforce_pushing_object_id' );
 			}
 
-			// Drupal only does a salesforce_pull flag, but we might as well do push and pull because WordPress
-			$salesforce_pushing = (int) get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
+			// Here's where we check to see whether the current record was updated by a push from this plugin or not. Here's how it works:
+			// 1. A record gets pushed to Salesforce by this plugin.
+			// 2. We save the LastModifiedDate from the Salesforce result as a timestamp in the transient.
+			// 3. Below, in addition to checking the record Id, we check against $object's LastModifiedDate and if it's not later than the transient value, we skip it because it's still pushing from our activity.
+			$salesforce_pushing = get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
+
+			if ( '1' !== $salesforce_pushing ) {
+				//$salesforce_pushing = gmdate( 'Y-m-d\TH:i:s\Z', $salesforce_pushing );
+				if ( false === $salesforce_pushing || strtotime( $object['LastModifiedDate'] ) > $salesforce_pushing ) {
+					$salesforce_pushing = 0;
+				} else {
+					$salesforce_pushing = 1;
+				}
+			} else {
+				$salesforce_pushing = 1;
+			}
+
 			if ( 1 === $salesforce_pushing ) {
 				$transients_to_delete[] = $mapping_object_id_transient;
+				if ( 1 === (int) $this->debug ) {
+					// create log entry for failed pull
+					$status = 'debug';
+					// translators: placeholders are: 1) the mapping object ID transient
+					$title = sprintf( esc_html__( 'Debug: mapping object transient ID %1$s is currently pushing, so we do not pull it.', 'object-sync-for-salesforce' ),
+						$mapping_object_id_transient
+					);
+
+					if ( isset( $this->logging ) ) {
+						$logging = $this->logging;
+					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+					}
+
+					$result = array(
+						'title'   => $title,
+						'message' => '',
+						'trigger' => $salesforce_mapping['sync_triggers'],
+						'parent'  => '',
+						'status'  => $status,
+					);
+
+					$logging->setup( $result );
+				}
+
 				continue;
 			}
 
@@ -847,13 +1005,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 								esc_attr( $mapping_object['salesforce_id'] )
 							);
 
-							$logging->setup(
-								$title,
-								$e->getMessage(),
-								$sf_sync_trigger,
-								$mapping_object['wordpress_id'],
-								$status
+							$result = array(
+								'title'   => $title,
+								'message' => $e->getMessage(),
+								'trigger' => $sf_sync_trigger,
+								'parent'  => $mapping_object['wordpress_id'],
+								'status'  => $status,
 							);
+
+							$logging->setup( $result );
+
+							$results[] = $result;
 
 							if ( false === $hold_exceptions ) {
 								throw $e;
@@ -889,13 +1051,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 								esc_attr( $mapping_object['salesforce_id'] )
 							);
 
-							$logging->setup(
-								$title,
-								'',
-								$sf_sync_trigger,
-								$mapping_object['wordpress_id'],
-								$status
+							$result = array(
+								'title'   => $title,
+								'message' => '',
+								'trigger' => $sf_sync_trigger,
+								'parent'  => $mapping_object['wordpress_id'],
+								'status'  => $status,
 							);
+
+							$logging->setup( $result );
+
+							$results[] = $result;
 
 							// hook for pull success
 							do_action( $this->option_prefix . 'pull_success', $op, $result, $synced_object );
@@ -932,13 +1098,18 @@ class Object_Sync_Sf_Salesforce_Pull {
 							esc_attr( $mapping_object['salesforce_id'] )
 						);
 
-						$logging->setup(
-							$title,
-							$more_ids,
-							$sf_sync_trigger,
-							$mapping_object['wordpress_id'],
-							$status
+						$result = array(
+							'title'   => $title,
+							'message' => $more_ids,
+							'trigger' => $sf_sync_trigger,
+							'parent'  => $mapping_object['wordpress_id'],
+							'status'  => $status,
 						);
+
+						$logging->setup( $result );
+
+						$results[] = $result;
+
 					} // End if().
 
 					// delete the map row from WordPress after the WordPress row has been deleted
@@ -946,7 +1117,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$this->mappings->delete_object_map( $mapping_object['id'] );
 					// there is no map row if we end this if statement
 				} // End if().
-				return;
+				continue;
 			} // End if().
 
 			// map the Salesforce values to WordPress fields
@@ -1084,13 +1255,18 @@ class Object_Sync_Sf_Salesforce_Pull {
 									$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 								}
 								$parent = 0;
-								$logging->setup(
-									$title,
-									$body,
-									$sf_sync_trigger,
-									$parent,
-									$status
+
+								$result = array(
+									'title'   => $title,
+									'message' => $body,
+									'trigger' => $sf_sync_trigger,
+									'parent'  => $parent,
+									'status'  => $status,
 								);
+
+								$logging->setup( $result );
+
+								$results[] = $result;
 							} // End if().
 						} // End if().
 
@@ -1130,15 +1306,21 @@ class Object_Sync_Sf_Salesforce_Pull {
 							} else {
 								$parent = 0;
 							}
-							$logging->setup(
-								$title,
-								$body,
-								$sf_sync_trigger,
-								$parent,
-								$status
+
+							$result = array(
+								'title'   => $title,
+								'message' => $body,
+								'trigger' => $sf_sync_trigger,
+								'parent'  => $parent,
+								'status'  => $status,
 							);
+
+							$logging->setup( $result );
+
+							$results[] = $result;
+
 							// exit out of here without saving any data in WordPress
-							return;
+							continue;
 						} // End if().
 
 						// right here we should set the pulling transient
@@ -1204,13 +1386,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$parent = 0;
 					}
 
-					$logging->setup(
-						$title,
-						$e->getMessage(),
-						$sf_sync_trigger,
-						$parent,
-						$status
+					$result = array(
+						'title'   => $title,
+						'message' => $e->getMessage(),
+						'trigger' => $sf_sync_trigger,
+						'parent'  => $parent,
+						'status'  => $status,
 					);
+
+					$logging->setup( $result );
+
+					$results[] = $result;
 
 					if ( false === $hold_exceptions ) {
 						throw $e;
@@ -1225,7 +1411,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// hook for pull fail
 					do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
 
-					return;
+					continue;
 				} // End try().
 
 				// set $wordpress_data to the query result
@@ -1259,13 +1445,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 						esc_attr( $object['Id'] )
 					);
 
-					$logging->setup(
-						$title,
-						'',
-						$sf_sync_trigger,
-						$wordpress_id,
-						$status
+					$result = array(
+						'title'   => $title,
+						'message' => '',
+						'trigger' => $sf_sync_trigger,
+						'parent'  => $wordpress_id,
+						'status'  => $status,
 					);
+
+					$logging->setup( $result );
+
+					$results[] = $result;
 
 					// update that mapping object
 					$mapping_object['wordpress_id'] = $wordpress_id;
@@ -1305,18 +1495,22 @@ class Object_Sync_Sf_Salesforce_Pull {
 						print_r( $result['errors'], true ) // if we get this error, we need to know whatever we have
 					);
 
-					$logging->setup(
-						$title,
-						$body,
-						$sf_sync_trigger,
-						$wordpress_id,
-						$status
+					$result = array(
+						'title'   => $title,
+						'message' => $body,
+						'trigger' => $sf_sync_trigger,
+						'parent'  => $wordpress_id,
+						'status'  => $status,
 					);
+
+					$logging->setup( $result );
+
+					$results[] = $result;
 
 					// hook for pull fail
 					do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
 
-					return;
+					continue;
 				} // End if().
 			} elseif ( false === $is_new ) {
 
@@ -1362,13 +1556,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 						esc_attr( $object['Id'] )
 					);
 
-					$logging->setup(
-						$title,
-						'',
-						$sf_sync_trigger,
-						$mapping_object['wordpress_id'],
-						$status
+					$result = array(
+						'title'   => $title,
+						'message' => '',
+						'trigger' => $sf_sync_trigger,
+						'parent'  => $mapping_object['wordpress_id'],
+						'status'  => $status,
 					);
+
+					$logging->setup( $result );
+
+					$results[] = $result;
 
 					// hook for pull success
 					do_action( $this->option_prefix . 'pull_success', $op, $result, $synced_object );
@@ -1392,13 +1590,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 						esc_attr( $object['Id'] )
 					);
 
-					$logging->setup(
-						$title,
-						$e->getMessage(),
-						$sf_sync_trigger,
-						$mapping_object['wordpress_id'],
-						$status
+					$result = array(
+						'title'   => $title,
+						'message' => $e->getMessage(),
+						'trigger' => $sf_sync_trigger,
+						'parent'  => $mapping_object['wordpress_id'],
+						'status'  => $status,
 					);
+
+					$logging->setup( $result );
+
+					$results[] = $result;
 
 					$mapping_object['last_sync_status']  = $this->mappings->status_error;
 					$mapping_object['last_sync_message'] = $e->getMessage();
@@ -1446,25 +1648,30 @@ class Object_Sync_Sf_Salesforce_Pull {
 			throw $exception;
 		}
 
+		return $results;
+
 	}
 
 	/**
-	* Increment the currently running query for the specified content type so it can go beyond 2000 records by updating the lastmodifieddate.
+	* Generate a new query based on the the currently running query for the specified content type. This lets it get around the 2000 offset ceiling Salesforce imposes on its API.
 	*
 	* @param string $type
 	*   e.g. "Contact", "Account", etc.
+	* @param object $soql
 	* @param array $salesforce_mapping
 	*   the fieldmap that maps the two object types
+	* @param timestamp $next_query_modified_date
+	*   the last record's modified datetime, or the current time if there isn't one
 	* @return object $soql
 	*
 	*/
-	private function increment_current_type_query( $type, $salesforce_mapping ) {
-		// get the last pull modified date
-		$last_pull_modified_date = get_option( $this->option_prefix . 'last_pull_modified_date_' . $type );
+	private function generate_next_current_type_query( $type, $soql, $salesforce_mapping, $next_query_modified_date ) {
 		// update the last sync timestamp for this content type
-		update_option( $this->option_prefix . 'pull_last_sync_' . $type, strtotime( $last_pull_modified_date ) );
+		$this->increment_current_type_datetime( $type, $next_query_modified_date );
 		// having updated the last sync timestamp, regenerate the SOQL query object
 		$soql = $this->get_pull_query( $type, $salesforce_mapping );
+		// since we've changed the last sync, reset the offset
+		$soql->offset = 0;
 		return $soql;
 	}
 
@@ -1477,11 +1684,28 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*/
 	private function clear_current_type_query( $type ) {
 		// update the last sync timestamp for this content type
-		update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
+		$this->increment_current_type_datetime( $type );
 		// delete the option value for the currently pulling query for this type
 		delete_option( $this->option_prefix . 'currently_pulling_query_' . $type );
-		// delete the option value for the last pull modified date
-		delete_option( $this->option_prefix . 'last_pull_modified_date_' . $type );
+		// delete the option value for the last pull record id
+		delete_option( $this->option_prefix . 'last_pull_id' );
+	}
+
+	/**
+	* Increment the currently running query's datetime
+	*
+	* @param string $type
+	*   e.g. "Contact", "Account", etc.
+	* @param timestamp $next_query_modified_date
+	*   the last record's modified datetime, or the current time if there isn't one
+	*
+	*/
+	private function increment_current_type_datetime( $type, $next_query_modified_date = '' ) {
+		// update the last sync timestamp for this content type
+		if ( '' === $next_query_modified_date ) {
+			$next_query_modified_date = current_time( 'timestamp', true );
+		}
+		update_option( $this->option_prefix . 'pull_last_sync_' . $type, $next_query_modified_date );
 	}
 
 	/**
@@ -1515,6 +1739,55 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		return $mapping_object;
 
+	}
+
+	/**
+	* Find out if pull is allowed for this record
+	*
+	* @param string $object_type
+	*   Salesforce object type
+	* @param array $object
+	*   Array of the salesforce object's data
+	* @param string $sf_sync_trigger
+	*   The current operation's trigger
+	* @param array $mapping
+	*   the fieldmap that maps the two object types
+	* @param array $map_sync_triggers
+	*
+	* @return bool $pull_allowed
+	*   Whether all this stuff allows the $result to be pulled into WordPress
+	*
+	*/
+	private function is_pull_allowed( $object_type, $object, $sf_sync_trigger, $mapping, $map_sync_triggers ) {
+
+		// default is pull is allowed
+		$pull_allowed = true;
+
+		// if the current fieldmap does not allow create, we need to check if there is an object map for the Salesforce object Id. if not, set pull_allowed to false.
+		if ( ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
+			$object_map = $this->mappings->load_by_salesforce( $object['Id'] );
+			if ( empty( $object_map ) ) {
+				$pull_allowed = false;
+			}
+		}
+
+		// Hook to allow other plugins to prevent a pull per-mapping.
+		// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
+		$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', $pull_allowed, $object_type, $object, $sf_sync_trigger, $mapping );
+
+		// example to keep from pulling the Contact with id of abcdef
+		/*
+		add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
+		// can always reduce this number if all the arguments are not necessary
+		function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
+			if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
+				$pull_allowed = false;
+			}
+			return $pull_allowed;
+		}
+		*/
+
+		return $pull_allowed;
 	}
 
 }
