@@ -711,11 +711,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 				// than endDate.
 				$now = $now > ( $last_delete_sync + 60 ) ? $now : $now + 60;
 
-				// need to be using gmdate for salesforce call
+				// need to be using gmdate for Salesforce call
 				$last_delete_sync_sf = gmdate( 'Y-m-d\TH:i:s\Z', $last_delete_sync );
 				$now_sf              = gmdate( 'Y-m-d\TH:i:s\Z', $now );
 
-				// salesforce call
+				// Salesforce call
 				$deleted = $sfapi->get_deleted( $type, $last_delete_sync_sf, $now_sf );
 
 				if ( empty( $deleted['data']['deletedRecords'] ) ) {
@@ -726,7 +726,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					$sf_sync_trigger = $this->mappings->sync_sf_delete;
 
-					// salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?
+					// Salesforce seriously returns Id for update requests and id for delete requests and this makes no sense but maybe one day they might change it somehow?
 					if ( ! isset( $result['Id'] ) && isset( $result['id'] ) ) {
 						$result['Id'] = $result['id'];
 					}
@@ -746,10 +746,10 @@ class Object_Sync_Sf_Salesforce_Pull {
 					}
 
 					// Hook to allow other plugins to prevent a pull per-mapping.
-					// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
+					// Putting the pull_allowed hook here will keep the queue from deleting a WordPress record when it is not supposed to delete it.
 					$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', $pull_allowed, $type, $result, $sf_sync_trigger, $salesforce_mapping );
 
-					// example to keep from pulling the Contact with id of abcdef
+					// example to keep from deleting the WordPress record mapped to the Contact with Id of abcdef
 					/*
 					add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
 					// can always reduce this number if all the arguments are not necessary
@@ -764,7 +764,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						continue;
 					}
 
-					// add a queue action to save data from salesforce
+					// Add a queue action to delete data from WordPress after it has been deleted from Salesforce.
 					$this->queue->add(
 						$this->schedulable_classes[ $this->schedule_name ]['callback'],
 						array(
