@@ -679,13 +679,15 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$sfapi = $this->salesforce['sfapi'];
 
-		// the drupal module runs a check_merged_records call right here. but it seems to be an invalid SOQL query.
-		// we are not incorporating that part of this branch at this time
+		// The Drupal module runs a check_merged_records call right here, but it seems to be an invalid SOQL query.
+		// We are not incorporating that part of this branch at this time
+		// See GitHub issue 197 to track this status. https://github.com/MinnPost/object-sync-for-salesforce/issues/197
 
 		// Load all unique SF record types that we have mappings for.
 		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
 
-			$type = $salesforce_mapping['salesforce_object'];
+			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping
+			$type              = $salesforce_mapping['salesforce_object']; // this sets the Salesforce object type for the SOQL query
 
 			$mappings = $this->mappings->get_fieldmaps(
 				null,
