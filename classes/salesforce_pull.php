@@ -569,9 +569,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// check if we have a stored next query to run for this type. if so, clear and return it.
 		$next_query_saved = get_option( $this->option_prefix . 'next_query_' . $type, '' );
 		if ( '' !== $next_query_saved ) {
-			$next_query = maybe_unserialize( $next_query_saved );
 			delete_option( $this->option_prefix . 'next_query_' . $type );
-			return $next_query;
 		}
 
 		$mapped_fields       = array();
