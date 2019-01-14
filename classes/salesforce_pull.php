@@ -365,6 +365,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 						} // end of debug
 					} // end if
 				} // end foreach
+
+				$next_query_modified_date = isset( $result['LastModifiedDate'] ) ? strtotime( $result['LastModifiedDate'] ) : current_time( 'timestamp', true );
+
 				if ( true === $this->batch_soql_queries ) {
 					// if applicable, process the next batch of records
 					$this->get_next_record_batch( $last_sync, $salesforce_mapping, $map_sync_triggers, $type, $version_path, $query_options, $response );
@@ -373,7 +376,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// If it does, we regenerate the query so it will have an offset next time it runs.
 					// If it does not, we clear the query if we've just processed the last row.
 					// this allows us to run an offset on the stored query instead of clearing it.
-					$does_next_offset_have_results = $this->get_offset_query( $type, $salesforce_mapping, $soql, true );
+					$does_next_offset_have_results = $this->get_offset_query( $type, $salesforce_mapping, $soql, $next_query_modified_date, true );
 					end( $response['records'] );
 					$last_record_key = key( $response['records'] );
 					if ( true === $does_next_offset_have_results ) {
@@ -381,7 +384,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$serialized_current_query = maybe_serialize( $soql );
 						update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query );
 
-						$soql                  = $this->get_offset_query( $type, $salesforce_mapping, $soql );
+						$soql                  = $this->get_offset_query( $type, $salesforce_mapping, $soql, $next_query_modified_date );
 						$serialized_next_query = maybe_serialize( $soql );
 						update_option( $this->option_prefix . 'next_query_' . $type, $serialized_next_query );
 					} elseif ( $last_record_key === $key ) {
@@ -499,11 +502,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* @param string $type the Salesforce object type
 	* @param array $salesforce_mapping the map between object types
 	* @param object $soql the SOQL object
+	* @param timestamp $next_query_modified_date the last record's modified datetime, or the current time if there isn't one
 	* @param bool $check are we just checking?
 	* @return object|bool $soql|$does_next_offset_have_results
 	*
 	*/
-	private function get_offset_query( $type, $salesforce_mapping, $soql, $check = false ) {
+	private function get_offset_query( $type, $salesforce_mapping, $soql, $next_query_modified_date, $check = false ) {
 		$sfapi         = $this->salesforce['sfapi'];
 		$query_options = array(
 			'cache' => false,
@@ -518,8 +522,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
 		$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
 		if ( $soql->offset > $this->max_soql_size ) {
+			$soql->offset             = 0;
+			$serialized_current_query = maybe_serialize( $soql );
+			update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query );
 			// regenerate the SOQL query so we can increment the last pull modified date value from Salesforce. This allows us to go beyond 2000 records as long as the records were modified at different times.
-			$soql = $this->increment_current_type_query( $type, $salesforce_mapping );
+			// we need to pass the last item's modified date here, if we have it.
+			$soql = $this->generate_next_current_type_query( $type, $soql, $salesforce_mapping, $next_query_modified_date );
 		}
 
 		if ( false === $check ) {
@@ -1645,20 +1653,25 @@ class Object_Sync_Sf_Salesforce_Pull {
 	}
 
 	/**
-	* Increment the currently running query for the specified content type so it can go beyond 2000 records by updating the lastmodifieddate.
+	* Generate a new query based on the the currently running query for the specified content type. This lets it get around the 2000 offset ceiling Salesforce imposes on its API.
 	*
 	* @param string $type
 	*   e.g. "Contact", "Account", etc.
+	* @param object $soql
 	* @param array $salesforce_mapping
 	*   the fieldmap that maps the two object types
+	* @param timestamp $next_query_modified_date
+	*   the last record's modified datetime, or the current time if there isn't one
 	* @return object $soql
 	*
 	*/
-	private function increment_current_type_query( $type, $salesforce_mapping ) {
+	private function generate_next_current_type_query( $type, $soql, $salesforce_mapping, $next_query_modified_date ) {
 		// update the last sync timestamp for this content type
-		update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
+		$this->increment_current_type_datetime( $type, $next_query_modified_date );
 		// having updated the last sync timestamp, regenerate the SOQL query object
 		$soql = $this->get_pull_query( $type, $salesforce_mapping );
+		// since we've changed the last sync, reset the offset
+		$soql->offset = 0;
 		return $soql;
 	}
 
@@ -1671,11 +1684,28 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*/
 	private function clear_current_type_query( $type ) {
 		// update the last sync timestamp for this content type
-		$end_time = update_option( $this->option_prefix . 'pull_last_sync_' . $type, current_time( 'timestamp', true ) );
+		$this->increment_current_type_datetime( $type );
 		// delete the option value for the currently pulling query for this type
 		delete_option( $this->option_prefix . 'currently_pulling_query_' . $type );
 		// delete the option value for the last pull record id
 		delete_option( $this->option_prefix . 'last_pull_id' );
+	}
+
+	/**
+	* Increment the currently running query's datetime
+	*
+	* @param string $type
+	*   e.g. "Contact", "Account", etc.
+	* @param timestamp $next_query_modified_date
+	*   the last record's modified datetime, or the current time if there isn't one
+	*
+	*/
+	private function increment_current_type_datetime( $type, $next_query_modified_date = '' ) {
+		// update the last sync timestamp for this content type
+		if ( '' === $next_query_modified_date ) {
+			$next_query_modified_date = current_time( 'timestamp', true );
+		}
+		update_option( $this->option_prefix . 'pull_last_sync_' . $type, $next_query_modified_date );
 	}
 
 	/**
