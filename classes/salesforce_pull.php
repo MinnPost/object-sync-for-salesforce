@@ -539,8 +539,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$soql->offset             = 0;
 			$serialized_current_query = maybe_serialize( $soql );
 			update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query );
-			// regenerate the SOQL query so we can increment the last pull modified date value from Salesforce. This allows us to go beyond 2000 records as long as the records were modified at different times.
-			// we need to pass the last item's modified date here, if we have it.
+			// Regenerate the SOQL query so we can increment the last pull modified date value from Salesforce. This allows us to go beyond 2000 records as long as the records were modified at different times.
+			// We need to pass the last item's modified date here, if we have it. This allows us to get the records that were modified after it was modified.
 			$soql = $this->generate_next_current_type_query( $type, $soql, $salesforce_mapping, $next_query_modified_date );
 		}
 
@@ -583,9 +583,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// check if we have a stored next query to run for this type. if so, clear and return it.
 		$next_query_saved = get_option( $this->option_prefix . 'next_query_' . $type, '' );
 		if ( '' !== $next_query_saved ) {
-			$next_query = maybe_unserialize( $next_query_saved );
 			delete_option( $this->option_prefix . 'next_query_' . $type );
-			return $next_query;
 		}
 
 		$mapped_fields       = array();
