@@ -115,47 +115,12 @@ class Object_Sync_Sf_Salesforce_Push {
 	/**
 	* Method for ajax hooks to call for pushing manually
 	*
-	* @param string $object_type
-	* @param int $wordpress_id
-	* @param string $http_method
+	* @param array $object
+	* @param string $type
 	*
 	*/
-	public function manual_push( $object_type, $wordpress_id, $http_method ) {
-		$object = $this->wordpress->get_wordpress_object_data( $object_type, $wordpress_id );
-		// run the WordPress trigger that corresponds to the HTTP method
-		switch ( $http_method ) {
-			case 'POST':
-				$trigger = $this->mappings->sync_wordpress_create;
-				break;
-			case 'PUT':
-				$trigger = $this->mappings->sync_wordpress_update;
-				break;
-			case 'DELETE':
-				$trigger = $this->mappings->sync_wordpress_delete;
-				break;
-		}
-		if ( isset( $trigger ) ) {
-			$results = $this->salesforce_push_object_crud( $object_type, $object, $trigger );
-			foreach ( $results as $result ) {
-				if ( 'success' === $result['status'] ) {
-					if ( 'POST' === $http_method || 'PUT' === $http_method ) {
-						$code = '201';
-					} elseif ( 'DELETE' === $http_method ) {
-						$code = '204';
-					}
-				} else {
-					$code = '405';
-				}
-			}
-		} else {
-			$code   = '405';
-			$result = '';
-		}
-		$result = array(
-			'code'   => $code,
-			'result' => $results,
-		);
-		return $result;
+	public function manual_object_update( $object, $type ) {
+		$this->salesforce_push_object_crud( $type, $object, $this->mappings->sync_wordpress_update, true );
 	}
 
 	/**
@@ -476,7 +441,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				}
 
 				$status = 'error';
-				// create log entry for not allowed manual pull
+				// create log entry for not allowed push
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
@@ -646,7 +611,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				if ( count( $salesforce_check ) === count( $salesforce_check, COUNT_RECURSIVE ) ) {
 					try {
-						$result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
+						$api_result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 					} catch ( Object_Sync_Sf_Exception $e ) {
 						$status = 'error';
 						// create log entry for failed delete
@@ -882,24 +847,31 @@ class Object_Sync_Sf_Salesforce_Push {
 
 					$op = 'Upsert';
 
-					$result = $sfapi->object_upsert( $mapping['salesforce_object'], $upsert_key, $upsert_value, $params );
+					$api_result = $sfapi->object_upsert( $mapping['salesforce_object'], $upsert_key, $upsert_value, $params );
 
 					// Handle upsert responses.
 					switch ( $sfapi->response['code'] ) {
 						// On Upsert:update retrieved object.
 						case '204':
-							$sf_object             = $sfapi->object_readby_external_id( $mapping['salesforce_object'], $upsert_key, $upsert_value );
-							$salesforce_data['id'] = $sf_object['data']['Id'];
+							$sf_object       = $sfapi->object_readby_external_id(
+								$mapping['salesforce_object'],
+								$upsert_key,
+								$upsert_value,
+								array(
+									'cache' => false,
+								)
+							);
+							$salesforce_data = $sf_object['data'];
 							break;
 						// Handle duplicate records.
 						case '300':
-							$result['errorCode'] = $sfapi->response['error'] . ' (' . $upsert_key . ':' . $upsert_value . ')';
+							$api_result['errorCode'] = $sfapi->response['error'] . ' (' . $upsert_key . ':' . $upsert_value . ')';
 							break;
 					}
 				} else {
 					// No key or prematch field exists on this field map object, create a new object in Salesforce.
-					$op     = 'Create';
-					$result = $sfapi->object_create( $mapping['salesforce_object'], $params );
+					$op         = 'Create';
+					$api_result = $sfapi->object_create( $mapping['salesforce_object'], $params );
 				} // End if().
 			} catch ( Object_Sync_Sf_Exception $e ) {
 				// create log entry for failed create or upsert
@@ -938,16 +910,23 @@ class Object_Sync_Sf_Salesforce_Push {
 			} // End try().
 
 			if ( ! isset( $salesforce_data ) ) {
-				// if we didn't set $salesforce_data already, set it now to api call result
-				$salesforce_data = $result['data'];
+				// if we didn't set $salesforce_data already, set it now
+				$sf_object       = $sfapi->object_read(
+					$mapping['salesforce_object'],
+					$api_result['data']['id'],
+					array(
+						'cache' => false,
+					)
+				);
+				$salesforce_data = $sf_object['data'];
 			}
 
 			// Salesforce api call was successful
 			// this means the object has already been created/updated in Salesforce
 			// this is not redundant because this is where it creates the object mapping rows in WordPress if the object does not already have one (we are still inside $is_new === TRUE here)
 
-			if ( empty( $result['errorCode'] ) ) {
-				$salesforce_id = $salesforce_data['id'];
+			if ( empty( $api_result['errorCode'] ) ) {
+				$salesforce_id = $salesforce_data['Id'];
 				$status        = 'success';
 
 				if ( isset( $this->logging ) ) {
@@ -976,10 +955,15 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				$logging->setup( $result );
 
+				// right here we should change the pushing transient to the LastModifiedDate for the Salesforce object.
+				if ( isset( $salesforce_data['LastModifiedDate'] ) ) {
+					set_transient( 'salesforce_pushing_' . $mapping_object['id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
+				}
+
 				// update that mapping object
 				$mapping_object['salesforce_id']     = $salesforce_id;
 				$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
-				$mapping_object                      = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+				$mapping_object_updated              = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 				// hook for push success
 				do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $object_id );
@@ -1083,8 +1067,8 @@ class Object_Sync_Sf_Salesforce_Push {
 				// returns $params.
 				$params = apply_filters( $this->option_prefix . 'push_update_params_modify', $params, $mapping_object['salesforce_id'], $mapping, $object );
 
-				$op     = 'Update';
-				$result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );
+				$op         = 'Update';
+				$api_result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );
 
 				$mapping_object['last_sync_status']  = $this->mappings->status_success;
 				$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
@@ -1155,6 +1139,23 @@ class Object_Sync_Sf_Salesforce_Push {
 				do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object );
 
 			} // End try().
+
+			if ( ! isset( $salesforce_data ) ) {
+				// if we didn't set $salesforce_data already, set it now
+				$sf_object       = $sfapi->object_read(
+					$mapping['salesforce_object'],
+					$mapping_object['salesforce_id'],
+					array(
+						'cache' => false,
+					)
+				);
+				$salesforce_data = $sf_object['data'];
+			}
+
+			// right here we should change the pushing transient to the LastModifiedDate for the Salesforce object.
+			if ( isset( $salesforce_data['LastModifiedDate'] ) ) {
+				set_transient( 'salesforce_pushing_' . $mapping_object['id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
+			}
 
 			// tell the mapping object - whether it is new or already existed - how we just used it
 			$mapping_object['last_sync_action'] = 'push';
@@ -1228,7 +1229,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @param array $map_sync_triggers
 	*
 	* @return bool $push_allowed
-	*   Whether all this stuff allows the $result to be pushed to Salesforce
+	*   Whether all this stuff allows the $api_result to be pushed to Salesforce
 	*
 	*/
 	private function is_push_allowed( $object_type, $object, $sf_sync_trigger, $mapping, $map_sync_triggers ) {
