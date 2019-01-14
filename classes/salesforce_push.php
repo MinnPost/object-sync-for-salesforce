@@ -115,12 +115,47 @@ class Object_Sync_Sf_Salesforce_Push {
 	/**
 	* Method for ajax hooks to call for pushing manually
 	*
-	* @param array $object
-	* @param string $type
+	* @param string $object_type
+	* @param int $wordpress_id
+	* @param string $http_method
 	*
 	*/
-	public function manual_object_update( $object, $type ) {
-		$this->salesforce_push_object_crud( $type, $object, $this->mappings->sync_wordpress_update, true );
+	public function manual_push( $object_type, $wordpress_id, $http_method ) {
+		$object = $this->wordpress->get_wordpress_object_data( $object_type, $wordpress_id );
+		// run the WordPress trigger that corresponds to the HTTP method
+		switch ( $http_method ) {
+			case 'POST':
+				$trigger = $this->mappings->sync_wordpress_create;
+				break;
+			case 'PUT':
+				$trigger = $this->mappings->sync_wordpress_update;
+				break;
+			case 'DELETE':
+				$trigger = $this->mappings->sync_wordpress_delete;
+				break;
+		}
+		if ( isset( $trigger ) ) {
+			$results = $this->salesforce_push_object_crud( $object_type, $object, $trigger );
+			foreach ( $results as $result ) {
+				if ( 'success' === $result['status'] ) {
+					if ( 'POST' === $http_method || 'PUT' === $http_method ) {
+						$code = '201';
+					} elseif ( 'DELETE' === $http_method ) {
+						$code = '204';
+					}
+				} else {
+					$code = '405';
+				}
+			}
+		} else {
+			$code   = '405';
+			$result = '';
+		}
+		$result = array(
+			'code'   => $code,
+			'result' => $results,
+		);
+		return $result;
 	}
 
 	/**
