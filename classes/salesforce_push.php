@@ -563,9 +563,16 @@ class Object_Sync_Sf_Salesforce_Push {
 	*/
 	public function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
+		// when using async, this task receives the object id as an integer. otherwise, it receives the object data
 		if ( is_int( $object ) ) {
 			$object_id = $object;
-			$object    = $this->wordpress->get_wordpress_object_data( $object_type, $object_id );
+			// if this is NOT a deletion, try to get all of the object's data
+			if ( $sf_sync_trigger != $this->mappings->sync_wordpress_delete ) {
+				$object = $this->wordpress->get_wordpress_object_data( $object_type, $object_id );
+			} else {
+				// otherwise, flag it as a delete and limit what we try to get
+				$object = $this->wordpress->get_wordpress_object_data( $object_type, $object_id, true );
+			}
 		}
 
 		if ( is_int( $mapping ) ) {
