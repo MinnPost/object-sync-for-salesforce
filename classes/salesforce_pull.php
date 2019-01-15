@@ -531,8 +531,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$query_options
 		);
 
-		error_log( 'next soql is ' . (string) $soql );
-
 		$response = $results['data'];
 		if ( ! isset( $response['errorCode'] ) && 0 < count( $response['records'] ) ) {
 			$does_next_offset_have_results = true;
