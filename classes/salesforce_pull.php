@@ -366,7 +366,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 					} // end if
 				} // end foreach
 
-				$next_query_modified_date = isset( $result['LastModifiedDate'] ) ? strtotime( $result['LastModifiedDate'] ) : current_time( 'timestamp', true );
+				// we're done with the foreach. store the LastModifiedDate of the last item processed, or the current time if it isn't there.
+				$last_date_for_query = isset( $result['LastModifiedDate'] ) ? $result['LastModifiedDate'] : '';
+				$this->increment_current_type_datetime( $type, $last_date_for_query );
 
 				if ( true === $this->batch_soql_queries ) {
 					// if applicable, process the next batch of records
@@ -376,17 +378,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// If it does, we regenerate the query so it will have an offset next time it runs.
 					// If it does not, we clear the query if we've just processed the last row.
 					// this allows us to run an offset on the stored query instead of clearing it.
-					$does_next_offset_have_results = $this->get_offset_query( $type, $salesforce_mapping, $soql, $next_query_modified_date, true );
+					$does_next_offset_have_results = $this->check_offset_query( $type, $salesforce_mapping, $query_options );
 					end( $response['records'] );
 					$last_record_key = key( $response['records'] );
 					if ( true === $does_next_offset_have_results ) {
-						// serialize the currently running SOQL query and store it for this type
-						$serialized_current_query = maybe_serialize( $soql );
-						update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query );
-
-						$soql                  = $this->get_offset_query( $type, $salesforce_mapping, $soql, $next_query_modified_date );
-						$serialized_next_query = maybe_serialize( $soql );
-						update_option( $this->option_prefix . 'next_query_' . $type, $serialized_next_query );
+						// increment SOQL query to run
+						$soql = $this->get_pull_query( $type, $salesforce_mapping );
 					} elseif ( $last_record_key === $key ) {
 						// clear the stored query. we don't need to offset and we've finished the loop.
 						$this->clear_current_type_query( $type );
@@ -501,53 +498,34 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*
 	* @param string $type the Salesforce object type
 	* @param array $salesforce_mapping the map between object types
-	* @param object $soql the SOQL object
-	* @param timestamp $next_query_modified_date the last record's modified datetime, or the current time if there isn't one
+	* @param array $query_options the options for the SOQL query
 	* @param bool $check are we just checking?
 	* @return object|bool $soql|$does_next_offset_have_results
 	*
 	*/
-	private function get_offset_query( $type, $salesforce_mapping, $soql, $next_query_modified_date, $check = false ) {
-		$sfapi         = $this->salesforce['sfapi'];
-		$query_options = array(
-			'cache' => false,
+	private function check_offset_query( $type, $salesforce_mapping, $query_options ) {
+
+		$soql                          = $this->get_pull_query( $type, $salesforce_mapping );
+		$does_next_offset_have_results = false;
+
+		$sfapi = $this->salesforce['sfapi'];
+		// Execute query
+		// have to cast it to string to make sure it uses the magic method
+		// we don't want to cache this because timestamps
+		$results = $sfapi->query(
+			(string) $soql,
+			$query_options
 		);
 
-		// check if we have a stored currently running query and if so, apply an offset or regenerate the query
-		$pull_query_running = get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' );
-		if ( '' !== $pull_query_running ) {
-			$saved_query = maybe_unserialize( $pull_query_running );
-		}
+		error_log( 'next soql is ' . (string) $soql );
 
-		// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
-		$soql->offset = isset( $saved_query->offset ) ? $saved_query->offset + $soql->limit : $soql->limit;
-		if ( $soql->offset > $this->max_soql_size ) {
-			$soql->offset             = 0;
-			$serialized_current_query = maybe_serialize( $soql );
-			update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query );
-			// Regenerate the SOQL query so we can increment the last pull modified date value from Salesforce. This allows us to go beyond 2000 records as long as the records were modified at different times.
-			// We need to pass the last item's modified date here, if we have it. This allows us to get the records that were modified after it was modified.
-			$soql = $this->generate_next_current_type_query( $type, $soql, $salesforce_mapping, $next_query_modified_date );
+		$response = $results['data'];
+		if ( ! isset( $response['errorCode'] ) && 0 < count( $response['records'] ) ) {
+			$does_next_offset_have_results = true;
 		}
-
-		if ( false === $check ) {
-			return $soql;
-		} else {
-			$does_next_offset_have_results = false;
-			// Execute query
-			// have to cast it to string to make sure it uses the magic method
-			// we don't want to cache this because timestamps
-			$results  = $sfapi->query(
-				(string) $soql,
-				$query_options
-			);
-			$response = $results['data'];
-			if ( ! isset( $response['errorCode'] ) && 0 < count( $response['records'] ) ) {
-				$does_next_offset_have_results = true;
-			}
-			return $does_next_offset_have_results;
-		}
+		return $does_next_offset_have_results;
 	}
+
 
 	/**
 	* Given a SObject type name, build an SOQL query to include all fields for all
@@ -565,11 +543,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* @see Object_Sync_Sf_Mapping::get_mapped_record_types
 	*/
 	private function get_pull_query( $type, $salesforce_mapping = array() ) {
-
-		// check if we have a stored next query to run for this type. if so, clear and return it.
-		$next_query_saved = get_option( $this->option_prefix . 'next_query_' . $type, '' );
-		if ( '' !== $next_query_saved ) {
-			delete_option( $this->option_prefix . 'next_query_' . $type );
+		// we need to determine what to do with saved queries. this is what we currently do but it doesn't work.
+		// check if we have a stored next query to run for this type. if so, unserialize it so we have an object.
+		$pull_query_running = get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' );
+		if ( '' !== $pull_query_running ) {
+			$saved_query = maybe_unserialize( $pull_query_running );
 		}
 
 		$mapped_fields       = array();
@@ -611,44 +589,57 @@ class Object_Sync_Sf_Salesforce_Pull {
 			return null;
 		}
 
-		$soql = new Object_Sync_Sf_Salesforce_Select_Query( $type );
+		if ( ! isset( $saved_query ) ) {
+			$soql = new Object_Sync_Sf_Salesforce_Select_Query( $type );
 
-		// Convert field mappings to SOQL.
-		$soql->fields = array_merge(
-			$mapped_fields,
-			array(
-				'Id'                                      => 'Id',
-				$salesforce_mapping['pull_trigger_field'] => $salesforce_mapping['pull_trigger_field'],
-			)
-		);
+			// Convert field mappings to SOQL.
+			$soql->fields = array_merge(
+				$mapped_fields,
+				array(
+					'Id' => 'Id',
+					$salesforce_mapping['pull_trigger_field'] => $salesforce_mapping['pull_trigger_field'],
+				)
+			);
 
-		// these are bit operators, so we leave out the strict
-		if ( in_array( $this->mappings->sync_sf_create, $salesforce_mapping['sync_triggers'] ) ) {
-			$soql->fields['CreatedDate'] = 'CreatedDate';
-		}
+			// these are bit operators, so we leave out the strict
+			if ( in_array( $this->mappings->sync_sf_create, $salesforce_mapping['sync_triggers'] ) ) {
+				$soql->fields['CreatedDate'] = 'CreatedDate';
+			}
 
-		// If no lastupdate, get all records, else get records since last pull.
-		// this should be what keeps it from getting all the records, whether or not they've ever been updated
-		// we also use the option for when the plugin was installed, and don't go back further than that by default
+			// Order by the trigger field, requesting the oldest records first
+			$soql->order = array(
+				$salesforce_mapping['pull_trigger_field'] => 'ASC',
+			);
 
-		$sf_activate_time = get_option( $this->option_prefix . 'activate_time', '' );
-		$sf_last_sync     = get_option( $this->option_prefix . 'pull_last_sync_' . $type, null );
-		if ( $sf_last_sync ) {
-			$last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
-			$soql->add_condition( $salesforce_mapping['pull_trigger_field'], $last_sync, '>' );
+			// Set a limit on the number of records that can be retrieved from the API at one time.
+			$soql->limit = filter_var( get_option( $this->option_prefix . 'pull_query_limit', 25 ), FILTER_VALIDATE_INT );
 		} else {
-			$activated = gmdate( 'Y-m-d\TH:i:s\Z', $sf_activate_time );
-			$soql->add_condition( $salesforce_mapping['pull_trigger_field'], $activated, '>' );
-			// put a hook in here to let devs go retroactive if they want, and sync data from before plugin was activated
+			$soql = $saved_query;
 		}
 
-		// Order by the trigger field, requesting the oldest records first
-		$soql->order = array(
-			$salesforce_mapping['pull_trigger_field'] => 'ASC',
-		);
+		// Get the value for the pull trigger field. Often this will LastModifiedDate. It needs to change when the query gets regenerated after the max offset has been reached.
+		$pull_trigger_field_value = $this->get_pull_date_value( $type, $soql );
 
-		// Set a limit on the number of records that can be retrieved from the API at one time.
-		$soql->limit = filter_var( get_option( $this->option_prefix . 'pull_query_limit', 25 ), FILTER_VALIDATE_INT );
+		// we check to see if the stored date is the same as the new one. if it is not, we will want to reset the offset
+		$reset_offset = false;
+		$has_date     = false;
+		$key          = array_search( $salesforce_mapping['pull_trigger_field'], array_column( $soql->conditions, 'field' ) );
+		if ( false !== $key ) {
+			$has_date = true;
+			if ( $soql->conditions[ $key ]['value'] !== $pull_trigger_field_value ) {
+				$reset_offset = true;
+			}
+		}
+
+		if ( false === $has_date ) {
+			$reset_offset = true;
+			$soql->add_condition( $salesforce_mapping['pull_trigger_field'], $pull_trigger_field_value, '>' );
+		} else {
+			$soql->conditions[ $key ]['value'] = $pull_trigger_field_value;
+		}
+
+		// Get the value for the SOQL offset. If max has already been reached, it is zero.
+		$soql->offset = $this->get_pull_offset( $type, $soql, $reset_offset );
 
 		// add a filter here to modify the query
 		// Hook to allow other plugins to modify the SOQL query before it is sent to Salesforce
@@ -664,7 +655,58 @@ class Object_Sync_Sf_Salesforce_Pull {
 		}
 		*/
 
+		// serialize the currently running SOQL query and store it for this type
+		$serialized_current_query = maybe_serialize( $soql );
+		update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query, false );
 		return $soql;
+	}
+
+
+	/**
+	* Determine the offset for the SOQL query to run
+	*
+	* @param string $type
+	*   e.g. "Contact", "Account", etc.
+	* @param object $soql
+	*   the SOQL object
+	* @param bool $reset
+	*   whether to reset the offset
+	*
+	*/
+	private function get_pull_offset( $type, $soql, $reset = false ) {
+		// set an offset. if there is a saved offset, add the limit to it and move on. otherwise, use the limit.
+		$offset = isset( $soql->offset ) ? $soql->offset + $soql->limit : $soql->limit;
+		if ( true === $reset || $offset > $this->max_soql_size ) {
+			$offset = 0;
+		}
+		return $offset;
+	}
+
+	/**
+	* Given a SObject type name, determine the datetime value the SOQL object should use to filter results. Often this will be LastModifiedDate.
+	*
+	* @param string $type
+	*   e.g. "Contact", "Account", etc.
+	*
+	* @return timestamp $pull_trigger_field_value
+	*
+	*/
+	private function get_pull_date_value( $type, $soql ) {
+		// If no lastupdate, get all records, else get records since last pull.
+		// this should be what keeps it from getting all the records, whether or not they've ever been updated
+		// we also use the option for when the plugin was installed, and don't go back further than that by default
+
+		$sf_activate_time = get_option( $this->option_prefix . 'activate_time', '' );
+		$sf_last_sync     = get_option( $this->option_prefix . 'pull_last_sync_' . $type, null );
+		if ( $sf_last_sync ) {
+			$pull_trigger_field_value = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
+		} else {
+			$pull_trigger_field_value = gmdate( 'Y-m-d\TH:i:s\Z', $sf_activate_time );
+		}
+
+		// todo: put a hook in here to let devs go retroactive if they want, and sync data from before plugin was activated
+
+		return $pull_trigger_field_value;
 
 	}
 
@@ -1653,29 +1695,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 	}
 
 	/**
-	* Generate a new query based on the the currently running query for the specified content type. This lets it get around the 2000 offset ceiling Salesforce imposes on its API.
-	*
-	* @param string $type
-	*   e.g. "Contact", "Account", etc.
-	* @param object $soql
-	* @param array $salesforce_mapping
-	*   the fieldmap that maps the two object types
-	* @param timestamp $next_query_modified_date
-	*   the last record's modified datetime, or the current time if there isn't one
-	* @return object $soql
-	*
-	*/
-	private function generate_next_current_type_query( $type, $soql, $salesforce_mapping, $next_query_modified_date ) {
-		// update the last sync timestamp for this content type
-		$this->increment_current_type_datetime( $type, $next_query_modified_date );
-		// having updated the last sync timestamp, regenerate the SOQL query object
-		$soql = $this->get_pull_query( $type, $salesforce_mapping );
-		// since we've changed the last sync, reset the offset
-		$soql->offset = 0;
-		return $soql;
-	}
-
-	/**
 	* Clear the currently stored query for the specified content type
 	*
 	* @param string $type
@@ -1704,6 +1723,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// update the last sync timestamp for this content type
 		if ( '' === $next_query_modified_date ) {
 			$next_query_modified_date = current_time( 'timestamp', true );
+		} else {
+			$next_query_modified_date = strtotime( $next_query_modified_date );
 		}
 		update_option( $this->option_prefix . 'pull_last_sync_' . $type, $next_query_modified_date );
 	}
