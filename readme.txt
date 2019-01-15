@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 5.0
-Stable tag: 1.5.2
+Stable tag: 1.6.0
 Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -244,9 +244,12 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
-* 1.6.0 (2018-12-)
+* 1.6.0 (2018-01-15)
+	* New: we have added some basic REST API endpoints to the plugin. They can be used to check for updated/deleted records in Salesforce, pull a specific record from Salesforce by ID, or push a specific record from WordPress by Id and type.
+	* Bug fix: pull queries were sometimes skipping records that should have been processed, especially when some records in the group were not allowed by the fieldmap.
+	* Bug fix: as of 1.5.0, Salesforce records were not being deleted when a corresponding WordPress record was deleted. This release restorese that functionality.
 	* Developers: the `object_sync_for_salesforce_pull_object_allowed` and `object_sync_for_salesforce_push_object_allowed` hooks now require that a value be returned, regardless of whether it is true or false. This was always the better way of handling these hook, but it was possible to use them without, and the documentation was incorrectly written.
 
 == Upgrade Notice ==
 = 1.6.0
-The primary purpose of this update is to introduce REST API endpoints for developers to use. There are also some developer hook fixes.
+The primary purpose of this update is to introduce REST API endpoints for developers to use. There are also some bug and developer hook fixes.
