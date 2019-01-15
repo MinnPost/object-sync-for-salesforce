@@ -194,7 +194,8 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @param string $user_id
 	*/
 	public function delete_user( $user_id ) {
-		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id );
+		// flag that this item has been deleted
+		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id, true );
 		$this->object_delete( $user, 'user' );
 	}
 
@@ -240,7 +241,13 @@ class Object_Sync_Sf_Salesforce_Push {
 			}
 		}
 
-		$post = $this->wordpress->get_wordpress_object_data( $post->post_type, $post_id );
+		// if it is NOT a deletion, don't flag it as such
+		if ( 1 !== $delete ) {
+			$post = $this->wordpress->get_wordpress_object_data( $post->post_type, $post_id );
+		} else {
+			// otherwise, flag that this item has been deleted
+			$post = $this->wordpress->get_wordpress_object_data( $post->post_type, $post_id, true );
+		}
 		if ( 1 === $update ) {
 			$this->object_update( $post, $post_type );
 		} elseif ( 1 === $delete ) {
@@ -276,7 +283,8 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @param string $post_id
 	*/
 	public function delete_attachment( $post_id ) {
-		$attachment = $this->wordpress->get_wordpress_object_data( 'attachment', $post_id );
+		// flag that this item has been deleted
+		$attachment = $this->wordpress->get_wordpress_object_data( 'attachment', $post_id, true );
 		$this->object_delete( $attachment, 'attachment' );
 	}
 
@@ -345,7 +353,8 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @param string $comment_id
 	*/
 	public function delete_comment( $comment_id ) {
-		$comment = $this->wordpress->get_wordpress_object_data( 'comment', $comment_id );
+		// flag that this item has been deleted
+		$comment = $this->wordpress->get_wordpress_object_data( 'comment', $comment_id, true );
 		$this->object_delete( $comment, 'comment' );
 	}
 
@@ -598,9 +607,16 @@ class Object_Sync_Sf_Salesforce_Push {
 	*/
 	public function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
+		// when using async, this task receives the object id as an integer. otherwise, it receives the object data
 		if ( is_int( $object ) ) {
 			$object_id = $object;
-			$object    = $this->wordpress->get_wordpress_object_data( $object_type, $object_id );
+			// if this is NOT a deletion, try to get all of the object's data
+			if ( $sf_sync_trigger != $this->mappings->sync_wordpress_delete ) {
+				$object = $this->wordpress->get_wordpress_object_data( $object_type, $object_id );
+			} else {
+				// otherwise, flag it as a delete and limit what we try to get
+				$object = $this->wordpress->get_wordpress_object_data( $object_type, $object_id, true );
+			}
 		}
 
 		if ( is_int( $mapping ) ) {
