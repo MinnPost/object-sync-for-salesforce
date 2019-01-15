@@ -657,7 +657,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// serialize the currently running SOQL query and store it for this type
 		$serialized_current_query = maybe_serialize( $soql );
-		update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query );
+		update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query, false );
 		return $soql;
 	}
 
