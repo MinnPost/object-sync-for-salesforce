@@ -210,7 +210,7 @@ class Object_Sync_Sf_Salesforce {
 		}
 
 		if ( ! empty( $this->response['data']['errorCode'] ) ) {
-			throw new Object_Sync_Sf_Exception( $this->response['data']['message'], $this->response['code'] );
+			return $this->response;
 		}
 
 		return $this->response;

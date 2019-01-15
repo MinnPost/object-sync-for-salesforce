@@ -193,6 +193,8 @@ class Object_Sync_Salesforce {
 
 		$this->pull = $this->pull( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes, $this->queue );
 
+		$this->rest = $this->rest( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull );
+
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull, $this->logging, $this->schedulable_classes, $this->queue );
 
 	}
@@ -398,6 +400,33 @@ class Object_Sync_Salesforce {
 		require_once plugin_dir_path( __FILE__ ) . 'classes/salesforce_pull.php';
 		$pull = new Object_Sync_Sf_Salesforce_Pull( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $logging, $schedulable_classes, $queue, $option_prefix );
 		return $pull;
+	}
+
+	/**
+	* Load the rest class.
+	* This handles REST API methods
+	*
+	* @param object $wpdb
+	* @param string $version
+	* @param array $login_credentials
+	* @param string $slug
+	* @param string $option_prefix
+	* @param object $wordpress
+	* @param object $salesforce
+	* @param object $mappings
+	* @param object $push
+	* @param object $pull
+	* @param object $logging
+	* @param array $schedulable_classes
+	* @param object $queue
+	* @return object $admin
+	*   Instance of Object_Sync_Sf_Rest
+	*
+	*/
+	private function rest( $wpdb, $version, $slug, $option_prefix, $wordpress, $salesforce, $mappings, $push, $pull ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/class-object-sync-sf-rest.php' );
+		$rest = new Object_Sync_Sf_Rest( $wpdb, $version, $slug, $option_prefix, $wordpress, $salesforce, $mappings, $push, $pull );
+		return $rest;
 	}
 
 	/**

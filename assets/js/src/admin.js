@@ -162,10 +162,12 @@
 			$( '.push_to_salesforce_button' ).on( 'click', function() {
 				var wordpressObject = $( '#wordpress_object_ajax' ).val();
 				var wordpressId = $( '#wordpress_id_ajax' ).val();
+				var salesforceId = $( '#salesforce_id_ajax' ).val();
 				var data = {
 					'action' : 'push_to_salesforce',
 					'wordpress_object' : wordpressObject,
-					'wordpress_id' : wordpressId
+					'wordpress_id' : wordpressId,
+					'salesforce_id' : salesforceId
 				}
 				$.post( ajaxurl, data, function( response ) {
 					if ( true === response.success ) {

@@ -277,9 +277,12 @@ class Object_Sync_Sf_Schedule {
 	 * Checks whether data exists within the queue and that
 	 * the process is not already running.
 	 */
-	public function maybe_handle( $already_checked = false, $ajax = false ) {
+	public function maybe_handle( $already_checked = false, $api = false ) {
 		if ( $this->is_process_running() ) {
 			// Background process already running.
+			if ( true === $api ) {
+				return true;
+			}
 			wp_die();
 		}
 
@@ -293,16 +296,17 @@ class Object_Sync_Sf_Schedule {
 			$this->check_for_data();
 		}
 
-		if ( $this->is_queue_empty() ) {
+		if ( $this->is_queue_empty() && false === $api ) {
 			// No data to process.
 			wp_die();
-		}
-
-		if ( true === $ajax ) {
-			check_ajax_referer( $this->identifier, 'nonce' );
+		} elseif ( $this->is_queue_empty() && true === $api ) {
+			return true;
 		}
 
 		$this->handle();
+		if ( true === $api ) {
+			return true;
+		}
 		wp_die();
 	}
 
