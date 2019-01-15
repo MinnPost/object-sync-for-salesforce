@@ -210,7 +210,7 @@ class Object_Sync_Sf_Salesforce {
 		}
 
 		if ( ! empty( $this->response['data']['errorCode'] ) ) {
-			throw new Object_Sync_Sf_Exception( $this->response['data']['message'], $this->response['code'] );
+			return $this->response;
 		}
 
 		return $this->response;
@@ -1106,14 +1106,16 @@ class Object_Sync_Sf_Salesforce {
 	*   Salesforce external id field name.
 	* @param string $value
 	*   Value of external id.
+	* @param array $options
+	*   Optional options to pass to the API call
 	*
 	* @return object
 	*   Object of the requested Salesforce object.
 	*
 	* part of core API calls
 	*/
-	public function object_readby_external_id( $name, $field, $value ) {
-		return $this->api_call( "sobjects/{$name}/{$field}/{$value}" );
+	public function object_readby_external_id( $name, $field, $value, $options = array() ) {
+		return $this->api_call( "sobjects/{$name}/{$field}/{$value}", array(), 'GET', $options );
 	}
 
 	/**

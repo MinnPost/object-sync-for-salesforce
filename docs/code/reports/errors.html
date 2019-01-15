@@ -59,12 +59,12 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">189</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">216</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
                                 </a>
                             </li>
                             <li>
@@ -103,6 +103,7 @@
                                                                                                     <li><a href="#classes/logging.php"><i class="icon-file"></i> classes/logging.php</a></li>
                                                                                                     <li><a href="#classes/salesforce_soap_partner.php"><i class="icon-file"></i> classes/salesforce_soap_partner.php</a></li>
                                                                                                     <li><a href="#classes/wordpress.php"><i class="icon-file"></i> classes/wordpress.php</a></li>
+                                                                                                    <li><a href="#classes/class-object-sync-sf-rest.php"><i class="icon-file"></i> classes/class-object-sync-sf-rest.php</a></li>
                                                                     </ul>
         </div>
 
@@ -271,7 +272,7 @@
                         <h3>
                             <i class="icon-file"></i>
                             object-sync-for-salesforce.php
-                            <small style="float: right;padding-right: 10px;">9</small>
+                            <small style="float: right;padding-right: 10px;">22</small>
                         </h3>
                         <div>
                             <table class="table markers table-bordered">
@@ -290,33 +291,98 @@
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>375</td>
+                                        <td>377</td>
                                         <td>Name of argument $option_prefix does not match with the DocBlock&#039;s name $object_prefix in push()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>375</td>
+                                        <td>377</td>
                                         <td>Argument $queue is missing from the Docblock of push</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>375</td>
+                                        <td>377</td>
                                         <td>Name of argument $queue does not match with the DocBlock&#039;s name $schedulable_classes in push()</td>
                                     </tr>
                                                                     <tr>
                                         <td>notice</td>
-                                        <td>375</td>
+                                        <td>377</td>
                                         <td>Parameter $object_prefix could not be found in push()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>397</td>
+                                        <td>399</td>
                                         <td>Argument $queue is missing from the Docblock of pull</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>397</td>
+                                        <td>399</td>
                                         <td>Name of argument $queue does not match with the DocBlock&#039;s name $schedulable_classes in pull()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>426</td>
+                                        <td>Name of argument $slug does not match with the DocBlock&#039;s name $login_credentials in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>426</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $slug in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>426</td>
+                                        <td>Name of argument $option_prefix does not match with the DocBlock&#039;s name $slug in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>426</td>
+                                        <td>Name of argument $wordpress does not match with the DocBlock&#039;s name $option_prefix in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>426</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $wordpress in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>426</td>
+                                        <td>Name of argument $salesforce does not match with the DocBlock&#039;s name $wordpress in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>426</td>
+                                        <td>Name of argument $mappings does not match with the DocBlock&#039;s name $salesforce in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>426</td>
+                                        <td>Name of argument $push does not match with the DocBlock&#039;s name $mappings in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>426</td>
+                                        <td>Name of argument $pull does not match with the DocBlock&#039;s name $push in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>notice</td>
+                                        <td>426</td>
+                                        <td>Parameter $login_credentials could not be found in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>notice</td>
+                                        <td>426</td>
+                                        <td>Parameter $logging could not be found in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>notice</td>
+                                        <td>426</td>
+                                        <td>Parameter $schedulable_classes could not be found in rest()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>notice</td>
+                                        <td>426</td>
+                                        <td>Parameter $queue could not be found in rest()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
@@ -337,7 +403,7 @@
                         <h3>
                             <i class="icon-file"></i>
                             classes/salesforce_pull.php
-                            <small style="float: right;padding-right: 10px;">22</small>
+                            <small style="float: right;padding-right: 10px;">25</small>
                         </h3>
                         <div>
                             <table class="table markers table-bordered">
@@ -403,6 +469,21 @@
                                         <td>error</td>
                                         <td>49</td>
                                         <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $option_prefix in __construct()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>notice</td>
+                                        <td>520</td>
+                                        <td>Parameter $check could not be found in check_offset_query()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>706</td>
+                                        <td>Argument $soql is missing from the Docblock of get_pull_date_value</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>706</td>
+                                        <td>Name of argument $soql does not match with the DocBlock&#039;s name $type in get_pull_date_value()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
@@ -648,7 +729,7 @@
                                 <tbody>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>1270</td>
+                                        <td>1272</td>
                                         <td>No summary for class \Object_Sync_Sf_Exception</td>
                                     </tr>
                                                                     <tr>
@@ -703,32 +784,32 @@
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>1151</td>
+                                        <td>1153</td>
                                         <td>Name of argument $start_date does not match with the DocBlock&#039;s name $startDate in get_deleted()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>1151</td>
+                                        <td>1153</td>
                                         <td>Name of argument $end_date does not match with the DocBlock&#039;s name $endDate in get_deleted()</td>
                                     </tr>
                                                                     <tr>
                                         <td>notice</td>
-                                        <td>1151</td>
+                                        <td>1153</td>
                                         <td>Parameter $startDate could not be found in get_deleted()</td>
                                     </tr>
                                                                     <tr>
                                         <td>notice</td>
-                                        <td>1151</td>
+                                        <td>1153</td>
                                         <td>Parameter $endDate could not be found in get_deleted()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>1233</td>
+                                        <td>1235</td>
                                         <td>Argument $reset is missing from the Docblock of get_record_type_id_by_developer_name</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>1233</td>
+                                        <td>1235</td>
                                         <td>Name of argument $reset does not match with the DocBlock&#039;s name $devname in get_record_type_id_by_developer_name()</td>
                                     </tr>
                                                                     <tr>
@@ -796,7 +877,7 @@
                         <h3>
                             <i class="icon-file"></i>
                             classes/salesforce_push.php
-                            <small style="float: right;padding-right: 10px;">27</small>
+                            <small style="float: right;padding-right: 10px;">29</small>
                         </h3>
                         <div>
                             <table class="table markers table-bordered">
@@ -810,83 +891,93 @@
                                 <tbody>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>141</td>
+                                        <td>176</td>
                                         <td>Argument $form_data is missing from the Docblock of um_add_user</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>141</td>
+                                        <td>176</td>
                                         <td>Name of argument $form_data does not match with the DocBlock&#039;s name $user_id in um_add_user()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>279</td>
+                                        <td>322</td>
                                         <td>Name of argument $tt_id does not match with the DocBlock&#039;s name $term_taxonomy_id in delete_term()</td>
                                     </tr>
                                                                     <tr>
                                         <td>notice</td>
-                                        <td>279</td>
+                                        <td>322</td>
                                         <td>Parameter $term_taxonomy_id could not be found in delete_term()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>321</td>
+                                        <td>365</td>
                                         <td>Argument $object is missing from the Docblock of object_insert</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>321</td>
+                                        <td>365</td>
                                         <td>Argument $type is missing from the Docblock of object_insert</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>329</td>
+                                        <td>373</td>
                                         <td>Argument $object is missing from the Docblock of object_update</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>329</td>
+                                        <td>373</td>
                                         <td>Argument $type is missing from the Docblock of object_update</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>337</td>
+                                        <td>381</td>
                                         <td>Argument $object is missing from the Docblock of object_delete</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>337</td>
+                                        <td>381</td>
                                         <td>Argument $type is missing from the Docblock of object_delete</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>492</td>
+                                        <td>608</td>
                                         <td>Name of argument $object does not match with the DocBlock&#039;s name $object|$object_id in salesforce_push_sync_rest()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>492</td>
+                                        <td>608</td>
                                         <td>Name of argument $mapping does not match with the DocBlock&#039;s name $mapping|$mapping_id in salesforce_push_sync_rest()</td>
                                     </tr>
                                                                     <tr>
                                         <td>notice</td>
-                                        <td>492</td>
+                                        <td>608</td>
                                         <td>Parameter $object|$object_id could not be found in salesforce_push_sync_rest()</td>
                                     </tr>
                                                                     <tr>
                                         <td>notice</td>
-                                        <td>492</td>
+                                        <td>608</td>
                                         <td>Parameter $mapping|$mapping_id could not be found in salesforce_push_sync_rest()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>1060</td>
+                                        <td>1240</td>
                                         <td>Argument $pending is missing from the Docblock of create_object_map</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>1060</td>
+                                        <td>1240</td>
                                         <td>Name of argument $pending does not match with the DocBlock&#039;s name $field_mapping in create_object_map()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>1286</td>
+                                        <td>Name of argument $object_type does not match with the DocBlock&#039;s name $type in is_push_allowed()</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>notice</td>
+                                        <td>1286</td>
+                                        <td>Parameter $type could not be found in is_push_allowed()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
@@ -1082,7 +1173,7 @@
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>1983</td>
+                                        <td>1997</td>
                                         <td>Argument $ajax is missing from the Docblock of clear_cache</td>
                                     </tr>
                                                                     <tr>
@@ -1335,18 +1426,84 @@
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>2537</td>
+                                        <td>2543</td>
                                         <td>Name of argument $cache_expiration does not match with the DocBlock&#039;s name $cache_expiration. in set()</td>
                                     </tr>
                                                                     <tr>
                                         <td>notice</td>
-                                        <td>2537</td>
+                                        <td>2543</td>
                                         <td>Parameter $cache_expiration. could not be found in set()</td>
                                     </tr>
                                                                     <tr>
                                         <td>error</td>
-                                        <td>2508</td>
+                                        <td>2514</td>
                                         <td>No summary for property $name</td>
+                                    </tr>
+                                                            </tbody>
+                            </table>
+                        </div>
+                                    </div>
+                            <div class="package-contents">
+                                            <a name="classes/class-object-sync-sf-rest.php" id="classes/class-object-sync-sf-rest.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>
+                            classes/class-object-sync-sf-rest.php
+                            <small style="float: right;padding-right: 10px;">9</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>17</td>
+                                        <td>No summary for property $wpdb</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>18</td>
+                                        <td>No summary for property $version</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>19</td>
+                                        <td>No summary for property $slug</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>20</td>
+                                        <td>No summary for property $option_prefix</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>21</td>
+                                        <td>No summary for property $wordpress</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>22</td>
+                                        <td>No summary for property $salesforce</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>23</td>
+                                        <td>No summary for property $mappings</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>24</td>
+                                        <td>No summary for property $push</td>
+                                    </tr>
+                                                                    <tr>
+                                        <td>error</td>
+                                        <td>25</td>
+                                        <td>No summary for property $pull</td>
                                     </tr>
                                                             </tbody>
                             </table>
@@ -1391,7 +1548,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on November 27th, 2018 at 18:15.
+                    on January 15th, 2019 at 21:37.
                 </section>
             </section>
         </section>

@@ -21,7 +21,55 @@
     <script src="../js/jquery.smooth-scroll.js"></script>
     <script src="../js/prism.min.js"></script>
     <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
-    
+        <script type="text/javascript">
+        function loadExternalCodeSnippets() {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+                var src = pre.getAttribute('data-src');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist or is empty';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        $(document).ready(function(){
+            loadExternalCodeSnippets();
+        });
+        $('#source-view').on('shown', function () {
+            loadExternalCodeSnippets();
+        })
+    </script>
+
     <link rel="shortcut icon" href="../images/favicon.ico"/>
     <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
     <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
@@ -88,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-961417990"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1889470951"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-961417990" class="accordion-body collapse in">
+            <div id="namespace-1889470951" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -125,100 +173,45 @@
     <section class="row-fluid">
         <div class="span10 offset2">
             <div class="row-fluid">
-                <div class="span8 content namespace">
+                <div class="span8 content file">
                     <nav>
-                                                
-                                            </nav>
-                    <h1><small></small>\</h1>
+                                                                    </nav>
 
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    <h1><small>classes</small>class-object-sync-sf-rest.php</h1>
+                    <p><em>Class file for the Object_Sync_Sf_Rest class.</em></p>
                     
+
                     
                     
                                         <h2>Classes</h2>
                     <table class="table table-hover">
                                             <tr>
-                            <td><a href="../classes/Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></td>
-                            <td><em>Start up the Object Sync for Salesforce plugin; initialize parameters and classes</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Activate.html">Object_Sync_Sf_Activate</a></td>
-                            <td><em>What to do when the plugin is activated</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Admin.html">Object_Sync_Sf_Admin</a></td>
-                            <td><em>Create default WordPress admin functionality to configure the plugin.</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Admin_Notice.html">Object_Sync_Sf_Admin_Notice</a></td>
-                            <td><em>Generate notices in the WordPress admin</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Deactivate.html">Object_Sync_Sf_Deactivate</a></td>
-                            <td><em>What to do when the plugin is deactivated</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Exception.html">Object_Sync_Sf_Exception</a></td>
-                            <td><em></em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Logging.html">Object_Sync_Sf_Logging</a></td>
-                            <td><em>Log events based on plugin settings</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Mapping.html">Object_Sync_Sf_Mapping</a></td>
-                            <td><em>Map objects and records between WordPress and Salesforce</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Queue.html">Object_Sync_Sf_Queue</a></td>
-                            <td><em>Object_Sync_Sf_Queue</em></td>
-                        </tr>
-                                            <tr>
                             <td><a href="../classes/Object_Sync_Sf_Rest.html">Object_Sync_Sf_Rest</a></td>
                             <td><em>Create WordPress REST API functionality</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Salesforce.html">Object_Sync_Sf_Salesforce</a></td>
-                            <td><em>Ability to authorize and communicate with the Salesforce REST API. This class can make read and write calls to Salesforce, and also cache the responses in WordPress.</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></td>
-                            <td><em>Pull data from Salesforce into WordPress</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></td>
-                            <td><em>Push data from WordPress into Salesforce</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></td>
-                            <td><em>Class representing a Salesforce SELECT SOQL query.</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></td>
-                            <td><em>Expose the partner SOAP API by extending SforcePartnerClient and configuring
-it with the OAUTH credentials and endpoints from the Salesforce API class.</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></td>
-                            <td><em>Work with the WordPress $wpdb object. This class can make read and write calls to the WordPress database, and also cache the responses.</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/Object_Sync_Sf_WordPress_Transient.html">Object_Sync_Sf_WordPress_Transient</a></td>
-                            <td><em>Class to store all theme/plugin transients as an array in one WordPress transient</em></td>
-                        </tr>
-                                            <tr>
-                            <td><a href="../classes/WordpressException.html">WordpressException</a></td>
-                            <td><em>WordpressException is a placeholder class in the event that we want to modify Exception for our own purposes.</em></td>
                         </tr>
                                         </table>
                                     </div>
 
                 <aside class="span4 detailsbar">
                     <dl>
-                        <dt>Namespace hierarchy</dt>
-                        <dd class="hierarchy">
-                                                                                                                                                <div class="namespace-wrapper">\</div>
-                        </dd>
+                                                    <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\Default</div></dd>
+                        
+                        
                     </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                                    <tr>
+                                <th>
+                                    file
+                                </th>
+                                <td>
+                                                                            
+                                                                    </td>
+                            </tr>
+                                            </table>
+
                 </aside>
             </div>
 
@@ -226,6 +219,16 @@ it with the OAUTH credentials and endpoints from the Salesforce API class.</em><
             
         </div>
     </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label"></h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/classes/class-object-sync-sf-rest.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
 
     <footer class="row-fluid">
         <section class="span10 offset2">
