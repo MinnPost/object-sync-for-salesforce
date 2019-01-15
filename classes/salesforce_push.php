@@ -159,7 +159,8 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @param string $user_id
 	*/
 	public function delete_user( $user_id ) {
-		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id );
+		// flag that this item has been deleted
+		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id, true );
 		$this->object_delete( $user, 'user' );
 	}
 
@@ -241,7 +242,8 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @param string $post_id
 	*/
 	public function delete_attachment( $post_id ) {
-		$attachment = $this->wordpress->get_wordpress_object_data( 'attachment', $post_id );
+		// flag that this item has been deleted
+		$attachment = $this->wordpress->get_wordpress_object_data( 'attachment', $post_id, true );
 		$this->object_delete( $attachment, 'attachment' );
 	}
 
@@ -310,7 +312,8 @@ class Object_Sync_Sf_Salesforce_Push {
 	* @param string $comment_id
 	*/
 	public function delete_comment( $comment_id ) {
-		$comment = $this->wordpress->get_wordpress_object_data( 'comment', $comment_id );
+		// flag that this item has been deleted
+		$comment = $this->wordpress->get_wordpress_object_data( 'comment', $comment_id, true );
 		$this->object_delete( $comment, 'comment' );
 	}
 
