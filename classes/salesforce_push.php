@@ -206,7 +206,13 @@ class Object_Sync_Sf_Salesforce_Push {
 			}
 		}
 
-		$post = $this->wordpress->get_wordpress_object_data( $post->post_type, $post_id );
+		// if it is NOT a deletion, don't flag it as such
+		if ( 1 !== $delete ) {
+			$post = $this->wordpress->get_wordpress_object_data( $post->post_type, $post_id );
+		} else {
+			// otherwise, flag that this item has been deleted
+			$post = $this->wordpress->get_wordpress_object_data( $post->post_type, $post_id, true );
+		}
 		if ( 1 === $update ) {
 			$this->object_update( $post, $post_type );
 		} elseif ( 1 === $delete ) {
