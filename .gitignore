@@ -4,5 +4,6 @@ phpdoc-cache-*
 /vendor/**/.git/
 /vendor/**/.github/
 /vendor/**/test/
+/vendor/**/unit_test/
 # generated
 release/
