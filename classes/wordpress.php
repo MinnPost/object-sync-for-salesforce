@@ -132,7 +132,7 @@ class Object_Sync_Sf_WordPress {
 			// User meta fields need to use update_user_meta for create as well, otherwise it'll just get created twice because apparently when the post is created it's already there.
 
 			// if the user is on WordPress VIP, the meta method is get_user_attribute
-			if ( defined( 'IS_WPCOM' ) && IS_WPCOM ) {
+			if ( ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) ) {
 				$user_meta_methods = array(
 					'create' => 'update_user_attribute',
 					'read'   => 'get_user_attribute',
