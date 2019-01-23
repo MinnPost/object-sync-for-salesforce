@@ -790,7 +790,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		}
 
 		// map the WordPress values to salesforce fields
-		$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, false, $is_new );
+		$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, false, $is_new, $object_id );
 
 		// hook to allow other plugins to modify the $params array
 		// use hook to map fields between the WordPress and Salesforce objects
