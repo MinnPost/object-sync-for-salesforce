@@ -192,6 +192,8 @@
 							);
 							?>
 						</small></p>
+						<p><small><?php echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' when mapping Salesforce fields, a * in the field name designates a required field for this object type.', 'object-sync-for-salesforce' ) . '</small>' );
+						?></p>
 					</td>
 				</tr>
 			</tfoot>
@@ -246,6 +248,10 @@
 
 								if ( 'api_name' === $display_value ) {
 									$salesforce_field['label'] = $salesforce_field['name'];
+								}
+
+								if ( false === $salesforce_field['nillable'] ) {
+									$salesforce_field['label'] .= ' *';
 								}
 
 								echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
