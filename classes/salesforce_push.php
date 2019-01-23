@@ -818,12 +818,15 @@ class Object_Sync_Sf_Salesforce_Push {
 			unset( $params['key'] );
 		}
 
-		$frequencies = $this->queue->get_frequencies();
-		$seconds     = reset( $frequencies )['frequency'] + 60;
+		$frequencies  = $this->queue->get_frequencies();
+		$seconds      = reset( $frequencies )['frequency'] + 60;
+		$saved_params = filter_var( get_option( $this->option_prefix . 'missing_required_data_id_' . $object[ $object_id ], false ), FILTER_VALIDATE_BOOLEAN );
 
 		// start the is_new stuff
-		if ( true === $is_new ) {
-
+		if ( true === $is_new || true === $saved_params ) {
+			if ( true === $saved_params ) {
+				delete_option( $this->option_prefix . 'missing_required_data_id_' . $object[ $object_id ] );
+			}
 			// right here we should set the pushing transient
 			// this means we have to create the mapping object here as well, and update it with the correct IDs after successful response
 			// create the mapping object between the rows
