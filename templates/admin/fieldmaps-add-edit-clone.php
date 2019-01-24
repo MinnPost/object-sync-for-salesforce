@@ -193,7 +193,8 @@
 							?>
 						</small></p>
 						<p><small>
-							<?php echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' when mapping Salesforce fields, a * in the field name designates a required field for this object type.', 'object-sync-for-salesforce' ) );
+							<?php
+							echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' when mapping Salesforce fields, a * in the field name designates a required field for this object type.', 'object-sync-for-salesforce' ) );
 							?>
 						</small></p>
 					</td>
