@@ -79,7 +79,7 @@
 				);
 				if ( isset( $record_types['recordTypeInfos'] ) ) :
 					?>
-					<label for="salesforce_record_types_allowed"><?php echo __( 'Allowed Record Types', 'object-sync-for-salesforce' ); ?>:</label>
+					<label for="salesforce_record_types_allowed"><?php echo esc_html__( 'Allowed Record Types', 'object-sync-for-salesforce' ); ?>:</label>
 					<div class="checkboxes">
 					<?php foreach ( $record_types['recordTypeInfos'] as $key => $value ) : ?>
 						<?php
@@ -112,8 +112,8 @@
 				);
 				if ( isset( $record_types['recordTypeInfos'] ) ) :
 					?>
-					<label for="salesforce_record_type_default"><?php echo __( 'Default Record Type', 'object-sync-for-salesforce' ); ?>:</label>
-					<select id="salesforce_record_type_default" name="salesforce_record_type_default" required><option value="">- <?php echo __( 'Select record type', 'object-sync-for-salesforce' ); ?> -</option>
+					<label for="salesforce_record_type_default"><?php echo esc_html__( 'Default Record Type', 'object-sync-for-salesforce' ); ?>:</label>
+					<select id="salesforce_record_type_default" name="salesforce_record_type_default" required><option value="">- <?php echo esc_html__( 'Select record type', 'object-sync-for-salesforce' ); ?> -</option>
 					<?php
 					foreach ( $record_types['recordTypeInfos'] as $key => $value ) :
 						if ( isset( $salesforce_record_type_default ) && $salesforce_record_type_default === $key ) {
@@ -138,7 +138,7 @@
 		</div>
 		<div class="pull_trigger_field">
 			<?php if ( isset( $pull_trigger_field ) ) : ?>
-				<label for="pull_trigger_field"><?php echo __( 'Date field to trigger pull', 'object-sync-for-salesforce' ); ?>:</label>
+				<label for="pull_trigger_field"><?php echo esc_html__( 'Date field to trigger pull', 'object-sync-for-salesforce' ); ?>:</label>
 				<?php
 				$object_fields = $this->get_salesforce_object_fields(
 					array(
@@ -186,14 +186,16 @@
 						<p><small>
 							<?php
 							// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
-							echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' to map a custom meta field (such as wp_postmeta, wp_usermeta, wp_termmeta, etc.), WordPress must have at least one value for that field. If you add a new meta field and want to map it, make sure to add a value for it and ', 'object-sync-for-salesforce' ) . '<a href="%1$s" id="clear-sfwp-cache">%2$s</a>' . esc_html__( ' to see the field listed here', 'object-sync-for-salesforce' ),
+							echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' to map a custom meta field (such as wp_postmeta, wp_usermeta, wp_termmeta, etc.), WordPress must have at least one value for that field. If you add a new meta field and want to map it, make sure to add a value for it and ', 'object-sync-for-salesforce' ) . '<a href="%1$s" id="clear-sfwp-cache">%2$s</a>' . esc_html__( ' to see the field listed here.', 'object-sync-for-salesforce' ),
 								esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=clear_cache' ) ),
 								esc_html__( 'clear the plugin cache', 'object-sync-for-salesforce' )
 							);
 							?>
 						</small></p>
-						<p><small><?php echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' when mapping Salesforce fields, a * in the field name designates a required field for this object type.', 'object-sync-for-salesforce' ) . '</small>' );
-						?></p>
+						<p><small>
+							<?php echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' when mapping Salesforce fields, a * in the field name designates a required field for this object type.', 'object-sync-for-salesforce' ) );
+							?>
+						</small></p>
 					</td>
 				</tr>
 			</tfoot>
