@@ -555,5 +555,6 @@ class Object_Sync_Salesforce {
 	}
 
 } // end class
-// Instantiate our class
-$object_sync_salesforce = Object_Sync_Salesforce::get_instance();
+
+// Instantiate our class. We do it early because ActionScheduler has to have access to plugins_loaded with priority of zero.
+add_action( 'plugins_loaded', array( 'Object_Sync_Salesforce', 'get_instance' ), -10 );
