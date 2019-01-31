@@ -687,18 +687,20 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Map values between WordPress and Salesforce objects.
 	 *
-	 * @param array $mapping Mapping object.
-	 * @param array $object WordPress or Salesforce object data.
-	 * @param array $trigger The thing that triggered this mapping.
-	 * @param bool  $use_soap Flag to enforce use of the SOAP API.
-	 * @param bool  $is_new Indicates whether a mapping object for this entity already exists.
+	 * @param array  $mapping Mapping object.
+	 * @param array  $object WordPress or Salesforce object data.
+	 * @param array  $trigger The thing that triggered this mapping.
+	 * @param bool   $use_soap Flag to enforce use of the SOAP API.
+	 * @param bool   $is_new Indicates whether a mapping object for this entity already exists.
+	 * @param string $object_id_field optionally pass the object id field name
 	 *
 	 * @return array Associative array of key value pairs.
 	 */
-	public function map_params( $mapping, $object, $trigger, $use_soap = false, $is_new = true ) {
+	public function map_params( $mapping, $object, $trigger, $use_soap = false, $is_new = true, $object_id_field = '' ) {
 
 		$params = array();
 
+		$has_missing_required_salesforce_field = false;
 		foreach ( $mapping['fields'] as $fieldmap ) {
 
 			$wordpress_haystack  = array_values( $this->wordpress_events );
@@ -787,6 +789,11 @@ class Object_Sync_Sf_Mapping {
 					unset( $params[ $salesforce_field ] );
 				}
 
+				// If a field is required in Salesforce and we don't have a value for it, save an option value with all its params, then return an empty value
+				if ( false === filter_var( $fieldmap['salesforce_field']['nillable'], FILTER_VALIDATE_BOOLEAN ) && ( ! isset( $object[ $wordpress_field ] ) || '' === $object[ $wordpress_field ] ) ) {
+					$has_missing_required_salesforce_field = true;
+				}
+
 				// we don't need a continue with the unset methods because there's no array being created down here
 			} elseif ( in_array( $trigger, $salesforce_haystack, true ) ) {
 
@@ -868,6 +875,11 @@ class Object_Sync_Sf_Mapping {
 
 			} // End if().
 		} // End foreach().
+
+		if ( true === $has_missing_required_salesforce_field ) {
+			update_option( $this->option_prefix . 'missing_required_data_id_' . $object[ $object_id_field ], true, false );
+			return array();
+		}
 
 		return $params;
 

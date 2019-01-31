@@ -245,6 +245,7 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 == Changelog ==
 
 * 1.x.x (2019-)
+    * New: improve handling of custom meta fields that are required by Salesforce. This plugin would fail to create objects if required fields were missing when a record was created. It should handle these situations much better.
     * New: update to version 2.2.0 of the ActionScheduler library.
 * 1.6.0 (2019-01-15)
 	* New: we have added some basic REST API endpoints to the plugin. They can be used to check for updated/deleted records in Salesforce, pull a specific record from Salesforce by ID, or push a specific record from WordPress by Id and type.
