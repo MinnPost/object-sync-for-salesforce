@@ -1,7 +1,10 @@
 Changelog
 =========
 
-* 1.6.0 (2018-01-15)
+* 1.7.0 (2019-01-31)
+    * New: improve handling of custom meta fields that are required by Salesforce. This plugin would fail to create objects if required fields were missing when a record was created. It should handle these situations much better.
+    * New: update to version 2.2.0 of the ActionScheduler library.
+* 1.6.0 (2019-01-15)
 	* New: we have added some basic REST API endpoints to the plugin. They can be used to check for updated/deleted records in Salesforce, pull a specific record from Salesforce by ID, or push a specific record from WordPress by Id and type.
 	* Bug fix: pull queries were sometimes skipping records that should have been processed, especially when some records in the group were not allowed by the fieldmap.
 	* Bug fix: as of 1.5.0, Salesforce records were not being deleted when a corresponding WordPress record was deleted. This release restorese that functionality.

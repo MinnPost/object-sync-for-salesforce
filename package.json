@@ -2,7 +2,7 @@
   "name": "object-sync-for-salesforce",
   "title": "Object Sync for Salesforce",
   "description": "Object Sync for Salesforce is a WordPress plugin that maps and syncs data between Salesforce objects and WordPress objects.",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "main": "index.js",
   "repository": "https://github.com/MinnPost/object-sync-for-salesforce.git",
   "author": "MinnPost",
@@ -10,15 +10,15 @@
   "dependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-env": "^7.3.1",
     "abbrev": "^1.1.1",
-    "autoprefixer": "^9.4.5",
+    "autoprefixer": "^9.4.7",
     "babel-loader": "^8.0.5",
     "babel-preset-env": "^1.7.0",
     "browser-sync": "^2.26.3",
     "css-mqpacker": "^7.0.0",
     "del": "^3.0.0",
-    "eslint": "^5.12.0",
+    "eslint": "^5.12.1",
     "eslint-config-wordpress": "^2.0.0",
     "glob": "^7.1.3",
     "gulp": "~3",
@@ -46,9 +46,9 @@
     "gulp-wp-pot": "^2.3.3",
     "natives": "^1.1.6",
     "node-sass": "^4.11.0",
-    "npm": "^6.5.0",
+    "npm": "^6.7.0",
     "npm-check-updates": "^2.15.0",
     "request": "^2.88.0",
-    "webpack": "^4.28.4"
+    "webpack": "^4.29.0"
   }
 }
