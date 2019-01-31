@@ -1326,8 +1326,19 @@ class Object_Sync_Sf_Admin {
 			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
 			$wordpress_id     = isset( $post_data['wordpress_id'] ) ? absint( $post_data['wordpress_id'] ) : '';
 		}
-		$data   = $this->wordpress->get_wordpress_object_data( $wordpress_object, $wordpress_id );
-		$result = $this->push->manual_object_update( $data, $wordpress_object );
+
+		// clarify what that variable is in this context.
+		$object_type = $wordpress_object;
+
+		// When objects are already mapped, there is a Salesforce id as well. Otherwise, it's blank.
+		$salesforce_id = isset( $post_data['salesforce_id'] ) ? sanitize_text_field( $post_data['salesforce_id'] ) : '';
+		if ( '' === $salesforce_id ) {
+			$method = 'POST';
+		} else {
+			$method = 'PUT';
+		}
+
+		$result = $this->push->manual_push( $object_type, $wordpress_id, $method );
 
 		if ( ! empty( $post_data['wordpress_object'] ) && ! empty( $post_data['wordpress_id'] ) ) {
 			wp_send_json_success( $result );
@@ -1828,8 +1839,11 @@ class Object_Sync_Sf_Admin {
 	* @return array $args
 	*/
 	private function version_options() {
+		$args = array();
+		if ( defined( 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION' ) || ! isset( $_GET['page'] ) || 'object-sync-salesforce-admin' !== $_GET['page'] ) {
+			return $args;
+		}
 		$versions = $this->salesforce['sfapi']->get_api_versions();
-		$args     = array();
 		foreach ( $versions['data'] as $key => $value ) {
 			$args[] = array(
 				'value' => $value['version'],

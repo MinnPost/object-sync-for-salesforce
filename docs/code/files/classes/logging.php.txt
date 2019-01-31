@@ -211,7 +211,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @access      public
 	 * @since       1.0
 	 *
-	 * @param       string $title A log post title.
+	 * @param       string|array $title_or_params A log post title, or the full array of parameters
 	 * @param       string $message The log message.
 	 * @param       string|0 $trigger The type of log triggered. Usually one of: debug, notice, warning, error.
 	 * @param       int $parent The parent WordPress object.
@@ -222,7 +222,18 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 *
 	 * @return      void
 	 */
-	public function setup( $title, $message, $trigger = 0, $parent = 0, $status ) {
+	public function setup( $title_or_params, $message = '', $trigger = 0, $parent = 0, $status = '' ) {
+
+		if ( is_array( $title_or_params ) ) {
+			$title   = $title_or_params['title'];
+			$message = $title_or_params['message'];
+			$trigger = $title_or_params['trigger'];
+			$parent  = $title_or_params['parent'];
+			$status  = $title_or_params['status'];
+		} else {
+			$title = $title_or_params;
+		}
+
 		if ( '1' === $this->enabled && in_array( $status, maybe_unserialize( $this->statuses_to_log ), true ) ) {
 			$triggers_to_log = get_option( $this->option_prefix . 'triggers_to_log', array() );
 			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in Object_Sync_Sf_Mapping class's method __construct()

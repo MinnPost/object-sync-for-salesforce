@@ -106,12 +106,12 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">189</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">216</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1551681122"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1192634301"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1551681122" class="accordion-body collapse in">
+            <div id="namespace-1192634301" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -153,6 +153,7 @@
                                                     <li class="class"><a href="../classes/Object_Sync_Sf_Logging.html">Object_Sync_Sf_Logging</a></li>
                                                     <li class="class"><a href="../classes/Object_Sync_Sf_Mapping.html">Object_Sync_Sf_Mapping</a></li>
                                                     <li class="class"><a href="../classes/Object_Sync_Sf_Queue.html">Object_Sync_Sf_Queue</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Rest.html">Object_Sync_Sf_Rest</a></li>
                                                     <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce.html">Object_Sync_Sf_Salesforce</a></li>
                                                     <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
                                                     <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
@@ -238,11 +239,15 @@
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_check_throttle" class="">check_throttle()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_updated_records" class="">get_updated_records()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_next_record_batch" class="">get_next_record_batch()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_check_offset_query" class="">check_offset_query()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_pull_query" class="">get_pull_query()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_pull_offset" class="">get_pull_offset()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_pull_date_value" class="">get_pull_date_value()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_deleted_records" class="">get_deleted_records()</a><br />
-                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_increment_current_type_query" class="">increment_current_type_query()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_clear_current_type_query" class="">clear_current_type_query()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_increment_current_type_datetime" class="">increment_current_type_datetime()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_create_object_map" class="">create_object_map()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_is_pull_allowed" class="">is_pull_allowed()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No private properties found</em>
@@ -654,7 +659,8 @@
                 <h3 class="public ">add_actions()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">add_actions() </pre>
-                <p><em>Create the action hooks based on what object maps exist from the admin settings</em></p>
+                <p><em>Create the action hooks based on what object maps exist from the admin settings
+route is http://example.com/wp-json/salesforce-rest-api/pull/ plus params we decide to accept</em></p>
                 
 
                 
@@ -679,15 +685,28 @@
             <article class="method">
                 <h3 class="public ">salesforce_pull_webhook()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">salesforce_pull_webhook() </pre>
-                <p><em>Ajax callback for salesforce pull. Returns status of 200 for successful
+                <pre class="signature" style="margin-right: 54px;">salesforce_pull_webhook(object  <span class="argument">$request</span>) : array</pre>
+                <p><em>REST API callback for salesforce pull. Returns status of 200 for successful
 attempt or 403 for a failed pull attempt (SF not authorized, threshhold
 reached, etc.</em></p>
-                <p>this is the ajax callback; not a cron run</p>
+                
 
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>object</td>
+                                <td>$request </td>
+                                <td><p>This is a merged object of all the arguments from the API request</p></td>
+                            </tr>
+                                            </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>code: 201
+data:
+success : true</p>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -733,7 +752,7 @@ reached, etc.</em></p>
             <article class="method">
                 <h3 class="public ">manual_pull()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">manual_pull(string  <span class="argument">$object_type</span>, string  <span class="argument">$salesforce_id</span>, string  <span class="argument">$wordpress_object</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">manual_pull(string  <span class="argument">$object_type</span>, string  <span class="argument">$salesforce_id</span>) : array</pre>
                 <p><em>Method for ajax hooks to call for pulling manually</em></p>
                 
 
@@ -749,15 +768,13 @@ reached, etc.</em></p>
                                 <td>$salesforce_id </td>
                                 <td></td>
                             </tr>
-                                                    <tr>
-                                <td>string</td>
-                                <td>$wordpress_object </td>
-                                <td></td>
-                            </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$result</p>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -900,6 +917,7 @@ reached, etc.</em></p>
                 <p>Executes a SOQL query based on defined mappings, loops through the results,
 and places each updated SF object into the queue for later processing.</p>
 <p>We copy the convention from the Drupal module here, and run a separate SOQL query for each type of object in SF</p>
+<p>If we return something here, it's because there is an error.</p>
 
                 
                 
@@ -984,6 +1002,53 @@ and places each updated SF object into the queue for later processing.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_check_offset_query" name="method_check_offset_query" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">check_offset_query()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check_offset_query(string  <span class="argument">$type</span>, array  <span class="argument">$salesforce_mapping</span>, array  <span class="argument">$query_options</span>) : object|boolean</pre>
+                <p><em>Get the next offset query. If check is true, only see if that query would have results. Otherwise, return the SOQL object.</em></p>
+                <p>When batchSize is not in use, run a check with an offset.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>the Salesforce object type</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$salesforce_mapping </td>
+                                <td><p>the map between object types</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$query_options </td>
+                                <td><p>the options for the SOQL query</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    object|boolean
+                                            &mdash; <p>$soql|$does_next_offset_have_results</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_get_pull_query" name="method_get_pull_query" class="anchor"></a>
             <article class="method">
                 <h3 class="private ">get_pull_query()</h3>
@@ -1031,14 +1096,32 @@ were found.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_get_deleted_records" name="method_get_deleted_records" class="anchor"></a>
+            <a id="method_get_pull_offset" name="method_get_pull_offset" class="anchor"></a>
             <article class="method">
-                <h3 class="private ">get_deleted_records()</h3>
+                <h3 class="private ">get_pull_offset()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_deleted_records() </pre>
-                <p><em>Get deleted records from salesforce.</em></p>
-                <p>Note that deletions can only be queried via REST with an API version &gt;= 29.0.</p>
+                <pre class="signature" style="margin-right: 54px;">get_pull_offset(string  <span class="argument">$type</span>, object  <span class="argument">$soql</span>, boolean  <span class="argument">$reset = false</span>) </pre>
+                <p><em>Determine the offset for the SOQL query to run</em></p>
+                
 
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$soql </td>
+                                <td><p>the SOQL object</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$reset </td>
+                                <td><p>whether to reset the offset</p></td>
+                            </tr>
+                                            </table>
                 
                 
                 				
@@ -1057,12 +1140,12 @@ were found.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_increment_current_type_query" name="method_increment_current_type_query" class="anchor"></a>
+            <a id="method_get_pull_date_value" name="method_get_pull_date_value" class="anchor"></a>
             <article class="method">
-                <h3 class="private ">increment_current_type_query()</h3>
+                <h3 class="private ">get_pull_date_value()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">increment_current_type_query(string  <span class="argument">$type</span>, array  <span class="argument">$salesforce_mapping</span>) : object</pre>
-                <p><em>Increment the currently running query for the specified content type so it can go beyond 2000 records by updating the lastmodifieddate.</em></p>
+                <pre class="signature" style="margin-right: 54px;">get_pull_date_value(string  <span class="argument">$type</span>,   <span class="argument">$soql</span>) : \timestamp</pre>
+                <p><em>Given a SObject type name, determine the datetime value the SOQL object should use to filter results. Often this will be LastModifiedDate.</em></p>
                 
 
                                     <h4>Parameters</h4>
@@ -1073,17 +1156,43 @@ were found.</p>
                                 <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
                             </tr>
                                                     <tr>
-                                <td>array</td>
-                                <td>$salesforce_mapping </td>
-                                <td><p>the fieldmap that maps the two object types</p></td>
+                                <td></td>
+                                <td>$soql </td>
+                                <td></td>
                             </tr>
                                             </table>
                 
                 
                                     <h4>Returns</h4>
-                    object
-                                            &mdash; <p>$soql</p>
+                    \timestamp
+                                            &mdash; <p>$pull_trigger_field_value</p>
                                     				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_deleted_records" name="method_get_deleted_records" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_deleted_records()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_deleted_records() </pre>
+                <p><em>Get deleted records from salesforce.</em></p>
+                <p>Note that deletions can only be queried via REST with an API version &gt;= 29.0.</p>
+
+                
+                
+                				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1113,6 +1222,45 @@ were found.</p>
                                 <td>string</td>
                                 <td>$type </td>
                                 <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_increment_current_type_datetime" name="method_increment_current_type_datetime" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">increment_current_type_datetime()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">increment_current_type_datetime(string  <span class="argument">$type</span>, \timestamp  <span class="argument">$next_query_modified_date = &#039;&#039;</span>) </pre>
+                <p><em>Increment the currently running query&#039;s datetime</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>\timestamp</td>
+                                <td>$next_query_modified_date </td>
+                                <td><p>the last record's modified datetime, or the current time if there isn't one</p></td>
                             </tr>
                                             </table>
                 
@@ -1179,6 +1327,64 @@ This is the database row for the map object</p>
         </aside>
     </div>
 
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_is_pull_allowed" name="method_is_pull_allowed" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">is_pull_allowed()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">is_pull_allowed(string  <span class="argument">$object_type</span>, array  <span class="argument">$object</span>, string  <span class="argument">$sf_sync_trigger</span>, array  <span class="argument">$mapping</span>, array  <span class="argument">$map_sync_triggers</span>) : boolean</pre>
+                <p><em>Find out if pull is allowed for this record</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$object_type </td>
+                                <td><p>Salesforce object type</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$object </td>
+                                <td><p>Array of the salesforce object's data</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sf_sync_trigger </td>
+                                <td><p>The current operation's trigger</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$mapping </td>
+                                <td><p>the fieldmap that maps the two object types</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$map_sync_triggers </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>$pull_allowed
+Whether all this stuff allows the $result to be pulled into WordPress</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
                                     </div>
     </section>
 
@@ -1228,7 +1434,7 @@ This is the database row for the map object</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on November 3rd, 2018 at 22:00.
+                    on January 15th, 2019 at 21:37.
                 </section>
             </section>
         </section>

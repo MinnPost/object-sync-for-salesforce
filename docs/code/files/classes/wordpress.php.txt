@@ -332,10 +332,10 @@ class Object_Sync_Sf_WordPress {
 	 *
 	 * @param string $object_type The type of object.
 	 * @param string $object_id The ID of the object.
+	 * @param bool $is_deleted Whether the WordPress object has been deleted
 	 * @return array $wordpress_object
 	 */
-	public function get_wordpress_object_data( $object_type, $object_id ) {
-
+	public function get_wordpress_object_data( $object_type, $object_id, $is_deleted = false ) {
 		$wordpress_object       = array();
 		$object_table_structure = $this->get_wordpress_table_structure( $object_type );
 
@@ -347,6 +347,12 @@ class Object_Sync_Sf_WordPress {
 		$object_name     = $object_table_structure['object_name'];
 		$where           = $object_table_structure['where'];
 		$ignore_keys     = $object_table_structure['ignore_keys'];
+
+		if ( true === $is_deleted ) {
+			$wordpress_object              = array();
+			$wordpress_object[ $id_field ] = $object_id;
+			return $wordpress_object;
+		}
 
 		if ( 'user' === $object_type ) {
 			$data = get_userdata( $object_id );
