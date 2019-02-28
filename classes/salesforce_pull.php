@@ -362,6 +362,40 @@ class Object_Sync_Sf_Salesforce_Pull {
 							continue;
 						}
 
+						if ( 1 === (int) $this->debug ) {
+							// create log entry for queue addition
+							$status = 'debug';
+							// translators: placeholders are: 1) the Salesforce ID
+							$title = sprintf( esc_html__( 'Debug: Add Salesforce ID %1$s to the queue', 'object-sync-for-salesforce' ),
+								esc_attr( $result['Id'] )
+							);
+
+							if ( isset( $this->logging ) ) {
+								$logging = $this->logging;
+							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+							}
+
+							$message = sprintf(
+								esc_html__( 'This record is being sent to the queue. The hook name is %1$s. The arguments for the hook are: object type %2$s, object map ID %3$s, sync trigger %4$s. The schedule name is %5$s.', 'object-sync-for-salesforce' ),
+								esc_attr( $this->schedulable_classes[ $this->schedule_name ]['callback'] ),
+								esc_attr( $type ),
+								absint( $salesforce_mapping['id'] ),
+								$sf_sync_trigger,
+								$this->schedule_name
+							);
+
+							$debug = array(
+								'title'   => $title,
+								'message' => $message,
+								'trigger' => $sf_sync_trigger,
+								'parent'  => '',
+								'status'  => $status,
+							);
+
+							$logging->setup( $debug );
+						}
+
 						// add a queue action to save data from salesforce
 						$this->queue->add(
 							$this->schedulable_classes[ $this->schedule_name ]['callback'],
