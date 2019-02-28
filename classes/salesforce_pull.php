@@ -209,31 +209,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping
 			$type              = $salesforce_mapping['salesforce_object']; // this sets the Salesforce object type for the SOQL query
 
-			if ( 1 === (int) $this->debug ) {
-				// create log entry to start generating the query
-				$status = 'debug';
-				// translators: placeholders are: 1) the Salesforce object type
-				$title = sprintf( esc_html__( 'Debug: Start to generate the SOQL query for the %1$s object type. The body is the fieldmap.', 'object-sync-for-salesforce' ),
-					esc_attr( $type )
-				);
-
-				if ( isset( $this->logging ) ) {
-					$logging = $this->logging;
-				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-				}
-
-				$debug = array(
-					'title'   => $title,
-					'message' => print_r( $salesforce_mapping, true ),
-					'trigger' => $salesforce_mapping['sync_triggers'],
-					'parent'  => '',
-					'status'  => $status,
-				);
-
-				$logging->setup( $debug );
-			}
-
 			$soql = $this->get_pull_query( $type, $salesforce_mapping );
 
 			// get_pull_query returns null if it has no matching fields
