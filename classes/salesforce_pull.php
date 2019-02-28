@@ -290,7 +290,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$status = 'debug';
 							// translators: placeholders are: 1) the Salesforce ID
 							$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s has already been attempted.', 'object-sync-for-salesforce' ),
-								absint( $result['Id'] )
+								esc_attr( $result['Id'] )
 							);
 
 							if ( isset( $this->logging ) ) {
@@ -340,7 +340,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 								$status = 'debug';
 								// translators: placeholders are: 1) the Salesforce ID
 								$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s is not allowed.', 'object-sync-for-salesforce' ),
-									absint( $result['Id'] )
+									esc_attr( $result['Id'] )
 								);
 
 								if ( isset( $this->logging ) ) {
@@ -380,7 +380,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$status = 'debug';
 							// translators: placeholders are: 1) the Salesforce ID
 							$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s has been successfully pulled.', 'object-sync-for-salesforce' ),
-								absint( $result['Id'] )
+								esc_attr( $result['Id'] )
 							);
 
 							if ( isset( $this->logging ) ) {
