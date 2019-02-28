@@ -245,6 +245,27 @@ class Object_Sync_Sf_Salesforce_Pull {
 				}
 			}
 
+			if ( 1 === (int) $this->debug ) {
+				// create log entry for the attempted query
+				$status = 'debug';
+				$title  = esc_html__( 'Debug: SOQL query to get updated records from Salesforce (it has not yet run)', 'object-sync-for-salesforce' );
+
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+				}
+
+				$debug = array(
+					'title'   => $title,
+					'message' => esc_html( (string) $soql ),
+					'trigger' => $salesforce_mapping['sync_triggers'],
+					'parent'  => '',
+					'status'  => $status,
+				);
+				$logging->setup( $debug );
+			}
+
 			// Execute query
 			// have to cast it to string to make sure it uses the magic method
 			// we don't want to cache this because timestamps
@@ -278,7 +299,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 							}
 
-							$result = array(
+							$debug = array(
 								'title'   => $title,
 								'message' => esc_html__( 'This ID has already been attempted so it was not pulled again.', 'object-sync-for-salesforce' ),
 								'trigger' => $salesforce_mapping['sync_triggers'],
@@ -286,7 +307,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 								'status'  => $status,
 							);
 
-							$logging->setup( $result );
+							$logging->setup( $debug );
 						}
 
 						continue;
@@ -328,15 +349,15 @@ class Object_Sync_Sf_Salesforce_Pull {
 									$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 								}
 
-								$result = array(
+								$debug = array(
 									'title'   => $title,
 									'message' => esc_html__( 'This ID is not pullable so it was skipped.', 'object-sync-for-salesforce' ),
-									'trigger' => $salesforce_mapping['sync_triggers'],
+									'trigger' => $sf_sync_trigger,
 									'parent'  => '',
 									'status'  => $status,
 								);
 
-								$logging->setup( $result );
+								$logging->setup( $debug );
 							}
 							continue;
 						}
@@ -368,14 +389,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 							}
 
-							$result = array(
+							$debug = array(
 								'title'   => $title,
 								'message' => esc_html__( 'This ID has been successfully pulled. It cannot be pulled again.', 'object-sync-for-salesforce' ),
-								'trigger' => $salesforce_mapping['sync_triggers'],
+								'trigger' => $sf_sync_trigger,
 								'parent'  => '',
 								'status'  => $status,
 							);
-							$logging->setup( $result );
+							$logging->setup( $debug );
 						} // end of debug
 					} // end if
 				} // end foreach
@@ -1126,7 +1147,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 					}
 
-					$result = array(
+					$debug = array(
 						'title'   => $title,
 						'message' => '',
 						'trigger' => $salesforce_mapping['sync_triggers'],
@@ -1134,7 +1155,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						'status'  => $status,
 					);
 
-					$logging->setup( $result );
+					$logging->setup( $debug );
 				}
 
 				continue;
