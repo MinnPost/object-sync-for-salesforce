@@ -402,6 +402,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		$object_id_field = $structure['id_field'];
 
 		// there is a WordPress object to push
+		// todo: this is where we'd start to address issue #135. we'd have to loop through mapping_objects if any existed.
 		if ( isset( $object[ $object_id_field ] ) ) {
 			$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object[ $object_id_field ] );
 
