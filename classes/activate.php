@@ -122,8 +122,6 @@ class Object_Sync_Sf_Activate {
 			last_sync_status tinyint(1) NOT NULL DEFAULT '0',
 			last_sync_message varchar(255) DEFAULT NULL,
 			PRIMARY KEY  (id),
-			UNIQUE KEY salesforce (salesforce_id),
-			UNIQUE KEY salesforce_wordpress (wordpress_object,wordpress_id),
 			KEY wordpress_object (wordpress_object,wordpress_id),
 			KEY salesforce_object (salesforce_id)
 		) $charset_collate";
