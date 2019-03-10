@@ -1141,7 +1141,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// Is this Salesforce object already connected to at least one WordPress object?
 			if ( isset( $mapping_objects[0]['id'] ) ) {
 				$is_new                      = false;
-				$mapping_object_id_transient = $mapping_object['id'];
+				$mapping_object_id_transient = $mapping_objects[0]['salesforce_id'];
 			} else {
 				// there is not a mapping object for this Salesforce object id yet
 				// check to see if there is a pushing transient for that Salesforce Id

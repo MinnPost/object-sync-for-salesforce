@@ -408,7 +408,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 			// there is already a mapping object for this WordPress object
 			if ( isset( $mapping_object['id'] ) ) {
-				$mapping_object_id_transient = $mapping_object['id'];
+				$mapping_object_id_transient = $mapping_object['salesforce_id'];
 			} else {
 				// there is not a mapping object for this WordPress object id yet
 				// check for that transient with the currently pulling id
@@ -833,9 +833,10 @@ class Object_Sync_Sf_Salesforce_Push {
 			// right here we should set the pushing transient
 			// this means we have to create the mapping object here as well, and update it with the correct IDs after successful response
 			// create the mapping object between the rows
-			$mapping_object_id = $this->create_object_map( $object, $wordpress_id_field_name, $this->mappings->generate_temporary_id( 'push' ), $mapping, true );
-			set_transient( 'salesforce_pushing_' . $mapping_object_id, 1, $seconds );
-			set_transient( 'salesforce_pushing_object_id', $mapping_object_id );
+			$temporary_map_id  = $this->mappings->generate_temporary_id( 'push' );
+			$mapping_object_id = $this->create_object_map( $object, $wordpress_id_field_name, $temporary_map_id, $mapping, true );
+			set_transient( 'salesforce_pushing_' . $temporary_map_id, 1, $seconds );
+			set_transient( 'salesforce_pushing_object_id', $temporary_map_id );
 			$mapping_object = $this->mappings->get_object_maps(
 				array(
 					'id' => $mapping_object_id,
@@ -1014,7 +1015,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// right here we should change the pushing transient to the LastModifiedDate for the Salesforce object.
 				if ( isset( $salesforce_data['LastModifiedDate'] ) ) {
-					set_transient( 'salesforce_pushing_' . $mapping_object['id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
+					set_transient( 'salesforce_pushing_' . $mapping_object['salesforce_id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
 				}
 
 				// update that mapping object
@@ -1070,8 +1071,8 @@ class Object_Sync_Sf_Salesforce_Push {
 			// $is_new is false here; we are updating an already mapped object
 
 			// right here we should set the pushing transient
-			set_transient( 'salesforce_pushing_' . $mapping_object['id'], 1, $seconds );
-			set_transient( 'salesforce_pushing_object_id', $mapping_object['id'] );
+			set_transient( 'salesforce_pushing_' . $mapping_object['salesforce_id'], 1, $seconds );
+			set_transient( 'salesforce_pushing_object_id', $mapping_object['salesforce_id'] );
 
 			// there is an existing object link
 			// if the last sync is greater than the last time this object was updated, skip it
@@ -1211,7 +1212,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 			// right here we should change the pushing transient to the LastModifiedDate for the Salesforce object.
 			if ( isset( $salesforce_data['LastModifiedDate'] ) ) {
-				set_transient( 'salesforce_pushing_' . $mapping_object['id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
+				set_transient( 'salesforce_pushing_' . $mapping_object['salesforce_id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
 			}
 
 			// tell the mapping object - whether it is new or already existed - how we just used it
