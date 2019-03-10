@@ -628,19 +628,19 @@ class Object_Sync_Sf_Salesforce_Pull {
 		);
 
 		// Iterate over each field mapping to determine our query parameters.
-		foreach ( $mappings as $mapping ) {
+		foreach ( $mappings as $salesforce_mapping ) {
 
 			// only use fields that come from Salesforce to WordPress, or that sync
 			$mapped_fields = array_merge(
 				$mapped_fields,
 				$this->mappings->get_mapped_fields(
-					$mapping,
+					$salesforce_mapping,
 					array( $this->mappings->direction_sync, $this->mappings->direction_sf_wordpress )
 				)
 			);
 
 			// If Record Type is specified, restrict query.
-			$mapping_record_types = $this->mappings->get_mapped_record_types( $mapping );
+			$mapping_record_types = $this->mappings->get_mapped_record_types( $salesforce_mapping );
 
 			// If Record Type is not specified for a given mapping, ensure query is unrestricted.
 			if ( empty( $mapping_record_types ) ) {
@@ -931,9 +931,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			$results = array();
 
-			foreach ( $salesforce_mappings as $mapping ) {
+			foreach ( $salesforce_mappings as $salesforce_mapping ) {
 
-				$map_sync_triggers = $mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping
+				$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping
 
 				// If no lastupdate, get all records, else get records since last pull.
 				// this should be what keeps it from getting all the records, whether or not they've ever been updated
@@ -953,7 +953,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				} else {
 					$sf_sync_trigger = $this->mappings->sync_sf_update;
 				}
-				$pull_allowed = $this->is_pull_allowed( $object_type, $object, $sf_sync_trigger, $mapping, $map_sync_triggers );
+				$pull_allowed = $this->is_pull_allowed( $object_type, $object, $sf_sync_trigger, $salesforce_mapping, $map_sync_triggers );
 
 				if ( true === $pull_allowed ) {
 					$result = $this->salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger );
@@ -968,8 +968,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					// translators: placeholders are: 1) the name of the WordPress object type, 2) the name of the Salesforce object, 3) the Salesforce Id value
 					$title = sprintf( esc_html__( 'Error: Manually pull WordPress %1$s not allowed (%2$s %3$s)', 'object-sync-for-salesforce' ),
-						esc_attr( $mapping['wordpress_object'] ),
-						esc_attr( $mapping['salesforce_object'] ),
+						esc_attr( $salesforce_mapping['wordpress_object'] ),
+						esc_attr( $salesforce_mapping['salesforce_object'] ),
 						esc_attr( $salesforce_id )
 					);
 
@@ -1044,13 +1044,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$sfapi = $this->salesforce['sfapi'];
 
 		if ( is_string( $object ) ) {
-			$object_id = $object;
+			$salesforce_id = $object;
 			// Load the Salesforce object data to save in WordPress. We need to make sure that this data does not get cached, which is consistent with other pull behavior as well as in other methods in this class.
 			// We should only do this if we're not trying to delete data in WordPress - otherwise, we'll get a 404 from Salesforce and the delete will fail.
 			if ( $sf_sync_trigger != $this->mappings->sync_sf_delete ) { // trigger is a bit operator
 				$object = $sfapi->object_read(
 					$object_type,
-					$object_id,
+					$salesforce_id,
 					array(
 						'cache' => false,
 					)
@@ -1343,12 +1343,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 			} // End if().
 
 			// map the Salesforce values to WordPress fields
-			$params = $this->mappings->map_params( $mapping, $object, $sf_sync_trigger, false, $is_new );
+			$params = $this->mappings->map_params( $salesforce_mapping, $object, $sf_sync_trigger, false, $is_new, $wordpress_id_field_name );
 
 			// hook to allow other plugins to modify the $params array
 			// use hook to map fields between the WordPress and Salesforce objects
 			// returns $params.
-			$params = apply_filters( $this->option_prefix . 'pull_params_modify', $params, $mapping, $object, $sf_sync_trigger, false, $is_new );
+			$params = apply_filters( $this->option_prefix . 'pull_params_modify', $params, $salesforce_mapping, $object, $sf_sync_trigger, false, $is_new );
 
 			// if we don't get any params, there are no fields that should be sent to WordPress
 			if ( empty( $params ) ) {
@@ -1959,7 +1959,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*   Whether all this stuff allows the $result to be pulled into WordPress
 	*
 	*/
-	private function is_pull_allowed( $object_type, $object, $sf_sync_trigger, $mapping, $map_sync_triggers ) {
+	private function is_pull_allowed( $object_type, $object, $sf_sync_trigger, $salesforce_mapping, $map_sync_triggers ) {
 
 		// default is pull is allowed
 		$pull_allowed = true;
