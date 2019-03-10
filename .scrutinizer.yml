@@ -1,3 +1,19 @@
+checks:
+  php:
+    avoid_closing_tag: false
+    avoid_superglobals: false
+    coding_standard:
+      name: WordPress
+    no_exit: false
+    no_global_keyword: false
+    one_class_per_file: false
+    psr2_class_declaration: false
+    psr2_control_structure_declaration: false
+    psr2_switch_declaration: false
+    variable_existence: false
+    verify_access_scope_valid: false
+    verify_argument_usable_as_reference: false
+    verify_property_names: false
 filter:
     excluded_paths:
         - 'bin/*'
@@ -7,6 +23,8 @@ filter:
         - 'assets/js/vendor/**/*.js'
         - 'assets/js/vendor/**/*.css'
         - 'node_modules/**/*'
+        - tests/
+        - vendor/
         - 'tests/**/*'
         - 'vendor/**/*'
         - 'Gulpfile.js'
