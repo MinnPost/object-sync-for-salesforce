@@ -2042,7 +2042,7 @@ class Object_Sync_Sf_Admin {
 	public function show_salesforce_user_fields( $user ) {
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
 		if ( true === $this->check_wordpress_admin_permissions() ) {
-			$mappings  = $this->mappings->load_all_by_wordpress( 'user', $user->ID );
+			$mappings = $this->mappings->load_all_by_wordpress( 'user', $user->ID );
 			$fieldmap = $this->mappings->get_fieldmaps(
 				null, // id field must be null for multiples
 				array(

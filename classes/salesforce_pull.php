@@ -1206,7 +1206,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// if this Salesforce record is new to WordPress, we can try to create it
 			if ( true === $is_new ) {
 				$synced_object = $this->get_synced_object( $object, $mapping_objects[0], $salesforce_mapping );
-				$create = $this->create_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $prematch, $wordpress_id_field_name, $seconds );
+				$create        = $this->create_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $prematch, $wordpress_id_field_name, $seconds );
 			} elseif ( false === $is_new ) {
 				// there is already at least one mapping_object['id'] associated with this Salesforce Id
 				// right here we should set the pulling transient

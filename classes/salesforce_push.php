@@ -398,7 +398,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	*/
 	private function salesforce_push_object_crud( $object_type, $object, $sf_sync_trigger, $manual = false ) {
 
-		$structure       = $this->wordpress->get_wordpress_table_structure( $object_type );
+		$structure               = $this->wordpress->get_wordpress_table_structure( $object_type );
 		$wordpress_id_field_name = $structure['id_field'];
 
 		// there is a WordPress object to push
