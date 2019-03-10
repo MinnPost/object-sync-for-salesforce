@@ -1196,6 +1196,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				unset( $params['prematch'] );
 			}
 
+			// if there is an external key field in Salesforce - ie a Mailchimp user id - on the fieldmap object, this should not affect how WordPress handles it is not included in the pull parameters.
+
 			// if we don't get any params, there are no fields that should be sent to WordPress
 			if ( empty( $params ) ) {
 				return;
@@ -1217,7 +1219,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$delete        = $this->delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds );
 				}
 			}
-			
 		} // End foreach() on $salesforce_mappings.
 
 		// delete transients that we've already processed for this Salesforce object.
@@ -1293,10 +1294,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// methods to run the wp update operations
 		$results = array();
 		$op      = '';
-
-		
-
-		// if there is an external key field in Salesforce - ie a Mailchimp user id - on the fieldmap object, this should not affect how WordPress handles it so we have removed it from the pull parameters.
 
 		// setup SF record type. CampaignMember objects get their Campaign's type
 		// i am still a bit confused about this
