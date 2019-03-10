@@ -259,7 +259,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$debug = array(
 					'title'   => $title,
 					'message' => esc_html( (string) $soql ),
-					'trigger' => $salesforce_mapping['sync_triggers'],
+					'trigger' => 0,
 					'parent'  => '',
 					'status'  => $status,
 				);
@@ -302,7 +302,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$debug = array(
 								'title'   => $title,
 								'message' => esc_html__( 'This ID has already been attempted so it was not pulled again.', 'object-sync-for-salesforce' ),
-								'trigger' => $salesforce_mapping['sync_triggers'],
+								'trigger' => 0,
 								'parent'  => '',
 								'status'  => $status,
 							);
@@ -410,7 +410,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						// update the current state so we don't end up on the same record again if the loop fails
 						update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
 						if ( 1 === (int) $this->debug ) {
-							// create log entry for failed pull
+							// create log entry for successful pull
 							$status = 'debug';
 							// translators: placeholders are: 1) the Salesforce ID
 							$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s has been successfully pulled.', 'object-sync-for-salesforce' ),
@@ -425,7 +425,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 							$debug = array(
 								'title'   => $title,
-								'message' => esc_html__( 'This ID has been successfully pulled. It cannot be pulled again.', 'object-sync-for-salesforce' ),
+								'message' => esc_html__( 'This ID has been successfully pulled and added to the queue for processing. It cannot be pulled again without being modified again.', 'object-sync-for-salesforce' ),
 								'trigger' => $sf_sync_trigger,
 								'parent'  => '',
 								'status'  => $status,
@@ -482,7 +482,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$result = array(
 					'title'   => $title,
 					'message' => $response['message'],
-					'trigger' => $salesforce_mapping['sync_triggers'],
+					'trigger' => 0,
 					'parent'  => '',
 					'status'  => $status,
 				);
@@ -1143,8 +1143,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$is_new                      = false;
 				$mapping_object_id_transient = $mapping_object['id'];
 			} else {
-				// there is not a mapping object for this WordPress object id yet
-				// check for that transient with the currently pushing id
+				// there is not a mapping object for this Salesforce object id yet
+				// check to see if there is a pushing transient for that Salesforce Id
 				$is_new                      = true;
 				$mapping_object_id_transient = get_transient( 'salesforce_pushing_object_id' );
 			}
@@ -1152,11 +1152,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// Here's where we check to see whether the current record was updated by a push from this plugin or not. Here's how it works:
 			// 1. A record gets pushed to Salesforce by this plugin.
 			// 2. We save the LastModifiedDate from the Salesforce result as a timestamp in the transient.
-			// 3. Below, in addition to checking the record Id, we check against $object's LastModifiedDate and if it's not later than the transient value, we skip it because it's still pushing from our activity.
+			// 3. Below, in addition to checking the Salesforce Id, we check against $object's LastModifiedDate and if it's not later than the transient value, we skip it because it's still pushing from our activity.
 			$salesforce_pushing = get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
 
 			if ( '1' !== $salesforce_pushing ) {
-				//$salesforce_pushing = gmdate( 'Y-m-d\TH:i:s\Z', $salesforce_pushing );
+				// the format to compare is like this: 'Y-m-d\TH:i:s\Z'
 				if ( false === $salesforce_pushing || strtotime( $object['LastModifiedDate'] ) > $salesforce_pushing ) {
 					$salesforce_pushing = 0;
 				} else {
@@ -1185,7 +1185,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$debug = array(
 						'title'   => $title,
 						'message' => '',
-						'trigger' => $salesforce_mapping['sync_triggers'],
+						'trigger' => $sf_sync_trigger,
 						'parent'  => '',
 						'status'  => $status,
 					);
