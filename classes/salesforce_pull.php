@@ -1110,24 +1110,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 				continue;
 			}
 
-			// if there's already a connection between the objects, $mapping_object will be an array
-			// if it's not already connected (ie on create), the array will be empty
-
-			// hook to allow other plugins to define or alter the mapping object
-			$mapping_object = apply_filters( $this->option_prefix . 'pull_mapping_object', $mapping_object, $object, $mapping );
-
-			// we already have the data from Salesforce at this point; we just need to work with it in WordPress
-			$synced_object = array(
-				'salesforce_object' => $object,
-				'mapping_object'    => $mapping_object,
-				'mapping'           => $mapping,
-			);
-
-			$structure = $this->wordpress->get_wordpress_table_structure( $salesforce_mapping['wordpress_object'] );
-			$object_id = $structure['id_field'];
-
-			$op = '';
-
 			// Is this Salesforce object already connected to at least one WordPress object?
 			if ( isset( $mapping_objects[0]['id'] ) ) {
 				$is_new                      = false;
@@ -1331,6 +1313,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				} // End if().
 				continue;
 			} // End if().
+			$structure               = $this->wordpress->get_wordpress_table_structure( $salesforce_mapping['wordpress_object'] );
+			$wordpress_id_field_name = $structure['id_field'];
 
 			// map the Salesforce values to WordPress fields
 			$params = $this->mappings->map_params( $salesforce_mapping, $object, $sf_sync_trigger, false, $is_new, $wordpress_id_field_name );
@@ -1364,6 +1348,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// methods to run the wp create or update operations
 
 			if ( true === $is_new ) {
+				$synced_object = $this->get_synced_object( $object, $mapping_objects[0], $salesforce_mapping );
 
 				// setup SF record type. CampaignMember objects get their Campaign's type
 				// i am still a bit confused about this
@@ -1467,14 +1452,35 @@ class Object_Sync_Sf_Salesforce_Pull {
 									$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 								}
 								$parent = 0;
+	/**
+	* Generate the synced_object array
+	*
+	* @param array $object
+	*   The data for the Salesforce object
+	* @param array $mapping_object
+	*   The data for the mapping object between the individual Salesforce and WordPress items
+	* @param array $salesforce_mapping
+	*   The data for the fieldmap between the object types
+	* @return array $synced_object
+	*   The combined array of these items. It allows for filtering of, at least, the mapping_object.
+	*
+	*/
+	private function get_synced_object( $object, $mapping_object, $salesforce_mapping ) {
+		// if there's already a connection between the objects, $mapping_object will be an array at this point
+		// if it's not already connected (ie on create), the array will be empty
 
-								$result = array(
-									'title'   => $title,
-									'message' => $body,
-									'trigger' => $sf_sync_trigger,
-									'parent'  => $parent,
-									'status'  => $status,
-								);
+		// hook to allow other plugins to define or alter the mapping object
+		$mapping_object = apply_filters( $this->option_prefix . 'pull_mapping_object', $mapping_object, $object, $salesforce_mapping );
+
+		// we already have the data from Salesforce at this point; we just need to work with it in WordPress
+		$synced_object = array(
+			'salesforce_object' => $object,
+			'mapping_object'    => $mapping_object,
+			'mapping'           => $salesforce_mapping,
+		);
+		return $synced_object;
+	}
+
 
 								$logging->setup( $result );
 
