@@ -1207,6 +1207,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$create = $this->create_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $prematch, $wordpress_id_field_name, $seconds );
 			} elseif ( false === $is_new ) {
 				// there is already at least one mapping_object['id'] associated with this Salesforce Id
+				// right here we should set the pulling transient
+				set_transient( 'salesforce_pulling_' . $mapping_objects[0]['salesforce_id'], 1, $seconds );
+				set_transient( 'salesforce_pulling_object_id', $mapping_objects[0]['salesforce_id'] );
 
 				// setup SF record type. CampaignMember objects get their Campaign's type
 				// i am still a bit confused about this
@@ -1808,9 +1811,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		} // End try().
 
-				// right here we should set the pulling transient
-				set_transient( 'salesforce_pulling_' . $mapping_object['id'], 1, $seconds );
-				set_transient( 'salesforce_pulling_object_id', $mapping_object['id'] );
+		// need to move these into the success check
 
 		// maybe can check to see if we actually updated anything in WordPress
 		// tell the mapping object - whether it is new or already existed - how we just used it
