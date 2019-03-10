@@ -1179,10 +1179,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// returns $params.
 			$params = apply_filters( $this->option_prefix . 'pull_params_modify', $params, $salesforce_mapping, $object, $sf_sync_trigger, false, $is_new );
 
-			// if we don't get any params, there are no fields that should be sent to WordPress
-			if ( empty( $params ) ) {
-				return;
-			}
 			// setup prematch parameters
 			$prematch = array();
 
@@ -1200,6 +1196,10 @@ class Object_Sync_Sf_Salesforce_Pull {
 				unset( $params['prematch'] );
 			}
 
+			// if we don't get any params, there are no fields that should be sent to WordPress
+			if ( empty( $params ) ) {
+				return;
+			}
 
 			// if this Salesforce record is new to WordPress, we can try to create it
 			if ( true === $is_new ) {
