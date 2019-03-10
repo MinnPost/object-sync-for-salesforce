@@ -106,7 +106,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// action-scheduler needs two hooks: one to check for records, and one to process them
 		add_action( $this->option_prefix . 'pull_check_records', array( $this, 'salesforce_pull' ), 10 );
-		add_action( $this->option_prefix . 'pull_process_records', array( $this, 'salesforce_pull_process_records' ), 10, 4 );
+		add_action( $this->option_prefix . 'pull_process_records', array( $this, 'salesforce_pull_process_records' ), 10, 3 );
 	}
 
 	/**
@@ -402,7 +402,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 							array(
 								'object_type'     => $type,
 								'object'          => $result['Id'],
-								'mapping'         => filter_var( $salesforce_mapping['id'], FILTER_VALIDATE_INT ),
 								'sf_sync_trigger' => $sf_sync_trigger,
 							),
 							$this->schedule_name
@@ -546,7 +545,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 							array(
 								'object_type'     => $type,
 								'object'          => $result['Id'],
-								'mapping'         => filter_var( $salesforce_mapping['id'], FILTER_VALIDATE_INT ),
 								'sf_sync_trigger' => $sf_sync_trigger,
 							),
 							$this->schedule_name
@@ -877,7 +875,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 						array(
 							'object_type'     => $type,
 							'object'          => $result['Id'],
-							'mapping'         => filter_var( $salesforce_mapping['id'], FILTER_VALIDATE_INT ),
 							'sf_sync_trigger' => $sf_sync_trigger,
 						),
 						$this->schedule_name
@@ -956,7 +953,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$pull_allowed = $this->is_pull_allowed( $object_type, $object, $sf_sync_trigger, $salesforce_mapping, $map_sync_triggers );
 
 				if ( true === $pull_allowed ) {
-					$result = $this->salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger );
+					$result = $this->salesforce_pull_process_records( $object_type, $object, $sf_sync_trigger );
 				} else {
 					$status = 'error';
 					// create log entry for not allowed manual pull
@@ -1031,15 +1028,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*   Type of Salesforce object.
 	* @param array|string $object
 	*   The Salesforce data or its Id value.
-	* @param array|int $mapping
-	*   Salesforce/WP mapping data or its id.
 	* @param int $sf_sync_trigger
 	*   Trigger for this sync.
 	*
 	* @return true or exit the method
 	*
 	*/
-	public function salesforce_pull_process_records( $object_type, $object, $mapping, $sf_sync_trigger ) {
+	public function salesforce_pull_process_records( $object_type, $object, $sf_sync_trigger ) {
 
 		$sfapi = $this->salesforce['sfapi'];
 
@@ -1060,11 +1055,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 					'Id' => $object,
 				);
 			} // gently handle deleted records
-		}
-
-		if ( is_int( $mapping ) ) {
-			$mapping_id = $mapping;
-			$mapping    = $this->mappings->get_fieldmaps( $mapping_id );
 		}
 
 		$mapping_conditions = array(
