@@ -1698,33 +1698,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$op     = 'Update';
 			$result = $this->wordpress->object_update( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'], $params );
 
-			if ( 1 === (int) $this->debug ) {
-				// create log entry for create start
-				$status = 'debug';
-				// translators: placeholders are: 1) the Salesforce Id value
-				$title = sprintf( esc_html__( 'Debug: Try to update existing record in WordPress from Salesforce Id %1$s.', 'object-sync-for-salesforce' ),
-					$object['Id']
-				);
-
-				$message = 'synced object is ' . print_r( $salesforce_mapping, true ) . ' and mapping object is ' . print_r( $mapping_object, true ) . ' and params are ' . print_r( $params, true ) . ' and result is ' . print_r( $result, true );
-
-				if ( isset( $this->logging ) ) {
-					$logging = $this->logging;
-				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-				}
-
-				$debug = array(
-					'title'   => $title,
-					'message' => $message,
-					'trigger' => $sf_sync_trigger,
-					'parent'  => '',
-					'status'  => $status,
-				);
-
-				$logging->setup( $debug );
-			}
-
 			$mapping_object['last_sync_status']  = $this->mappings->status_success;
 			$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
 
