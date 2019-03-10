@@ -403,7 +403,8 @@ class Object_Sync_Sf_Salesforce_Push {
 
 		// there is a WordPress object to push
 		if ( isset( $object[ $wordpress_id_field_name ] ) ) {
-			$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
+			// todo: we might need to loop through these?
+			$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] )[0];
 
 			// there is already a mapping object for this WordPress object
 			if ( isset( $mapping_object['id'] ) ) {
@@ -472,7 +473,8 @@ class Object_Sync_Sf_Salesforce_Push {
 				$wordpress_id_field_name = $structure['id_field'];
 
 				// this returns the row that maps the individual WordPress row to the individual Salesfoce row
-				$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object[ "$wordpress_id_field_name" ] );
+				// todo: we might need to loop through these?
+				$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ "$wordpress_id_field_name" ] )[0];
 
 				// hook to allow other plugins to define or alter the mapping object
 				$mapping_object = apply_filters( $this->option_prefix . 'push_mapping_object', $mapping_object, $object, $mapping );
@@ -637,7 +639,8 @@ class Object_Sync_Sf_Salesforce_Push {
 		$wordpress_id_field_name = $structure['id_field'];
 
 		// this returns the row that maps the individual WordPress row to the individual Salesfoce row
-		$mapping_object = $this->mappings->load_by_wordpress( $object_type, $object[ "$wordpress_id_field_name" ] );
+		// todo: we might need to loop through these?
+		$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ "$wordpress_id_field_name" ] )[0];
 
 		// hook to allow other plugins to define or alter the mapping object
 		$mapping_object = apply_filters( $this->option_prefix . 'push_mapping_object', $mapping_object, $object, $mapping );
@@ -658,7 +661,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			if ( isset( $mapping_object['id'] ) ) {
 				$op = 'Delete';
 
-				$salesforce_check = $this->mappings->load_by_salesforce( $mapping_object['salesforce_id'] );
+				$salesforce_check = $this->mappings->load_all_by_salesforce( $mapping_object['salesforce_id'] )[0];
 
 				if ( count( $salesforce_check ) === count( $salesforce_check, COUNT_RECURSIVE ) ) {
 					try {
@@ -1295,7 +1298,8 @@ class Object_Sync_Sf_Salesforce_Push {
 		if ( ! in_array( $this->mappings->sync_wordpress_create, $map_sync_triggers ) ) {
 			$structure               = $this->wordpress->get_wordpress_table_structure( $object_type );
 			$wordpress_id_field_name = $structure['id_field'];
-			$object_map              = $this->mappings->load_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
+			// we only need to check against the first mapping object, if it exists. we don't need to loop through them.
+			$object_map = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] )[0];
 			if ( empty( $object_map ) ) {
 				$push_allowed = false;
 			}

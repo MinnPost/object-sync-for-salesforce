@@ -1094,7 +1094,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// this returns the row that maps the individual Salesforce row to the individual WordPress row
 			// todo: this is where we'd start to address issue #135. we'd have to loop through mapping_objects if any existed.
 			if ( isset( $object['Id'] ) ) {
-				$mapping_object = $this->mappings->load_by_salesforce( $object['Id'] );
+				$mapping_objects = $this->mappings->load_all_by_salesforce( $object['Id'] );
 			} else {
 				// if we don't have a Salesforce object id, we've got no business doing stuff in WordPress
 				$status = 'error';
@@ -1138,8 +1138,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			$op = '';
 
-			// are these objects already connected in WordPress?
-			if ( isset( $mapping_object['id'] ) ) {
+			// Is this Salesforce object already connected to at least one WordPress object?
+			if ( isset( $mapping_objects[0]['id'] ) ) {
 				$is_new                      = false;
 				$mapping_object_id_transient = $mapping_object['id'];
 			} else {
@@ -1966,7 +1966,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// if the current fieldmap does not allow create, we need to check if there is an object map for the Salesforce object Id. if not, set pull_allowed to false.
 		if ( ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
-			$object_map = $this->mappings->load_by_salesforce( $object['Id'] );
+			$object_map = $this->mappings->load_all_by_salesforce( $object['Id'] )[0];
 			if ( empty( $object_map ) ) {
 				$pull_allowed = false;
 			}
