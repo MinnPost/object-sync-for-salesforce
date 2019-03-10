@@ -116,6 +116,8 @@ class Object_Sync_Sf_Mapping {
 		$this->status_success = 1;
 		$this->status_error   = 0;
 
+		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
+
 	}
 
 	/**
