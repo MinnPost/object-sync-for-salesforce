@@ -1211,20 +1211,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 				set_transient( 'salesforce_pulling_' . $mapping_objects[0]['salesforce_id'], 1, $seconds );
 				set_transient( 'salesforce_pulling_object_id', $mapping_objects[0]['salesforce_id'] );
 
-				// setup SF record type. CampaignMember objects get their Campaign's type
-				// i am still a bit confused about this
-				// we should store this as a meta field on each object, if it meets these criteria
-				// we need to store the read/modify attributes because the field doesn't exist in the mapping
-				if ( $salesforce_mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type && empty( $params['RecordTypeId'] ) && ( 'CampaignMember' !== $salesforce_mapping['salesforce_object'] ) ) {
-					$type = $salesforce_mapping['wordpress_object'];
-					if ( 'category' === $salesforce_mapping['wordpress_object'] || 'tag' === $salesforce_mapping['wordpress_object'] || 'post_tag' === $salesforce_mapping['wordpress_object'] ) {
-						$type = 'term';
-					}
-					$params['RecordTypeId'] = array(
-						'value'         => $salesforce_mapping['salesforce_record_type_default'],
-						'method_modify' => 'update_' . $type . '_meta',
-						'method_read'   => 'get_' . $type . '_meta',
-					);
 				foreach ( $mapping_objects as $mapping_object ) {
 					$synced_object = $this->get_synced_object( $object, $mapping_object, $salesforce_mapping );
 					$update        = $this->update_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $wordpress_id_field_name, $seconds );
@@ -1312,6 +1298,21 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// if there is an external key field in Salesforce - ie a Mailchimp user id - on the fieldmap object, this should not affect how WordPress handles it so we have removed it from the pull parameters.
 
+		// setup SF record type. CampaignMember objects get their Campaign's type
+		// i am still a bit confused about this
+		// we should store this as a meta field on each object, if it meets these criteria
+		// we need to store the read/modify attributes because the field doesn't exist in the mapping
+		if ( $salesforce_mapping['salesforce_record_type_default'] !== $this->mappings->salesforce_default_record_type && empty( $params['RecordTypeId'] ) && ( 'CampaignMember' !== $salesforce_mapping['salesforce_object'] ) ) {
+			$type = $salesforce_mapping['wordpress_object'];
+			if ( 'category' === $salesforce_mapping['wordpress_object'] || 'tag' === $salesforce_mapping['wordpress_object'] || 'post_tag' === $salesforce_mapping['wordpress_object'] ) {
+				$type = 'term';
+			}
+			$params['RecordTypeId'] = array(
+				'value'         => $salesforce_mapping['salesforce_record_type_default'],
+				'method_modify' => 'update_' . $type . '_meta',
+				'method_read'   => 'get_' . $type . '_meta',
+			);
+		}
 
 		try {
 
