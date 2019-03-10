@@ -1328,13 +1328,15 @@ class Object_Sync_Sf_Salesforce_Pull {
 			if ( empty( $params ) ) {
 				return;
 			}
+			// setup prematch parameters
+			$prematch = array();
 
 			// if there is a prematch WordPress field - ie email - on the fieldmap object
 			if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
-				$prematch_field_wordpress  = $params['prematch']['wordpress_field'];
-				$prematch_field_salesforce = $params['prematch']['salesforce_field'];
-				$prematch_value            = $params['prematch']['value'];
-				$prematch_methods          = array(
+				$prematch['field_wordpress']  = $params['prematch']['wordpress_field'];
+				$prematch['field_salesforce'] = $params['prematch']['salesforce_field'];
+				$prematch['value']            = $params['prematch']['value'];
+				$prematch['methods']          = array(
 					'method_match'  => isset( $params['prematch']['method_match'] ) ? $params['prematch']['method_match'] : $params['prematch']['method_read'],
 					'method_create' => $params['prematch']['method_create'],
 					'method_update' => $params['prematch']['method_update'],
