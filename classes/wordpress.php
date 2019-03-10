@@ -2584,8 +2584,10 @@ class Object_Sync_Sf_WordPress_Transient {
 	public function flush() {
 		$keys   = $this->all_keys();
 		$result = true;
-		foreach ( $keys as $key ) {
-			$result = delete_transient( $key );
+		if ( ! empty( $keys ) ) {
+			foreach ( $keys as $key ) {
+				$result = delete_transient( $key );
+			}
 		}
 		$result = delete_transient( $this->name );
 		return $result;
