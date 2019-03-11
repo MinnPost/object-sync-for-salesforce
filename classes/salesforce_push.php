@@ -477,7 +477,10 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// this returns the row that maps the individual WordPress row to the individual Salesfoce row
 				// todo: we might need to loop through these?
-				$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ "$wordpress_id_field_name" ] )[0];
+				$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
+				if ( ! empty( $mapping_object ) ) {
+					$mapping_object = $mapping_object[0];
+				}
 
 				// hook to allow other plugins to define or alter the mapping object
 				$mapping_object = apply_filters( $this->option_prefix . 'push_mapping_object', $mapping_object, $object, $mapping );
@@ -643,7 +646,10 @@ class Object_Sync_Sf_Salesforce_Push {
 
 		// this returns the row that maps the individual WordPress row to the individual Salesfoce row
 		// todo: we might need to loop through these?
-		$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ "$wordpress_id_field_name" ] )[0];
+		$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
+		if ( ! empty( $mapping_object ) ) {
+			$mapping_object = $mapping_object[0];
+		}
 
 		// hook to allow other plugins to define or alter the mapping object
 		$mapping_object = apply_filters( $this->option_prefix . 'push_mapping_object', $mapping_object, $object, $mapping );
