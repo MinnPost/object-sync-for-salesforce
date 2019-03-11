@@ -175,11 +175,23 @@ class Object_Sync_Salesforce {
 		 * }
 		*/
 
-		$this->load = $this->load( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
-
 		$this->queue = $this->queue( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
 
 		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
+
+		// Run non-activation things. We do this early because ActionScheduler has to have access to plugins_loaded with priority of zero.
+		add_action( 'plugins_loaded', array( $this, 'run' ), -10 );
+
+	}
+
+	/**
+	 * run the plugin, independent of activation methods.
+	 *
+	 */
+	public function run() {
+
+		$this->load = $this->load( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
+
 		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
 
 		$this->logging = $this->logging( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
@@ -196,7 +208,6 @@ class Object_Sync_Salesforce {
 		$this->rest = $this->rest( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull );
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull, $this->logging, $this->schedulable_classes, $this->queue );
-
 	}
 
 	/**
@@ -556,5 +567,5 @@ class Object_Sync_Salesforce {
 
 } // end class
 
-// Instantiate our class. We do it early because ActionScheduler has to have access to plugins_loaded with priority of zero.
-add_action( 'plugins_loaded', array( 'Object_Sync_Salesforce', 'get_instance' ), -10 );
+// Instantiate our class.
+$object_sync_salesforce = Object_Sync_Salesforce::get_instance();

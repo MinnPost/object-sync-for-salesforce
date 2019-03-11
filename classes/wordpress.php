@@ -905,7 +905,7 @@ class Object_Sync_Sf_WordPress {
 
 				// Send notification of new user.
 				// todo: Figure out what permissions ought to get notifications for this and make sure it works the right way.
-				wp_new_user_notification( $user_id, null, 'admin user' );
+				wp_new_user_notification( $user_id, null, 'both' );
 
 			}
 		} else {
