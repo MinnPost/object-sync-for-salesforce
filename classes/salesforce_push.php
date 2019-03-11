@@ -403,8 +403,11 @@ class Object_Sync_Sf_Salesforce_Push {
 
 		// there is a WordPress object to push
 		if ( isset( $object[ $wordpress_id_field_name ] ) ) {
-			// todo: we might need to loop through these?
-			$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] )[0];
+			// todo: we might want to loop through these?
+			$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
+			if ( ! empty( $mapping_object ) ) {
+				$mapping_object = $mapping_object[0];
+			}
 
 			// there is already a mapping object for this WordPress object
 			if ( isset( $mapping_object['id'] ) ) {
