@@ -1828,7 +1828,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				set_transient( 'salesforce_pulling_object_id', $mapping_object['salesforce_id'] );
 
 				$op              = 'Delete';
-				$wordpress_check = $this->mappings->load_all_by_wordpress( $mapping_object['wordpress_object'], $mapping_object['wordpress_id'] )[0];
+				$wordpress_check = $this->mappings->load_all_by_wordpress( $mapping_object['wordpress_object'], $mapping_object['wordpress_id'] );
 				if ( count( $wordpress_check ) === count( $wordpress_check, COUNT_RECURSIVE ) ) {
 					try {
 						$result = $this->wordpress->object_delete( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'] );
@@ -2061,7 +2061,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// if the current fieldmap does not allow create, we need to check if there is an object map for the Salesforce object Id. if not, set pull_allowed to false.
 		if ( ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
-			$object_map = $this->mappings->load_all_by_salesforce( $object['Id'] )[0];
+			$object_map = $this->mappings->load_all_by_salesforce( $object['Id'] );
 			if ( empty( $object_map ) ) {
 				$pull_allowed = false;
 			}
