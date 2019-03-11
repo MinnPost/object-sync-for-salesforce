@@ -459,6 +459,7 @@ class Object_Sync_Sf_Mapping {
 		if ( 1 === $insert ) {
 			return $this->wpdb->insert_id;
 		} elseif ( false !== strpos( $this->wpdb->last_error, 'Duplicate entry' ) ) {
+			// this error should never happen now, I think. But let's watch and see.
 			$mapping = $this->load_all_by_salesforce( $data['salesforce_id'] )[0];
 			$id      = $mapping['id'];
 			$status  = 'error';
