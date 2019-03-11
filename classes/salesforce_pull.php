@@ -1467,7 +1467,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				// right here we should set the pulling transient
 				// this means we have to create the mapping object here as well, and update it with the correct IDs after successful response
 				// create the mapping object between the rows
-				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $mapping );
+				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
 				set_transient( 'salesforce_pulling_' . $object['Id'], 1, $seconds );
 				set_transient( 'salesforce_pulling_object_id', $object['Id'] );
 				$mapping_object = $this->mappings->get_object_maps(
@@ -1483,7 +1483,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			} else {
 				// No key or prematch field exists on this field map object, create a new object in WordPress.
 				$op                = 'Create';
-				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $mapping );
+				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
 				set_transient( 'salesforce_pulling_' . $mapping_object_id, 1, $seconds );
 				set_transient( 'salesforce_pulling_object_id', $mapping_object_id );
 				$mapping_object = $this->mappings->get_object_maps(
@@ -2069,13 +2069,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// Hook to allow other plugins to prevent a pull per-mapping.
 		// Putting the pull_allowed hook here will keep the queue from storing data when it is not supposed to store it
-		$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', $pull_allowed, $object_type, $object, $sf_sync_trigger, $mapping );
+		$pull_allowed = apply_filters( $this->option_prefix . 'pull_object_allowed', $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping );
 
 		// example to keep from pulling the Contact with id of abcdef
 		/*
 		add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
 		// can always reduce this number if all the arguments are not necessary
-		function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
+		function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
 			if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
 				$pull_allowed = false;
 			}
