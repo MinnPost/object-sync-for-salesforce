@@ -1057,10 +1057,33 @@ class Object_Sync_Sf_Salesforce_Pull {
 					)
 				)['data'];
 			} else {
+				if ( 1 === (int) $this->debug ) {
+					// create log entry for failed pull
+					$status = 'debug';
+					$title  = esc_html__( 'Debug: we are missing a deletedDate attribute here, but are expected to delete an item.', 'object-sync-for-salesforce' );
+
+					if ( isset( $this->logging ) ) {
+						$logging = $this->logging;
+					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+					}
+
+					$debug = array(
+						'title'   => $title,
+						'message' => '',
+						'trigger' => $sf_sync_trigger,
+						'parent'  => '',
+						'status'  => $status,
+					);
+
+					$logging->setup( $debug );
+				}
+
 				$object = array(
-					'Id' => $object,
+					'Id'          => $object,
+					'deletedDate' => gmdate( 'Y-m-d\TH:i:s\Z' ), // this should hopefully never happen
 				);
-			} // gently handle deleted records
+			} // deleted records should always come through with their own deletedDate value
 		}
 
 		$mapping_conditions = array(
@@ -1137,11 +1160,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			if ( 1 !== $salesforce_pushing ) {
 				// the format to compare is like this: gmdate( 'Y-m-d\TH:i:s\Z', $salesforce_pushing )
-				if ( false === $salesforce_pushing || ( isset( $object['LastModifiedDate'] ) && strtotime( $object['LastModifiedDate'] ) > $salesforce_pushing ) ) {
+				if ( 0 === $salesforce_pushing || ( isset( $object['LastModifiedDate'] ) && strtotime( $object['LastModifiedDate'] ) > $salesforce_pushing ) || ( isset( $object['deletedDate'] ) && strtotime( $object['deletedDate'] ) > $salesforce_pushing ) ) {
 					$salesforce_pushing = 0;
 				} else {
 					$salesforce_pushing = 1;
 				}
+			} else {
+				$salesforce_pushing = 1;
 			}
 
 			if ( 1 === $salesforce_pushing ) {
@@ -1177,37 +1202,42 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$structure               = $this->wordpress->get_wordpress_table_structure( $salesforce_mapping['wordpress_object'] );
 			$wordpress_id_field_name = $structure['id_field'];
 
-			// map the Salesforce values to WordPress fields
-			$params = $this->mappings->map_params( $salesforce_mapping, $object, $sf_sync_trigger, false, $is_new, $wordpress_id_field_name );
+			// don't do parameters if we are deleting
+			if ( $sf_sync_trigger == $this->mappings->sync_sf_create || $sf_sync_trigger == $this->mappings->sync_sf_update ) { // trigger is a bit operator
 
-			// hook to allow other plugins to modify the $params array
-			// use hook to map fields between the WordPress and Salesforce objects
-			// returns $params.
-			$params = apply_filters( $this->option_prefix . 'pull_params_modify', $params, $salesforce_mapping, $object, $sf_sync_trigger, false, $is_new );
+				// map the Salesforce values to WordPress fields
+				$params = $this->mappings->map_params( $salesforce_mapping, $object, $sf_sync_trigger, false, $is_new, $wordpress_id_field_name );
 
-			// setup prematch parameters
-			$prematch = array();
+				// hook to allow other plugins to modify the $params array
+				// use hook to map fields between the WordPress and Salesforce objects
+				// returns $params.
+				$params = apply_filters( $this->option_prefix . 'pull_params_modify', $params, $salesforce_mapping, $object, $sf_sync_trigger, false, $is_new );
 
-			// if there is a prematch WordPress field - ie email - on the fieldmap object
-			if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
-				$prematch['field_wordpress']  = $params['prematch']['wordpress_field'];
-				$prematch['field_salesforce'] = $params['prematch']['salesforce_field'];
-				$prematch['value']            = $params['prematch']['value'];
-				$prematch['methods']          = array(
-					'method_match'  => isset( $params['prematch']['method_match'] ) ? $params['prematch']['method_match'] : $params['prematch']['method_read'],
-					'method_create' => $params['prematch']['method_create'],
-					'method_update' => $params['prematch']['method_update'],
-					'method_read'   => $params['prematch']['method_read'],
-				);
-				unset( $params['prematch'] );
-			}
+				// setup prematch parameters
+				$prematch = array();
 
-			// if there is an external key field in Salesforce - ie a Mailchimp user id - on the fieldmap object, this should not affect how WordPress handles it is not included in the pull parameters.
+				// if there is a prematch WordPress field - ie email - on the fieldmap object
+				if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
+					$prematch['field_wordpress']  = $params['prematch']['wordpress_field'];
+					$prematch['field_salesforce'] = $params['prematch']['salesforce_field'];
+					$prematch['value']            = $params['prematch']['value'];
+					$prematch['methods']          = array(
+						'method_match'  => isset( $params['prematch']['method_match'] ) ? $params['prematch']['method_match'] : $params['prematch']['method_read'],
+						'method_create' => $params['prematch']['method_create'],
+						'method_update' => $params['prematch']['method_update'],
+						'method_read'   => $params['prematch']['method_read'],
+					);
+					unset( $params['prematch'] );
+				}
 
-			// if we don't get any params, there are no fields that should be sent to WordPress
-			if ( empty( $params ) ) {
-				return;
-			}
+				// if there is an external key field in Salesforce - ie a Mailchimp user id - on the fieldmap object, this should not affect how WordPress handles it is not included in the pull parameters.
+
+				// if we don't get any params, there are no fields that should be sent to WordPress
+				if ( empty( $params ) ) {
+					return;
+				}
+
+			} // end checking for create/update
 
 			// if this Salesforce record is new to WordPress, we can try to create it
 			if ( true === $is_new ) {
@@ -1226,8 +1256,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				foreach ( $mapping_objects as $mapping_object ) {
 					$synced_object = $this->get_synced_object( $object, $mapping_object, $salesforce_mapping );
-					$update        = $this->update_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $wordpress_id_field_name, $seconds );
-					$delete        = $this->delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds );
+					// if params is set, this is an update request. if not, it is a delete.
+					if ( isset( $params ) ) {
+						$update        = $this->update_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $wordpress_id_field_name, $seconds );
+					} else {
+						$delete        = $this->delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds );
+					}
 				}
 			}
 		} // End foreach() on $salesforce_mappings.
