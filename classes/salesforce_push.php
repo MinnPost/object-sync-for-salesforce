@@ -932,7 +932,7 @@ class Object_Sync_Sf_Salesforce_Push {
 							break;
 						// Handle duplicate records.
 						case '300':
-							$api_result['errorCode'] = $sfapi->response['error'] . ' (' . $upsert_key . ':' . $upsert_value . ')';
+							$api_result['data']['errorCode'] = $sfapi->response['error'] . ' (' . $upsert_key . ':' . $upsert_value . ')';
 							break;
 					}
 				} else {
@@ -1050,7 +1050,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// translators: placeholders are: 1) error code the Salesforce API returned, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value
 				$title = sprintf( esc_html__( '%1$s error syncing: %2$s to Salesforce (WordPress %3$s with %4$s of %5$s)', 'object-sync-for-salesforce' ),
-					absint( $salesforce_data['errorCode'] ),
+					esc_attr( $api_result['data']['errorCode'] ),
 					esc_attr( $op ),
 					esc_attr( $mapping['wordpress_object'] ),
 					esc_attr( $wordpress_id_field_name ),
@@ -1060,7 +1060,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				// translators: placeholders are 1) the name of the Salesforce object type, 2) the error message returned from the Salesforce APIs
 				$body = sprintf( '<p>' . esc_html__( 'Object: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: %2$s', 'object-sync-for-salesforce' ) . '</p>',
 					esc_attr( $mapping['salesforce_object'] ),
-					esc_html( $salesforce_data['message'] )
+					esc_html( $api_result['data']['message'] )
 				);
 
 				$result = array(
