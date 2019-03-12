@@ -14,22 +14,17 @@ checks:
     verify_access_scope_valid: false
     verify_argument_usable_as_reference: false
     verify_property_names: false
+    
 filter:
     excluded_paths:
         - 'bin/*'
         - 'docs/*'
+        - 'node_modules/*'
+        - 'tests/*'
         - '*.min.js'
         - '*.min.css'
-        - 'assets/js/vendor/**/*.js'
-        - 'assets/js/vendor/**/*.css'
-        - 'node_modules/**/*'
-        - tests/
-        - vendor/
-        - 'tests/**/*'
-        - 'vendor/**/*'
+        - 'assets/js/vendor/*'
         - 'Gulpfile.js'
-        - 'wordpress/**/*.js'
-        - 'wordpress/**/*.css'
     dependency_paths:
         - wordpress/
 tools:
@@ -38,8 +33,8 @@ tools:
             standard: WordPress
 build:
     environment:
-      node: 'v11.0.0'
-      php: '7.1.25'
+      node: 'v11.11.0'
+      php: '7.3.3'
       mysql: true
       apache2:
         modules:
