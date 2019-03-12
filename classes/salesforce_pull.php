@@ -1112,30 +1112,30 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// Is this Salesforce object already connected to at least one WordPress object?
 			if ( isset( $mapping_objects[0]['id'] ) ) {
-				$is_new                      = false;
-				$mapping_object_id_transient = $mapping_objects[0]['salesforce_id'];
+				$is_new = false;
 			} else {
 				// there is not a mapping object for this Salesforce object id yet
 				// check to see if there is a pushing transient for that Salesforce Id
-				$is_new                      = true;
-				$mapping_object_id_transient = get_transient( 'salesforce_pushing_object_id' );
+				$is_new = true;
 			}
 
+			$mapping_object_id_transient = get_transient( 'salesforce_pushing_object_id' );
+			if ( false === $mapping_object_id_transient ) {
+				$mapping_object_id_transient = $object['Id'];
+			}
 			// Here's where we check to see whether the current record was updated by a push from this plugin or not. Here's how it works:
 			// 1. A record gets pushed to Salesforce by this plugin.
 			// 2. We save the LastModifiedDate from the Salesforce result as a timestamp in the transient.
 			// 3. Below, in addition to checking the Salesforce Id, we check against $object's LastModifiedDate and if it's not later than the transient value, we skip it because it's still pushing from our activity.
-			$salesforce_pushing = get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
+			$salesforce_pushing = (int) get_transient( 'salesforce_pushing_' . $mapping_object_id_transient );
 
-			if ( '1' !== $salesforce_pushing ) {
-				// the format to compare is like this: 'Y-m-d\TH:i:s\Z'
+			if ( 1 !== $salesforce_pushing ) {
+				// the format to compare is like this: gmdate( 'Y-m-d\TH:i:s\Z', $salesforce_pushing )
 				if ( false === $salesforce_pushing || strtotime( $object['LastModifiedDate'] ) > $salesforce_pushing ) {
 					$salesforce_pushing = 0;
 				} else {
 					$salesforce_pushing = 1;
 				}
-			} else {
-				$salesforce_pushing = 1;
 			}
 
 			if ( 1 === $salesforce_pushing ) {
