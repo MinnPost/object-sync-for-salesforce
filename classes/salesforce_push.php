@@ -976,23 +976,24 @@ class Object_Sync_Sf_Salesforce_Push {
 				return;
 			} // End try().
 
-			if ( ! isset( $salesforce_data ) ) {
-				// if we didn't set $salesforce_data already, set it now
-				$sf_object       = $sfapi->object_read(
-					$mapping['salesforce_object'],
-					$api_result['data']['id'],
-					array(
-						'cache' => false,
-					)
-				);
-				$salesforce_data = $sf_object['data'];
-			}
-
 			// Salesforce api call was successful
 			// this means the object has already been created/updated in Salesforce
 			// this is not redundant because this is where it creates the object mapping rows in WordPress if the object does not already have one (we are still inside $is_new === TRUE here)
 
-			if ( empty( $api_result['errorCode'] ) ) {
+			if ( empty( $api_result['data']['errorCode'] ) ) {
+
+				if ( ! isset( $salesforce_data ) ) {
+					// if we didn't set $salesforce_data already, set it now
+					$sf_object       = $sfapi->object_read(
+						$mapping['salesforce_object'],
+						$api_result['data']['id'],
+						array(
+							'cache' => false,
+						)
+					);
+					$salesforce_data = $sf_object['data'];
+				}
+
 				$salesforce_id = $salesforce_data['Id'];
 				$status        = 'success';
 
