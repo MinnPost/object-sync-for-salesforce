@@ -788,7 +788,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// We are not incorporating that part of this branch at this time
 		// See GitHub issue 197 to track this status. https://github.com/MinnPost/object-sync-for-salesforce/issues/197
 
-		// Load all unique SF record types that we have mappings for.
+		// Load all unique SF record types that we have mappings for. This results in a double loop.
 		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
 
 			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping
@@ -802,7 +802,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			);
 
 			// Iterate over each field mapping to determine our query parameters.
-			foreach ( $mappings as $mapping ) {
+			foreach ( $mappings as $salesforce_mapping ) {
 
 				$last_delete_sync = get_option( $this->option_prefix . 'pull_delete_last_' . $type, current_time( 'timestamp', true ) );
 				$now              = current_time( 'timestamp', true );
@@ -838,7 +838,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$data = array(
 						'object_type'     => $type,
 						'object'          => $result,
-						'mapping'         => $mapping,
+						'mapping'         => $salesforce_mapping,
 						'sf_sync_trigger' => $sf_sync_trigger, // sf delete trigger
 					);
 
@@ -869,12 +869,18 @@ class Object_Sync_Sf_Salesforce_Pull {
 						continue;
 					}
 
+					// setup the Id and the deletedDate for passing to the queue
+					$deleted_item = array(
+						'Id'          => $result['Id'],
+						'deletedDate' => $result['deletedDate'],
+					);
+
 					// Add a queue action to delete data from WordPress after it has been deleted from Salesforce.
 					$this->queue->add(
 						$this->schedulable_classes[ $this->schedule_name ]['callback'],
 						array(
 							'object_type'     => $type,
-							'object'          => $result['Id'],
+							'object'          => $deleted_item,
 							'sf_sync_trigger' => $sf_sync_trigger,
 						),
 						$this->schedule_name
