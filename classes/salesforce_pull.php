@@ -1131,7 +1131,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			if ( 1 !== $salesforce_pushing ) {
 				// the format to compare is like this: gmdate( 'Y-m-d\TH:i:s\Z', $salesforce_pushing )
-				if ( false === $salesforce_pushing || strtotime( $object['LastModifiedDate'] ) > $salesforce_pushing ) {
+				if ( false === $salesforce_pushing || ( isset( $object['LastModifiedDate'] ) && strtotime( $object['LastModifiedDate'] ) > $salesforce_pushing ) ) {
 					$salesforce_pushing = 0;
 				} else {
 					$salesforce_pushing = 1;
