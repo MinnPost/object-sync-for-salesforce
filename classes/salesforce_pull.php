@@ -1203,7 +1203,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$wordpress_id_field_name = $structure['id_field'];
 
 			// don't do parameters if we are deleting
-			if ( $sf_sync_trigger == $this->mappings->sync_sf_create || $sf_sync_trigger == $this->mappings->sync_sf_update ) { // trigger is a bit operator
+			if ( true === $is_new || $sf_sync_trigger == $this->mappings->sync_sf_create || $sf_sync_trigger == $this->mappings->sync_sf_update ) { // trigger is a bit operator
 
 				// map the Salesforce values to WordPress fields
 				$params = $this->mappings->map_params( $salesforce_mapping, $object, $sf_sync_trigger, false, $is_new, $wordpress_id_field_name );
