@@ -1138,7 +1138,7 @@ class Object_Sync_Sf_WordPress {
 	 */
 	private function user_delete( $id, $reassign = null ) {
 		// According to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error.
-		require_once( './wp-admin/includes/user.php' );
+		require_once( ABSPATH . '/wp-admin/includes/user.php' );
 		$result = wp_delete_user( $id, $reassign );
 		return $result;
 	}
