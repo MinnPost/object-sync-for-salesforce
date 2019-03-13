@@ -123,18 +123,41 @@ class Object_Sync_Sf_Activate {
 			KEY salesforce_object (salesforce_id)
 		) $charset_collate";
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if ( ! function_exists( 'dbDelta' ) ) {
+			if ( ! is_admin() ) {
+				return false;
+			}
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		}
 
 		// Note: see https://wordpress.stackexchange.com/questions/67345/how-to-implement-wordpress-plugin-update-that-modifies-the-database
 		// When we run the dbDelta method below, "it checks if the table exists. What's more, it checks the column types. So if the table doesn't exist, it creates it, if it does, but some column types have changed it updates them, and if a column doesn't exists - it adds it."
 		// This does not remove columns if we remove columns, so we'll need to expand beyond this in the future if that happens, although I think the schema is pretty solid now.
-		dbDelta( $field_map_sql );
-		dbDelta( $object_map_sql );
+		$result_field_map  = dbDelta( $field_map_sql );
+		$result_object_map = dbDelta( $object_map_sql );
 
-		update_option( $this->option_prefix . 'db_version', $this->version );
+		$remove_key_version = '1.8.0';
+		if ( version_compare( $this->user_installed_version, $remove_key_version, '<' ) ) {
+	    	$wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce" );
+	    	$wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce_wordpress" );
+	    	$result_key = true;
+	    }
 
 		// store right now as the time for the plugin's activation
 		update_option( $this->option_prefix . 'activate_time', current_time( 'timestamp', true ) );
+
+		if ( !isset( $result_key ) && empty( $result_field_map ) && empty( $result_object_map ) ) {
+			// No changes, database already exists and is up-to-date
+			return;
+		}
+
+		// utf8mb4 conversion.
+		maybe_convert_table_to_utf8mb4( $field_map_table );
+		maybe_convert_table_to_utf8mb4( $object_map_table );
+
+		update_option( $this->option_prefix . 'db_version', $this->version );
+
+		return;
 
 	}
 
