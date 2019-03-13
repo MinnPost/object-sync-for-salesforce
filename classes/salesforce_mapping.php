@@ -803,7 +803,7 @@ class Object_Sync_Sf_Mapping {
 
 				// A Salesforce event caused this.
 
-				if ( isset( $salesforce_field_type ) && ! is_null( $object[ $salesforce_field ] ) ) {
+				if ( isset( $salesforce_field_type ) && isset( $object[ $salesforce_field ] )  && ! is_null( $object[ $salesforce_field ] ) ) {
 					// Salesforce provides multipicklist values as a delimited string. If the
 					// destination field in WordPress accepts multiple values, explode the string into an array and then serialize it.
 					if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce ) ) {
