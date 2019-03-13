@@ -1,9 +1,16 @@
 Changelog
 =========
 
+* 1.8.0 (2019-03-)
+	* New: WordPress 5.1 changed its new user notification parameters. Thanks to GitHub user @synthetiv for the fix.
+	* New: we've added a few additional debug log entries.
+	* Bug fix: 1.7.0 introduced an activation issue that this release fixes. We've also cleaned up the database versioning that occurs upon activation.
+	* Bug fix: a bug existed in fieldmaps that had a Salesforce field like a record ID, which cannot be pushed to Salesforce but can be pulled from Salesforce, but the sync was failing. Thanks to WordPress forum user @walexparadis for the report on this.
+
 * 1.7.0 (2019-01-31)
     * New: improve handling of custom meta fields that are required by Salesforce. This plugin would fail to create objects if required fields were missing when a record was created. It should handle these situations much better.
     * New: update to version 2.2.0 of the ActionScheduler library.
+
 * 1.6.0 (2019-01-15)
 	* New: we have added some basic REST API endpoints to the plugin. They can be used to check for updated/deleted records in Salesforce, pull a specific record from Salesforce by ID, or push a specific record from WordPress by Id and type.
 	* Bug fix: pull queries were sometimes skipping records that should have been processed, especially when some records in the group were not allowed by the fieldmap.
