@@ -1,5 +1,9 @@
 .sass-cache
+phpdoc-cache-*
 /node_modules/
-/vendor/
+/vendor/**/.git/
+/vendor/**/.github/
+/vendor/**/test/
+/vendor/**/unit_test/
 # generated
 release/

@@ -10,7 +10,7 @@ This plugin also allows you to extend who has the `configure_salesforce` capabil
 
 This example would give editor users the capability to see these logs as well.
 
-```
+```php
 add_filter( 'object_sync_for_salesforce_logging_post_type_args', 'set_log_visibility', 10, 1 );
 function set_log_visibility( $log_args ) {
 	$log_args['capabilities'] = array(

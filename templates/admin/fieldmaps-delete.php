@@ -8,11 +8,11 @@
 	<?php
 		// translators: the placeholders refer to: 1) the fieldmap label, 2) the saleforce object name, and 3) the WordPress object name
 		echo sprintf( esc_html__( 'This fieldmap is called %1$s and it maps the Salesforce %2$s object to the WordPress %3$s object.', 'object-sync-for-salesforce' ),
-	    	'<strong> ' . esc_html( $map['label'] ) . '</strong>',
-	    	esc_html( $map['salesforce_object'] ),
-	    	esc_html( $map['wordpress_object'] )
+			'<strong> ' . esc_html( $map['label'] ) . '</strong>',
+			esc_html( $map['salesforce_object'] ),
+			esc_html( $map['wordpress_object'] )
 		);
 	?>
 	</p>
-	<?php submit_button( 'Confirm deletion' ); ?>
+	<?php submit_button( esc_html__( 'Confirm deletion', 'object-sync-for-salesforce' ) ); ?>
 </form>

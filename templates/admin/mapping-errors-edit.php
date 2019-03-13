@@ -17,5 +17,10 @@
 		<label for="salesforce_id"><?php echo esc_html__( 'Salesforce Id', 'object-sync-for-salesforce' ); ?>: </label>
 		<input type="text" id="salesforce_id" name="salesforce_id" required value="<?php echo isset( $salesforce_id ) ? esc_html( $salesforce_id ) : ''; ?>" />
 	</div>
-	<?php submit_button( ucfirst( $method ) . ' object map' ); ?>
+	<?php
+		submit_button(
+			// translators: the placeholder refers to the currently selected method (edit or delete)
+			sprintf( esc_html__( '%1$s object map', 'object-sync-for-salesforce' ), ucfirst( $method ) )
+		);
+	?>
 </form>

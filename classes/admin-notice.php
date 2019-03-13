@@ -31,11 +31,11 @@ class Object_Sync_Sf_Admin_Notice {
 	*
 	*/
 	public function __construct( $condition, $message, $dismissible = false, $type = '', $template = '' ) {
-		$this->condition = $condition;
-		$this->message = $message;
+		$this->condition   = $condition;
+		$this->message     = $message;
 		$this->dismissible = $dismissible;
-		$this->type = $type;
-		$this->template = $template;
+		$this->type        = $type;
+		$this->template    = $template;
 
 		add_action( 'admin_notices', array( $this, 'render' ) );
 
@@ -66,7 +66,7 @@ class Object_Sync_Sf_Admin_Notice {
 		}
 
 		$condition = $this->condition;
-		$message = $this->message;
+		$message   = $this->message;
 
 		require_once( $template );
 

@@ -1,0 +1,33 @@
+filter:
+    excluded_paths:
+        - 'bin/*'
+        - 'docs/*'
+        - '*.min.js'
+        - '*.min.css'
+        - 'assets/js/vendor/**/*.js'
+        - 'assets/js/vendor/**/*.css'
+        - 'node_modules/**/*'
+        - 'tests/**/*'
+        - 'vendor/**/*'
+        - 'Gulpfile.js'
+        - 'wordpress/**/*.js'
+        - 'wordpress/**/*.css'
+    dependency_paths:
+        - wordpress/
+tools:
+    php_code_sniffer:
+        config:
+            standard: WordPress
+build:
+    environment:
+      node: 'v11.0.0'
+      php: '7.1.25'
+      mysql: true
+      apache2:
+        modules:
+          - rewrite
+    nodes:
+        analysis:
+            dependencies:
+                before:
+                    - composer require --dev johnpbloch/wordpress
