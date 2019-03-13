@@ -793,6 +793,7 @@ class Object_Sync_Sf_Mapping {
 				//    this field is expected by the fieldmap
 				//    Salesforce's api reports that this field is required
 				//    we do not have a wordpress value for this field, or it's empty
+				//    it also means the field has not been unset by prematch, updateable, key, or directional flags prior to this check.
 				// When this happens, we should flag that we're missing a required Salesforce field
 				if ( in_array( $salesforce_field, $params) && false === filter_var( $fieldmap['salesforce_field']['nillable'], FILTER_VALIDATE_BOOLEAN ) && ( ! isset( $object[ $wordpress_field ] ) || '' === $object[ $wordpress_field ] ) ) {
 					$has_missing_required_salesforce_field = true;
