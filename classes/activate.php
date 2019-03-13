@@ -42,8 +42,8 @@ class Object_Sync_Sf_Activate {
 		$this->schedulable_classes = $schedulable_classes;
 		$this->queue               = $queue;
 
-		$this->action_group_suffix = '_check_records';
-		$this->installed_version   = get_option( $this->option_prefix . 'db_version', '' );
+		$this->action_group_suffix    = '_check_records';
+		$this->user_installed_version = get_option( $this->option_prefix . 'db_version', '' );
 
 		$this->add_actions();
 	}
@@ -57,9 +57,6 @@ class Object_Sync_Sf_Activate {
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'php_requirements' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'wordpress_salesforce_tables' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'add_roles_capabilities' ) );
-
-		// make sure admin users have the installed version as a transient
-		add_action( 'admin_init', array( $this, 'set_installed_version' ), 10 );
 
 		// this should run when the user is in the admin area to make sure the database gets updated
 		add_action( 'admin_init', array( $this, 'wordpress_salesforce_update_db_check' ), 10 );
@@ -170,24 +167,17 @@ class Object_Sync_Sf_Activate {
 	}
 
 	/**
-	* Set the installed version
-	*/
-	public function set_installed_version() {
-		// Save the current plugin version in a transient
-		set_transient( $this->option_prefix . 'installed_version', $this->installed_version );
-	}
-
-	/**
 	* Check for database version
 	* When the plugin is loaded in the admin, if the database version does not match the current version, perform these methods
 	*
 	*/
 	public function wordpress_salesforce_update_db_check() {
+
 		// user is running a version less than the current one
-		$previous_version = get_transient( $this->option_prefix . 'installed_version' );
-		if ( version_compare( $previous_version, $this->version, '<' ) ) {
+		if ( version_compare( $this->user_installed_version, $this->version, '<' ) ) {
 			$this->wordpress_salesforce_tables();
-			delete_transient( $this->option_prefix . 'installed_version' );
+		} else {
+			return true;
 		}
 	}
 
