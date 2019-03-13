@@ -632,7 +632,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 		$sfapi = $this->salesforce['sfapi'];
 
-		// we need to get the wordpress id here so we can check to see if the object already has a map
+		// we need to get the WordPress id here so we can check to see if the object already has a map
 		$structure = $this->wordpress->get_wordpress_table_structure( $object_type );
 		$object_id = $structure['id_field'];
 
