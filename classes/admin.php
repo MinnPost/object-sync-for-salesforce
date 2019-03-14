@@ -602,7 +602,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'token_url_path'                 => array(
-				'title'    => 'Token URL Path',
+				'title'    => __( 'Token URL Path', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -615,7 +615,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'api_version'                    => array(
-				'title'    => 'Salesforce API Version',
+				'title'    => __( 'Salesforce API Version', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -628,7 +628,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'object_filters'                 => array(
-				'title'    => 'Limit Salesforce Objects',
+				'title'    => __( 'Limit Salesforce Objects', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['checkboxes'],
 				'page'     => $page,
 				'section'  => $section,
@@ -638,13 +638,13 @@ class Object_Sync_Sf_Admin {
 					'desc'     => __( 'Allows you to limit which Salesforce objects can be mapped', 'object-sync-for-salesforce' ),
 					'items'    => array(
 						'triggerable' => array(
-							'text'    => 'Only Triggerable objects',
+							'text'    => __( 'Only Triggerable objects', 'object-sync-for-salesforce' ),
 							'id'      => 'triggerable',
 							'desc'    => '',
 							'default' => $this->default_triggerable,
 						),
 						'updateable'  => array(
-							'text'    => 'Only Updateable objects',
+							'text'    => __( 'Only Updateable objects', 'object-sync-for-salesforce' ),
 							'id'      => 'updateable',
 							'desc'    => '',
 							'default' => $this->default_updateable,
@@ -653,14 +653,14 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'salesforce_field_display_value' => array(
-				'title'    => 'Salesforce Field Display Value',
+				'title'    => __( 'Salesforce Field Display Value', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'select',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => 'When choosing Salesforce fields to map, this value determines how the dropdown will identify Salesforce fields.',
+					'desc'     => __( 'When choosing Salesforce fields to map, this value determines how the dropdown will identify Salesforce fields.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 					'items'    => array(
 						'field_label' => array(
@@ -679,7 +679,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'pull_query_limit'               => array(
-				'title'    => 'Pull query record limit',
+				'title'    => __( 'Pull query record limit', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -692,7 +692,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'pull_throttle'                  => array(
-				'title'    => 'Pull throttle (seconds)',
+				'title'    => __( 'Pull throttle (seconds)', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -704,50 +704,50 @@ class Object_Sync_Sf_Admin {
 					'default'  => $this->default_pull_throttle,
 				),
 			),
-			'use_soap' => array(
-				'title' => 'Enable the Salesforce SOAP API?',
-				'callback' => $callbacks['text'],
-				'page' => $page,
-				'section' => $section,
-				'args' => array(
-					'type' => 'checkbox',
-					'validate' => 'sanitize_text_field',
-					'desc' => 'Check this to enable the SOAP API and use it instead of the REST API when the plugin supports it. https://developer.salesforce.com/blogs/tech-pubs/2011/10/salesforce-apis-what-they-are-when-to-use-them.html to compare the two.',
-					'constant' => '',
-				),
-			),
-			'soap_wsdl_path' => array(
-				'title' => 'Path to SOAP WSDL file',
-				'callback' => $callbacks['text'],
-				'page' => $page,
-				'section' => $section,
-				'args' => array(
-					'type' => 'text',
-					'validate' => 'sanitize_text_field',
-					'desc' => 'Optionally add the path to your WSDL file. If you do not, the plugin will use the default partner.wsdl.xml from the Force.com toolkit.',
-					'constant' => '',
-				),
-			),
-			'debug_mode'                     => array(
-				'title'    => 'Debug mode?',
+			'use_soap'                       => array(
+				'title'    => __( 'Enable the Salesforce SOAP API?', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'checkbox',
-					'validate' => 'sanitize_validate_text',
+					'validate' => 'sanitize_text_field',
+					'desc'     => __( 'Check this to enable the SOAP API and use it instead of the REST API when the plugin supports it. https://developer.salesforce.com/blogs/tech-pubs/2011/10/salesforce-apis-what-they-are-when-to-use-them.html to compare the two. Note: if you need to detect Salesforce merges in this plugin, you will need to enable SOAP.', 'object-sync-for-salesforce' ),
+					'constant' => '',
+				),
+			),
+			'soap_wsdl_path'                 => array(
+				'title'    => __( 'Path to SOAP WSDL file', 'object-sync-for-salesforce' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'text',
+					'validate' => 'sanitize_text_field',
+					'desc'     => __( 'Optionally add a path to your own WSDL file. If you do not, the plugin will use the default partner.wsdl.xml from the Force.com toolkit.', 'object-sync-for-salesforce' ),
+					'constant' => '',
+				),
+			),
+			'debug_mode'                     => array(
+				'title'    => __( 'Debug mode?', 'object-sync-for-salesforce' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'checkbox',
+					'validate' => 'sanitize_text_field',
 					'desc'     => __( 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
 			),
 			'delete_data_on_uninstall'       => array(
-				'title'    => 'Delete plugin data on uninstall?',
+				'title'    => __( 'Delete plugin data on uninstall?', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'checkbox',
-					'validate' => 'sanitize_validate_text',
+					'validate' => 'sanitize_text_field',
 					'desc'     => __( 'If checked, the plugin will delete the tables and other data it creates when you uninstall it. Unchecking this field can be useful if you need to reactivate the plugin for any reason without losing data.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
@@ -756,13 +756,13 @@ class Object_Sync_Sf_Admin {
 
 		if ( true === is_object( $this->salesforce['sfapi'] ) && true === $this->salesforce['sfapi']->is_authorized() ) {
 			$salesforce_settings['api_version'] = array(
-				'title'    => 'Salesforce API Version',
+				'title'    => __( 'Salesforce API Version', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'select',
-					'validate' => 'sanitize_validate_text',
+					'validate' => 'sanitize_text_field',
 					'desc'     => '',
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION',
 					'items'    => $this->version_options(),

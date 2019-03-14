@@ -86,12 +86,6 @@ class Object_Sync_Salesforce {
 	*/
 	public $salesforce;
 
-	/**
-	* @var object
-	* Load and initialize the Salesforce_Soap class.
-	* this contains the Salesforce SOAP client
-	*/
-	public $salesforce_soap_partner;
 
 	/**
 	* @var object
@@ -207,7 +201,6 @@ class Object_Sync_Salesforce {
 
 		$this->wordpress  = $this->wordpress( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->mappings, $this->logging );
 		$this->salesforce = $this->salesforce_get_api();
-		$this->salesforce_soap_partner = $this->salesforce_soap_partner( $this->salesforce['sfapi'] );
 
 		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes, $this->queue );
 
@@ -312,6 +305,7 @@ class Object_Sync_Salesforce {
 	public function salesforce_get_api() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_query.php' ); // this can be used to generate soql queries, but we don't often need it so it gets initialized whenever it's needed
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_soap_partner.php' );
 		$consumer_key        = $this->login_credentials['consumer_key'];
 		$consumer_secret     = $this->login_credentials['consumer_secret'];
 		$login_url           = $this->login_credentials['login_url'];
@@ -336,18 +330,6 @@ class Object_Sync_Salesforce {
 			'is_authorized' => $is_authorized,
 			'sfapi'         => $sfapi,
 		);
-	}
-
-	/**
-	* Public helper to load the Salesforce SOAP client
-	* This is public so other plugins can access the same SF instance
-	*
-	* @return
-	*/
-	public function salesforce_soap_partner( $sfapi ) {
-		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_soap_partner.php' );
-		$salesforce_soap_partner = new Object_Sync_Sf_Salesforce_Soap_Partner( $sfapi );
-		return $salesforce_soap_partner;
 	}
 
 	/**
