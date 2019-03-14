@@ -1,4 +1,4 @@
-# Copyright (C) 2019 object-sync-for-salesforce
+# Copyright (C) 2017 object-sync-for-salesforce
 # This file is distributed under the same license as the object-sync-for-salesforce package.
 msgid ""
 msgstr ""
@@ -13,978 +13,563 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: object-sync-for-salesforce.php:473, classes/admin.php:293, classes/admin.php:353
+#: object-sync-for-salesforce.php:413, classes/admin.php:237, release/svn/trunk/object-sync-for-salesforce.php:393, release/svn/tags/1.0.0/object-sync-for-salesforce.php:393, release/svn/tags/1.0.1/object-sync-for-salesforce.php:393, release/svn/tags/1.0.3/object-sync-for-salesforce.php:393, release/svn/tags/1.0.5/object-sync-for-salesforce.php:393, release/svn/tags/1.0.6/object-sync-for-salesforce.php:393, release/svn/tags/1.0.8/object-sync-for-salesforce.php:393, release/svn/trunk/classes/admin.php:237, release/svn/tags/1.0.0/classes/admin.php:203, release/svn/tags/1.0.1/classes/admin.php:203, release/svn/tags/1.0.3/classes/admin.php:203, release/svn/tags/1.0.5/classes/admin.php:203, release/svn/tags/1.0.6/classes/admin.php:211, release/svn/tags/1.0.8/classes/admin.php:237
 msgid "Settings"
 msgstr ""
 
-#: classes/admin.php:273, templates/admin/user-profile-salesforce-change.php:2, templates/admin/user-profile-salesforce-map.php:2, templates/admin/user-profile-salesforce.php:5
+#: classes/admin.php:146, templates/admin/user-profile-salesforce-change.php:2, templates/admin/user-profile-salesforce-map.php:2, templates/admin/user-profile-salesforce.php:5, release/svn/trunk/classes/admin.php:146, release/svn/tags/1.0.0/classes/admin.php:143, release/svn/tags/1.0.1/classes/admin.php:143, release/svn/tags/1.0.3/classes/admin.php:143, release/svn/tags/1.0.5/classes/admin.php:143, release/svn/tags/1.0.6/classes/admin.php:146, release/svn/tags/1.0.8/classes/admin.php:146, release/svn/trunk/templates/admin/user-profile-salesforce-change.php:2, release/svn/trunk/templates/admin/user-profile-salesforce-map.php:2, release/svn/trunk/templates/admin/user-profile-salesforce.php:5, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce-change.php:2, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce-map.php:2, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:5, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce-change.php:2, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce-map.php:2, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:5, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce-change.php:2, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce-map.php:2, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:5, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce-change.php:2, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce-map.php:2, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:5, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce-change.php:2, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce-map.php:2, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:5, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce-change.php:2, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce-map.php:2, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:5
 msgid "Salesforce"
 msgstr ""
 
-#: classes/admin.php:294, classes/admin.php:1977
-msgid "Authorize"
-msgstr ""
-
-#: classes/admin.php:295, templates/admin/fieldmaps-list.php:1
-msgid "Fieldmaps"
-msgstr ""
-
-#: classes/admin.php:296
-msgid "Scheduling"
-msgstr ""
-
-#: classes/admin.php:297
-msgid "Import &amp; Export"
-msgstr ""
-
-#: classes/admin.php:302
-msgid "Log Settings"
-msgstr ""
-
-#: classes/admin.php:306, templates/admin/mapping-errors.php:1
-msgid "Mapping Errors"
-msgstr ""
-
-#: classes/admin.php:322
+#: classes/admin.php:194, release/svn/trunk/classes/admin.php:194, release/svn/tags/1.0.0/classes/admin.php:268, release/svn/tags/1.0.1/classes/admin.php:268, release/svn/tags/1.0.3/classes/admin.php:268, release/svn/tags/1.0.5/classes/admin.php:268, release/svn/tags/1.0.6/classes/admin.php:276, release/svn/tags/1.0.8/classes/admin.php:194
 msgid "Authorize tab"
 msgstr ""
 
-#: classes/admin.php:329
+#: classes/admin.php:201, release/svn/trunk/classes/admin.php:201, release/svn/tags/1.0.8/classes/admin.php:201
 msgid "Fieldmaps tab"
 msgstr ""
 
-#: classes/admin.php:349
+#: classes/admin.php:213, release/svn/trunk/classes/admin.php:213, release/svn/tags/1.0.8/classes/admin.php:213
+msgid "Scheduling tab"
+msgstr ""
+
+#: classes/admin.php:233, release/svn/trunk/classes/admin.php:233, release/svn/tags/1.0.0/classes/admin.php:199, release/svn/tags/1.0.1/classes/admin.php:199, release/svn/tags/1.0.3/classes/admin.php:199, release/svn/tags/1.0.5/classes/admin.php:199, release/svn/tags/1.0.6/classes/admin.php:207, release/svn/tags/1.0.8/classes/admin.php:233
 msgid "Connect to Salesforce"
 msgstr ""
 
-#: classes/admin.php:536
-msgid "Consumer Key"
-msgstr ""
-
-#: classes/admin.php:549
-msgid "Consumer Secret"
-msgstr ""
-
-#: classes/admin.php:561
-msgid "Callback URL"
-msgstr ""
-
-#. translators: %1$s is the admin URL for the Authorize tab
-#: classes/admin.php:569
-msgid "In most cases, you will want to use %1$s for this value."
-msgstr ""
-
-#: classes/admin.php:576
-msgid "Login Base URL"
-msgstr ""
-
-#. translators: 1) production salesforce login, 2) sandbox salesforce login
-#: classes/admin.php:584
-msgid "For most Salesforce setups, you should use %1$s for production and %2$s for sandbox."
-msgstr ""
-
-#: classes/admin.php:592
-msgid "Authorize URL Path"
-msgstr ""
-
-#: classes/admin.php:599, classes/admin.php:612
-msgid "For most Salesforce installs, this should not be changed."
-msgstr ""
-
-#: classes/admin.php:638
-msgid "Allows you to limit which Salesforce objects can be mapped"
-msgstr ""
-
-#: classes/admin.php:667
-msgid "Field Label"
-msgstr ""
-
-#: classes/admin.php:675
-msgid "API Name"
-msgstr ""
-
-#: classes/admin.php:689
-msgid "Limit the number of records that can be pulled from Salesforce in a single query."
-msgstr ""
-
-#: classes/admin.php:702
-msgid "Number of seconds to wait between repeated salesforce pulls. Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage."
-msgstr ""
-
-#: classes/admin.php:715
-msgid "Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment."
-msgstr ""
-
-#: classes/admin.php:727
-msgid "If checked, the plugin will delete the tables and other data it creates when you uninstall it. Unchecking this field can be useful if you need to reactivate the plugin for any reason without losing data."
-msgstr ""
-
-#: classes/admin.php:799
-msgid "Batch Settings"
-msgstr ""
-
-#: classes/admin.php:803
-msgid "Batch size"
-msgstr ""
-
-#: classes/admin.php:811
-msgid "Set how many actions (checking for data changes, syncing a record, etc. all count as individual actions) can be run in a batch. Start with a low number here, like 5, if you are unsure."
-msgstr ""
-
-#: classes/admin.php:817
-msgid "Concurrent batches"
-msgstr ""
-
-#: classes/admin.php:825
-msgid "Set how many batches of actions can be run at once. Start with a low number here, like 3, if you are unsure."
-msgstr ""
-
-#: classes/admin.php:835
+#: classes/admin.php:630, release/svn/trunk/classes/admin.php:606, release/svn/tags/1.0.0/classes/admin.php:554, release/svn/tags/1.0.1/classes/admin.php:554, release/svn/tags/1.0.3/classes/admin.php:554, release/svn/tags/1.0.5/classes/admin.php:554, release/svn/tags/1.0.6/classes/admin.php:595, release/svn/tags/1.0.8/classes/admin.php:606
 msgid "Run schedule every"
 msgstr ""
 
-#: classes/admin.php:847, classes/admin.php:1002
+#: classes/admin.php:642, classes/admin.php:797, release/svn/trunk/classes/admin.php:618, release/svn/trunk/classes/admin.php:773, release/svn/tags/1.0.0/classes/admin.php:566, release/svn/tags/1.0.0/classes/admin.php:721, release/svn/tags/1.0.1/classes/admin.php:566, release/svn/tags/1.0.1/classes/admin.php:721, release/svn/tags/1.0.3/classes/admin.php:566, release/svn/tags/1.0.3/classes/admin.php:721, release/svn/tags/1.0.5/classes/admin.php:566, release/svn/tags/1.0.5/classes/admin.php:721, release/svn/tags/1.0.6/classes/admin.php:607, release/svn/tags/1.0.6/classes/admin.php:762, release/svn/tags/1.0.8/classes/admin.php:618, release/svn/tags/1.0.8/classes/admin.php:773
 msgid "Time unit"
 msgstr ""
 
-#: classes/admin.php:857, classes/admin.php:1012
-msgid "Minutes"
-msgstr ""
-
-#: classes/admin.php:861, classes/admin.php:1016
-msgid "Hours"
-msgstr ""
-
-#: classes/admin.php:865, classes/admin.php:1020
-msgid "Days"
-msgstr ""
-
-#. translators: $this->get_schedule_count is an integer showing how many items are in the current queue
-#: classes/admin.php:874
+#: classes/admin.php:668, release/svn/trunk/classes/admin.php:644, release/svn/tags/1.0.0/classes/admin.php:592, release/svn/tags/1.0.1/classes/admin.php:592, release/svn/tags/1.0.3/classes/admin.php:592, release/svn/tags/1.0.5/classes/admin.php:592, release/svn/tags/1.0.6/classes/admin.php:633, release/svn/tags/1.0.8/classes/admin.php:644
 msgid "%s item"
 msgid_plural "%s items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/admin.php:879
-msgid "Clear this queue"
-msgstr ""
-
-#: classes/admin.php:919
-msgid "Enable Logging?"
-msgstr ""
-
-#: classes/admin.php:931
-msgid "Statuses to log"
-msgstr ""
-
-#: classes/admin.php:938
-msgid "these are the statuses to log"
-msgstr ""
-
-#: classes/admin.php:941
-msgid "Error"
-msgstr ""
-
-#: classes/admin.php:946
-msgid "Success"
-msgstr ""
-
-#: classes/admin.php:951
-msgid "Notice"
-msgstr ""
-
-#: classes/admin.php:956
-msgid "Debug"
-msgstr ""
-
-#: classes/admin.php:964
-msgid "Automatically delete old log entries?"
-msgstr ""
-
-#: classes/admin.php:976
-msgid "Age to delete log entries"
-msgstr ""
-
-#: classes/admin.php:983
-msgid "If automatic deleting is enabled, it will affect logs this old."
-msgstr ""
-
-#: classes/admin.php:989
+#: classes/admin.php:784, release/svn/trunk/classes/admin.php:760, release/svn/tags/1.0.0/classes/admin.php:708, release/svn/tags/1.0.1/classes/admin.php:708, release/svn/tags/1.0.3/classes/admin.php:708, release/svn/tags/1.0.5/classes/admin.php:708, release/svn/tags/1.0.6/classes/admin.php:749, release/svn/tags/1.0.8/classes/admin.php:760
 msgid "Check for old logs every"
 msgstr ""
 
-#: classes/admin.php:1009
-msgid "These two fields are how often the site will check for logs to delete."
-msgstr ""
-
-#: classes/admin.php:1027
-msgid "Triggers to log"
-msgstr ""
-
-#: classes/admin.php:1034
-msgid "these are the triggers to log"
-msgstr ""
-
-#: classes/admin.php:1037, templates/admin/fieldmaps-add-edit-clone.php:427
-msgid "WordPress create"
-msgstr ""
-
-#: classes/admin.php:1042, templates/admin/fieldmaps-add-edit-clone.php:428
-msgid "WordPress update"
-msgstr ""
-
-#: classes/admin.php:1047, templates/admin/fieldmaps-add-edit-clone.php:429
-msgid "WordPress delete"
-msgstr ""
-
-#: classes/admin.php:1052, templates/admin/fieldmaps-add-edit-clone.php:430
-msgid "Salesforce create"
-msgstr ""
-
-#: classes/admin.php:1057, templates/admin/fieldmaps-add-edit-clone.php:431
-msgid "Salesforce update"
-msgstr ""
-
-#: classes/admin.php:1062, templates/admin/fieldmaps-add-edit-clone.php:432
-msgid "Salesforce delete"
-msgstr ""
-
-#: classes/admin.php:1108
-msgid "Your account does not have permission to edit the Salesforce REST API plugin's settings."
-msgstr ""
-
-#: classes/admin.php:1114
-msgid "Errors kept this fieldmap from being saved."
-msgstr ""
-
-#: classes/admin.php:1120
-msgid "Errors kept this object map from being saved."
-msgstr ""
-
-#: classes/admin.php:1126
-msgid "This data was successfully saved."
-msgstr ""
-
-#: classes/admin.php:1132
-msgid "This data was not successfully saved. Try again."
-msgstr ""
-
-#: classes/admin.php:1138
-msgid "Errors kept these mapping errors from being deleted."
-msgstr ""
-
-#: classes/admin.php:1746, classes/admin.php:1831
+#: classes/admin.php:1343, classes/admin.php:1428, release/svn/trunk/classes/admin.php:1319, release/svn/trunk/classes/admin.php:1404, release/svn/tags/1.0.0/classes/admin.php:1195, release/svn/tags/1.0.0/classes/admin.php:1280, release/svn/tags/1.0.1/classes/admin.php:1195, release/svn/tags/1.0.1/classes/admin.php:1280, release/svn/tags/1.0.3/classes/admin.php:1195, release/svn/tags/1.0.3/classes/admin.php:1280, release/svn/tags/1.0.5/classes/admin.php:1195, release/svn/tags/1.0.5/classes/admin.php:1280, release/svn/tags/1.0.6/classes/admin.php:1308, release/svn/tags/1.0.6/classes/admin.php:1393, release/svn/tags/1.0.8/classes/admin.php:1319, release/svn/tags/1.0.8/classes/admin.php:1404
 msgid "Defined in wp-config.php"
 msgstr ""
 
-#: classes/admin.php:1802
-msgid "Select one"
-msgstr ""
-
 #. translators: 1) $versions_is_cached is the "This list is/is not cached, and/but" line, 2) $versions_from_cache is the "items were/were not loaded from the cache" line
-#: classes/admin.php:1927
+#: classes/admin.php:1503, release/svn/trunk/classes/admin.php:1479, release/svn/tags/1.0.1/classes/admin.php:1355, release/svn/tags/1.0.3/classes/admin.php:1355, release/svn/tags/1.0.5/classes/admin.php:1355, release/svn/tags/1.0.6/classes/admin.php:1468, release/svn/tags/1.0.8/classes/admin.php:1479
 msgid "Available Salesforce API versions. %1$s %2$s. This is not an authenticated request, so it does not touch the Salesforce token."
 msgstr ""
 
 #. translators: 1) $contacts['data']['totalSize'] is the number of items loaded, 2) $contacts['data']['records'][0]['attributes']['type'] is the name of the Salesforce object, 3) $contacts_is_cached is the "They are/are not cached, and/but" line, 4) $contacts_from_cache is the "they were/were not loaded from the cache" line, 5) is the "this request did/did not require refreshing the Salesforce token" line
-#: classes/admin.php:1954
+#: classes/admin.php:1530, release/svn/trunk/classes/admin.php:1506, release/svn/tags/1.0.1/classes/admin.php:1382, release/svn/tags/1.0.3/classes/admin.php:1382, release/svn/tags/1.0.5/classes/admin.php:1382, release/svn/tags/1.0.6/classes/admin.php:1495, release/svn/tags/1.0.8/classes/admin.php:1506
 msgid "Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s."
 msgstr ""
 
-#: classes/admin.php:2000
-msgid "The plugin cache has been cleared."
-msgstr ""
-
-#: classes/admin.php:2002
-msgid "There was an error clearing the plugin cache. Try refreshing this page."
+#: classes/admin.php:1553, release/svn/trunk/classes/admin.php:1529, release/svn/tags/1.0.0/classes/admin.php:1370, release/svn/tags/1.0.1/classes/admin.php:1405, release/svn/tags/1.0.3/classes/admin.php:1405, release/svn/tags/1.0.5/classes/admin.php:1405, release/svn/tags/1.0.6/classes/admin.php:1518, release/svn/tags/1.0.8/classes/admin.php:1529
+msgid "Authorize"
 msgstr ""
 
 #. translators: $schedule_name is the name of the current queue. Defaults: salesforce_pull, salesforce_push, salesforce
-#: classes/admin.php:2134
+#: classes/admin.php:1676, release/svn/trunk/classes/admin.php:1652, release/svn/tags/1.0.0/classes/admin.php:1493, release/svn/tags/1.0.1/classes/admin.php:1528, release/svn/tags/1.0.3/classes/admin.php:1528, release/svn/tags/1.0.5/classes/admin.php:1528, release/svn/tags/1.0.6/classes/admin.php:1641, release/svn/tags/1.0.8/classes/admin.php:1652
 msgid "You have cleared the %s schedule."
 msgstr ""
 
-#: classes/admin.php:2136
+#: classes/admin.php:1678, release/svn/trunk/classes/admin.php:1654, release/svn/tags/1.0.0/classes/admin.php:1495, release/svn/tags/1.0.1/classes/admin.php:1530, release/svn/tags/1.0.3/classes/admin.php:1530, release/svn/tags/1.0.5/classes/admin.php:1530, release/svn/tags/1.0.6/classes/admin.php:1643, release/svn/tags/1.0.8/classes/admin.php:1654
 msgid "You need to specify the name of the schedule you want to clear."
 msgstr ""
 
-#: classes/admin.php:2193, classes/salesforce_pull.php:1706, classes/salesforce_push.php:1019, classes/salesforce_push.php:1128
+#: classes/admin.php:1730, classes/salesforce_pull.php:1141, classes/salesforce_push.php:814, classes/salesforce_push.php:913, release/svn/trunk/classes/admin.php:1706, release/svn/trunk/classes/salesforce_pull.php:1134, release/svn/trunk/classes/salesforce_push.php:807, release/svn/trunk/classes/salesforce_push.php:906, release/svn/tags/1.0.0/classes/admin.php:1547, release/svn/tags/1.0.0/classes/salesforce_pull.php:1119, release/svn/tags/1.0.0/classes/salesforce_push.php:807, release/svn/tags/1.0.0/classes/salesforce_push.php:906, release/svn/tags/1.0.1/classes/admin.php:1582, release/svn/tags/1.0.1/classes/salesforce_pull.php:1119, release/svn/tags/1.0.1/classes/salesforce_push.php:807, release/svn/tags/1.0.1/classes/salesforce_push.php:906, release/svn/tags/1.0.3/classes/admin.php:1582, release/svn/tags/1.0.3/classes/salesforce_pull.php:1119, release/svn/tags/1.0.3/classes/salesforce_push.php:807, release/svn/tags/1.0.3/classes/salesforce_push.php:906, release/svn/tags/1.0.5/classes/admin.php:1582, release/svn/tags/1.0.5/classes/salesforce_pull.php:1119, release/svn/tags/1.0.5/classes/salesforce_push.php:807, release/svn/tags/1.0.5/classes/salesforce_push.php:906, release/svn/tags/1.0.6/classes/admin.php:1695, release/svn/tags/1.0.6/classes/salesforce_pull.php:1119, release/svn/tags/1.0.6/classes/salesforce_push.php:807, release/svn/tags/1.0.6/classes/salesforce_push.php:906, release/svn/tags/1.0.8/classes/admin.php:1706, release/svn/tags/1.0.8/classes/salesforce_pull.php:1134, release/svn/tags/1.0.8/classes/salesforce_push.php:807, release/svn/tags/1.0.8/classes/salesforce_push.php:906
 msgid "Mapping object updated via function: "
 msgstr ""
 
-#: classes/class-object-sync-sf-rest.php:140, classes/class-object-sync-sf-rest.php:148, classes/class-object-sync-sf-rest.php:156, classes/class-object-sync-sf-rest.php:161
-msgid "This kind of request is not allowed."
-msgstr ""
-
-#: classes/class-object-sync-sf-rest.php:143, classes/class-object-sync-sf-rest.php:151, classes/class-object-sync-sf-rest.php:166
-msgid "You do not have permissions to view this data."
-msgstr ""
-
-#. translators: placeholder is the URL of the Salesforce API request
-#: classes/salesforce.php:305
+#: classes/salesforce.php:295, release/svn/trunk/classes/salesforce.php:295, release/svn/tags/1.0.0/classes/salesforce.php:295, release/svn/tags/1.0.1/classes/salesforce.php:295, release/svn/tags/1.0.3/classes/salesforce.php:295, release/svn/tags/1.0.5/classes/salesforce.php:295, release/svn/tags/1.0.6/classes/salesforce.php:295, release/svn/tags/1.0.8/classes/salesforce.php:295
 msgid "Debug: on Salesforce API HTTP Request to URL: %1$s."
 msgstr ""
 
-#. translators: placeholder is the HTTP status code returned by the Salesforce API request
-#. translators: placeholder is the server code returned by the api
-#. translators: placeholder is the server code returned by Salesforce
-#: classes/salesforce.php:415, classes/salesforce.php:436, classes/salesforce.php:464
+#: classes/salesforce.php:389, classes/salesforce.php:410, classes/salesforce.php:438, release/svn/trunk/classes/salesforce.php:389, release/svn/trunk/classes/salesforce.php:410, release/svn/trunk/classes/salesforce.php:438, release/svn/tags/1.0.0/classes/salesforce.php:389, release/svn/tags/1.0.0/classes/salesforce.php:410, release/svn/tags/1.0.0/classes/salesforce.php:438, release/svn/tags/1.0.1/classes/salesforce.php:389, release/svn/tags/1.0.1/classes/salesforce.php:410, release/svn/tags/1.0.1/classes/salesforce.php:438, release/svn/tags/1.0.3/classes/salesforce.php:389, release/svn/tags/1.0.3/classes/salesforce.php:410, release/svn/tags/1.0.3/classes/salesforce.php:438, release/svn/tags/1.0.5/classes/salesforce.php:389, release/svn/tags/1.0.5/classes/salesforce.php:410, release/svn/tags/1.0.5/classes/salesforce.php:438, release/svn/tags/1.0.6/classes/salesforce.php:389, release/svn/tags/1.0.6/classes/salesforce.php:410, release/svn/tags/1.0.6/classes/salesforce.php:438, release/svn/tags/1.0.8/classes/salesforce.php:389, release/svn/tags/1.0.8/classes/salesforce.php:410, release/svn/tags/1.0.8/classes/salesforce.php:438
 msgid "Error: %1$s: on Salesforce http request"
 msgstr ""
 
-#. translators: placeholders are: 1) the URL requested, 2) the message returned by the error, 3) the server code returned
-#: classes/salesforce.php:441
+#: classes/salesforce.php:415, release/svn/trunk/classes/salesforce.php:415, release/svn/tags/1.0.0/classes/salesforce.php:415, release/svn/tags/1.0.1/classes/salesforce.php:415, release/svn/tags/1.0.3/classes/salesforce.php:415, release/svn/tags/1.0.5/classes/salesforce.php:415, release/svn/tags/1.0.6/classes/salesforce.php:415, release/svn/tags/1.0.8/classes/salesforce.php:415
 msgid "URL: %1$s"
 msgstr ""
 
-#: classes/salesforce.php:441, classes/salesforce_push.php:1046
+#: classes/salesforce.php:415, classes/salesforce_push.php:841, release/svn/trunk/classes/salesforce.php:415, release/svn/trunk/classes/salesforce_push.php:834, release/svn/tags/1.0.0/classes/salesforce.php:415, release/svn/tags/1.0.0/classes/salesforce_push.php:834, release/svn/tags/1.0.1/classes/salesforce.php:415, release/svn/tags/1.0.1/classes/salesforce_push.php:834, release/svn/tags/1.0.3/classes/salesforce.php:415, release/svn/tags/1.0.3/classes/salesforce_push.php:834, release/svn/tags/1.0.5/classes/salesforce.php:415, release/svn/tags/1.0.5/classes/salesforce_push.php:834, release/svn/tags/1.0.6/classes/salesforce.php:415, release/svn/tags/1.0.6/classes/salesforce_push.php:834, release/svn/tags/1.0.8/classes/salesforce.php:415, release/svn/tags/1.0.8/classes/salesforce_push.php:834
 msgid "Message: %2$s"
 msgstr ""
 
-#: classes/salesforce.php:441
+#: classes/salesforce.php:415, release/svn/trunk/classes/salesforce.php:415, release/svn/tags/1.0.0/classes/salesforce.php:415, release/svn/tags/1.0.1/classes/salesforce.php:415, release/svn/tags/1.0.3/classes/salesforce.php:415, release/svn/tags/1.0.5/classes/salesforce.php:415, release/svn/tags/1.0.6/classes/salesforce.php:415, release/svn/tags/1.0.8/classes/salesforce.php:415
 msgid "Code: %3$s"
 msgstr ""
 
-#: classes/salesforce.php:591
+#: classes/salesforce.php:549, release/svn/trunk/classes/salesforce.php:549, release/svn/tags/1.0.0/classes/salesforce.php:549, release/svn/tags/1.0.1/classes/salesforce.php:549, release/svn/tags/1.0.3/classes/salesforce.php:549, release/svn/tags/1.0.5/classes/salesforce.php:549, release/svn/tags/1.0.6/classes/salesforce.php:549, release/svn/tags/1.0.8/classes/salesforce.php:549
 msgid "There is no refresh token."
 msgstr ""
 
-#: classes/salesforce.php:615
+#: classes/salesforce.php:573, release/svn/trunk/classes/salesforce.php:573, release/svn/tags/1.0.0/classes/salesforce.php:573, release/svn/tags/1.0.1/classes/salesforce.php:573, release/svn/tags/1.0.3/classes/salesforce.php:573, release/svn/tags/1.0.5/classes/salesforce.php:573, release/svn/tags/1.0.6/classes/salesforce.php:573, release/svn/tags/1.0.8/classes/salesforce.php:573
 msgid "Unable to get a Salesforce access token. Salesforce returned the following errorCode: "
 msgstr ""
 
-#: classes/salesforce.php:649
+#: classes/salesforce.php:607, release/svn/trunk/classes/salesforce.php:607, release/svn/tags/1.0.0/classes/salesforce.php:607, release/svn/tags/1.0.1/classes/salesforce.php:607, release/svn/tags/1.0.3/classes/salesforce.php:607, release/svn/tags/1.0.5/classes/salesforce.php:607, release/svn/tags/1.0.6/classes/salesforce.php:607, release/svn/tags/1.0.8/classes/salesforce.php:607
 msgid "Unable to access identity service."
 msgstr ""
 
-#. translators: %1$s is the name of a WordPress object. %2$s is the id of that object.
-#: classes/salesforce_mapping.php:446
+#: classes/salesforce_mapping.php:396, release/svn/trunk/classes/salesforce_mapping.php:396, release/svn/tags/1.0.5/classes/salesforce_mapping.php:396, release/svn/tags/1.0.6/classes/salesforce_mapping.php:396, release/svn/tags/1.0.8/classes/salesforce_mapping.php:396
 msgid "Error Mapping: error caused by trying to map the WordPress %1$s with ID of %2$s to Salesforce ID starting with \"tmp_sf_\", which is invalid."
 msgstr ""
 
-#. translators: %1$s is the status word "Error". %1$s is the Id of a Salesforce object. %2$s is the ID of a mapping object.
-#: classes/salesforce_mapping.php:471
+#: classes/salesforce_mapping.php:421, release/svn/trunk/classes/salesforce_mapping.php:421, release/svn/tags/1.0.0/classes/salesforce_mapping.php:421, release/svn/tags/1.0.1/classes/salesforce_mapping.php:421, release/svn/tags/1.0.3/classes/salesforce_mapping.php:421, release/svn/tags/1.0.5/classes/salesforce_mapping.php:421, release/svn/tags/1.0.6/classes/salesforce_mapping.php:421, release/svn/tags/1.0.8/classes/salesforce_mapping.php:421
 msgid "Error: Mapping: there is already a WordPress object mapped to the Salesforce object %1$s and the mapping object ID is %2$s"
 msgstr ""
 
-#. translators: %1$s is the Id of a Salesforce object.
-#: classes/salesforce_mapping.php:674
+#: classes/salesforce_mapping.php:613, release/svn/trunk/classes/salesforce_mapping.php:613, release/svn/tags/1.0.0/classes/salesforce_mapping.php:595, release/svn/tags/1.0.1/classes/salesforce_mapping.php:595, release/svn/tags/1.0.3/classes/salesforce_mapping.php:595, release/svn/tags/1.0.5/classes/salesforce_mapping.php:611, release/svn/tags/1.0.6/classes/salesforce_mapping.php:613, release/svn/tags/1.0.8/classes/salesforce_mapping.php:613
 msgid "Notice: Mapping: there is more than one mapped WordPress object for the Salesforce object %2$s"
 msgstr ""
 
-#. translators: placeholders are: 1) the Salesforce ID
-#: classes/salesforce_pull.php:271
-msgid "Debug: Salesforce ID %1$s has already been attempted."
-msgstr ""
-
-#: classes/salesforce_pull.php:283
-msgid "This ID has already been attempted so it was not pulled again."
-msgstr ""
-
-#. translators: placeholders are: 1) the Salesforce ID
-#: classes/salesforce_pull.php:321
-msgid "Debug: Salesforce ID %1$s is not allowed."
-msgstr ""
-
-#: classes/salesforce_pull.php:333
-msgid "This ID is not pullable so it was skipped."
-msgstr ""
-
-#. translators: placeholders are: 1) the Salesforce ID
-#: classes/salesforce_pull.php:361
-msgid "Debug: Salesforce ID %1$s has been successfully pulled."
-msgstr ""
-
-#: classes/salesforce_pull.php:373
-msgid "This ID has been successfully pulled. It cannot be pulled again."
-msgstr ""
-
 #. translators: placeholders are: 1) the server error code, and 2) the name of the Salesforce object
-#: classes/salesforce_pull.php:416
-msgid "Error: %1$s Salesforce %2$s"
+#: classes/salesforce_pull.php:272, release/svn/trunk/classes/salesforce_pull.php:272, release/svn/tags/1.0.0/classes/salesforce_pull.php:257, release/svn/tags/1.0.1/classes/salesforce_pull.php:257, release/svn/tags/1.0.3/classes/salesforce_pull.php:257, release/svn/tags/1.0.5/classes/salesforce_pull.php:257, release/svn/tags/1.0.6/classes/salesforce_pull.php:257, release/svn/tags/1.0.8/classes/salesforce_pull.php:272
+msgid "Error: %1$s %2$s"
 msgstr ""
 
-#. translators: placeholders are: 1) the name of the WordPress object type, 2) the name of the Salesforce object, 3) the Salesforce Id value
-#: classes/salesforce_pull.php:915
-msgid "Error: Manually pull WordPress %1$s not allowed (%2$s %3$s)"
-msgstr ""
-
-#. translators: placeholders are: 1) the server error code
-#: classes/salesforce_pull.php:938
-msgid "Error: %1$s Salesforce Pull"
-msgstr ""
-
-#: classes/salesforce_pull.php:1051
+#: classes/salesforce_pull.php:533, release/svn/trunk/classes/salesforce_pull.php:526, release/svn/tags/1.0.0/classes/salesforce_pull.php:511, release/svn/tags/1.0.1/classes/salesforce_pull.php:511, release/svn/tags/1.0.3/classes/salesforce_pull.php:511, release/svn/tags/1.0.5/classes/salesforce_pull.php:511, release/svn/tags/1.0.6/classes/salesforce_pull.php:511, release/svn/tags/1.0.8/classes/salesforce_pull.php:526
 msgid "Error: Salesforce Pull: unable to process queue item because it has no Salesforce Id."
 msgstr ""
 
-#. translators: placeholders are: 1) the mapping object ID transient
-#: classes/salesforce_pull.php:1119
-msgid "Debug: mapping object transient ID %1$s is currently pushing, so we do not pull it."
-msgstr ""
-
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-#: classes/salesforce_pull.php:1165
-msgid "Error: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)"
-msgstr ""
-
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-#: classes/salesforce_pull.php:1211
+#: classes/salesforce_pull.php:662, release/svn/trunk/classes/salesforce_pull.php:655, release/svn/tags/1.0.0/classes/salesforce_pull.php:640, release/svn/tags/1.0.1/classes/salesforce_pull.php:640, release/svn/tags/1.0.3/classes/salesforce_pull.php:640, release/svn/tags/1.0.5/classes/salesforce_pull.php:640, release/svn/tags/1.0.6/classes/salesforce_pull.php:640, release/svn/tags/1.0.8/classes/salesforce_pull.php:655
 msgid "Success: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)"
 msgstr ""
 
-#: classes/salesforce_pull.php:1236
+#: classes/salesforce_pull.php:683, release/svn/trunk/classes/salesforce_pull.php:676, release/svn/tags/1.0.0/classes/salesforce_pull.php:661, release/svn/tags/1.0.1/classes/salesforce_pull.php:661, release/svn/tags/1.0.3/classes/salesforce_pull.php:661, release/svn/tags/1.0.5/classes/salesforce_pull.php:661, release/svn/tags/1.0.6/classes/salesforce_pull.php:661, release/svn/tags/1.0.8/classes/salesforce_pull.php:676
 msgid "The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress ID. They are:"
 msgstr ""
 
-#: classes/salesforce_pull.php:1248
+#: classes/salesforce_pull.php:695, release/svn/trunk/classes/salesforce_pull.php:688, release/svn/tags/1.0.0/classes/salesforce_pull.php:673, release/svn/tags/1.0.1/classes/salesforce_pull.php:673, release/svn/tags/1.0.3/classes/salesforce_pull.php:673, release/svn/tags/1.0.5/classes/salesforce_pull.php:673, release/svn/tags/1.0.6/classes/salesforce_pull.php:673, release/svn/tags/1.0.8/classes/salesforce_pull.php:688
 msgid "The map row between this Salesforce object and the WordPress object, as stored in the WordPress database, will be deleted, and this Salesforce object has been deleted, but the WordPress object row will remain untouched."
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-#: classes/salesforce_pull.php:1258
+#: classes/salesforce_pull.php:705, release/svn/trunk/classes/salesforce_pull.php:698, release/svn/tags/1.0.0/classes/salesforce_pull.php:683, release/svn/tags/1.0.1/classes/salesforce_pull.php:683, release/svn/tags/1.0.3/classes/salesforce_pull.php:683, release/svn/tags/1.0.5/classes/salesforce_pull.php:683, release/svn/tags/1.0.6/classes/salesforce_pull.php:683, release/svn/tags/1.0.8/classes/salesforce_pull.php:698
 msgid "Notice: %1$s %2$s with %3$s of %4$s (%5$s %6$s) did not delete the WordPress item."
 msgstr ""
 
-#: classes/salesforce_pull.php:1396
+#: classes/salesforce_pull.php:854, release/svn/trunk/classes/salesforce_pull.php:847, release/svn/tags/1.0.0/classes/salesforce_pull.php:832, release/svn/tags/1.0.1/classes/salesforce_pull.php:832, release/svn/tags/1.0.3/classes/salesforce_pull.php:832, release/svn/tags/1.0.5/classes/salesforce_pull.php:832, release/svn/tags/1.0.6/classes/salesforce_pull.php:832, release/svn/tags/1.0.8/classes/salesforce_pull.php:847
 msgid "Error: There is at least one object map with a WordPress ID of 0."
 msgstr ""
 
 #. translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the Salesforce object it was trying to map
-#: classes/salesforce_pull.php:1400
+#: classes/salesforce_pull.php:858, release/svn/trunk/classes/salesforce_pull.php:851, release/svn/tags/1.0.0/classes/salesforce_pull.php:836, release/svn/tags/1.0.1/classes/salesforce_pull.php:836, release/svn/tags/1.0.3/classes/salesforce_pull.php:836, release/svn/tags/1.0.5/classes/salesforce_pull.php:836, release/svn/tags/1.0.6/classes/salesforce_pull.php:836, release/svn/tags/1.0.8/classes/salesforce_pull.php:851
 msgid "There is an object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of 0 and the Salesforce object with ID of %3$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:1406
+#: classes/salesforce_pull.php:864, release/svn/trunk/classes/salesforce_pull.php:857, release/svn/tags/1.0.0/classes/salesforce_pull.php:842, release/svn/tags/1.0.1/classes/salesforce_pull.php:842, release/svn/tags/1.0.3/classes/salesforce_pull.php:842, release/svn/tags/1.0.5/classes/salesforce_pull.php:842, release/svn/tags/1.0.6/classes/salesforce_pull.php:842, release/svn/tags/1.0.8/classes/salesforce_pull.php:857
 msgid "There are multiple object maps with WordPress ID of 0. Their IDs are: "
 msgstr ""
 
-#. translators: placeholders are: 1) the mapping object row ID, 2) the ID of the Salesforce object, 3) the WordPress object type
-#: classes/salesforce_pull.php:1409
+#: classes/salesforce_pull.php:867, release/svn/trunk/classes/salesforce_pull.php:860, release/svn/tags/1.0.0/classes/salesforce_pull.php:845, release/svn/tags/1.0.1/classes/salesforce_pull.php:845, release/svn/tags/1.0.3/classes/salesforce_pull.php:845, release/svn/tags/1.0.5/classes/salesforce_pull.php:845, release/svn/tags/1.0.6/classes/salesforce_pull.php:845, release/svn/tags/1.0.8/classes/salesforce_pull.php:860
 msgid "Mapping object id: %1$s. Salesforce Id: %2$s. WordPress object type: %3$s"
 msgstr ""
 
 #. translators: placeholders are: 1) mapping object row id, 2) WordPress object tyoe, 3) individual WordPress item ID, 4) individual Salesforce item ID
-#: classes/salesforce_pull.php:1447
+#: classes/salesforce_pull.php:900, release/svn/trunk/classes/salesforce_pull.php:893, release/svn/tags/1.0.0/classes/salesforce_pull.php:878, release/svn/tags/1.0.1/classes/salesforce_pull.php:878, release/svn/tags/1.0.3/classes/salesforce_pull.php:878, release/svn/tags/1.0.5/classes/salesforce_pull.php:878, release/svn/tags/1.0.6/classes/salesforce_pull.php:878, release/svn/tags/1.0.8/classes/salesforce_pull.php:893
 msgid "Notice: Because object map %1$s already exists, WordPress %2$s %3$s was not mapped to Salesforce Id %4$s"
 msgstr ""
 
 #. translators: placeholders are 1) WordPress object type, 2) field name for the WordPress id, 3) the WordPress id value, 4) the Salesforce object type, 5) the Salesforce object Id that was modified, 6) the mapping object row id
-#: classes/salesforce_pull.php:1455
+#: classes/salesforce_pull.php:908, release/svn/trunk/classes/salesforce_pull.php:901, release/svn/tags/1.0.0/classes/salesforce_pull.php:886, release/svn/tags/1.0.1/classes/salesforce_pull.php:886, release/svn/tags/1.0.3/classes/salesforce_pull.php:886, release/svn/tags/1.0.5/classes/salesforce_pull.php:886, release/svn/tags/1.0.6/classes/salesforce_pull.php:886, release/svn/tags/1.0.8/classes/salesforce_pull.php:901
 msgid "The WordPress %1$s with %2$s of %3$s is already mapped to the Salesforce %4$s with Id of %5$s in the mapping object with id of %6$s. The Salesforce %4$s with Id of %5$s was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing data unintentionally."
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, and 2) the name of the WordPress object
-#: classes/salesforce_pull.php:1527
-msgid "Error: %1$s WordPress %2$s"
+#: classes/salesforce_pull.php:1048, classes/salesforce_pull.php:1151, release/svn/trunk/classes/salesforce_pull.php:1041, release/svn/trunk/classes/salesforce_pull.php:1144, release/svn/tags/1.0.0/classes/salesforce_pull.php:1026, release/svn/tags/1.0.0/classes/salesforce_pull.php:1129, release/svn/tags/1.0.1/classes/salesforce_pull.php:1026, release/svn/tags/1.0.1/classes/salesforce_pull.php:1129, release/svn/tags/1.0.3/classes/salesforce_pull.php:1026, release/svn/tags/1.0.3/classes/salesforce_pull.php:1129, release/svn/tags/1.0.5/classes/salesforce_pull.php:1026, release/svn/tags/1.0.5/classes/salesforce_pull.php:1129, release/svn/tags/1.0.6/classes/salesforce_pull.php:1026, release/svn/tags/1.0.6/classes/salesforce_pull.php:1129, release/svn/tags/1.0.8/classes/salesforce_pull.php:1041, release/svn/tags/1.0.8/classes/salesforce_pull.php:1144
+msgid "Success: %1$s %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)"
 msgstr ""
 
-#. translators: placeholders are: 1) the name of the Salesforce object, and 2) Id of the Salesforce object
-#: classes/salesforce_pull.php:1537
-msgid " (Salesforce %1$s with Id of %2$s)"
-msgstr ""
-
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-#: classes/salesforce_pull.php:1605, classes/salesforce_pull.php:1716
-msgid "Success: %1$s WordPress %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)"
-msgstr ""
-
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object type, 3) the Salesforce object Id value
-#: classes/salesforce_pull.php:1650
+#: classes/salesforce_pull.php:1089, release/svn/trunk/classes/salesforce_pull.php:1082, release/svn/tags/1.0.0/classes/salesforce_pull.php:1067, release/svn/tags/1.0.1/classes/salesforce_pull.php:1067, release/svn/tags/1.0.3/classes/salesforce_pull.php:1067, release/svn/tags/1.0.5/classes/salesforce_pull.php:1067, release/svn/tags/1.0.6/classes/salesforce_pull.php:1067, release/svn/tags/1.0.8/classes/salesforce_pull.php:1082
 msgid "Error syncing: %1$s to WordPress (Salesforce %2$s Id %3$s)"
 msgstr ""
 
-#. translators: placeholders are: 1) the name of the WordPress object type, 2) the WordPress id field name, 3) the WordPress id field value, 4) the array of errors
-#: classes/salesforce_pull.php:1657
+#: classes/salesforce_pull.php:1096, release/svn/trunk/classes/salesforce_pull.php:1089, release/svn/tags/1.0.0/classes/salesforce_pull.php:1074, release/svn/tags/1.0.1/classes/salesforce_pull.php:1074, release/svn/tags/1.0.3/classes/salesforce_pull.php:1074, release/svn/tags/1.0.5/classes/salesforce_pull.php:1074, release/svn/tags/1.0.6/classes/salesforce_pull.php:1074, release/svn/tags/1.0.8/classes/salesforce_pull.php:1089
 msgid "Object: %1$s with %2$s of %3$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:1657
+#: classes/salesforce_pull.php:1096, release/svn/trunk/classes/salesforce_pull.php:1089, release/svn/tags/1.0.0/classes/salesforce_pull.php:1074, release/svn/tags/1.0.1/classes/salesforce_pull.php:1074, release/svn/tags/1.0.3/classes/salesforce_pull.php:1074, release/svn/tags/1.0.5/classes/salesforce_pull.php:1074, release/svn/tags/1.0.6/classes/salesforce_pull.php:1074, release/svn/tags/1.0.8/classes/salesforce_pull.php:1089
 msgid "Message: "
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-#: classes/salesforce_pull.php:1750
-msgid "Error: %1$s WordPress %2$s with %3$s of %4$s (Salesforce %5$s with Id of %6$s)"
-msgstr ""
-
-#: classes/salesforce_pull.php:1880
+#: classes/salesforce_pull.php:1270, release/svn/trunk/classes/salesforce_pull.php:1263, release/svn/tags/1.0.0/classes/salesforce_pull.php:1248, release/svn/tags/1.0.1/classes/salesforce_pull.php:1248, release/svn/tags/1.0.3/classes/salesforce_pull.php:1248, release/svn/tags/1.0.5/classes/salesforce_pull.php:1248, release/svn/tags/1.0.6/classes/salesforce_pull.php:1248, release/svn/tags/1.0.8/classes/salesforce_pull.php:1263
 msgid "Mapping object created via function: "
 msgstr ""
 
-#. translators: placeholder is the name of the WordPress id field
-#: classes/salesforce_push.php:436
+#: classes/salesforce_push.php:353, release/svn/trunk/classes/salesforce_push.php:353, release/svn/tags/1.0.0/classes/salesforce_push.php:353, release/svn/tags/1.0.1/classes/salesforce_push.php:353, release/svn/tags/1.0.3/classes/salesforce_push.php:353, release/svn/tags/1.0.5/classes/salesforce_push.php:353, release/svn/tags/1.0.6/classes/salesforce_push.php:353, release/svn/tags/1.0.8/classes/salesforce_push.php:353
 msgid "Error: Salesforce Push: unable to process queue item because it has no WordPress %1$s."
 msgstr ""
 
-#. translators: placeholders are: 1) the name of the current operation, 2) the name of the WordPress object type, 3) the name of the WordPress ID field, 4) the value of the object's ID in WordPress, 5) the name of the Salesforce object
-#: classes/salesforce_push.php:515
-msgid "Error: %1$s Salesforce %5$s with WordPress %2$s with %3$s of %4$s was not allowed by this fieldmap."
+#: classes/salesforce_push.php:543, classes/salesforce_push.php:795, classes/salesforce_push.php:923, release/svn/trunk/classes/salesforce_push.php:536, release/svn/trunk/classes/salesforce_push.php:788, release/svn/trunk/classes/salesforce_push.php:916, release/svn/tags/1.0.0/classes/salesforce_push.php:536, release/svn/tags/1.0.0/classes/salesforce_push.php:788, release/svn/tags/1.0.0/classes/salesforce_push.php:916, release/svn/tags/1.0.1/classes/salesforce_push.php:536, release/svn/tags/1.0.1/classes/salesforce_push.php:788, release/svn/tags/1.0.1/classes/salesforce_push.php:916, release/svn/tags/1.0.3/classes/salesforce_push.php:536, release/svn/tags/1.0.3/classes/salesforce_push.php:788, release/svn/tags/1.0.3/classes/salesforce_push.php:916, release/svn/tags/1.0.5/classes/salesforce_push.php:536, release/svn/tags/1.0.5/classes/salesforce_push.php:788, release/svn/tags/1.0.5/classes/salesforce_push.php:916, release/svn/tags/1.0.6/classes/salesforce_push.php:536, release/svn/tags/1.0.6/classes/salesforce_push.php:788, release/svn/tags/1.0.6/classes/salesforce_push.php:916, release/svn/tags/1.0.8/classes/salesforce_push.php:536, release/svn/tags/1.0.8/classes/salesforce_push.php:788, release/svn/tags/1.0.8/classes/salesforce_push.php:916
+msgid "Success: %1$s %2$s %3$s (WordPress %4$s with %5$s of %6$s)"
 msgstr ""
 
-#. translators: placeholders are: 1) the name of the WordPress object type, 2) the name of the WordPress ID field, 3) the value of the object's ID in WordPress, 4) the name of the Salesforce object
-#: classes/salesforce_push.php:569
-msgid "Success: Add to queue: Push WordPress %1$s with %2$s of %3$s to Salesforce %4$s."
-msgstr ""
-
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value if there is one, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#: classes/salesforce_push.php:676, classes/salesforce_push.php:941, classes/salesforce_push.php:1170
-msgid "Error: %1$s Salesforce %2$s %3$s (WordPress %4$s with %5$s of %6$s)"
-msgstr ""
-
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#: classes/salesforce_push.php:710, classes/salesforce_push.php:993, classes/salesforce_push.php:1138
-msgid "Success: %1$s Salesforce %2$s %3$s (WordPress %4$s with %5$s of %6$s)"
-msgstr ""
-
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#: classes/salesforce_push.php:755
+#: classes/salesforce_push.php:586, release/svn/trunk/classes/salesforce_push.php:579, release/svn/tags/1.0.0/classes/salesforce_push.php:579, release/svn/tags/1.0.1/classes/salesforce_push.php:579, release/svn/tags/1.0.3/classes/salesforce_push.php:579, release/svn/tags/1.0.5/classes/salesforce_push.php:579, release/svn/tags/1.0.6/classes/salesforce_push.php:579, release/svn/tags/1.0.8/classes/salesforce_push.php:579
 msgid "Notice: %1$s %2$s %3$s (WordPress %4$s with %5$s of %6$s did not delete the Salesforce item.)"
 msgstr ""
 
-#. translators: placeholders are: 1) error code the Salesforce API returned, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value
-#: classes/salesforce_push.php:1037
+#: classes/salesforce_push.php:832, release/svn/trunk/classes/salesforce_push.php:825, release/svn/tags/1.0.0/classes/salesforce_push.php:825, release/svn/tags/1.0.1/classes/salesforce_push.php:825, release/svn/tags/1.0.3/classes/salesforce_push.php:825, release/svn/tags/1.0.5/classes/salesforce_push.php:825, release/svn/tags/1.0.6/classes/salesforce_push.php:825, release/svn/tags/1.0.8/classes/salesforce_push.php:825
 msgid "%1$s error syncing: %2$s to Salesforce (WordPress %3$s with %4$s of %5$s)"
 msgstr ""
 
-#. translators: placeholders are 1) the name of the Salesforce object type, 2) the error message returned from the Salesforce APIs
-#: classes/salesforce_push.php:1046
+#: classes/salesforce_push.php:841, release/svn/trunk/classes/salesforce_push.php:834, release/svn/tags/1.0.0/classes/salesforce_push.php:834, release/svn/tags/1.0.1/classes/salesforce_push.php:834, release/svn/tags/1.0.3/classes/salesforce_push.php:834, release/svn/tags/1.0.5/classes/salesforce_push.php:834, release/svn/tags/1.0.6/classes/salesforce_push.php:834, release/svn/tags/1.0.8/classes/salesforce_push.php:834
 msgid "Object: %1$s"
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the Salesforce Id value
-#: classes/salesforce_push.php:1086
+#: classes/salesforce_push.php:878, release/svn/trunk/classes/salesforce_push.php:871, release/svn/tags/1.0.0/classes/salesforce_push.php:871, release/svn/tags/1.0.1/classes/salesforce_push.php:871, release/svn/tags/1.0.3/classes/salesforce_push.php:871, release/svn/tags/1.0.5/classes/salesforce_push.php:871, release/svn/tags/1.0.6/classes/salesforce_push.php:871, release/svn/tags/1.0.8/classes/salesforce_push.php:871
 msgid "Notice: %1$s: Did not sync WordPress %2$s with %3$s of %4$s with Salesforce Id %5$s because the last sync timestamp was greater than the object updated timestamp."
 msgstr ""
 
-#. translators: placeholders are 1) when a sync on this mapping last occured, 2) when the object was last updated
-#: classes/salesforce_push.php:1095
+#: classes/salesforce_push.php:887, release/svn/trunk/classes/salesforce_push.php:880, release/svn/tags/1.0.0/classes/salesforce_push.php:880, release/svn/tags/1.0.1/classes/salesforce_push.php:880, release/svn/tags/1.0.3/classes/salesforce_push.php:880, release/svn/tags/1.0.5/classes/salesforce_push.php:880, release/svn/tags/1.0.6/classes/salesforce_push.php:880, release/svn/tags/1.0.8/classes/salesforce_push.php:880
 msgid "Last sync time: %1$s"
 msgstr ""
 
-#: classes/salesforce_push.php:1095
+#: classes/salesforce_push.php:887, release/svn/trunk/classes/salesforce_push.php:880, release/svn/tags/1.0.0/classes/salesforce_push.php:880, release/svn/tags/1.0.1/classes/salesforce_push.php:880, release/svn/tags/1.0.3/classes/salesforce_push.php:880, release/svn/tags/1.0.5/classes/salesforce_push.php:880, release/svn/tags/1.0.6/classes/salesforce_push.php:880, release/svn/tags/1.0.8/classes/salesforce_push.php:880
 msgid "Object updated time: %2$s"
 msgstr ""
 
-#. translators: placeholder is for the action that occurred on the mapping object (pending or created)
-#: classes/salesforce_push.php:1261
-msgid "Mapping object %1$s via function: "
+#: classes/salesforce_push.php:1023, release/svn/trunk/classes/salesforce_push.php:1016, release/svn/tags/1.0.0/classes/salesforce_push.php:1016, release/svn/tags/1.0.1/classes/salesforce_push.php:1016, release/svn/tags/1.0.3/classes/salesforce_push.php:1016, release/svn/tags/1.0.5/classes/salesforce_push.php:1016, release/svn/tags/1.0.6/classes/salesforce_push.php:1016, release/svn/tags/1.0.8/classes/salesforce_push.php:1016
+msgid "Mapping object %1$s via function"
 msgstr ""
 
-#. translators: %1$s is a method name.
-#. translators: %1$s is a method name.
-#: classes/wordpress.php:894, classes/wordpress.php:1885
+#: classes/wordpress.php:844, classes/wordpress.php:1781, release/svn/trunk/classes/wordpress.php:844, release/svn/trunk/classes/wordpress.php:1781, release/svn/tags/1.0.0/classes/wordpress.php:844, release/svn/tags/1.0.0/classes/wordpress.php:1770, release/svn/tags/1.0.1/classes/wordpress.php:844, release/svn/tags/1.0.1/classes/wordpress.php:1770, release/svn/tags/1.0.3/classes/wordpress.php:844, release/svn/tags/1.0.3/classes/wordpress.php:1770, release/svn/tags/1.0.5/classes/wordpress.php:844, release/svn/tags/1.0.5/classes/wordpress.php:1770, release/svn/tags/1.0.6/classes/wordpress.php:844, release/svn/tags/1.0.6/classes/wordpress.php:1770, release/svn/tags/1.0.8/classes/wordpress.php:844, release/svn/tags/1.0.8/classes/wordpress.php:1781
 msgid "Tried to upsert meta with method %1$s."
 msgstr ""
 
-#: classes/wordpress.php:1065
+#: classes/wordpress.php:997, release/svn/trunk/classes/wordpress.php:997, release/svn/tags/1.0.0/classes/wordpress.php:997, release/svn/tags/1.0.1/classes/wordpress.php:997, release/svn/tags/1.0.3/classes/wordpress.php:997, release/svn/tags/1.0.5/classes/wordpress.php:997, release/svn/tags/1.0.6/classes/wordpress.php:997, release/svn/tags/1.0.8/classes/wordpress.php:997
 msgid "Error: Users: Tried to run user_upsert, and ended up without a user id"
 msgstr ""
 
-#: classes/wordpress.php:1396
+#: classes/wordpress.php:1311, release/svn/trunk/classes/wordpress.php:1311, release/svn/tags/1.0.0/classes/wordpress.php:1300, release/svn/tags/1.0.1/classes/wordpress.php:1300, release/svn/tags/1.0.3/classes/wordpress.php:1300, release/svn/tags/1.0.5/classes/wordpress.php:1300, release/svn/tags/1.0.6/classes/wordpress.php:1300, release/svn/tags/1.0.8/classes/wordpress.php:1311
 msgid "Error: Posts: Tried to run post_upsert, and ended up without a post id"
 msgstr ""
 
-#: classes/wordpress.php:1716
+#: classes/wordpress.php:1615, release/svn/trunk/classes/wordpress.php:1615, release/svn/tags/1.0.0/classes/wordpress.php:1604, release/svn/tags/1.0.1/classes/wordpress.php:1604, release/svn/tags/1.0.3/classes/wordpress.php:1604, release/svn/tags/1.0.5/classes/wordpress.php:1604, release/svn/tags/1.0.6/classes/wordpress.php:1604, release/svn/tags/1.0.8/classes/wordpress.php:1615
 msgid "Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id"
 msgstr ""
 
-#: classes/wordpress.php:2052
+#: classes/wordpress.php:1933, release/svn/trunk/classes/wordpress.php:1933, release/svn/tags/1.0.0/classes/wordpress.php:1922, release/svn/tags/1.0.1/classes/wordpress.php:1922, release/svn/tags/1.0.3/classes/wordpress.php:1922, release/svn/tags/1.0.5/classes/wordpress.php:1922, release/svn/tags/1.0.6/classes/wordpress.php:1922, release/svn/tags/1.0.8/classes/wordpress.php:1933
 msgid "Error: Terms: Tried to run term_upsert, and ended up without a term id"
 msgstr ""
 
-#. translators: %1$s is a method name.
-#. translators: %1$s is a method name.
-#: classes/wordpress.php:2102, classes/wordpress.php:2454
+#: classes/wordpress.php:1983, classes/wordpress.php:2314, release/svn/trunk/classes/wordpress.php:1983, release/svn/trunk/classes/wordpress.php:2314, release/svn/tags/1.0.0/classes/wordpress.php:1972, release/svn/tags/1.0.0/classes/wordpress.php:2303, release/svn/tags/1.0.1/classes/wordpress.php:1972, release/svn/tags/1.0.1/classes/wordpress.php:2303, release/svn/tags/1.0.3/classes/wordpress.php:1972, release/svn/tags/1.0.3/classes/wordpress.php:2303, release/svn/tags/1.0.5/classes/wordpress.php:1972, release/svn/tags/1.0.5/classes/wordpress.php:2303, release/svn/tags/1.0.6/classes/wordpress.php:1972, release/svn/tags/1.0.6/classes/wordpress.php:2303, release/svn/tags/1.0.8/classes/wordpress.php:1983, release/svn/tags/1.0.8/classes/wordpress.php:2314
 msgid "Tried to update meta with method %1$s."
 msgstr ""
 
-#. translators: %1$s is a method name.
-#: classes/wordpress.php:2208
+#: classes/wordpress.php:2086, release/svn/trunk/classes/wordpress.php:2086, release/svn/tags/1.0.0/classes/wordpress.php:2075, release/svn/tags/1.0.1/classes/wordpress.php:2075, release/svn/tags/1.0.3/classes/wordpress.php:2075, release/svn/tags/1.0.5/classes/wordpress.php:2075, release/svn/tags/1.0.6/classes/wordpress.php:2075, release/svn/tags/1.0.8/classes/wordpress.php:2086
 msgid "Tried to add meta with method %1$s."
 msgstr ""
 
-#. translators: %1$s is a number. %2$s is a key. %3$s is the value of that key. %4$s is a var_export'd array of comments.
-#: classes/wordpress.php:2325
+#: classes/wordpress.php:2185, release/svn/trunk/classes/wordpress.php:2185, release/svn/tags/1.0.0/classes/wordpress.php:2174, release/svn/tags/1.0.1/classes/wordpress.php:2174, release/svn/tags/1.0.3/classes/wordpress.php:2174, release/svn/tags/1.0.5/classes/wordpress.php:2174, release/svn/tags/1.0.6/classes/wordpress.php:2174, release/svn/tags/1.0.8/classes/wordpress.php:2185
 msgid "Error: Comments: there are %1$s comment matches for the Salesforce key %2$s with the value of %3$s. Here they are: %4$s"
 msgstr ""
 
-#: classes/wordpress.php:2407
+#: classes/wordpress.php:2267, release/svn/trunk/classes/wordpress.php:2267, release/svn/tags/1.0.0/classes/wordpress.php:2256, release/svn/tags/1.0.1/classes/wordpress.php:2256, release/svn/tags/1.0.3/classes/wordpress.php:2256, release/svn/tags/1.0.5/classes/wordpress.php:2256, release/svn/tags/1.0.6/classes/wordpress.php:2256, release/svn/tags/1.0.8/classes/wordpress.php:2267
 msgid "Error: Comments: Tried to run comment_upsert, and ended up without a comment id"
 msgstr ""
 
-#: templates/admin/authorized.php:2
+#: templates/admin/authorized.php:2, release/svn/trunk/templates/admin/authorized.php:2, release/svn/tags/1.0.0/templates/admin/authorized.php:2, release/svn/tags/1.0.1/templates/admin/authorized.php:2, release/svn/tags/1.0.3/templates/admin/authorized.php:2, release/svn/tags/1.0.5/templates/admin/authorized.php:2, release/svn/tags/1.0.6/templates/admin/authorized.php:2, release/svn/tags/1.0.8/templates/admin/authorized.php:2
 msgid "Disconnect from Salesforce"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:13, templates/admin/fieldmaps-list.php:5, templates/admin/status.php:16
+#: templates/admin/fieldmaps-add-edit-clone.php:13, templates/admin/fieldmaps-list.php:5, templates/admin/status.php:16, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:13, release/svn/trunk/templates/admin/fieldmaps-list.php:5, release/svn/trunk/templates/admin/status.php:16, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:13, release/svn/tags/1.0.0/templates/admin/fieldmaps-list.php:5, release/svn/tags/1.0.0/templates/admin/status.php:16, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:13, release/svn/tags/1.0.1/templates/admin/fieldmaps-list.php:5, release/svn/tags/1.0.1/templates/admin/status.php:16, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:13, release/svn/tags/1.0.3/templates/admin/fieldmaps-list.php:5, release/svn/tags/1.0.3/templates/admin/status.php:16, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:13, release/svn/tags/1.0.5/templates/admin/fieldmaps-list.php:5, release/svn/tags/1.0.5/templates/admin/status.php:16, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:13, release/svn/tags/1.0.6/templates/admin/fieldmaps-list.php:5, release/svn/tags/1.0.6/templates/admin/status.php:16, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:13, release/svn/tags/1.0.8/templates/admin/fieldmaps-list.php:5, release/svn/tags/1.0.8/templates/admin/status.php:16
 msgid "Label"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:18, templates/admin/fieldmaps-list.php:6
+#: templates/admin/fieldmaps-add-edit-clone.php:18, templates/admin/fieldmaps-list.php:6, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:18, release/svn/trunk/templates/admin/fieldmaps-list.php:6, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:18, release/svn/tags/1.0.0/templates/admin/fieldmaps-list.php:6, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:18, release/svn/tags/1.0.1/templates/admin/fieldmaps-list.php:6, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:18, release/svn/tags/1.0.3/templates/admin/fieldmaps-list.php:6, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:18, release/svn/tags/1.0.5/templates/admin/fieldmaps-list.php:6, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:18, release/svn/tags/1.0.6/templates/admin/fieldmaps-list.php:6, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:18, release/svn/tags/1.0.8/templates/admin/fieldmaps-list.php:6
 msgid "WordPress Object"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:20, templates/admin/fieldmaps-add-edit-clone.php:44
+#: templates/admin/fieldmaps-add-edit-clone.php:20, templates/admin/fieldmaps-add-edit-clone.php:44, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:20, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:44, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:20, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:44, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:20, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:44, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:20, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:44, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:20, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:44, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:20, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:44, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:20, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:44
 msgid "Select object type"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:41, templates/admin/fieldmaps-list.php:7
+#: templates/admin/fieldmaps-add-edit-clone.php:41, templates/admin/fieldmaps-list.php:7, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:41, release/svn/trunk/templates/admin/fieldmaps-list.php:7, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:41, release/svn/tags/1.0.0/templates/admin/fieldmaps-list.php:7, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:41, release/svn/tags/1.0.1/templates/admin/fieldmaps-list.php:7, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:41, release/svn/tags/1.0.3/templates/admin/fieldmaps-list.php:7, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:41, release/svn/tags/1.0.5/templates/admin/fieldmaps-list.php:7, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:41, release/svn/tags/1.0.6/templates/admin/fieldmaps-list.php:7, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:41, release/svn/tags/1.0.8/templates/admin/fieldmaps-list.php:7
 msgid "Salesforce Object"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:82
-msgid "Allowed Record Types"
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:115
-msgid "Default Record Type"
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:116
-msgid "Select record type"
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:141
-msgid "Date field to trigger pull"
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:166
-msgid "When the plugin checks for data to bring from Salesforce into WordPress, it will use the selected field to determine what relevant changes have occurred in Salesforce."
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:171
+#: templates/admin/fieldmaps-add-edit-clone.php:162, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:162, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:162, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:162, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:162, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:162, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:162, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:162
 msgid "Fieldmap"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:175
+#: templates/admin/fieldmaps-add-edit-clone.php:166, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:166, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:166, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:166, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:166, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:166, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:166, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:166
 msgid "WordPress Field"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:176
+#: templates/admin/fieldmaps-add-edit-clone.php:167, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:167, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:167, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:167, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:167, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:167, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:167, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:167
 msgid "Salesforce Field"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:177
+#: templates/admin/fieldmaps-add-edit-clone.php:168, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:168, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:168, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:168, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:168, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:168, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:168, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:168
 msgid "Prematch"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:178
+#: templates/admin/fieldmaps-add-edit-clone.php:169, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:169, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:169, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:169, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:169, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:169, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:169, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:169
 msgid "Salesforce Key"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:179
+#: templates/admin/fieldmaps-add-edit-clone.php:170, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:170, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:170, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:170, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:170, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:170, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:170, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:170
 msgid "Direction"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:180, templates/admin/fieldmaps-list.php:40, templates/admin/mapping-errors.php:57, templates/admin/mapping-errors.php:82
+#: templates/admin/fieldmaps-add-edit-clone.php:171, templates/admin/fieldmaps-list.php:25, templates/admin/mapping-errors.php:30, templates/admin/mapping-errors.php:47, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:171, release/svn/trunk/templates/admin/fieldmaps-list.php:25, release/svn/trunk/templates/admin/mapping-errors.php:30, release/svn/trunk/templates/admin/mapping-errors.php:47, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:171, release/svn/tags/1.0.0/templates/admin/fieldmaps-list.php:25, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:171, release/svn/tags/1.0.1/templates/admin/fieldmaps-list.php:25, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:171, release/svn/tags/1.0.3/templates/admin/fieldmaps-list.php:25, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:171, release/svn/tags/1.0.5/templates/admin/fieldmaps-list.php:25, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:171, release/svn/tags/1.0.6/templates/admin/fieldmaps-list.php:25, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:30, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:47, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:171, release/svn/tags/1.0.8/templates/admin/fieldmaps-list.php:25, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:30, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:47
 msgid "Delete"
 msgstr ""
 
-#. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
-#: templates/admin/fieldmaps-add-edit-clone.php:189, templates/admin/fieldmaps-add-edit-clone.php:197
-msgid "Note:"
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:189
-msgid " to map a custom meta field (such as wp_postmeta, wp_usermeta, wp_termmeta, etc.), WordPress must have at least one value for that field. If you add a new meta field and want to map it, make sure to add a value for it and "
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:189
-msgid " to see the field listed here."
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:191
-msgid "clear the plugin cache"
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:197
-msgid " when mapping Salesforce fields, a * in the field name designates a required field for this object type."
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:212, templates/admin/fieldmaps-add-edit-clone.php:329
+#: templates/admin/fieldmaps-add-edit-clone.php:182, templates/admin/fieldmaps-add-edit-clone.php:285, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:182, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:285, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:182, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:285, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:182, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:285, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:182, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:285, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:182, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:285, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:182, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:285, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:182, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:285
 msgid "Select WordPress field"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:233, templates/admin/fieldmaps-add-edit-clone.php:343
+#: templates/admin/fieldmaps-add-edit-clone.php:203, templates/admin/fieldmaps-add-edit-clone.php:299, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:203, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:299, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:203, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:299, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:203, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:299, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:203, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:299, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:203, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:299, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:203, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:299, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:203, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:299
 msgid "Select Salesforce field"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:278
+#: templates/admin/fieldmaps-add-edit-clone.php:234, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:234, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:234, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:234, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:234, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:234, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:234, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:234
 msgid "This pair should be checked for existing matches in Salesforce before adding"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:288
+#: templates/admin/fieldmaps-add-edit-clone.php:244, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:244, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:244, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:244, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:244, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:244, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:244, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:244
 msgid "This Salesforce field is an External ID in Salesforce"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:313, templates/admin/fieldmaps-add-edit-clone.php:367
+#: templates/admin/fieldmaps-add-edit-clone.php:269, templates/admin/fieldmaps-add-edit-clone.php:323, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:269, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:323, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:269, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:323, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:269, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:323, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:269, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:323, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:269, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:323, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:269, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:323, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:269, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:323
 msgid "Salesforce to WordPress"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:314, templates/admin/fieldmaps-add-edit-clone.php:368
+#: templates/admin/fieldmaps-add-edit-clone.php:270, templates/admin/fieldmaps-add-edit-clone.php:324, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:270, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:324, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:270, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:324, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:270, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:324, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:270, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:324, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:270, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:324, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:270, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:324, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:270, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:324
 msgid "WordPress to Salesforce"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:315, templates/admin/fieldmaps-add-edit-clone.php:369
+#: templates/admin/fieldmaps-add-edit-clone.php:271, templates/admin/fieldmaps-add-edit-clone.php:325, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:271, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:325, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:271, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:325, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:271, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:325, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:271, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:325, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:271, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:325, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:271, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:325, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:271, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:325
 msgid "Sync"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:384
+#: templates/admin/fieldmaps-add-edit-clone.php:340, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:340, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:340, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:340, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:340, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:340, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:340, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:340
 msgid "Add another field mapping"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:386
+#: templates/admin/fieldmaps-add-edit-clone.php:342, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:342, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:342, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:342, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:342, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:342, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:342, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:342
 msgid "Add field mapping"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:390
-msgid "A checked Prematch (when saving data in either WordPress or Salesforce) or Salesforce Key (only when saving data from WordPress to Salesforce) field will cause the plugin to check for a match on that value before creating new records."
+#: templates/admin/fieldmaps-add-edit-clone.php:346, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:346, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:346, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:346, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:346, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:346, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:346, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:346
+msgid "Prematch tells the plugin to match records that have the same value before sending data to Salesforce. Salesforce Key indicates the Salesforce field is an External ID. If either of these is checked, the plugin will do an UPSERT to avoid duplicate data when possible."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:393
+#: templates/admin/fieldmaps-add-edit-clone.php:349, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:349, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:349, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:349, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:349, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:349, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:349, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:349
 msgid "Action triggers"
 msgstr ""
 
-#. translators: placeholders are for the class names: salesforce_push and salesforce_pull
-#: templates/admin/fieldmaps-add-edit-clone.php:436
+#: templates/admin/fieldmaps-add-edit-clone.php:383, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:383, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:383, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:383, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:383, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:383, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:383, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:383
+msgid "WordPress create"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:384, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:384, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:384, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:384, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:384, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:384, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:384, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:384
+msgid "WordPress update"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:385, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:385, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:385, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:385, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:385, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:385, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:385, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:385
+msgid "WordPress delete"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:386, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:386, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:386, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:386, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:386, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:386, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:386, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:386
+msgid "Salesforce create"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:387, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:387, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:387, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:387, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:387, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:387, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:387, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:387
+msgid "Salesforce update"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:388, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:388, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:388, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:388, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:388, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:388, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:388, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:388
+msgid "Salesforce delete"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:392, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:392, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:392, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:392, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:392, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:392, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:392, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:392
 msgid "Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. These settings are used by the %1$s and %2$s classes respectively."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:441
+#: templates/admin/fieldmaps-add-edit-clone.php:397, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:397, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:397, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:397, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:397, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:397, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:397, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:397
 msgid "Process asynchronously"
 msgstr ""
 
-#. translators: placeholder is for WordPress cron method name
-#: templates/admin/fieldmaps-add-edit-clone.php:445
+#: templates/admin/fieldmaps-add-edit-clone.php:401, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:401, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:401, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:401, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:401, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:401, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:401, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:401
 msgid "If selected, push data will be queued for processing and synchronized when %s is run. This may increase site performance, but changes will not be reflected in real time."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:450
+#: templates/admin/fieldmaps-add-edit-clone.php:406, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:406, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:405, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:405, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:405, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:405, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:405, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:406
 msgid "Push drafts"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:451
+#: templates/admin/fieldmaps-add-edit-clone.php:407, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:407, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:406, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:406, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:406, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:406, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:406, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:407
 msgid "If selected, WordPress will send drafts of this object type (if it creates drafts for it) to Salesforce."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:454
-msgid "Pull to drafts"
+#: templates/admin/fieldmaps-add-edit-clone.php:410, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:410, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:409, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:409, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:409, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:409, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:409, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:410
+msgid "Weight"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:455
-msgid "If selected, WordPress will pull data into drafts of this object type (if it creates drafts for it) from Salesforce, including when it attempts to match records."
+#: templates/admin/fieldmaps-add-edit-clone.php:412, release/svn/trunk/templates/admin/fieldmaps-add-edit-clone.php:412, release/svn/tags/1.0.0/templates/admin/fieldmaps-add-edit-clone.php:411, release/svn/tags/1.0.1/templates/admin/fieldmaps-add-edit-clone.php:411, release/svn/tags/1.0.3/templates/admin/fieldmaps-add-edit-clone.php:411, release/svn/tags/1.0.5/templates/admin/fieldmaps-add-edit-clone.php:411, release/svn/tags/1.0.6/templates/admin/fieldmaps-add-edit-clone.php:411, release/svn/tags/1.0.8/templates/admin/fieldmaps-add-edit-clone.php:412
+msgid "Weight is intended for use when you have multiple fieldmaps for the same object, either in WordPress or Salesforce."
 msgstr ""
 
-#. translators: the placeholder refers to the currently selected method (add, edit, or clone)
-#: templates/admin/fieldmaps-add-edit-clone.php:474
-msgid "%1$s fieldmap"
-msgstr ""
-
-#: templates/admin/fieldmaps-delete.php:6
+#: templates/admin/fieldmaps-delete.php:6, release/svn/trunk/templates/admin/fieldmaps-delete.php:6, release/svn/tags/1.0.0/templates/admin/fieldmaps-delete.php:6, release/svn/tags/1.0.1/templates/admin/fieldmaps-delete.php:6, release/svn/tags/1.0.3/templates/admin/fieldmaps-delete.php:6, release/svn/tags/1.0.5/templates/admin/fieldmaps-delete.php:6, release/svn/tags/1.0.6/templates/admin/fieldmaps-delete.php:6, release/svn/tags/1.0.8/templates/admin/fieldmaps-delete.php:6
 msgid "Are you sure you want to delete this fieldmap?"
 msgstr ""
 
-#. translators: the placeholders refer to: 1) the fieldmap label, 2) the saleforce object name, and 3) the WordPress object name
-#: templates/admin/fieldmaps-delete.php:10
+#: templates/admin/fieldmaps-delete.php:10, release/svn/trunk/templates/admin/fieldmaps-delete.php:10, release/svn/tags/1.0.0/templates/admin/fieldmaps-delete.php:10, release/svn/tags/1.0.1/templates/admin/fieldmaps-delete.php:10, release/svn/tags/1.0.3/templates/admin/fieldmaps-delete.php:10, release/svn/tags/1.0.5/templates/admin/fieldmaps-delete.php:10, release/svn/tags/1.0.6/templates/admin/fieldmaps-delete.php:10, release/svn/tags/1.0.8/templates/admin/fieldmaps-delete.php:10
 msgid "This fieldmap is called %1$s and it maps the Salesforce %2$s object to the WordPress %3$s object."
 msgstr ""
 
-#: templates/admin/fieldmaps-delete.php:17, templates/admin/mapping-errors-delete.php:17
-msgid "Confirm deletion"
+#: templates/admin/fieldmaps-list.php:1, release/svn/trunk/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.0/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.1/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.3/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.5/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.6/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.8/templates/admin/fieldmaps-list.php:1
+msgid "Fieldmaps"
 msgstr ""
 
-#: templates/admin/fieldmaps-list.php:1
+#: templates/admin/fieldmaps-list.php:1, release/svn/trunk/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.0/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.1/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.3/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.5/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.6/templates/admin/fieldmaps-list.php:1, release/svn/tags/1.0.8/templates/admin/fieldmaps-list.php:1
 msgid "Add New"
 msgstr ""
 
-#: templates/admin/fieldmaps-list.php:8, templates/admin/mapping-errors.php:22, templates/admin/user-profile-salesforce.php:35
+#: templates/admin/fieldmaps-list.php:8, templates/admin/mapping-errors.php:14, templates/admin/user-profile-salesforce.php:35, release/svn/trunk/templates/admin/fieldmaps-list.php:8, release/svn/trunk/templates/admin/mapping-errors.php:14, release/svn/trunk/templates/admin/user-profile-salesforce.php:35, release/svn/tags/1.0.0/templates/admin/fieldmaps-list.php:8, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:35, release/svn/tags/1.0.1/templates/admin/fieldmaps-list.php:8, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:35, release/svn/tags/1.0.3/templates/admin/fieldmaps-list.php:8, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:35, release/svn/tags/1.0.5/templates/admin/fieldmaps-list.php:8, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:35, release/svn/tags/1.0.6/templates/admin/fieldmaps-list.php:8, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:14, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:35, release/svn/tags/1.0.8/templates/admin/fieldmaps-list.php:8, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:14, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:35
 msgid "Actions"
 msgstr ""
 
-#. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
-#: templates/admin/fieldmaps-list.php:17
-msgid "Has your WordPress or Salesforce data structure changed? "
-msgstr ""
-
-#: templates/admin/fieldmaps-list.php:17
-msgid " to make sure you can map the most recent data structures."
-msgstr ""
-
-#: templates/admin/fieldmaps-list.php:34, templates/admin/mapping-errors.php:54, templates/admin/mapping-errors.php:79, templates/admin/user-profile-salesforce.php:12
+#: templates/admin/fieldmaps-list.php:19, templates/admin/mapping-errors.php:27, templates/admin/mapping-errors.php:44, templates/admin/user-profile-salesforce.php:12, release/svn/trunk/templates/admin/fieldmaps-list.php:19, release/svn/trunk/templates/admin/mapping-errors.php:27, release/svn/trunk/templates/admin/mapping-errors.php:44, release/svn/trunk/templates/admin/user-profile-salesforce.php:12, release/svn/tags/1.0.0/templates/admin/fieldmaps-list.php:19, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:12, release/svn/tags/1.0.1/templates/admin/fieldmaps-list.php:19, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:12, release/svn/tags/1.0.3/templates/admin/fieldmaps-list.php:19, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:12, release/svn/tags/1.0.5/templates/admin/fieldmaps-list.php:19, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:12, release/svn/tags/1.0.6/templates/admin/fieldmaps-list.php:19, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:27, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:44, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:12, release/svn/tags/1.0.8/templates/admin/fieldmaps-list.php:19, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:27, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:44, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:12
 msgid "Edit"
 msgstr ""
 
-#: templates/admin/fieldmaps-list.php:37
+#: templates/admin/fieldmaps-list.php:22, release/svn/trunk/templates/admin/fieldmaps-list.php:22, release/svn/tags/1.0.0/templates/admin/fieldmaps-list.php:22, release/svn/tags/1.0.1/templates/admin/fieldmaps-list.php:22, release/svn/tags/1.0.3/templates/admin/fieldmaps-list.php:22, release/svn/tags/1.0.5/templates/admin/fieldmaps-list.php:22, release/svn/tags/1.0.6/templates/admin/fieldmaps-list.php:22, release/svn/tags/1.0.8/templates/admin/fieldmaps-list.php:22
 msgid "Clone"
 msgstr ""
 
-#. translators: the placeholders refer to: 1) the fieldmap label, 2) the saleforce object name, and 3) the WordPress object name
-#: templates/admin/fieldmaps-list.php:50
+#: templates/admin/fieldmaps-list.php:35, release/svn/trunk/templates/admin/fieldmaps-list.php:35, release/svn/tags/1.0.0/templates/admin/fieldmaps-list.php:35, release/svn/tags/1.0.1/templates/admin/fieldmaps-list.php:35, release/svn/tags/1.0.3/templates/admin/fieldmaps-list.php:35, release/svn/tags/1.0.5/templates/admin/fieldmaps-list.php:35, release/svn/tags/1.0.6/templates/admin/fieldmaps-list.php:35, release/svn/tags/1.0.8/templates/admin/fieldmaps-list.php:35
 msgid "No fieldmaps exist yet. You can "
 msgstr ""
 
-#: templates/admin/import-export.php:1, templates/admin/import-export.php:13
-msgid "Import"
-msgstr ""
-
-#: templates/admin/import-export.php:5
-msgid "Import the plugin data from a .json file. You can use the Export options below to get this file."
-msgstr ""
-
-#: templates/admin/import-export.php:11
-msgid "Overwrite existing data"
-msgstr ""
-
-#: templates/admin/import-export.php:16, templates/admin/import-export.php:32
-msgid "Export"
-msgstr ""
-
-#: templates/admin/import-export.php:22
-msgid "Include Fieldmaps"
-msgstr ""
-
-#: templates/admin/import-export.php:26
-msgid "Include Object Maps"
-msgstr ""
-
-#: templates/admin/import-export.php:30
-msgid "Include Plugin Settings"
-msgstr ""
-
-#: templates/admin/mapping-errors-delete.php:6
+#: templates/admin/mapping-errors-delete.php:6, release/svn/trunk/templates/admin/mapping-errors-delete.php:6, release/svn/tags/1.0.6/templates/admin/mapping-errors-delete.php:6, release/svn/tags/1.0.8/templates/admin/mapping-errors-delete.php:6
 msgid "Are you sure you want to delete this mapping object?"
 msgstr ""
 
-#. translators: the placeholders refer to: 1) the WordPress object name, 2) the WordPress object Id, and 3) the Salesforce object Id
-#: templates/admin/mapping-errors-delete.php:10
+#: templates/admin/mapping-errors-delete.php:10, release/svn/trunk/templates/admin/mapping-errors-delete.php:10, release/svn/tags/1.0.6/templates/admin/mapping-errors-delete.php:10, release/svn/tags/1.0.8/templates/admin/mapping-errors-delete.php:10
 msgid "This object map maps the WordPress %1$s with an id value of %2$s to the Salesforce object with Id of %3$s."
 msgstr ""
 
-#: templates/admin/mapping-errors-edit.php:13
+#: templates/admin/mapping-errors-edit.php:13, release/svn/trunk/templates/admin/mapping-errors-edit.php:13, release/svn/tags/1.0.6/templates/admin/mapping-errors-edit.php:13, release/svn/tags/1.0.8/templates/admin/mapping-errors-edit.php:13
 msgid "WordPress Id"
 msgstr ""
 
-#: templates/admin/mapping-errors-edit.php:17, templates/admin/user-profile-salesforce.php:10
+#: templates/admin/mapping-errors-edit.php:17, templates/admin/user-profile-salesforce.php:10, release/svn/trunk/templates/admin/mapping-errors-edit.php:17, release/svn/trunk/templates/admin/user-profile-salesforce.php:10, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:10, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:10, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:10, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:10, release/svn/tags/1.0.6/templates/admin/mapping-errors-edit.php:17, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:10, release/svn/tags/1.0.8/templates/admin/mapping-errors-edit.php:17, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:10
 msgid "Salesforce Id"
 msgstr ""
 
-#. translators: the placeholder refers to the currently selected method (edit or delete)
-#: templates/admin/mapping-errors-edit.php:23
-msgid "%1$s object map"
+#: templates/admin/mapping-errors.php:1, release/svn/trunk/templates/admin/mapping-errors.php:1, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:1, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:1
+msgid "Mapping Errors"
 msgstr ""
 
-#: templates/admin/mapping-errors.php:2
+#: templates/admin/mapping-errors.php:2, release/svn/trunk/templates/admin/mapping-errors.php:2, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:2, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:2
 msgid "When this tab is present, it means one or more mapping errors have occurred when the plugin has tried to save a new mapping object, either based on data pulled in from Salesforce or data that was sent to Salesforce. The plugin creates a temporary flag for WordPress (if it is a pull action) or for Salesforce (if it is a push action), and if it fails the temporary flag remains."
 msgstr ""
 
-#: templates/admin/mapping-errors.php:3
+#: templates/admin/mapping-errors.php:3, release/svn/trunk/templates/admin/mapping-errors.php:3, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:3, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:3
 msgid "For any mapping object error, you can edit (if, for example, you know the ID of the item that should be in place) or delete each database row, or you can try to track down what the plugin was doing based on the other data displayed here."
 msgstr ""
 
-#: templates/admin/mapping-errors.php:4
+#: templates/admin/mapping-errors.php:4, release/svn/trunk/templates/admin/mapping-errors.php:4, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:4, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:4
 msgid "If you edit one of these items, and it correctly maps data between the two systems, the sync for those items will behave as normal going forward, so any edits you do after that will sync as they should."
 msgstr ""
 
-#: templates/admin/mapping-errors.php:17
+#: templates/admin/mapping-errors.php:9, release/svn/trunk/templates/admin/mapping-errors.php:9, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:9, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:9
 msgid "Type"
 msgstr ""
 
-#: templates/admin/mapping-errors.php:18
+#: templates/admin/mapping-errors.php:10, release/svn/trunk/templates/admin/mapping-errors.php:10, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:10, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:10
 msgid "WordPress ID"
 msgstr ""
 
-#: templates/admin/mapping-errors.php:19
+#: templates/admin/mapping-errors.php:11, release/svn/trunk/templates/admin/mapping-errors.php:11, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:11, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:11
 msgid "WordPress Object Type"
 msgstr ""
 
-#: templates/admin/mapping-errors.php:20, templates/admin/user-profile-salesforce-change.php:6, templates/admin/user-profile-salesforce-map.php:6
+#: templates/admin/mapping-errors.php:12, templates/admin/user-profile-salesforce-change.php:6, templates/admin/user-profile-salesforce-map.php:6, release/svn/trunk/templates/admin/mapping-errors.php:12, release/svn/trunk/templates/admin/user-profile-salesforce-change.php:6, release/svn/trunk/templates/admin/user-profile-salesforce-map.php:6, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce-change.php:6, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce-map.php:6, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce-change.php:6, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce-map.php:6, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce-change.php:6, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce-map.php:6, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce-change.php:6, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce-map.php:6, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:12, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce-change.php:6, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce-map.php:6, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:12, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce-change.php:6, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce-map.php:6
 msgid "Salesforce ID"
 msgstr ""
 
-#: templates/admin/mapping-errors.php:21
+#: templates/admin/mapping-errors.php:13, release/svn/trunk/templates/admin/mapping-errors.php:13, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:13, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:13
 msgid "Created Date/Time"
 msgstr ""
 
-#: templates/admin/mapping-errors.php:30
-msgid "Delete selected rows"
-msgstr ""
-
-#: templates/admin/mapping-errors.php:48, templates/admin/user-profile-salesforce.php:38
+#: templates/admin/mapping-errors.php:21, templates/admin/user-profile-salesforce.php:38, release/svn/trunk/templates/admin/mapping-errors.php:21, release/svn/trunk/templates/admin/user-profile-salesforce.php:38, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:38, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:38, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:38, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:38, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:21, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:38, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:21, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:38
 msgid "Pull from Salesforce"
 msgstr ""
 
-#: templates/admin/mapping-errors.php:73, templates/admin/user-profile-salesforce.php:37
+#: templates/admin/mapping-errors.php:38, templates/admin/user-profile-salesforce.php:37, release/svn/trunk/templates/admin/mapping-errors.php:38, release/svn/trunk/templates/admin/user-profile-salesforce.php:37, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:37, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:37, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:37, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:37, release/svn/tags/1.0.6/templates/admin/mapping-errors.php:38, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:37, release/svn/tags/1.0.8/templates/admin/mapping-errors.php:38, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:37
 msgid "Push to Salesforce"
 msgstr ""
 
-#: templates/admin/settings.php:4
-msgid "Save settings"
-msgstr ""
-
-#: templates/admin/status.php:1
+#: templates/admin/status.php:1, release/svn/trunk/templates/admin/status.php:1, release/svn/tags/1.0.0/templates/admin/status.php:1, release/svn/tags/1.0.1/templates/admin/status.php:1, release/svn/tags/1.0.3/templates/admin/status.php:1, release/svn/tags/1.0.5/templates/admin/status.php:1, release/svn/tags/1.0.6/templates/admin/status.php:1, release/svn/tags/1.0.8/templates/admin/status.php:1
 msgid "Salesforce Status"
 msgstr ""
 
-#. translators: placeholder is for the version number of the Salesforce REST API
-#: templates/admin/status.php:5
+#: templates/admin/status.php:5, release/svn/trunk/templates/admin/status.php:5, release/svn/tags/1.0.0/templates/admin/status.php:5, release/svn/tags/1.0.1/templates/admin/status.php:5, release/svn/tags/1.0.3/templates/admin/status.php:5, release/svn/tags/1.0.5/templates/admin/status.php:5, release/svn/tags/1.0.6/templates/admin/status.php:5, release/svn/tags/1.0.8/templates/admin/status.php:5
 msgid "Currently, we are using version %1$s of the Salesforce REST API. Available versions are displayed below."
 msgstr ""
 
-#: templates/admin/status.php:17
+#: templates/admin/status.php:17, release/svn/trunk/templates/admin/status.php:17, release/svn/tags/1.0.0/templates/admin/status.php:17, release/svn/tags/1.0.1/templates/admin/status.php:17, release/svn/tags/1.0.3/templates/admin/status.php:17, release/svn/tags/1.0.5/templates/admin/status.php:17, release/svn/tags/1.0.6/templates/admin/status.php:17, release/svn/tags/1.0.8/templates/admin/status.php:17
 msgid "URL"
 msgstr ""
 
-#: templates/admin/status.php:18
+#: templates/admin/status.php:18, release/svn/trunk/templates/admin/status.php:18, release/svn/tags/1.0.0/templates/admin/status.php:18, release/svn/tags/1.0.1/templates/admin/status.php:18, release/svn/tags/1.0.3/templates/admin/status.php:18, release/svn/tags/1.0.5/templates/admin/status.php:18, release/svn/tags/1.0.6/templates/admin/status.php:18, release/svn/tags/1.0.8/templates/admin/status.php:18
 msgid "Version"
 msgstr ""
 
-#: templates/admin/user-profile-salesforce-change.php:3
+#: templates/admin/user-profile-salesforce-change.php:3, release/svn/trunk/templates/admin/user-profile-salesforce-change.php:3, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce-change.php:3, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce-change.php:3, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce-change.php:3, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce-change.php:3, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce-change.php:3, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce-change.php:3
 msgid "You can change the Salesforce object that this WordPress user maps to by changing the ID and updating this user."
 msgstr ""
 
-#: templates/admin/user-profile-salesforce-change.php:9, templates/admin/user-profile-salesforce-map.php:9
+#: templates/admin/user-profile-salesforce-change.php:9, templates/admin/user-profile-salesforce-map.php:9, release/svn/trunk/templates/admin/user-profile-salesforce-change.php:9, release/svn/trunk/templates/admin/user-profile-salesforce-map.php:9, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce-change.php:9, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce-map.php:9, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce-change.php:9, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce-map.php:9, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce-change.php:9, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce-map.php:9, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce-change.php:9, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce-map.php:9, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce-change.php:9, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce-map.php:9, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce-change.php:9, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce-map.php:9
 msgid "Enter a Salesforce object ID."
 msgstr ""
 
-#: templates/admin/user-profile-salesforce-map.php:3
+#: templates/admin/user-profile-salesforce-map.php:3, release/svn/trunk/templates/admin/user-profile-salesforce-map.php:3, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce-map.php:3, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce-map.php:3, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce-map.php:3, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce-map.php:3, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce-map.php:3, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce-map.php:3
 msgid "This user is not mapped to an object in Salesforce. You can run a push to send this object to Salesforce, which will cause it to follow the plugin's normal mapping conventions, or you can create a manual link to a Salesforce object."
 msgstr ""
 
-#: templates/admin/user-profile-salesforce-map.php:11
+#: templates/admin/user-profile-salesforce-map.php:11, release/svn/trunk/templates/admin/user-profile-salesforce-map.php:11, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce-map.php:11, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce-map.php:11, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce-map.php:11, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce-map.php:11, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce-map.php:11, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce-map.php:11
 msgid "Push to Salesforce as new record"
 msgstr ""
 
-#: templates/admin/user-profile-salesforce.php:7
+#: templates/admin/user-profile-salesforce.php:7, release/svn/trunk/templates/admin/user-profile-salesforce.php:7, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:7, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:7, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:7, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:7, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:7, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:7
 msgid "This user is mapped to a Salesforce object"
 msgstr ""
 
-#: templates/admin/user-profile-salesforce.php:15
+#: templates/admin/user-profile-salesforce.php:15, release/svn/trunk/templates/admin/user-profile-salesforce.php:15, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:15, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:15, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:15, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:15, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:15, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:15
 msgid "Last Sync Message"
 msgstr ""
 
-#: templates/admin/user-profile-salesforce.php:20
+#: templates/admin/user-profile-salesforce.php:20, release/svn/trunk/templates/admin/user-profile-salesforce.php:20, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:20, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:20, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:20, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:20, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:20, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:20
 msgid "Last Sync Action"
 msgstr ""
 
-#: templates/admin/user-profile-salesforce.php:25
+#: templates/admin/user-profile-salesforce.php:25, release/svn/trunk/templates/admin/user-profile-salesforce.php:25, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:25, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:25, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:25, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:25, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:25, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:25
 msgid "Last Sync Status"
 msgstr ""
 
-#: templates/admin/user-profile-salesforce.php:26
+#: templates/admin/user-profile-salesforce.php:26, release/svn/trunk/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:26
 msgid "success"
 msgstr ""
 
-#: templates/admin/user-profile-salesforce.php:26
+#: templates/admin/user-profile-salesforce.php:26, release/svn/trunk/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:26, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:26
 msgid "error"
 msgstr ""
 
-#: templates/admin/user-profile-salesforce.php:30
+#: templates/admin/user-profile-salesforce.php:30, release/svn/trunk/templates/admin/user-profile-salesforce.php:30, release/svn/tags/1.0.0/templates/admin/user-profile-salesforce.php:30, release/svn/tags/1.0.1/templates/admin/user-profile-salesforce.php:30, release/svn/tags/1.0.3/templates/admin/user-profile-salesforce.php:30, release/svn/tags/1.0.5/templates/admin/user-profile-salesforce.php:30, release/svn/tags/1.0.6/templates/admin/user-profile-salesforce.php:30, release/svn/tags/1.0.8/templates/admin/user-profile-salesforce.php:30
 msgid "Last Sync"
+msgstr ""
+
+#: release/svn/tags/1.0.0/classes/salesforce_mapping.php:396, release/svn/tags/1.0.1/classes/salesforce_mapping.php:396, release/svn/tags/1.0.3/classes/salesforce_mapping.php:396
+msgid "Error Mapping: error caused by trying to map the WordPress %1$s with ID of %2$s to Salesforce ID of 0, which is invalid."
 msgstr ""

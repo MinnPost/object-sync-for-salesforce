@@ -88,6 +88,13 @@ class Object_Sync_Salesforce {
 
 	/**
 	* @var object
+	* Load and initialize the Salesforce_Soap class.
+	* this contains the Salesforce SOAP client
+	*/
+	public $salesforce_soap_partner;
+
+	/**
+	* @var object
 	* Load and initialize the Object_Sync_Sf_Salesforce_Push class
 	*/
 	private $push;
@@ -200,6 +207,7 @@ class Object_Sync_Salesforce {
 
 		$this->wordpress  = $this->wordpress( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->mappings, $this->logging );
 		$this->salesforce = $this->salesforce_get_api();
+		$this->salesforce_soap_partner = $this->salesforce_soap_partner( $this->salesforce['sfapi'] );
 
 		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes, $this->queue );
 
@@ -328,6 +336,18 @@ class Object_Sync_Salesforce {
 			'is_authorized' => $is_authorized,
 			'sfapi'         => $sfapi,
 		);
+	}
+
+	/**
+	* Public helper to load the Salesforce SOAP client
+	* This is public so other plugins can access the same SF instance
+	*
+	* @return
+	*/
+	public function salesforce_soap_partner( $sfapi ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_soap_partner.php' );
+		$salesforce_soap_partner = new Object_Sync_Sf_Salesforce_Soap_Partner( $sfapi );
+		return $salesforce_soap_partner;
 	}
 
 	/**
