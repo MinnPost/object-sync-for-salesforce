@@ -712,7 +712,7 @@ class Object_Sync_Sf_Admin {
 				'args' => array(
 					'type' => 'checkbox',
 					'validate' => 'sanitize_text_field',
-					'desc' => 'Check this to enable the SOAP API and use it instead of the REST API when the plugin supports it. https://developer.salesforce.com/blogs/tech-pubs/2011/10/salesforce-apis-what-they-are-when-to-use-them.html to compare the two.',
+					'desc' => 'Check this to enable the SOAP API and use it instead of the REST API when the plugin supports it. https://developer.salesforce.com/blogs/tech-pubs/2011/10/salesforce-apis-what-they-are-when-to-use-them.html to compare the two. Note: if you need to detect Salesforce merges in this plugin, you will need to enable SOAP.',
 					'constant' => '',
 				),
 			),
@@ -724,7 +724,7 @@ class Object_Sync_Sf_Admin {
 				'args' => array(
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
-					'desc' => 'Optionally add the path to your WSDL file. If you do not, the plugin will use the default partner.wsdl.xml from the Force.com toolkit.',
+					'desc' => 'Optionally add a path to your own WSDL file. If you do not, the plugin will use the default partner.wsdl.xml from the Force.com toolkit.',
 					'constant' => '',
 				),
 			),
