@@ -1303,6 +1303,16 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$is_new = true;
 			}
 
+			// by default, we're not doing a merge
+			$is_merge = false;
+
+			// but this is a merge action
+			if ( isset( $object['deletedDate'] ) ) {
+				error_log( 'merge is true' );
+				$is_new   = false;
+				$is_merge = true;
+			}
+
 			$mapping_object_id_transient = get_transient( 'salesforce_pushing_object_id' );
 			if ( false === $mapping_object_id_transient ) {
 				$mapping_object_id_transient = $object['Id'];
@@ -1402,7 +1412,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				}
 				$synced_object = $this->get_synced_object( $object, $mapping_object, $salesforce_mapping );
 				$create        = $this->create_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $prematch, $wordpress_id_field_name, $seconds );
-			} elseif ( false === $is_new ) {
+			} elseif ( false === $is_new && false === $is_merge ) {
 				// there is already at least one mapping_object['id'] associated with this Salesforce Id
 				// right here we should set the pulling transient
 				set_transient( 'salesforce_pulling_' . $mapping_objects[0]['salesforce_id'], 1, $seconds );
