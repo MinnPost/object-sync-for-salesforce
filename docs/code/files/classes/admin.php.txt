@@ -724,7 +724,7 @@ class Object_Sync_Sf_Admin {
 				'args' => array(
 					'type' => 'text',
 					'validate' => 'sanitize_text_field',
-					'desc' => 'Add the path to the WSDL file',
+					'desc' => 'Optionally add the path to your WSDL file. If you do not, the plugin will use the default partner.wsdl.xml from the Force.com toolkit.',
 					'constant' => '',
 				),
 			),
