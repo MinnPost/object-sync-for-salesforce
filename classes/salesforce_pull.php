@@ -70,6 +70,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$this->min_soql_batch_size = 200; // batches cannot be smaller than 200 records
 		$this->max_soql_size       = 2000;
 
+		$this->mergeable_record_types = array( 'Lead', 'Contact', 'Account' );
+
 		// Create action hooks for WordPress objects. We run this after plugins are loaded in case something depends on another plugin.
 		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
 
@@ -161,6 +163,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		if ( true === $this->salesforce['is_authorized'] && true === $this->check_throttle() ) {
 
 			$this->get_updated_records();
+			$this->get_merged_records();
 			$this->get_deleted_records();
 
 			// Store this request time for the throttle check.
@@ -776,6 +779,148 @@ class Object_Sync_Sf_Salesforce_Pull {
 	}
 
 	/**
+	* Get merged records from Salesforce.
+	* Note that merges can currently only work if the Soap API is enabled.
+	*
+	*/
+	private function get_merged_records() {
+
+		$sfapi = $this->salesforce['sfapi'];
+		$use_soap = filter_var( get_option( 'object_sync_for_salesforce_use_soap', false ), FILTER_VALIDATE_BOOLEAN );
+		$use_soap = true;
+		if ( true === $use_soap ) {
+			$wsdl = get_option( 'object_sync_for_salesforce_soap_wsdl_path', plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml' );
+			$soap = new Object_Sync_Sf_Salesforce_Soap_Partner( $sfapi, $wsdl );
+		}
+		$seconds = 60;
+
+		$merged_records = array();
+
+		// Load fieldmaps for mergeable types
+		foreach ( $this->mergeable_record_types as $type ) {
+			$mappings = $this->mappings->get_fieldmaps(
+				null,
+				array(
+					'salesforce_object' => $type,
+				)
+			);
+
+			// Iterate over each field mapping to determine our query parameters.
+			foreach ( $mappings as $salesforce_mapping ) {
+				$last_merge_sync = get_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], current_time( 'timestamp', true ) );
+				$now              = current_time( 'timestamp', true );
+				update_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], $now );
+
+				// get_deleted() constraint: startDate cannot be more than 30 days ago
+				// (using an incompatible date may lead to exceptions).
+				$last_merge_sync = $last_merge_sync > ( current_time( 'timestamp', true ) - 2505600 ) ? $last_merge_sync : ( current_time( 'timestamp', true ) - 2505600 );
+
+				// get_deleted() constraint: startDate must be at least one minute greater
+				// than endDate.
+				$now = $now > ( $last_merge_sync + 60 ) ? $now : $now + 60;
+
+				// need to be using gmdate for Salesforce call
+				$last_merge_sync_sf = gmdate( 'Y-m-d\TH:i:s\Z', $last_merge_sync );
+
+				// we want to add something like this eventually, to the query: AND SystemModstamp > 2006-01-01T23:01:01+01:00
+
+				$merged = array();
+				// there doesn't appear to be a way to do this in the rest api; for now we'll do soap
+				if ( true === $use_soap ) {
+					$type = $salesforce_mapping['salesforce_object'];
+					$query  = "SELECT Id, isDeleted, masterRecordId FROM $type WHERE masterRecordId != '' AND SystemModStamp > $last_merge_sync_sf";
+					//error_log( 'final query will be ' . $query );
+					//$query  = "SELECT Id, isDeleted, masterRecordId FROM $type WHERE masterRecordId != ''";
+					//error_log( 'query is ' . $query );
+					// Salesforce call
+					$merged = $soap->try_soap( 'queryAll', $query );
+					if ( ! empty( $merged->records ) ) {
+						$merged = json_decode( wp_json_encode( $merged->records ), true );
+					} else {
+						continue;
+					}
+
+					foreach ( $merged as $result ) {
+						$record = array();
+						if ( is_array( array_unique( $result['Id'] ) ) ) {
+							$record['Id'] = array_unique( $result['Id'] )[0];
+						} else {
+							$record['Id'] = $result['Id'];
+						}
+						if ( isset( $result['any'] ) ) {
+							libxml_use_internal_errors( true );
+							$any = simplexml_load_string( '<?xml version="1.0" standalone="yes"?><root>' . $result['any'] . '</root>' );
+							if ( $any ) {
+							    $json   = wp_json_encode( $any );
+								$array  = json_decode( $json, TRUE );
+								$record = array_merge( $record, $array );
+							}
+						}
+						$merged_records[] = $record;
+						$this->respond_to_salesforce_merge( $type, $record );
+					} // End foreach on merged
+				} // End if on soap
+				if ( ! empty( $merged_records ) ) {
+					set_transient( 'salesforce_merged_' . $type, $merged_records, $seconds );
+				}
+			} // End foreach on mappings
+		} // end foreach on types
+
+	}
+
+	/**
+	* Respond to Salesforce merge events
+	* This means we update the mapping object to contain the new Salesforce Id, and pull its data
+	*
+	* @param string $object_type
+	* @param array $merged_record
+	*
+	*/
+	private function respond_to_salesforce_merge( $object_type, $merged_record ) {
+		$op = 'Merge';
+		if ( isset( $merged_record['Id'] ) && true === filter_var( $merged_record['sf:IsDeleted'], FILTER_VALIDATE_BOOLEAN ) && '' !== $merged_record['sf:MasterRecordId'] ) {
+			$previous_sf_id  = $merged_record['Id'];
+			$new_sf_id       = $merged_record['sf:MasterRecordId'];
+			$mapping_objects = $this->mappings->load_all_by_salesforce( $previous_sf_id );
+			foreach ( $mapping_objects as $mapping_object ) {
+				$wordpress_type                  = $mapping_object['wordpress_object'];
+				$wordpress_id                    = $mapping_object['wordpress_id'];
+				$mapping_object['salesforce_id'] = $new_sf_id;
+				$mapping_object = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+
+				$status = 'success';
+
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+				}
+
+				// translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object type, 3) the previous Salesforce Id value, 4) the new Salesforce Id value, 5) the name of the WordPress object, 6) the WordPress id value
+				$title = sprintf( esc_html__( 'Success: %1$s Salesforce %2$s objects with Ids %3$s and %4$s were merged (%4$s is the remaining ID. It is mapped to WordPress %5$s with %6$s.)', 'object-sync-for-salesforce' ),
+					esc_attr( $op ),
+					esc_attr( $object_type ),
+					esc_attr( $previous_sf_id ),
+					esc_attr( $new_sf_id ),
+					esc_attr( $wordpress_type ),
+					esc_attr( $wordpress_id ),
+				);
+
+				$result = array(
+					'title'   => $title,
+					'message' => '',
+					'trigger' => 0,
+					'parent'  => $wordpress_id,
+					'status'  => $status,
+				);
+
+				$logging->setup( $result );
+
+			}
+		}
+	}
+
+	/**
 	* Get deleted records from salesforce.
 	* Note that deletions can only be queried via REST with an API version >= 29.0.
 	*
@@ -822,6 +967,20 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				// Salesforce call
 				$deleted = $sfapi->get_deleted( $type, $last_delete_sync_sf, $now_sf );
+				$merged  = get_transient( 'salesforce_merged_' . $type );
+				if ( false !== $merged && isset( $deleted['data']['deletedRecords'] ) ) {
+					foreach ( $merged as $key ) {
+						$deleted['data']['deletedRecords'] = array_filter(
+							$deleted['data']['deletedRecords'],
+							function( $x ) use ( $key ) {
+								if ( ! isset( $x['Id'] ) && isset( $x['id'] ) ) {
+									$x['Id'] = $x['id'];
+								}
+								return $x['Id'] !== $key;
+							}
+						);
+					}
+				}
 
 				if ( empty( $deleted['data']['deletedRecords'] ) ) {
 					continue;

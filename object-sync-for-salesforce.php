@@ -304,6 +304,7 @@ class Object_Sync_Salesforce {
 	public function salesforce_get_api() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_query.php' ); // this can be used to generate soql queries, but we don't often need it so it gets initialized whenever it's needed
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_soap_partner.php' );
 		$consumer_key        = $this->login_credentials['consumer_key'];
 		$consumer_secret     = $this->login_credentials['consumer_secret'];
 		$login_url           = $this->login_credentials['login_url'];
