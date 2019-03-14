@@ -704,24 +704,24 @@ class Object_Sync_Sf_Admin {
 					'default'  => $this->default_pull_throttle,
 				),
 			),
-			'use_soap' => array(
-				'title' => __( 'Enable the Salesforce SOAP API?', 'object-sync-for-salesforce' ),
+			'use_soap'                       => array(
+				'title'    => __( 'Enable the Salesforce SOAP API?', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
-				'page' => $page,
-				'section' => $section,
-				'args' => array(
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
 					'type'     => 'checkbox',
 					'validate' => 'sanitize_text_field',
 					'desc'     => __( 'Check this to enable the SOAP API and use it instead of the REST API when the plugin supports it. https://developer.salesforce.com/blogs/tech-pubs/2011/10/salesforce-apis-what-they-are-when-to-use-them.html to compare the two. Note: if you need to detect Salesforce merges in this plugin, you will need to enable SOAP.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
 			),
-			'soap_wsdl_path' => array(
-				'title' => __( 'Path to SOAP WSDL file', 'object-sync-for-salesforce' ),
+			'soap_wsdl_path'                 => array(
+				'title'    => __( 'Path to SOAP WSDL file', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
-				'page' => $page,
-				'section' => $section,
-				'args' => array(
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
 					'type'     => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc'     => __( 'Optionally add a path to your own WSDL file. If you do not, the plugin will use the default partner.wsdl.xml from the Force.com toolkit.', 'object-sync-for-salesforce' ),
