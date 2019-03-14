@@ -1392,7 +1392,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 				if ( empty( $params ) ) {
 					return;
 				}
-
 			} // end checking for create/update
 
 			// if this Salesforce record is new to WordPress, we can try to create it
@@ -1414,9 +1413,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$synced_object = $this->get_synced_object( $object, $mapping_object, $salesforce_mapping );
 					// if params is set, this is an update request. if not, it is a delete.
 					if ( isset( $params ) ) {
-						$update        = $this->update_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $wordpress_id_field_name, $seconds );
+						$update = $this->update_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $wordpress_id_field_name, $seconds );
 					} else {
-						$delete        = $this->delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds );
+						$delete = $this->delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds );
 					}
 				}
 			}
