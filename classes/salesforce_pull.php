@@ -829,9 +829,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 				if ( true === $use_soap ) {
 					$type = $salesforce_mapping['salesforce_object'];
 					$query  = "SELECT Id, isDeleted, masterRecordId FROM $type WHERE masterRecordId != '' AND SystemModStamp > $last_merge_sync_sf";
-					//error_log( 'final query will be ' . $query );
-					//$query  = "SELECT Id, isDeleted, masterRecordId FROM $type WHERE masterRecordId != ''";
-					//error_log( 'query is ' . $query );
 					// Salesforce call
 					$merged = $soap->try_soap( 'queryAll', $query );
 					if ( ! empty( $merged->records ) ) {
