@@ -1427,6 +1427,10 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$delete = $this->delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds );
 					}
 				}
+			} elseif ( false === $is_new ) {
+				// on merge, we should still update the transient
+				set_transient( 'salesforce_pulling_' . $mapping_objects[0]['salesforce_id'], 1, $seconds );
+				set_transient( 'salesforce_pulling_object_id', $mapping_objects[0]['salesforce_id'] );
 			}
 		} // End foreach() on $salesforce_mappings.
 
