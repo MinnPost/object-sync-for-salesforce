@@ -139,7 +139,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 
 		$schedule = get_post_meta( $post->ID, self::SCHEDULE_META_KEY, true );
-		if ( empty($schedule) ) {
+		if ( empty( $schedule ) || ! is_a( $schedule, 'ActionScheduler_Schedule' ) ) {
 			$schedule = new ActionScheduler_NullSchedule();
 		}
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array('fields' => 'names') );
@@ -626,16 +626,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 				'ID'         => 'ASC',
 			),
 			'date_query'       => array(
-				'column' => 'post_date',
-				array(
-					'compare' => '<=',
-					'year'    => $date->format( 'Y' ),
-					'month'   => $date->format( 'n' ),
-					'day'     => $date->format( 'j' ),
-					'hour'    => $date->format( 'G' ),
-					'minute'  => $date->format( 'i' ),
-					'second'  => $date->format( 's' ),
-				),
+				'column' => 'post_date_gmt',
+				'before' => $date->format( 'Y-m-d H:i' ),
+				'inclusive' => true,
 			),
 			'tax_query' => array(
 				array(
