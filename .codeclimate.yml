@@ -20,6 +20,8 @@ exclude_paths:
   - node_modules/**/*
   - tests/**/*
   - vendor/**/*
+  - assets/css/vendor/*
+  - assets/js/vendor/*
   - "**.min.css"
   - "**.min.js"
   - "Gulpfile.js"

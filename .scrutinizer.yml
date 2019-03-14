@@ -1,17 +1,30 @@
+checks:
+  php:
+    avoid_closing_tag: false
+    avoid_superglobals: false
+    coding_standard:
+      name: WordPress
+    no_exit: false
+    no_global_keyword: false
+    one_class_per_file: false
+    psr2_class_declaration: false
+    psr2_control_structure_declaration: false
+    psr2_switch_declaration: false
+    variable_existence: false
+    verify_access_scope_valid: false
+    verify_argument_usable_as_reference: false
+    verify_property_names: false
+    
 filter:
     excluded_paths:
         - 'bin/*'
         - 'docs/*'
+        - 'node_modules/*'
+        - 'tests/*'
         - '*.min.js'
         - '*.min.css'
-        - 'assets/js/vendor/**/*.js'
-        - 'assets/js/vendor/**/*.css'
-        - 'node_modules/**/*'
-        - 'tests/**/*'
-        - 'vendor/**/*'
+        - 'assets/js/vendor/*'
         - 'Gulpfile.js'
-        - 'wordpress/**/*.js'
-        - 'wordpress/**/*.css'
     dependency_paths:
         - wordpress/
 tools:
@@ -20,8 +33,8 @@ tools:
             standard: WordPress
 build:
     environment:
-      node: 'v11.0.0'
-      php: '7.1.25'
+      node: 'v11.11.0'
+      php: '7.3.3'
       mysql: true
       apache2:
         modules:

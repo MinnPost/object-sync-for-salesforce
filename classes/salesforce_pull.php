@@ -379,8 +379,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 							}
 
-							// translators: placeholders are 1) the hook name, 2) the Salesforce object type, 3) the object map ID, 4) the sync trigger, 5) the schedule name.
-							$message = sprintf( esc_html__( 'This record is being sent to the queue. The hook name is %1$s. The arguments for the hook are: object type %2$s, object map ID %3$s, sync trigger %4$s. The schedule name is %5$s.', 'object-sync-for-salesforce' ),
+							$message = sprintf(
+								esc_html__( 'This record is being sent to the queue. The hook name is %1$s. The arguments for the hook are: object type %2$s, object map ID %3$s, sync trigger %4$s. The schedule name is %5$s.', 'object-sync-for-salesforce' ),
 								esc_attr( $this->schedulable_classes[ $this->schedule_name ]['callback'] ),
 								esc_attr( $type ),
 								absint( $salesforce_mapping['id'] ),
@@ -785,8 +785,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*/
 	private function get_merged_records() {
 
-		$sfapi    = $this->salesforce['sfapi'];
+		$sfapi = $this->salesforce['sfapi'];
 		$use_soap = filter_var( get_option( 'object_sync_for_salesforce_use_soap', false ), FILTER_VALIDATE_BOOLEAN );
+		$use_soap = true;
 		if ( true === $use_soap ) {
 			$wsdl = get_option( 'object_sync_for_salesforce_soap_wsdl_path', plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml' );
 			$soap = new Object_Sync_Sf_Salesforce_Soap_Partner( $sfapi, $wsdl );
@@ -807,7 +808,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// Iterate over each field mapping to determine our query parameters.
 			foreach ( $mappings as $salesforce_mapping ) {
 				$last_merge_sync = get_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], current_time( 'timestamp', true ) );
-				$now             = current_time( 'timestamp', true );
+				$now              = current_time( 'timestamp', true );
 				update_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], $now );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
@@ -826,8 +827,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$merged = array();
 				// there doesn't appear to be a way to do this in the rest api; for now we'll do soap
 				if ( true === $use_soap ) {
-					$type   = $salesforce_mapping['salesforce_object'];
+					$type = $salesforce_mapping['salesforce_object'];
 					$query  = "SELECT Id, isDeleted, masterRecordId FROM $type WHERE masterRecordId != '' AND SystemModStamp > $last_merge_sync_sf";
+					// Salesforce call
 					$merged = $soap->try_soap( 'queryAll', $query );
 					if ( ! empty( $merged->records ) ) {
 						$merged = json_decode( wp_json_encode( $merged->records ), true );
@@ -846,8 +848,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 							libxml_use_internal_errors( true );
 							$any = simplexml_load_string( '<?xml version="1.0" standalone="yes"?><root>' . $result['any'] . '</root>' );
 							if ( $any ) {
-								$json   = wp_json_encode( $any );
-								$array  = json_decode( $json, true );
+							    $json   = wp_json_encode( $any );
+								$array  = json_decode( $json, TRUE );
 								$record = array_merge( $record, $array );
 							}
 						}
@@ -881,7 +883,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$wordpress_type                  = $mapping_object['wordpress_object'];
 				$wordpress_id                    = $mapping_object['wordpress_id'];
 				$mapping_object['salesforce_id'] = $new_sf_id;
-				$mapping_object                  = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+				$mapping_object = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 				$status = 'success';
 

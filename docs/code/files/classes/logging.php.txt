@@ -239,8 +239,6 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in Object_Sync_Sf_Mapping class's method __construct()
 			if ( in_array( $trigger, maybe_unserialize( $triggers_to_log ) ) || 0 === $trigger ) {
 				$this->add( $title, $message, $parent );
-			} elseif ( is_array( $trigger ) && array_intersect( $trigger, maybe_unserialize( $triggers_to_log ) ) ) {
-				$this->add( $title, $message, $parent );
 			}
 		}
 	}

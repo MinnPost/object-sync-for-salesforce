@@ -1138,7 +1138,7 @@ class Object_Sync_Sf_WordPress {
 	 */
 	private function user_delete( $id, $reassign = null ) {
 		// According to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error.
-		require_once( './wp-admin/includes/user.php' );
+		require_once( ABSPATH . 'wp-admin/includes/user.php' );
 		$result = wp_delete_user( $id, $reassign );
 		return $result;
 	}
@@ -2584,8 +2584,10 @@ class Object_Sync_Sf_WordPress_Transient {
 	public function flush() {
 		$keys   = $this->all_keys();
 		$result = true;
-		foreach ( $keys as $key ) {
-			$result = delete_transient( $key );
+		if ( ! empty( $keys ) ) {
+			foreach ( $keys as $key ) {
+				$result = delete_transient( $key );
+			}
 		}
 		$result = delete_transient( $this->name );
 		return $result;

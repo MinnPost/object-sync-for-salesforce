@@ -2,6 +2,7 @@ Changelog
 =========
 
 * 1.8.0 (2019-03-)
+	* New: we can now map multiple WordPress objects to the same Salesforce object. Each WordPress record will update the Salesforce record, and the Salesforce record can update each WordPress record, all according to the fieldmap. Thanks to WordPress forum user @joecanas1 for the initial report some time ago.
 	* New: WordPress 5.1 changed its new user notification parameters. Thanks to GitHub user @synthetiv for the fix.
 	* New: we've added a few additional debug log entries.
 	* Bug fix: 1.7.0 introduced an activation issue that this release fixes. We've also cleaned up the database versioning that occurs upon activation.
