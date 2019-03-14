@@ -756,6 +756,30 @@ class Object_Sync_Sf_WordPress {
 				break;
 		} // End switch().
 
+		if ( isset( $result['errors'] ) && ! empty( $result['errors'] ) ) {
+			$status = 'error';
+			// translators: 1) is object type, 2) is id value
+			$title = sprintf( esc_html__( 'Error: WordPress update for %1$s ID %2$s was unsuccessful with these errors:', 'object-sync-for-salesforce' ),
+				esc_attr( $name ),
+				esc_attr( $id )
+			);
+
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+			}
+
+			$error_log = array(
+				'title'   => $title,
+				'message' => esc_html( print_r( $result['errors'], true ) ),
+				'trigger' => 0,
+				'parent'  => '',
+				'status'  => $status,
+			);
+			$logging->setup( $error_log );
+		}
+
 		return $result;
 	}
 
@@ -1105,11 +1129,14 @@ class Object_Sync_Sf_WordPress {
 				$method  = $value['method_modify'];
 				$meta_id = $method( $user_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'key'   => $key,
-						'value' => $value,
-					);
+					$changed = false;
+					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
+					if ( get_user_meta( $user_id, $key, true ) !== $value['value'] ) {
+						$errors[] = array(
+							'key'   => $key,
+							'value' => $value,
+						);
+					}
 				}
 			}
 
@@ -1447,11 +1474,14 @@ class Object_Sync_Sf_WordPress {
 					$method  = $value['method_modify'];
 					$meta_id = $method( $post_id, $key, $value['value'] );
 					if ( false === $meta_id ) {
-						$success  = false;
-						$errors[] = array(
-							'key'   => $key,
-							'value' => $value,
-						);
+						$changed = false;
+						// Check and make sure the stored value matches $value['value'], otherwise it's an error.
+						if ( get_post_meta( $post_id, $key, true ) !== $value['value'] ) {
+							$errors[] = array(
+								'key'   => $key,
+								'value' => $value,
+							);
+						}
 					}
 				}
 			}
@@ -2447,16 +2477,19 @@ class Object_Sync_Sf_WordPress {
 				$method  = $value['method_modify'];
 				$meta_id = $method( $comment_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'message' => sprintf(
-							// Translators: %1$s is a method name.
-							esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
-							esc_html( $method )
-						),
-						'key'     => $key,
-						'value'   => $value,
-					);
+					$changed = false;
+					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
+					if ( get_comment_meta( $comment_id, $key, true ) !== $value['value'] ) {
+						$errors[] = array(
+							'message' => sprintf(
+								// Translators: %1$s is a method name.
+								esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
+								esc_html( $method )
+							),
+							'key'     => $key,
+							'value'   => $value,
+						);
+					}
 				}
 			}
 
