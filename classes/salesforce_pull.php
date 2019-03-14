@@ -794,9 +794,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$wsdl = get_option( 'object_sync_for_salesforce_soap_wsdl_path', plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml' );
 			$soap = new Object_Sync_Sf_Salesforce_Soap_Partner( $sfapi, $wsdl );
 		}
-
-		$frequencies = $this->queue->get_frequencies();
-		$seconds     = reset( $frequencies )['frequency'] + 60;
+		$seconds = 60;
 
 		$merged_records = array();
 
@@ -860,10 +858,10 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$this->respond_to_salesforce_merge( $type, $record );
 					} // End foreach on merged
 				} // End if on soap
+				if ( ! empty( $merged_records ) ) {
+					set_transient( 'salesforce_merged_' . $type, $merged_records, $seconds );
+				}
 			} // End foreach on mappings
-			if ( ! empty( $merged_records ) ) {
-				set_transient( 'salesforce_merged_' . $type, $merged_records, $seconds );
-			}
 		} // end foreach on types
 
 	}
