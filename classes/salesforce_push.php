@@ -475,8 +475,8 @@ class Object_Sync_Sf_Salesforce_Push {
 				$structure               = $this->wordpress->get_wordpress_table_structure( $object_type );
 				$wordpress_id_field_name = $structure['id_field'];
 
-				// this returns the row that maps the individual WordPress row to the individual Salesfoce row
-				// todo: we might need to loop through these?
+				// this returns the WordPress rows that map to the individual Salesfoce row
+				// we don't need to loop through these because we're just generating an error log for push not allowed.
 				$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
 				if ( ! empty( $mapping_object ) ) {
 					$mapping_object = $mapping_object[0];
