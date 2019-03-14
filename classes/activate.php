@@ -138,15 +138,15 @@ class Object_Sync_Sf_Activate {
 
 		$remove_key_version = '1.8.0';
 		if ( version_compare( $this->user_installed_version, $remove_key_version, '<' ) ) {
-	    	$wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce" );
-	    	$wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce_wordpress" );
-	    	$result_key = true;
-	    }
+			$wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce" );
+			$wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce_wordpress" );
+			$result_key = true;
+		}
 
 		// store right now as the time for the plugin's activation
 		update_option( $this->option_prefix . 'activate_time', current_time( 'timestamp', true ) );
 
-		if ( !isset( $result_key ) && empty( $result_field_map ) && empty( $result_object_map ) ) {
+		if ( ! isset( $result_key ) && empty( $result_field_map ) && empty( $result_object_map ) ) {
 			// No changes, database already exists and is up-to-date
 			return;
 		}
