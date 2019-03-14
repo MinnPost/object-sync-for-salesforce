@@ -1111,6 +1111,19 @@ class Object_Sync_Sf_WordPress {
 		$content              = array();
 		$content[ $id_field ] = $user_id;
 		foreach ( $params as $key => $value ) {
+
+			// if the update value for email already exists on another user, don't fail this update; keep the user's email address
+			if ( 'user_email' === $key && email_exists( $value['value'] ) ) {
+				unset( $params[ $key ] );
+				continue;
+			}
+
+			// if the update value for login already exists on another user, don't fail this update; keep the user's login
+			if ( 'user_login' === $key && username_exists( $value['value'] ) ) {
+				unset( $params[ $key ] );
+				continue;
+			}
+
 			if ( 'wp_update_user' === $value['method_modify'] ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
