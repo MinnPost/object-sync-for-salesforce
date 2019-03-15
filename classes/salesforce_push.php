@@ -682,11 +682,9 @@ class Object_Sync_Sf_Salesforce_Push {
 					// right here we should set the pushing transient
 					set_transient( 'salesforce_pushing_' . $mapping_object['salesforce_id'], 1, $seconds );
 					set_transient( 'salesforce_pushing_object_id', $mapping_object['salesforce_id'] );
-					$deleted_date = '';
 
 					try {
-						$api_result   = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
-						$deleted_date = gmdate( 'Y-m-d\TH:i:s\Z' );
+						$api_result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 					} catch ( Object_Sync_Sf_Exception $e ) {
 						$status = 'error';
 						// create log entry for failed delete
@@ -793,9 +791,9 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				} // End if().
 
-				// right here we should change the pushing transient to the closest datetime to when the object was deleted
+				// right here we should change the pushing_object_id transient to the Salesforce Id value
 				if ( isset( $api_result['code'] ) && (int) 204 === $api_result['code'] ) {
-					set_transient( 'salesforce_pushing_' . $mapping_object['salesforce_id'], strtotime( $deleted_date ) );
+					set_transient( 'salesforce_pushing_' . $mapping_object['salesforce_id'], 1 );
 					set_transient( 'salesforce_pushing_object_id', $mapping_object['salesforce_id'] );
 				}
 
