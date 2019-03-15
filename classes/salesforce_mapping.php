@@ -638,7 +638,7 @@ class Object_Sync_Sf_Mapping {
 	}
 
 	/**
-	 * Delete an object map row between a WordPress and Salesforce object
+	 * Generate a temporary ID to store while waiting for a push or pull to complete, before the record has been assigned a new ID
 	 *
 	 * @param string $direction Whether this is part of a push or pull action
 	 * @return $id is a temporary string that will be replaced if the modification is successful
