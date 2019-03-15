@@ -662,7 +662,8 @@ class Object_Sync_Sf_Salesforce_Push {
 			'mapping'          => $mapping,
 		);
 
-		$op = '';
+		$op     = '';
+		$result = '';
 
 		// deleting mapped objects
 		// these are bit operators, so we leave out the strict
