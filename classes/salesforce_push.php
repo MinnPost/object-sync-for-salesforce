@@ -674,8 +674,18 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// only delete if there are no additional mapping objects for this record.
 				if ( 1 === count( $mapping_objects ) ) {
+
+					$frequencies = $this->queue->get_frequencies();
+					$seconds     = reset( $frequencies )['frequency'] + 60;
+
+					// right here we should set the pushing transient
+					set_transient( 'salesforce_pushing_' . $mapping_object['salesforce_id'], 1, $seconds );
+					set_transient( 'salesforce_pushing_object_id', $mapping_object['salesforce_id'] );
+					$deleted_date = '';
+
 					try {
-						$api_result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
+						$api_result   = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
+						$deleted_date = gmdate( 'Y-m-d\TH:i:s\Z' );
 					} catch ( Object_Sync_Sf_Exception $e ) {
 						$status = 'error';
 						// create log entry for failed delete
@@ -781,6 +791,12 @@ class Object_Sync_Sf_Salesforce_Push {
 					$logging->setup( $result );
 
 				} // End if().
+
+				// right here we should change the pushing transient to the closest datetime to when the object was deleted
+				if ( isset( $api_result['code'] ) && (int) 204 === $api_result['code'] ) {
+					set_transient( 'salesforce_pushing_' . $mapping_object['salesforce_id'], strtotime( $deleted_date ) );
+					set_transient( 'salesforce_pushing_object_id', $mapping_object['salesforce_id'] );
+				}
 
 				// delete the map row from WordPress after the Salesforce row has been deleted
 				// we delete the map row even if the Salesforce delete failed, because the WordPress object is gone
