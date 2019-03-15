@@ -670,9 +670,10 @@ class Object_Sync_Sf_Salesforce_Push {
 			if ( isset( $mapping_object['id'] ) ) {
 				$op = 'Delete';
 
-				$salesforce_check = $this->mappings->load_all_by_salesforce( $mapping_object['salesforce_id'] )[0];
+				$mapping_objects = $this->mappings->load_all_by_salesforce( $mapping_object['salesforce_id'] );
 
-				if ( count( $salesforce_check ) === count( $salesforce_check, COUNT_RECURSIVE ) ) {
+				// only delete if there are no additional mapping objects for this record.
+				if ( 1 === count( $mapping_objects ) ) {
 					try {
 						$api_result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 					} catch ( Object_Sync_Sf_Exception $e ) {
@@ -742,19 +743,15 @@ class Object_Sync_Sf_Salesforce_Push {
 						do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $wordpress_id_field_name );
 					}
 				} else {
-					$more_ids = '<p>The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are: ';
-					$i        = 0;
-					foreach ( $salesforce_check as $match ) {
-						$i++;
-						$more_ids .= $match['wordpress_id'];
-						if ( count( $salesforce_check ) !== $i ) {
-							$more_ids .= ', ';
-						} else {
-							$more_ids .= '.</p>';
-						}
-					}
+					$more_ids = __( '<p>The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are:</p>', 'object-sync-for-salesforce' );
 
-					$more_ids .= '<p>The map row between this WordPress object and the Salesforce object, as stored in the WordPress database, will be deleted, and this WordPress object has been deleted, but Salesforce will remain untouched.</p>';
+					$more_ids .= '<ul>';
+					foreach ( $mapping_objects as $match ) {
+						$more_ids .= '<li>' . $match['wordpress_id'] . '</li>';
+					}
+					$more_ids .= '</ul>';
+
+					$more_ids .= __( '<p>The map row between this WordPress object and the Salesforce object, as stored in the WordPress database, will be deleted, and this WordPress object has been deleted, but Salesforce will remain untouched.</p>', 'object-sync-for-salesforce' );
 
 					$status = 'notice';
 					if ( isset( $this->logging ) ) {
@@ -764,7 +761,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					}
 
 					// translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-					$title = sprintf( esc_html__( 'Notice: %1$s %2$s %3$s (WordPress %4$s with %5$s of %6$s did not delete the Salesforce item.)', 'object-sync-for-salesforce' ),
+					$title = sprintf( esc_html__( 'Notice: %1$s on Salesforce %2$s with Id of %3$s was stopped because there are other Salesforce records mapped to WordPress %4$s with %5$s of %6$s', 'object-sync-for-salesforce' ),
 						esc_attr( $op ),
 						esc_attr( $mapping['salesforce_object'] ),
 						esc_attr( $mapping_object['salesforce_id'] ),
