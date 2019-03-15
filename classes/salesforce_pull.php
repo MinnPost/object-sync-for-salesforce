@@ -898,7 +898,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					esc_attr( $previous_sf_id ),
 					esc_attr( $new_sf_id ),
 					esc_attr( $wordpress_type ),
-					esc_attr( $wordpress_id ),
+					esc_attr( $wordpress_id )
 				);
 
 				$result = array(
