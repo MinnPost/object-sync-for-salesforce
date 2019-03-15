@@ -1424,8 +1424,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					if ( isset( $params ) ) {
 						$update = $this->update_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $wordpress_id_field_name, $seconds );
 					} else {
-						$count_mapping_objects = count( $mapping_objects );
-						$delete                = $this->delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds, $count_mapping_objects );
+						$delete = $this->delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds, $mapping_objects );
 					}
 				}
 			} elseif ( false === $is_new ) {
@@ -2021,11 +2020,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*   The name of the ID field for this particular WordPress object type
 	* @param int $seconds
 	*   Timeout for the transient value to determine the direction for a sync.
+	* @param array $mapping_objects
+	*   The data for the mapping objects between the individual Salesforce and WordPress items. We only pass this because of the need to count before deleting records.
 	* @return array $results
 	*   Currently this contains an array of log entries for each attempt.
 	*
 	*/
-	private function delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds, $count_mapping_objects ) {
+	private function delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds, $mapping_objects ) {
 
 		$salesforce_mapping = $synced_object['mapping'];
 		$mapping_object     = $synced_object['mapping_object'];
@@ -2038,13 +2039,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 		if ( $sf_sync_trigger == $this->mappings->sync_sf_delete ) { // trigger is a bit operator
 			if ( isset( $mapping_object['id'] ) ) {
 
-				set_transient( 'salesforce_pulling_' . $mapping_object['salesforce_id'], 1, $seconds );
-				set_transient( 'salesforce_pulling_object_id', $mapping_object['salesforce_id'] );
-
 				$op = 'Delete';
 
 				// only delete if there are no additional mapping objects for this record
-				if ( 1 === $count_mapping_objects ) {
+				if ( 1 === count( $mapping_objects ) ) {
+
+					set_transient( 'salesforce_pulling_' . $mapping_object['salesforce_id'], 1, $seconds );
+					set_transient( 'salesforce_pulling_object_id', $mapping_object['salesforce_id'] );
+
 					try {
 						$result = $this->wordpress->object_delete( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'] );
 					} catch ( WordpressException $e ) {
@@ -2154,7 +2156,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						esc_attr( $op ),
 						esc_attr( $salesforce_mapping['wordpress_object'] ),
 						esc_attr( $wordpress_id_field_name ),
-						esc_attr( $object[ "$wordpress_id_field_name" ] ),
+						esc_attr( $mapping_object['wordpress_id'] ),
 						esc_attr( $salesforce_mapping['salesforce_object'] ),
 						esc_attr( $mapping_object['salesforce_id'] )
 					);
