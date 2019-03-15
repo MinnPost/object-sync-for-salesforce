@@ -86,7 +86,6 @@ class Object_Sync_Salesforce {
 	*/
 	public $salesforce;
 
-
 	/**
 	* @var object
 	* Load and initialize the Object_Sync_Sf_Salesforce_Push class

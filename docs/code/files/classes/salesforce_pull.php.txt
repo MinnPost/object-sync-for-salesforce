@@ -245,27 +245,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 				}
 			}
 
-			if ( 1 === (int) $this->debug ) {
-				// create log entry for the attempted query
-				$status = 'debug';
-				$title  = esc_html__( 'Debug: SOQL query to get updated records from Salesforce (it has not yet run)', 'object-sync-for-salesforce' );
-
-				if ( isset( $this->logging ) ) {
-					$logging = $this->logging;
-				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-				}
-
-				$debug = array(
-					'title'   => $title,
-					'message' => esc_html( (string) $soql ),
-					'trigger' => $salesforce_mapping['sync_triggers'],
-					'parent'  => '',
-					'status'  => $status,
-				);
-				$logging->setup( $debug );
-			}
-
 			// Execute query
 			// have to cast it to string to make sure it uses the magic method
 			// we don't want to cache this because timestamps
@@ -290,7 +269,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$status = 'debug';
 							// translators: placeholders are: 1) the Salesforce ID
 							$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s has already been attempted.', 'object-sync-for-salesforce' ),
-								esc_attr( $result['Id'] )
+								absint( $result['Id'] )
 							);
 
 							if ( isset( $this->logging ) ) {
@@ -299,7 +278,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 							}
 
-							$debug = array(
+							$result = array(
 								'title'   => $title,
 								'message' => esc_html__( 'This ID has already been attempted so it was not pulled again.', 'object-sync-for-salesforce' ),
 								'trigger' => $salesforce_mapping['sync_triggers'],
@@ -307,7 +286,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 								'status'  => $status,
 							);
 
-							$logging->setup( $debug );
+							$logging->setup( $result );
 						}
 
 						continue;
@@ -340,7 +319,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 								$status = 'debug';
 								// translators: placeholders are: 1) the Salesforce ID
 								$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s is not allowed.', 'object-sync-for-salesforce' ),
-									esc_attr( $result['Id'] )
+									absint( $result['Id'] )
 								);
 
 								if ( isset( $this->logging ) ) {
@@ -349,51 +328,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 									$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 								}
 
-								$debug = array(
+								$result = array(
 									'title'   => $title,
 									'message' => esc_html__( 'This ID is not pullable so it was skipped.', 'object-sync-for-salesforce' ),
-									'trigger' => $sf_sync_trigger,
+									'trigger' => $salesforce_mapping['sync_triggers'],
 									'parent'  => '',
 									'status'  => $status,
 								);
 
-								$logging->setup( $debug );
+								$logging->setup( $result );
 							}
 							continue;
-						}
-
-						if ( 1 === (int) $this->debug ) {
-							// create log entry for queue addition
-							$status = 'debug';
-							// translators: placeholders are: 1) the Salesforce ID
-							$title = sprintf( esc_html__( 'Debug: Add Salesforce ID %1$s to the queue', 'object-sync-for-salesforce' ),
-								esc_attr( $result['Id'] )
-							);
-
-							if ( isset( $this->logging ) ) {
-								$logging = $this->logging;
-							} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-							}
-
-							$message = sprintf(
-								esc_html__( 'This record is being sent to the queue. The hook name is %1$s. The arguments for the hook are: object type %2$s, object map ID %3$s, sync trigger %4$s. The schedule name is %5$s.', 'object-sync-for-salesforce' ),
-								esc_attr( $this->schedulable_classes[ $this->schedule_name ]['callback'] ),
-								esc_attr( $type ),
-								absint( $salesforce_mapping['id'] ),
-								$sf_sync_trigger,
-								$this->schedule_name
-							);
-
-							$debug = array(
-								'title'   => $title,
-								'message' => $message,
-								'trigger' => $sf_sync_trigger,
-								'parent'  => '',
-								'status'  => $status,
-							);
-
-							$logging->setup( $debug );
 						}
 
 						// add a queue action to save data from salesforce
@@ -414,7 +359,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$status = 'debug';
 							// translators: placeholders are: 1) the Salesforce ID
 							$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s has been successfully pulled.', 'object-sync-for-salesforce' ),
-								esc_attr( $result['Id'] )
+								absint( $result['Id'] )
 							);
 
 							if ( isset( $this->logging ) ) {
@@ -423,14 +368,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 								$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 							}
 
-							$debug = array(
+							$result = array(
 								'title'   => $title,
 								'message' => esc_html__( 'This ID has been successfully pulled. It cannot be pulled again.', 'object-sync-for-salesforce' ),
-								'trigger' => $sf_sync_trigger,
+								'trigger' => $salesforce_mapping['sync_triggers'],
 								'parent'  => '',
 								'status'  => $status,
 							);
-							$logging->setup( $debug );
+							$logging->setup( $result );
 						} // end of debug
 					} // end if
 				} // end foreach
@@ -1181,7 +1126,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 					}
 
-					$debug = array(
+					$result = array(
 						'title'   => $title,
 						'message' => '',
 						'trigger' => $salesforce_mapping['sync_triggers'],
@@ -1189,7 +1134,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						'status'  => $status,
 					);
 
-					$logging->setup( $debug );
+					$logging->setup( $result );
 				}
 
 				continue;

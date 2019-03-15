@@ -116,6 +116,8 @@ class Object_Sync_Sf_Mapping {
 		$this->status_success = 1;
 		$this->status_error   = 0;
 
+		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
+
 	}
 
 	/**
@@ -457,7 +459,8 @@ class Object_Sync_Sf_Mapping {
 		if ( 1 === $insert ) {
 			return $this->wpdb->insert_id;
 		} elseif ( false !== strpos( $this->wpdb->last_error, 'Duplicate entry' ) ) {
-			$mapping = $this->load_by_salesforce( $data['salesforce_id'] );
+			// this error should never happen now, I think. But let's watch and see.
+			$mapping = $this->load_all_by_salesforce( $data['salesforce_id'] )[0];
 			$id      = $mapping['id'];
 			$status  = 'error';
 			if ( isset( $this->logging ) ) {
@@ -484,8 +487,47 @@ class Object_Sync_Sf_Mapping {
 	}
 
 	/**
+	 * Get all object map rows between WordPress and Salesforce objects.
+	 *
+	 * This replaces previous functionality that would return a single object map if there was only one, rather than a multi-dimensional array.
+	 *
+	 * @param array $conditions Limitations on the SQL query for object mapping rows.
+	 * @param bool $reset Unused parameter.
+	 * @return $mappings
+	 */
+	public function get_all_object_maps( $conditions = array(), $reset = false ) {
+		$table = $this->object_map_table;
+		$order = ' ORDER BY object_updated, created';
+		if ( ! empty( $conditions ) ) { // get multiple but with a limitation.
+			$mappings = array();
+
+			if ( ! empty( $conditions ) ) {
+				$where = ' WHERE ';
+				$i     = 0;
+				foreach ( $conditions as $key => $value ) {
+					$i++;
+					if ( $i > 1 ) {
+						$where .= ' AND ';
+					}
+					$where .= '`' . $key . '` = "' . $value . '"';
+				}
+			} else {
+				$where = '';
+			}
+
+			$mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . $order, ARRAY_A );
+		} else { // get all of the mappings. ALL THE MAPPINGS.
+			$mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $order, ARRAY_A );
+		}
+
+		return $mappings;
+
+	}
+
+	/**
 	 * Get one or more object map rows between WordPress and Salesforce objects
 	 *
+	 * @deprecated since 1.8.0
 	 * @param array $conditions Limitations on the SQL query for object mapping rows.
 	 * @param bool  $reset Unused parameter.
 	 * @return $map or $mappings
@@ -596,7 +638,7 @@ class Object_Sync_Sf_Mapping {
 	}
 
 	/**
-	 * Delete an object map row between a WordPress and Salesforce object
+	 * Generate a temporary ID to store while waiting for a push or pull to complete, before the record has been assigned a new ID
 	 *
 	 * @param string $direction Whether this is part of a push or pull action
 	 * @return $id is a temporary string that will be replaced if the modification is successful
@@ -621,6 +663,25 @@ class Object_Sync_Sf_Mapping {
 	 * @return SalesforceMappingObject
 	 *   The requested SalesforceMappingObject or FALSE if none was found.
 	 */
+	public function load_all_by_wordpress( $object_type, $object_id, $reset = false ) {
+		$conditions = array(
+			'wordpress_id'     => $object_id,
+			'wordpress_object' => $object_type,
+		);
+		return $this->get_all_object_maps( $conditions, $reset );
+	}
+
+	/**
+	 * Returns one or more Salesforce object mappings for a given WordPress object.
+	 *
+	 * @deprecated since 1.8.0
+	 * @param string $object_type Type of object to load.
+	 * @param int    $object_id Unique identifier of the target object to load.
+	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
+	 *
+	 * @return SalesforceMappingObject
+	 *   The requested SalesforceMappingObject or FALSE if none was found.
+	 */
 	public function load_by_wordpress( $object_type, $object_id, $reset = false ) {
 		$conditions = array(
 			'wordpress_id'     => $object_id,
@@ -632,6 +693,25 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Returns Salesforce object mappings for a given Salesforce object.
 	 *
+	 * @param string $salesforce_id Type of object to load.
+	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
+	 *
+	 * @return array $maps all the fieldmaps that match the Salesforce Id
+	 */
+	public function load_all_by_salesforce( $salesforce_id, $reset = false ) {
+		$conditions = array(
+			'salesforce_id' => $salesforce_id,
+		);
+
+		$maps = $this->get_all_object_maps( $conditions, $reset );
+
+		return $maps;
+	}
+
+	/**
+	 * Returns one or more Salesforce object mappings for a given Salesforce object.
+	 *
+	 * @deprecated since 1.8.0
 	 * @param string $salesforce_id Type of object to load.
 	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
 	 *
@@ -833,7 +913,7 @@ class Object_Sync_Sf_Mapping {
 				}
 
 				// Make an array because we need to store the methods for each field as well.
-				if ( '' !== $object[ $salesforce_field ] ) {
+				if ( isset( $object[ $salesforce_field ] ) && '' !== $object[ $salesforce_field ] ) {
 					$params[ $wordpress_field ]          = array();
 					$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
 				} else {
