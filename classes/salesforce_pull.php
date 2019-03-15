@@ -1304,12 +1304,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// by default, we're not doing a merge
 			$is_merge = false;
-
-			// but this is a merge action
-			if ( isset( $object['deletedDate'] ) ) {
-				error_log( 'merge is true' );
-				$is_new   = false;
-				$is_merge = true;
+			$merged   = get_transient( 'salesforce_merged_' . $object_type );
+			if ( false !== $merged ) {
+				$key = array_search( $object['Id'], array_column( $merged, 'Id' ) );
+				if ( false !== $key ) {
+					$is_merge = true;
+					$is_new   = false;
+				}
 			}
 
 			$mapping_object_id_transient = get_transient( 'salesforce_pushing_object_id' );
@@ -1428,8 +1429,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				}
 			} elseif ( false === $is_new ) {
 				// on merge, we should still update the transient
-				set_transient( 'salesforce_pulling_' . $mapping_objects[0]['salesforce_id'], 1, $seconds );
-				set_transient( 'salesforce_pulling_object_id', $mapping_objects[0]['salesforce_id'] );
+				set_transient( 'salesforce_pulling_' . $object['Id'], 1, $seconds );
+				set_transient( 'salesforce_pulling_object_id', $object['Id'] );
 			}
 		} // End foreach() on $salesforce_mappings.
 
