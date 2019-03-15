@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">216</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">218</span>
                                 </a>
                             </li>
                             <li>
@@ -116,7 +116,7 @@
                             </li>
                             <li>
                                 <a href="../reports/deprecated.html">
-                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">3</span>
                                 </a>
                             </li>
                         </ul>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1651031819"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1171025521"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1651031819" class="accordion-body collapse in">
+            <div id="namespace-1171025521" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -207,12 +207,15 @@
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#method_update_fieldmap" class="">update_fieldmap()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#method_delete_fieldmap" class="">delete_fieldmap()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#method_create_object_map" class="">create_object_map()</a><br />
-                                                                    <a href="../classes/Object_Sync_Sf_Mapping.html#method_get_object_maps" class="">get_object_maps()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Mapping.html#method_get_all_object_maps" class="">get_all_object_maps()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Mapping.html#method_get_object_maps" class="deprecated">get_object_maps()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#method_update_object_map" class="">update_object_map()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#method_delete_object_map" class="">delete_object_map()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#method_generate_temporary_id" class="">generate_temporary_id()</a><br />
-                                                                    <a href="../classes/Object_Sync_Sf_Mapping.html#method_load_by_wordpress" class="">load_by_wordpress()</a><br />
-                                                                    <a href="../classes/Object_Sync_Sf_Mapping.html#method_load_by_salesforce" class="">load_by_salesforce()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Mapping.html#method_load_all_by_wordpress" class="">load_all_by_wordpress()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Mapping.html#method_load_by_wordpress" class="deprecated">load_by_wordpress()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Mapping.html#method_load_all_by_salesforce" class="">load_all_by_salesforce()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Mapping.html#method_load_by_salesforce" class="deprecated">load_by_salesforce()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#method_map_params" class="">map_params()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#method_get_failed_object_maps" class="">get_failed_object_maps()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#method_get_failed_object_map" class="">get_failed_object_map()</a><br />
@@ -1404,9 +1407,54 @@ Warning: count(): Parameter must be an array or an object that implements Counta
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_get_all_object_maps" name="method_get_all_object_maps" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_all_object_maps()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_all_object_maps(array  <span class="argument">$conditions = array()</span>, boolean  <span class="argument">$reset = false</span>) : \$mappings</pre>
+                <p><em>Get all object map rows between WordPress and Salesforce objects.</em></p>
+                <p>This replaces previous functionality that would return a single object map if there was only one, rather than a multi-dimensional array.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$conditions </td>
+                                <td><p>Limitations on the SQL query for object mapping rows.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$reset </td>
+                                <td><p>Unused parameter.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    \$mappings
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_get_object_maps" name="method_get_object_maps" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">get_object_maps()</h3>
+                <h3 class="public deprecated">get_object_maps()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">get_object_maps(array  <span class="argument">$conditions = array()</span>, boolean  <span class="argument">$reset = false</span>) : \$map</pre>
                 <p><em>Get one or more object map rows between WordPress and Salesforce objects</em></p>
@@ -1440,7 +1488,11 @@ Warning: count(): Parameter must be an array or an object that implements Counta
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
+                                                                <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    since 1.8.0
+                </aside>
+                        <dl>
                                                                             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
@@ -1541,7 +1593,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                 <h3 class="public ">generate_temporary_id()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">generate_temporary_id(string  <span class="argument">$direction</span>) : \$id</pre>
-                <p><em>Delete an object map row between a WordPress and Salesforce object</em></p>
+                <p><em>Generate a temporary ID to store while waiting for a push or pull to complete, before the record has been assigned a new ID</em></p>
                 
 
                                     <h4>Parameters</h4>
@@ -1577,11 +1629,11 @@ Warning: count(): Parameter must be an array or an object that implements Counta
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_load_by_wordpress" name="method_load_by_wordpress" class="anchor"></a>
+            <a id="method_load_all_by_wordpress" name="method_load_all_by_wordpress" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">load_by_wordpress()</h3>
+                <h3 class="public ">load_all_by_wordpress()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">load_by_wordpress(string  <span class="argument">$object_type</span>, integer  <span class="argument">$object_id</span>, boolean  <span class="argument">$reset = false</span>) : \SalesforceMappingObject</pre>
+                <pre class="signature" style="margin-right: 54px;">load_all_by_wordpress(string  <span class="argument">$object_type</span>, integer  <span class="argument">$object_id</span>, boolean  <span class="argument">$reset = false</span>) : \SalesforceMappingObject</pre>
                 <p><em>Returns Salesforce object mappings for a given WordPress object.</em></p>
                 
 
@@ -1628,12 +1680,113 @@ Warning: count(): Parameter must be an array or an object that implements Counta
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_load_by_wordpress" name="method_load_by_wordpress" class="anchor"></a>
+            <article class="method">
+                <h3 class="public deprecated">load_by_wordpress()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">load_by_wordpress(string  <span class="argument">$object_type</span>, integer  <span class="argument">$object_id</span>, boolean  <span class="argument">$reset = false</span>) : \SalesforceMappingObject</pre>
+                <p><em>Returns one or more Salesforce object mappings for a given WordPress object.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$object_type </td>
+                                <td><p>Type of object to load.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$object_id </td>
+                                <td><p>Unique identifier of the target object to load.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$reset </td>
+                                <td><p>Whether or not the cache should be cleared and fetch from current data.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    \SalesforceMappingObject
+                                            &mdash; <p>The requested SalesforceMappingObject or FALSE if none was found.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                                <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    since 1.8.0
+                </aside>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_load_all_by_salesforce" name="method_load_all_by_salesforce" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">load_all_by_salesforce()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">load_all_by_salesforce(string  <span class="argument">$salesforce_id</span>, boolean  <span class="argument">$reset = false</span>) : array</pre>
+                <p><em>Returns Salesforce object mappings for a given Salesforce object.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$salesforce_id </td>
+                                <td><p>Type of object to load.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$reset </td>
+                                <td><p>Whether or not the cache should be cleared and fetch from current data.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$maps all the fieldmaps that match the Salesforce Id</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_load_by_salesforce" name="method_load_by_salesforce" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">load_by_salesforce()</h3>
+                <h3 class="public deprecated">load_by_salesforce()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">load_by_salesforce(string  <span class="argument">$salesforce_id</span>, boolean  <span class="argument">$reset = false</span>) : array</pre>
-                <p><em>Returns Salesforce object mappings for a given Salesforce object.</em></p>
+                <p><em>Returns one or more Salesforce object mappings for a given Salesforce object.</em></p>
                 
 
                                     <h4>Parameters</h4>
@@ -1664,7 +1817,11 @@ The most recent fieldmap</p>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
+                                                                <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    since 1.8.0
+                </aside>
+                        <dl>
                                                                             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
@@ -2000,7 +2157,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on January 31st, 2019 at 20:29.
+                    on March 15th, 2019 at 20:34.
                 </section>
             </section>
         </section>

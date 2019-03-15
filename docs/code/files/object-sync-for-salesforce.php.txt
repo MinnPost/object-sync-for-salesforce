@@ -2,7 +2,7 @@
 /*
 Plugin Name: Object Sync for Salesforce
 Description: Object Sync for Salesforce maps and syncs data between Salesforce objects and WordPress objects.
-Version: 1.7.0
+Version: 1.8.0
 Author: MinnPost
 Author URI: https://code.minnpost.com
 License: GPL2+
@@ -130,7 +130,7 @@ class Object_Sync_Salesforce {
 		global $wpdb;
 
 		$this->wpdb              = $wpdb;
-		$this->version           = '1.7.0';
+		$this->version           = '1.8.0';
 		$this->slug              = 'object-sync-for-salesforce';
 		$this->option_prefix     = 'object_sync_for_salesforce_';
 		$this->login_credentials = $this->get_login_credentials();
@@ -175,11 +175,23 @@ class Object_Sync_Salesforce {
 		 * }
 		*/
 
-		$this->load = $this->load( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
-
 		$this->queue = $this->queue( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
 
 		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
+
+		// Run non-activation things. We do this early because ActionScheduler has to have access to plugins_loaded with priority of zero.
+		add_action( 'plugins_loaded', array( $this, 'run' ), -10 );
+
+	}
+
+	/**
+	 * run the plugin, independent of activation methods.
+	 *
+	 */
+	public function run() {
+
+		$this->load = $this->load( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
+
 		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
 
 		$this->logging = $this->logging( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
@@ -196,7 +208,6 @@ class Object_Sync_Salesforce {
 		$this->rest = $this->rest( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull );
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull, $this->logging, $this->schedulable_classes, $this->queue );
-
 	}
 
 	/**
@@ -293,6 +304,7 @@ class Object_Sync_Salesforce {
 	public function salesforce_get_api() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_query.php' ); // this can be used to generate soql queries, but we don't often need it so it gets initialized whenever it's needed
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_soap_partner.php' );
 		$consumer_key        = $this->login_credentials['consumer_key'];
 		$consumer_secret     = $this->login_credentials['consumer_secret'];
 		$login_url           = $this->login_credentials['login_url'];
@@ -556,6 +568,6 @@ class Object_Sync_Salesforce {
 
 } // end class
 
-// Instantiate our class. We do it early because ActionScheduler has to have access to plugins_loaded with priority of zero.
-add_action( 'plugins_loaded', array( 'Object_Sync_Salesforce', 'get_instance' ), -10 );
+// Instantiate our class.
+$object_sync_salesforce = Object_Sync_Salesforce::get_instance();
 

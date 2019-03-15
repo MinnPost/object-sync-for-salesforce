@@ -756,6 +756,30 @@ class Object_Sync_Sf_WordPress {
 				break;
 		} // End switch().
 
+		if ( isset( $result['errors'] ) && ! empty( $result['errors'] ) ) {
+			$status = 'error';
+			// translators: 1) is object type, 2) is id value
+			$title = sprintf( esc_html__( 'Error: WordPress update for %1$s ID %2$s was unsuccessful with these errors:', 'object-sync-for-salesforce' ),
+				esc_attr( $name ),
+				esc_attr( $id )
+			);
+
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+			}
+
+			$error_log = array(
+				'title'   => $title,
+				'message' => esc_html( print_r( $result['errors'], true ) ),
+				'trigger' => 0,
+				'parent'  => '',
+				'status'  => $status,
+			);
+			$logging->setup( $error_log );
+		}
+
 		return $result;
 	}
 
@@ -905,7 +929,7 @@ class Object_Sync_Sf_WordPress {
 
 				// Send notification of new user.
 				// todo: Figure out what permissions ought to get notifications for this and make sure it works the right way.
-				wp_new_user_notification( $user_id, null, 'admin user' );
+				wp_new_user_notification( $user_id, null, 'both' );
 
 			}
 		} else {
@@ -1087,6 +1111,19 @@ class Object_Sync_Sf_WordPress {
 		$content              = array();
 		$content[ $id_field ] = $user_id;
 		foreach ( $params as $key => $value ) {
+
+			// if the update value for email already exists on another user, don't fail this update; keep the user's email address
+			if ( 'user_email' === $key && email_exists( $value['value'] ) ) {
+				unset( $params[ $key ] );
+				continue;
+			}
+
+			// if the update value for login already exists on another user, don't fail this update; keep the user's login
+			if ( 'user_login' === $key && username_exists( $value['value'] ) ) {
+				unset( $params[ $key ] );
+				continue;
+			}
+
 			if ( 'wp_update_user' === $value['method_modify'] ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
@@ -1105,11 +1142,14 @@ class Object_Sync_Sf_WordPress {
 				$method  = $value['method_modify'];
 				$meta_id = $method( $user_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'key'   => $key,
-						'value' => $value,
-					);
+					$changed = false;
+					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
+					if ( get_user_meta( $user_id, $key, true ) !== $value['value'] ) {
+						$errors[] = array(
+							'key'   => $key,
+							'value' => $value,
+						);
+					}
 				}
 			}
 
@@ -1138,7 +1178,7 @@ class Object_Sync_Sf_WordPress {
 	 */
 	private function user_delete( $id, $reassign = null ) {
 		// According to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error.
-		require_once( './wp-admin/includes/user.php' );
+		require_once( ABSPATH . 'wp-admin/includes/user.php' );
 		$result = wp_delete_user( $id, $reassign );
 		return $result;
 	}
@@ -1447,11 +1487,14 @@ class Object_Sync_Sf_WordPress {
 					$method  = $value['method_modify'];
 					$meta_id = $method( $post_id, $key, $value['value'] );
 					if ( false === $meta_id ) {
-						$success  = false;
-						$errors[] = array(
-							'key'   => $key,
-							'value' => $value,
-						);
+						$changed = false;
+						// Check and make sure the stored value matches $value['value'], otherwise it's an error.
+						if ( get_post_meta( $post_id, $key, true ) !== $value['value'] ) {
+							$errors[] = array(
+								'key'   => $key,
+								'value' => $value,
+							);
+						}
 					}
 				}
 			}
@@ -2447,16 +2490,19 @@ class Object_Sync_Sf_WordPress {
 				$method  = $value['method_modify'];
 				$meta_id = $method( $comment_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'message' => sprintf(
-							// Translators: %1$s is a method name.
-							esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
-							esc_html( $method )
-						),
-						'key'     => $key,
-						'value'   => $value,
-					);
+					$changed = false;
+					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
+					if ( get_comment_meta( $comment_id, $key, true ) !== $value['value'] ) {
+						$errors[] = array(
+							'message' => sprintf(
+								// Translators: %1$s is a method name.
+								esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
+								esc_html( $method )
+							),
+							'key'     => $key,
+							'value'   => $value,
+						);
+					}
 				}
 			}
 
@@ -2584,8 +2630,10 @@ class Object_Sync_Sf_WordPress_Transient {
 	public function flush() {
 		$keys   = $this->all_keys();
 		$result = true;
-		foreach ( $keys as $key ) {
-			$result = delete_transient( $key );
+		if ( ! empty( $keys ) ) {
+			foreach ( $keys as $key ) {
+				$result = delete_transient( $key );
+			}
 		}
 		$result = delete_transient( $this->name );
 		return $result;

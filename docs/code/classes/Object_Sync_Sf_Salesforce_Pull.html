@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">216</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">218</span>
                                 </a>
                             </li>
                             <li>
@@ -116,7 +116,7 @@
                             </li>
                             <li>
                                 <a href="../reports/deprecated.html">
-                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">3</span>
                                 </a>
                             </li>
                         </ul>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-181607695"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1514502149"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-181607695" class="accordion-body collapse in">
+            <div id="namespace-1514502149" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -243,7 +243,13 @@
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_pull_query" class="">get_pull_query()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_pull_offset" class="">get_pull_offset()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_pull_date_value" class="">get_pull_date_value()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_merged_records" class="">get_merged_records()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_respond_to_salesforce_merge" class="">respond_to_salesforce_merge()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_deleted_records" class="">get_deleted_records()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_synced_object" class="">get_synced_object()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_create_called_from_salesforce" class="">create_called_from_salesforce()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_update_called_from_salesforce" class="">update_called_from_salesforce()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_delete_called_from_salesforce" class="">delete_called_from_salesforce()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_clear_current_type_query" class="">clear_current_type_query()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_increment_current_type_datetime" class="">increment_current_type_datetime()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_create_object_map" class="">create_object_map()</a><br />
@@ -810,7 +816,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
             <article class="method">
                 <h3 class="public ">salesforce_pull_process_records()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">salesforce_pull_process_records(string  <span class="argument">$object_type</span>, array|string  <span class="argument">$object</span>, array|integer  <span class="argument">$mapping</span>, integer  <span class="argument">$sf_sync_trigger</span>) : true</pre>
+                <pre class="signature" style="margin-right: 54px;">salesforce_pull_process_records(string  <span class="argument">$object_type</span>, array|string  <span class="argument">$object</span>, integer  <span class="argument">$sf_sync_trigger</span>) : true</pre>
                 <p><em>Sync WordPress objects and Salesforce objects from the queue using the REST API.</em></p>
                 
 
@@ -825,11 +831,6 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                                 <td>array|string</td>
                                 <td>$object </td>
                                 <td><p>The Salesforce data or its Id value.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>array|integer</td>
-                                <td>$mapping </td>
-                                <td><p>Salesforce/WP mapping data or its id.</p></td>
                             </tr>
                                                     <tr>
                                 <td>integer</td>
@@ -1234,6 +1235,80 @@ Warning: count(): Parameter must be an array or an object that implements Counta
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_get_merged_records" name="method_get_merged_records" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_merged_records()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_merged_records() </pre>
+                <p><em>Get merged records from Salesforce.</em></p>
+                <p>Note that merges can currently only work if the Soap API is enabled.</p>
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_respond_to_salesforce_merge" name="method_respond_to_salesforce_merge" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">respond_to_salesforce_merge()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">respond_to_salesforce_merge(string  <span class="argument">$object_type</span>, array  <span class="argument">$merged_record</span>) </pre>
+                <p><em>Respond to Salesforce merge events
+This means we update the mapping object to contain the new Salesforce Id, and pull its data</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$object_type </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$merged_record </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_get_deleted_records" name="method_get_deleted_records" class="anchor"></a>
             <article class="method">
                 <h3 class="private ">get_deleted_records()</h3>
@@ -1249,6 +1324,249 @@ Warning: count(): Parameter must be an array or an object that implements Counta
 Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
 
                 				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_synced_object" name="method_get_synced_object" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_synced_object()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_synced_object(array  <span class="argument">$object</span>, array  <span class="argument">$mapping_object</span>, array  <span class="argument">$salesforce_mapping</span>) : array</pre>
+                <p><em>Generate the synced_object array</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$object </td>
+                                <td><p>The data for the Salesforce object</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$mapping_object </td>
+                                <td><p>The data for the mapping object between the individual Salesforce and WordPress items</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$salesforce_mapping </td>
+                                <td><p>The data for the fieldmap between the object types</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$synced_object
+The combined array of these items. It allows for filtering of, at least, the mapping_object.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_create_called_from_salesforce" name="method_create_called_from_salesforce" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">create_called_from_salesforce()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">create_called_from_salesforce(string  <span class="argument">$sf_sync_trigger</span>, array  <span class="argument">$synced_object</span>, array  <span class="argument">$params</span>, array  <span class="argument">$prematch</span>, string  <span class="argument">$wordpress_id_field_name</span>, integer  <span class="argument">$seconds</span>) : array</pre>
+                <p><em>Create records in WordPress from a Salesforce pull</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sf_sync_trigger </td>
+                                <td><p>The current operation's trigger</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$synced_object </td>
+                                <td><p>Combined data for fieldmap, mapping object, and Salesforce object data</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Array of mapped key value pairs between WordPress and Salesforce fields.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$prematch </td>
+                                <td><p>Array of criteria to determine what to do on upsert operations</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_id_field_name </td>
+                                <td><p>The name of the ID field for this particular WordPress object type</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$seconds </td>
+                                <td><p>Timeout for the transient value to determine the direction for a sync.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$results
+Currently this contains an array of log entries for each attempt.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_update_called_from_salesforce" name="method_update_called_from_salesforce" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">update_called_from_salesforce()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">update_called_from_salesforce(string  <span class="argument">$sf_sync_trigger</span>, array  <span class="argument">$synced_object</span>, array  <span class="argument">$params</span>, string  <span class="argument">$wordpress_id_field_name</span>, integer  <span class="argument">$seconds</span>) : array</pre>
+                <p><em>Update records in WordPress from a Salesforce pull</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sf_sync_trigger </td>
+                                <td><p>The current operation's trigger</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$synced_object </td>
+                                <td><p>Combined data for fieldmap, mapping object, and Salesforce object data</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Array of mapped key value pairs between WordPress and Salesforce fields.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_id_field_name </td>
+                                <td><p>The name of the ID field for this particular WordPress object type</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$seconds </td>
+                                <td><p>Timeout for the transient value to determine the direction for a sync.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$results
+Currently this contains an array of log entries for each attempt.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_delete_called_from_salesforce" name="method_delete_called_from_salesforce" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">delete_called_from_salesforce()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">delete_called_from_salesforce(string  <span class="argument">$sf_sync_trigger</span>, array  <span class="argument">$synced_object</span>, string  <span class="argument">$wordpress_id_field_name</span>, integer  <span class="argument">$seconds</span>, array  <span class="argument">$mapping_objects</span>) : array</pre>
+                <p><em>Delete records in WordPress from a Salesforce pull</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sf_sync_trigger </td>
+                                <td><p>The current operation's trigger</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$synced_object </td>
+                                <td><p>Combined data for fieldmap, mapping object, and Salesforce object data</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_id_field_name </td>
+                                <td><p>The name of the ID field for this particular WordPress object type</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$seconds </td>
+                                <td><p>Timeout for the transient value to determine the direction for a sync.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$mapping_objects </td>
+                                <td><p>The data for the mapping objects between the individual Salesforce and WordPress items. We only pass this because of the need to count before deleting records.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$results
+Currently this contains an array of log entries for each attempt.</p>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1401,7 +1719,7 @@ This is the database row for the map object</p>
             <article class="method">
                 <h3 class="private ">is_pull_allowed()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">is_pull_allowed(string  <span class="argument">$object_type</span>, array  <span class="argument">$object</span>, string  <span class="argument">$sf_sync_trigger</span>, array  <span class="argument">$mapping</span>, array  <span class="argument">$map_sync_triggers</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">is_pull_allowed(string  <span class="argument">$object_type</span>, array  <span class="argument">$object</span>, string  <span class="argument">$sf_sync_trigger</span>,   <span class="argument">$salesforce_mapping</span>, array  <span class="argument">$map_sync_triggers</span>) : boolean</pre>
                 <p><em>Find out if pull is allowed for this record</em></p>
                 
 
@@ -1423,9 +1741,9 @@ This is the database row for the map object</p>
                                 <td><p>The current operation's trigger</p></td>
                             </tr>
                                                     <tr>
-                                <td>array</td>
-                                <td>$mapping </td>
-                                <td><p>the fieldmap that maps the two object types</p></td>
+                                <td></td>
+                                <td>$salesforce_mapping </td>
+                                <td></td>
                             </tr>
                                                     <tr>
                                 <td>array</td>
@@ -1506,7 +1824,7 @@ Whether all this stuff allows the $result to be pulled into WordPress</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on January 31st, 2019 at 20:29.
+                    on March 15th, 2019 at 20:34.
                 </section>
             </section>
         </section>
