@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.8.2 (2019-03-16)
+    * Bug fix: 1.8.0 accidentally disabled a developer filter. This re-enables it.
+
 * 1.8.1 (2019-03-16)
     * Bug fix: 1.8.0 introduced a possible issue with checking for updated records.
 
