@@ -1907,7 +1907,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// hook to allow other plugins to do something right before WordPress data is saved
 		// ex: run outside methods on an object if it exists, or do something in preparation for it if it doesn't
-		//do_action( $this->option_prefix . 'pre_pull', $mapping_object['wordpress_id'], $salesforce_mapping, $object, $wordpress_id_field_name, $params );
+		do_action( $this->option_prefix . 'pre_pull', $mapping_object['wordpress_id'], $salesforce_mapping, $object, $wordpress_id_field_name, $params );
 
 		try {
 
