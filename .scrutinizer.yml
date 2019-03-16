@@ -21,6 +21,7 @@ filter:
         - 'docs/*'
         - 'node_modules/*'
         - 'tests/*'
+        - 'vendor/*/tests/*'
         - '*.min.js'
         - '*.min.css'
         - 'assets/js/vendor/*'
