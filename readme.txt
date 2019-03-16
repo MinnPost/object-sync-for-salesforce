@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 5.1
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -243,6 +243,9 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 - **Build other integrations in WordPress** this plugin focuses on the Salesforce REST API, as it covers the integration needs we have. Salesforce also has many other developer options: the SOAP API (we hope to incorporate this into Object Sync for Salesforce at some point), the Bulk API, and the Metadata API. Developers could extend this plugin to integrate with one of these. We would welcome any pull requests!
 
 == Changelog ==
+
+* 1.8.1 (2019-03-16)
+    * Bug fix: 1.8.0 introduced a possible issue with checking for updated records.
 
 * 1.8.0 (2019-03-15)
     * New: we can now map multiple WordPress objects to the same Salesforce object. Each WordPress record will update the Salesforce record, and the Salesforce record can update each WordPress record, all according to the fieldmap. Thanks to WordPress forum user @joecanas1 for the initial report some time ago.

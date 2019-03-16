@@ -1,7 +1,10 @@
 Changelog
 =========
 
-* 1.8.0 (2019-03-)
+* 1.8.1 (2019-03-16)
+    * Bug fix: 1.8.0 introduced a possible issue with checking for updated records.
+
+* 1.8.0 (2019-03-15)
 	* New: we can now map multiple WordPress objects to the same Salesforce object. Each WordPress record will update the Salesforce record, and the Salesforce record can update each WordPress record, all according to the fieldmap. Thanks to WordPress forum user @joecanas1 for the initial report some time ago.
 	* New: if Soap is enabled in the plugin settings, it is capable of responding to merge events. For example, if two Contacts are merged in Salesforce and a user is mapped to the old one, it will become mapped to the new one.
 	* New: WordPress 5.1 changed its new user notification parameters. Thanks to GitHub user @synthetiv for the fix.
