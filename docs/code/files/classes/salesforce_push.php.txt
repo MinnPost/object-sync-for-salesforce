@@ -217,6 +217,21 @@ class Object_Sync_Sf_Salesforce_Push {
 		if ( isset( $post->post_type ) && in_array( $post->post_type, array( 'wp_log', 'revision', 'scheduled-action' ), true ) ) {
 			return;
 		}
+
+		// hook to allow developers to define post types they do want to check
+		$allowed_post_types = apply_filters( $this->option_prefix . 'allowed_post_action_types', array() );
+
+		if ( ! empty( $allowed_post_types ) ) {
+
+		}
+
+		// hook to allow developers to define post types they do not want to check
+		$not_allowed_post_types = apply_filters( $this->option_prefix . 'not_allowed_post_action_types', array() );
+
+		if ( ! empty( $not_allowed_post_types ) ) {
+			
+		}
+
 		if ( $post->post_modified_gmt === $post->post_date_gmt && 'trash' !== $post->post_status ) {
 			$update = 0;
 			$delete = 0;
