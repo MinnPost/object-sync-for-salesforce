@@ -85,8 +85,8 @@ class Object_Sync_Sf_WordPress {
 		// this should be all the objects
 		$wordpress_objects = apply_filters( $this->option_prefix . 'add_more_wordpress_types', $wordpress_objects );
 
-		// by default, only remove the log type we use in this plugin
-		$types_to_remove = apply_filters( $this->option_prefix . 'remove_wordpress_types', array( 'wp_log' ) );
+		// by default, only remove the revision, log, and scheduled-action types that we use in this plugin
+		$types_to_remove = apply_filters( $this->option_prefix . 'remove_wordpress_types', array( 'wp_log', 'scheduled-action', 'revision' ) );
 
 		// if the hook filters out any types, remove them from the visible list
 		if ( ! empty( $types_to_remove ) ) {
