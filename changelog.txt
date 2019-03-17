@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.8.3 (2019-03-17)
+    * Bug fix: In what seemed to be rare cases, manual push or pull requests from the WordPress admin were failing to actually save any data.
+
 * 1.8.2 (2019-03-16)
     * Bug fix: 1.8.0 accidentally disabled a developer filter. This re-enables it.
 

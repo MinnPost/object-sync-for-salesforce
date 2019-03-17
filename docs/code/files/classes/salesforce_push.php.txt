@@ -135,7 +135,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				break;
 		}
 		if ( isset( $trigger ) ) {
-			$results = $this->salesforce_push_object_crud( $object_type, $object, $trigger );
+			$results = $this->salesforce_push_object_crud( $object_type, $object, $trigger, true );
 			foreach ( $results as $result ) {
 				if ( 'success' === $result['status'] ) {
 					if ( 'POST' === $http_method || 'PUT' === $http_method ) {

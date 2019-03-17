@@ -1057,117 +1057,21 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* @return array $result
 	*
 	*/
-	public function manual_pull( $object_type, $salesforce_id ) {
-		$sfapi  = $this->salesforce['sfapi'];
-		$object = $sfapi->object_read(
-			$object_type,
-			$salesforce_id,
-			array(
-				'cache' => false,
-			)
-		)['data'];
+	public function manual_pull( $object_type, $salesforce_id = '' ) {
 
-		// if the object call does not return an error, continue
-		if ( ! isset( $object['errorCode'] ) ) {
-			$code                = '201';
-			$salesforce_mappings = $this->mappings->get_fieldmaps(
-				null,
-				array(
-					'salesforce_object' => $object_type,
-				)
-			);
-
-			// from drupal: if there is more than one mapping, don't throw exceptions
-			$hold_exceptions = count( $salesforce_mappings ) > 1;
-			$exception       = false;
-
-			$frequencies = $this->queue->get_frequencies();
-			$seconds     = reset( $frequencies )['frequency'] + 60;
-
-			$transients_to_delete = array();
-
-			$results = array();
-
-			foreach ( $salesforce_mappings as $salesforce_mapping ) {
-
-				$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping
-
-				// If no lastupdate, get all records, else get records since last pull.
-				// this should be what keeps it from getting all the records, whether or not they've ever been updated
-				// we also use the option for when the plugin was installed, and don't go back further than that by default
-
-				$sf_activate_time = get_option( $this->option_prefix . 'activate_time', '' );
-				$sf_last_sync     = get_option( $this->option_prefix . 'pull_last_sync_' . $object_type, null );
-				if ( $sf_last_sync ) {
-					$last_sync = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
-				} else {
-					$activated = gmdate( 'Y-m-d\TH:i:s\Z', $sf_activate_time );
-				}
-
-				// if this record is new as of the last sync, use the create trigger
-				if ( isset( $object['CreatedDate'] ) && $object['CreatedDate'] > $last_sync ) {
-					$sf_sync_trigger = $this->mappings->sync_sf_create;
-				} else {
-					$sf_sync_trigger = $this->mappings->sync_sf_update;
-				}
-				$pull_allowed = $this->is_pull_allowed( $object_type, $object, $sf_sync_trigger, $salesforce_mapping, $map_sync_triggers );
-
-				if ( true === $pull_allowed ) {
-					$result = $this->salesforce_pull_process_records( $object_type, $object, $sf_sync_trigger );
-				} else {
-					$status = 'error';
-					// create log entry for not allowed manual pull
-					if ( isset( $this->logging ) ) {
-						$logging = $this->logging;
-					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-					}
-
-					// translators: placeholders are: 1) the name of the WordPress object type, 2) the name of the Salesforce object, 3) the Salesforce Id value
-					$title = sprintf( esc_html__( 'Error: Manually pull WordPress %1$s not allowed (%2$s %3$s)', 'object-sync-for-salesforce' ),
-						esc_attr( $salesforce_mapping['wordpress_object'] ),
-						esc_attr( $salesforce_mapping['salesforce_object'] ),
-						esc_attr( $salesforce_id )
-					);
-
-					$result = array(
-						'title'   => $title,
-						'message' => '',
-						'trigger' => '',
-						'parent'  => 0,
-						'status'  => $status,
-					);
-
-					$logging->setup( $result );
-				}
-				$results[] = $result;
-			}
+		if ( '' === $salesforce_id ) {
+			$sf_sync_trigger = $this->mappings->sync_sf_create;
 		} else {
-			$code = '403';
-			// create log entry for failed pull
-			$status = 'error';
-			// translators: placeholders are: 1) the server error code
-			$title = sprintf( esc_html__( 'Error: %1$s Salesforce Pull', 'object-sync-for-salesforce' ),
-				esc_attr( $object['errorCode'] )
-			);
+			$sf_sync_trigger = $this->mappings->sync_sf_update;
+		}
 
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+		$results = $this->salesforce_pull_process_records( $object_type, $salesforce_id, $sf_sync_trigger );
+
+		$code = '201';
+		foreach ( $results as $result ) {
+			if ( 'success' !== $result['status'] ) {
+				$code = '403';
 			}
-
-			$result = array(
-				'title'   => $title,
-				'message' => $object['message'],
-				'parent'  => '',
-				'status'  => $status,
-				'trigger' => '',
-			);
-
-			$logging->setup( $result );
-
-			return $result;
 		}
 
 		$result = array(
@@ -1415,6 +1319,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				}
 				$synced_object = $this->get_synced_object( $object, $mapping_object, $salesforce_mapping );
 				$create        = $this->create_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $prematch, $wordpress_id_field_name, $seconds );
+				$results       = array_merge( $results, $create );
 			} elseif ( false === $is_new && false === $is_merge ) {
 				// unless we're on a delete, there is already at least one mapping_object['id'] associated with this Salesforce Id
 				// right here we should set the pulling transient
@@ -1425,9 +1330,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$synced_object = $this->get_synced_object( $object, $mapping_object, $salesforce_mapping );
 					// if params is set, this is an update request. if not, it is a delete.
 					if ( isset( $params ) ) {
-						$update = $this->update_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $wordpress_id_field_name, $seconds );
+						$update  = $this->update_called_from_salesforce( $sf_sync_trigger, $synced_object, $params, $wordpress_id_field_name, $seconds );
+						$results = array_merge( $results, $update );
 					} else {
-						$delete = $this->delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds, $mapping_objects );
+						$delete  = $this->delete_called_from_salesforce( $sf_sync_trigger, $synced_object, $wordpress_id_field_name, $seconds, $mapping_objects );
+						$results = array_merge( $results, $delete );
 					}
 				}
 			} elseif ( false === $is_new ) {

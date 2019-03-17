@@ -131,22 +131,12 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( 'user' === $object_type ) {
 			// User meta fields need to use update_user_meta for create as well, otherwise it'll just get created twice because apparently when the post is created it's already there.
 
-			// if the user is on WordPress VIP, the meta method is get_user_attribute
-			if ( ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) ) {
-				$user_meta_methods = array(
-					'create' => 'update_user_attribute',
-					'read'   => 'get_user_attribute',
-					'update' => 'update_user_attribute',
-					'delete' => 'delete_user_attribute',
-				);
-			} else {
-				$user_meta_methods = array(
-					'create' => 'update_user_meta',
-					'read'   => 'get_user_meta',
-					'update' => 'update_user_meta',
-					'delete' => 'delete_user_meta',
-				);
-			}
+			$user_meta_methods = array(
+				'create' => 'update_user_meta',
+				'read'   => 'get_user_meta',
+				'update' => 'update_user_meta',
+				'delete' => 'delete_user_meta',
+			);
 
 			$object_table_structure = array(
 				'object_name'     => 'user',
@@ -1146,8 +1136,9 @@ class Object_Sync_Sf_WordPress {
 					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
 					if ( get_user_meta( $user_id, $key, true ) !== $value['value'] ) {
 						$errors[] = array(
-							'key'   => $key,
-							'value' => $value,
+							'key'          => $key,
+							'value'        => $value,
+							'actual_value' => get_user_meta( $user_id, $key, true ),
 						);
 					}
 				}

@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 5.1
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -244,6 +244,9 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
+* 1.8.3 (2019-03-17)
+    * Bug fix: In what seemed to be rare cases, manual push or pull requests from the WordPress admin were failing to actually save any data.
+
 * 1.8.2 (2019-03-16)
     * Bug fix: 1.8.0 accidentally disabled a developer filter. This re-enables it.
 
@@ -260,7 +263,3 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
     * Bug fix: a bug existed in fieldmaps that had a Salesforce field like a record ID, which cannot be pushed to Salesforce but can be pulled from Salesforce, but the sync was failing. Thanks to WordPress forum user @walexparadis for the report on this.
     * Developers: we've updated our included version of ActionScheduler to 2.2.1.
     * Developers: the `load_by_wordpress` and `load_by_salesforce` methods on the `salesforce_mapping` class have been deprecated in favor of `load_all_by_wordpress` and `load_all_by_salesforce`, though the deprecated methods have not been removed.
-
-== Upgrade Notice ==
-= 1.8.2
-Sorry about the quick updates. 1.8.1 and 1.8.2 are important restorations of things that 1.8.0 accidentally disabled.
