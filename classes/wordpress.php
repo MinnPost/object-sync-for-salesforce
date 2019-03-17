@@ -1136,8 +1136,9 @@ class Object_Sync_Sf_WordPress {
 					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
 					if ( get_user_meta( $user_id, $key, true ) !== $value['value'] ) {
 						$errors[] = array(
-							'key'   => $key,
-							'value' => $value,
+							'key'          => $key,
+							'value'        => $value,
+							'actual_value' => get_user_meta( $user_id, $key, true ),
 						);
 					}
 				}
