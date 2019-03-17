@@ -2073,16 +2073,20 @@ class Object_Sync_Sf_Admin {
 					'wordpress_object' => 'user',
 				)
 			);
-			foreach ( $mappings as $mapping ) {
-				if ( isset( $mapping['id'] ) && ! isset( $get_data['edit_salesforce_mapping'] ) ) {
-					require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
-				} elseif ( ! empty( $fieldmap ) ) { // is the user mapped to something already?
-					if ( isset( $get_data['edit_salesforce_mapping'] ) && 'true' === sanitize_key( $get_data['edit_salesforce_mapping'] ) ) {
-						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
-					} else {
-						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
+			if ( count( $mappings ) > 0 ) {
+				foreach ( $mappings as $mapping ) {
+					if ( isset( $mapping['id'] ) && ! isset( $get_data['edit_salesforce_mapping'] ) ) {
+						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
+					} elseif ( ! empty( $fieldmap ) ) { // is the user mapped to something already?
+						if ( isset( $get_data['edit_salesforce_mapping'] ) && 'true' === sanitize_key( $get_data['edit_salesforce_mapping'] ) ) {
+							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
+						} else {
+							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
+						}
 					}
 				}
+			} else {
+				require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
 			}
 		}
 	}
