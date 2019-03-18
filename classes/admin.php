@@ -1625,7 +1625,7 @@ class Object_Sync_Sf_Admin {
 		}
 
 		$overwrite = isset( $_POST['overwrite'] ) ? esc_attr( $_POST['overwrite'] ) : '';
-		if ( '1' === $overwrite ) {
+		if ( true === filter_var( $overwrite, FILTER_VALIDATE_BOOLEAN ) ) {
 			if ( isset( $data['fieldmaps'] ) ) {
 				$fieldmaps = $this->mappings->get_fieldmaps();
 				foreach ( $fieldmaps as $fieldmap ) {
@@ -2078,7 +2078,7 @@ class Object_Sync_Sf_Admin {
 					if ( isset( $mapping['id'] ) && ! isset( $get_data['edit_salesforce_mapping'] ) ) {
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
 					} elseif ( ! empty( $fieldmap ) ) { // is the user mapped to something already?
-						if ( isset( $get_data['edit_salesforce_mapping'] ) && 'true' === sanitize_key( $get_data['edit_salesforce_mapping'] ) ) {
+						if ( isset( $get_data['edit_salesforce_mapping'] ) && true === filter_var( $get_data['edit_salesforce_mapping'], FILTER_VALIDATE_BOOLEAN ) ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
 						} else {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
@@ -2098,7 +2098,7 @@ class Object_Sync_Sf_Admin {
 	*/
 	public function save_salesforce_user_fields( $user_id ) {
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-		if ( isset( $post_data['salesforce_update_mapped_user'] ) && '1' === rawurlencode( $post_data['salesforce_update_mapped_user'] ) ) {
+		if ( isset( $post_data['salesforce_update_mapped_user'] ) && true === filter_var( $post_data['salesforce_update_mapped_user'], FILTER_VALIDATE_BOOLEAN ) ) {
 			$mapping_object                  = $this->mappings->get_object_maps(
 				array(
 					'wordpress_id'     => $user_id,
@@ -2108,7 +2108,7 @@ class Object_Sync_Sf_Admin {
 			$mapping_object['salesforce_id'] = $post_data['salesforce_id'];
 
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
-		} elseif ( isset( $post_data['salesforce_create_mapped_user'] ) && '1' === rawurlencode( $post_data['salesforce_create_mapped_user'] ) ) {
+		} elseif ( isset( $post_data['salesforce_create_mapped_user'] ) && true === filter_var( $post_data['salesforce_create_mapped_user'], FILTER_VALIDATE_BOOLEAN ) ) {
 			// if a Salesforce ID was entered
 			if ( isset( $post_data['salesforce_id'] ) && ! empty( $post_data['salesforce_id'] ) ) {
 				$mapping_object = $this->create_object_map( $user_id, 'user', $post_data['salesforce_id'] );
