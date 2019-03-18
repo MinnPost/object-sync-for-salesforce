@@ -5,7 +5,7 @@
 	<tr>
 		<th><label for="salesforce_id"><?php echo esc_html__( 'Salesforce ID', 'object-sync-for-salesforce' ); ?></label></th>
 		<td>
-			<input type="text" name="salesforce_id" id="salesforce_id" value="<?php if ( isset( $mapping['id'] ) ) { echo esc_html( $mapping['salesforce_id'] ); } ?>" class="regular-text" /><br />
+			<input type="text" name="salesforce_id" id="salesforce_id" value="<?php if ( isset( $mapping['id'] ) ) { echo esc_attr( $mapping['salesforce_id'] ); } ?>" class="regular-text" required /><br />
 			<span class="description"><?php echo esc_html__( 'Enter a Salesforce object ID.', 'object-sync-for-salesforce' ); ?></span>
 		</td>
 	</tr>

@@ -1135,16 +1135,22 @@ class Object_Sync_Sf_WordPress {
 			$success = true;
 			$errors  = array();
 			foreach ( $params as $key => $value ) {
-				$method  = $value['method_modify'];
-				$meta_id = $method( $user_id, $key, $value['value'] );
+				$modify  = $value['method_modify'];
+				$read    = $value['method_read'];
+				$meta_id = $modify( $user_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
 					$changed = false;
 					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
-					if ( get_user_meta( $user_id, $key, true ) !== $value['value'] ) {
+					if ( (string) $read( $user_id, $key, true ) !== (string) $value['value'] ) {
 						$errors[] = array(
-							'key'          => $key,
-							'value'        => $value,
-							'actual_value' => get_user_meta( $user_id, $key, true ),
+							'message' => sprintf(
+								// Translators: 1) is the key of the meta field, 2) is the method that should be used to update the value, 3) is the already stored value, 4) is the new value the plugin tried to save
+								esc_html__( 'Unable to update meta key %1$s with method %2$s. The stored value is %3$s and the new value should be %4$s.', 'object-sync-for-salesforce' ),
+								esc_attr( $key ),
+								esc_attr( $modify ),
+								wp_kses_post( $read( $user_id, $key, true ) ),
+								wp_kses_post( $value['value'] )
+							),
 						);
 					}
 				}
@@ -1481,15 +1487,22 @@ class Object_Sync_Sf_WordPress {
 			}
 			if ( is_array( $params ) && ! empty( $params ) ) {
 				foreach ( $params as $key => $value ) {
-					$method  = $value['method_modify'];
-					$meta_id = $method( $post_id, $key, $value['value'] );
+					$modify  = $value['method_modify'];
+					$read    = $value['method_read'];
+					$meta_id = $modify( $post_id, $key, $value['value'] );
 					if ( false === $meta_id ) {
 						$changed = false;
 						// Check and make sure the stored value matches $value['value'], otherwise it's an error.
-						if ( get_post_meta( $post_id, $key, true ) !== $value['value'] ) {
+						if ( (string) $read( $post_id, $key, true ) !== (string) $value['value'] ) {
 							$errors[] = array(
-								'key'   => $key,
-								'value' => $value,
+								'message' => sprintf(
+									// Translators: 1) is the key of the meta field, 2) is the method that should be used to update the value, 3) is the already stored value, 4) is the new value the plugin tried to save
+									esc_html__( 'Unable to update meta key %1$s with method %2$s. The stored value is %3$s and the new value should be %4$s.', 'object-sync-for-salesforce' ),
+									esc_attr( $key ),
+									esc_attr( $modify ),
+									wp_kses_post( $read( $user_id, $key, true ) ),
+									wp_kses_post( $value['value'] )
+								),
 							);
 						}
 					}
@@ -2484,20 +2497,22 @@ class Object_Sync_Sf_WordPress {
 			$success = true;
 			$errors  = array();
 			foreach ( $params as $key => $value ) {
-				$method  = $value['method_modify'];
-				$meta_id = $method( $comment_id, $key, $value['value'] );
+				$modify  = $value['method_modify'];
+				$read    = $value['method_read'];
+				$meta_id = $modify( $comment_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
 					$changed = false;
 					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
-					if ( get_comment_meta( $comment_id, $key, true ) !== $value['value'] ) {
+					if ( (string) $read( $comment_id, $key, true ) !== (string) $value['value'] ) {
 						$errors[] = array(
 							'message' => sprintf(
-								// Translators: %1$s is a method name.
-								esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
-								esc_html( $method )
+								// Translators: 1) is the key of the meta field, 2) is the method that should be used to update the value, 3) is the already stored value, 4) is the new value the plugin tried to save
+								esc_html__( 'Unable to update meta key %1$s with method %2$s. The stored value is %3$s and the new value should be %4$s.', 'object-sync-for-salesforce' ),
+								esc_attr( $key ),
+								esc_attr( $modify ),
+								wp_kses_post( $read( $user_id, $key, true ) ),
+								wp_kses_post( $value['value'] )
 							),
-							'key'     => $key,
-							'value'   => $value,
 						);
 					}
 				}
