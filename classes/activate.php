@@ -21,7 +21,8 @@ class Object_Sync_Sf_Activate {
 	protected $schedulable_classes;
 	protected $queue;
 
-	private $installed_version;
+	private $action_group_suffix;
+	private $user_installed_version;
 
 	/**
 	* Constructor which sets up activate hooks

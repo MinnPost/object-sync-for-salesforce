@@ -18,12 +18,15 @@ class Object_Sync_Sf_Salesforce_Push {
 	protected $version;
 	protected $login_credentials;
 	protected $slug;
+	protected $wordpress;
 	protected $salesforce;
 	protected $mappings;
 	protected $logging;
 	protected $schedulable_classes;
 	protected $queue;
 	protected $option_prefix;
+
+	public $debug;
 
 	/**
 	* @var string
@@ -329,7 +332,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	* Callback method for adding a comment
 	*
 	* @param string $comment_id
-	* @param int|string comment_approved
+	* @param int|string $comment_approved
 	* @param array $commentdata
 	*/
 	public function add_comment( $comment_id, $comment_approved, $commentdata = array() ) {

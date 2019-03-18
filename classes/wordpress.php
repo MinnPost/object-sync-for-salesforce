@@ -21,6 +21,12 @@ class Object_Sync_Sf_WordPress {
 	protected $logging;
 	protected $option_prefix;
 
+	public $wordpress_objects;
+	public $options;
+
+	public $sfwp_transients;
+	public $debug;
+
 	/**
 	 * Constructor which discovers objects in WordPress
 	 *
@@ -36,9 +42,9 @@ class Object_Sync_Sf_WordPress {
 		$this->wpdb          = $wpdb;
 		$this->version       = $version;
 		$this->slug          = $slug;
-		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->mappings      = $mappings;
 		$this->logging       = $logging;
+		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 
 		add_action( 'admin_init', function() {
 			$this->wordpress_objects = $this->get_object_types();
@@ -321,7 +327,7 @@ class Object_Sync_Sf_WordPress {
 	 * Get WordPress data based on what object it is
 	 *
 	 * @param string $object_type The type of object.
-	 * @param string $object_id The ID of the object.
+	 * @param int $object_id The ID of the object.
 	 * @param bool $is_deleted Whether the WordPress object has been deleted
 	 * @return array $wordpress_object
 	 */
@@ -683,7 +689,7 @@ class Object_Sync_Sf_WordPress {
 	 * Update an existing object.
 	 *
 	 * @param string $name Object type name, E.g., user, post, comment.
-	 * @param string $id WordPress id of the object.
+	 * @param int $id WordPress id of the object.
 	 * @param array  $params Values of the fields to set for the object.
 	 *
 	 * part of CRUD for WordPress objects
@@ -777,7 +783,7 @@ class Object_Sync_Sf_WordPress {
 	 * Delete a WordPress object.
 	 *
 	 * @param string $name Object type name, E.g., user, post, comment.
-	 * @param string $id WordPress id of the object.
+	 * @param int $id WordPress id of the object.
 	 *
 	 * @return array
 	 *   data:
@@ -2095,7 +2101,7 @@ class Object_Sync_Sf_WordPress {
 	/**
 	 * Update a WordPress term.
 	 *
-	 * @param string $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
+	 * @param int $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
 	 * @param array  $params Array of term data params.
 	 * @param string $taxonomy The taxonomy to which to add the term. this is required.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
@@ -2170,7 +2176,7 @@ class Object_Sync_Sf_WordPress {
 	/**
 	 * Delete a WordPress term.
 	 *
-	 * @param string $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
+	 * @param int $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
 	 * @param string $taxonomy The taxonomy from which to delete the term. this is required.
 	 *
 	 * @return bool True if successful, false if failed.
@@ -2450,7 +2456,7 @@ class Object_Sync_Sf_WordPress {
 	/**
 	 * Update a WordPress comment.
 	 *
-	 * @param string $comment_id The ID for the comment to be updated. This value needs to be in the array that is sent to wp_update_comment.
+	 * @param int $comment_id The ID for the comment to be updated. This value needs to be in the array that is sent to wp_update_comment.
 	 * @param array  $params Array of comment data params.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
 	 *
@@ -2549,6 +2555,8 @@ class WordpressException extends Exception {
 class Object_Sync_Sf_WordPress_Transient {
 
 	protected $name;
+
+	public $cache_prefix;
 
 	/**
 	 * Constructor which sets cache options and the name of the field that lists this plugin's cache keys.

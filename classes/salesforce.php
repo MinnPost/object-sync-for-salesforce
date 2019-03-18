@@ -14,6 +14,26 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
  */
 class Object_Sync_Sf_Salesforce {
 
+	protected $consumer_key;
+	protected $consumer_secret;
+	protected $login_url;
+	protected $callback_url;
+	protected $authorize_path;
+	protected $token_path;
+	protected $rest_api_version;
+	protected $wordpress;
+	protected $slug;
+	protected $logging;
+	protected $schedulable_classes;
+	protected $option_prefix;
+
+	public $options;
+	public $success_codes;
+	public $refresh_code;
+	public $success_or_refresh_codes;
+
+	public $debug;
+
 	public $response;
 
 	/**
@@ -54,10 +74,11 @@ class Object_Sync_Sf_Salesforce {
 		$this->rest_api_version    = $rest_api_version;
 		$this->wordpress           = $wordpress;
 		$this->slug                = $slug;
-		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->logging             = $logging;
 		$this->schedulable_classes = $schedulable_classes;
-		$this->options             = array(
+		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
+
+		$this->options = array(
 			'cache'            => true,
 			'cache_expiration' => $this->cache_expiration(),
 			'type'             => 'read',
@@ -298,7 +319,8 @@ class Object_Sync_Sf_Salesforce {
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
 			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+				global $wpdb;
+				$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 			}
 
 			// translators: placeholder is the URL of the Salesforce API request
@@ -408,7 +430,8 @@ class Object_Sync_Sf_Salesforce {
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+					global $wpdb;
+					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 				}
 
 				// translators: placeholder is the HTTP status code returned by the Salesforce API request
@@ -429,7 +452,8 @@ class Object_Sync_Sf_Salesforce {
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+					global $wpdb;
+					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 				}
 
 				// translators: placeholder is the server code returned by the api
@@ -457,7 +481,8 @@ class Object_Sync_Sf_Salesforce {
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
 				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+					global $wpdb;
+					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 				}
 
 				// translators: placeholder is the server code returned by Salesforce
@@ -1148,7 +1173,7 @@ class Object_Sync_Sf_Salesforce {
 	*   Start date to check for deleted objects (in ISO 8601 format).
 	* @param string $endDate
 	*   End date to check for deleted objects (in ISO 8601 format).
-	* @return GetDeletedResult
+	* @return mixed $result
 	*/
 	public function get_deleted( $type, $start_date, $end_date ) {
 		$options = array(

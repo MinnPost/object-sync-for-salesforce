@@ -52,6 +52,8 @@ class Object_Sync_Sf_Mapping {
 	public $status_success;
 	public $status_error;
 
+	public $debug;
+
 	/**
 	 * Constructor which sets up links between the systems
 	 *

@@ -57,6 +57,11 @@ class Object_Sync_Salesforce {
 	private $queue;
 
 	/**
+	* @var bool
+	*/
+	private $load;
+
+	/**
 	* @var object
 	*/
 	private $activated;
@@ -80,8 +85,8 @@ class Object_Sync_Salesforce {
 	private $wordpress;
 
 	/**
-	* @var object
-	* Load and initialize the Object_Sync_Sf_Salesforce class.
+	* @var array
+	* Load and initialize the API on the Object_Sync_Sf_Salesforce class.
 	* This contains the Salesforce API methods
 	*/
 	public $salesforce;
@@ -97,6 +102,12 @@ class Object_Sync_Salesforce {
 	* Load and initialize the Object_Sync_Sf_Salesforce_Pull class
 	*/
 	private $pull;
+
+	/**
+	* @var object
+	* Load and initialize the Object_Sync_Sf_Rest class
+	*/
+	private $rest;
 
 	/**
 	 * @var object
@@ -217,10 +228,12 @@ class Object_Sync_Salesforce {
 	 * @param string $version
 	 * @param string $slug
 	 * @param string $option_prefix
+	 * @return bool true
 	 *
 	 */
 	private function load( $wpdb, $version, $slug, $option_prefix ) {
 		require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+		return true;
 	}
 
 	/**
@@ -321,7 +334,7 @@ class Object_Sync_Salesforce {
 		$sfapi               = '';
 		if ( $consumer_key && $consumer_secret ) {
 			$sfapi = new Object_Sync_Sf_Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes, $option_prefix );
-			if ( $sfapi->is_authorized() === true ) {
+			if ( true === $sfapi->is_authorized() ) {
 				$is_authorized = true;
 			}
 		}

@@ -23,9 +23,16 @@ class Object_Sync_Sf_Admin {
 	protected $mappings;
 	protected $push;
 	protected $pull;
+	protected $logging;
 	protected $schedulable_classes;
 	protected $queue;
 	protected $option_prefix;
+
+	private $sfwp_transients;
+
+	private $access_token;
+	private $instance_url;
+	private $refresh_token;
 
 	/**
 	* @var string
@@ -1428,7 +1435,10 @@ class Object_Sync_Sf_Admin {
 	public function prepare_fieldmap_data() {
 		$error     = false;
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-		$cachekey  = md5( wp_json_encode( $post_data ) );
+		$cachekey  = wp_json_encode( $post_data );
+		if ( false !== $cachekey ) {
+			$cachekey = md5( $cachekey );
+		}
 
 		if ( ! isset( $post_data['label'] ) || ! isset( $post_data['salesforce_object'] ) || ! isset( $post_data['wordpress_object'] ) ) {
 			$error = true;
@@ -1503,7 +1513,10 @@ class Object_Sync_Sf_Admin {
 	public function prepare_object_map_data() {
 		$error     = false;
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-		$cachekey  = md5( wp_json_encode( $post_data ) );
+		$cachekey  = wp_json_encode( $post_data );
+		if ( false !== $cachekey ) {
+			$cachekey = md5( $cachekey );
+		}
 
 		if ( ! isset( $post_data['wordpress_id'] ) || ! isset( $post_data['salesforce_id'] ) ) {
 			$error = true;
@@ -1557,8 +1570,11 @@ class Object_Sync_Sf_Admin {
 			exit();
 		} elseif ( $post_data['delete'] ) {
 			$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-			$cachekey  = md5( wp_json_encode( $post_data ) );
-			$error     = false;
+			$cachekey  = wp_json_encode( $post_data );
+			if ( false !== $cachekey ) {
+				$cachekey = md5( $cachekey );
+			}
+			$error = false;
 			if ( ! isset( $post_data['delete'] ) ) {
 				$error = true;
 			}
@@ -1741,12 +1757,14 @@ class Object_Sync_Sf_Admin {
 		}
 
 		if ( ! isset( $args['constant'] ) || ! defined( $args['constant'] ) ) {
-			$value = esc_attr( get_option( $id, '' ) );
+			$value = filter_var( get_option( $id, false ), FILTER_VALIDATE_BOOLEAN );
 			if ( 'checkbox' === $type ) {
-				if ( '1' === $value ) {
+				if ( true === $value ) {
 					$checked = 'checked ';
 				}
 				$value = 1;
+			} else {
+				$value = '';
 			}
 			if ( '' === $value && isset( $args['default'] ) && '' !== $args['default'] ) {
 				$value = $args['default'];
