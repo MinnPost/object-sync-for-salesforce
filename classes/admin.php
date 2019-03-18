@@ -2075,11 +2075,13 @@ class Object_Sync_Sf_Admin {
 			);
 			if ( count( $mappings ) > 0 ) {
 				foreach ( $mappings as $mapping ) {
-					if ( isset( $mapping['id'] ) && ! isset( $get_data['edit_salesforce_mapping'] ) ) {
+					if ( isset( $mapping['id'] ) && ! isset( $get_data['edit_salesforce_mapping'] ) && ! isset( $get_data['delete_salesforce_mapping'] ) ) {
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
 					} elseif ( ! empty( $fieldmap ) ) { // is the user mapped to something already?
 						if ( isset( $get_data['edit_salesforce_mapping'] ) && true === filter_var( $get_data['edit_salesforce_mapping'], FILTER_VALIDATE_BOOLEAN ) ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
+						} elseif ( isset( $get_data['delete_salesforce_mapping'] ) && true === filter_var( $get_data['delete_salesforce_mapping'], FILTER_VALIDATE_BOOLEAN ) ) {
+							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-delete.php' );
 						} else {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
 						}
@@ -2115,6 +2117,11 @@ class Object_Sync_Sf_Admin {
 			} elseif ( isset( $post_data['push_new_user_to_salesforce'] ) ) {
 				// otherwise, create a new record in Salesforce
 				$result = $this->push_to_salesforce( 'user', $user_id );
+			}
+		} elseif ( isset( $post_data['salesforce_delete_mapped_user'] ) && true === filter_var( $post_data['salesforce_delete_mapped_user'], FILTER_VALIDATE_BOOLEAN ) ) {
+			// if a Salesforce ID was entered
+			if ( isset( $post_data['mapping_id'] ) && ! empty( $post_data['mapping_id'] ) ) {
+				$delete = $this->mappings->delete_object_map( $post_data['mapping_id'] );
 			}
 		}
 	}
