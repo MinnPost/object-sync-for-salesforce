@@ -24,6 +24,9 @@ class Object_Sync_Sf_Rest {
 	protected $push;
 	protected $pull;
 
+	private $sfwp_transients;
+	private $namespace;
+
 	/**
 	* Constructor which sets up rest methods
 	*
@@ -174,7 +177,7 @@ class Object_Sync_Sf_Rest {
 	* Process the REST API request
 	*
 	* @param WP_REST_Request $request
-	* @return $result
+	* @return array $result
 	*/
 	public function process( WP_REST_Request $request ) {
 		// see methods: https://developer.wordpress.org/reference/classes/wp_rest_request/

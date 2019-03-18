@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">218</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">258</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-600527676"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1860614555"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-600527676" class="accordion-body collapse in">
+            <div id="namespace-1860614555" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -243,6 +243,7 @@
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#property_name_length" class="">$name_length</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#property_status_success" class="">$status_success</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_Mapping.html#property_status_error" class="">$status_error</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Mapping.html#property_debug" class="">$debug</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No constants found</em>
@@ -842,6 +843,30 @@
         </aside>
     </div>
 
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_debug" name="property_debug" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$debug</h3>
+                <pre class="signature">$debug : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
                                                     <div class="row-fluid">
         <div class="span8 content class">
             <a id="property_wpdb" name="property_wpdb" class="anchor"></a>
@@ -1131,7 +1156,7 @@
             <article class="method">
                 <h3 class="public ">get_fieldmaps()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_fieldmaps(integer  <span class="argument">$id = null</span>, array  <span class="argument">$conditions = array()</span>, boolean  <span class="argument">$reset = false</span>) : Array</pre>
+                <pre class="signature" style="margin-right: 54px;">get_fieldmaps(integer  <span class="argument">$id = null</span>, array  <span class="argument">$conditions = array()</span>, boolean  <span class="argument">$reset = false</span>) : array</pre>
                 <p><em>Get one or more fieldmap rows between a WordPress and Salesforce object</em></p>
                 
 
@@ -1161,7 +1186,7 @@
                                                                     </dl>
                 
                                     <h4>Returns</h4>
-                    Array
+                    array
                                             &mdash; <p>$map a single mapping or $mappings, an array of mappings.</p>
                                     				
                             </article>
@@ -1272,7 +1297,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
             <article class="method">
                 <h3 class="public ">update_fieldmap()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">update_fieldmap(array  <span class="argument">$posted = array()</span>, array  <span class="argument">$wordpress_fields = array()</span>, array  <span class="argument">$salesforce_fields = array()</span>, integer  <span class="argument">$id = &#039;&#039;</span>) : \$map</pre>
+                <pre class="signature" style="margin-right: 54px;">update_fieldmap(array  <span class="argument">$posted = array()</span>, array  <span class="argument">$wordpress_fields = array()</span>, array  <span class="argument">$salesforce_fields = array()</span>, integer  <span class="argument">$id = &#039;&#039;</span>) : boolean</pre>
                 <p><em>Update a fieldmap row between a WordPress and Salesforce object</em></p>
                 
 
@@ -1307,7 +1332,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                                                                     </dl>
                 
                                     <h4>Returns</h4>
-                    \$map
+                    boolean
                                     				
                             </article>
         </div>
@@ -1456,7 +1481,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
             <article class="method">
                 <h3 class="public deprecated">get_object_maps()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_object_maps(array  <span class="argument">$conditions = array()</span>, boolean  <span class="argument">$reset = false</span>) : \$map</pre>
+                <pre class="signature" style="margin-right: 54px;">get_object_maps(array  <span class="argument">$conditions = array()</span>, boolean  <span class="argument">$reset = false</span>) : array</pre>
                 <p><em>Get one or more object map rows between WordPress and Salesforce objects</em></p>
                 
 
@@ -1481,8 +1506,8 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                                                                     </dl>
                 
                                     <h4>Returns</h4>
-                    \$map
-                                            &mdash; <p>or $mappings</p>
+                    array
+                                            &mdash; <p>$map or $mappings</p>
                                     				
                             </article>
         </div>
@@ -1507,7 +1532,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
             <article class="method">
                 <h3 class="public ">update_object_map()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">update_object_map(array  <span class="argument">$posted = array()</span>, array  <span class="argument">$id = &#039;&#039;</span>) : \$map</pre>
+                <pre class="signature" style="margin-right: 54px;">update_object_map(array  <span class="argument">$posted = array()</span>, array  <span class="argument">$id = &#039;&#039;</span>) : boolean</pre>
                 <p><em>Update an object map row between a WordPress and Salesforce object</em></p>
                 
 
@@ -1532,7 +1557,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                                                                     </dl>
                 
                                     <h4>Returns</h4>
-                    \$map
+                    boolean
                                     				
                             </article>
         </div>
@@ -1553,7 +1578,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
             <article class="method">
                 <h3 class="public ">delete_object_map()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">delete_object_map(integer|array  <span class="argument">$id = &#039;&#039;</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">delete_object_map(integer|array  <span class="argument">$id = &#039;&#039;</span>) : boolean</pre>
                 <p><em>Delete an object map row between a WordPress and Salesforce object</em></p>
                 
 
@@ -1572,7 +1597,9 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                             <dd></dd>
                                                                     </dl>
                 
-                				
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1592,7 +1619,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
             <article class="method">
                 <h3 class="public ">generate_temporary_id()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">generate_temporary_id(string  <span class="argument">$direction</span>) : \$id</pre>
+                <pre class="signature" style="margin-right: 54px;">generate_temporary_id(string  <span class="argument">$direction</span>) : string</pre>
                 <p><em>Generate a temporary ID to store while waiting for a push or pull to complete, before the record has been assigned a new ID</em></p>
                 
 
@@ -1611,8 +1638,8 @@ Warning: count(): Parameter must be an array or an object that implements Counta
 Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
 
                                     <h4>Returns</h4>
-                    \$id
-                                            &mdash; <p>is a temporary string that will be replaced if the modification is successful</p>
+                    string
+                                            &mdash; <p>$id is a temporary string that will be replaced if the modification is successful</p>
                                     				
                             </article>
         </div>
@@ -1976,7 +2003,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
             <article class="method">
                 <h3 class="private ">setup_fieldmap_data()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">setup_fieldmap_data(array  <span class="argument">$posted = array()</span>, array  <span class="argument">$wordpress_fields = array()</span>, array  <span class="argument">$salesforce_fields = array()</span>) : \$data</pre>
+                <pre class="signature" style="margin-right: 54px;">setup_fieldmap_data(array  <span class="argument">$posted = array()</span>, array  <span class="argument">$wordpress_fields = array()</span>, array  <span class="argument">$salesforce_fields = array()</span>) : array</pre>
                 <p><em>Setup fieldmap data
 Sets up the database entry for mapping the object types between Salesforce and WordPress</em></p>
                 
@@ -2006,7 +2033,8 @@ Warning: count(): Parameter must be an array or an object that implements Counta
 Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
 
                                     <h4>Returns</h4>
-                    \$data
+                    array
+                                            &mdash; <p>$data the fieldmap's data for the database</p>
                                     				
                             </article>
         </div>
@@ -2027,7 +2055,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
             <article class="method">
                 <h3 class="private ">setup_object_map_data()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">setup_object_map_data(array  <span class="argument">$posted = array()</span>) : \$data</pre>
+                <pre class="signature" style="margin-right: 54px;">setup_object_map_data(array  <span class="argument">$posted = array()</span>) : array</pre>
                 <p><em>Setup the data for the object map</em></p>
                 
 
@@ -2046,8 +2074,8 @@ Warning: count(): Parameter must be an array or an object that implements Counta
 Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
 
                                     <h4>Returns</h4>
-                    \$data
-                                            &mdash; <p>Filtered array with only the keys that are in the object map database table. Strips out things from WordPress form if they're present.</p>
+                    array
+                                            &mdash; <p>$data Filtered array with only the keys that are in the object map database table. Strips out things from WordPress form if they're present.</p>
                                     				
                             </article>
         </div>
@@ -2157,7 +2185,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on March 17th, 2019 at 20:46.
+                    on March 18th, 2019 at 18:23.
                 </section>
             </section>
         </section>

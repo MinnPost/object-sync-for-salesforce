@@ -22,6 +22,8 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public $enabled;
 	public $statuses_to_log;
 
+	private $schedule_name;
+
 
 	/**
 	 * Constructor which sets content type and pruning for logs
@@ -53,7 +55,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @throws \Exception
 	 */
 	private function init() {
-		if ( '1' === $this->enabled ) {
+		if ( true === filter_var( $this->enabled, FILTER_VALIDATE_BOOLEAN ) ) {
 			add_filter( 'cron_schedules', array( $this, 'add_prune_interval' ) );
 			add_filter( 'wp_log_types', array( $this, 'set_log_types' ), 10, 1 );
 			add_filter( 'wp_logging_should_we_prune', array( $this, 'set_prune_option' ), 10, 1 );
@@ -72,6 +74,12 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		}
 	}
 
+	/**
+	 * Set visibility for the post type
+	 *
+	 * @param array $log_args The post arguments
+	 * @return array $log_args
+	 */
 	public function set_log_visibility( $log_args ) {
 		// set public to true overrides the WP_DEBUG setting that is the default on the class
 		// capabilities makes it so (currently) only admin users can see the log posts in their admin view

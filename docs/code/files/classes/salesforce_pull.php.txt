@@ -18,12 +18,20 @@ class Object_Sync_Sf_Salesforce_Pull {
 	protected $version;
 	protected $login_credentials;
 	protected $slug;
+	protected $wordpress;
 	protected $salesforce;
 	protected $mappings;
 	protected $logging;
 	protected $schedulable_classes;
 	protected $queue;
 	protected $option_prefix;
+
+	private $batch_soql_queries;
+	private $min_soql_batch_size;
+	private $max_soql_size;
+	private $mergeable_record_types;
+
+	public $debug;
 
 	/**
 	* @var string
@@ -503,7 +511,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	* Executes a nextRecordsUrl SOQL query based on the previous result,
 	* and places each updated SF object into the queue for later processing.
 	*
-	* @param gmdate $last_sync
+	* @param datetime $last_sync
 	* @param array $salesforce_mapping
 	* @param array $map_sync_triggers
 	* @param string $type

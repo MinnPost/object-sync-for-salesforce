@@ -81,7 +81,7 @@ class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 				// only once.
 				$this->refreshed = true;
 				$this->salesforce_api->refresh_token();
-				return $this->trySoap( $function, $args );
+				return $this->try_soap( $function, $args );
 			}
 
 			// If we've already tried a refresh, this refresh token is probably

@@ -23,9 +23,16 @@ class Object_Sync_Sf_Admin {
 	protected $mappings;
 	protected $push;
 	protected $pull;
+	protected $logging;
 	protected $schedulable_classes;
 	protected $queue;
 	protected $option_prefix;
+
+	private $sfwp_transients;
+
+	private $access_token;
+	private $instance_url;
+	private $refresh_token;
 
 	/**
 	* @var string
@@ -1428,7 +1435,10 @@ class Object_Sync_Sf_Admin {
 	public function prepare_fieldmap_data() {
 		$error     = false;
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-		$cachekey  = md5( wp_json_encode( $post_data ) );
+		$cachekey  = wp_json_encode( $post_data );
+		if ( false !== $cachekey ) {
+			$cachekey = md5( $cachekey );
+		}
 
 		if ( ! isset( $post_data['label'] ) || ! isset( $post_data['salesforce_object'] ) || ! isset( $post_data['wordpress_object'] ) ) {
 			$error = true;
@@ -1503,7 +1513,10 @@ class Object_Sync_Sf_Admin {
 	public function prepare_object_map_data() {
 		$error     = false;
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-		$cachekey  = md5( wp_json_encode( $post_data ) );
+		$cachekey  = wp_json_encode( $post_data );
+		if ( false !== $cachekey ) {
+			$cachekey = md5( $cachekey );
+		}
 
 		if ( ! isset( $post_data['wordpress_id'] ) || ! isset( $post_data['salesforce_id'] ) ) {
 			$error = true;
@@ -1557,8 +1570,11 @@ class Object_Sync_Sf_Admin {
 			exit();
 		} elseif ( $post_data['delete'] ) {
 			$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-			$cachekey  = md5( wp_json_encode( $post_data ) );
-			$error     = false;
+			$cachekey  = wp_json_encode( $post_data );
+			if ( false !== $cachekey ) {
+				$cachekey = md5( $cachekey );
+			}
+			$error = false;
 			if ( ! isset( $post_data['delete'] ) ) {
 				$error = true;
 			}
@@ -1625,7 +1641,7 @@ class Object_Sync_Sf_Admin {
 		}
 
 		$overwrite = isset( $_POST['overwrite'] ) ? esc_attr( $_POST['overwrite'] ) : '';
-		if ( '1' === $overwrite ) {
+		if ( true === filter_var( $overwrite, FILTER_VALIDATE_BOOLEAN ) ) {
 			if ( isset( $data['fieldmaps'] ) ) {
 				$fieldmaps = $this->mappings->get_fieldmaps();
 				foreach ( $fieldmaps as $fieldmap ) {
@@ -1741,12 +1757,14 @@ class Object_Sync_Sf_Admin {
 		}
 
 		if ( ! isset( $args['constant'] ) || ! defined( $args['constant'] ) ) {
-			$value = esc_attr( get_option( $id, '' ) );
+			$value = filter_var( get_option( $id, false ), FILTER_VALIDATE_BOOLEAN );
 			if ( 'checkbox' === $type ) {
-				if ( '1' === $value ) {
+				if ( true === $value ) {
 					$checked = 'checked ';
 				}
 				$value = 1;
+			} else {
+				$value = '';
 			}
 			if ( '' === $value && isset( $args['default'] ) && '' !== $args['default'] ) {
 				$value = $args['default'];
@@ -2075,11 +2093,13 @@ class Object_Sync_Sf_Admin {
 			);
 			if ( count( $mappings ) > 0 ) {
 				foreach ( $mappings as $mapping ) {
-					if ( isset( $mapping['id'] ) && ! isset( $get_data['edit_salesforce_mapping'] ) ) {
+					if ( isset( $mapping['id'] ) && ! isset( $get_data['edit_salesforce_mapping'] ) && ! isset( $get_data['delete_salesforce_mapping'] ) ) {
 						require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce.php' );
 					} elseif ( ! empty( $fieldmap ) ) { // is the user mapped to something already?
-						if ( isset( $get_data['edit_salesforce_mapping'] ) && 'true' === sanitize_key( $get_data['edit_salesforce_mapping'] ) ) {
+						if ( isset( $get_data['edit_salesforce_mapping'] ) && true === filter_var( $get_data['edit_salesforce_mapping'], FILTER_VALIDATE_BOOLEAN ) ) {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-change.php' );
+						} elseif ( isset( $get_data['delete_salesforce_mapping'] ) && true === filter_var( $get_data['delete_salesforce_mapping'], FILTER_VALIDATE_BOOLEAN ) ) {
+							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-delete.php' );
 						} else {
 							require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/user-profile-salesforce-map.php' );
 						}
@@ -2098,7 +2118,7 @@ class Object_Sync_Sf_Admin {
 	*/
 	public function save_salesforce_user_fields( $user_id ) {
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-		if ( isset( $post_data['salesforce_update_mapped_user'] ) && '1' === rawurlencode( $post_data['salesforce_update_mapped_user'] ) ) {
+		if ( isset( $post_data['salesforce_update_mapped_user'] ) && true === filter_var( $post_data['salesforce_update_mapped_user'], FILTER_VALIDATE_BOOLEAN ) ) {
 			$mapping_object                  = $this->mappings->get_object_maps(
 				array(
 					'wordpress_id'     => $user_id,
@@ -2108,13 +2128,18 @@ class Object_Sync_Sf_Admin {
 			$mapping_object['salesforce_id'] = $post_data['salesforce_id'];
 
 			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
-		} elseif ( isset( $post_data['salesforce_create_mapped_user'] ) && '1' === rawurlencode( $post_data['salesforce_create_mapped_user'] ) ) {
+		} elseif ( isset( $post_data['salesforce_create_mapped_user'] ) && true === filter_var( $post_data['salesforce_create_mapped_user'], FILTER_VALIDATE_BOOLEAN ) ) {
 			// if a Salesforce ID was entered
 			if ( isset( $post_data['salesforce_id'] ) && ! empty( $post_data['salesforce_id'] ) ) {
 				$mapping_object = $this->create_object_map( $user_id, 'user', $post_data['salesforce_id'] );
 			} elseif ( isset( $post_data['push_new_user_to_salesforce'] ) ) {
 				// otherwise, create a new record in Salesforce
 				$result = $this->push_to_salesforce( 'user', $user_id );
+			}
+		} elseif ( isset( $post_data['salesforce_delete_mapped_user'] ) && true === filter_var( $post_data['salesforce_delete_mapped_user'], FILTER_VALIDATE_BOOLEAN ) ) {
+			// if a Salesforce ID was entered
+			if ( isset( $post_data['mapping_id'] ) && ! empty( $post_data['mapping_id'] ) ) {
+				$delete = $this->mappings->delete_object_map( $post_data['mapping_id'] );
 			}
 		}
 	}
