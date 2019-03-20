@@ -588,7 +588,7 @@ class Object_Sync_Sf_Admin {
 					'type'     => 'url',
 					'validate' => 'sanitize_validate_text',
 					// translators: 1) production salesforce login, 2) sandbox salesforce login
-					'desc'     => sprintf( __( 'For most Salesforce setups, you should use %1$s for production and %2$s for sandbox.', 'object-sync-for-salesforce' ),
+					'desc'     => sprintf( __( 'For most Salesforce setups, you should use %1$s for production and %2$s for sandbox. If you try to use an instance name as the URL, you may encounter Salesforce errors.', 'object-sync-for-salesforce' ),
 						esc_url( 'https://login.salesforce.com' ),
 						esc_url( 'https://test.salesforce.com' )
 					),
