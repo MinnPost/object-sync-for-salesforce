@@ -1225,7 +1225,28 @@ class Object_Sync_Sf_WordPress {
 			$content['post_content'] = ' ';
 		}
 
-		$post_id = wp_insert_post( $content, true ); // return an error instead of a 0 id
+		if ( 'tribe_events' === $content['post_type'] && class_exists( 'Tribe__Events__Main' ) ) {
+			// borrowing some code from https://github.com/tacjtg/rhp-tribe-events/blob/master/rhp-tribe-events.php
+			if ( isset( $params['_EventStartDate'] ) ) {
+				$start_date                    = strtotime( $params['_EventStartDate']['value'] );
+				$content['EventStartDate']     = $start_date;
+				$content['EventStartHour']     = date( Tribe__Date_Utils::HOURFORMAT, $start_date );
+				$content['EventStartMinute']   = date( Tribe__Date_Utils::MINUTEFORMAT, $start_date );
+				$content['EventStartMeridian'] = date( Tribe__Date_Utils::MERIDIANFORMAT, $start_date );
+				unset( $params['_EventStartDate'] );
+			}
+			if ( isset( $params['_EventEndDate'] ) ) {
+				$end_date                    = strtotime( $params['_EventEndDate']['value'] );
+				$content['EventEndDate']     = $end_date;
+				$content['EventEndHour']     = date( Tribe__Date_Utils::HOURFORMAT, $end_date );
+				$content['EventEndMinute']   = date( Tribe__Date_Utils::MINUTEFORMAT, $end_date );
+				$content['EventEndMeridian'] = date( Tribe__Date_Utils::MERIDIANFORMAT, $end_date );
+				unset( $params['_EventEndDate'] );
+			}
+			$post_id = tribe_create_event( $content );
+		} else {
+			$post_id = wp_insert_post( $content, true ); // return an error instead of a 0 id
+		}
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
