@@ -1757,14 +1757,13 @@ class Object_Sync_Sf_Admin {
 		}
 
 		if ( ! isset( $args['constant'] ) || ! defined( $args['constant'] ) ) {
-			$value = filter_var( get_option( $id, false ), FILTER_VALIDATE_BOOLEAN );
+			$value = esc_attr( get_option( $id, '' ) );
 			if ( 'checkbox' === $type ) {
+				$value = filter_var( get_option( $id, false ), FILTER_VALIDATE_BOOLEAN );
 				if ( true === $value ) {
 					$checked = 'checked ';
 				}
 				$value = 1;
-			} else {
-				$value = '';
 			}
 			if ( '' === $value && isset( $args['default'] ) && '' !== $args['default'] ) {
 				$value = $args['default'];
