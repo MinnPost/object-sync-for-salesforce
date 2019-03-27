@@ -904,8 +904,9 @@ class Object_Sync_Sf_Mapping {
 							if ( 'tribe_events' === $mapping['wordpress_object'] && class_exists( 'Tribe__Events__Main' ) ) {
 								$format = 'Y-m-d H:i:s';
 							}
-							$date                        = get_date_from_gmt( $object[ $salesforce_field ], 'Y-m-d\TH:i:s\Z' ); // convert from GMT to local date/time based on WordPress time zone setting.
-							$object[ $salesforce_field ] = date_i18n( $format, strtotime( $date ) );
+							// Note: the Salesforce REST API appears to always return dates as GMT values. We should retrieve them that way, then format them to deal with them in WordPress appropriately.
+							$gmt_date                    = get_date_from_gmt( $object[ $salesforce_field ], 'Y-m-d\TH:i:s\Z' ); // convert from GMT to local date/time based on WordPress time zone setting.
+							$object[ $salesforce_field ] = date_i18n( $format, strtotime( $gmt_date ) );
 							break;
 						case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce ) ):
 							$object[ $salesforce_field ] = isset( $object[ $salesforce_field ] ) ? (int) $object[ $salesforce_field ] : 0;
