@@ -1225,7 +1225,7 @@ class Object_Sync_Sf_WordPress {
 			$content['post_content'] = ' ';
 		}
 
-		if ( 'tribe_events' === $content['post_type'] && class_exists( 'Tribe__Events__Main' ) ) {
+		if ( 'tribe_events' === $content['post_type'] && class_exists( 'Tribe__Date_Utils' ) && function_exists( 'tribe_create_event' ) ) {
 			// borrowing some code from https://github.com/tacjtg/rhp-tribe-events/blob/master/rhp-tribe-events.php
 			if ( isset( $params['_EventStartDate'] ) ) {
 				$start_date                    = strtotime( $params['_EventStartDate']['value'] );
