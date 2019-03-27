@@ -11,6 +11,4 @@ categories:
     label: for developers
 change-template: '- $TITLE (#$NUMBER)'
 template: |
-  ## next release &ndash; date
-
   $CHANGES
