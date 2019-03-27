@@ -901,6 +901,14 @@ class Object_Sync_Sf_Mapping {
 							if ( isset( $fieldmap['wordpress_field']['type'] ) && 'datetime' === $fieldmap['wordpress_field']['type'] ) {
 								$format = 'Y-m-d H:i:s';
 							}
+							if ( 'tribe_events' === $mapping['wordpress_object'] && class_exists( 'Tribe__Events__Main' ) ) {
+								$format = 'Y-m-d H:i:s';
+							}
+							if ( 'datetime' === $salesforce_field_type ) {
+								// Note: the Salesforce REST API appears to always return datetimes as GMT values. We should retrieve them that way, then format them to deal with them in WordPress appropriately.
+								// We should not do any converting unless it's a datetime, because if it's a date, Salesforce stores it as midnight. We don't want to convert that.
+								$object[ $salesforce_field ] = get_date_from_gmt( $object[ $salesforce_field ], 'Y-m-d\TH:i:s\Z' ); // convert from GMT to local date/time based on WordPress time zone setting.
+							}
 							$object[ $salesforce_field ] = date_i18n( $format, strtotime( $object[ $salesforce_field ] ) );
 							break;
 						case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce ) ):
