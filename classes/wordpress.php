@@ -900,25 +900,9 @@ class Object_Sync_Sf_WordPress {
 				$success = false;
 				$errors  = $user_id;
 			} else {
-				$success = true;
-				$errors  = array();
-				foreach ( $params as $key => $value ) {
-					$method = $value['method_modify'];
-					// we need to provide a way for passing the values in a custom order here
-					$meta_id = $method( $user_id, $key, $value['value'] );
-					if ( false === $meta_id ) {
-						$success  = false;
-						$errors[] = array(
-							'message' => sprintf(
-								// translators: %1$s is a method name.
-								esc_html__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
-								esc_html( $method )
-							),
-							'key'     => $key,
-							'value'   => $value,
-						);
-					}
-				}
+				$meta_result = $this->save_wp_meta( $params, $user_id, 'user', false );
+				$success     = $meta_result['success'];
+				$errors      = $meta_result['errors'];
 
 				// Developers can use this hook to set any other user data - permissions, etc.
 				do_action( $this->option_prefix . 'set_more_user_data', $user_id, $params, 'create' );
@@ -1132,34 +1116,12 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $user_id;
 		} else {
-			$success = true;
-			$errors  = array();
-			foreach ( $params as $key => $value ) {
-				$modify  = $value['method_modify'];
-				$read    = $value['method_read'];
-				$meta_id = $modify( $user_id, $key, $value['value'] );
-				if ( false === $meta_id ) {
-					$changed = false;
-					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
-					if ( (string) $read( $user_id, $key, true ) !== (string) $value['value'] ) {
-						$errors[] = array(
-							'message' => sprintf(
-								// Translators: 1) is the key of the meta field, 2) is the method that should be used to update the value, 3) is the already stored value, 4) is the new value the plugin tried to save
-								esc_html__( 'Unable to update meta key %1$s with method %2$s. The stored value is %3$s and the new value should be %4$s.', 'object-sync-for-salesforce' ),
-								esc_attr( $key ),
-								esc_attr( $modify ),
-								wp_kses_post( $read( $user_id, $key, true ) ),
-								wp_kses_post( $value['value'] )
-							),
-						);
-					}
-				}
-			}
-
+			$meta_result = $this->save_wp_meta( $params, $user_id, 'user', true );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other user data - permissions, etc.
 			do_action( $this->option_prefix . 'set_more_user_data', $user_id, $params, 'update' );
-
-		}
+		} // End if().
 
 		$result = array(
 			'data'   => array(
@@ -1244,31 +1206,17 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $post_id;
 		} else {
-			$success = true;
-			$errors  = array();
-			// If it's a custom post type, fix the methods.
+			// If it's a custom record type, fix the methods.
 			if ( isset( $params['RecordTypeId']['value'] ) ) {
 				$params['RecordTypeId']['method_modify'] = 'update_post_meta';
 				$params['RecordTypeId']['method_read']   = 'get_post_meta';
 			}
-			if ( is_array( $params ) && ! empty( $params ) ) {
-				foreach ( $params as $key => $value ) {
-					$method  = $value['method_modify'];
-					$meta_id = $method( $post_id, $key, $value['value'] );
-					if ( false === $meta_id ) {
-						$success  = false;
-						$errors[] = array(
-							'key'   => $key,
-							'value' => $value,
-						);
-					}
-				}
-			}
-
+			$meta_result = $this->save_wp_meta( $params, $post_id, 'post', false );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other post data.
 			do_action( $this->option_prefix . 'set_more_post_data', $post_id, $params, 'create' );
-
-		}
+		} // End if().
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
@@ -1491,41 +1439,17 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $post_id;
 		} else {
-			$success = true;
-			$errors  = array();
-			// If it's a custom post type, fix the methods.
+			// If it's a custom record type, fix the methods.
 			if ( isset( $params['RecordTypeId']['value'] ) ) {
 				$params['RecordTypeId']['method_modify'] = 'update_post_meta';
 				$params['RecordTypeId']['method_read']   = 'get_post_meta';
 			}
-			if ( is_array( $params ) && ! empty( $params ) ) {
-				foreach ( $params as $key => $value ) {
-					$modify  = $value['method_modify'];
-					$read    = $value['method_read'];
-					$meta_id = $modify( $post_id, $key, $value['value'] );
-					if ( false === $meta_id ) {
-						$changed = false;
-						// Check and make sure the stored value matches $value['value'], otherwise it's an error.
-						if ( (string) $read( $post_id, $key, true ) !== (string) $value['value'] ) {
-							$errors[] = array(
-								'message' => sprintf(
-									// Translators: 1) is the key of the meta field, 2) is the method that should be used to update the value, 3) is the already stored value, 4) is the new value the plugin tried to save
-									esc_html__( 'Unable to update meta key %1$s with method %2$s. The stored value is %3$s and the new value should be %4$s.', 'object-sync-for-salesforce' ),
-									esc_attr( $key ),
-									esc_attr( $modify ),
-									wp_kses_post( $read( $user_id, $key, true ) ),
-									wp_kses_post( $value['value'] )
-								),
-							);
-						}
-					}
-				}
-			}
-
+			$meta_result = $this->save_wp_meta( $params, $post_id, 'post', true );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other post data.
 			do_action( $this->option_prefix . 'set_more_post_data', $post_id, $params, 'update' );
-
-		}
+		} // End if().
 
 		$result = array(
 			'data'   => array(
@@ -1937,30 +1861,13 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $term;
 		} else {
-			$term_id = $term[ "$id_field" ];
-			$success = true;
-			$errors  = array();
-			foreach ( $params as $key => $value ) {
-				$method  = $value['method_modify'];
-				$meta_id = $method( $term_id, $key, $value['value'] );
-				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'message' => sprintf(
-							// translators: %1$s is a method name.
-							esc_html__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
-							esc_html( $method )
-						),
-						'key'     => $key,
-						'value'   => $value,
-					);
-				}
-			}
-
+			$term_id     = $term[ "$id_field" ];
+			$meta_result = $this->save_wp_meta( $params, $term_id, 'term', false );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other term data.
 			do_action( $this->option_prefix . 'set_more_term_data', $term_id, $params, 'create' );
-
-		}
+		} // End if().
 
 		if ( is_wp_error( $term ) ) {
 			$success = false;
@@ -2154,30 +2061,13 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $term;
 		} else {
-			$term_id = $term[ "$id_field" ];
-			$success = true;
-			$errors  = array();
-			foreach ( $params as $key => $value ) {
-				$method  = $value['method_modify'];
-				$meta_id = $method( $term_id, $key, $value['value'] );
-				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'message' => sprintf(
-							// translators: %1$s is a method name.
-							esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
-							esc_html( $method )
-						),
-						'key'     => $key,
-						'value'   => $value,
-					);
-				}
-			}
-
+			$term_id     = $term[ "$id_field" ];
+			$meta_result = $this->save_wp_meta( $params, $term_id, 'term', true );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other term data.
 			do_action( $this->option_prefix . 'set_more_term_data', $term_id, $params, 'update' );
-
-		}
+		} // End if().
 
 		if ( is_wp_error( $term ) ) {
 			$success = false;
@@ -2261,29 +2151,12 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $comment_id;
 		} else {
-			$success = true;
-			$errors  = array();
-			foreach ( $params as $key => $value ) {
-				$method  = $value['method_modify'];
-				$meta_id = $method( $comment_id, $key, $value['value'] );
-				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'message' => sprintf(
-							// translators: %1$s is a method name.
-							esc_html__( 'Tried to add meta with method %1$s.', 'object-sync-for-salesforce' ),
-							esc_html( $method )
-						),
-						'key'     => $key,
-						'value'   => $value,
-					);
-				}
-			}
-
+			$meta_result = $this->save_wp_meta( $params, $comment_id, 'comment', false );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other comment data.
 			do_action( $this->option_prefix . 'set_more_comment_data', $comment_id, $params, 'create' );
-
-		}
+		} // End if()
 
 		if ( is_wp_error( $comment_id ) ) {
 			$success = false;
@@ -2507,34 +2380,12 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $updated;
 		} else {
-			$success = true;
-			$errors  = array();
-			foreach ( $params as $key => $value ) {
-				$modify  = $value['method_modify'];
-				$read    = $value['method_read'];
-				$meta_id = $modify( $comment_id, $key, $value['value'] );
-				if ( false === $meta_id ) {
-					$changed = false;
-					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
-					if ( (string) $read( $comment_id, $key, true ) !== (string) $value['value'] ) {
-						$errors[] = array(
-							'message' => sprintf(
-								// Translators: 1) is the key of the meta field, 2) is the method that should be used to update the value, 3) is the already stored value, 4) is the new value the plugin tried to save
-								esc_html__( 'Unable to update meta key %1$s with method %2$s. The stored value is %3$s and the new value should be %4$s.', 'object-sync-for-salesforce' ),
-								esc_attr( $key ),
-								esc_attr( $modify ),
-								wp_kses_post( $read( $user_id, $key, true ) ),
-								wp_kses_post( $value['value'] )
-							),
-						);
-					}
-				}
-			}
-
+			$meta_result = $this->save_wp_meta( $params, $comment_id, 'comment', true );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other comment data.
 			do_action( $this->option_prefix . 'set_more_comment_data', $comment_id, $params, 'update' );
-
-		}
+		} // End if().
 
 		if ( is_wp_error( $updated ) ) {
 			$success = false;
@@ -2567,6 +2418,71 @@ class Object_Sync_Sf_WordPress {
 	private function comment_delete( $id, $force_delete = false ) {
 		$result = wp_delete_comment( $id, $force_delete );
 		return $result;
+	}
+
+	/**
+	 * Standard method for saving meta values
+	 * This works for users, posts, terms, and comments. It does not work for attachments.
+	 *
+	 * @param array $params the values to be saved.
+	 * @param int $parent_object_id the WordPress object ID that this metadata is associated with.
+	 * @param string $parent_object_type the WordPress object type.
+	 * @param bool $is_update whether we're creating or updating data
+	 *
+	 * @return array $meta_result contains the success flag, the changed flag, and the array of errors
+	 */
+	private function save_wp_meta( $params, $parent_object_id, $parent_object_type, $is_update = false ) {
+		$success = true;
+		$changed = false;
+		$errors  = array();
+		if ( is_array( $params ) && ! empty( $params ) ) {
+			$changed = true;
+			foreach ( $params as $key => $value ) {
+				$modify = $value['method_modify'];
+				if ( true === $is_update ) {
+					$read = $value['method_read'];
+				}
+				// todo: we could provide a way for passing the values in a custom order here
+				$meta_id = $modify( $parent_object_id, $key, $value['value'] );
+				if ( false === $meta_id ) {
+					if ( true === $is_update && isset( $read ) ) {
+						$changed = false;
+						// Check and make sure the stored value matches $value['value'], otherwise it's an error.
+						if ( (string) $read( $parent_object_id, $key, true ) !== (string) $value['value'] ) {
+							$errors[] = array(
+								'message' => sprintf(
+									// Translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save
+									esc_html__( 'Unable to update %1$s meta key %2$s with method %3$s. The stored value is %4$s and the new value should be %5$s.', 'object-sync-for-salesforce' ),
+									esc_attr( $parent_object_type ),
+									esc_attr( $key ),
+									esc_attr( $modify ),
+									wp_kses_post( $read( $parent_object_id, $key, true ) ),
+									wp_kses_post( $value['value'] )
+								),
+							);
+						}
+					} else {
+						$success  = false;
+						$errors[] = array(
+							'message' => sprintf(
+								// translators: 1) is the WordPress object type, 2) is the method that should be used to save the value.
+								esc_html__( 'Tried to add %1$s meta with method %2$s.', 'object-sync-for-salesforce' ),
+								esc_attr( $parent_object_type ),
+								esc_html( $method )
+							),
+							'key'     => $key,
+							'value'   => $value,
+						);
+					}
+				}
+			} // End foreach.
+		}
+		$meta_result = array(
+			'success' => $success,
+			'changed' => $changed,
+			'errors'  => $errors,
+		);
+		return $meta_result;
 	}
 
 	/**
