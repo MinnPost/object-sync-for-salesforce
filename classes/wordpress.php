@@ -1225,22 +1225,14 @@ class Object_Sync_Sf_WordPress {
 			$content['post_content'] = ' ';
 		}
 
-		if ( 'tribe_events' === $content['post_type'] && class_exists( 'Tribe__Date_Utils' ) && function_exists( 'tribe_create_event' ) ) {
+		if ( 'tribe_events' === $content['post_type'] && function_exists( 'tribe_create_event' ) ) {
 			// borrowing some code from https://github.com/tacjtg/rhp-tribe-events/blob/master/rhp-tribe-events.php
 			if ( isset( $params['_EventStartDate'] ) ) {
-				$start_date                    = strtotime( $params['_EventStartDate']['value'] );
-				$content['EventStartDate']     = $start_date;
-				$content['EventStartHour']     = date( Tribe__Date_Utils::HOURFORMAT, $start_date );
-				$content['EventStartMinute']   = date( Tribe__Date_Utils::MINUTEFORMAT, $start_date );
-				$content['EventStartMeridian'] = date( Tribe__Date_Utils::MERIDIANFORMAT, $start_date );
+				$content = $this->append_tec_event_dates( $params['_EventStartDate']['value'], 'start', $content );
 				unset( $params['_EventStartDate'] );
 			}
 			if ( isset( $params['_EventEndDate'] ) ) {
-				$end_date                    = strtotime( $params['_EventEndDate']['value'] );
-				$content['EventEndDate']     = $end_date;
-				$content['EventEndHour']     = date( Tribe__Date_Utils::HOURFORMAT, $end_date );
-				$content['EventEndMinute']   = date( Tribe__Date_Utils::MINUTEFORMAT, $end_date );
-				$content['EventEndMeridian'] = date( Tribe__Date_Utils::MERIDIANFORMAT, $end_date );
+				$content = $this->append_tec_event_dates( $params['_EventEndDate']['value'], 'end', $content );
 				unset( $params['_EventEndDate'] );
 			}
 			$post_id = tribe_create_event( $content );
@@ -2575,6 +2567,29 @@ class Object_Sync_Sf_WordPress {
 	private function comment_delete( $id, $force_delete = false ) {
 		$result = wp_delete_comment( $id, $force_delete );
 		return $result;
+	}
+
+	/**
+	 * Generate date formats for The Event Calendar plugin
+	 *
+	 * @param datetime $date
+	 * @param string $type this should be start or end
+	 * @param array $content the other mapped params
+	 *
+	 * @return array $content
+	 */
+	private function append_tec_event_dates( $date, $type, $content ) {
+		if ( ( 'start' === $type || 'end' === $type ) && class_exists( 'Tribe__Date_Utils' ) ) {
+			$dates                                      = array();
+			$date_type                                  = ucfirst( $type );
+			$timestamp                                  = strtotime( $date );
+			$dates[ 'Event' . $date_type . 'Date' ]     = $timestamp;
+			$dates[ 'Event' . $date_type . 'Hour' ]     = date( Tribe__Date_Utils::HOURFORMAT, $timestamp );
+			$dates[ 'Event' . $date_type . 'Minute' ]   = date( Tribe__Date_Utils::MINUTEFORMAT, $timestamp );
+			$dates[ 'Event' . $date_type . 'Meridian' ] = date( Tribe__Date_Utils::MERIDIANFORMAT, $timestamp );
+			$content                                    = $content + $dates;
+		}
+		return $content;
 	}
 
 }
