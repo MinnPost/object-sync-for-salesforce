@@ -900,7 +900,7 @@ class Object_Sync_Sf_WordPress {
 				$success = false;
 				$errors  = $user_id;
 			} else {
-				$meta_result = $this->save_wp_meta( $params, $user_id, 'user', false );
+				$meta_result = $this->create_wp_meta( $params, $user_id, 'user' );
 				$success     = $meta_result['success'];
 				$errors      = $meta_result['errors'];
 
@@ -1116,7 +1116,7 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $user_id;
 		} else {
-			$meta_result = $this->save_wp_meta( $params, $user_id, 'user', true );
+			$meta_result = $this->update_wp_meta( $params, $user_id, 'user' );
 			$success     = $meta_result['success'];
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other user data - permissions, etc.
@@ -1211,7 +1211,7 @@ class Object_Sync_Sf_WordPress {
 				$params['RecordTypeId']['method_modify'] = 'update_post_meta';
 				$params['RecordTypeId']['method_read']   = 'get_post_meta';
 			}
-			$meta_result = $this->save_wp_meta( $params, $post_id, 'post', false );
+			$meta_result = $this->create_wp_meta( $params, $post_id, 'post' );
 			$success     = $meta_result['success'];
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other post data.
@@ -1444,7 +1444,7 @@ class Object_Sync_Sf_WordPress {
 				$params['RecordTypeId']['method_modify'] = 'update_post_meta';
 				$params['RecordTypeId']['method_read']   = 'get_post_meta';
 			}
-			$meta_result = $this->save_wp_meta( $params, $post_id, 'post', true );
+			$meta_result = $this->update_wp_meta( $params, $post_id, 'post' );
 			$success     = $meta_result['success'];
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other post data.
@@ -1862,7 +1862,7 @@ class Object_Sync_Sf_WordPress {
 			$errors  = $term;
 		} else {
 			$term_id     = $term[ "$id_field" ];
-			$meta_result = $this->save_wp_meta( $params, $term_id, 'term', false );
+			$meta_result = $this->create_wp_meta( $params, $term_id, 'term' );
 			$success     = $meta_result['success'];
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other term data.
@@ -2062,7 +2062,7 @@ class Object_Sync_Sf_WordPress {
 			$errors  = $term;
 		} else {
 			$term_id     = $term[ "$id_field" ];
-			$meta_result = $this->save_wp_meta( $params, $term_id, 'term', true );
+			$meta_result = $this->update_wp_meta( $params, $term_id, 'term' );
 			$success     = $meta_result['success'];
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other term data.
@@ -2151,7 +2151,7 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $comment_id;
 		} else {
-			$meta_result = $this->save_wp_meta( $params, $comment_id, 'comment', false );
+			$meta_result = $this->create_wp_meta( $params, $comment_id, 'comment' );
 			$success     = $meta_result['success'];
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other comment data.
@@ -2380,7 +2380,7 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $updated;
 		} else {
-			$meta_result = $this->save_wp_meta( $params, $comment_id, 'comment', true );
+			$meta_result = $this->update_wp_meta( $params, $comment_id, 'comment' );
 			$success     = $meta_result['success'];
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other comment data.
@@ -2421,17 +2421,56 @@ class Object_Sync_Sf_WordPress {
 	}
 
 	/**
-	 * Standard method for saving meta values
+	 * Standard method for creating meta values
 	 * This works for users, posts, terms, and comments. It does not work for attachments.
 	 *
 	 * @param array $params the values to be saved.
 	 * @param int $parent_object_id the WordPress object ID that this metadata is associated with.
 	 * @param string $parent_object_type the WordPress object type.
-	 * @param bool $is_update whether we're creating or updating data
+	 *
+	 * @return array $meta_result contains the success flag and the array of errors
+	 */
+	private function create_wp_meta( $params, $parent_object_id, $parent_object_type ) {
+		$success = true;
+		$errors  = array();
+		if ( is_array( $params ) && ! empty( $params ) ) {
+			foreach ( $params as $key => $value ) {
+				$modify = $value['method_modify'];
+				// todo: we could provide a way for passing the values in a custom order here
+				$meta_id = $modify( $parent_object_id, $key, $value['value'] );
+				if ( false === $meta_id ) {
+					$success  = false;
+					$errors[] = array(
+						'message' => sprintf(
+							// translators: 1) is the WordPress object type, 2) is the method that should be used to save the value.
+							esc_html__( 'Tried to add %1$s meta with method %2$s.', 'object-sync-for-salesforce' ),
+							esc_attr( $parent_object_type ),
+							esc_html( $method )
+						),
+						'key'     => $key,
+						'value'   => $value,
+					);
+				}
+			} // End foreach.
+		}
+		$meta_result = array(
+			'success' => $success,
+			'errors'  => $errors,
+		);
+		return $meta_result;
+	}
+
+	/**
+	 * Standard method for updating meta values
+	 * This works for users, posts, terms, and comments. It does not work for attachments.
+	 *
+	 * @param array $params the values to be saved.
+	 * @param int $parent_object_id the WordPress object ID that this metadata is associated with.
+	 * @param string $parent_object_type the WordPress object type.
 	 *
 	 * @return array $meta_result contains the success flag, the changed flag, and the array of errors
 	 */
-	private function save_wp_meta( $params, $parent_object_id, $parent_object_type, $is_update = false ) {
+	private function update_wp_meta( $params, $parent_object_id, $parent_object_type ) {
 		$success = true;
 		$changed = false;
 		$errors  = array();
@@ -2439,39 +2478,23 @@ class Object_Sync_Sf_WordPress {
 			$changed = true;
 			foreach ( $params as $key => $value ) {
 				$modify = $value['method_modify'];
-				if ( true === $is_update ) {
-					$read = $value['method_read'];
-				}
+				$read   = $value['method_read'];
 				// todo: we could provide a way for passing the values in a custom order here
 				$meta_id = $modify( $parent_object_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
-					if ( true === $is_update && isset( $read ) ) {
-						$changed = false;
-						// Check and make sure the stored value matches $value['value'], otherwise it's an error.
-						if ( (string) $read( $parent_object_id, $key, true ) !== (string) $value['value'] ) {
-							$errors[] = array(
-								'message' => sprintf(
-									// Translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save
-									esc_html__( 'Unable to update %1$s meta key %2$s with method %3$s. The stored value is %4$s and the new value should be %5$s.', 'object-sync-for-salesforce' ),
-									esc_attr( $parent_object_type ),
-									esc_attr( $key ),
-									esc_attr( $modify ),
-									wp_kses_post( $read( $parent_object_id, $key, true ) ),
-									wp_kses_post( $value['value'] )
-								),
-							);
-						}
-					} else {
-						$success  = false;
+					$changed = false;
+					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
+					if ( (string) $read( $parent_object_id, $key, true ) !== (string) $value['value'] ) {
 						$errors[] = array(
 							'message' => sprintf(
-								// translators: 1) is the WordPress object type, 2) is the method that should be used to save the value.
-								esc_html__( 'Tried to add %1$s meta with method %2$s.', 'object-sync-for-salesforce' ),
+								// Translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save
+								esc_html__( 'Unable to update %1$s meta key %2$s with method %3$s. The stored value is %4$s and the new value should be %5$s.', 'object-sync-for-salesforce' ),
 								esc_attr( $parent_object_type ),
-								esc_html( $method )
+								esc_attr( $key ),
+								esc_attr( $modify ),
+								wp_kses_post( $read( $parent_object_id, $key, true ) ),
+								wp_kses_post( $value['value'] )
 							),
-							'key'     => $key,
-							'value'   => $value,
 						);
 					}
 				}
