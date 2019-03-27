@@ -2572,7 +2572,7 @@ class Object_Sync_Sf_WordPress {
 	/**
 	 * Generate date formats for The Event Calendar plugin
 	 *
-	 * @param datetime $date
+	 * @param string $date the string value of the date from Salesforce
 	 * @param string $type this should be start or end
 	 * @param array $content the other mapped params
 	 *
