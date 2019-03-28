@@ -2425,7 +2425,7 @@ class Object_Sync_Sf_WordPress {
 	 * This works for users, posts, terms, and comments. It does not work for attachments.
 	 *
 	 * @param array $params the values to be saved.
-	 * @param int $parent_object_id the WordPress object ID that this metadata is associated with.
+	 * @param int|wp_error $parent_object_id the WordPress object ID that this metadata is associated with. It shouldn't ever end up here as an error, but it's worth documenting.
 	 * @param string $parent_object_type the WordPress object type.
 	 *
 	 * @return array $meta_result contains the success flag and the array of errors
@@ -2433,7 +2433,7 @@ class Object_Sync_Sf_WordPress {
 	private function create_wp_meta( $params, $parent_object_id, $parent_object_type ) {
 		$success = true;
 		$errors  = array();
-		if ( is_array( $params ) && ! empty( $params ) ) {
+		if ( ! is_wp_error( $parent_object_id ) && is_array( $params ) && ! empty( $params ) ) {
 			foreach ( $params as $key => $value ) {
 				$modify = $value['method_modify'];
 				// todo: we could provide a way for passing the values in a custom order here
@@ -2465,7 +2465,7 @@ class Object_Sync_Sf_WordPress {
 	 * This works for users, posts, terms, and comments. It does not work for attachments.
 	 *
 	 * @param array $params the values to be saved.
-	 * @param int $parent_object_id the WordPress object ID that this metadata is associated with.
+	 * @param int|wp_error $parent_object_id the WordPress object ID that this metadata is associated with. It shouldn't ever end up here as an error, but it's worth documenting.
 	 * @param string $parent_object_type the WordPress object type.
 	 *
 	 * @return array $meta_result contains the success flag, the changed flag, and the array of errors
@@ -2474,7 +2474,7 @@ class Object_Sync_Sf_WordPress {
 		$success = true;
 		$changed = false;
 		$errors  = array();
-		if ( is_array( $params ) && ! empty( $params ) ) {
+		if ( ! is_wp_error( $parent_object_id ) && is_array( $params ) && ! empty( $params ) ) {
 			$changed = true;
 			foreach ( $params as $key => $value ) {
 				$modify = $value['method_modify'];
