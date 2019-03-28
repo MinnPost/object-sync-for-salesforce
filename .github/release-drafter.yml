@@ -1,4 +1,4 @@
-name-template: v$NEXT_PATCH_VERSION 🌈
+name-template: Version $NEXT_PATCH_VERSION 🌈
 tag-template: v$NEXT_PATCH_VERSION
 categories:
   - title: 🚀 Features
@@ -11,6 +11,4 @@ categories:
     label: for developers
 change-template: '- $TITLE (#$NUMBER)'
 template: |
-  ## next release &ndash; date
-
   $CHANGES
