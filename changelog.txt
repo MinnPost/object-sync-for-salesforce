@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.8.5 (2019-03-30)
+    * Bug fix: This fixes a possible issue in which the plugin would fail to realize that its database version was up to date.
+
 * 1.8.4 (2019-03-27)
     * Bug fix: Dates used by The Event Calendar plugin were not correctly saved. This could cause TEC events not to appear on the calendar. Thanks to @vajeshrathor for reporting this issue. The fix also improves overall date formatting within this plugin.
     * Bug fix: The edit profile screen for users mapped to Salesforce could incorrectly be changed to a blank value, which did not delete the map. This release adds a delete link for this purpose.

@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 5.1
-Stable tag: 1.8.4
+Stable tag: 1.8.5
 Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -243,6 +243,9 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 - **Build other integrations in WordPress** this plugin focuses on the Salesforce REST API, as it covers the integration needs we have. Salesforce also has many other developer options: the SOAP API (we hope to incorporate this into Object Sync for Salesforce at some point), the Bulk API, and the Metadata API. Developers could extend this plugin to integrate with one of these. We would welcome any pull requests!
 
 == Changelog ==
+
+* 1.8.5 (2019-03-30)
+    * Bug fix: This fixes a possible issue in which the plugin would fail to realize that its database version was up to date.
 
 * 1.8.4 (2019-03-27)
     * Bug fix: Dates used by The Event Calendar plugin were not correctly saved. This could cause TEC events not to appear on the calendar. Thanks to @vajeshrathor for reporting this issue. The fix also improves overall date formatting within this plugin.

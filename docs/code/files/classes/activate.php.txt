@@ -147,16 +147,18 @@ class Object_Sync_Sf_Activate {
 		// store right now as the time for the plugin's activation
 		update_option( $this->option_prefix . 'activate_time', current_time( 'timestamp', true ) );
 
-		if ( ! isset( $result_key ) && empty( $result_field_map ) && empty( $result_object_map ) ) {
-			// No changes, database already exists and is up-to-date
-			return;
-		}
-
 		// utf8mb4 conversion.
 		maybe_convert_table_to_utf8mb4( $field_map_table );
 		maybe_convert_table_to_utf8mb4( $object_map_table );
 
-		update_option( $this->option_prefix . 'db_version', $this->version );
+		if ( version_compare( $this->user_installed_version, $this->version, '<' ) ) {
+			update_option( $this->option_prefix . 'db_version', $this->version );
+		}
+
+		if ( ! isset( $result_key ) && empty( $result_field_map ) && empty( $result_object_map ) ) {
+			// No changes, database already exists and is up-to-date
+			return;
+		}
 
 		return;
 
