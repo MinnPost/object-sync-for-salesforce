@@ -32,19 +32,19 @@ CREATE TABLE `wp_object_sync_sf_field_map` (
 ## wp_object_sync_sf_object_map
 
 ```sql
-    CREATE TABLE `wp_object_sync_sf_object_map` (
-        `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-        `wordpress_id` varchar(32) NOT NULL,
-        `salesforce_id` varbinary(32) NOT NULL DEFAULT '',
-        `wordpress_object` varchar(128) NOT NULL DEFAULT '',
-        `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        `object_updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        `last_sync` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        `last_sync_action` varchar(128) DEFAULT NULL,
-        `last_sync_status` tinyint(1) NOT NULL DEFAULT '0',
-        `last_sync_message` varchar(255) DEFAULT NULL,
-        PRIMARY KEY  (`id`),
-        KEY wordpress_object (`wordpress_object`,`wordpress_id`),
-        KEY salesforce_object (`salesforce_id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+CREATE TABLE `wp_object_sync_sf_object_map` (
+    `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    `wordpress_id` varchar(32) NOT NULL,
+    `salesforce_id` varbinary(32) NOT NULL DEFAULT '',
+    `wordpress_object` varchar(128) NOT NULL DEFAULT '',
+    `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `object_updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `last_sync` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `last_sync_action` varchar(128) DEFAULT NULL,
+    `last_sync_status` tinyint(1) NOT NULL DEFAULT '0',
+    `last_sync_message` varchar(255) DEFAULT NULL,
+    PRIMARY KEY  (`id`),
+    KEY wordpress_object (`wordpress_object`,`wordpress_id`),
+    KEY salesforce_object (`salesforce_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 ```

@@ -197,12 +197,12 @@ Sometimes Salesforce returns a 401 error. This means the session ID or OAuth tok
 If the plugin allows you to authorize in Salesforce, but does not finish activating in WordPress, consider these possible issues:
 
 1. Insufficient app permissions in Salesforce. Make sure the app's permissions are at least "Perform requests on your behalf at any time" for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select "Access and manage your data (api)" as one of these scopes. If you change permissions, give Salesforce a few minutes before trying to connect again.
-2. The plugin may have been unable to create its required database tables.
+2. The plugin may have been unable to create its required database tables. If you think this may be the case, refer to [this document](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting-unable-to-create-database-tables.md) for the necessary SQL.
 3. Mismatched settings between the plugin and the expected values in Salesforce.
 
 ### Troubleshooting Fieldmaps
 
-If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in [the plugin documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
+If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in the [troubleshooting](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting.md) section of the plugin's documentation.
 
 **Plugin configuration**
 

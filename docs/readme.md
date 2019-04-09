@@ -84,6 +84,8 @@ This is the full documentation for this plugin, extending the information in [th
 
 	There are several ways to troubleshoot when the plugin has errors, including but not limited to the above log entries and the mapping errors.
 
+    If you are unable to create the plugin's required database tables, refer to [this document](./troubleshooting-unable-to-create-database-tables.md) for the necessary SQL.
+
 12. [All developer hooks](./all-developer-hooks.md)
 
     This is a full list of all the developer hooks in the plugin. Each hook indicates what file contains it, and where the documentation for it resides.
