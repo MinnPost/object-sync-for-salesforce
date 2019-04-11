@@ -78,7 +78,8 @@ class Object_Sync_Sf_Activate {
 
 	/**
 	* Create database tables for Salesforce
-	* This creates tables for fieldmaps (between types of objects) and object maps (between indidual instances of objects)
+	* This creates tables for fieldmaps (between types of objects) and object maps (between individual instances of objects).
+	* Important requirement for developers: when you update the SQL for either of these tables, also update it in the documentation file located at /docs/troubleshooting-unable-to-create-database-tables.md and make sure that is included in your commit(s).
 	*
 	*/
 	public function wordpress_salesforce_tables() {
