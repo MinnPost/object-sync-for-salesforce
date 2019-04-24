@@ -24,7 +24,13 @@ To get started quicky, install Object Sync for Salesforce from the [WordPress pl
 
 The plugin documentation contains [initial setup instructions](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md). This is the fastest way to get the plugin running on your site.
 
-## Finding other options
+## Getting support using this plugin
+
+We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). If you have these requests, please put them in that forum, not in this GitHub repository and not in anyone's email inbox.
+
+Use this repository for bugs, feature requests, etc. and especially do that if you can help solve these things.
+
+## Finding other sync options
 
 This plugin can be relatively complicated, and sometimes other plugins can effectively integrate Salesforce and WordPress, especially if there are more limited, specific requirements. If one of these can meet those requirements, use it. We're happy to link to additional choices here, as well.
 
@@ -53,4 +59,4 @@ All versions of this plugin are listed in the [releases](https://github.com/Minn
 
 ## Donating
 
-If you'd like to support this project, MinnPost is a 501(c)(3) nonprofit news organization located in Minnesota. You can make a tax-deductible donation, and we'll attach it to our open source development work, at [https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY](https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY).
+If you'd like to support this project financially, MinnPost is a 501(c)(3) nonprofit news organization located in Minnesota. You can make a tax-deductible donation, and we'll attach it to our open source development work, at [https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY](https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY).
