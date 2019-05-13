@@ -67,17 +67,17 @@
     },
     {
         "name": "prospress/action-scheduler",
-        "version": "2.2.4",
-        "version_normalized": "2.2.4.0",
+        "version": "2.2.5",
+        "version_normalized": "2.2.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/prospress/action-scheduler.git",
-            "reference": "f5643fe30a7554dbb57b055d7d024e7cf5cd401b"
+            "reference": "fd7c6b76a7af27d6403ffe39b0963dbd8ce50488"
         },
         "require-dev": {
             "wp-cli/wp-cli": "1.5.1"
         },
-        "time": "2019-04-15T14:35:58+00:00",
+        "time": "2019-04-24T12:45:40+00:00",
         "type": "wordpress-plugin",
         "installation-source": "source",
         "license": [

@@ -5,7 +5,7 @@ Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 5.2
 Stable tag: 1.8.5
-Requires PHP: 5.5
+Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,7 +27,7 @@ This plugin also includes developer hooks that allow for additional plugins to m
 
 To install the plugin in WordPress, your PHP environment needs the following:
 
-1. At least version 5.5.
+1. At least version 5.6.20.
 2. SSL support (this is required to connect to Salesforce).
 3. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
 

@@ -14,7 +14,7 @@ To get started quicky, install Object Sync for Salesforce from the [WordPress pl
 
 ### Requirements
 
-1. A PHP installation of at least version 5.5.
+1. A PHP installation of at least version 5.6.20.
 2. A WordPress installation of at least version 4.6.
 3. SSL support.
 4. A Salesforce account. Developers can register for a free Developer Edition account at [https://developer.salesforce.com/signup](https://developer.salesforce.com/signup)
