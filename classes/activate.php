@@ -70,9 +70,9 @@ class Object_Sync_Sf_Activate {
 	* Check for the minimum required version of php
 	*/
 	public function php_requirements() {
-		if ( version_compare( PHP_VERSION, '5.5', '<' ) ) {
+		if ( version_compare( PHP_VERSION, '5.6.20', '<' ) ) {
 			deactivate_plugins( plugin_basename( __FILE__ ) );
-			wp_die( '<strong>This plugin requires PHP Version 5.5</strong> <br />Please contact your host to upgrade PHP on your server, and then retry activating the plugin.' );
+			wp_die( '<strong>This plugin requires PHP Version 5.6.20</strong> <br />Please contact your host to upgrade PHP on your server, and then retry activating the plugin.' );
 		}
 	}
 

@@ -66,10 +66,12 @@ function change_push_params( $params, $mapping, $object, $sf_sync_trigger, $use_
 *   Mapping object.
 * @param array $object
 *   WordPress object data.
+* @param string $object_type
+*	WordPress object type.
 *
 */
-add_filter( 'object_sync_for_salesforce_push_update_params_modify', 'set_names_if_missing' ), 10, 4 );
-public function set_names_if_missing( $params, $salesforce_id, $mapping, $object ) {
+add_filter( 'object_sync_for_salesforce_push_update_params_modify', 'set_names_if_missing' ), 10, 5 );
+public function set_names_if_missing( $params, $salesforce_id, $mapping, $object, $object_type ) {
 	if ( null === $salesforce_id ) {
 		$params['FirstName'] = $object['first_name'];
 		$params['LastName']  = $object['last_name'];

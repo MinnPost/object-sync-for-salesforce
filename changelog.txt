@@ -1,6 +1,13 @@
 Changelog
 =========
 
+* 1.8.6 (2019-05-13)
+	* Feature: Add object type parameter to `push_update_params_modify` developer hook.
+	* Maintenance: Centralize documentation of SQL table structure.
+	* Maintenance: Replace the various calls to create/update metadata with just one for easier management.
+	* Maintenance: Update supported WordPress version to 5.2 and PHP version to 5.6.20 to match the new minimum for WordPress. 
+	* Developers: Update ActionScheduler to 2.2.5.
+
 * 1.8.5 (2019-03-30)
     * Bug fix: This fixes a possible issue in which the plugin would fail to realize that its database version was up to date.
 

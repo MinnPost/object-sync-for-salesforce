@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-418285031"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-643485158"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-418285031" class="accordion-body collapse in">
+            <div id="namespace-643485158" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -261,6 +261,8 @@
                                                                     <a href="../classes/Object_Sync_Sf_WordPress.html#method_comment_upsert" class="">comment_upsert()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_WordPress.html#method_comment_update" class="">comment_update()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_WordPress.html#method_comment_delete" class="">comment_delete()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_WordPress.html#method_create_wp_meta" class="">create_wp_meta()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_WordPress.html#method_update_wp_meta" class="">update_wp_meta()</a><br />
                                                                     <a href="../classes/Object_Sync_Sf_WordPress.html#method_append_tec_event_dates" class="">append_tec_event_dates()</a><br />
                                                             </section>
                             <section class="span4">
@@ -2399,6 +2401,110 @@ Warning: count(): Parameter must be an array or an object that implements Counta
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_create_wp_meta" name="method_create_wp_meta" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">create_wp_meta()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">create_wp_meta(array  <span class="argument">$params</span>, integer|\wp_error  <span class="argument">$parent_object_id</span>, string  <span class="argument">$parent_object_type</span>) : array</pre>
+                <p><em>Standard method for creating meta values
+This works for users, posts, terms, and comments. It does not work for attachments.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>the values to be saved.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer|\wp_error</td>
+                                <td>$parent_object_id </td>
+                                <td><p>the WordPress object ID that this metadata is associated with. It shouldn't ever end up here as an error, but it's worth documenting.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$parent_object_type </td>
+                                <td><p>the WordPress object type.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$meta_result contains the success flag and the array of errors</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_update_wp_meta" name="method_update_wp_meta" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">update_wp_meta()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">update_wp_meta(array  <span class="argument">$params</span>, integer|\wp_error  <span class="argument">$parent_object_id</span>, string  <span class="argument">$parent_object_type</span>) : array</pre>
+                <p><em>Standard method for updating meta values
+This works for users, posts, terms, and comments. It does not work for attachments.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>the values to be saved.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer|\wp_error</td>
+                                <td>$parent_object_id </td>
+                                <td><p>the WordPress object ID that this metadata is associated with. It shouldn't ever end up here as an error, but it's worth documenting.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$parent_object_type </td>
+                                <td><p>the WordPress object type.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$meta_result contains the success flag, the changed flag, and the array of errors</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_append_tec_event_dates" name="method_append_tec_event_dates" class="anchor"></a>
             <article class="method">
                 <h3 class="private ">append_tec_event_dates()</h3>
@@ -2497,7 +2603,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on March 30th, 2019 at 20:46.
+                    on May 13th, 2019 at 17:41.
                 </section>
             </section>
         </section>

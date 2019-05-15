@@ -3,9 +3,9 @@ Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations, harmoney
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
-Tested up to: 5.1
-Stable tag: 1.8.5
-Requires PHP: 5.5
+Tested up to: 5.2
+Stable tag: 1.8.6
+Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,7 +27,7 @@ This plugin also includes developer hooks that allow for additional plugins to m
 
 To install the plugin in WordPress, your PHP environment needs the following:
 
-1. At least version 5.5.
+1. At least version 5.6.20.
 2. SSL support (this is required to connect to Salesforce).
 3. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
 
@@ -243,6 +243,13 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 - **Build other integrations in WordPress** this plugin focuses on the Salesforce REST API, as it covers the integration needs we have. Salesforce also has many other developer options: the SOAP API (we hope to incorporate this into Object Sync for Salesforce at some point), the Bulk API, and the Metadata API. Developers could extend this plugin to integrate with one of these. We would welcome any pull requests!
 
 == Changelog ==
+
+* 1.8.6 (2019-05-13)
+    * Feature: Add object type parameter to `push_update_params_modify` developer hook.
+    * Maintenance: Centralize documentation of SQL table structure.
+    * Maintenance: Replace the various calls to create/update metadata with just one for easier management.
+    * Maintenance: Update supported WordPress version to 5.2 and PHP version to 5.6.20 to match the new minimum for WordPress. 
+    * Developers: Update ActionScheduler to 2.2.5.
 
 * 1.8.5 (2019-03-30)
     * Bug fix: This fixes a possible issue in which the plugin would fail to realize that its database version was up to date.

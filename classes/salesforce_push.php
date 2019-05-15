@@ -890,7 +890,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				// hook to allow other plugins to change params on update actions only
 				// use hook to map fields between the WordPress and Salesforce objects
 				// returns $params.
-				$params = apply_filters( $this->option_prefix . 'push_update_params_modify', $params, $salesforce_id, $mapping, $object );
+				$params = apply_filters( $this->option_prefix . 'push_update_params_modify', $params, $salesforce_id, $mapping, $object, $mapping['wordpress_object'] );
 
 				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || null !== $salesforce_id ) {
 
@@ -1149,7 +1149,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				// hook to allow other plugins to change params on update actions only
 				// use hook to map fields between the WordPress and Salesforce objects
 				// returns $params.
-				$params = apply_filters( $this->option_prefix . 'push_update_params_modify', $params, $mapping_object['salesforce_id'], $mapping, $object );
+				$params = apply_filters( $this->option_prefix . 'push_update_params_modify', $params, $mapping_object['salesforce_id'], $mapping, $object, $mapping['wordpress_object'] );
 
 				$op         = 'Update';
 				$api_result = $sfapi->object_update( $mapping['salesforce_object'], $mapping_object['salesforce_id'], $params );

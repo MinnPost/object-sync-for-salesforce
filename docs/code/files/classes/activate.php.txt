@@ -70,15 +70,16 @@ class Object_Sync_Sf_Activate {
 	* Check for the minimum required version of php
 	*/
 	public function php_requirements() {
-		if ( version_compare( PHP_VERSION, '5.5', '<' ) ) {
+		if ( version_compare( PHP_VERSION, '5.6.20', '<' ) ) {
 			deactivate_plugins( plugin_basename( __FILE__ ) );
-			wp_die( '<strong>This plugin requires PHP Version 5.5</strong> <br />Please contact your host to upgrade PHP on your server, and then retry activating the plugin.' );
+			wp_die( '<strong>This plugin requires PHP Version 5.6.20</strong> <br />Please contact your host to upgrade PHP on your server, and then retry activating the plugin.' );
 		}
 	}
 
 	/**
 	* Create database tables for Salesforce
-	* This creates tables for fieldmaps (between types of objects) and object maps (between indidual instances of objects)
+	* This creates tables for fieldmaps (between types of objects) and object maps (between individual instances of objects).
+	* Important requirement for developers: when you update the SQL for either of these tables, also update it in the documentation file located at /docs/troubleshooting-unable-to-create-database-tables.md and make sure that is included in your commit(s).
 	*
 	*/
 	public function wordpress_salesforce_tables() {
