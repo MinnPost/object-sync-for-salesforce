@@ -22,11 +22,11 @@ const wpPot = require('gulp-wp-pot');
 // Some config data for our tasks
 const config = {
   styles: {
-    src: 'assets/sass/**/*.scss',
+    admin_src: 'assets/sass/**/*.scss',
     dest: 'assets/css'
   },
   scripts: {
-    src: './assets/js/**/*.js',
+    admin_src: './assets/js/src/*.js',
     uglify: [ 'assets/js/*.js', '!assets/js/*.min.js' ],
     dest: './assets/js'
   },
@@ -44,22 +44,22 @@ const config = {
   }
 };
 
-function styles() {
-  return gulp.src(config.styles.src)
+function adminstyles() {
+  return gulp.src(config.styles.admin_src)
     .pipe(sourcemaps.init()) // Sourcemaps need to init before compilation
     .pipe(sassGlob()) // Allow for globbed @import statements in SCSS
     .pipe(sass()) // Compile
     .on('error', sass.logError) // Error reporting
     .pipe(postcss([
-		autoprefixer( {
-			'browsers': [ 'last 2 version' ]
-		} ),
-		mqpacker( {
-			'sort': true
-		} ),
-      	cssnano( {
-			'safe': true // Use safe optimizations.
-		} ) // Minify
+  		autoprefixer( {
+  			'browsers': [ 'last 2 version' ]
+  		} ),
+  		mqpacker( {
+  			'sort': true
+  		} ),
+      cssnano( {
+  			'safe': true // Use safe optimizations.
+  		} ) // Minify
     ]))
     .pipe(sourcemaps.write()) // Write the sourcemap files
     .pipe(gulp.dest(config.styles.dest)) // Drop the resulting CSS file in the specified dir
@@ -67,32 +67,12 @@ function styles() {
 }
 
 function adminscripts() {
-  return gulp.src(config.scripts.admin)
+  return gulp.src(config.scripts.admin_src)
     .pipe(sourcemaps.init())
     .pipe(babel({
       presets: ['@babel/preset-env']
     }))
-    .pipe(concat('admin.js')) // Concatenate
-    .pipe(uglify()) // Minify + compress
-    .pipe(rename({
-      suffix: '.min'
-    }))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(config.scripts.dest))
-    .pipe(browserSync.stream());
-}
-
-function mainscripts() {
-  return gulp.src(config.scripts.main)
-    .pipe(sourcemaps.init())
-    .pipe(babel({
-      presets: ['@babel/preset-env']
-    }))
-    .pipe(concat('minnpost.js')) // Concatenate
-    /*.pipe(uglify()) // Minify + compress
-    .pipe(rename({
-      suffix: '.min'
-    }))*/
+    .pipe(concat(packagejson.name + '-admin.js')) // Concatenate
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.scripts.dest))
     .pipe(browserSync.stream());
@@ -159,8 +139,8 @@ function browserSyncReload(done) {
 
 // Watch directories, and run specific tasks on file changes
 function watch() {
-  gulp.watch(config.styles.src, styles);
-  gulp.watch(config.scripts.src, scripts);
+  gulp.watch(config.styles.admin_src, adminstyles);
+  gulp.watch(config.scripts.admin_src, adminscripts);
   
   // Reload browsersync when PHP files change, if active
   if (config.browserSync.active) {
@@ -169,9 +149,8 @@ function watch() {
 }
 
 // export tasks
-exports.styles    = styles;
+exports.adminstyles    = adminstyles;
 exports.adminscripts   = adminscripts;
-exports.mainscripts    = mainscripts;
 exports.uglifyscripts  = uglifyscripts;
 exports.images         = images;
 exports.translate      = translate;
@@ -180,6 +159,6 @@ exports.watch          = watch;
 // What happens when we run gulp?
 gulp.task('default',
   gulp.series(
-    gulp.parallel(styles, mainscripts, uglifyscripts, images, translate) // run these tasks asynchronously
+    gulp.parallel(adminstyles, adminscripts, uglifyscripts, images, translate) // run these tasks asynchronously
   )
 );
