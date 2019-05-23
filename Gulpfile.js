@@ -160,8 +160,8 @@ function watch() {
 }
 
 // export tasks
-exports.adminstyles    = adminstyles;
 exports.sasslint       = sasslint;
+exports.adminstyles    = adminstyles;
 exports.adminscripts   = adminscripts;
 exports.uglifyscripts  = uglifyscripts;
 exports.images         = images;
@@ -171,6 +171,18 @@ exports.watch          = watch;
 // What happens when we run gulp?
 gulp.task('default',
   gulp.series(
-    gulp.parallel(adminstyles, adminscripts, uglifyscripts, images, translate) // run these tasks asynchronously
+    gulp.parallel(sasslint, adminstyles, adminscripts, uglifyscripts, images, translate) // run these tasks asynchronously
+  )
+);
+
+gulp.task('styles',
+  gulp.series(
+    gulp.parallel(sasslint, adminstyles) // run these tasks asynchronously
+  )
+);
+
+gulp.task('scripts',
+  gulp.series(
+    gulp.parallel(adminscripts, uglifyscripts) // run these tasks asynchronously
   )
 );
