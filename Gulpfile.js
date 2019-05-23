@@ -4,6 +4,7 @@ const babel = require('gulp-babel');
 const browserSync = require('browser-sync').create();
 const concat = require('gulp-concat');
 const cssnano = require('cssnano');
+const eslint = require('gulp-eslint');
 const fs = require('fs');
 const gulp = require('gulp');
 const imagemin = require('gulp-imagemin');
@@ -74,6 +75,7 @@ function adminscripts() {
     }))
     .pipe(concat(packagejson.name + '-admin.js')) // Concatenate
     .pipe(sourcemaps.write())
+    .pipe(eslint())
     .pipe(gulp.dest(config.scripts.dest))
     .pipe(browserSync.stream());
 }
