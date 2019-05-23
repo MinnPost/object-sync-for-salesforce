@@ -103,8 +103,7 @@ function uglifyscripts() {
 
 // Optimize Images
 function images() {
-  return gulp
-    .src(config.images.main)
+  return gulp.src(config.images.docs_src)
     .pipe(
       imagemin([
         imagemin.gifsicle({ interlaced: true }),
@@ -120,7 +119,7 @@ function images() {
         })
       ])
     )
-    .pipe(gulp.dest(config.images.dest));
+    .pipe(gulp.dest(config.images.docs_dest));
 }
 
 // Generates translation file.
