@@ -38,7 +38,7 @@ const config = {
   	docs_dest: './docs/assets/img/'
   },
   languages: {
-    src: [ './**/*.php', '!vendor/*', '!tests/*' ],
+    src: [ './**/*.php', '!.git/*', '!.svn/*', '!bin/**/*', '!node_modules/*', '!release/**/*', '!vendor/**/*' ],
     dest: './languages/' + packagejson.name + '.pot'
   },
   browserSync: {
