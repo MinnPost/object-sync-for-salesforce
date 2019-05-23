@@ -9,8 +9,11 @@ $vertical-space: 15px;
 $select-border-color: #ddd;
 
 .settings_page_object-sync-salesforce-admin {
+
 	.form-table {
+
 		td {
+
 			.checkbox {
 				line-height: 1.3;
 				margin-bottom: 9px;
@@ -20,6 +23,7 @@ $select-border-color: #ddd;
 
 	// fieldmap form
 	.fieldmap {
+
 		.spinner {
 			display: inline-block;
 			float: none;
@@ -30,6 +34,7 @@ $select-border-color: #ddd;
 			margin-bottom: $vertical-space;
 			position: relative;
 		}
+
 		.fields {
 			border: 0;
 		}
@@ -50,30 +55,37 @@ $select-border-color: #ddd;
 
 		div {
 			padding: $vertical-space $horizontal-space;
+
 			label {
 				display: inline-block;
-				font-weight: bold;
+				font-weight: 700;
 				margin-bottom: $vertical-space / 2;
 			}
+
+			input,
+			select {
+				display: block;
+			}
+
 		}
 
-
-		.radios label, .checkboxes label {
+		.radios label,
+		.checkboxes label {
 			display: block;
-			font-weight: normal;
+			font-weight: 400;
 		}
 
-		.radios input, .checkboxes input {
+		.radios input,
+		.checkboxes input {
 			display: inline-block;
-		}
-		div input, div select {
-			display: block;
 		}
 
 		table {
+
 			.column-direction {
 				min-width: 200px;
 			}
+
 			td div {
 				padding-left: 0;
 				padding-top: 0;
@@ -88,73 +100,95 @@ $select-border-color: #ddd;
 	.select2-dropdown {
 		z-index: 999999 !important;
 	}
+
 	.select2-results {
-		line-height: 1.5em;
-		.select2-results__option, .select2-results__group {
+		line-height: 1.5;
+
+		.select2-results__option,
+		.select2-results__group {
 			margin: 0;
 			padding: 8px;
 		}
+
 		.description {
 			display: block;
 			//color: #999;
 			padding-top: 4px;
 		}
 	}
+
 	.select2-dropdown {
 		border-color: $select-border-color;
 	}
+
 	.select2-dropdown--below {
 		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 	}
+
 	.select2-dropdown--above {
 		box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.1);
 	}
+
 	.select2-container {
-		.select2-selection__rendered.ui-sortable li {
-			cursor: move;
-		}
+
 		.select2-selection {
 			border-color: #ddd;
 		}
+
 		.select2-search__field {
 			min-width: 150px;
 		}
+
 		.select2-selection--single {
 			height: 32px;
+
 			.select2-selection__rendered {
-				line-height: 32px;
+				line-height: 2;
 				padding-right: 24px;
 			}
+
 			.select2-selection__arrow {
 				right: 3px;
 				height: 30px;
 			}
 		}
-		.select2-selection--multiple  {
+
+		.select2-selection--multiple {
 			min-height: 28px;
 			border-radius: 0;
 			line-height: 1.5;
+
 			li {
 				margin: 0;
 			}
+
 			.select2-selection__choice {
 				padding: 2px 6px;
+
 				.description {
 					display: none;
 				}
 			}
 		}
+
 		.select2-selection__clear {
 			color: #999;
 			margin-top: -1px;
 		}
-		.select2-search--inline .select2-search__field {
+
+		.select2-search--inline
+		.select2-search__field {
 			font-family: inherit;
 			font-size: inherit;
 			font-weight: inherit;
 			padding: 3px 0;
 		}
+
+		.select2-selection__rendered.ui-sortable li {
+			cursor: move;
+		}
 	}
+
 	/*.woocommerce table.form-table .select2-container {
 		min-width: 400px !important;
 	}*/
@@ -167,6 +201,7 @@ $select-border-color: #ddd;
 	box-shadow: $box-shadow-less;
 	margin: 5px 0 $vertical-space;
 	padding: 1px 12px;
+
 	p {
 		margin: 0.5em 0;
 		padding: 2px;
@@ -176,6 +211,7 @@ $select-border-color: #ddd;
 // profile table for salesforce info
 .mapped-salesforce-user {
 	width: auto;
+
 	caption {
 		border: 1px solid $border-color-darker;
 		border-bottom: 0;
@@ -183,10 +219,11 @@ $select-border-color: #ddd;
 		color: #555;
 		font-size: 14px;
 		font-weight: 400;
-		line-height: 1.3em;
+		line-height: 1.3;
 		padding: 8px $horizontal-space;
 		text-align: left;
 	}
+
 	tr th {
 		border-right: 1px solid $border-color-lighter;
 		font-size: 13px;

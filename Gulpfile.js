@@ -16,6 +16,7 @@ const rename = require('gulp-rename');
 const sass = require('gulp-sass');
 const sassGlob = require('gulp-sass-glob');
 const sort = require( 'gulp-sort' );
+const gulpStylelint = require('gulp-stylelint');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const wpPot = require('gulp-wp-pot');
@@ -24,6 +25,7 @@ const wpPot = require('gulp-wp-pot');
 const config = {
   styles: {
     admin_src: 'assets/sass/**/*.scss',
+    lint_dest: 'assets/sass/',
     dest: 'assets/css'
   },
   scripts: {
@@ -65,6 +67,14 @@ function adminstyles() {
     .pipe(sourcemaps.write()) // Write the sourcemap files
     .pipe(gulp.dest(config.styles.dest)) // Drop the resulting CSS file in the specified dir
     .pipe(browserSync.stream());
+}
+
+function sasslint() {
+  return gulp.src(config.styles.admin_src)
+    .pipe(gulpStylelint({
+      fix: true
+    }))
+    .pipe(gulp.dest(config.styles.lint_dest));
 }
 
 function adminscripts() {
@@ -152,6 +162,7 @@ function watch() {
 
 // export tasks
 exports.adminstyles    = adminstyles;
+exports.sasslint       = sasslint;
 exports.adminscripts   = adminscripts;
 exports.uglifyscripts  = uglifyscripts;
 exports.images         = images;
