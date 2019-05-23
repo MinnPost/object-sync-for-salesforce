@@ -14,6 +14,7 @@ node_modules/\*
 package-lock.json
 package.json
 phpdoc.dist.xml
+phpcs.xml
 phpunit.xml
 release.sh
 release/\*
