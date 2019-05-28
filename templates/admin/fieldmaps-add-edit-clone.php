@@ -26,7 +26,8 @@
 					} else {
 						$selected = '';
 					}
-					echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
+					echo sprintf(
+						'<option value="%1$s"%2$s>%3$s</option>',
 						esc_html( $object ),
 						esc_attr( $selected ),
 						esc_html( $object )
@@ -59,7 +60,8 @@
 					} else {
 						$selected = '';
 					}
-					echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
+					echo sprintf(
+						'<option value="%1$s"%2$s>%3$s</option>',
 						esc_html( $object['name'] ),
 						esc_attr( $selected ),
 						esc_html( $object['label'] )
@@ -67,6 +69,17 @@
 				}
 				?>
 			</select>
+			<?php if ( empty( $salesforce_objects ) ) : ?>
+				<p class="description">
+					<?php
+					echo sprintf(
+						// translators: 1) is the link to troubleshooting object maps in the plugin documentation
+						'<strong>' . esc_html__( 'The plugin is unable to access any Salesforce objects for object mapping.', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' This is most likely a permissions issue. See %1$s in the plugin documentation for more information and possible solutions.', 'object-sync-for-salesforce' ) . '</strong>',
+						'<a href="https://github.com/MinnPost/object-sync-for-salesforce/blob/271-object-map-permission-issues/docs/troubleshooting.md#object-map-issues">troubleshooting object maps</a>'
+					);
+					?>
+				</p>
+			<?php endif; ?>
 		</div>
 		<div class="salesforce_record_types_allowed">
 			<?php
@@ -88,7 +101,8 @@
 						} else {
 							$checked = '';
 						}
-						echo sprintf( '<label><input type="checkbox" class="form-checkbox" value="%1$s" name="%2$s" id="%3$s"%4$s>%5$s</label>',
+						echo sprintf(
+							'<label><input type="checkbox" class="form-checkbox" value="%1$s" name="%2$s" id="%3$s"%4$s>%5$s</label>',
 							esc_html( $key ),
 							esc_attr( 'salesforce_record_types_allowed[' . $key . ']' ),
 							esc_attr( 'salesforce_record_types_allowed-' . $key ),
@@ -122,7 +136,8 @@
 							$selected = '';
 						}
 						if ( ! isset( $salesforce_record_types_allowed ) || in_array( $key, $salesforce_record_types_allowed, true ) ) {
-							echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
+							echo sprintf(
+								'<option value="%1$s"%2$s>%3$s</option>',
 								esc_attr( $key ),
 								esc_attr( $selected ),
 								esc_html( $value )
@@ -131,7 +146,7 @@
 					endforeach;
 					?>
 					</select>
-				<?php
+					<?php
 				endif;
 			endif;
 			?>
@@ -155,7 +170,8 @@
 					} else {
 						$selected = '';
 					}
-					echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
+					echo sprintf(
+						'<option value="%1$s"%2$s>%3$s</option>',
 						esc_attr( $value['name'] ),
 						esc_attr( $selected ),
 						esc_html( $value['label'] )
@@ -186,7 +202,9 @@
 						<p><small>
 							<?php
 							// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
-							echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' to map a custom meta field (such as wp_postmeta, wp_usermeta, wp_termmeta, etc.), WordPress must have at least one value for that field. If you add a new meta field and want to map it, make sure to add a value for it and ', 'object-sync-for-salesforce' ) . '<a href="%1$s" id="clear-sfwp-cache">%2$s</a>' . esc_html__( ' to see the field listed here.', 'object-sync-for-salesforce' ),
+							echo sprintf(
+								'<strong>' .
+								esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' to map a custom meta field (such as wp_postmeta, wp_usermeta, wp_termmeta, etc.), WordPress must have at least one value for that field. If you add a new meta field and want to map it, make sure to add a value for it and ', 'object-sync-for-salesforce' ) . '<a href="%1$s" id="clear-sfwp-cache">%2$s</a>' . esc_html__( ' to see the field listed here.', 'object-sync-for-salesforce' ),
 								esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=clear_cache' ) ),
 								esc_html__( 'clear the plugin cache', 'object-sync-for-salesforce' )
 							);
@@ -205,7 +223,7 @@
 				if ( isset( $fieldmap_fields ) && null !== $fieldmap_fields && is_array( $fieldmap_fields ) ) {
 					foreach ( $fieldmap_fields as $key => $value ) {
 						$key = md5( $key . time() );
-				?>
+						?>
 				<tr>
 					<td class="column-wordpress_field">
 						<select name="wordpress_field[<?php echo esc_attr( $key ); ?>]" id="wordpress_field-<?php echo esc_attr( $key ); ?>">
@@ -218,7 +236,8 @@
 								} else {
 									$selected = '';
 								}
-								echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
+								echo sprintf(
+									'<option value="%1$s"%2$s>%3$s</option>',
 									esc_attr( $wordpress_field['key'] ),
 									esc_attr( $selected ),
 									esc_html( $wordpress_field['key'] )
@@ -257,7 +276,8 @@
 									$salesforce_field['label'] .= ' *';
 								}
 
-								echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
+								echo sprintf(
+									'<option value="%1$s"%2$s>%3$s</option>',
 									esc_attr( $salesforce_field['name'] ),
 									esc_attr( $selected ),
 									esc_html( $salesforce_field['label'] )
@@ -319,10 +339,10 @@
 						<input type="checkbox" name="is_delete[<?php echo esc_attr( $key ); ?>]" id="is_delete-<?php echo esc_attr( $key ); ?>" value="1" />
 					</td>
 				</tr>
-				<?php
+						<?php
 					} // End foreach().
 				} elseif ( isset( $wordpress_object ) && isset( $salesforce_object ) ) {
-				?>
+					?>
 				<tr>
 					<td class="column-wordpress_field">
 						<select name="wordpress_field[0]" id="wordpress_field-0">
@@ -330,7 +350,8 @@
 							<?php
 							$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
 							foreach ( $wordpress_fields as $wordpress_field ) {
-								echo sprintf( '<option value="%1$s">%2$s</option>',
+								echo sprintf(
+									'<option value="%1$s">%2$s</option>',
 									esc_attr( $wordpress_field['key'] ),
 									esc_html( $wordpress_field['key'] )
 								);
@@ -348,7 +369,8 @@
 								)
 							);
 							foreach ( $salesforce_fields as $salesforce_field ) {
-								echo sprintf( '<option value="%1$s">%2$s</option>',
+								echo sprintf(
+									'<option value="%1$s">%2$s</option>',
 									esc_attr( $salesforce_field['name'] ),
 									esc_html( $salesforce_field['label'] )
 								);
@@ -373,7 +395,7 @@
 						<input type="checkbox" name="is_delete[0]" id="is_delete-0" value="1" />
 					</td>
 				</tr>
-				<?php
+					<?php
 				} // End if().
 				?>
 			</tbody>
@@ -460,5 +482,5 @@
 			// translators: the placeholder refers to the currently selected method (add, edit, or clone)
 			sprintf( esc_html__( '%1$s fieldmap', 'object-sync-for-salesforce' ), ucfirst( $method ) )
 		);
-	?>
+		?>
 </form>
