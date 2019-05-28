@@ -42,6 +42,18 @@ If the plugin allows you to authorize in Salesforce, but does not finish activat
 2. The plugin may have been unable to create its required database tables. If you think this may be the case, refer to [this document](./troubleshooting-unable-to-create-database-tables.md) for the necessary SQL.
 3. Mismatched settings between the plugin and the expected values in Salesforce.
 
+## Object map issues
+
+If you are successfully authenticated with Salesforce, but you are unable to create an object map, there are several ways to troubleshoot. Always check your PHP error logs first.
+
+### There are no Salesforce objects in the dropdown
+
+When there are no values in the list of Salesforce objects, this means the plugin can’t access any of the objects in your Salesforce. There are three likely causes for this:
+
+1. You need to change the OAuth scope on the app you created in Salesforce. For most uses with this plugin, you’ll want to use "Perform requests on your behalf at any time" and "Access and manage your data (api)."" If you do change these, you’ll need to wait several minutes before trying again, as Salesforce is rather slow on this.
+2. Your Salesforce objects might not be accessible to the Salesforce user who has authenticated with WordPress via this plugin.
+3. The Salesforce objects might have other restrictive permissions.
+
 ## Fieldmap issues
 
 If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. Always check your PHP error logs first.

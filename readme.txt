@@ -200,7 +200,19 @@ If the plugin allows you to authorize in Salesforce, but does not finish activat
 2. The plugin may have been unable to create its required database tables. If you think this may be the case, refer to [this document](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting-unable-to-create-database-tables.md) for the necessary SQL.
 3. Mismatched settings between the plugin and the expected values in Salesforce.
 
-### Troubleshooting Fieldmaps
+### Troubleshooting object maps
+
+If you are successfully authenticated with Salesforce, but you are unable to create object maps, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in the [troubleshooting](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting.md) section of the plugin's documentation.
+
+**There are no Salesforce objects in the dropdown**
+
+When there are no values in the list of Salesforce objects, this means the plugin can’t access any of the objects in your Salesforce. There are three likely causes for this:
+
+- You need to change the OAuth scope on the app you created in Salesforce. For most uses with this plugin, you’ll want to use "Perform requests on your behalf at any time" and "Access and manage your data (api)."" If you do change these, you’ll need to wait several minutes before trying again, as Salesforce is rather slow on this.
+- Your Salesforce objects might not be accessible to the Salesforce user who has authenticated with WordPress via this plugin.
+- The Salesforce objects might have other restrictive permissions.
+
+### Troubleshooting fieldmaps
 
 If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in the [troubleshooting](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting.md) section of the plugin's documentation.
 
@@ -230,6 +242,10 @@ We welcome contributions to this project from other developers. See our [contrib
 ### Plugin documentation
 
 There is extensive documentation of this plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
+
+### Getting support using this plugin
+
+We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). Please do not send them by email.
 
 ### Finding other options to sync Salesforce and WordPress
 
