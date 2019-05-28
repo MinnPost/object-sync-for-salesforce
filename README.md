@@ -28,6 +28,8 @@ The plugin documentation contains [initial setup instructions](https://github.co
 
 We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). If you have these requests, please put them in that forum, not in this GitHub repository and not in anyone's email inbox.
 
+While MinnPost's nonprofit newsroom does welcome [donations](https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY) to support our work, this plugin does not have a paid version.
+
 Use this repository for bugs, feature requests, etc. and especially do that if you can help solve these things.
 
 ## Finding other sync options
