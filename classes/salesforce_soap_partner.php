@@ -26,6 +26,9 @@ class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 	*
 	*/
 	public function __construct( Object_Sync_Sf_Salesforce $sfapi, $wsdl = null ) {
+		if ( ! extension_loaded( 'soap' ) ) {
+			return;
+		}
 		if ( ! class_exists( 'SforceBaseClient' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
 			require_once plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/SforcePartnerClient.php';
 		}
