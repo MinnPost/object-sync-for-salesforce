@@ -338,9 +338,13 @@ class Object_Sync_Salesforce {
 				$is_authorized = true;
 			}
 		}
+
+		$soap_enabled = $this->is_soap_available();
+
 		return array(
 			'is_authorized' => $is_authorized,
 			'sfapi'         => $sfapi,
+			'soap_enabled'  => $soap_enabled,
 		);
 	}
 
@@ -577,6 +581,19 @@ class Object_Sync_Salesforce {
 
 		return $login_credentials;
 
+	}
+
+	/**
+	 * Check the server to see if Soap is available
+	 *
+	 * @return bool $is_soap_available
+	 */
+	private function is_soap_available() {
+		$is_soap_available = false;
+		if ( extension_loaded( 'soap' ) && class_exists( 'SoapClient' ) ) {
+			$is_soap_available = true;
+		}
+		return $is_soap_available;
 	}
 
 } // end class
