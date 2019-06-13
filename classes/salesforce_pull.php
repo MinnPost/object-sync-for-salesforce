@@ -795,13 +795,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$sfapi    = $this->salesforce['sfapi'];
 		$use_soap = filter_var( get_option( 'object_sync_for_salesforce_use_soap', false ), FILTER_VALIDATE_BOOLEAN );
+		// a server could be missing the soap extension. if so, this would be false
+		if ( false === $this->salesforce['soap_enabled'] ) {
+			$use_soap = false;
+		}
 		if ( true === $use_soap ) {
 			$wsdl = get_option( 'object_sync_for_salesforce_soap_wsdl_path', plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml' );
 			$soap = new Object_Sync_Sf_Salesforce_Soap_Partner( $sfapi, $wsdl );
-			// a server could be missing the soap extension. if so, this class result would be false.
-			if ( false === $soap ) {
-				$use_soap = false;
-			}
 		}
 		$seconds = 60;
 
