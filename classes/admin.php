@@ -714,7 +714,7 @@ class Object_Sync_Sf_Admin {
 		);
 
 		// only show soap settings if the soap extension is enabled on the server
-		if ( true === $this->salesforce['soap_enabled'] ) {
+		if ( true === $this->salesforce['soap_available'] ) {
 			$salesforce_settings['use_soap']       = array(
 				'title'    => __( 'Enable the Salesforce SOAP API?', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
