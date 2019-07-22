@@ -720,6 +720,7 @@ class Object_Sync_Sf_Admin {
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
+				'class'    => 'object-sync-for-salesforce-enable-soap',
 				'args'     => array(
 					'type'     => 'checkbox',
 					'validate' => 'sanitize_text_field',
@@ -732,6 +733,7 @@ class Object_Sync_Sf_Admin {
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
+				'class'    => 'object-sync-for-salesforce-soap-wsdl-path',
 				'args'     => array(
 					'type'     => 'text',
 					'validate' => 'sanitize_text_field',
@@ -790,6 +792,7 @@ class Object_Sync_Sf_Admin {
 			$validate = $attributes['args']['validate'];
 			$page     = $attributes['page'];
 			$section  = $attributes['section'];
+			$class    = isset( $attributes['class'] ) ? $attributes['class'] : '';
 			$args     = array_merge(
 				$attributes['args'],
 				array(
@@ -797,6 +800,7 @@ class Object_Sync_Sf_Admin {
 					'id'        => $id,
 					'label_for' => $id,
 					'name'      => $name,
+					'class'     => $class,
 				)
 			);
 
@@ -1759,6 +1763,10 @@ class Object_Sync_Sf_Admin {
 
 		if ( 'checkbox' === $type ) {
 			$class = 'checkbox';
+		}
+
+		if ( isset( $args['class'] ) ) {
+			$class = $args['class'];
 		}
 
 		if ( ! isset( $args['constant'] ) || ! defined( $args['constant'] ) ) {
