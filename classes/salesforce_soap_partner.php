@@ -15,7 +15,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
  */
 class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 
-	protected $sf_api;
+	protected $salesforce_api;
 	protected $is_authorized;
 	private $refreshed;
 
