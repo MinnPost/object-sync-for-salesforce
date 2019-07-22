@@ -317,7 +317,10 @@ class Object_Sync_Salesforce {
 	public function salesforce_get_api() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_query.php' ); // this can be used to generate soql queries, but we don't often need it so it gets initialized whenever it's needed
-		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_soap_partner.php' );
+
+		$soap_available = $this->is_soap_available();
+		$soap_loaded    = $this->is_soap_loaded();
+
 		$consumer_key        = $this->login_credentials['consumer_key'];
 		$consumer_secret     = $this->login_credentials['consumer_secret'];
 		$login_url           = $this->login_credentials['login_url'];
@@ -338,9 +341,12 @@ class Object_Sync_Salesforce {
 				$is_authorized = true;
 			}
 		}
+
 		return array(
-			'is_authorized' => $is_authorized,
-			'sfapi'         => $sfapi,
+			'is_authorized'  => $is_authorized,
+			'sfapi'          => $sfapi,
+			'soap_available' => $soap_available,
+			'soap_loaded'    => $soap_loaded,
 		);
 	}
 
@@ -577,6 +583,40 @@ class Object_Sync_Salesforce {
 
 		return $login_credentials;
 
+	}
+
+	/**
+	 * Check the server to see if Soap is available
+	 *
+	 * @return bool $is_soap_available
+	 */
+	private function is_soap_available() {
+		$is_soap_available = false;
+		if ( extension_loaded( 'soap' ) && class_exists( 'SoapClient' ) ) {
+			$is_soap_available = true;
+		}
+		return $is_soap_available;
+	}
+
+	/**
+	 * Check the plugin to see if the Soap option has been enabled and the class has been loaded
+	 *
+	 * @return bool $is_soap_loaded
+	 */
+	private function is_soap_loaded() {
+		$is_soap_loaded = false;
+		if ( false === $this->is_soap_available() ) {
+			return $is_soap_loaded;
+		}
+		$use_soap = filter_var( get_option( 'object_sync_for_salesforce_use_soap', false ), FILTER_VALIDATE_BOOLEAN );
+		if ( false === $use_soap ) {
+			return $is_soap_loaded;
+		}
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_soap_partner.php' );
+		if ( class_exists( 'Object_Sync_Sf_Salesforce_Soap_Partner' ) ) {
+			$is_soap_loaded = true;
+		}
+		return $is_soap_loaded;
 	}
 
 } // end class

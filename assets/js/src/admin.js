@@ -1,4 +1,18 @@
 ( function( $ ) {
+
+	/**
+	 * Don't show the WSDL file field unless SOAP is enabled
+	 */
+	function toggleSoapFields() {
+		if ( 0 < $( '.object-sync-for-salesforce-enable-soap' ).length ) {
+			if ( $( '.object-sync-for-salesforce-enable-soap input' ).is( ':checked' ) ) {
+				$( '.object-sync-for-salesforce-soap-wsdl-path' ).show();
+			} else {
+				$( '.object-sync-for-salesforce-soap-wsdl-path' ).hide();
+			}
+		}
+	}
+
 	/**
 	 * Generates the Salesforce object fields based on the dropdown activity and API results.
 	 */
@@ -235,6 +249,12 @@
 			return false;
 		});
 	}
+
+	// show wsdl field if soap is enabled
+	$( document ).on( 'change', '.object-sync-for-salesforce-enable-soap input', function() {
+		toggleSoapFields();
+	});
+
 	/**
 	 * As the Drupal plugin does, we only allow one field to be a prematch
 	 */
@@ -258,6 +278,10 @@
 	 */
 	$( document ).ready( function() {
 
+		// for main admin settings
+		toggleSoapFields();
+
+		// for the fieldmap add/edit screen
 		var timeout;
 
 		if ( jQuery.fn.select2 ) {
@@ -285,7 +309,11 @@
 		});
 		salesforceObjectFields();
 		addFieldMappingRow();
+
+		// for push/pull methods running via ajax
 		pushAndPullObjects();
+
+		// for clearing the plugin cache
 		clearSfwpCacheLink();
 	});
 }( jQuery ) );
