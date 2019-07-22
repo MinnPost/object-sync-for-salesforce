@@ -41,6 +41,11 @@ const config = {
     src: [ './**/*.php', '!.git/*', '!.svn/*', '!bin/**/*', '!node_modules/*', '!release/**/*', '!vendor/**/*' ],
     dest: './languages/' + packagejson.name + '.pot'
   },
+  changelog: {
+    src: 'changelog.md',
+    edit: 'changelog.txt',
+    dest: '.'
+  },
   browserSync: {
     active: false,
     localURL: 'mylocalsite.local'
@@ -130,6 +135,14 @@ function translate() {
       .pipe( gulp.dest( config.languages.dest ) );
 }
 
+// Generates changelog.txt as a copy of changelog.md
+function changelog() {
+  return gulp
+    .src( config.changelog.src )
+    .pipe( rename( config.changelog.edit ) )
+    .pipe( gulp.dest( config.changelog.dest ) );
+}
+
 // Injects changes into browser
 function browserSyncTask() {
   if (config.browserSync.active) {
@@ -159,12 +172,14 @@ function watch() {
 // define complex gulp tasks
 const styles  = gulp.series(sasslint, adminstyles);
 const scripts = gulp.series(adminscripts, uglifyscripts);
-const build   = gulp.series(gulp.parallel(styles, scripts, images, translate));
+const build   = gulp.series(gulp.parallel(styles, scripts, images, translate, changelog));
 
 // export tasks
-exports.styles         = styles;
-exports.scripts        = scripts;
-exports.images         = images;
-exports.translate      = translate;
-exports.watch          = watch;
-exports.default        = build;
+exports.styles    = styles;
+exports.scripts   = scripts;
+exports.images    = images;
+exports.translate = translate;
+exports.changelog = changelog;
+exports.watch     = watch;
+exports.default   = build;
+
