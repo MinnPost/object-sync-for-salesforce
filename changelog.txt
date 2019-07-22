@@ -1,6 +1,12 @@
 Changelog
 =========
 
+* 1.8.7 (2019-07-22)
+	* Bug fix: Stop the plugin from breaking when SOAP is missing from the server. Thanks to GitHub user @Ethanb00 for the report.
+	* Fix issues with pull success method/docs. Thanks to @mistermarco for the report and the fix.
+	* Maintenance: Improve documentation in various places, notably for object map issues caused by Salesforce permissions.
+	* Maintenance: Update Gulp to 4.x.
+
 * 1.8.6 (2019-05-13)
 	* Feature: Add object type parameter to `push_update_params_modify` developer hook.
 	* Maintenance: Centralize documentation of SQL table structure.
