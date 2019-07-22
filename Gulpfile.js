@@ -159,30 +159,15 @@ function watch() {
   }
 }
 
+// define complex gulp tasks
+const styles  = gulp.series(sasslint, adminstyles);
+const scripts = gulp.series(adminscripts, uglifyscripts);
+const build   = gulp.series(gulp.parallel(styles, scripts, images, translate));
+
 // export tasks
-exports.sasslint       = sasslint;
-exports.adminstyles    = adminstyles;
-exports.adminscripts   = adminscripts;
-exports.uglifyscripts  = uglifyscripts;
+exports.styles         = styles;
+exports.scripts        = scripts;
 exports.images         = images;
 exports.translate      = translate;
 exports.watch          = watch;
-
-// What happens when we run gulp?
-gulp.task('default',
-  gulp.series(
-    gulp.parallel(sasslint, adminstyles, adminscripts, uglifyscripts, images, translate) // run these tasks asynchronously
-  )
-);
-
-gulp.task('styles',
-  gulp.series(
-    gulp.parallel(sasslint, adminstyles) // run these tasks asynchronously
-  )
-);
-
-gulp.task('scripts',
-  gulp.series(
-    gulp.parallel(adminscripts, uglifyscripts) // run these tasks asynchronously
-  )
-);
+exports.default        = build;
