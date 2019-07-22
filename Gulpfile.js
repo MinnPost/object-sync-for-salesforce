@@ -182,4 +182,3 @@ exports.translate = translate;
 exports.changelog = changelog;
 exports.watch     = watch;
 exports.default   = build;
-
