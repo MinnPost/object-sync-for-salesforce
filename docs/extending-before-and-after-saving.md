@@ -113,7 +113,7 @@ function push_fail( $op, $response, $synced_object ) {
 #### After success
 
 ```php
-add_action( 'object_sync_for_salesforce_push_success', 'push_success', 10, 3 );
+add_action( 'object_sync_for_salesforce_push_success', 'push_success', 10, 4 );
 function push_success( $op, $response, $synced_object, $object_id ) {
     // do things if the save succeeded
     // $op is what the plugin did - Create, Update, Upsert, Delete

@@ -1048,9 +1048,12 @@ class Object_Sync_Sf_Salesforce_Push {
 				$mapping_object['salesforce_id']     = $salesforce_id;
 				$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
 				$mapping_object_updated              = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+				
+				// save the mapping object to the synced object
+				$synced_object['mapping_object'] = $mapping_object;
 
 				// hook for push success
-				do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $wordpress_id_field_name );
+				do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $salesforce_id );
 			} else {
 
 				// create log entry for failed create or upsert
