@@ -55,19 +55,19 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `object_sync_for_salesforce_settings_tabs`:
     - description: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
     - code: [classes/admin.php](../classes/admin.php)
-    - documentation: [add a settings tab](./docs/adding-settings.md#add-a-settings-tab)
+    - documentation: [add a settings tab](./adding-settings.md#add-a-settings-tab)
 - `object_sync_for_salesforce_settings_tab_include_settings`:
     - description: when adding tabs to the Salesforce Settings screen, determine whether or not to include the default settings PHP template, which we use to render the form.
     - code: [classes/admin.php](../classes/admin.php)
-    - documentation: [change the template](./docs/adding-settings.md#change-the-template)
+    - documentation: [change the template](./adding-settings.md#change-the-template)
 - `object_sync_for_salesforce_settings_tab_content_before`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display before the settings form.
     - code: [classes/admin.php](../classes/admin.php)
-    - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
+    - documentation: [adding settings](./adding-settings.md#add-content-to-a-tab)
 - `object_sync_for_salesforce_settings_tab_content_after`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form.
     - code: [classes/admin.php](../classes/admin.php)
-    - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
+    - documentation: [adding settings](./adding-settings.md#add-content-to-a-tab)
 - `object_sync_for_salesforce_modify_schedulable_classes`:
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
     - code: [object-sync-for-salesforce.php](../../object-sync-for-salesforce.php)
