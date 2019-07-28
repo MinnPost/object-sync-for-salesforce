@@ -70,11 +70,11 @@ This page lists all developer hooks available in this plugin, with links to wher
     - documentation: [adding settings](./adding-settings.md#add-content-to-a-tab)
 - `object_sync_for_salesforce_modify_schedulable_classes`:
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
-    - code: [object-sync-for-salesforce.php](../../object-sync-for-salesforce.php)
+    - code: [object-sync-for-salesforce.php](../object-sync-for-salesforce.php)
     - documentation: [extending scheduling](./extending-scheduling.md)
 - `object_sync_for_salesforce_select_library`:
 	- description: modify the `select` library used for choosing WordPress and Salesforce fields on fieldmaps. By default, we add the selectWoo library.
-	- code: [object-sync-for-salesforce.php](../../object-sync-for-salesforce.php)
+	- code: [object-sync-for-salesforce.php](../object-sync-for-salesforce.php)
 	- documentation: [extending mapping options](./extending-mapping-options.md#administration-interface)
 - `object_sync_for_salesforce_add_more_wordpress_types`:
     - description: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
