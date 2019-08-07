@@ -179,9 +179,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 */
 	public function set_prune_option( $should_we_prune ) {
 		$should_we_prune = get_option( $this->option_prefix . 'prune_logs', $should_we_prune );
-		if ( '1' === $should_we_prune ) {
-			$should_we_prune = true;
-		}
+		$should_we_prune = filter_var( $should_we_prune, FILTER_VALIDATE_BOOLEAN );
 		return $should_we_prune;
 	}
 
@@ -242,7 +240,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			$title = $title_or_params;
 		}
 
-		if ( '1' === $this->enabled && in_array( $status, maybe_unserialize( $this->statuses_to_log ), true ) ) {
+		if ( true === filter_var( $this->enabled, FILTER_VALIDATE_BOOLEAN ) && in_array( $status, maybe_unserialize( $this->statuses_to_log ), true ) ) {
 			$triggers_to_log = get_option( $this->option_prefix . 'triggers_to_log', array() );
 			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in Object_Sync_Sf_Mapping class's method __construct()
 			if ( in_array( $trigger, maybe_unserialize( $triggers_to_log ) ) || 0 === $trigger ) {
