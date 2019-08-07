@@ -45,6 +45,8 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 
 		$this->schedule_name = 'wp_logging_prune_routine';
 
+		$this->capability = 'configure_salesforce';
+
 		$this->init();
 
 	}
@@ -89,14 +91,14 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		$log_args['publicly_queryable']  = false;
 		$log_args['exclude_from_search'] = true;
 		$log_args['capabilities']        = array(
-			'edit_post'          => 'configure_salesforce',
-			'read_post'          => 'configure_salesforce',
-			'delete_post'        => 'configure_salesforce',
-			'edit_posts'         => 'configure_salesforce',
-			'edit_others_posts'  => 'configure_salesforce',
-			'delete_posts'       => 'configure_salesforce',
-			'publish_posts'      => 'configure_salesforce',
-			'read_private_posts' => 'configure_salesforce',
+			'edit_post'          => $this->capability,
+			'read_post'          => $this->capability,
+			'delete_post'        => $this->capability,
+			'edit_posts'         => $this->capability,
+			'edit_others_posts'  => $this->capability,
+			'delete_posts'       => $this->capability,
+			'publish_posts'      => $this->capability,
+			'read_private_posts' => $this->capability,
 		);
 
 		$log_args = apply_filters( $this->option_prefix . 'logging_post_type_args', $log_args );
