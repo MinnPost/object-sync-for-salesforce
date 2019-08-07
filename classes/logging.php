@@ -64,6 +64,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			add_filter( 'wp_logging_prune_when', array( $this, 'set_prune_age' ), 10, 1 );
 			add_filter( 'wp_logging_prune_query_args', array( $this, 'set_prune_args' ), 10, 1 );
 			add_filter( 'wp_logging_post_type_args', array( $this, 'set_log_visibility' ), 10, 1 );
+			add_filter( 'wp_unique_post_slug', array( $this, 'set_log_slug' ), 10, 4 );
 
 			$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
 			$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
@@ -104,6 +105,22 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		$log_args = apply_filters( $this->option_prefix . 'logging_post_type_args', $log_args );
 
 		return $log_args;
+	}
+
+	/**
+	 * Create a (probably unique) post name for logs in a more performant manner than wp_unique_post_slug().
+	 *
+	 * @param string $slug The post slug
+	 * @param int $post_ID The post ID
+	 * @param string $post_status The post status
+	 * @param string $post_type The post type
+	 * @return string $slug
+	 */
+	public function set_log_slug( $slug, $post_ID, $post_status, $post_type ) {
+		if ( 'wp_log' === $post_type ) {
+			$slug = uniqid( $post_type . '-', true ) . '-' . wp_generate_password( 32, false );
+		}
+		return $slug;
 	}
 
 	/**
