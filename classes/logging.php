@@ -66,14 +66,11 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			add_filter( 'wp_logging_post_type_args', array( $this, 'set_log_visibility' ), 10, 1 );
 			add_filter( 'pre_wp_unique_post_slug', array( $this, 'set_log_slug' ), 10, 5 );
 
-			$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
-			$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
-			$frequency       = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
-			$key             = $frequency['key'];
+			// when the schedule might change
+			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_unit', array( $this, 'check_log_schedule' ), 10, 3 );
+			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_number', array( $this, 'check_log_schedule' ), 10, 3 );
 
-			if ( ! wp_next_scheduled( $this->schedule_name ) ) {
-				wp_schedule_event( time(), $key, $this->schedule_name );
-			}
+			$this->save_log_schedule();
 		}
 	}
 
@@ -122,6 +119,59 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			$override_slug = uniqid( $post_type . '-', true ) . '-' . wp_generate_password( 32, false );
 		}
 		return $override_slug;
+	}
+
+	/**
+	 * When the cron settings change, clear the relevant schedule
+	 *
+	 * @param mixed $old_value Previous option value
+	 * @param mixed $new_value New option value
+	 * @param string $option Name of option
+	 */
+	public function check_log_schedule( $old_value, $new_value, $option ) {
+		$clear_schedule  = false;
+		$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
+		$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
+		if ( $this->option_prefix . 'logs_how_often_unit' === $option ) {
+			$old_frequency = $this->get_schedule_frequency( $old_value, $schedule_number );
+			$new_frequency = $this->get_schedule_frequency( $new_value, $schedule_number );
+			$old_key       = $old_frequency['key'];
+			$new_key       = $new_frequency['key'];
+			if ( $old_key !== $new_key ) {
+				$clear_schedule = true;
+			}
+		}
+		if ( $this->option_prefix . 'logs_how_often_number' === $option ) {
+			$old_frequency = $this->get_schedule_frequency( $schedule_unit, $old_value );
+			$new_frequency = $this->get_schedule_frequency( $schedule_unit, $new_value );
+			$old_key       = $old_frequency['key'];
+			$new_key       = $new_frequency['key'];
+			if ( $old_key !== $new_key ) {
+				$clear_schedule = true;
+			}
+		}
+		if ( true === $clear_schedule ) {
+			wp_clear_scheduled_hook( $this->schedule_name );
+			$this->save_log_schedule();
+		}
+	}
+
+	/**
+	 * Save a cron schedule
+	 *
+	 */
+	public function save_log_schedule() {
+		global $pagenow;
+		if ( ( 'options.php' !== $pagenow ) && ( ! isset( $_GET['page'] ) || $this->slug . '-admin' !== $_GET['page'] ) ) {
+			return;
+		}
+		$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
+		$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
+		$frequency       = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
+		$key             = $frequency['key'];
+		if ( ! wp_next_scheduled( $this->schedule_name ) ) {
+			wp_schedule_event( time(), $key, $this->schedule_name );
+		}
 	}
 
 	/**
