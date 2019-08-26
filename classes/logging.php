@@ -66,6 +66,11 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			add_filter( 'wp_logging_post_type_args', array( $this, 'set_log_visibility' ), 10, 1 );
 			add_filter( 'pre_wp_unique_post_slug', array( $this, 'set_log_slug' ), 10, 5 );
 
+			// add a sortable Type column to the posts admin
+			add_filter( 'manage_edit-wp_log_columns', array( $this, 'type_column' ), 10, 1 );
+			add_action( 'manage_wp_log_posts_custom_column', array( $this, 'type_column_content' ), 10, 2 );
+			add_filter( 'manage_edit-wp_log_sortable_columns', array( $this, 'sortable_columns' ), 10, 1 );
+
 			// when the schedule might change
 			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_unit', array( $this, 'check_log_schedule' ), 10, 3 );
 			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_number', array( $this, 'check_log_schedule' ), 10, 3 );
@@ -119,6 +124,51 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			$override_slug = uniqid( $post_type . '-', true ) . '-' . wp_generate_password( 32, false );
 		}
 		return $override_slug;
+	}
+
+	/**
+	 * Add a Type column to the posts admin for this post type
+	 *
+	 * @param array $columns
+	 * @return array $columns
+	 */
+	public function type_column( $columns ) {
+		$columns['type'] = __( 'Type', 'object-sync-for-salesforce' );
+		return $columns;
+	}
+
+	/**
+	 * Make the Type column in the posts admin for this post type sortable
+	 *
+	 * @param array $columns
+	 * @return array $columns
+	 */
+	public function sortable_columns( $columns ) {
+		$columns['type'] = 'type';
+		return $columns;
+	}
+
+	/**
+	 * Add the content for the Type column in the posts admin for this post type
+	 *
+	 * @param string $column_name
+	 * @param int $post_id
+	 */
+	public function type_column_content( $column_name, $post_id ) {
+		if ( 'type' != $column_name ) {
+			return;
+		}
+		// get wp_log_type
+		$terms = wp_get_post_terms(
+			$post_id,
+			'wp_log_type',
+			array(
+				'fields' => 'names',
+			)
+		);
+		if ( is_array( $terms ) ) {
+			echo esc_attr( $terms[0] );
+		}
 	}
 
 	/**
