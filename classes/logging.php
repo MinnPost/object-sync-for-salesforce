@@ -68,8 +68,12 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 
 			// add a sortable Type column to the posts admin
 			add_filter( 'manage_edit-wp_log_columns', array( $this, 'type_column' ), 10, 1 );
-			add_action( 'manage_wp_log_posts_custom_column', array( $this, 'type_column_content' ), 10, 2 );
 			add_filter( 'manage_edit-wp_log_sortable_columns', array( $this, 'sortable_columns' ), 10, 1 );
+			add_action( 'manage_wp_log_posts_custom_column', array( $this, 'type_column_content' ), 10, 2 );
+
+			// filter the log posts admin by log type
+			add_filter( 'parse_query', array( $this, 'posts_filter' ), 10, 1 );
+			add_action( 'restrict_manage_posts', array( $this, 'restrict_log_posts' ) );
 
 			// when the schedule might change
 			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_unit', array( $this, 'check_log_schedule' ), 10, 3 );
@@ -168,6 +172,65 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		);
 		if ( is_array( $terms ) ) {
 			echo esc_attr( $terms[0] );
+		}
+	}
+
+	/**
+	 * Filter log posts by the taxonomy from the dropdown when a value is present
+	 *
+	 * @param object $query
+	 * @return object $query
+	 */
+	public function posts_filter( $query ) {
+		global $pagenow;
+		$type     = 'wp_log';
+		$taxonomy = 'wp_log_type';
+		if ( is_admin() && isset( $_GET['post_type'] ) && esc_attr( $_GET['post_type'] ) === $type && 'edit.php' === $pagenow && isset( $_GET[ $taxonomy ] ) && '' !== $_GET[ $taxonomy ] ) {
+			$query->post_type = $type;
+			$query->tax_query = array(
+				array(
+					'taxonomy' => $taxonomy,
+					'field'    => 'slug',
+					'terms'    => esc_attr( $_GET[ $taxonomy ] ),
+				),
+			);
+		}
+	}
+
+	/**
+	 * Add a filter form for the log admin so we can filter by wp_log_type taxonomy values
+	 *
+	 * @param object $query
+	 * @return object $query
+	 */
+	public function restrict_log_posts() {
+		$type     = 'wp_log';
+		$taxonomy = 'wp_log_type';
+		// only add filter to post type you want
+		if ( isset( $_GET['post_type'] ) && esc_attr( $_GET['post_type'] ) === $type ) {
+			// get wp_log_type
+			$terms = get_terms(
+				[
+					'taxonomy'   => $taxonomy,
+					'hide_empty' => true,
+				]
+			);
+			?>
+			<select name="wp_log_type">
+				<option value=""><?php _e( 'All log types ', 'object-sync-for-salesforce' ); ?></option>
+				<?php
+				$current_log_type = isset( $_GET[ $taxonomy ] ) ? esc_attr( $_GET[ $taxonomy ] ) : '';
+				foreach ( $terms as $key => $term ) {
+					printf(
+						'<option value="%s"%s>%s</option>',
+						$term->slug,
+						$term->slug == $current_log_type ? ' selected="selected"' : '',
+						$term->name
+					);
+				}
+				?>
+			</select>
+			<?php
 		}
 	}
 
