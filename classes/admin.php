@@ -162,6 +162,7 @@ class Object_Sync_Sf_Admin {
 		add_action( 'wp_ajax_clear_sfwp_cache', array( $this, 'clear_sfwp_cache' ) );
 
 		add_action( 'edit_user_profile', array( $this, 'show_salesforce_user_fields' ) );
+		add_action( 'show_user_profile', array( $this, 'show_salesforce_user_fields' ) );
 		add_action( 'personal_options_update', array( $this, 'save_salesforce_user_fields' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'save_salesforce_user_fields' ) );
 
