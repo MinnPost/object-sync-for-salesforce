@@ -45,6 +45,8 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 
 		$this->schedule_name = 'wp_logging_prune_routine';
 
+		$this->capability = 'configure_salesforce';
+
 		$this->init();
 
 	}
@@ -62,15 +64,22 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			add_filter( 'wp_logging_prune_when', array( $this, 'set_prune_age' ), 10, 1 );
 			add_filter( 'wp_logging_prune_query_args', array( $this, 'set_prune_args' ), 10, 1 );
 			add_filter( 'wp_logging_post_type_args', array( $this, 'set_log_visibility' ), 10, 1 );
+			add_filter( 'pre_wp_unique_post_slug', array( $this, 'set_log_slug' ), 10, 5 );
 
-			$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
-			$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
-			$frequency       = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
-			$key             = $frequency['key'];
+			// add a sortable Type column to the posts admin
+			add_filter( 'manage_edit-wp_log_columns', array( $this, 'type_column' ), 10, 1 );
+			add_filter( 'manage_edit-wp_log_sortable_columns', array( $this, 'sortable_columns' ), 10, 1 );
+			add_action( 'manage_wp_log_posts_custom_column', array( $this, 'type_column_content' ), 10, 2 );
 
-			if ( ! wp_next_scheduled( $this->schedule_name ) ) {
-				wp_schedule_event( time(), $key, $this->schedule_name );
-			}
+			// filter the log posts admin by log type
+			add_filter( 'parse_query', array( $this, 'posts_filter' ), 10, 1 );
+			add_action( 'restrict_manage_posts', array( $this, 'restrict_log_posts' ) );
+
+			// when the schedule might change
+			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_unit', array( $this, 'check_log_schedule' ), 10, 3 );
+			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_number', array( $this, 'check_log_schedule' ), 10, 3 );
+
+			$this->save_log_schedule();
 		}
 	}
 
@@ -89,19 +98,197 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		$log_args['publicly_queryable']  = false;
 		$log_args['exclude_from_search'] = true;
 		$log_args['capabilities']        = array(
-			'edit_post'          => 'configure_salesforce',
-			'read_post'          => 'configure_salesforce',
-			'delete_post'        => 'configure_salesforce',
-			'edit_posts'         => 'configure_salesforce',
-			'edit_others_posts'  => 'configure_salesforce',
-			'delete_posts'       => 'configure_salesforce',
-			'publish_posts'      => 'configure_salesforce',
-			'read_private_posts' => 'configure_salesforce',
+			'edit_post'          => $this->capability,
+			'read_post'          => $this->capability,
+			'delete_post'        => $this->capability,
+			'edit_posts'         => $this->capability,
+			'edit_others_posts'  => $this->capability,
+			'delete_posts'       => $this->capability,
+			'publish_posts'      => $this->capability,
+			'read_private_posts' => $this->capability,
 		);
 
 		$log_args = apply_filters( $this->option_prefix . 'logging_post_type_args', $log_args );
 
 		return $log_args;
+	}
+
+	/**
+	 * Create a (probably unique) post name for logs in a more performant manner than wp_unique_post_slug().
+	 *
+	 * @param string $override_slug Short-circuit return value.
+	 * @param string $slug The desired slug (post_name).
+	 * @param int $post_ID The post ID
+	 * @param string $post_status The post status
+	 * @param string $post_type The post type
+	 * @return string
+	 */
+	public function set_log_slug( $override_slug, $slug, $post_ID, $post_status, $post_type ) {
+		if ( 'wp_log' === $post_type ) {
+			$override_slug = uniqid( $post_type . '-', true ) . '-' . wp_generate_password( 32, false );
+		}
+		return $override_slug;
+	}
+
+	/**
+	 * Add a Type column to the posts admin for this post type
+	 *
+	 * @param array $columns
+	 * @return array $columns
+	 */
+	public function type_column( $columns ) {
+		$columns['type'] = __( 'Type', 'object-sync-for-salesforce' );
+		return $columns;
+	}
+
+	/**
+	 * Make the Type column in the posts admin for this post type sortable
+	 *
+	 * @param array $columns
+	 * @return array $columns
+	 */
+	public function sortable_columns( $columns ) {
+		$columns['type'] = 'type';
+		return $columns;
+	}
+
+	/**
+	 * Add the content for the Type column in the posts admin for this post type
+	 *
+	 * @param string $column_name
+	 * @param int $post_id
+	 */
+	public function type_column_content( $column_name, $post_id ) {
+		if ( 'type' != $column_name ) {
+			return;
+		}
+		// get wp_log_type
+		$terms = wp_get_post_terms(
+			$post_id,
+			'wp_log_type',
+			array(
+				'fields' => 'names',
+			)
+		);
+		if ( is_array( $terms ) ) {
+			echo esc_attr( $terms[0] );
+		}
+	}
+
+	/**
+	 * Filter log posts by the taxonomy from the dropdown when a value is present
+	 *
+	 * @param object $query
+	 * @return object $query
+	 */
+	public function posts_filter( $query ) {
+		global $pagenow;
+		$type     = 'wp_log';
+		$taxonomy = 'wp_log_type';
+		if ( is_admin() && 'edit.php' === $pagenow ) {
+			if ( isset( $_GET['post_type'] ) && esc_attr( $_GET['post_type'] ) === $type ) {
+				if ( isset( $_GET[ $taxonomy ] ) && '' !== $_GET[ $taxonomy ] ) {
+					$query->post_type = $type;
+					$query->tax_query = array(
+						array(
+							'taxonomy' => $taxonomy,
+							'field'    => 'slug',
+							'terms'    => esc_attr( $_GET[ $taxonomy ] ),
+						),
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Add a filter form for the log admin so we can filter by wp_log_type taxonomy values
+	 *
+	 * @param object $query
+	 * @return object $query
+	 */
+	public function restrict_log_posts() {
+		$type     = 'wp_log';
+		$taxonomy = 'wp_log_type';
+		// only add filter to post type you want
+		if ( isset( $_GET['post_type'] ) && esc_attr( $_GET['post_type'] ) === $type ) {
+			// get wp_log_type
+			$terms = get_terms(
+				[
+					'taxonomy'   => $taxonomy,
+					'hide_empty' => true,
+				]
+			);
+			?>
+			<select name="wp_log_type">
+				<option value=""><?php _e( 'All log types ', 'object-sync-for-salesforce' ); ?></option>
+				<?php
+				$current_log_type = isset( $_GET[ $taxonomy ] ) ? esc_attr( $_GET[ $taxonomy ] ) : '';
+				foreach ( $terms as $key => $term ) {
+					printf(
+						'<option value="%s"%s>%s</option>',
+						$term->slug,
+						$term->slug == $current_log_type ? ' selected="selected"' : '',
+						$term->name
+					);
+				}
+				?>
+			</select>
+			<?php
+		}
+	}
+
+	/**
+	 * When the cron settings change, clear the relevant schedule
+	 *
+	 * @param mixed $old_value Previous option value
+	 * @param mixed $new_value New option value
+	 * @param string $option Name of option
+	 */
+	public function check_log_schedule( $old_value, $new_value, $option ) {
+		$clear_schedule  = false;
+		$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
+		$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
+		if ( $this->option_prefix . 'logs_how_often_unit' === $option ) {
+			$old_frequency = $this->get_schedule_frequency( $old_value, $schedule_number );
+			$new_frequency = $this->get_schedule_frequency( $new_value, $schedule_number );
+			$old_key       = $old_frequency['key'];
+			$new_key       = $new_frequency['key'];
+			if ( $old_key !== $new_key ) {
+				$clear_schedule = true;
+			}
+		}
+		if ( $this->option_prefix . 'logs_how_often_number' === $option ) {
+			$old_frequency = $this->get_schedule_frequency( $schedule_unit, $old_value );
+			$new_frequency = $this->get_schedule_frequency( $schedule_unit, $new_value );
+			$old_key       = $old_frequency['key'];
+			$new_key       = $new_frequency['key'];
+			if ( $old_key !== $new_key ) {
+				$clear_schedule = true;
+			}
+		}
+		if ( true === $clear_schedule ) {
+			wp_clear_scheduled_hook( $this->schedule_name );
+			$this->save_log_schedule();
+		}
+	}
+
+	/**
+	 * Save a cron schedule
+	 *
+	 */
+	public function save_log_schedule() {
+		global $pagenow;
+		if ( ( 'options.php' !== $pagenow ) && ( ! isset( $_GET['page'] ) || $this->slug . '-admin' !== $_GET['page'] ) ) {
+			return;
+		}
+		$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
+		$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
+		$frequency       = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
+		$key             = $frequency['key'];
+		if ( ! wp_next_scheduled( $this->schedule_name ) ) {
+			wp_schedule_event( time(), $key, $this->schedule_name );
+		}
 	}
 
 	/**
@@ -179,9 +366,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 */
 	public function set_prune_option( $should_we_prune ) {
 		$should_we_prune = get_option( $this->option_prefix . 'prune_logs', $should_we_prune );
-		if ( '1' === $should_we_prune ) {
-			$should_we_prune = true;
-		}
+		$should_we_prune = filter_var( $should_we_prune, FILTER_VALIDATE_BOOLEAN );
 		return $should_we_prune;
 	}
 
@@ -242,7 +427,15 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			$title = $title_or_params;
 		}
 
-		if ( '1' === $this->enabled && in_array( $status, maybe_unserialize( $this->statuses_to_log ), true ) ) {
+		if ( ! is_array( maybe_unserialize( $this->statuses_to_log ) ) ) {
+			if ( $status === $this->statuses_to_log ) {
+				$this->add( $title, $message, $parent );
+			} else {
+				return;
+			}
+		}
+
+		if ( true === filter_var( $this->enabled, FILTER_VALIDATE_BOOLEAN ) && in_array( $status, maybe_unserialize( $this->statuses_to_log ), true ) ) {
 			$triggers_to_log = get_option( $this->option_prefix . 'triggers_to_log', array() );
 			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in Object_Sync_Sf_Mapping class's method __construct()
 			if ( in_array( $trigger, maybe_unserialize( $triggers_to_log ) ) || 0 === $trigger ) {

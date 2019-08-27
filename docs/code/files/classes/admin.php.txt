@@ -162,6 +162,7 @@ class Object_Sync_Sf_Admin {
 		add_action( 'wp_ajax_clear_sfwp_cache', array( $this, 'clear_sfwp_cache' ) );
 
 		add_action( 'edit_user_profile', array( $this, 'show_salesforce_user_fields' ) );
+		add_action( 'show_user_profile', array( $this, 'show_salesforce_user_fields' ) );
 		add_action( 'personal_options_update', array( $this, 'save_salesforce_user_fields' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'save_salesforce_user_fields' ) );
 
@@ -711,53 +712,60 @@ class Object_Sync_Sf_Admin {
 					'default'  => $this->default_pull_throttle,
 				),
 			),
-			'use_soap'                       => array(
+		);
+
+		// only show soap settings if the soap extension is enabled on the server
+		if ( true === $this->salesforce['soap_available'] ) {
+			$salesforce_settings['use_soap']       = array(
 				'title'    => __( 'Enable the Salesforce SOAP API?', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
+				'class'    => 'object-sync-for-salesforce-enable-soap',
 				'args'     => array(
 					'type'     => 'checkbox',
 					'validate' => 'sanitize_text_field',
 					'desc'     => __( 'Check this to enable the SOAP API and use it instead of the REST API when the plugin supports it. https://developer.salesforce.com/blogs/tech-pubs/2011/10/salesforce-apis-what-they-are-when-to-use-them.html to compare the two. Note: if you need to detect Salesforce merges in this plugin, you will need to enable SOAP.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
-			),
-			'soap_wsdl_path'                 => array(
+			);
+			$salesforce_settings['soap_wsdl_path'] = array(
 				'title'    => __( 'Path to SOAP WSDL file', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
+				'class'    => 'object-sync-for-salesforce-soap-wsdl-path',
 				'args'     => array(
 					'type'     => 'text',
 					'validate' => 'sanitize_text_field',
 					'desc'     => __( 'Optionally add a path to your own WSDL file. If you do not, the plugin will use the default partner.wsdl.xml from the Force.com toolkit.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
+			);
+		}
+
+		$salesforce_settings['debug_mode']               = array(
+			'title'    => __( 'Debug mode?', 'object-sync-for-salesforce' ),
+			'callback' => $callbacks['text'],
+			'page'     => $page,
+			'section'  => $section,
+			'args'     => array(
+				'type'     => 'checkbox',
+				'validate' => 'sanitize_text_field',
+				'desc'     => __( 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment.', 'object-sync-for-salesforce' ),
+				'constant' => '',
 			),
-			'debug_mode'                     => array(
-				'title'    => __( 'Debug mode?', 'object-sync-for-salesforce' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'checkbox',
-					'validate' => 'sanitize_text_field',
-					'desc'     => __( 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment.', 'object-sync-for-salesforce' ),
-					'constant' => '',
-				),
-			),
-			'delete_data_on_uninstall'       => array(
-				'title'    => __( 'Delete plugin data on uninstall?', 'object-sync-for-salesforce' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'checkbox',
-					'validate' => 'sanitize_text_field',
-					'desc'     => __( 'If checked, the plugin will delete the tables and other data it creates when you uninstall it. Unchecking this field can be useful if you need to reactivate the plugin for any reason without losing data.', 'object-sync-for-salesforce' ),
-					'constant' => '',
-				),
+		);
+		$salesforce_settings['delete_data_on_uninstall'] = array(
+			'title'    => __( 'Delete plugin data on uninstall?', 'object-sync-for-salesforce' ),
+			'callback' => $callbacks['text'],
+			'page'     => $page,
+			'section'  => $section,
+			'args'     => array(
+				'type'     => 'checkbox',
+				'validate' => 'sanitize_text_field',
+				'desc'     => __( 'If checked, the plugin will delete the tables and other data it creates when you uninstall it. Unchecking this field can be useful if you need to reactivate the plugin for any reason without losing data.', 'object-sync-for-salesforce' ),
+				'constant' => '',
 			),
 		);
 
@@ -785,6 +793,7 @@ class Object_Sync_Sf_Admin {
 			$validate = $attributes['args']['validate'];
 			$page     = $attributes['page'];
 			$section  = $attributes['section'];
+			$class    = isset( $attributes['class'] ) ? $attributes['class'] : '';
 			$args     = array_merge(
 				$attributes['args'],
 				array(
@@ -792,6 +801,7 @@ class Object_Sync_Sf_Admin {
 					'id'        => $id,
 					'label_for' => $id,
 					'name'      => $name,
+					'class'     => $class,
 				)
 			);
 
@@ -1754,6 +1764,10 @@ class Object_Sync_Sf_Admin {
 
 		if ( 'checkbox' === $type ) {
 			$class = 'checkbox';
+		}
+
+		if ( isset( $args['class'] ) ) {
+			$class = $args['class'];
 		}
 
 		if ( ! isset( $args['constant'] ) || ! defined( $args['constant'] ) ) {

@@ -2,7 +2,7 @@
 /*
 Plugin Name: Object Sync for Salesforce
 Description: Object Sync for Salesforce maps and syncs data between Salesforce objects and WordPress objects.
-Version: 1.8.6
+Version: 1.8.8
 Author: MinnPost
 Author URI: https://code.minnpost.com
 License: GPL2+
@@ -141,7 +141,7 @@ class Object_Sync_Salesforce {
 		global $wpdb;
 
 		$this->wpdb              = $wpdb;
-		$this->version           = '1.8.6';
+		$this->version           = '1.8.8';
 		$this->slug              = 'object-sync-for-salesforce';
 		$this->option_prefix     = 'object_sync_for_salesforce_';
 		$this->login_credentials = $this->get_login_credentials();
@@ -317,7 +317,10 @@ class Object_Sync_Salesforce {
 	public function salesforce_get_api() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_query.php' ); // this can be used to generate soql queries, but we don't often need it so it gets initialized whenever it's needed
-		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_soap_partner.php' );
+
+		$soap_available = $this->is_soap_available();
+		$soap_loaded    = $this->is_soap_loaded();
+
 		$consumer_key        = $this->login_credentials['consumer_key'];
 		$consumer_secret     = $this->login_credentials['consumer_secret'];
 		$login_url           = $this->login_credentials['login_url'];
@@ -338,9 +341,12 @@ class Object_Sync_Salesforce {
 				$is_authorized = true;
 			}
 		}
+
 		return array(
-			'is_authorized' => $is_authorized,
-			'sfapi'         => $sfapi,
+			'is_authorized'  => $is_authorized,
+			'sfapi'          => $sfapi,
+			'soap_available' => $soap_available,
+			'soap_loaded'    => $soap_loaded,
 		);
 	}
 
@@ -535,7 +541,7 @@ class Object_Sync_Salesforce {
 
 		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/object-sync-for-salesforce-admin.min.js', __FILE__ ), $javascript_dependencies, filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/object-sync-for-salesforce-admin.min.js' ), true );
 
-		wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/object-sync-for-salesforce-admin.min.css', __FILE__ ), $css_dependencies, filemtime( plugin_dir_path( __FILE__ ) . 'assets/css/object-sync-for-salesforce-admin.min.css' ), 'all' );
+		wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/object-sync-for-salesforce-admin.css', __FILE__ ), $css_dependencies, filemtime( plugin_dir_path( __FILE__ ) . 'assets/css/object-sync-for-salesforce-admin.css' ), 'all' );
 	}
 
 	/**
@@ -577,6 +583,40 @@ class Object_Sync_Salesforce {
 
 		return $login_credentials;
 
+	}
+
+	/**
+	 * Check the server to see if Soap is available
+	 *
+	 * @return bool $is_soap_available
+	 */
+	private function is_soap_available() {
+		$is_soap_available = false;
+		if ( extension_loaded( 'soap' ) && class_exists( 'SoapClient' ) ) {
+			$is_soap_available = true;
+		}
+		return $is_soap_available;
+	}
+
+	/**
+	 * Check the plugin to see if the Soap option has been enabled and the class has been loaded
+	 *
+	 * @return bool $is_soap_loaded
+	 */
+	private function is_soap_loaded() {
+		$is_soap_loaded = false;
+		if ( false === $this->is_soap_available() ) {
+			return $is_soap_loaded;
+		}
+		$use_soap = filter_var( get_option( 'object_sync_for_salesforce_use_soap', false ), FILTER_VALIDATE_BOOLEAN );
+		if ( false === $use_soap ) {
+			return $is_soap_loaded;
+		}
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_soap_partner.php' );
+		if ( class_exists( 'Object_Sync_Sf_Salesforce_Soap_Partner' ) ) {
+			$is_soap_loaded = true;
+		}
+		return $is_soap_loaded;
 	}
 
 } // end class

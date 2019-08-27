@@ -794,7 +794,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	private function get_merged_records() {
 
 		$sfapi    = $this->salesforce['sfapi'];
-		$use_soap = filter_var( get_option( 'object_sync_for_salesforce_use_soap', false ), FILTER_VALIDATE_BOOLEAN );
+		$use_soap = $this->salesforce['soap_loaded'];
 		if ( true === $use_soap ) {
 			$wsdl = get_option( 'object_sync_for_salesforce_soap_wsdl_path', plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml' );
 			$soap = new Object_Sync_Sf_Salesforce_Soap_Partner( $sfapi, $wsdl );

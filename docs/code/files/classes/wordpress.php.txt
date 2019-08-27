@@ -2484,6 +2484,11 @@ class Object_Sync_Sf_WordPress {
 				if ( false === $meta_id ) {
 					$changed = false;
 					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
+
+					if ( ! is_string( $value['value'] ) ) {
+						error_log( 'the value for value is ' . $value['value'] . ' and the stored value is ' . $read( $parent_object_id, $key, true ) . ' and the parent object id is ' . $parent_object_id );
+					}
+
 					if ( (string) $read( $parent_object_id, $key, true ) !== (string) $value['value'] ) {
 						$errors[] = array(
 							'message' => sprintf(
