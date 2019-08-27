@@ -262,6 +262,13 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
+* 1.8.8 (2019-08-26)
+    * Feature: Make plugin logs sortable and filterable by type value.
+    * Feature: Add Salesforce info block to user profiles that have the `configure_salesforce` capability. Thanks to @ddoddsr for the report and the fix.
+    * Bug fix: Fix log scheduling so it resets the schedule when the log settings change.
+    * Bug fix: Fix log slug generation so it stops worrying about unique slugs every time.
+    * Maintenance: Fix docs links in All Developer Hooks. Thanks to @ddoddsr for the fix.
+
 * 1.8.7 (2019-07-22)
     * Bug fix: Stop the plugin from breaking when SOAP is missing from the server. Thanks to GitHub user @Ethanb00 for the report.
     * Fix issues with pull success method/docs. Thanks to @mistermarco for the report and the fix.
