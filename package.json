@@ -2,7 +2,7 @@
   "name": "object-sync-for-salesforce",
   "title": "Object Sync for Salesforce",
   "description": "Object Sync for Salesforce is a WordPress plugin that maps and syncs data between Salesforce objects and WordPress objects.",
-  "version": "1.8.7",
+  "version": "1.8.8",
   "main": "Gulpfile.js",
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^6.0.0",
-    "gulp-imagemin": "^6.0.0",
+    "gulp-imagemin": "^6.1.0",
     "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^8.0.0",
     "gulp-rename": "^1.4.0",
@@ -38,7 +38,7 @@
     "gulp-stylelint": "^9.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-wp-pot": "^2.3.5",
-    "npm-check-updates": "^3.1.20",
+    "npm-check-updates": "^3.1.21",
     "stylelint": "^10.1.0",
     "stylelint-config-wordpress": "^14.0.0"
   },

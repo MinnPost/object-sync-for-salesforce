@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 5.2
-Stable tag: 1.8.7
+Stable tag: 1.8.8
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -261,6 +261,12 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 - **Build other integrations in WordPress** this plugin focuses on the Salesforce REST API, as it covers the integration needs we have. Salesforce also has many other developer options: the SOAP API (we hope to incorporate this into Object Sync for Salesforce at some point), the Bulk API, and the Metadata API. Developers could extend this plugin to integrate with one of these. We would welcome any pull requests!
 
 == Changelog ==
+
+* 1.8.7 (2019-07-22)
+    * Bug fix: Stop the plugin from breaking when SOAP is missing from the server. Thanks to GitHub user @Ethanb00 for the report.
+    * Fix issues with pull success method/docs. Thanks to @mistermarco for the report and the fix.
+    * Maintenance: Improve documentation in various places, notably for object map issues caused by Salesforce permissions.
+    * Maintenance: Update Gulp to 4.x.
 
 * 1.8.6 (2019-05-13)
     * Feature: Add object type parameter to `push_update_params_modify` developer hook.
