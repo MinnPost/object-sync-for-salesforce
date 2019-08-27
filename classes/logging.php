@@ -185,15 +185,19 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		global $pagenow;
 		$type     = 'wp_log';
 		$taxonomy = 'wp_log_type';
-		if ( is_admin() && isset( $_GET['post_type'] ) && esc_attr( $_GET['post_type'] ) === $type && 'edit.php' === $pagenow && isset( $_GET[ $taxonomy ] ) && '' !== $_GET[ $taxonomy ] ) {
-			$query->post_type = $type;
-			$query->tax_query = array(
-				array(
-					'taxonomy' => $taxonomy,
-					'field'    => 'slug',
-					'terms'    => esc_attr( $_GET[ $taxonomy ] ),
-				),
-			);
+		if ( is_admin() && 'edit.php' === $pagenow ) {
+			if ( isset( $_GET['post_type'] ) && esc_attr( $_GET['post_type'] ) === $type ) {
+				if ( isset( $_GET[ $taxonomy ] ) && '' !== $_GET[ $taxonomy ] ) {
+					$query->post_type = $type;
+					$query->tax_query = array(
+						array(
+							'taxonomy' => $taxonomy,
+							'field'    => 'slug',
+							'terms'    => esc_attr( $_GET[ $taxonomy ] ),
+						),
+					);
+				}
+			}
 		}
 	}
 
