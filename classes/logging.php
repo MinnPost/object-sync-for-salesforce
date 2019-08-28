@@ -66,14 +66,20 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			add_filter( 'wp_logging_post_type_args', array( $this, 'set_log_visibility' ), 10, 1 );
 			add_filter( 'pre_wp_unique_post_slug', array( $this, 'set_log_slug' ), 10, 5 );
 
-			// add a sortable Type column to the posts admin
-			add_filter( 'manage_edit-wp_log_columns', array( $this, 'type_column' ), 10, 1 );
-			add_filter( 'manage_edit-wp_log_sortable_columns', array( $this, 'sortable_columns' ), 10, 1 );
-			add_action( 'manage_wp_log_posts_custom_column', array( $this, 'type_column_content' ), 10, 2 );
+			// add a filter to check for other plugins that might be filtering the log screen
+			$are_logs_filtered = apply_filters( 'wp_logging_manage_logs_filtered', false );
+			add_filter( 'wp_logging_manage_logs_filtered', '__return_true' );
 
-			// filter the log posts admin by log type
-			add_filter( 'parse_query', array( $this, 'posts_filter' ), 10, 1 );
-			add_action( 'restrict_manage_posts', array( $this, 'restrict_log_posts' ) );
+			if ( false === $are_logs_filtered ) {
+				// add a sortable Type column to the posts admin
+				add_filter( 'manage_edit-wp_log_columns', array( $this, 'type_column' ), 10, 1 );
+				add_filter( 'manage_edit-wp_log_sortable_columns', array( $this, 'sortable_columns' ), 10, 1 );
+				add_action( 'manage_wp_log_posts_custom_column', array( $this, 'type_column_content' ), 10, 2 );
+
+				// filter the log posts admin by log type
+				add_filter( 'parse_query', array( $this, 'posts_filter' ), 10, 1 );
+				add_action( 'restrict_manage_posts', array( $this, 'restrict_log_posts' ) );
+			}
 
 			// when the schedule might change
 			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_unit', array( $this, 'check_log_schedule' ), 10, 3 );
