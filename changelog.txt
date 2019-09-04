@@ -5,6 +5,7 @@ Changelog
 	* Feature: Provide an optional setting for how many log entries to clear at a time.
 	* Bug fix: Unify push success hook parameters so they match the (until now, inconsistently incorrect) documentation.
 	* Bug fix: Prevent duplicate admin display when multiple plugins try to filter the admin for logs.
+	* Bug fix: fix issue with error logging from Salesforce picklist fields.
 
 * 1.8.8 (2019-08-26)
 	* Feature: Make plugin logs sortable and filterable by type value.
