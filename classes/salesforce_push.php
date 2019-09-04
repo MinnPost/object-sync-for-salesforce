@@ -1053,7 +1053,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				$synced_object['mapping_object'] = $mapping_object;
 
 				// hook for push success
-				do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $salesforce_id, $object[ "$wordpress_id_field_name" ] );
+				do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $salesforce_id, $wordpress_id_field_name );
 			} else {
 
 				// create log entry for failed create or upsert
