@@ -113,8 +113,8 @@ function push_fail( $op, $response, $synced_object ) {
 #### After success
 
 ```php
-add_action( 'object_sync_for_salesforce_push_success', 'push_success', 10, 4 );
-function push_success( $op, $response, $synced_object, $object_id ) {
+add_action( 'object_sync_for_salesforce_push_success', 'push_success', 10, 5 );
+function push_success( $op, $response, $synced_object, $object_id, $wordpress_id_field_name ) {
     // do things if the save succeeded
     // $op is what the plugin did - Create, Update, Upsert, Delete
     // $response is what was returned by the $salesforce class. sfapi->response
@@ -128,5 +128,6 @@ function push_success( $op, $response, $synced_object, $object_id ) {
     );
     */
     // $object_id is the salesforce object id
+    // $wordpress_id_field_name is the name of the ID field in WordPress
 }
 ```

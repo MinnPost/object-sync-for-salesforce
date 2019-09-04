@@ -752,7 +752,7 @@ class Object_Sync_Sf_Salesforce_Push {
 						$logging->setup( $result );
 
 						// hook for push success
-						do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $wordpress_id_field_name );
+						do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $mapping_object['salesforce_id'], $wordpress_id_field_name );
 					}
 				} else {
 					$more_ids = __( '<p>The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are:</p>', 'object-sync-for-salesforce' );
@@ -1053,7 +1053,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				$synced_object['mapping_object'] = $mapping_object;
 
 				// hook for push success
-				do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $salesforce_id );
+				do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $salesforce_id, $wordpress_id_field_name );
 			} else {
 
 				// create log entry for failed create or upsert
@@ -1188,7 +1188,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				$logging->setup( $result );
 
 				// hook for push success
-				do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $wordpress_id_field_name );
+				do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $mapping_object['salesforce_id'], $wordpress_id_field_name );
 
 			} catch ( Object_Sync_Sf_Exception $e ) {
 				// create log entry for failed update
