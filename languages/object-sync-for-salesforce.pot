@@ -21,7 +21,7 @@ msgstr ""
 msgid "Salesforce"
 msgstr ""
 
-#: classes/admin.php:302, classes/admin.php:2032
+#: classes/admin.php:302, classes/admin.php:2045
 msgid "Authorize"
 msgstr ""
 
@@ -279,97 +279,105 @@ msgid "These two fields are how often the site will check for logs to delete."
 msgstr ""
 
 #: classes/admin.php:1068
-msgid "Triggers to log"
+msgid "Clear this many log entries"
 msgstr ""
 
 #: classes/admin.php:1075
+msgid "This number is how many log entries the plugin will try to clear at a time. If you do not enter a number, the default is 100."
+msgstr ""
+
+#: classes/admin.php:1081
+msgid "Triggers to log"
+msgstr ""
+
+#: classes/admin.php:1088
 msgid "these are the triggers to log"
 msgstr ""
 
-#: classes/admin.php:1078, templates/admin/fieldmaps-add-edit-clone.php:449
+#: classes/admin.php:1091, templates/admin/fieldmaps-add-edit-clone.php:449
 msgid "WordPress create"
 msgstr ""
 
-#: classes/admin.php:1083, templates/admin/fieldmaps-add-edit-clone.php:450
+#: classes/admin.php:1096, templates/admin/fieldmaps-add-edit-clone.php:450
 msgid "WordPress update"
 msgstr ""
 
-#: classes/admin.php:1088, templates/admin/fieldmaps-add-edit-clone.php:451
+#: classes/admin.php:1101, templates/admin/fieldmaps-add-edit-clone.php:451
 msgid "WordPress delete"
 msgstr ""
 
-#: classes/admin.php:1093, templates/admin/fieldmaps-add-edit-clone.php:452
+#: classes/admin.php:1106, templates/admin/fieldmaps-add-edit-clone.php:452
 msgid "Salesforce create"
 msgstr ""
 
-#: classes/admin.php:1098, templates/admin/fieldmaps-add-edit-clone.php:453
+#: classes/admin.php:1111, templates/admin/fieldmaps-add-edit-clone.php:453
 msgid "Salesforce update"
 msgstr ""
 
-#: classes/admin.php:1103, templates/admin/fieldmaps-add-edit-clone.php:454
+#: classes/admin.php:1116, templates/admin/fieldmaps-add-edit-clone.php:454
 msgid "Salesforce delete"
 msgstr ""
 
-#: classes/admin.php:1149
+#: classes/admin.php:1162
 msgid "Your account does not have permission to edit the Salesforce REST API plugin's settings."
 msgstr ""
 
-#: classes/admin.php:1155
+#: classes/admin.php:1168
 msgid "Errors kept this fieldmap from being saved."
 msgstr ""
 
-#: classes/admin.php:1161
+#: classes/admin.php:1174
 msgid "Errors kept this object map from being saved."
 msgstr ""
 
-#: classes/admin.php:1167
+#: classes/admin.php:1180
 msgid "This data was successfully saved."
 msgstr ""
 
-#: classes/admin.php:1173
+#: classes/admin.php:1186
 msgid "This data was not successfully saved. Try again."
 msgstr ""
 
-#: classes/admin.php:1179
+#: classes/admin.php:1192
 msgid "Errors kept these mapping errors from being deleted."
 msgstr ""
 
-#: classes/admin.php:1801, classes/admin.php:1886
+#: classes/admin.php:1814, classes/admin.php:1899
 msgid "Defined in wp-config.php"
 msgstr ""
 
-#: classes/admin.php:1857
+#: classes/admin.php:1870
 msgid "Select one"
 msgstr ""
 
 #. translators: 1) $versions_is_cached is the "This list is/is not cached, and/but" line, 2) $versions_from_cache is the "items were/were not loaded from the cache" line
-#: classes/admin.php:1982
+#: classes/admin.php:1995
 msgid "Available Salesforce API versions. %1$s %2$s. This is not an authenticated request, so it does not touch the Salesforce token."
 msgstr ""
 
 #. translators: 1) $contacts['data']['totalSize'] is the number of items loaded, 2) $contacts['data']['records'][0]['attributes']['type'] is the name of the Salesforce object, 3) $contacts_is_cached is the "They are/are not cached, and/but" line, 4) $contacts_from_cache is the "they were/were not loaded from the cache" line, 5) is the "this request did/did not require refreshing the Salesforce token" line
-#: classes/admin.php:2009
+#: classes/admin.php:2022
 msgid "Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s."
 msgstr ""
 
-#: classes/admin.php:2055
+#: classes/admin.php:2068
 msgid "The plugin cache has been cleared."
 msgstr ""
 
-#: classes/admin.php:2057
+#: classes/admin.php:2070
 msgid "There was an error clearing the plugin cache. Try refreshing this page."
 msgstr ""
 
 #. translators: $schedule_name is the name of the current queue. Defaults: salesforce_pull, salesforce_push, salesforce
-#: classes/admin.php:2202
+#: classes/admin.php:2215
 msgid "You have cleared the %s schedule."
 msgstr ""
 
-#: classes/admin.php:2204
+#: classes/admin.php:2217
 msgid "You need to specify the name of the schedule you want to clear."
 msgstr ""
 
-#: classes/admin.php:2261, classes/salesforce_pull.php:1833, classes/salesforce_push.php:1049, classes/salesforce_push.php:1161
+#: classes/admin.php:2274, classes/salesforce_pull.php:1833, classes/salesforce_push.php:1049, classes/salesforce_push.php:1161
 msgid "Mapping object updated via function: "
 msgstr ""
 
@@ -381,11 +389,11 @@ msgstr ""
 msgid "You do not have permissions to view this data."
 msgstr ""
 
-#: classes/logging.php:140, templates/admin/mapping-errors.php:17
+#: classes/logging.php:146, templates/admin/mapping-errors.php:17
 msgid "Type"
 msgstr ""
 
-#: classes/logging.php:224
+#: classes/logging.php:233
 msgid "All log types "
 msgstr ""
 
@@ -702,7 +710,7 @@ msgid "Tried to add %1$s meta with method %2$s."
 msgstr ""
 
 #. translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save
-#: classes/wordpress.php:2496
+#: classes/wordpress.php:2505
 msgid "Unable to update %1$s meta key %2$s with method %3$s. The stored value is %4$s and the new value should be %5$s."
 msgstr ""
 

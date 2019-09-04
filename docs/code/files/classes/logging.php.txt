@@ -66,14 +66,20 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			add_filter( 'wp_logging_post_type_args', array( $this, 'set_log_visibility' ), 10, 1 );
 			add_filter( 'pre_wp_unique_post_slug', array( $this, 'set_log_slug' ), 10, 5 );
 
-			// add a sortable Type column to the posts admin
-			add_filter( 'manage_edit-wp_log_columns', array( $this, 'type_column' ), 10, 1 );
-			add_filter( 'manage_edit-wp_log_sortable_columns', array( $this, 'sortable_columns' ), 10, 1 );
-			add_action( 'manage_wp_log_posts_custom_column', array( $this, 'type_column_content' ), 10, 2 );
+			// add a filter to check for other plugins that might be filtering the log screen
+			$are_logs_filtered = apply_filters( 'wp_logging_manage_logs_filtered', false );
+			add_filter( 'wp_logging_manage_logs_filtered', '__return_true' );
 
-			// filter the log posts admin by log type
-			add_filter( 'parse_query', array( $this, 'posts_filter' ), 10, 1 );
-			add_action( 'restrict_manage_posts', array( $this, 'restrict_log_posts' ) );
+			if ( false === $are_logs_filtered ) {
+				// add a sortable Type column to the posts admin
+				add_filter( 'manage_edit-wp_log_columns', array( $this, 'type_column' ), 10, 1 );
+				add_filter( 'manage_edit-wp_log_sortable_columns', array( $this, 'sortable_columns' ), 10, 1 );
+				add_action( 'manage_wp_log_posts_custom_column', array( $this, 'type_column_content' ), 10, 2 );
+
+				// filter the log posts admin by log type
+				add_filter( 'parse_query', array( $this, 'posts_filter' ), 10, 1 );
+				add_action( 'restrict_manage_posts', array( $this, 'restrict_logs_by_type' ), 10, 1 );
+			}
 
 			// when the schedule might change
 			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_unit', array( $this, 'check_log_schedule' ), 10, 3 );
@@ -204,14 +210,13 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	/**
 	 * Add a filter form for the log admin so we can filter by wp_log_type taxonomy values
 	 *
-	 * @param object $query
-	 * @return object $query
+	 * @param string $post_type
 	 */
-	public function restrict_log_posts() {
+	public function restrict_logs_by_type( $post_type ) {
 		$type     = 'wp_log';
 		$taxonomy = 'wp_log_type';
 		// only add filter to post type you want
-		if ( isset( $_GET['post_type'] ) && esc_attr( $_GET['post_type'] ) === $type ) {
+		if ( 'wp_log' === $post_type ) {
 			// get wp_log_type
 			$terms = get_terms(
 				[
@@ -219,17 +224,21 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 					'hide_empty' => true,
 				]
 			);
+			if ( is_wp_error( $terms ) || empty( $terms ) ) {
+				// no terms, or the taxonomy doesn't exist, skip
+				return;
+			}
 			?>
 			<select name="wp_log_type">
-				<option value=""><?php _e( 'All log types ', 'object-sync-for-salesforce' ); ?></option>
+				<option value=""><?php esc_html_e( 'All log types ', 'object-sync-for-salesforce' ); ?></option>
 				<?php
 				$current_log_type = isset( $_GET[ $taxonomy ] ) ? esc_attr( $_GET[ $taxonomy ] ) : '';
 				foreach ( $terms as $key => $term ) {
 					printf(
 						'<option value="%s"%s>%s</option>',
-						$term->slug,
-						$term->slug == $current_log_type ? ' selected="selected"' : '',
-						$term->name
+						esc_attr( $term->slug ),
+						selected( $term->slug, $current_log_type, false ),
+						esc_html( $term->name )
 					);
 				}
 				?>
@@ -393,6 +402,10 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 */
 	public function set_prune_args( $args ) {
 		$args['wp_log_type'] = 'salesforce';
+		$number_to_prune     = get_option( $this->option_prefix . 'logs_how_many_number', '' );
+		if ( '' !== $number_to_prune ) {
+			$args['posts_per_page'] = filter_var( $number_to_prune, FILTER_SANITIZE_NUMBER_INT );
+		}
 		return $args;
 	}
 

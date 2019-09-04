@@ -1064,6 +1064,19 @@ class Object_Sync_Sf_Admin {
 					),
 				),
 			),
+			'logs_how_many_number'  => array(
+				'title'    => __( 'Clear this many log entries', 'object-sync-for-salesforce' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'number',
+					'validate' => 'absint',
+					'desc'     => __( 'This number is how many log entries the plugin will try to clear at a time. If you do not enter a number, the default is 100.', 'object-sync-for-salesforce' ),
+					'default'  => '100',
+					'constant' => '',
+				),
+			),
 			'triggers_to_log'       => array(
 				'title'    => __( 'Triggers to log', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['checkboxes'],

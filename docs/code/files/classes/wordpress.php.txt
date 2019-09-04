@@ -2484,12 +2484,21 @@ class Object_Sync_Sf_WordPress {
 				if ( false === $meta_id ) {
 					$changed = false;
 					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
+					// In some cases, such as picklists, WordPress is dealing with an array that came from Salesforce at this point, so we need to serialize the value before assuming it's an error.
 
-					if ( ! is_string( $value['value'] ) ) {
-						error_log( 'the value for value is ' . $value['value'] . ' and the stored value is ' . $read( $parent_object_id, $key, true ) . ' and the parent object id is ' . $parent_object_id );
+					if ( is_array( $value['value'] ) ) {
+						$new_value = maybe_serialize( $value['value'] );
+					} else {
+						$new_value = (string) $value['value'];
 					}
 
-					if ( (string) $read( $parent_object_id, $key, true ) !== (string) $value['value'] ) {
+					if ( is_array( $read( $parent_object_id, $key, true ) ) ) {
+						$stored_value = maybe_serialize( $read( $parent_object_id, $key, true ) );
+					} else {
+						$stored_value = (string) $read( $parent_object_id, $key, true );
+					}
+
+					if ( $stored_value !== $new_value ) {
 						$errors[] = array(
 							'message' => sprintf(
 								// Translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save
@@ -2497,8 +2506,8 @@ class Object_Sync_Sf_WordPress {
 								esc_attr( $parent_object_type ),
 								esc_attr( $key ),
 								esc_attr( $modify ),
-								wp_kses_post( $read( $parent_object_id, $key, true ) ),
-								wp_kses_post( $value['value'] )
+								wp_kses_post( $stored_value ),
+								wp_kses_post( $new_value )
 							),
 						);
 					}
