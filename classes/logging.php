@@ -402,6 +402,10 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 */
 	public function set_prune_args( $args ) {
 		$args['wp_log_type'] = 'salesforce';
+		$number_to_prune     = get_option( $this->option_prefix . 'logs_how_many_number', '' );
+		if ( '' !== $number_to_prune ) {
+			$args['posts_per_page'] = filter_var( $number_to_prune, FILTER_SANITIZE_NUMBER_INT );
+		}
 		return $args;
 	}
 
