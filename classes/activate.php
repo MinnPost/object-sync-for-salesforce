@@ -139,7 +139,7 @@ class Object_Sync_Sf_Activate {
 		$result_object_map = dbDelta( $object_map_sql );
 
 		$remove_key_version = '1.8.0';
-		if ( version_compare( $this->user_installed_version, $remove_key_version, '<' ) ) {
+		if ( '' !== $this->user_installed_version && version_compare( $this->user_installed_version, $remove_key_version, '<' ) ) {
 			$this->wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce" );
 			$this->wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce_wordpress" );
 			$result_key = true;
@@ -152,7 +152,7 @@ class Object_Sync_Sf_Activate {
 		maybe_convert_table_to_utf8mb4( $field_map_table );
 		maybe_convert_table_to_utf8mb4( $object_map_table );
 
-		if ( version_compare( $this->user_installed_version, $this->version, '<' ) ) {
+		if ( '' === $this->user_installed_version || version_compare( $this->user_installed_version, $this->version, '<' ) ) {
 			update_option( $this->option_prefix . 'db_version', $this->version );
 		}
 
