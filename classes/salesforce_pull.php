@@ -299,8 +299,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 						if ( 1 === (int) $this->debug ) {
 							// create log entry for failed pull
 							$status = 'debug';
-							// translators: placeholders are: 1) the Salesforce ID
-							$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s has already been attempted.', 'object-sync-for-salesforce' ),
+							$title  = sprintf(
+								// translators: placeholders are: 1) the Salesforce ID
+								esc_html__( 'Debug: Salesforce ID %1$s has already been attempted.', 'object-sync-for-salesforce' ),
 								esc_attr( $result['Id'] )
 							);
 
@@ -349,8 +350,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 							if ( 1 === (int) $this->debug ) {
 								// create log entry for failed pull
 								$status = 'debug';
-								// translators: placeholders are: 1) the Salesforce ID
-								$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s is not allowed.', 'object-sync-for-salesforce' ),
+								$title  = sprintf(
+									// translators: placeholders are: 1) the Salesforce ID
+									esc_html__( 'Debug: Salesforce ID %1$s is not allowed.', 'object-sync-for-salesforce' ),
 									esc_attr( $result['Id'] )
 								);
 
@@ -376,8 +378,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 						if ( 1 === (int) $this->debug ) {
 							// create log entry for queue addition
 							$status = 'debug';
-							// translators: placeholders are: 1) the Salesforce ID
-							$title = sprintf( esc_html__( 'Debug: Add Salesforce ID %1$s to the queue', 'object-sync-for-salesforce' ),
+							$title  = sprintf(
+								// translators: placeholders are: 1) the Salesforce ID
+								esc_html__( 'Debug: Add Salesforce ID %1$s to the queue', 'object-sync-for-salesforce' ),
 								esc_attr( $result['Id'] )
 							);
 
@@ -388,6 +391,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							}
 
 							$message = sprintf(
+								// translators: 1) is the name of the hook that was called, 2) is the Salesforce object type, 3) is the ID for the object map, 4) is the event trigger that is running, and 5) is the name of the schedule that is running.
 								esc_html__( 'This record is being sent to the queue. The hook name is %1$s. The arguments for the hook are: object type %2$s, object map ID %3$s, sync trigger %4$s. The schedule name is %5$s.', 'object-sync-for-salesforce' ),
 								esc_attr( $this->schedulable_classes[ $this->schedule_name ]['callback'] ),
 								esc_attr( $type ),
@@ -422,8 +426,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 						if ( 1 === (int) $this->debug ) {
 							// create log entry for successful pull
 							$status = 'debug';
-							// translators: placeholders are: 1) the Salesforce ID
-							$title = sprintf( esc_html__( 'Debug: Salesforce ID %1$s has been successfully pulled.', 'object-sync-for-salesforce' ),
+							$title  = sprintf(
+								// translators: placeholders are: 1) the Salesforce ID
+								esc_html__( 'Debug: Salesforce ID %1$s has been successfully pulled.', 'object-sync-for-salesforce' ),
 								esc_attr( $result['Id'] )
 							);
 
@@ -899,8 +904,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 				}
 
-				// translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object type, 3) the previous Salesforce Id value, 4) the new Salesforce Id value, 5) the name of the WordPress object, 6) the WordPress id value
-				$title = sprintf( esc_html__( 'Success: %1$s Salesforce %2$s objects with Ids %3$s and %4$s were merged (%4$s is the remaining ID. It is mapped to WordPress %5$s with %6$s.)', 'object-sync-for-salesforce' ),
+				$title = sprintf(
+					// translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object type, 3) the previous Salesforce Id value, 4) the new Salesforce Id value, 5) the name of the WordPress object, 6) the WordPress id value
+					esc_html__( 'Success: %1$s Salesforce %2$s objects with Ids %3$s and %4$s were merged (%4$s is the remaining ID. It is mapped to WordPress %5$s with %6$s.)', 'object-sync-for-salesforce' ),
 					esc_attr( $op ),
 					esc_attr( $object_type ),
 					esc_attr( $previous_sf_id ),
@@ -1253,8 +1259,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 				if ( 1 === (int) $this->debug ) {
 					// create log entry for failed pull
 					$status = 'debug';
-					// translators: placeholders are: 1) the mapping object ID transient
-					$title = sprintf( esc_html__( 'Debug: mapping object transient ID %1$s is currently pushing, so we do not pull it.', 'object-sync-for-salesforce' ),
+					$title  = sprintf(
+						// translators: placeholders are: 1) the mapping object ID transient
+						esc_html__( 'Debug: mapping object transient ID %1$s is currently pushing, so we do not pull it.', 'object-sync-for-salesforce' ),
 						$mapping_object_id_transient
 					);
 
@@ -1503,8 +1510,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$title  = sprintf( esc_html__( 'Error: There is at least one object map with a WordPress ID of 0.', 'object-sync-for-salesforce' ) );
 
 						if ( 1 === count( $mapping_object_debug ) ) {
-							// translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the Salesforce object it was trying to map
-							$body = sprintf( esc_html__( 'There is an object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of 0 and the Salesforce object with ID of %3$s', 'object-sync-for-salesforce' ),
+							$body = sprintf(
+								// translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the Salesforce object it was trying to map
+								esc_html__( 'There is an object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of 0 and the Salesforce object with ID of %3$s', 'object-sync-for-salesforce' ),
 								absint( $mapping_object_debug['id'] ),
 								esc_attr( $salesforce_mapping['wordpress_object'] ),
 								esc_attr( $mapping_object_debug['salesforce_id'] )
@@ -1512,8 +1520,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 						} else {
 							$body = sprintf( esc_html__( 'There are multiple object maps with WordPress ID of 0. Their IDs are: ', 'object-sync-for-salesforce' ) . '<ul>' );
 							foreach ( $mapping_object_debug as $mapping_object ) {
-								// translators: placeholders are: 1) the mapping object row ID, 2) the ID of the Salesforce object, 3) the WordPress object type
-								$body .= sprintf( '<li>' . esc_html__( 'Mapping object id: %1$s. Salesforce Id: %2$s. WordPress object type: %3$s', 'object-sync-for-salesforce' ) . '</li>',
+								$body .= sprintf(
+									// translators: placeholders are: 1) the mapping object row ID, 2) the ID of the Salesforce object, 3) the WordPress object type
+									'<li>' . esc_html__( 'Mapping object id: %1$s. Salesforce Id: %2$s. WordPress object type: %3$s', 'object-sync-for-salesforce' ) . '</li>',
 									absint( $mapping_object['id'] ),
 									esc_attr( $mapping_object['salesforce_id'] ),
 									esc_attr( $salesforce_mapping['wordpress_object'] )
@@ -1550,16 +1559,18 @@ class Object_Sync_Sf_Salesforce_Pull {
 					set_transient( 'salesforce_pulling_object_id', $mapping_object['salesforce_id'] );
 					// create log entry to indicate that nothing happened
 					$status = 'notice';
-					// translators: placeholders are: 1) mapping object row id, 2) WordPress object tyoe, 3) individual WordPress item ID, 4) individual Salesforce item ID
-					$title = sprintf( esc_html__( 'Notice: Because object map %1$s already exists, WordPress %2$s %3$s was not mapped to Salesforce Id %4$s', 'object-sync-for-salesforce' ),
+					$title  = sprintf(
+						// translators: placeholders are: 1) mapping object row id, 2) WordPress object tyoe, 3) individual WordPress item ID, 4) individual Salesforce item ID
+						esc_html__( 'Notice: Because object map %1$s already exists, WordPress %2$s %3$s was not mapped to Salesforce Id %4$s', 'object-sync-for-salesforce' ),
 						absint( $mapping_object['id'] ),
 						esc_attr( $salesforce_mapping['wordpress_object'] ),
 						absint( $wordpress_id ),
 						esc_attr( $object['Id'] )
 					);
 
-					// translators: placeholders are 1) WordPress object type, 2) field name for the WordPress id, 3) the WordPress id value, 4) the Salesforce object type, 5) the Salesforce object Id that was modified, 6) the mapping object row id
-					$body = sprintf( esc_html__( 'The WordPress %1$s with %2$s of %3$s is already mapped to the Salesforce %4$s with Id of %5$s in the mapping object with id of %6$s. The Salesforce %4$s with Id of %5$s was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing data unintentionally.', 'object-sync-for-salesforce' ),
+					$body = sprintf(
+						// translators: placeholders are 1) WordPress object type, 2) field name for the WordPress id, 3) the WordPress id value, 4) the Salesforce object type, 5) the Salesforce object Id that was modified, 6) the mapping object row id
+						esc_html__( 'The WordPress %1$s with %2$s of %3$s is already mapped to the Salesforce %4$s with Id of %5$s in the mapping object with id of %6$s. The Salesforce %4$s with Id of %5$s was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing data unintentionally.', 'object-sync-for-salesforce' ),
 						esc_attr( $salesforce_mapping['wordpress_object'] ),
 						esc_attr( $structure['id_field'] ),
 						absint( $wordpress_id ),
@@ -1628,9 +1639,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 		} catch ( WordpressException $e ) {
 			// create log entry for failed create or upsert
 			$status = 'error';
-
-			// translators: placeholders are: 1) what operation is happening, and 2) the name of the WordPress object
-			$title = sprintf( esc_html__( 'Error: %1$s WordPress %2$s', 'object-sync-for-salesforce' ),
+			$title  = sprintf(
+				// translators: placeholders are: 1) what operation is happening, and 2) the name of the WordPress object
+				esc_html__( 'Error: %1$s WordPress %2$s', 'object-sync-for-salesforce' ),
 				esc_attr( $op ),
 				esc_attr( $salesforce_mapping['wordpress_object'] )
 			);
@@ -1639,8 +1650,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$title .= ' ' . $salesforce_id;
 			}
 
-			// translators: placeholders are: 1) the name of the Salesforce object, and 2) Id of the Salesforce object
-			$title .= sprintf( esc_html__( ' (Salesforce %1$s with Id of %2$s)', 'object-sync-for-salesforce' ),
+			$title .= sprintf(
+				// translators: placeholders are: 1) the name of the Salesforce object, and 2) Id of the Salesforce object
+				esc_html__( ' (Salesforce %1$s with Id of %2$s)', 'object-sync-for-salesforce' ),
 				$salesforce_mapping['salesforce_object'],
 				$object['Id']
 			);
@@ -1706,8 +1718,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 			}
 
-			// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-			$title = sprintf( esc_html__( 'Success: %1$s WordPress %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)', 'object-sync-for-salesforce' ),
+			$title = sprintf(
+				// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
+				esc_html__( 'Success: %1$s WordPress %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)', 'object-sync-for-salesforce' ),
 				esc_attr( $op ),
 				esc_attr( $salesforce_mapping['wordpress_object'] ),
 				esc_attr( $wordpress_id_field_name ),
@@ -1751,15 +1764,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$wordpress_id = print_r( $wordpress_id, true );
 			}
 
-			// translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object type, 3) the Salesforce object Id value
-			$title = sprintf( esc_html__( 'Error syncing: %1$s to WordPress (Salesforce %2$s Id %3$s)', 'object-sync-for-salesforce' ),
+			$title = sprintf(
+				// translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object type, 3) the Salesforce object Id value
+				esc_html__( 'Error syncing: %1$s to WordPress (Salesforce %2$s Id %3$s)', 'object-sync-for-salesforce' ),
 				esc_attr( $op ),
 				esc_attr( $salesforce_mapping['salesforce_object'] ),
 				esc_attr( $object['Id'] )
 			);
 
-			// translators: placeholders are: 1) the name of the WordPress object type, 2) the WordPress id field name, 3) the WordPress id field value, 4) the array of errors
-			$body = sprintf( '<p>' . esc_html__( 'Object: %1$s with %2$s of %3$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: ', 'object-sync-for-salesforce' ) . '%4$s',
+			$body = sprintf(
+				// translators: placeholders are: 1) the name of the WordPress object type, 2) the WordPress id field name, 3) the WordPress id field value, 4) the array of errors
+				'<p>' . esc_html__( 'Object: %1$s with %2$s of %3$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: ', 'object-sync-for-salesforce' ) . '%4$s',
 				esc_attr( $salesforce_mapping['wordpress_object'] ),
 				esc_attr( $wordpress_id_field_name ),
 				esc_attr( $wordpress_id ),
@@ -1839,8 +1854,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 			}
 
-			// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-			$title = sprintf( esc_html__( 'Success: %1$s WordPress %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)', 'object-sync-for-salesforce' ),
+			$title = sprintf(
+				// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
+				esc_html__( 'Success: %1$s WordPress %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)', 'object-sync-for-salesforce' ),
 				esc_attr( $op ),
 				esc_attr( $salesforce_mapping['wordpress_object'] ),
 				esc_attr( $wordpress_id_field_name ),
@@ -1873,8 +1889,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 			}
 
-			// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-			$title .= sprintf( esc_html__( 'Error: %1$s WordPress %2$s with %3$s of %4$s (Salesforce %5$s with Id of %6$s)', 'object-sync-for-salesforce' ),
+			$title .= sprintf(
+				// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
+				esc_html__( 'Error: %1$s WordPress %2$s with %3$s of %4$s (Salesforce %5$s with Id of %6$s)', 'object-sync-for-salesforce' ),
 				esc_attr( $op ),
 				esc_attr( $salesforce_mapping['wordpress_object'] ),
 				esc_attr( $wordpress_id_field_name ),
@@ -1976,8 +1993,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 						}
 
-						// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-						$title = sprintf( esc_html__( 'Error: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)', 'object-sync-for-salesforce' ),
+						$title = sprintf(
+							// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
+							esc_html__( 'Error: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)', 'object-sync-for-salesforce' ),
 							esc_attr( $op ),
 							esc_attr( $salesforce_mapping['wordpress_object'] ),
 							esc_attr( $wordpress_id_field_name ),
@@ -2022,8 +2040,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 						}
 
-						// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-						$title = sprintf( esc_html__( 'Success: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)', 'object-sync-for-salesforce' ),
+						$title = sprintf(
+							// translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
+							esc_html__( 'Success: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)', 'object-sync-for-salesforce' ),
 							esc_attr( $op ),
 							esc_attr( $salesforce_mapping['wordpress_object'] ),
 							esc_attr( $wordpress_id_field_name ),
@@ -2049,8 +2068,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 					} // End if() successful
 				} else {
 					// create log entry for additional mapped items
-					// translators: parameter is the name of the WordPress id field name
-					$more_ids = sprintf( '<p>' . esc_html__( 'The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress %1$s.) They are:', 'object-sync-for-salesforce' ) . '</p>',
+					$more_ids = sprintf(
+						// translators: parameter is the name of the WordPress id field name
+						'<p>' . esc_html__( 'The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress %1$s.) They are:', 'object-sync-for-salesforce' ) . '</p>',
 						esc_attr( $wordpress_id_field_name )
 					);
 
@@ -2069,8 +2089,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 					}
 
-					// translators: placeholders are: 1) the operation that is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object type, 6) the Salesforce Id
-					$title = sprintf( esc_html__( 'Notice: %1$s on WordPress %2$s with %3$s of %4$s was stopped because there are other WordPress records mapped to Salesforce %5$s of %6$s', 'object-sync-for-salesforce' ),
+					$title = sprintf(
+						// translators: placeholders are: 1) the operation that is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object type, 6) the Salesforce Id
+						esc_html__( 'Notice: %1$s on WordPress %2$s with %3$s of %4$s was stopped because there are other WordPress records mapped to Salesforce %5$s of %6$s', 'object-sync-for-salesforce' ),
 						esc_attr( $op ),
 						esc_attr( $salesforce_mapping['wordpress_object'] ),
 						esc_attr( $wordpress_id_field_name ),
