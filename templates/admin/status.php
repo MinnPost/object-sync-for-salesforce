@@ -1,11 +1,12 @@
 <h3><?php echo esc_html__( 'Salesforce Status', 'object-sync-for-salesforce' ); ?></h3>
 <p>
 <?php
-	// translators: placeholder is for the version number of the Salesforce REST API
-	echo sprintf( esc_html__( 'Currently, we are using version %1$s of the Salesforce REST API. Available versions are displayed below.', 'object-sync-for-salesforce' ),
+	echo sprintf(
+		// translators: placeholder is for the version number of the Salesforce REST API
+		esc_html__( 'Currently, we are using version %1$s of the Salesforce REST API. Available versions are displayed below.', 'object-sync-for-salesforce' ),
 		esc_html( $this->login_credentials['rest_api_version'] )
 	);
-?>
+	?>
 </p>
 <table class="widefat striped">
 	<thead>
@@ -35,22 +36,24 @@
 	</tbody>
 </table>
 
-<table class="widefat striped">
-	<thead>
-		<summary>
-			<h4><?php echo $contacts_apicall_summary; ?></h4>
-		</summary>
-		<tr>
-			<th><?php echo esc_html__( 'Contact ID' ); ?></th>
-			<th><?php echo esc_html__( 'Name' ); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php foreach ( $contacts['data']['records'] as $contact ) { ?>
+<?php if ( '' !== $contacts_apicall_summary ) : ?>
+	<table class="widefat striped">
+		<thead>
+			<summary>
+				<h4><?php echo $contacts_apicall_summary; ?></h4>
+			</summary>
 			<tr>
-				<td><?php echo esc_html( $contact['Id'] ); ?></td>
-				<td><?php echo esc_html( $contact['Name'] ); ?></td>
+				<th><?php echo esc_html__( 'Contact ID' ); ?></th>
+				<th><?php echo esc_html__( 'Name' ); ?></th>
 			</tr>
-		<?php } ?>
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			<?php foreach ( $contacts['data']['records'] as $contact ) { ?>
+				<tr>
+					<td><?php echo esc_html( $contact['Id'] ); ?></td>
+					<td><?php echo esc_html( $contact['Name'] ); ?></td>
+				</tr>
+			<?php } ?>
+		</tbody>
+	</table>
+<?php endif; ?>

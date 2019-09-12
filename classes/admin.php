@@ -2018,14 +2018,20 @@ class Object_Sync_Sf_Admin {
 			$contacts_refreshed_token = esc_html__( 'This request did not require refreshing the Salesforce token', 'object-sync-salesforce' );
 		}
 
-		// translators: 1) $contacts['data']['totalSize'] is the number of items loaded, 2) $contacts['data']['records'][0]['attributes']['type'] is the name of the Salesforce object, 3) $contacts_is_cached is the "They are/are not cached, and/but" line, 4) $contacts_from_cache is the "they were/were not loaded from the cache" line, 5) is the "this request did/did not require refreshing the Salesforce token" line
-		$contacts_apicall_summary = sprintf( esc_html__( 'Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s.', 'object-sync-for-salesforce' ),
-			absint( $contacts['data']['totalSize'] ),
-			esc_html( $contacts['data']['records'][0]['attributes']['type'] ),
-			$contacts_is_cached,
-			$contacts_from_cache,
-			$contacts_refreshed_token
-		);
+		// display contact summary if there are any contacts
+		if ( 0 < absint( $contacts['data']['totalSize'] ) ) {
+			$contacts_apicall_summary = sprintf(
+				// translators: 1) $contacts['data']['totalSize'] is the number of items loaded, 2) $contacts['data']['records'][0]['attributes']['type'] is the name of the Salesforce object, 3) $contacts_is_cached is the "They are/are not cached, and/but" line, 4) $contacts_from_cache is the "they were/were not loaded from the cache" line, 5) is the "this request did/did not require refreshing the Salesforce token" line
+				esc_html__( 'Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s.', 'object-sync-for-salesforce' ),
+				absint( $contacts['data']['totalSize'] ),
+				esc_html( $contacts['data']['records'][0]['attributes']['type'] ),
+				$contacts_is_cached,
+				$contacts_from_cache,
+				$contacts_refreshed_token
+			);
+		} else {
+			$contacts_apicall_summary = '';
+		}
 
 		require_once( plugin_dir_path( __FILE__ ) . '/../templates/admin/status.php' );
 
