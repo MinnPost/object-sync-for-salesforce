@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 5.2
-Stable tag: 1.8.9
+Stable tag: 1.8.10
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -261,6 +261,12 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 - **Build other integrations in WordPress** this plugin focuses on the Salesforce REST API, as it covers the integration needs we have. Salesforce also has many other developer options: the SOAP API (we hope to incorporate this into Object Sync for Salesforce at some point), the Bulk API, and the Metadata API. Developers could extend this plugin to integrate with one of these. We would welcome any pull requests!
 
 == Changelog ==
+
+* 1.8.10 (2019-09-12)
+    * Bug fix: Prevent PHP errors when API requests on empty Salesforce objects also return errors
+    * Bug fix: Fix authorize settings tab to prevent errors when there are no Salesforce Contacts (#303)
+    * Bug fix: Fix activation issue with $query object that occurred in some environments. Thanks to @yetanotherse for the fix.
+    * Maintenance: update some multiline function calls to match current WPCS standards.
 
 * 1.8.9 (2019-09-03)
     * Feature: Provide an optional setting for how many log entries to clear at a time.

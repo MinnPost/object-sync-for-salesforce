@@ -1,6 +1,12 @@
 Changelog
 =========
 
+* 1.8.10 (2019-09-12)
+	* Bug fix: Prevent PHP errors when API requests on empty Salesforce objects also return errors
+	* Bug fix: Fix authorize settings tab to prevent errors when there are no Salesforce Contacts (#303)
+	* Bug fix: Fix activation issue with $query object that occurred in some environments. Thanks to @yetanotherse for the fix.
+	* Maintenance: update some multiline function calls to match current WPCS standards.
+
 * 1.8.9 (2019-09-03)
 	* Feature: Provide an optional setting for how many log entries to clear at a time.
 	* Bug fix: Unify push success hook parameters so they match the (until now, inconsistently incorrect) documentation.
