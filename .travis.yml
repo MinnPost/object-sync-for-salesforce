@@ -4,18 +4,22 @@
 # See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 sudo: false
 
+cache:
+  directories:
+   - $HOME/.composer/cache/files
+
+# Tell Travis CI which distro to use
+dist: trusty
+
 # Tell Travis CI we're using PHP
 language: php
 
-# PHP version used in first build configuration.
-# We only support PHP-supported versions of PHP.
-# https://secure.php.net/supported-versions.php
-# php:
-#     - "5.6"
-#     - "7.0"
-#     - "7.1"
-#     - "7.2"
-#     - "7.3"
+# Run Matrix for these PHP versions
+php:
+- "5.6"
+- "7.0"
+- "7.2"
+- "7.3"
 
 # WordPress version used in first build configuration.
 # env:
@@ -57,6 +61,10 @@ matrix:
         env: WP_VERSION=4.9
       - php: 7.1
         env: WP_VERSION=5.0
+      - php: 7.1
+        env: WP_VERSION=5.1
+      - php: 7.1
+        env: WP_VERSION=5.2
       # PHPUnit 7 support will come with https://core.trac.wordpress.org/ticket/43218
       # - php: 7.2
       #   env: WP_VERSION=4.9 WP_TESTS_DIR=/tmp/wordpress/tests/phpunit WP_CORE_DIR=/tmp/wordpress
