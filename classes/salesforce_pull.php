@@ -468,17 +468,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$this->clear_current_type_query( $type );
 					}
 				} // end if
-			} elseif ( 0 === count( $response['records'] ) && false === $this->batch_soql_queries ) {
+			} elseif ( ! isset( $response['errorCode'] ) && 0 === count( $response['records'] ) && false === $this->batch_soql_queries ) {
 				// only update/clear these option values if we are currently still processing a query
 				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
 					$this->clear_current_type_query( $type );
 				}
-			} else {
-
+			} elseif ( isset( $response['errorCode'] ) ) {
 				// create log entry for failed pull
 				$status = 'error';
-				// translators: placeholders are: 1) the server error code, and 2) the name of the Salesforce object
-				$title = sprintf( esc_html__( 'Error: %1$s Salesforce %2$s', 'object-sync-for-salesforce' ),
+				$title  = sprintf(
+					// translators: placeholders are: 1) the server error code, and 2) the name of the Salesforce object
+					esc_html__( 'Error: %1$s when pulling %2$s data from Salesforce', 'object-sync-for-salesforce' ),
 					absint( $response['errorCode'] ),
 					esc_attr( $salesforce_mapping['salesforce_object'] )
 				);
