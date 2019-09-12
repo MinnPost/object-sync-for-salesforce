@@ -140,8 +140,8 @@ class Object_Sync_Sf_Activate {
 
 		$remove_key_version = '1.8.0';
 		if ( version_compare( $this->user_installed_version, $remove_key_version, '<' ) ) {
-			$wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce" );
-			$wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce_wordpress" );
+			$this->wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce" );
+			$this->wpdb->query( "ALTER TABLE $object_map_table DROP INDEX salesforce_wordpress" );
 			$result_key = true;
 		}
 
