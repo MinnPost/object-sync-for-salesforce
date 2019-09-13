@@ -1,22 +1,16 @@
 # Travis CI Configuration File
-
-# Use Travis CI container-based infrastructure
-# See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 sudo: false
-
+dist: trusty
+language: php
 cache:
   apt: true
   directories:
-   - $HOME/.composer/cache/files
-   - node_modules
-   - vendor
-
-# Tell Travis CI which distro to use
-dist: trusty
-
-# Tell Travis CI we're using PHP
-language: php
-
+    - $HOME/.composer/cache
+    - node_modules
+    - vendor
+env:
+  global:
+    - WP_TRAVISCI=travis:phpunit
 # Run Matrix for these PHP versions
 php:
 - "5.6"
@@ -32,10 +26,6 @@ notifications:
 branches:
   only:
     - master
-
-env:
-  global:
-    - WP_TRAVISCI=travis:phpunit
 
 # PHP/WP versions
 matrix:
@@ -85,17 +75,21 @@ install:
 
 # Clones WordPress and configures our testing environment.
 before_script:
-    - export WP_TESTS_DIR=/tmp/wordpress/tests/phpunit
-    - export WP_CORE_DIR=/tmp/wordpress/
-    - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-    - |
-      # Remove Xdebug for a huge performance increase:
-      if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
-        phpenv config-rm xdebug.ini
-      else
-        echo "xdebug.ini does not exist"
-      fi
-    - |
+  - export WP_TESTS_DIR=/tmp/wordpress/tests/phpunit
+  - export WP_CORE_DIR=/tmp/wordpress/
+  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+  - |
+    # Remove Xdebug for a huge performance increase:
+    if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
+      phpenv config-rm xdebug.ini
+    else
+      echo "xdebug.ini does not exist"
+    fi
+  - |
+    # Export Composer's global bin dir to PATH, but not on PHP 5.2:
+    composer config --list --global
+    export PATH=`composer config --list --global | grep '\[home\]' | { read a; echo "${a#* }/vendor/bin:$PATH"; }`
+  - |
     # Install the specified version of PHPUnit depending on the PHP version:
     if [[ "$WP_TRAVISCI" == "travis:phpunit" ]]; then
       case "$TRAVIS_PHP_VERSION" in
