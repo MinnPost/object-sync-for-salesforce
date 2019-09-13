@@ -155,9 +155,9 @@ class Object_Sync_Sf_Admin {
 		add_action( 'admin_post_delete_fieldmap', array( $this, 'delete_fieldmap' ) );
 		add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ) );
 		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ) );
-		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ) );
-		add_action( 'wp_ajax_push_to_salesforce', array( $this, 'push_to_salesforce' ) );
-		add_action( 'wp_ajax_pull_from_salesforce', array( $this, 'pull_from_salesforce' ) );
+		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ) , 10, 2);
+		add_action( 'wp_ajax_push_to_salesforce', array( $this, 'push_to_salesforce' ), 10, 3 );
+		add_action( 'wp_ajax_pull_from_salesforce', array( $this, 'pull_from_salesforce' ), 10, 2 );
 		add_action( 'wp_ajax_refresh_mapped_data', array( $this, 'refresh_mapped_data' ) );
 		add_action( 'wp_ajax_clear_sfwp_cache', array( $this, 'clear_sfwp_cache' ) );
 
@@ -1373,8 +1373,9 @@ class Object_Sync_Sf_Admin {
 	*
 	* @param string $wordpress_object
 	* @param int $wordpress_id
+	* @param bool $force_return Force the method to return json instead of outputting it.
 	*/
-	public function push_to_salesforce( $wordpress_object = '', $wordpress_id = '' ) {
+	public function push_to_salesforce( $wordpress_object = '', $wordpress_id = '', $force_return ) {
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		if ( empty( $wordpress_object ) && empty( $wordpress_id ) ) {
 			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
@@ -1394,7 +1395,7 @@ class Object_Sync_Sf_Admin {
 
 		$result = $this->push->manual_push( $object_type, $wordpress_id, $method );
 
-		if ( ! empty( $post_data['wordpress_object'] ) && ! empty( $post_data['wordpress_id'] ) ) {
+		if ( ! $force_return &&  ! empty( $post_data['wordpress_object'] ) && ! empty( $post_data['wordpress_id'] ) ) {
 			wp_send_json_success( $result );
 		} else {
 			return $result;
