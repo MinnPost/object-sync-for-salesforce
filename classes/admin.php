@@ -148,23 +148,30 @@ class Object_Sync_Sf_Admin {
 	*
 	*/
 	public function add_actions() {
+		// Settings API forms and notices
 		add_action( 'admin_init', array( $this, 'salesforce_settings_forms' ) );
 		add_action( 'admin_init', array( $this, 'notices' ) );
 		add_action( 'admin_post_post_fieldmap', array( $this, 'prepare_fieldmap_data' ) );
-
 		add_action( 'admin_post_delete_fieldmap', array( $this, 'delete_fieldmap' ) );
-		add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ) );
-		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ) );
-		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ) , 10, 2);
+
+		// Ajax for fieldmap forms
+		add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ), 10, 1 );
+		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
+		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
+
+		// Ajax events that can be manually called
 		add_action( 'wp_ajax_push_to_salesforce', array( $this, 'push_to_salesforce' ), 10, 3 );
 		add_action( 'wp_ajax_pull_from_salesforce', array( $this, 'pull_from_salesforce' ), 10, 2 );
-		add_action( 'wp_ajax_refresh_mapped_data', array( $this, 'refresh_mapped_data' ) );
+		add_action( 'wp_ajax_refresh_mapped_data', array( $this, 'refresh_mapped_data' ), 10, 1 );
 		add_action( 'wp_ajax_clear_sfwp_cache', array( $this, 'clear_sfwp_cache' ) );
 
-		add_action( 'edit_user_profile', array( $this, 'show_salesforce_user_fields' ) );
-		add_action( 'show_user_profile', array( $this, 'show_salesforce_user_fields' ) );
-		add_action( 'personal_options_update', array( $this, 'save_salesforce_user_fields' ) );
-		add_action( 'edit_user_profile_update', array( $this, 'save_salesforce_user_fields' ) );
+		// we add a Salesforce box on user profiles
+		add_action( 'edit_user_profile', array( $this, 'show_salesforce_user_fields' ), 10, 1 );
+		add_action( 'show_user_profile', array( $this, 'show_salesforce_user_fields' ), 10, 1 );
+
+		// and we can update Salesforce fields on the user profile box
+		add_action( 'personal_options_update', array( $this, 'save_salesforce_user_fields' ), 10, 1 );
+		add_action( 'edit_user_profile_update', array( $this, 'save_salesforce_user_fields' ), 10, 1 );
 
 		// when either field for schedule settings changes
 		foreach ( $this->schedulable_classes as $key => $value ) {
@@ -177,6 +184,7 @@ class Object_Sync_Sf_Admin {
 			add_filter( 'update_option_' . $this->option_prefix . $key . '_schedule_unit', array( $this, 'change_action_schedule' ), 10, 3 );
 		}
 
+		// handle post requests for object maps
 		add_action( 'admin_post_delete_object_map', array( $this, 'delete_object_map' ) );
 		add_action( 'admin_post_post_object_map', array( $this, 'prepare_object_map_data' ) );
 
@@ -1375,7 +1383,7 @@ class Object_Sync_Sf_Admin {
 	* @param int $wordpress_id
 	* @param bool $force_return Force the method to return json instead of outputting it.
 	*/
-	public function push_to_salesforce( $wordpress_object = '', $wordpress_id = '', $force_return ) {
+	public function push_to_salesforce( $wordpress_object = '', $wordpress_id = '', $force_return = false ) {
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		if ( empty( $wordpress_object ) && empty( $wordpress_id ) ) {
 			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
@@ -1395,7 +1403,7 @@ class Object_Sync_Sf_Admin {
 
 		$result = $this->push->manual_push( $object_type, $wordpress_id, $method );
 
-		if ( ! $force_return &&  ! empty( $post_data['wordpress_object'] ) && ! empty( $post_data['wordpress_id'] ) ) {
+		if ( false === $force_return && ! empty( $post_data['wordpress_object'] ) && ! empty( $post_data['wordpress_id'] ) ) {
 			wp_send_json_success( $result );
 		} else {
 			return $result;
