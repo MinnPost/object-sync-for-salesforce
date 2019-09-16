@@ -381,7 +381,7 @@ class Object_Sync_Sf_WordPress {
 			}
 		*/
 
-		$wordpress_object = apply_filters( $this->option_prefix . 'wordpress_object_data', $wordpress_object );
+		$wordpress_object = apply_filters( $this->option_prefix . 'wordpress_object_data', $wordpress_object, $object_type );
 
 		return $wordpress_object;
 
