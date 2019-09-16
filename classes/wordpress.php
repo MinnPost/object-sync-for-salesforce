@@ -374,14 +374,18 @@ class Object_Sync_Sf_WordPress {
 		 * This is useful for custom objects, hidden fields, or custom formatting.
 		 * Here's an example of filters to add/modify data:
 		 *
-			add_filter( 'object_sync_for_salesforce_wordpress_object_data', 'modify_data', 10, 1 );
-			function modify_data( $wordpress_object ) {
+			add_filter( 'object_sync_for_salesforce_wordpress_object_data', 'modify_data', 10, 2 );
+			function modify_data( $wordpress_object, $object_type ) {
 				$wordpress_object['field_a'] = 'i am a field value that salesforce wants to store but WordPress does not care about';
+				// Add field values to specific WordPress objects such as 'post', 'page', 'user', a Custom Post Type, etc.
+				if ($object_type === 'user') {
+					$wordpress_object['field_b'] = 'i am a field value that salesforce wants to store but WordPress does not care about';
+				}
 				return $wordpress_object;
 			}
 		*/
 
-		$wordpress_object = apply_filters( $this->option_prefix . 'wordpress_object_data', $wordpress_object );
+		$wordpress_object = apply_filters( $this->option_prefix . 'wordpress_object_data', $wordpress_object, $object_type );
 
 		return $wordpress_object;
 
