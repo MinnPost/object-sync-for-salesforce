@@ -37,6 +37,15 @@ $select-border-color: #ddd;
 
 		.fields {
 			border: 0;
+			min-width: 100%;
+		}
+
+		.fields-holder {
+			position: relative;
+			width: 100%;
+			overflow-x: auto;
+			margin: 0;
+			padding: 0;
 		}
 
 		legend {
@@ -82,8 +91,16 @@ $select-border-color: #ddd;
 
 		table {
 
+			&.sticky-header {
+				position: unset;
+			}
+
 			.column-direction {
 				min-width: 200px;
+			}
+
+			.column-is_key {
+				min-width: 100px;
 			}
 
 			td div {
@@ -231,3 +248,25 @@ $select-border-color: #ddd;
 	}
 }
 
+// class for sticky table header on fieldmap add/edit screen
+.sticky-header {
+	position: relative;
+
+	tr th {
+		position: sticky;
+		top: 28px;
+		background: #fff;
+		z-index: 10;
+	}
+}
+
+.admin-bar .sticky-header {
+	top: 46px;
+}
+
+@media screen and (min-width: 783px) {
+
+	.admin-bar .sticky-header {
+		top: 32px;
+	}
+}

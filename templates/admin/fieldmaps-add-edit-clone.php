@@ -185,221 +185,223 @@
 	</fieldset>
 	<fieldset class="fields">
 		<legend><?php echo esc_html__( 'Fieldmap', 'object-sync-for-salesforce' ); ?></legend>
-		<table class="wp-list-table widefat striped fields">
-			<thead>
-				<tr>
-					<th class="column-wordpress_field"><?php echo esc_html__( 'WordPress Field', 'object-sync-for-salesforce' ); ?></th>
-					<th class="column-salesforce_field"><?php echo esc_html__( 'Salesforce Field', 'object-sync-for-salesforce' ); ?></th>
-					<th class="column-is_prematch"><?php echo esc_html__( 'Prematch', 'object-sync-for-salesforce' ); ?></th>
-					<th class="column-is_key"><?php echo esc_html__( 'Salesforce Key', 'object-sync-for-salesforce' ); ?></th>
-					<th class="column-direction"><?php echo esc_html__( 'Direction', 'object-sync-for-salesforce' ); ?></th>
-					<th class="column-is_delete"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></th>
-				</tr>
-			</thead>
-			<tfoot>
-				<tr>
-					<td colspan="6">
-						<p><small>
-							<?php
-							// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
-							echo sprintf(
-								'<strong>' .
-								esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' to map a custom meta field (such as wp_postmeta, wp_usermeta, wp_termmeta, etc.), WordPress must have at least one value for that field. If you add a new meta field and want to map it, make sure to add a value for it and ', 'object-sync-for-salesforce' ) . '<a href="%1$s" id="clear-sfwp-cache">%2$s</a>' . esc_html__( ' to see the field listed here.', 'object-sync-for-salesforce' ),
-								esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=clear_cache' ) ),
-								esc_html__( 'clear the plugin cache', 'object-sync-for-salesforce' )
-							);
-							?>
-						</small></p>
-						<p><small>
-							<?php
-							echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' when mapping Salesforce fields, a * in the field name designates a required field for this object type.', 'object-sync-for-salesforce' ) );
-							?>
-						</small></p>
-					</td>
-				</tr>
-			</tfoot>
-			<tbody>
-				<?php
-				if ( isset( $fieldmap_fields ) && null !== $fieldmap_fields && is_array( $fieldmap_fields ) ) {
-					foreach ( $fieldmap_fields as $key => $value ) {
-						$key = md5( $key . time() );
-						?>
-				<tr>
-					<td class="column-wordpress_field">
-						<select name="wordpress_field[<?php echo esc_attr( $key ); ?>]" id="wordpress_field-<?php echo esc_attr( $key ); ?>">
-							<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
-							<?php
-							$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
-							foreach ( $wordpress_fields as $wordpress_field ) {
-								if ( isset( $value['wordpress_field']['label'] ) && $value['wordpress_field']['label'] === $wordpress_field['key'] ) {
-									$selected = ' selected';
-								} else {
-									$selected = '';
-								}
+		<div class="fields-holder">
+			<table class="wp-list-table widefat striped fields sticky-header">
+				<thead>
+					<tr>
+						<th class="column-wordpress_field"><?php echo esc_html__( 'WordPress Field', 'object-sync-for-salesforce' ); ?></th>
+						<th class="column-salesforce_field"><?php echo esc_html__( 'Salesforce Field', 'object-sync-for-salesforce' ); ?></th>
+						<th class="column-is_prematch"><?php echo esc_html__( 'Prematch', 'object-sync-for-salesforce' ); ?></th>
+						<th class="column-is_key"><?php echo esc_html__( 'Salesforce Key', 'object-sync-for-salesforce' ); ?></th>
+						<th class="column-direction"><?php echo esc_html__( 'Direction', 'object-sync-for-salesforce' ); ?></th>
+						<th class="column-is_delete"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<td colspan="6">
+							<p><small>
+								<?php
+								// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
 								echo sprintf(
-									'<option value="%1$s"%2$s>%3$s</option>',
-									esc_attr( $wordpress_field['key'] ),
-									esc_attr( $selected ),
-									esc_html( $wordpress_field['key'] )
+									'<strong>' .
+									esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' to map a custom meta field (such as wp_postmeta, wp_usermeta, wp_termmeta, etc.), WordPress must have at least one value for that field. If you add a new meta field and want to map it, make sure to add a value for it and ', 'object-sync-for-salesforce' ) . '<a href="%1$s" id="clear-sfwp-cache">%2$s</a>' . esc_html__( ' to see the field listed here.', 'object-sync-for-salesforce' ),
+									esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=clear_cache' ) ),
+									esc_html__( 'clear the plugin cache', 'object-sync-for-salesforce' )
 								);
+								?>
+							</small></p>
+							<p><small>
+								<?php
+								echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' when mapping Salesforce fields, a * in the field name designates a required field for this object type.', 'object-sync-for-salesforce' ) );
+								?>
+							</small></p>
+						</td>
+					</tr>
+				</tfoot>
+				<tbody>
+					<?php
+					if ( isset( $fieldmap_fields ) && null !== $fieldmap_fields && is_array( $fieldmap_fields ) ) {
+						foreach ( $fieldmap_fields as $key => $value ) {
+							$key = md5( $key . time() );
+							?>
+					<tr>
+						<td class="column-wordpress_field">
+							<select name="wordpress_field[<?php echo esc_attr( $key ); ?>]" id="wordpress_field-<?php echo esc_attr( $key ); ?>">
+								<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
+								<?php
+								$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
+								foreach ( $wordpress_fields as $wordpress_field ) {
+									if ( isset( $value['wordpress_field']['label'] ) && $value['wordpress_field']['label'] === $wordpress_field['key'] ) {
+										$selected = ' selected';
+									} else {
+										$selected = '';
+									}
+									echo sprintf(
+										'<option value="%1$s"%2$s>%3$s</option>',
+										esc_attr( $wordpress_field['key'] ),
+										esc_attr( $selected ),
+										esc_html( $wordpress_field['key'] )
+									);
+								}
+								?>
+							</select>
+
+						</td>
+						<td class="column-salesforce_field">
+							<select name="salesforce_field[<?php echo esc_attr( $key ); ?>]" id="salesforce_field-<?php echo esc_attr( $key ); ?>">
+								<option value="">- <?php echo esc_html__( 'Select Salesforce field', 'object-sync-for-salesforce' ); ?> -</option>
+								<?php
+								$salesforce_fields = $this->get_salesforce_object_fields(
+									array(
+										'salesforce_object' => $salesforce_object,
+									)
+								);
+								// allow for api name or field label to be the display value in the <select>
+								$display_value = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
+								foreach ( $salesforce_fields as $salesforce_field ) {
+									if ( isset( $value['salesforce_field']['name'] ) && $value['salesforce_field']['name'] === $salesforce_field['name'] ) {
+										$selected = ' selected';
+									} elseif ( isset( $value['salesforce_field']['label'] ) && $value['salesforce_field']['label'] === $salesforce_field['name'] ) {
+										// this conditional is for versions up to 1.1.2, but i think it's fine to leave it for now. if we remove it, people's fieldmaps will not show correctly in the admin.
+										$selected = ' selected';
+									} else {
+										$selected = '';
+									}
+
+									if ( 'api_name' === $display_value ) {
+										$salesforce_field['label'] = $salesforce_field['name'];
+									}
+
+									if ( false === $salesforce_field['nillable'] ) {
+										$salesforce_field['label'] .= ' *';
+									}
+
+									echo sprintf(
+										'<option value="%1$s"%2$s>%3$s</option>',
+										esc_attr( $salesforce_field['name'] ),
+										esc_attr( $selected ),
+										esc_html( $salesforce_field['label'] )
+									);
+								}
+								?>
+							</select>
+
+						</td>
+						<td class="column-is_prematch">
+							<?php
+							if ( isset( $value['is_prematch'] ) && '1' === $value['is_prematch'] ) {
+								$checked = ' checked';
+							} else {
+								$checked = '';
 							}
 							?>
-						</select>
-
-					</td>
-					<td class="column-salesforce_field">
-						<select name="salesforce_field[<?php echo esc_attr( $key ); ?>]" id="salesforce_field-<?php echo esc_attr( $key ); ?>">
-							<option value="">- <?php echo esc_html__( 'Select Salesforce field', 'object-sync-for-salesforce' ); ?> -</option>
+							<input type="checkbox" name="is_prematch[<?php echo esc_attr( $key ); ?>]" id="is_prematch-<?php echo esc_attr( $key ); ?>" value="1" <?php echo esc_attr( $checked ); ?> title="<?php echo esc_html__( 'This pair should be checked for existing matches in Salesforce before adding', 'object-sync-for-salesforce' ); ?>" />
+						</td>
+						<td class="column-is_key">
 							<?php
-							$salesforce_fields = $this->get_salesforce_object_fields(
-								array(
-									'salesforce_object' => $salesforce_object,
-								)
-							);
-							// allow for api name or field label to be the display value in the <select>
-							$display_value = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
-							foreach ( $salesforce_fields as $salesforce_field ) {
-								if ( isset( $value['salesforce_field']['name'] ) && $value['salesforce_field']['name'] === $salesforce_field['name'] ) {
-									$selected = ' selected';
-								} elseif ( isset( $value['salesforce_field']['label'] ) && $value['salesforce_field']['label'] === $salesforce_field['name'] ) {
-									// this conditional is for versions up to 1.1.2, but i think it's fine to leave it for now. if we remove it, people's fieldmaps will not show correctly in the admin.
-									$selected = ' selected';
-								} else {
-									$selected = '';
-								}
-
-								if ( 'api_name' === $display_value ) {
-									$salesforce_field['label'] = $salesforce_field['name'];
-								}
-
-								if ( false === $salesforce_field['nillable'] ) {
-									$salesforce_field['label'] .= ' *';
-								}
-
-								echo sprintf(
-									'<option value="%1$s"%2$s>%3$s</option>',
-									esc_attr( $salesforce_field['name'] ),
-									esc_attr( $selected ),
-									esc_html( $salesforce_field['label'] )
-								);
+							if ( isset( $value['is_key'] ) && '1' === $value['is_key'] ) {
+								$checked = ' checked';
+							} else {
+								$checked = '';
 							}
 							?>
-						</select>
-
-					</td>
-					<td class="column-is_prematch">
-						<?php
-						if ( isset( $value['is_prematch'] ) && '1' === $value['is_prematch'] ) {
-							$checked = ' checked';
-						} else {
-							$checked = '';
-						}
-						?>
-						<input type="checkbox" name="is_prematch[<?php echo esc_attr( $key ); ?>]" id="is_prematch-<?php echo esc_attr( $key ); ?>" value="1" <?php echo esc_attr( $checked ); ?> title="<?php echo esc_html__( 'This pair should be checked for existing matches in Salesforce before adding', 'object-sync-for-salesforce' ); ?>" />
-					</td>
-					<td class="column-is_key">
-						<?php
-						if ( isset( $value['is_key'] ) && '1' === $value['is_key'] ) {
-							$checked = ' checked';
-						} else {
-							$checked = '';
-						}
-						?>
-						<input type="checkbox" name="is_key[<?php echo esc_attr( $key ); ?>]" id="is_key-<?php echo esc_attr( $key ); ?>" value="1" <?php echo esc_attr( $checked ); ?> title="<?php echo esc_html__( 'This Salesforce field is an External ID in Salesforce', 'object-sync-for-salesforce' ); ?>" />
-					</td>
-					<td class="column-direction">
-						<?php
-						if ( isset( $value['direction'] ) ) {
-							if ( 'sf_wp' === $value['direction'] ) {
-								$checked_sf_wp = ' checked';
-								$checked_wp_sf = '';
-								$checked_sync  = '';
-							} elseif ( 'wp_sf' === $value['direction'] ) {
-								$checked_sf_wp = '';
-								$checked_wp_sf = ' checked';
-								$checked_sync  = '';
+							<input type="checkbox" name="is_key[<?php echo esc_attr( $key ); ?>]" id="is_key-<?php echo esc_attr( $key ); ?>" value="1" <?php echo esc_attr( $checked ); ?> title="<?php echo esc_html__( 'This Salesforce field is an External ID in Salesforce', 'object-sync-for-salesforce' ); ?>" />
+						</td>
+						<td class="column-direction">
+							<?php
+							if ( isset( $value['direction'] ) ) {
+								if ( 'sf_wp' === $value['direction'] ) {
+									$checked_sf_wp = ' checked';
+									$checked_wp_sf = '';
+									$checked_sync  = '';
+								} elseif ( 'wp_sf' === $value['direction'] ) {
+									$checked_sf_wp = '';
+									$checked_wp_sf = ' checked';
+									$checked_sync  = '';
+								} else {
+									$checked_sf_wp = '';
+									$checked_wp_sf = '';
+									$checked_sync  = ' checked';
+								}
 							} else {
 								$checked_sf_wp = '';
 								$checked_wp_sf = '';
-								$checked_sync  = ' checked';
+								$checked_sync  = ' checked'; // by default, start with Sync checked
 							}
-						} else {
-							$checked_sf_wp = '';
-							$checked_wp_sf = '';
-							$checked_sync  = ' checked'; // by default, start with Sync checked
-						}
+							?>
+							<div class="radios">
+								<label><input type="radio" value="sf_wp" name="direction[<?php echo esc_attr( $key ); ?>]" id="direction-<?php echo esc_attr( $key ); ?>-sf-wp" <?php echo esc_attr( $checked_sf_wp ); ?> required> <?php echo esc_html__( 'Salesforce to WordPress', 'object-sync-for-salesforce' ); ?></label>
+								<label><input type="radio" value="wp_sf" name="direction[<?php echo esc_attr( $key ); ?>]" id="direction-<?php echo esc_attr( $key ); ?>-wp-sf" <?php echo esc_attr( $checked_wp_sf ); ?> required> <?php echo esc_html__( 'WordPress to Salesforce', 'object-sync-for-salesforce' ); ?></label>
+								<label><input type="radio" value="sync" name="direction[<?php echo esc_attr( $key ); ?>]" id="direction-<?php echo esc_attr( $key ); ?>-sync" <?php echo esc_attr( $checked_sync ); ?> required> <?php echo esc_html__( 'Sync', 'object-sync-for-salesforce' ); ?></label>
+							</div>
+						</td>
+						<td class="column-is_delete">
+							<input type="checkbox" name="is_delete[<?php echo esc_attr( $key ); ?>]" id="is_delete-<?php echo esc_attr( $key ); ?>" value="1" />
+						</td>
+					</tr>
+							<?php
+						} // End foreach().
+					} elseif ( isset( $wordpress_object ) && isset( $salesforce_object ) ) {
 						?>
-						<div class="radios">
-							<label><input type="radio" value="sf_wp" name="direction[<?php echo esc_attr( $key ); ?>]" id="direction-<?php echo esc_attr( $key ); ?>-sf-wp" <?php echo esc_attr( $checked_sf_wp ); ?> required> <?php echo esc_html__( 'Salesforce to WordPress', 'object-sync-for-salesforce' ); ?></label>
-							<label><input type="radio" value="wp_sf" name="direction[<?php echo esc_attr( $key ); ?>]" id="direction-<?php echo esc_attr( $key ); ?>-wp-sf" <?php echo esc_attr( $checked_wp_sf ); ?> required> <?php echo esc_html__( 'WordPress to Salesforce', 'object-sync-for-salesforce' ); ?></label>
-							<label><input type="radio" value="sync" name="direction[<?php echo esc_attr( $key ); ?>]" id="direction-<?php echo esc_attr( $key ); ?>-sync" <?php echo esc_attr( $checked_sync ); ?> required> <?php echo esc_html__( 'Sync', 'object-sync-for-salesforce' ); ?></label>
-						</div>
-					</td>
-					<td class="column-is_delete">
-						<input type="checkbox" name="is_delete[<?php echo esc_attr( $key ); ?>]" id="is_delete-<?php echo esc_attr( $key ); ?>" value="1" />
-					</td>
-				</tr>
+					<tr>
+						<td class="column-wordpress_field">
+							<select name="wordpress_field[0]" id="wordpress_field-0">
+								<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
+								<?php
+								$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
+								foreach ( $wordpress_fields as $wordpress_field ) {
+									echo sprintf(
+										'<option value="%1$s">%2$s</option>',
+										esc_attr( $wordpress_field['key'] ),
+										esc_html( $wordpress_field['key'] )
+									);
+								}
+								?>
+							</select>
+						</td>
+						<td class="column-salesforce_field">
+							<select name="salesforce_field[0]" id="salesforce_field-0">
+								<option value="">- <?php echo esc_html__( 'Select Salesforce field', 'object-sync-for-salesforce' ); ?> -</option>
+								<?php
+								$salesforce_fields = $this->get_salesforce_object_fields(
+									array(
+										'salesforce_object' => $salesforce_object,
+									)
+								);
+								foreach ( $salesforce_fields as $salesforce_field ) {
+									echo sprintf(
+										'<option value="%1$s">%2$s</option>',
+										esc_attr( $salesforce_field['name'] ),
+										esc_html( $salesforce_field['label'] )
+									);
+								}
+								?>
+							</select>
+						</td>
+						<td class="column-is_prematch">
+							<input type="checkbox" name="is_prematch[0]" id="is_prematch-0" value="1" />
+						</td>
+						<td class="column-is_key">
+							<input type="checkbox" name="is_key[0]" id="is_key-0" value="1" />
+						</td>
+						<td class="column-direction">
+							<div class="radios">
+								<label><input type="radio" value="sf_wp" name="direction[0]" id="direction-0-sf-wp" required> <?php echo esc_html__( 'Salesforce to WordPress', 'object-sync-for-salesforce' ); ?></label>
+								<label><input type="radio" value="wp_sf" name="direction[0]" id="direction-0-wp-sf" required> <?php echo esc_html__( 'WordPress to Salesforce', 'object-sync-for-salesforce' ); ?></label>
+								<label><input type="radio" value="sync" name="direction[0]" id="direction-0-sync" required checked> <?php echo esc_html__( 'Sync', 'object-sync-for-salesforce' ); ?></label>
+							</div>
+						</td>
+						<td class="column-is_delete">
+							<input type="checkbox" name="is_delete[0]" id="is_delete-0" value="1" />
+						</td>
+					</tr>
 						<?php
-					} // End foreach().
-				} elseif ( isset( $wordpress_object ) && isset( $salesforce_object ) ) {
+					} // End if().
 					?>
-				<tr>
-					<td class="column-wordpress_field">
-						<select name="wordpress_field[0]" id="wordpress_field-0">
-							<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
-							<?php
-							$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
-							foreach ( $wordpress_fields as $wordpress_field ) {
-								echo sprintf(
-									'<option value="%1$s">%2$s</option>',
-									esc_attr( $wordpress_field['key'] ),
-									esc_html( $wordpress_field['key'] )
-								);
-							}
-							?>
-						</select>
-					</td>
-					<td class="column-salesforce_field">
-						<select name="salesforce_field[0]" id="salesforce_field-0">
-							<option value="">- <?php echo esc_html__( 'Select Salesforce field', 'object-sync-for-salesforce' ); ?> -</option>
-							<?php
-							$salesforce_fields = $this->get_salesforce_object_fields(
-								array(
-									'salesforce_object' => $salesforce_object,
-								)
-							);
-							foreach ( $salesforce_fields as $salesforce_field ) {
-								echo sprintf(
-									'<option value="%1$s">%2$s</option>',
-									esc_attr( $salesforce_field['name'] ),
-									esc_html( $salesforce_field['label'] )
-								);
-							}
-							?>
-						</select>
-					</td>
-					<td class="column-is_prematch">
-						<input type="checkbox" name="is_prematch[0]" id="is_prematch-0" value="1" />
-					</td>
-					<td class="column-is_key">
-						<input type="checkbox" name="is_key[0]" id="is_key-0" value="1" />
-					</td>
-					<td class="column-direction">
-						<div class="radios">
-							<label><input type="radio" value="sf_wp" name="direction[0]" id="direction-0-sf-wp" required> <?php echo esc_html__( 'Salesforce to WordPress', 'object-sync-for-salesforce' ); ?></label>
-							<label><input type="radio" value="wp_sf" name="direction[0]" id="direction-0-wp-sf" required> <?php echo esc_html__( 'WordPress to Salesforce', 'object-sync-for-salesforce' ); ?></label>
-							<label><input type="radio" value="sync" name="direction[0]" id="direction-0-sync" required checked> <?php echo esc_html__( 'Sync', 'object-sync-for-salesforce' ); ?></label>
-						</div>
-					</td>
-					<td class="column-is_delete">
-						<input type="checkbox" name="is_delete[0]" id="is_delete-0" value="1" />
-					</td>
-				</tr>
-					<?php
-				} // End if().
-				?>
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</div>
 		<!--<div class="spinner"></div>-->
 		<?php
 		if ( isset( $fieldmap_fields ) && null !== $fieldmap_fields ) {
