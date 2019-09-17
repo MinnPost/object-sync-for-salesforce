@@ -699,7 +699,7 @@ class Object_Sync_Sf_Mapping {
 	 * @param string $salesforce_id Type of object to load.
 	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
 	 *
-	 * @return array $maps all the fieldmaps that match the Salesforce Id
+	 * @return array $maps all the object maps that match the Salesforce Id
 	 */
 	public function load_all_by_salesforce( $salesforce_id, $reset = false ) {
 		$conditions = array(
