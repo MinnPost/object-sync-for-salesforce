@@ -184,7 +184,7 @@
 		</div>
 	</fieldset>
 	<fieldset class="fields">
-		<legend><?php echo esc_html__( 'Fieldmap', 'object-sync-for-salesforce' ); ?></legend>
+		<legend><strong><?php echo esc_html__( 'Fieldmap', 'object-sync-for-salesforce' ); ?></strong></legend>
 		<div class="fields-holder">
 			<table class="wp-list-table widefat striped fields sticky-header">
 				<thead>
