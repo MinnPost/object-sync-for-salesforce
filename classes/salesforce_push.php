@@ -523,9 +523,11 @@ class Object_Sync_Sf_Salesforce_Push {
 						break;
 				}
 
-				$title = sprintf(
-					// translators: placeholders are: 1) the name of the current operation, 2) the name of the WordPress object type, 3) the name of the WordPress ID field, 4) the value of the object's ID in WordPress, 5) the name of the Salesforce object
-					esc_html__( 'Error: %1$s Salesforce %5$s with WordPress %2$s with %3$s of %4$s was not allowed by this fieldmap.', 'object-sync-for-salesforce' ),
+				$log_status = 'notice';
+				$title      = sprintf(
+					// translators: placeholders are: 1) the log status, capitalized, 2) the name of the current operation, 3) the name of the WordPress object type, 4) the name of the WordPress ID field, 5) the value of the object's ID in WordPress, 6) the name of the Salesforce object
+					esc_html__( '%1$s: %2$s Salesforce %3$s with WordPress %4$s with %5$s of %6$s was not allowed by this fieldmap.', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $log_status ) ),
 					esc_attr( $op ),
 					esc_attr( $mapping['wordpress_object'] ),
 					esc_attr( $wordpress_id_field_name ),
@@ -538,7 +540,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					'message' => '',
 					'trigger' => $sf_sync_trigger,
 					'parent'  => esc_attr( $object[ $wordpress_id_field_name ] ),
-					'status'  => 'error',
+					'status'  => $log_status,
 				);
 				if ( '' !== $op ) {
 					$logging->setup( $result );
