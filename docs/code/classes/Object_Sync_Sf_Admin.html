@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1834069498"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-419280401"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1834069498" class="accordion-body collapse in">
+            <div id="namespace-419280401" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -1472,7 +1472,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
             <article class="method">
                 <h3 class="public ">push_to_salesforce()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">push_to_salesforce(string  <span class="argument">$wordpress_object = &#039;&#039;</span>, integer  <span class="argument">$wordpress_id = &#039;&#039;</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">push_to_salesforce(string  <span class="argument">$wordpress_object = &#039;&#039;</span>, integer  <span class="argument">$wordpress_id = &#039;&#039;</span>, boolean  <span class="argument">$force_return = false</span>) </pre>
                 <p><em>Manually push the WordPress object to Salesforce
 This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $wordpress_id fields</em></p>
                 
@@ -1488,6 +1488,11 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
                                 <td>integer</td>
                                 <td>$wordpress_id </td>
                                 <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$force_return </td>
+                                <td><p>Force the method to return json instead of outputting it.</p></td>
                             </tr>
                                             </table>
                 
@@ -2726,7 +2731,7 @@ This is the database row for the map object</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on September 12th, 2019 at 14:36.
+                    on September 17th, 2019 at 21:55.
                 </section>
             </section>
         </section>

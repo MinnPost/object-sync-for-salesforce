@@ -446,8 +446,9 @@ class Object_Sync_Sf_Mapping {
 			}
 			$logging->setup(
 				sprintf(
-					// translators: %1$s is the name of a WordPress object. %2$s is the id of that object.
-					esc_html__( 'Error Mapping: error caused by trying to map the WordPress %1$s with ID of %2$s to Salesforce ID starting with "tmp_sf_", which is invalid.', 'object-sync-for-salesforce' ),
+					// translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of that object.
+					esc_html__( '%1$s Mapping: error caused by trying to map the WordPress %2$s with ID of %3$s to Salesforce ID starting with "tmp_sf_", which is invalid.', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
 					esc_attr( $data['wordpress_object'] ),
 					absint( $data['wordpress_id'] )
 				),
@@ -472,8 +473,9 @@ class Object_Sync_Sf_Mapping {
 			}
 			$logging->setup(
 				sprintf(
-					// translators: %1$s is the status word "Error". %1$s is the Id of a Salesforce object. %2$s is the ID of a mapping object.
-					esc_html__( 'Error: Mapping: there is already a WordPress object mapped to the Salesforce object %1$s and the mapping object ID is %2$s', 'object-sync-for-salesforce' ),
+					// translators: %1$s is the status word "Error". %2$s is the Id of a Salesforce object. %3$s is the ID of a mapping object.
+					esc_html__( '%1$s: Mapping: there is already a WordPress object mapped to the Salesforce object %2$s and the mapping object ID is %3$s', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
 					esc_attr( $data['salesforce_id'] ),
 					absint( $id )
 				),
@@ -699,7 +701,7 @@ class Object_Sync_Sf_Mapping {
 	 * @param string $salesforce_id Type of object to load.
 	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
 	 *
-	 * @return array $maps all the fieldmaps that match the Salesforce Id
+	 * @return array $maps all the object maps that match the Salesforce Id
 	 */
 	public function load_all_by_salesforce( $salesforce_id, $reset = false ) {
 		$conditions = array(

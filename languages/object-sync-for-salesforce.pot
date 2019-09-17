@@ -13,371 +13,371 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: object-sync-for-salesforce.php:504, classes/admin.php:301, classes/admin.php:361
+#: object-sync-for-salesforce.php:504, classes/admin.php:309, classes/admin.php:369
 msgid "Settings"
 msgstr ""
 
-#: classes/admin.php:281, templates/admin/user-profile-salesforce-change.php:2, templates/admin/user-profile-salesforce-delete.php:3, templates/admin/user-profile-salesforce-map.php:2, templates/admin/user-profile-salesforce.php:5
+#: classes/admin.php:289, templates/admin/user-profile-salesforce-change.php:2, templates/admin/user-profile-salesforce-delete.php:3, templates/admin/user-profile-salesforce-map.php:2, templates/admin/user-profile-salesforce.php:5
 msgid "Salesforce"
 msgstr ""
 
-#: classes/admin.php:302, classes/admin.php:2051
+#: classes/admin.php:310, classes/admin.php:2060
 msgid "Authorize"
 msgstr ""
 
-#: classes/admin.php:303, templates/admin/fieldmaps-list.php:1
+#: classes/admin.php:311, templates/admin/fieldmaps-list.php:1
 msgid "Fieldmaps"
 msgstr ""
 
-#: classes/admin.php:304
+#: classes/admin.php:312
 msgid "Scheduling"
 msgstr ""
 
-#: classes/admin.php:305
+#: classes/admin.php:313
 msgid "Import &amp; Export"
 msgstr ""
 
-#: classes/admin.php:310
+#: classes/admin.php:318
 msgid "Log Settings"
 msgstr ""
 
-#: classes/admin.php:314, templates/admin/mapping-errors.php:1
+#: classes/admin.php:322, templates/admin/mapping-errors.php:1
 msgid "Mapping Errors"
 msgstr ""
 
-#: classes/admin.php:330
+#: classes/admin.php:338
 msgid "Authorize tab"
 msgstr ""
 
-#: classes/admin.php:337
+#: classes/admin.php:345
 msgid "Fieldmaps tab"
 msgstr ""
 
-#: classes/admin.php:357
+#: classes/admin.php:365
 msgid "Connect to Salesforce"
 msgstr ""
 
-#: classes/admin.php:544
+#: classes/admin.php:552
 msgid "Consumer Key"
 msgstr ""
 
-#: classes/admin.php:557
+#: classes/admin.php:565
 msgid "Consumer Secret"
 msgstr ""
 
-#: classes/admin.php:569
+#: classes/admin.php:577
 msgid "Callback URL"
 msgstr ""
 
 #. translators: %1$s is the admin URL for the Authorize tab
-#: classes/admin.php:577
+#: classes/admin.php:585
 msgid "In most cases, you will want to use %1$s for this value."
 msgstr ""
 
-#: classes/admin.php:584
+#: classes/admin.php:592
 msgid "Login Base URL"
 msgstr ""
 
 #. translators: 1) production salesforce login, 2) sandbox salesforce login
-#: classes/admin.php:592
+#: classes/admin.php:600
 msgid "For most Salesforce setups, you should use %1$s for production and %2$s for sandbox. If you try to use an instance name as the URL, you may encounter Salesforce errors."
 msgstr ""
 
-#: classes/admin.php:600
+#: classes/admin.php:608
 msgid "Authorize URL Path"
 msgstr ""
 
-#: classes/admin.php:607, classes/admin.php:620
+#: classes/admin.php:615, classes/admin.php:628
 msgid "For most Salesforce installs, this should not be changed."
 msgstr ""
 
-#: classes/admin.php:613
+#: classes/admin.php:621
 msgid "Token URL Path"
 msgstr ""
 
-#: classes/admin.php:626, classes/admin.php:774
+#: classes/admin.php:634, classes/admin.php:782
 msgid "Salesforce API Version"
 msgstr ""
 
-#: classes/admin.php:639
+#: classes/admin.php:647
 msgid "Limit Salesforce Objects"
 msgstr ""
 
-#: classes/admin.php:646
+#: classes/admin.php:654
 msgid "Allows you to limit which Salesforce objects can be mapped"
 msgstr ""
 
-#: classes/admin.php:649
+#: classes/admin.php:657
 msgid "Only Triggerable objects"
 msgstr ""
 
-#: classes/admin.php:655
+#: classes/admin.php:663
 msgid "Only Updateable objects"
 msgstr ""
 
-#: classes/admin.php:664
+#: classes/admin.php:672
 msgid "Salesforce Field Display Value"
 msgstr ""
 
-#: classes/admin.php:671
+#: classes/admin.php:679
 msgid "When choosing Salesforce fields to map, this value determines how the dropdown will identify Salesforce fields."
 msgstr ""
 
-#: classes/admin.php:675
+#: classes/admin.php:683
 msgid "Field Label"
 msgstr ""
 
-#: classes/admin.php:683
+#: classes/admin.php:691
 msgid "API Name"
 msgstr ""
 
-#: classes/admin.php:690
+#: classes/admin.php:698
 msgid "Pull query record limit"
 msgstr ""
 
-#: classes/admin.php:697
+#: classes/admin.php:705
 msgid "Limit the number of records that can be pulled from Salesforce in a single query."
 msgstr ""
 
-#: classes/admin.php:703
+#: classes/admin.php:711
 msgid "Pull throttle (seconds)"
 msgstr ""
 
-#: classes/admin.php:710
+#: classes/admin.php:718
 msgid "Number of seconds to wait between repeated salesforce pulls. Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage."
 msgstr ""
 
-#: classes/admin.php:720
+#: classes/admin.php:728
 msgid "Enable the Salesforce SOAP API?"
 msgstr ""
 
-#: classes/admin.php:728
+#: classes/admin.php:736
 msgid "Check this to enable the SOAP API and use it instead of the REST API when the plugin supports it. https://developer.salesforce.com/blogs/tech-pubs/2011/10/salesforce-apis-what-they-are-when-to-use-them.html to compare the two. Note: if you need to detect Salesforce merges in this plugin, you will need to enable SOAP."
 msgstr ""
 
-#: classes/admin.php:733
+#: classes/admin.php:741
 msgid "Path to SOAP WSDL file"
 msgstr ""
 
-#: classes/admin.php:741
+#: classes/admin.php:749
 msgid "Optionally add a path to your own WSDL file. If you do not, the plugin will use the default partner.wsdl.xml from the Force.com toolkit."
 msgstr ""
 
-#: classes/admin.php:748
+#: classes/admin.php:756
 msgid "Debug mode?"
 msgstr ""
 
-#: classes/admin.php:755
+#: classes/admin.php:763
 msgid "Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment."
 msgstr ""
 
-#: classes/admin.php:760
+#: classes/admin.php:768
 msgid "Delete plugin data on uninstall?"
 msgstr ""
 
-#: classes/admin.php:767
+#: classes/admin.php:775
 msgid "If checked, the plugin will delete the tables and other data it creates when you uninstall it. Unchecking this field can be useful if you need to reactivate the plugin for any reason without losing data."
 msgstr ""
 
-#: classes/admin.php:840
+#: classes/admin.php:848
 msgid "Batch Settings"
 msgstr ""
 
-#: classes/admin.php:844
+#: classes/admin.php:852
 msgid "Batch size"
 msgstr ""
 
-#: classes/admin.php:852
+#: classes/admin.php:860
 msgid "Set how many actions (checking for data changes, syncing a record, etc. all count as individual actions) can be run in a batch. Start with a low number here, like 5, if you are unsure."
 msgstr ""
 
-#: classes/admin.php:858
+#: classes/admin.php:866
 msgid "Concurrent batches"
 msgstr ""
 
-#: classes/admin.php:866
+#: classes/admin.php:874
 msgid "Set how many batches of actions can be run at once. Start with a low number here, like 3, if you are unsure."
 msgstr ""
 
-#: classes/admin.php:876
+#: classes/admin.php:884
 msgid "Run schedule every"
 msgstr ""
 
-#: classes/admin.php:888, classes/admin.php:1043
+#: classes/admin.php:896, classes/admin.php:1051
 msgid "Time unit"
 msgstr ""
 
-#: classes/admin.php:898, classes/admin.php:1053
+#: classes/admin.php:906, classes/admin.php:1061
 msgid "Minutes"
 msgstr ""
 
-#: classes/admin.php:902, classes/admin.php:1057
+#: classes/admin.php:910, classes/admin.php:1065
 msgid "Hours"
 msgstr ""
 
-#: classes/admin.php:906, classes/admin.php:1061
+#: classes/admin.php:914, classes/admin.php:1069
 msgid "Days"
 msgstr ""
 
 #. translators: $this->get_schedule_count is an integer showing how many items are in the current queue
-#: classes/admin.php:915
+#: classes/admin.php:923
 msgid "%s item"
 msgid_plural "%s items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/admin.php:920
+#: classes/admin.php:928
 msgid "Clear this queue"
 msgstr ""
 
-#: classes/admin.php:960
+#: classes/admin.php:968
 msgid "Enable Logging?"
 msgstr ""
 
-#: classes/admin.php:972
+#: classes/admin.php:980
 msgid "Statuses to log"
 msgstr ""
 
-#: classes/admin.php:979
+#: classes/admin.php:987
 msgid "these are the statuses to log"
 msgstr ""
 
-#: classes/admin.php:982
+#: classes/admin.php:990
 msgid "Error"
 msgstr ""
 
-#: classes/admin.php:987
+#: classes/admin.php:995
 msgid "Success"
 msgstr ""
 
-#: classes/admin.php:992
+#: classes/admin.php:1000
 msgid "Notice"
 msgstr ""
 
-#: classes/admin.php:997
+#: classes/admin.php:1005
 msgid "Debug"
 msgstr ""
 
-#: classes/admin.php:1005
+#: classes/admin.php:1013
 msgid "Automatically delete old log entries?"
 msgstr ""
 
-#: classes/admin.php:1017
+#: classes/admin.php:1025
 msgid "Age to delete log entries"
 msgstr ""
 
-#: classes/admin.php:1024
+#: classes/admin.php:1032
 msgid "If automatic deleting is enabled, it will affect logs this old."
 msgstr ""
 
-#: classes/admin.php:1030
+#: classes/admin.php:1038
 msgid "Check for old logs every"
 msgstr ""
 
-#: classes/admin.php:1050
+#: classes/admin.php:1058
 msgid "These two fields are how often the site will check for logs to delete."
 msgstr ""
 
-#: classes/admin.php:1068
+#: classes/admin.php:1076
 msgid "Clear this many log entries"
 msgstr ""
 
-#: classes/admin.php:1075
+#: classes/admin.php:1083
 msgid "This number is how many log entries the plugin will try to clear at a time. If you do not enter a number, the default is 100."
 msgstr ""
 
-#: classes/admin.php:1081
+#: classes/admin.php:1089
 msgid "Triggers to log"
 msgstr ""
 
-#: classes/admin.php:1088
+#: classes/admin.php:1096
 msgid "these are the triggers to log"
 msgstr ""
 
-#: classes/admin.php:1091, templates/admin/fieldmaps-add-edit-clone.php:449
+#: classes/admin.php:1099, templates/admin/fieldmaps-add-edit-clone.php:449
 msgid "WordPress create"
 msgstr ""
 
-#: classes/admin.php:1096, templates/admin/fieldmaps-add-edit-clone.php:450
+#: classes/admin.php:1104, templates/admin/fieldmaps-add-edit-clone.php:450
 msgid "WordPress update"
 msgstr ""
 
-#: classes/admin.php:1101, templates/admin/fieldmaps-add-edit-clone.php:451
+#: classes/admin.php:1109, templates/admin/fieldmaps-add-edit-clone.php:451
 msgid "WordPress delete"
 msgstr ""
 
-#: classes/admin.php:1106, templates/admin/fieldmaps-add-edit-clone.php:452
+#: classes/admin.php:1114, templates/admin/fieldmaps-add-edit-clone.php:452
 msgid "Salesforce create"
 msgstr ""
 
-#: classes/admin.php:1111, templates/admin/fieldmaps-add-edit-clone.php:453
+#: classes/admin.php:1119, templates/admin/fieldmaps-add-edit-clone.php:453
 msgid "Salesforce update"
 msgstr ""
 
-#: classes/admin.php:1116, templates/admin/fieldmaps-add-edit-clone.php:454
+#: classes/admin.php:1124, templates/admin/fieldmaps-add-edit-clone.php:454
 msgid "Salesforce delete"
 msgstr ""
 
-#: classes/admin.php:1162
+#: classes/admin.php:1170
 msgid "Your account does not have permission to edit the Salesforce REST API plugin's settings."
 msgstr ""
 
-#: classes/admin.php:1168
+#: classes/admin.php:1176
 msgid "Errors kept this fieldmap from being saved."
 msgstr ""
 
-#: classes/admin.php:1174
+#: classes/admin.php:1182
 msgid "Errors kept this object map from being saved."
 msgstr ""
 
-#: classes/admin.php:1180
+#: classes/admin.php:1188
 msgid "This data was successfully saved."
 msgstr ""
 
-#: classes/admin.php:1186
+#: classes/admin.php:1194
 msgid "This data was not successfully saved. Try again."
 msgstr ""
 
-#: classes/admin.php:1192
+#: classes/admin.php:1200
 msgid "Errors kept these mapping errors from being deleted."
 msgstr ""
 
-#: classes/admin.php:1814, classes/admin.php:1899
+#: classes/admin.php:1823, classes/admin.php:1908
 msgid "Defined in wp-config.php"
 msgstr ""
 
-#: classes/admin.php:1870
+#: classes/admin.php:1879
 msgid "Select one"
 msgstr ""
 
 #. translators: 1) $versions_is_cached is the "This list is/is not cached, and/but" line, 2) $versions_from_cache is the "items were/were not loaded from the cache" line
-#: classes/admin.php:1995
+#: classes/admin.php:2004
 msgid "Available Salesforce API versions. %1$s %2$s. This is not an authenticated request, so it does not touch the Salesforce token."
 msgstr ""
 
 #. translators: 1) $contacts['data']['totalSize'] is the number of items loaded, 2) $contacts['data']['records'][0]['attributes']['type'] is the name of the Salesforce object, 3) $contacts_is_cached is the "They are/are not cached, and/but" line, 4) $contacts_from_cache is the "they were/were not loaded from the cache" line, 5) is the "this request did/did not require refreshing the Salesforce token" line
-#: classes/admin.php:2025
+#: classes/admin.php:2034
 msgid "Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s."
 msgstr ""
 
-#: classes/admin.php:2074
+#: classes/admin.php:2083
 msgid "The plugin cache has been cleared."
 msgstr ""
 
-#: classes/admin.php:2076
+#: classes/admin.php:2085
 msgid "There was an error clearing the plugin cache. Try refreshing this page."
 msgstr ""
 
 #. translators: $schedule_name is the name of the current queue. Defaults: salesforce_pull, salesforce_push, salesforce
-#: classes/admin.php:2221
+#: classes/admin.php:2230
 msgid "You have cleared the %s schedule."
 msgstr ""
 
-#: classes/admin.php:2223
+#: classes/admin.php:2232
 msgid "You need to specify the name of the schedule you want to clear."
 msgstr ""
 
-#: classes/admin.php:2280, classes/salesforce_pull.php:1848, classes/salesforce_push.php:1057, classes/salesforce_push.php:1173
+#: classes/admin.php:2289, classes/salesforce_pull.php:1874, classes/salesforce_push.php:1067, classes/salesforce_push.php:1194
 msgid "Mapping object updated via function: "
 msgstr ""
 
@@ -397,321 +397,335 @@ msgstr ""
 msgid "All log types "
 msgstr ""
 
-#. translators: placeholder is the URL of the Salesforce API request
-#: classes/salesforce.php:327
-msgid "Debug: on Salesforce API HTTP Request to URL: %1$s."
+#. translators: placeholders are: 1) the log status, 2) the URL of the Salesforce API request
+#: classes/salesforce.php:328
+msgid "%1$s: on Salesforce API HTTP Request to URL: %2$s."
 msgstr ""
 
-#. translators: placeholder is the HTTP status code returned by the Salesforce API request
-#. translators: placeholder is the server code returned by the api
-#. translators: placeholder is the server code returned by Salesforce
-#: classes/salesforce.php:438, classes/salesforce.php:460, classes/salesforce.php:489
-msgid "Error: %1$s: on Salesforce http request"
+#. translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request
+#. translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request
+#. translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request
+#: classes/salesforce.php:441, classes/salesforce.php:465, classes/salesforce.php:497
+msgid "%1$s: %2$s: on Salesforce HTTP request"
 msgstr ""
 
 #. translators: placeholders are: 1) the URL requested, 2) the message returned by the error, 3) the server code returned
-#: classes/salesforce.php:465
+#: classes/salesforce.php:472
 msgid "URL: %1$s"
 msgstr ""
 
-#: classes/salesforce.php:465, classes/salesforce_push.php:1089
+#: classes/salesforce.php:472, classes/salesforce_push.php:1099
 msgid "Message: %2$s"
 msgstr ""
 
-#: classes/salesforce.php:465
+#: classes/salesforce.php:472
 msgid "Code: %3$s"
 msgstr ""
 
-#: classes/salesforce.php:616
+#: classes/salesforce.php:625
 msgid "There is no refresh token."
 msgstr ""
 
-#: classes/salesforce.php:640
+#: classes/salesforce.php:649
 msgid "Unable to get a Salesforce access token. Salesforce returned the following errorCode: "
 msgstr ""
 
-#: classes/salesforce.php:674
+#: classes/salesforce.php:683
 msgid "Unable to access identity service."
 msgstr ""
 
-#. translators: %1$s is the name of a WordPress object. %2$s is the id of that object.
+#. translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of that object.
 #: classes/salesforce_mapping.php:450
-msgid "Error Mapping: error caused by trying to map the WordPress %1$s with ID of %2$s to Salesforce ID starting with \"tmp_sf_\", which is invalid."
+msgid "%1$s Mapping: error caused by trying to map the WordPress %2$s with ID of %3$s to Salesforce ID starting with \"tmp_sf_\", which is invalid."
 msgstr ""
 
-#. translators: %1$s is the status word "Error". %1$s is the Id of a Salesforce object. %2$s is the ID of a mapping object.
-#: classes/salesforce_mapping.php:476
-msgid "Error: Mapping: there is already a WordPress object mapped to the Salesforce object %1$s and the mapping object ID is %2$s"
+#. translators: %1$s is the status word "Error". %2$s is the Id of a Salesforce object. %3$s is the ID of a mapping object.
+#: classes/salesforce_mapping.php:477
+msgid "%1$s: Mapping: there is already a WordPress object mapped to the Salesforce object %2$s and the mapping object ID is %3$s"
 msgstr ""
 
 #. translators: %1$s is the Id of a Salesforce object.
-#: classes/salesforce_mapping.php:757
+#: classes/salesforce_mapping.php:759
 msgid "Notice: Mapping: there is more than one mapped WordPress object for the Salesforce object %2$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:262
-msgid "Debug: SOQL query to get updated records from Salesforce (it has not yet run)"
+#. translators: placeholders are: 1) the log status
+#: classes/salesforce_pull.php:264
+msgid "%1$s: SOQL query to get updated records from Salesforce (it has not yet run)"
 msgstr ""
 
-#. translators: placeholders are: 1) the Salesforce ID
-#: classes/salesforce_pull.php:304
-msgid "Debug: Salesforce ID %1$s has already been attempted."
+#. translators: placeholders are: 1) the log status, 2) the Salesforce ID
+#: classes/salesforce_pull.php:308
+msgid "%1$s: Salesforce ID %2$s has already been attempted."
 msgstr ""
 
-#: classes/salesforce_pull.php:316
+#: classes/salesforce_pull.php:321
 msgid "This ID has already been attempted so it was not pulled again."
 msgstr ""
 
-#. translators: placeholders are: 1) the Salesforce ID
-#: classes/salesforce_pull.php:355
-msgid "Debug: Salesforce ID %1$s is not allowed."
+#. translators: placeholders are: 1) the log status, 2) the Salesforce ID
+#: classes/salesforce_pull.php:360
+msgid "%1$s: Salesforce ID %2$s is not allowed."
 msgstr ""
 
-#: classes/salesforce_pull.php:367
+#: classes/salesforce_pull.php:373
 msgid "This ID is not pullable so it was skipped."
 msgstr ""
 
-#. translators: placeholders are: 1) the Salesforce ID
-#: classes/salesforce_pull.php:383
-msgid "Debug: Add Salesforce ID %1$s to the queue"
+#. translators: placeholders are: 1) the log status, 2) the Salesforce ID
+#: classes/salesforce_pull.php:389
+msgid "%1$s: Add Salesforce ID %2$s to the queue"
 msgstr ""
 
 #. translators: 1) is the name of the hook that was called, 2) is the Salesforce object type, 3) is the ID for the object map, 4) is the event trigger that is running, and 5) is the name of the schedule that is running.
-#: classes/salesforce_pull.php:395
+#: classes/salesforce_pull.php:402
 msgid "This record is being sent to the queue. The hook name is %1$s. The arguments for the hook are: object type %2$s, object map ID %3$s, sync trigger %4$s. The schedule name is %5$s."
 msgstr ""
 
-#. translators: placeholders are: 1) the Salesforce ID
-#: classes/salesforce_pull.php:431
-msgid "Debug: Salesforce ID %1$s has been successfully pulled."
+#. translators: placeholders are: 1) the log status, 2) the Salesforce ID
+#: classes/salesforce_pull.php:438
+msgid "%1$s: Salesforce ID %2$s has been successfully pulled."
 msgstr ""
 
-#: classes/salesforce_pull.php:443
+#: classes/salesforce_pull.php:451
 msgid "This ID has been successfully pulled and added to the queue for processing. It cannot be pulled again without being modified again."
 msgstr ""
 
-#. translators: placeholders are: 1) the server error code, and 2) the name of the Salesforce object
-#: classes/salesforce_pull.php:486
-msgid "Error: %1$s when pulling %2$s data from Salesforce"
+#. translators: placeholders are: 1) the log status, 2) the server error code, and 3) the name of the Salesforce object
+#: classes/salesforce_pull.php:494
+msgid "%1$s: %2$s when pulling %3$s data from Salesforce"
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object type, 3) the previous Salesforce Id value, 4) the new Salesforce Id value, 5) the name of the WordPress object, 6) the WordPress id value
-#: classes/salesforce_pull.php:909
-msgid "Success: %1$s Salesforce %2$s objects with Ids %3$s and %4$s were merged (%4$s is the remaining ID. It is mapped to WordPress %5$s with %6$s.)"
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object type, 4) the previous Salesforce Id value, 5) the new Salesforce Id value, 6) the name of the WordPress object, 7) the WordPress id value
+#: classes/salesforce_pull.php:918
+msgid "%1$s: %2$s Salesforce %3$s objects with Ids %4$s and %5$s were merged (%5$s is the remaining ID. It is mapped to WordPress %6$s with %7$s.)"
 msgstr ""
 
-#: classes/salesforce_pull.php:1135
-msgid "Debug: we are missing a deletedDate attribute here, but are expected to delete an item."
+#. translators: placeholders are: 1) the log status
+#: classes/salesforce_pull.php:1147
+msgid "%1$s: we are missing a deletedDate attribute here, but are expected to delete an item."
 msgstr ""
 
-#: classes/salesforce_pull.php:1198
-msgid "Error: Salesforce Pull: unable to process queue item because it has no Salesforce Id."
+#. translators: placeholders are: 1) the log status
+#: classes/salesforce_pull.php:1214
+msgid "%1$s: Salesforce Pull: unable to process queue item because it has no Salesforce Id."
 msgstr ""
 
-#. translators: placeholders are: 1) the mapping object ID transient
-#: classes/salesforce_pull.php:1264
-msgid "Debug: mapping object transient ID %1$s is currently pushing, so we do not pull it."
+#. translators: placeholders are: 1) the log status, 2) the mapping object ID transient
+#: classes/salesforce_pull.php:1281
+msgid "%1$s: mapping object transient ID %2$s is currently pushing, so we do not pull it."
 msgstr ""
 
-#: classes/salesforce_pull.php:1510
-msgid "Error: There is at least one object map with a WordPress ID of 0."
+#. translators: placeholders are: 1) the log status
+#: classes/salesforce_pull.php:1530
+msgid "%1$s: There is at least one object map with a WordPress ID of 0."
 msgstr ""
 
 #. translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the Salesforce object it was trying to map
-#: classes/salesforce_pull.php:1515
+#: classes/salesforce_pull.php:1537
 msgid "There is an object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of 0 and the Salesforce object with ID of %3$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:1521
+#: classes/salesforce_pull.php:1543
 msgid "There are multiple object maps with WordPress ID of 0. Their IDs are: "
 msgstr ""
 
 #. translators: placeholders are: 1) the mapping object row ID, 2) the ID of the Salesforce object, 3) the WordPress object type
-#: classes/salesforce_pull.php:1525
+#: classes/salesforce_pull.php:1547
 msgid "Mapping object id: %1$s. Salesforce Id: %2$s. WordPress object type: %3$s"
 msgstr ""
 
-#. translators: placeholders are: 1) mapping object row id, 2) WordPress object tyoe, 3) individual WordPress item ID, 4) individual Salesforce item ID
-#: classes/salesforce_pull.php:1564
-msgid "Notice: Because object map %1$s already exists, WordPress %2$s %3$s was not mapped to Salesforce Id %4$s"
+#. translators: placeholders are: 1) log status, 2) mapping object row id, 3) WordPress object tyoe, 4) individual WordPress item ID, 5) individual Salesforce item ID
+#: classes/salesforce_pull.php:1586
+msgid "%1$s: Because object map %2$s already exists, WordPress %3$s %4$s was not mapped to Salesforce Id %5$s"
 msgstr ""
 
 #. translators: placeholders are 1) WordPress object type, 2) field name for the WordPress id, 3) the WordPress id value, 4) the Salesforce object type, 5) the Salesforce object Id that was modified, 6) the mapping object row id
-#: classes/salesforce_pull.php:1573
+#: classes/salesforce_pull.php:1596
 msgid "The WordPress %1$s with %2$s of %3$s is already mapped to the Salesforce %4$s with Id of %5$s in the mapping object with id of %6$s. The Salesforce %4$s with Id of %5$s was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing data unintentionally."
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, and 2) the name of the WordPress object
-#: classes/salesforce_pull.php:1644
-msgid "Error: %1$s WordPress %2$s"
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, and 3) the name of the WordPress object
+#: classes/salesforce_pull.php:1667
+msgid "%1$s: %2$s WordPress %3$s"
 msgstr ""
 
 #. translators: placeholders are: 1) the name of the Salesforce object, and 2) Id of the Salesforce object
-#: classes/salesforce_pull.php:1655
+#: classes/salesforce_pull.php:1679
 msgid " (Salesforce %1$s with Id of %2$s)"
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-#: classes/salesforce_pull.php:1723, classes/salesforce_pull.php:1859
-msgid "Success: %1$s WordPress %2$s with %3$s of %4$s (Salesforce %5$s Id of %6$s)"
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value
+#: classes/salesforce_pull.php:1747, classes/salesforce_pull.php:1885
+msgid "%1$s: %2$s WordPress %3$s with %4$s of %5$s (Salesforce %6$s Id of %7$s)"
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object type, 3) the Salesforce object Id value
-#: classes/salesforce_pull.php:1769
-msgid "Error syncing: %1$s to WordPress (Salesforce %2$s Id %3$s)"
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object type, 4) the Salesforce object Id value
+#: classes/salesforce_pull.php:1794
+msgid "%1$s syncing: %2$s to WordPress (Salesforce %3$s Id %4$s)"
 msgstr ""
 
 #. translators: placeholders are: 1) the name of the WordPress object type, 2) the WordPress id field name, 3) the WordPress id field value, 4) the array of errors
-#: classes/salesforce_pull.php:1777
+#: classes/salesforce_pull.php:1803
 msgid "Object: %1$s with %2$s of %3$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:1777
+#: classes/salesforce_pull.php:1803
 msgid "Message: "
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-#: classes/salesforce_pull.php:1894
-msgid "Error: %1$s WordPress %2$s with %3$s of %4$s (Salesforce %5$s with Id of %6$s)"
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value
+#: classes/salesforce_pull.php:1921
+msgid "%1$s: %2$s WordPress %3$s with %4$s of %5$s (Salesforce %6$s with Id of %7$s)"
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-#: classes/salesforce_pull.php:1998
-msgid "Error: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)"
-msgstr ""
-
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object, 6) the Salesforce Id value
-#: classes/salesforce_pull.php:2045
-msgid "Success: %1$s WordPress %2$s with %3$s of %4$s (%5$s %6$s)"
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value
+#: classes/salesforce_pull.php:2026, classes/salesforce_pull.php:2074
+msgid "%1$s: %2$s WordPress %3$s with %4$s of %5$s (%6$s %7$s)"
 msgstr ""
 
 #. translators: parameter is the name of the WordPress id field name
-#: classes/salesforce_pull.php:2073
+#: classes/salesforce_pull.php:2103
 msgid "The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress %1$s.) They are:"
 msgstr ""
 
-#: classes/salesforce_pull.php:2083
+#: classes/salesforce_pull.php:2113
 msgid "<p>The map row between this Salesforce object and the WordPress object, as stored in the WordPress database, will be deleted, and this Salesforce object has been deleted, but WordPress object data will remain untouched.</p>"
 msgstr ""
 
 #. translators: placeholders are: 1) the operation that is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object type, 6) the Salesforce Id
-#: classes/salesforce_pull.php:2094
-msgid "Notice: %1$s on WordPress %2$s with %3$s of %4$s was stopped because there are other WordPress records mapped to Salesforce %5$s of %6$s"
+#: classes/salesforce_pull.php:2124
+msgid "%1$s: %2$s on WordPress %3$s with %4$s of %5$s was stopped because there are other WordPress records mapped to Salesforce %6$s of %7$s"
 msgstr ""
 
-#: classes/salesforce_pull.php:2183
+#: classes/salesforce_pull.php:2214
 msgid "Mapping object created via function: "
 msgstr ""
 
-#. translators: placeholder is the name of the WordPress id field
+#. translators: placeholders are: 1) the log status, 2) the name of the WordPress id field
 #: classes/salesforce_push.php:444
-msgid "Error: Salesforce Push: unable to process queue item because it has no WordPress %1$s."
+msgid "%1$s: Salesforce Push: unable to process queue item because it has no WordPress %2$s."
 msgstr ""
 
-#. translators: placeholders are: 1) the name of the current operation, 2) the name of the WordPress object type, 3) the name of the WordPress ID field, 4) the value of the object's ID in WordPress, 5) the name of the Salesforce object
-#: classes/salesforce_push.php:528
-msgid "Error: %1$s Salesforce %5$s with WordPress %2$s with %3$s of %4$s was not allowed by this fieldmap."
+#. translators: placeholders are: 1) the log status, capitalized, 2) the name of the current operation, 3) the name of the WordPress object type, 4) the name of the WordPress ID field, 5) the value of the object's ID in WordPress, 6) the name of the Salesforce object
+#: classes/salesforce_push.php:530
+msgid "%1$s: %2$s Salesforce %3$s with WordPress %4$s with %5$s of %6$s was not allowed by this fieldmap."
 msgstr ""
 
-#. translators: placeholders are: 1) the name of the WordPress object type, 2) the name of the WordPress ID field, 3) the value of the object's ID in WordPress, 4) the name of the Salesforce object
-#: classes/salesforce_push.php:583
-msgid "Success: Add to queue: Push WordPress %1$s with %2$s of %3$s to Salesforce %4$s."
+#. translators: placeholders are: 1) the log status, 2) the name of the WordPress object type, 3) the name of the WordPress ID field, 4) the value of the object's ID in WordPress, 5) the name of the Salesforce object
+#: classes/salesforce_push.php:587
+msgid "%1$s: Add to queue: Push WordPress %2$s with %3$s of %4$s to Salesforce %5$s."
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value if there is one, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#: classes/salesforce_push.php:705, classes/salesforce_push.php:976, classes/salesforce_push.php:1217
-msgid "Error: %1$s Salesforce %2$s %3$s (WordPress %4$s with %5$s of %6$s)"
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value if there is one, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value
+#. translators: placeholders are: 1) the log status ,2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value
+#: classes/salesforce_push.php:710, classes/salesforce_push.php:746, classes/salesforce_push.php:984, classes/salesforce_push.php:1039, classes/salesforce_push.php:1205, classes/salesforce_push.php:1239
+msgid "%1$s: %2$s Salesforce %3$s %4$s (WordPress %5$s with %6$s of %7$s)"
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#: classes/salesforce_push.php:740, classes/salesforce_push.php:1030, classes/salesforce_push.php:1184
-msgid "Success: %1$s Salesforce %2$s %3$s (WordPress %4$s with %5$s of %6$s)"
-msgstr ""
-
-#: classes/salesforce_push.php:763
+#: classes/salesforce_push.php:770
 msgid "<p>The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are:</p>"
 msgstr ""
 
-#: classes/salesforce_push.php:771
+#: classes/salesforce_push.php:778
 msgid "<p>The map row between this WordPress object and the Salesforce object, as stored in the WordPress database, will be deleted, and this WordPress object has been deleted, but Salesforce will remain untouched.</p>"
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the Salesforce object, 3) the Salesforce Id value, 4) the name of the WordPress object type, 5) the WordPress id field name, 6) the WordPress object id value
-#: classes/salesforce_push.php:782
-msgid "Notice: %1$s on Salesforce %2$s with Id of %3$s was stopped because there are other Salesforce records mapped to WordPress %4$s with %5$s of %6$s"
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value
+#: classes/salesforce_push.php:789
+msgid "%1$s: %2$s on Salesforce %3$s with Id of %4$s was stopped because there are other Salesforce records mapped to WordPress %5$s with %6$s of %7$s"
 msgstr ""
 
 #. translators: placeholders are: 1) error code the Salesforce API returned, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value
-#: classes/salesforce_push.php:1079
+#: classes/salesforce_push.php:1089
 msgid "%1$s error syncing: %2$s to Salesforce (WordPress %3$s with %4$s of %5$s)"
 msgstr ""
 
-#. translators: placeholders are 1) the name of the Salesforce object type, 2) the error message returned from the Salesforce APIs
-#: classes/salesforce_push.php:1089
+#. translators: placeholders are 1) the name of the Salesforce object type, 2) the error message returned from the Salesforce APIs, 3) the parameters that were attempted
+#: classes/salesforce_push.php:1099
 msgid "Object: %1$s"
 msgstr ""
 
-#. translators: placeholders are: 1) what operation is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the Salesforce Id value
-#: classes/salesforce_push.php:1130
-msgid "Notice: %1$s: Did not sync WordPress %2$s with %3$s of %4$s with Salesforce Id %5$s because the last sync timestamp was greater than the object updated timestamp."
+#: classes/salesforce_push.php:1099
+msgid "Params: %3$s"
+msgstr ""
+
+#. translators: placeholders are 1) the upsert key attempted, 2) the upsert value attempted
+#: classes/salesforce_push.php:1108
+msgid "Upsert key: %1$s"
+msgstr ""
+
+#: classes/salesforce_push.php:1108
+msgid "Upsert value: %2$s"
+msgstr ""
+
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the Salesforce Id value
+#: classes/salesforce_push.php:1150
+msgid "%1$s: %2$s: Did not sync WordPress %3$s with %4$s of %5$s with Salesforce Id %6$s because the last sync timestamp was greater than the object updated timestamp."
 msgstr ""
 
 #. translators: placeholders are 1) when a sync on this mapping last occured, 2) when the object was last updated
-#: classes/salesforce_push.php:1140
+#: classes/salesforce_push.php:1161
 msgid "Last sync time: %1$s"
 msgstr ""
 
-#: classes/salesforce_push.php:1140
+#: classes/salesforce_push.php:1161
 msgid "Object updated time: %2$s"
 msgstr ""
 
 #. translators: placeholder is for the action that occurred on the mapping object (pending or created)
-#: classes/salesforce_push.php:1310
+#: classes/salesforce_push.php:1333
 msgid "Mapping object %1$s via function: "
 msgstr ""
 
-#. translators: 1) is object type, 2) is id value
-#: classes/wordpress.php:758
-msgid "Error: WordPress update for %1$s ID %2$s was unsuccessful with these errors:"
+#. translators: 1) is log status, 2) is object type, 3) is id value
+#: classes/wordpress.php:763
+msgid "%1$s: WordPress update for %2$s ID %3$s was unsuccessful with these errors:"
 msgstr ""
 
-#: classes/wordpress.php:1069
-msgid "Error: Users: Tried to run user_upsert, and ended up without a user id"
+#. translators: placeholders are: 1) the log status
+#: classes/wordpress.php:1077
+msgid "%1$s: Users: Tried to run user_upsert, and ended up without a user id"
 msgstr ""
 
-#: classes/wordpress.php:1400
-msgid "Error: Posts: Tried to run post_upsert, and ended up without a post id"
+#. translators: placeholders are: 1) the log status
+#: classes/wordpress.php:1416
+msgid "%1$s: Posts: Tried to run post_upsert, and ended up without a post id"
 msgstr ""
 
-#: classes/wordpress.php:1706
-msgid "Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id"
+#. translators: placeholders are: 1) the log status
+#: classes/wordpress.php:1731
+msgid "%1$s: Attachments: Tried to run attachment_upsert, and ended up without an attachment id"
 msgstr ""
 
-#: classes/wordpress.php:2025
-msgid "Error: Terms: Tried to run term_upsert, and ended up without a term id"
+#. translators: placeholders are: 1) the log status
+#: classes/wordpress.php:2057
+msgid "%1$s: Terms: Tried to run term_upsert, and ended up without a term id"
 msgstr ""
 
-#. translators: %1$s is a number. %2$s is a key. %3$s is the value of that key. %4$s is a var_export'd array of comments.
-#: classes/wordpress.php:2264
-msgid "Error: Comments: there are %1$s comment matches for the Salesforce key %2$s with the value of %3$s. Here they are: %4$s"
+#. translators: %1$s is the log status. %2$s is a number. %3$s is a key. %4$s is the value of that key. %5$s is a var_export'd array of comments.
+#: classes/wordpress.php:2301
+msgid "%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s"
 msgstr ""
 
-#: classes/wordpress.php:2346
-msgid "Error: Comments: Tried to run comment_upsert, and ended up without a comment id"
+#. translators: placeholders are: 1) the log status
+#: classes/wordpress.php:2387
+msgid "%1$s: Comments: Tried to run comment_upsert, and ended up without a comment id"
 msgstr ""
 
 #. translators: 1) is the WordPress object type, 2) is the method that should be used to save the value.
-#: classes/wordpress.php:2446
+#: classes/wordpress.php:2492
 msgid "Tried to add %1$s meta with method %2$s."
 msgstr ""
 
 #. translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save
-#: classes/wordpress.php:2505
+#: classes/wordpress.php:2551
 msgid "Unable to update %1$s meta key %2$s with method %3$s. The stored value is %4$s and the new value should be %5$s."
 msgstr ""
 
@@ -883,7 +897,7 @@ msgid "Pull to drafts"
 msgstr ""
 
 #: templates/admin/fieldmaps-add-edit-clone.php:477
-msgid "If selected, WordPress will pull data into drafts of this object type (if it creates drafts for it) from Salesforce, including when it attempts to match records."
+msgid "If selected, WordPress will check for matches against existing drafts of this object type, and will also update existing drafts."
 msgstr ""
 
 #. translators: the placeholder refers to the currently selected method (add, edit, or clone)

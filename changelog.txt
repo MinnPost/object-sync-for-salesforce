@@ -1,6 +1,12 @@
 Changelog
 =========
 
+* 1.8.11 (2019-09-17)
+	* Bug fix: fix Ajax call for pushing data to Salesforce, and allow it to return JSON instead of echoing it. Thanks to WordPress user @graces25 for the report and the fix.
+	* Maintenance: use the log entry status variable in the title of all the log entries.
+	* Maintenance: when a fieldmap doesn't allow an operation, log it as a notice instead of an error.
+	* Developers: add the WordPress object type to the object_sync_for_salesforce_wordpress_object_data filter, allowing developers to alter WordPress data by the current object type. Thanks to GitHub user @DonnyVO for this work.
+
 * 1.8.10 (2019-09-12)
 	* Bug fix: Prevent PHP errors when API requests on empty Salesforce objects also return errors
 	* Bug fix: Fix authorize settings tab to prevent errors when there are no Salesforce Contacts (#303)
