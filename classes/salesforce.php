@@ -323,8 +323,10 @@ class Object_Sync_Sf_Salesforce {
 				$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 			}
 
-			// translators: placeholder is the URL of the Salesforce API request
-			$title = sprintf( esc_html__( 'Debug: on Salesforce API HTTP Request to URL: %1$s.', 'object-sync-for-salesforce' ),
+			$title = sprintf(
+				// translators: placeholders are: 1) the log status, 2) the URL of the Salesforce API request
+				esc_html__( '%1$s: on Salesforce API HTTP Request to URL: %2$s.', 'object-sync-for-salesforce' ),
+				ucfirst( esc_attr( $status ) ),
 				esc_url( $url )
 			);
 
@@ -434,9 +436,11 @@ class Object_Sync_Sf_Salesforce {
 					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 				}
 
-				// translators: placeholder is the HTTP status code returned by the Salesforce API request
-				$title = sprintf( esc_html__( 'Error: %1$s: on Salesforce http request', 'object-sync-for-salesforce' ),
-					esc_attr( $code )
+				$title = sprintf(
+					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request
+					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
+					absint( $code )
 				);
 
 				$logging->setup(
@@ -456,13 +460,16 @@ class Object_Sync_Sf_Salesforce {
 					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 				}
 
-				// translators: placeholder is the server code returned by the api
-				$title = sprintf( esc_html__( 'Error: %1$s: on Salesforce http request', 'object-sync-for-salesforce' ),
+				$title = sprintf(
+					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request
+					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
 					absint( $code )
 				);
 
-				// translators: placeholders are: 1) the URL requested, 2) the message returned by the error, 3) the server code returned
-				$body = sprintf( '<p>' . esc_html__( 'URL: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: %2$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Code: %3$s', 'object-sync-for-salesforce' ),
+				$body = sprintf(
+					// translators: placeholders are: 1) the URL requested, 2) the message returned by the error, 3) the server code returned
+					'<p>' . esc_html__( 'URL: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: %2$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Code: %3$s', 'object-sync-for-salesforce' ),
 					esc_attr( $url ),
 					esc_html( $data[0]['message'] ),
 					absint( $code )
@@ -485,8 +492,10 @@ class Object_Sync_Sf_Salesforce {
 					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 				}
 
-				// translators: placeholder is the server code returned by Salesforce
-				$title = sprintf( esc_html__( 'Error: %1$s: on Salesforce http request', 'object-sync-for-salesforce' ),
+				$title = sprintf(
+					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request
+					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
 					absint( $code )
 				);
 
