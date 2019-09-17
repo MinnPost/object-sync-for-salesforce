@@ -474,7 +474,7 @@
 		</div>
 		<div class="checkboxes">
 			<label><input type="checkbox" name="pull_to_drafts" id="pull-to-drafts" value="1" <?php echo isset( $pull_to_drafts ) && '1' === $pull_to_drafts ? ' checked' : ''; ?>><?php echo esc_html__( 'Pull to drafts', 'object-sync-for-salesforce' ); ?></label>
-			<p class="description"><?php echo esc_html__( 'If selected, WordPress will pull data into drafts of this object type (if it creates drafts for it) from Salesforce, including when it attempts to match records.', 'object-sync-for-salesforce' ); ?></p>
+			<p class="description"><?php echo esc_html__( 'If selected, WordPress will check for matches against existing drafts of this object type, and will also update existing drafts.', 'object-sync-for-salesforce' ); ?></p>
 		</div>
 	</fieldset>
 	<?php
