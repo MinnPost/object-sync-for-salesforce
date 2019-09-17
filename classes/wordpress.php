@@ -758,8 +758,10 @@ class Object_Sync_Sf_WordPress {
 
 		if ( isset( $result['errors'] ) && ! empty( $result['errors'] ) ) {
 			$status = 'error';
-			// translators: 1) is object type, 2) is id value
-			$title = sprintf( esc_html__( 'Error: WordPress update for %1$s ID %2$s was unsuccessful with these errors:', 'object-sync-for-salesforce' ),
+			$title  = sprintf(
+				// translators: 1) is log status, 2) is object type, 3) is id value
+				esc_html__( '%1$s: WordPress update for %2$s ID %3$s was unsuccessful with these errors:', 'object-sync-for-salesforce' ),
+				ucfirst( esc_attr( $status ) ),
 				esc_attr( $name ),
 				esc_attr( $id )
 			);
@@ -1068,13 +1070,21 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
+
+		$status = 'error';
+		$title  = sprintf(
+			// translators: placeholders are: 1) the log status
+			esc_html__( '%1$s: Users: Tried to run user_upsert, and ended up without a user id', 'object-sync-for-salesforce' ),
+			ucfirst( esc_attr( $status ) )
+		);
+
 		$logging->setup(
 			// todo: can we get any more specific about this?
-			esc_html__( 'Error: Users: Tried to run user_upsert, and ended up without a user id', 'object-sync-for-salesforce' ),
+			$title,
 			'',
 			0,
 			0,
-			'error'
+			$status
 		);
 
 	}
@@ -1399,13 +1409,21 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
+
+		$status = 'error';
+		$title  = sprintf(
+			// translators: placeholders are: 1) the log status
+			esc_html__( '%1$s: Posts: Tried to run post_upsert, and ended up without a post id', 'object-sync-for-salesforce' ),
+			ucfirst( esc_attr( $status ) )
+		);
+
 		$logging->setup(
 			// todo: can we be more explicit here about what post upsert failed?
-			esc_html__( 'Error: Posts: Tried to run post_upsert, and ended up without a post id', 'object-sync-for-salesforce' ),
+			$title,
 			'',
 			0,
 			0,
-			'error'
+			$status
 		);
 
 	}
@@ -1706,14 +1724,21 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
+
+		$status = 'error';
+		$title  = sprintf(
+			// translators: placeholders are: 1) the log status
+			esc_html__( '%1$s: Attachments: Tried to run attachment_upsert, and ended up without an attachment id', 'object-sync-for-salesforce' ),
+			ucfirst( esc_attr( $status ) )
+		);
+
 		$logging->setup(
-			esc_html__( 'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id', 'object-sync-for-salesforce' ),
+			$title,
 			'',
 			0,
 			0,
-			'error'
+			$status
 		);
-
 	}
 
 	/**
@@ -2025,12 +2050,20 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
+
+		$status = 'error';
+		$title  = sprintf(
+			// translators: placeholders are: 1) the log status
+			esc_html__( '%1$s: Terms: Tried to run term_upsert, and ended up without a term id', 'object-sync-for-salesforce' ),
+			ucfirst( esc_attr( $status ) )
+		);
+
 		$logging->setup(
-			esc_html__( 'Error: Terms: Tried to run term_upsert, and ended up without a term id', 'object-sync-for-salesforce' ),
+			$title,
 			'',
 			0,
 			0,
-			'error'
+			$status
 		);
 
 	}
@@ -2264,8 +2297,9 @@ class Object_Sync_Sf_WordPress {
 				}
 				$logging->setup(
 					sprintf(
-						// translators: %1$s is a number. %2$s is a key. %3$s is the value of that key. %4$s is a var_export'd array of comments.
-						esc_html__( 'Error: Comments: there are %1$s comment matches for the Salesforce key %2$s with the value of %3$s. Here they are: %4$s', 'object-sync-for-salesforce' ),
+						// translators: %1$s is the log status. %2$s is a number. %3$s is a key. %4$s is the value of that key. %5$s is a var_export'd array of comments.
+						esc_html__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', 'object-sync-for-salesforce' ),
+						ucfirst( esc_attr( $status ) ),
 						absint( count( $comments ) ),
 						esc_html( $key ),
 						esc_html( $value ),
@@ -2346,12 +2380,20 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
+
+		$status = 'error';
+		$title  = sprintf(
+			// translators: placeholders are: 1) the log status
+			esc_html__( '%1$s: Comments: Tried to run comment_upsert, and ended up without a comment id', 'object-sync-for-salesforce' ),
+			ucfirst( esc_attr( $status ) )
+		);
+
 		$logging->setup(
-			esc_html__( 'Error: Comments: Tried to run comment_upsert, and ended up without a comment id', 'object-sync-for-salesforce' ),
+			$title,
 			'',
 			0,
 			0,
-			'error'
+			$status
 		);
 
 	}
