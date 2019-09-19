@@ -745,6 +745,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 		}
 		*/
 
+		// Make sure our SOQL object properties that are arrays are unique. This prevents values added via developer hook from being added repeatedly when a query is cached.
+		$soql->fields     = array_unique( $soql->fields, SORT_REGULAR );
+		$soql->order      = array_unique( $soql->order, SORT_REGULAR );
+		$soql->conditions = array_unique( $soql->conditions, SORT_REGULAR );
+
 		// serialize the currently running SOQL query and store it for this type
 		$serialized_current_query = maybe_serialize( $soql );
 		update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query, false );
