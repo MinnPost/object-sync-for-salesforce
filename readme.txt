@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 5.2
-Stable tag: 1.8.11
+Stable tag: 1.8.12
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -262,6 +262,10 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
+* 1.8.12 (2019-09-19)
+    * Bug fix: fix the `object_sync_for_salesforce_pull_query_modify` filter to prevent SOQL query properties from being added multiple times.
+    * Developers: clean up Travis config to stop its builds from failing.
+
 * 1.8.11 (2019-09-17)
     * Bug fix: fix Ajax call for pushing data to Salesforce, and allow it to return JSON instead of echoing it. Thanks to WordPress user @graces25 for the report and the fix.
     * Maintenance: use the log entry status variable in the title of all the log entries.
@@ -326,3 +330,5 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
     * Bug fix: a bug existed in fieldmaps that had a Salesforce field like a record ID, which cannot be pushed to Salesforce but can be pulled from Salesforce, but the sync was failing. Thanks to WordPress forum user @walexparadis for the report on this.
     * Developers: we've updated our included version of ActionScheduler to 2.2.1.
     * Developers: the `load_by_wordpress` and `load_by_salesforce` methods on the `salesforce_mapping` class have been deprecated in favor of `load_all_by_wordpress` and `load_all_by_salesforce`, though the deprecated methods have not been removed.
+
+See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/changelog.md) on GitHub or in changelog.txt in the installed plugin.
