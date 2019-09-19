@@ -737,13 +737,18 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// quick example to change the order to descending
 		/*
-		add_filter( 'object_sync_for_salesforce_pull_query_modify', 'change_pull_query', 10, 6 );
+		add_filter( 'object_sync_for_salesforce_pull_query_modify', 'change_pull_query', 10, 4 );
 		// can always reduce this number if all the arguments are not necessary
-		function change_pull_query( $soql, $type, $salesforce_mapping, $mapped_fields, $salesforce_mapping, $mapped_fields ) {
+		function change_pull_query( $soql, $type, $salesforce_mapping, $mapped_fields ) {
 			$soql->order = 'DESC';
 			return $soql;
 		}
 		*/
+
+		// Make sure our SOQL object properties that are arrays are unique. This prevents values added via developer hook from being added repeatedly when a query is cached.
+		$soql->fields     = array_unique( $soql->fields, SORT_REGULAR );
+		$soql->order      = array_unique( $soql->order, SORT_REGULAR );
+		$soql->conditions = array_unique( $soql->conditions, SORT_REGULAR );
 
 		// serialize the currently running SOQL query and store it for this type
 		$serialized_current_query = maybe_serialize( $soql );
