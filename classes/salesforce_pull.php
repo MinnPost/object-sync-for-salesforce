@@ -737,9 +737,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// quick example to change the order to descending
 		/*
-		add_filter( 'object_sync_for_salesforce_pull_query_modify', 'change_pull_query', 10, 6 );
+		add_filter( 'object_sync_for_salesforce_pull_query_modify', 'change_pull_query', 10, 4 );
 		// can always reduce this number if all the arguments are not necessary
-		function change_pull_query( $soql, $type, $salesforce_mapping, $mapped_fields, $salesforce_mapping, $mapped_fields ) {
+		function change_pull_query( $soql, $type, $salesforce_mapping, $mapped_fields ) {
 			$soql->order = 'DESC';
 			return $soql;
 		}
