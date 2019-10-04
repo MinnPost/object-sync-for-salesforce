@@ -36,6 +36,42 @@
 				?>
 			</select>
 		</div>
+		<div class="wordpress_object_default_status">
+			<?php
+			$get_wordpress_object_description = $this->get_wordpress_object_description(
+				array(
+					'wordpress_object' => $wordpress_object,
+					'include'          => 'statuses',
+				)
+			);
+			if ( ! empty( $get_wordpress_object_description['statuses'] ) ) :
+				?>
+				<label for="wordpress_object_default_status"><?php echo esc_html__( 'Default object status', 'object-sync-for-salesforce' ); ?>: </label>
+				<div class="spinner"></div>
+				<select id="wordpress_object_default_status" name="wordpress_object_default_status">
+					<option value="">- <?php echo esc_html__( 'Select object status', 'object-sync-for-salesforce' ); ?> -</option>
+					<?php
+					foreach ( $get_wordpress_object_description['statuses'] as $key => $value ) {
+						if ( isset( $wordpress_object_default_status ) && $wordpress_object_default_status === $key ) {
+							$selected = ' selected';
+						} else {
+							$selected = '';
+						}
+						echo sprintf(
+							'<option value="%1$s"%2$s>%3$s</option>',
+							esc_html( $key ),
+							esc_attr( $selected ),
+							esc_html( $value )
+						);
+					}
+					?>
+				</select>
+				<p class="description"><?php echo esc_html__( 'If this fieldmap allows new records to be created from Salesforce data, you can set a default status for them. You can override this default status by making a field that maps to the object\'s status field, or by using a developer hook to populate it.', 'object-sync-for-salesforce' ); ?></p>
+				<p class="description"><?php echo esc_html__( 'The only core object that requires a status is the post. If you do not otherwise set a status, newly created posts will be drafts.', 'object-sync-for-salesforce' ); ?></p>
+				<?php
+			endif;
+			?>
+		</div>
 	</fieldset>
 	<fieldset class="salesforce_side">
 		<div class="salesforce_object">

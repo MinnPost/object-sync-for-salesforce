@@ -155,6 +155,7 @@ class Object_Sync_Sf_Admin {
 		add_action( 'admin_post_delete_fieldmap', array( $this, 'delete_fieldmap' ) );
 
 		// Ajax for fieldmap forms
+		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_description' ), 10, 1 );
 		add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ), 10, 1 );
 		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
 		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
@@ -396,6 +397,7 @@ class Object_Sync_Sf_Admin {
 							$salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
 							$salesforce_record_type_default  = $map['salesforce_record_type_default'];
 							$wordpress_object                = $map['wordpress_object'];
+							$wordpress_object_default_status = isset( $map['wordpress_object_default_status'] ) ? $map['wordpress_object_default_status'] : '';
 							$pull_trigger_field              = $map['pull_trigger_field'];
 							$fieldmap_fields                 = $map['fields'];
 							$sync_triggers                   = $map['sync_triggers'];
@@ -1229,6 +1231,57 @@ class Object_Sync_Sf_Admin {
 			}
 		}
 
+	}
+
+	/**
+	* Get all the WordPress object settings for fieldmapping.
+	* This must include at least the available statuses for that object type.
+	* This takes either the $_POST array via ajax, or can be directly called with a $data array
+	*
+	* @param array $data
+	* data must contain a wordpress_object
+	* can optionally contain a type
+	* @return array $object_settings
+	*/
+	public function get_wordpress_object_description( $data = array() ) {
+		$ajax = false;
+		if ( empty( $data ) ) {
+			$data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+			$ajax = true;
+		}
+
+		$object_description = array();
+
+		if ( ! empty( $data['wordpress_object'] ) ) {
+			$wordpress_object = $data['wordpress_object'];
+			$object_fields    = array();
+			$object_statuses  = array();
+
+			// these can come from ajax
+			$include = isset( $data['include'] ) ? (array) $data['include'] : array();
+			$include = array_map( 'esc_attr', $include );
+
+			if ( in_array( 'fields', $include, true ) || empty( $include ) ) {
+				$type   = isset( $data['field_type'] ) ? esc_attr( $data['field_type'] ) : ''; // can come from ajax
+				$fields = $this->get_wordpress_object_fields( $wordpress_object );
+				foreach ( $fields as $key => $value ) {
+					if ( '' === $type || $type === $value['type'] ) {
+						$object_fields[ $key ] = $value;
+					}
+				}
+				$object_description['fields'] = $object_fields;
+			}
+
+			if ( in_array( 'statuses', $include, true ) ) {
+				$object_description['statuses'] = $this->wordpress->get_wordpress_object_statuses( $wordpress_object );
+			}
+		}
+
+		if ( true === $ajax ) {
+			wp_send_json_success( $object_description );
+		} else {
+			return $object_description;
+		}
 	}
 
 	/**

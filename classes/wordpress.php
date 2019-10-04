@@ -392,6 +392,54 @@ class Object_Sync_Sf_WordPress {
 	}
 
 	/**
+	* Get all the WordPress object statuses that can be set when creating new records
+	* This is filterable for cases where plugins make custom statuses, but otherwise it only contains the default WordPress statuses
+	*
+	* @param string $object_type is the WordPress object type name
+	* @return array $statuses
+	*/
+	public function get_wordpress_object_statuses( $object_type ) {
+		switch ( $object_type ) {
+			// the user object, by default, does not do anything with the status field in the wp_users table
+			// these other objects don't have a status field, by default
+			case 'user':
+			case 'category':
+			case 'tag':
+			case 'post_tag':
+				$statuses = array();
+				break;
+			case 'post':
+			case 'attachment':
+				$statuses = get_post_statuses();
+				break;
+			case 'comment':
+				$statuses = get_comment_statuses();
+				break;
+			default:
+				// we assume it's a custom post type if it's not one of the core objects
+				$statuses = get_post_statuses();
+				break;
+		}
+
+		/*
+		 * Allow developers to change the statuses available for this object type.
+		 * The returned $statuses needs to be an array like described above.
+		 * This is useful for custom objects, or statuses added to core objects by other plugins
+		 * Here's an example of filters to add/modify data:
+		 *
+			add_filter( 'object_sync_for_salesforce_wordpress_object_statuses', 'modify_statuses', 10, 2 );
+			function modify_statuses( $statuses, $object_type ) {
+				$statuses['spam'] = __( 'Spam', 'object-sync-for-salesforce' );
+				return $statuses;
+			}
+		*/
+
+		$statuses = apply_filters( $this->option_prefix . 'wordpress_object_statuses', $statuses, $object_type );
+
+		return $statuses;
+	}
+
+	/**
 	 * Check to see if this API call exists in the cache
 	 * if it does, return the transient for that key
 	 *
