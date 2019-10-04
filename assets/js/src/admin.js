@@ -14,6 +14,64 @@
 	}
 
 	/**
+	 * Generates the WordPress object fields based on the dropdown activity and API results.
+	 */
+	function wordpressObjectFields() {
+
+		var delay = ( function() {
+			var timer = 0;
+			return function( callback, ms ) {
+				clearTimeout ( timer );
+				timer = setTimeout( callback, ms );
+			};
+		}() );
+
+		if ( 0 === $( '.wordpress_object_default_status > *' ).length ) {
+			$( '.wordpress_object_default_status' ).hide();
+		}
+
+		$( '#wordpress_object' ).on( 'change', function() {
+			var that = this;
+			var delayTime = 1000;
+			delay( function() {
+				var data = {
+					'action' : 'get_wordpress_object_description',
+					'include' : [ 'statuses' ],
+					'wordpress_object' : that.value
+				}
+				$.post( ajaxurl, data, function( response ) {
+
+					var statusesMarkup = '';
+
+					if ( 0 < $( response.data.statuses ).length ) {
+						statusesMarkup += '<label for="wordpress_object_default_status">Default ' + that.value + ' status:</label>';
+						statusesMarkup += '<select name="wordpress_object_default_status" id="wordpress_object_default_status"><option value="">- Select ' + that.value + ' status -</option>';
+						$.each( response.data.statuses, function( index, value ) {
+							statusesMarkup += '<option value="' + index + '">' + value + '</option>';
+						});
+						statusesMarkup += '</select>';
+						statusesMarkup += '<p class="description">If this fieldmap allows new records to be created from Salesforce data, you can set a default status for them. You can override this default status by making a field that maps to the status field in the field settings below, or by using a developer hook to populate it.</p>';
+						statusesMarkup += '<p class="description">The only core object that requires a status is the post. If you do not otherwise set a status, newly created posts will be drafts.</p>';
+					}
+
+					$( '.wordpress_object_default_status' ).html( statusesMarkup );
+
+					if ( '' !== statusesMarkup ) {
+						$( '.wordpress_object_default_status' ).show();
+					} else {
+						$( '.wordpress_object_default_status' ).hide();
+					}
+
+					if ( jQuery.fn.select2 ) {
+						$( 'select#wordpress_object_default_status' ).select2();
+					}
+
+				});
+			}, delayTime );
+		});
+	}
+
+	/**
 	 * Generates the Salesforce object fields based on the dropdown activity and API results.
 	 */
 	function salesforceObjectFields() {
@@ -76,7 +134,7 @@
 							dateMarkup += '<option value="' + value.name + '">' + value.label + '</option>';
 						});
 						dateMarkup += '</select>';
-						dateMarkup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>'
+						dateMarkup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>';
 					}
 
 					$( '.pull_trigger_field' ).html( dateMarkup );
@@ -272,7 +330,7 @@
 	 * Select2 on select fields
 	 * Clear fields when the targeted WordPress or Salesforce object type changes
 	 * Add a spinner for Ajax requests
-	 * Manage the display for Salesforce object fields based on API reponse
+	 * Manage the display for WordPress and Salesforce object fields based on Ajax reponses
 	 * Manual push and pull
 	 * Clearing the cache
 	 */
@@ -286,6 +344,7 @@
 
 		if ( jQuery.fn.select2 ) {
 			$( 'select#wordpress_object' ).select2();
+			$( 'select#wordpress_object_default_status' ).select2();
 			$( 'select#salesforce_object' ).select2();
 			$( 'select#salesforce_record_type_default' ).select2();
 			$( 'select#pull_trigger_field' ).select2();
@@ -307,6 +366,7 @@
 		}).ajaxStop( function() {
 			$( '.spinner' ).removeClass( 'is-active' );
 		});
+		wordpressObjectFields();
 		salesforceObjectFields();
 		addFieldMappingRow();
 
