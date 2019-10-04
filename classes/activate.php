@@ -92,6 +92,7 @@ class Object_Sync_Sf_Activate {
 			label varchar(64) NOT NULL DEFAULT '',
 			name varchar(64) NOT NULL DEFAULT '',
 			wordpress_object varchar(128) NOT NULL DEFAULT '',
+			wordpress_object_default_status varchar(255) NOT NULL DEFAULT '',
 			salesforce_object varchar(255) NOT NULL DEFAULT '',
 			salesforce_record_types_allowed longblob,
 			salesforce_record_type_default varchar(255) NOT NULL DEFAULT '',
