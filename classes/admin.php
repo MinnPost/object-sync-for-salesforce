@@ -157,7 +157,7 @@ class Object_Sync_Sf_Admin {
 		// Ajax for fieldmap forms
 		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_description' ), 10, 1 );
 		add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ), 10, 1 );
-		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
+		add_action( 'wp_ajax_get_wordpress_object_fields', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
 		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
 
 		// Ajax events that can be manually called
