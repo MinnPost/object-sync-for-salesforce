@@ -164,7 +164,6 @@ class Object_Sync_Sf_Mapping {
 		} elseif ( ! empty( $conditions ) ) { // get multiple but with a limitation.
 			$mappings    = array();
 			$record_type = '';
-
 			// Assemble the SQL.
 			if ( ! empty( $conditions ) ) {
 				$where = ' WHERE ';
@@ -183,19 +182,18 @@ class Object_Sync_Sf_Mapping {
 			} else {
 				$where = '';
 			}
-
 			$mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . ' ORDER BY `weight`', ARRAY_A );
-
 			if ( ! empty( $mappings ) ) {
 				$mappings = $this->prepare_fieldmap_data( $mappings, $record_type );
 			}
-
 			return $mappings;
-
-		} else { // get all of the mappings. ALL THE MAPPINGS.
-
-			// if the version is greater than or equal to 1.5.0, the fieldmap table has a pull_to_drafts column
-			if ( version_compare( $this->version, '1.5.0', '>=' ) ) {
+		} else {
+			// get all of the mappings. ALL THE MAPPINGS.
+			if ( version_compare( $this->version, '1.9.0', '>=' ) ) {
+				// if the version is greater than or equal to 1.9.0, the fieldmap table has a wordpress_object_default_status column
+				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `wordpress_object_default_status`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
+			} elseif ( version_compare( $this->version, '1.5.0', '>=' ) ) {
+				// if the version is greater than or equal to 1.5.0, the fieldmap table has a pull_to_drafts column
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
 			} elseif ( version_compare( $this->version, '1.2.5', '>=' ) ) {
 				// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column
@@ -203,11 +201,9 @@ class Object_Sync_Sf_Mapping {
 			} else {
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
 			}
-
 			if ( ! empty( $mappings ) ) {
 				$mappings = $this->prepare_fieldmap_data( $mappings );
 			}
-
 			return $mappings;
 		} // End if().
 	}
@@ -306,6 +302,10 @@ class Object_Sync_Sf_Mapping {
 			'salesforce_object' => $posted['salesforce_object'],
 			'wordpress_object'  => $posted['wordpress_object'],
 		);
+		if ( isset( $posted['wordpress_object_default_status'] ) ) {
+			// added in version 1.9.0.
+			$data['wordpress_object_default_status'] = sanitize_text_field( $posted['wordpress_object_default_status'] );
+		}
 		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
