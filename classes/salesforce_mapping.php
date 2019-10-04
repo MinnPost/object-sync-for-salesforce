@@ -302,10 +302,8 @@ class Object_Sync_Sf_Mapping {
 			'salesforce_object' => $posted['salesforce_object'],
 			'wordpress_object'  => $posted['wordpress_object'],
 		);
-		if ( isset( $posted['wordpress_object_default_status'] ) ) {
-			// added in version 1.9.0.
-			$data['wordpress_object_default_status'] = sanitize_text_field( $posted['wordpress_object_default_status'] );
-		}
+		// added in version 1.9.0.
+		$data['wordpress_object_default_status'] = isset( $posted['wordpress_object_default_status'] ) ? sanitize_text_field( $posted['wordpress_object_default_status'] ) : '';
 		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
