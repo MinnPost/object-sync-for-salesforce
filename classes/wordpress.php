@@ -399,6 +399,7 @@ class Object_Sync_Sf_WordPress {
 	* @return array $statuses
 	*/
 	public function get_wordpress_object_statuses( $object_type ) {
+		$statuses = array();
 		switch ( $object_type ) {
 			// the user object, by default, does not do anything with the status field in the wp_users table
 			// these other objects don't have a status field, by default
