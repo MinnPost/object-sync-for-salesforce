@@ -783,11 +783,12 @@ class Object_Sync_Sf_Mapping {
 
 		$params = array();
 
+		// these are the triggers that define whether the action was from WordPress or Salesforce.
+		$wordpress_haystack  = array_values( $this->wordpress_events );
+		$salesforce_haystack = array_values( $this->salesforce_events );
+
 		$has_missing_required_salesforce_field = false;
 		foreach ( $mapping['fields'] as $fieldmap ) {
-
-			$wordpress_haystack  = array_values( $this->wordpress_events );
-			$salesforce_haystack = array_values( $this->salesforce_events );
 
 			$fieldmap['wordpress_field']['methods'] = maybe_unserialize( $fieldmap['wordpress_field']['methods'] );
 
