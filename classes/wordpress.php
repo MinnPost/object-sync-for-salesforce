@@ -583,6 +583,7 @@ class Object_Sync_Sf_WordPress {
 	 *
 	 * @param string $name Object type name, E.g., user, post, comment.
 	 * @param array  $params Values of the fields to set for the object.
+	 * @param string $default_status the default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -595,28 +596,28 @@ class Object_Sync_Sf_WordPress {
 	 *
 	 * part of CRUD for WordPress objects
 	 */
-	public function object_create( $name, $params ) {
+	public function object_create( $name, $params, $default_status = '' ) {
 
 		$structure = $this->get_wordpress_table_structure( $name );
 		$id_field  = $structure['id_field'];
 
 		switch ( $name ) {
 			case 'user':
-				$result = $this->user_create( $params, $id_field );
+				$result = $this->user_create( $params, $id_field, $default_status );
 				break;
 			case 'post':
-				$result = $this->post_create( $params, $id_field );
+				$result = $this->post_create( $params, $id_field, $name, $default_status );
 				break;
 			case 'attachment':
-				$result = $this->attachment_create( $params, $id_field );
+				$result = $this->attachment_create( $params, $id_field, $default_status );
 				break;
 			case 'category':
 			case 'tag':
 			case 'post_tag':
-				$result = $this->term_create( $params, $name, $id_field );
+				$result = $this->term_create( $params, $name, $id_field, $default_status );
 				break;
 			case 'comment':
-				$result = $this->comment_create( $params, $id_field );
+				$result = $this->comment_create( $params, $id_field, $default_status );
 				break;
 			default:
 				/*
@@ -630,13 +631,17 @@ class Object_Sync_Sf_WordPress {
 				 */
 				// Check to see if someone is calling the filter, and apply it if so.
 				if ( ! has_filter( $this->option_prefix . 'create_custom_wordpress_item' ) ) {
-					$result = $this->post_create( $params, $id_field, $name );
+					$result = $this->post_create( $params, $id_field, $name, $default_status );
 				} else {
-					$result = apply_filters( $this->option_prefix . 'create_custom_wordpress_item', array(
-						'params'   => $params,
-						'name'     => $name,
-						'id_field' => $id_field,
-					) );
+					$result = apply_filters(
+						$this->option_prefix . 'create_custom_wordpress_item',
+						array(
+							'params'         => $params,
+							'name'           => $name,
+							'id_field'       => $id_field,
+							'default_status' => $default_status,
+						)
+					);
 				}
 				break;
 		} // End switch().
@@ -660,6 +665,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param array  $params Values of the fields to set for the object.
 	 * @param bool   $pull_to_drafts Whether to save to WordPress drafts when pulling from Salesforce.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 * @param string $default_status The default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -672,7 +678,7 @@ class Object_Sync_Sf_WordPress {
 	 *
 	 * part of CRUD for WordPress objects
 	 */
-	public function object_upsert( $name, $key, $value, $methods = array(), $params, $pull_to_drafts = false, $check_only = false ) {
+	public function object_upsert( $name, $key, $value, $methods = array(), $params, $pull_to_drafts = false, $check_only = false, $default_status = '' ) {
 
 		$structure = $this->get_wordpress_table_structure( $name );
 		$id_field  = $structure['id_field'];
@@ -688,21 +694,21 @@ class Object_Sync_Sf_WordPress {
 
 		switch ( $name ) {
 			case 'user':
-				$result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $check_only );
+				$result = $this->user_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $check_only, $default_status );
 				break;
 			case 'post':
-				$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $name, $check_only );
+				$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $name, $check_only, $default_status );
 				break;
 			case 'attachment':
-				$result = $this->attachment_upsert( $key, $value, $methods, $params, $id_field, $check_only );
+				$result = $this->attachment_upsert( $key, $value, $methods, $params, $id_field, $check_only, $default_status );
 				break;
 			case 'category':
 			case 'tag':
 			case 'post_tag':
-				$result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $check_only );
+				$result = $this->term_upsert( $key, $value, $methods, $params, $name, $id_field, $check_only, $default_status );
 				break;
 			case 'comment':
-				$result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $check_only );
+				$result = $this->comment_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $check_only, $default_status );
 				break;
 			default:
 				/*
@@ -714,22 +720,26 @@ class Object_Sync_Sf_WordPress {
 				 * Use hook like this:
 				 *     add_filter( 'object_sync_for_salesforce_upsert_custom_wordpress_item', upsert_object, 10, 1 );
 				 * The one param is:
-				 *     array( 'key' => key, 'value' => value, 'methods' => methods, 'params' => array_of_params, 'id_field' => idfield, 'pull_to_drafts' => pulltodrafts, 'name' => name, 'check_only' => $check_only )
+				 *     array( 'key' => key, 'value' => value, 'methods' => methods, 'params' => array_of_params, 'id_field' => idfield, 'pull_to_drafts' => pulltodrafts, 'name' => name, 'check_only' => $check_only, 'default_status' => $default_status, )
 				*/
 				// Check to see if someone is calling the filter, and apply it if so.
 				if ( ! has_filter( $this->option_prefix . 'upsert_custom_wordpress_item' ) ) {
-					$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $name, $check_only );
+					$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $name, $check_only, $default_status );
 				} else {
-					$result = apply_filters( $this->option_prefix . 'upsert_custom_wordpress_item', array(
-						'key'            => $key,
-						'value'          => $value,
-						'methods'        => $methods,
-						'params'         => $params,
-						'id_field'       => $id_field,
-						'pull_to_drafts' => $pull_to_drafts,
-						'name'           => $name,
-						'check_only'     => $check_only,
-					) );
+					$result = apply_filters(
+						$this->option_prefix . 'upsert_custom_wordpress_item',
+						array(
+							'key'            => $key,
+							'value'          => $value,
+							'methods'        => $methods,
+							'params'         => $params,
+							'id_field'       => $id_field,
+							'pull_to_drafts' => $pull_to_drafts,
+							'name'           => $name,
+							'check_only'     => $check_only,
+							'default_status' => $default_status,
+						)
+					);
 				}
 				break;
 		} // End switch().
@@ -906,6 +916,7 @@ class Object_Sync_Sf_WordPress {
 	 *
 	 * @param array  $params array of user data params.
 	 * @param string $id_field The column in the DB that holdes the user ID.
+	 * @param string $default_status The default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -913,7 +924,7 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function user_create( $params, $id_field = 'ID' ) {
+	private function user_create( $params, $id_field = 'ID', $default_status = '' ) {
 
 		// Allow username to be email address or username.
 		// The username could be autogenerated before this point for the sake of URLs.
@@ -1001,6 +1012,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
 	 * @param bool   $pull_to_drafts Whether to save to WordPress drafts when pulling from Salesforce.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 * @param string $default_status The default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -1008,7 +1020,7 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $pull_to_drafts = false, $check_only = false ) {
+	private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $pull_to_drafts = false, $check_only = false, $default_status = '' ) {
 
 		// If the key is user_email, we need to make it just email because that is how the WordPress method reads it.
 		$method = $methods['method_match'];
@@ -1066,7 +1078,7 @@ class Object_Sync_Sf_WordPress {
 					'method_modify' => $method,
 					'method_read'   => $methods['method_read'],
 				);
-				$result         = $this->user_create( $params );
+				$result         = $this->user_create( $params, $id_field, $default_status );
 				return $result;
 			} else {
 				// Check only is true but there's not a user yet.
@@ -1094,7 +1106,7 @@ class Object_Sync_Sf_WordPress {
 
 			// User does not exist after more checking. we want to create it.
 			if ( false === $existing_id && false === $check_only ) {
-				$result = $this->user_create( $params );
+				$result = $this->user_create( $params, $id_field, $default_status );
 				return $result;
 			} elseif ( true === $check_only ) {
 				// We are just checking to see if there is a match.
@@ -1217,6 +1229,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param array  $params Array of post data params.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
 	 * @param string $post_type Optional string for custom post type, if applicable.
+	 * @param string $default_status the default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -1224,7 +1237,7 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function post_create( $params, $id_field = 'ID', $post_type = 'post' ) {
+	private function post_create( $params, $id_field = 'ID', $post_type = 'post', $default_status = '' ) {
 		// Load all params with a method_modify of the object structure's content_method into $content
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( $post_type );
@@ -1233,6 +1246,11 @@ class Object_Sync_Sf_WordPress {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
+		}
+
+		// if status didn't come via a mapped field or developer hook and there is a default, set it
+		if ( ! isset( $content['post_status'] ) && '' !== $default_status ) {
+			$content['post_status'] = $default_status;
 		}
 
 		if ( '' !== $post_type ) {
@@ -1312,6 +1330,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param bool   $pull_to_drafts Whether to save to WordPress drafts when pulling from Salesforce.
 	 * @param string $post_type Optional string for custom post type, if applicable.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 * @param string $default_status the default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -1319,7 +1338,7 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $pull_to_drafts = false, $post_type = 'post', $check_only = false ) {
+	private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $pull_to_drafts = false, $post_type = 'post', $check_only = false, $default_status = '' ) {
 
 		$method = $methods['method_match'];
 
@@ -1394,7 +1413,7 @@ class Object_Sync_Sf_WordPress {
 					'method_modify' => $method,
 					'method_read'   => $methods['method_read'],
 				);
-				$result         = $this->post_create( $params, $id_field, $post_type );
+				$result         = $this->post_create( $params, $id_field, $post_type, $default_status );
 				return $result;
 			} else {
 				// Check only is true but there's not a post yet.
@@ -1431,7 +1450,7 @@ class Object_Sync_Sf_WordPress {
 
 			// Post does not exist after more checking. maybe we want to create it.
 			if ( 0 === $existing_id && false === $check_only ) {
-				$result = $this->post_create( $params, $id_field, $post_type );
+				$result = $this->post_create( $params, $id_field, $post_type, $default_status );
 				return $result;
 			} elseif ( true === $check_only ) {
 				// We are just checking to see if there is a match.
@@ -1550,6 +1569,7 @@ class Object_Sync_Sf_WordPress {
 	 *
 	 * @param array  $params Array of attachment data params.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 * @param string $default_status the default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -1557,7 +1577,7 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function attachment_create( $params, $id_field = 'ID' ) {
+	private function attachment_create( $params, $id_field = 'ID', $default_status = '' ) {
 		// Load all params with a method_modify of the object structure's content_method into $content
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( 'attachment' );
@@ -1567,6 +1587,11 @@ class Object_Sync_Sf_WordPress {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
+		}
+
+		// if status didn't come via a mapped field or developer hook and there is a default, set it
+		if ( ! isset( $content['post_status'] ) && '' !== $default_status ) {
+			$content['post_status'] = $default_status;
 		}
 
 		// Developers can use this hook to pass filename and parent data for the attachment.
@@ -1631,6 +1656,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param array  $params Array of attachment data params.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 * @param string $default_status the default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -1638,7 +1664,7 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function attachment_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $check_only = false ) {
+	private function attachment_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $check_only = false, $default_status = '' ) {
 
 		$method = $methods['method_match'];
 
@@ -1708,7 +1734,7 @@ class Object_Sync_Sf_WordPress {
 					'method_modify' => $method,
 					'method_read'   => $methods['method_read'],
 				);
-				$result         = $this->attachment_create( $params );
+				$result         = $this->attachment_create( $params, $id_field, $default_status );
 				return $result;
 			} else {
 				// Check only is true but there's not an attachment yet.
@@ -1745,7 +1771,7 @@ class Object_Sync_Sf_WordPress {
 
 			// Attachment does not exist after more checking. maybe we want to create it.
 			if ( 0 === $existing_id && false === $check_only ) {
-				$result = $this->attachment_create( $params );
+				$result = $this->attachment_create( $params, $id_field, $default_status );
 				return $result;
 			} elseif ( true === $check_only ) {
 				// We are just checking to see if there is a match.
@@ -1906,6 +1932,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param array  $params Array of term data params.
 	 * @param string $taxonomy The taxonomy to which to add the term. this is required.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
+	 * @param string $default_status the default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -1913,7 +1940,7 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function term_create( $params, $taxonomy, $id_field = 'ID' ) {
+	private function term_create( $params, $taxonomy, $id_field = 'ID', $default_status = '' ) {
 		if ( 'tag' === $taxonomy ) {
 			$taxonomy = 'post_tag';
 		}
@@ -1978,6 +2005,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
 	 * @param bool   $pull_to_drafts Whether to save to WordPress drafts when pulling from Salesforce.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 * @param string $default_status the default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -1985,7 +2013,7 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $pull_to_drafts = false, $check_only = false ) {
+	private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $pull_to_drafts = false, $check_only = false, $default_status = '' ) {
 		if ( 'tag' === $taxonomy ) {
 			$taxonomy = 'post_tag';
 		}
@@ -2041,7 +2069,7 @@ class Object_Sync_Sf_WordPress {
 					'method_modify' => $method,
 					'method_read'   => $methods['method_read'],
 				);
-				$result         = $this->term_create( $params, $taxonomy, $id_field );
+				$result         = $this->term_create( $params, $taxonomy, $id_field, $default_status );
 				return $result;
 			} else {
 				// Check only is true but there's not a term yet.
@@ -2075,7 +2103,7 @@ class Object_Sync_Sf_WordPress {
 
 			// Term does not exist after more checking. maybe we want to create it.
 			if ( null === $existing_id && false === $check_only ) {
-				$result = $this->term_create( $params, $taxonomy, $id_field );
+				$result = $this->term_create( $params, $taxonomy, $id_field, $default_status );
 				return $result;
 			} elseif ( true === $check_only ) {
 				// We are just checking to see if there is a match.
@@ -2196,6 +2224,7 @@ class Object_Sync_Sf_WordPress {
 	 *
 	 * @param array  $params Array of comment data params.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not comment_ID.
+	 * @param string $default_status the default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -2203,7 +2232,7 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function comment_create( $params, $id_field = 'comment_ID' ) {
+	private function comment_create( $params, $id_field = 'comment_ID', $default_status = '' ) {
 		// Load all params with a method_modify of the object structure's content_method into $content
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( 'comment' );
@@ -2212,6 +2241,11 @@ class Object_Sync_Sf_WordPress {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
+		}
+
+		// if status didn't come via a mapped field or developer hook and there is a default, set it
+		if ( ! isset( $content['comment_approved'] ) && '' !== $default_status ) {
+			$content['comment_approved'] = $default_status;
 		}
 
 		// Fields that are required for comments, even if they are empty values.
@@ -2274,6 +2308,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not comment_ID.
 	 * @param bool   $pull_to_drafts Whether to save to WordPress drafts when pulling from Salesforce.
 	 * @param bool   $check_only Allows this method to only check for matching records, instead of making any data changes.
+	 * @param string $default_status the default status for this object from the fieldmap.
 	 *
 	 * @return array
 	 *   data:
@@ -2281,7 +2316,7 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $pull_to_drafts = false, $check_only = false ) {
+	private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $pull_to_drafts = false, $check_only = false, $default_status = '' ) {
 		$method = $methods['method_match'];
 		if ( 'get_comment' === $method ) {
 			$method = 'get_comments';
@@ -2372,7 +2407,7 @@ class Object_Sync_Sf_WordPress {
 					'method_modify' => $method,
 					'method_read'   => $methods['method_read'],
 				);
-				$result         = $this->comment_create( $params, $id_field );
+				$result         = $this->comment_create( $params, $id_field, $default_status );
 				return $result;
 			} else {
 				// Check only is true but there's not a comment yet.
@@ -2404,7 +2439,7 @@ class Object_Sync_Sf_WordPress {
 
 			// Comment does not exist after more checking. We want to create it.
 			if ( null === $existing_id && false === $check_only ) {
-				$result = $this->comment_create( $params, $id_field );
+				$result = $this->comment_create( $params, $id_field, $default_status );
 				return $result;
 			} elseif ( true === $check_only ) {
 				// We are just checking to see if there is a match.

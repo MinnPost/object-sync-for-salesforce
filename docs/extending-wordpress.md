@@ -80,7 +80,7 @@ Developers can use the `object_sync_for_salesforce_create_custom_wordpress_item`
 ```php
 add_filter( 'object_sync_for_salesforce_create_custom_wordpress_item', 'add_object', 10, 1 );
 function add_object( $create_data ) {
-    // $create_data is array( 'name' => objecttype, 'params' => array_of_params, 'id_field' => idfield )
+    // $create_data is array( 'name' => objecttype, 'params' => array_of_params, 'id_field' => idfield, 'default_status' => 'draft' )
     // run methods here to add the record to the database
     // save the result as $result
     return $result;
@@ -118,6 +118,7 @@ function upsert_object( $create_data ) {
         'pull_to_drafts' => $pull_to_drafts,
         'name'           => $name,
         'check_only'     => $check_only,
+        'default_status' => $default_status,
     );
     */
     // run methods here to upsert record in the database
