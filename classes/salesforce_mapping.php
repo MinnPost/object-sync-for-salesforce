@@ -770,7 +770,7 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Map values between WordPress and Salesforce objects.
 	 *
-	 * @param array  $mapping Mapping object.
+	 * @param array  $mapping The fieldmap that maps these types together.
 	 * @param array  $object WordPress or Salesforce object data.
 	 * @param array  $trigger The thing that triggered this mapping.
 	 * @param bool   $use_soap Flag to enforce use of the SOAP API.
