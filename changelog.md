@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.9.0 ()
+	* Feature: when pushing or pulling the `wp_capabilities` field on a WordPress user, treat the data as WordPress needs it to assign roles. Thanks to WordPress user @emilyb6116 for reporting this and for testing the fix.
+
 * 1.8.12 (2019-09-19)
 	* Bug fix: fix the `object_sync_for_salesforce_pull_query_modify` filter to prevent SOQL query properties from being added multiple times.
 	* Developers: clean up Travis config to stop its builds from failing.
