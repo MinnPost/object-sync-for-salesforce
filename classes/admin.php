@@ -158,6 +158,7 @@ class Object_Sync_Sf_Admin {
 		add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ), 10, 1 );
 		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
 		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
+		add_action( 'wp_ajax_get_salesforce_field_info', array( $this, 'get_salesforce_field_info' ), 10, 2 );
 
 		// Ajax events that can be manually called
 		add_action( 'wp_ajax_push_to_salesforce', array( $this, 'push_to_salesforce' ), 10, 3 );
@@ -1372,6 +1373,42 @@ class Object_Sync_Sf_Admin {
 			wp_send_json_success( $object_fields );
 		} else {
 			return $object_fields;
+		}
+	}
+
+	/**
+	* Get info on the Salesforce field
+	* This takes either the $_POST array via ajax, or can be directly called with $salesforce_object and $salesforce_field fields
+	*
+	* @param string $salesforce_object
+	* @param string $salesforce_field
+	* @return array $object_field
+	*/
+	public function get_salesforce_field_info( $salesforce_object = '', $salesforce_field = '' ) {
+		$object_field = array();
+		$post_data    = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		if ( empty( $salesforce_object ) ) {
+			$salesforce_object = isset( $post_data['salesforce_object'] ) ? sanitize_text_field( wp_unslash( $post_data['salesforce_object'] ) ) : '';
+		}
+		if ( empty( $salesforce_field ) ) {
+			$salesforce_field = isset( $post_data['salesforce_field'] ) ? sanitize_text_field( wp_unslash( $post_data['salesforce_field'] ) ) : '';
+		}
+
+		if ( '' !== $salesforce_object ) {
+			$object = $this->salesforce['sfapi']->object_describe( $salesforce_object );
+			if ( ! empty( $object['fields'] ) ) {
+				foreach ( $object['fields'] as $key => $field ) {
+					if ( $salesforce_field === $field['name'] ) {
+						$object_field = $field;
+					}
+				}
+			}
+		}
+
+		if ( ! empty( $post_data ) ) {
+			wp_send_json_success( $object_field );
+		} else {
+			return $object_field;
 		}
 	}
 
