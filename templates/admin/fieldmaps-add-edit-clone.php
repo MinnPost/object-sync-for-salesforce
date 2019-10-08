@@ -245,7 +245,7 @@
 							}
 							?>
 						</select>
-
+						<div class="wordpresss_field_options"></div>
 					</td>
 					<td class="column-salesforce_field">
 						<select name="salesforce_field[<?php echo esc_attr( $key ); ?>]" id="salesforce_field-<?php echo esc_attr( $key ); ?>">
