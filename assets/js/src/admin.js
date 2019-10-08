@@ -120,12 +120,39 @@
 				rowKey = Math.floor( Date.now() / 1000 );
 				fieldmapFields( wordpressObject, salesforceObject, rowKey );
 				$( this ).parent().find( '.missing-object' ).remove();
+				salesforceFieldInfo();
 			} else {
 				$( this ).parent().prepend( '<div class="error missing-object"><span>You have to pick a WordPress object and a Salesforce object to add field mapping.</span></div>' );
 			}
 			return false;
 		});
 	}
+	/**
+	 * Based on the Salesforce field's info, we can set some options for how the data is handled
+	 */
+	function salesforceFieldInfo() {
+		var wordpressFieldOptions = '.wordpresss_field_options';
+		var salesforceObject      = $( '#salesforce_object' ).val();
+		$( wordpressFieldOptions ).hide();
+		if ( '' !== salesforceObject ) {
+			$( document ).on( 'change', '[id^=salesforce_field-]', function() {
+				var data = {
+					'action'            : 'get_salesforce_field_info',
+					'salesforce_object' : salesforceObject,
+					'salesforce_field'  : $( this ).val()
+				}
+				var parent = $( this ).parent().parent();
+				$( wordpressFieldOptions, $( parent )).hide();
+				$.post( ajaxurl, data, function( response ) {
+					if ( true === response.success && 'undefined' !== typeof response.data.type ) {
+						var salesforceFieldType = response.data.type;
+						$( wordpressFieldOptions, $( parent ) ).show();
+					}
+				});
+			});
+		}
+	}
+
 	/**
 	 * Gets the WordPress and Salesforce field results via an Ajax call
 	 * @param string wordpressObject the WordPress object type
@@ -309,6 +336,7 @@
 		});
 		salesforceObjectFields();
 		addFieldMappingRow();
+		salesforceFieldInfo();
 
 		// for push/pull methods running via ajax
 		pushAndPullObjects();
