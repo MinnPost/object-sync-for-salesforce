@@ -2219,8 +2219,17 @@ class Object_Sync_Sf_Admin {
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab_key => $tab_caption ) {
 			$active = $current_tab === $tab_key ? ' nav-tab-active' : '';
-			if ( 'settings' === $tab_key || ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) ) {
-				echo sprintf( '<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
+
+			if ( true === $this->salesforce['is_authorized'] ) {
+				echo sprintf(
+					'<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
+					esc_attr( $active ),
+					esc_url( '?page=object-sync-salesforce-admin&tab=' . $tab_key ),
+					esc_html( $tab_caption )
+				);
+			} elseif ( 'settings' === $tab_key || ( 'authorize' === $tab_key && isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) ) {
+				echo sprintf(
+					'<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
 					esc_attr( $active ),
 					esc_url( '?page=object-sync-salesforce-admin&tab=' . $tab_key ),
 					esc_html( $tab_caption )
