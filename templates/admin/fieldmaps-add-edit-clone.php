@@ -257,7 +257,7 @@
 									$direction_label = esc_html__( 'Sync', 'object-sync-for-salesforce' );
 								} elseif ( 'sf_wp' === $value['direction'] ) {
 									$direction_label = esc_html__( 'Salesforce to WordPress', 'object-sync-for-salesforce' );
-								} elseif ( 'wp_sf' === $value_direction ) {
+								} elseif ( 'wp_sf' === $value['direction'] ) {
 									$direction_label = esc_html__( 'WordPress to Salesforce', 'object-sync-for-salesforce' );
 								}
 								?>
