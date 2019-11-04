@@ -285,12 +285,13 @@
 		var timeout;
 
 		if ( jQuery.fn.select2 ) {
-			$( 'select#wordpress_object' ).select2();
+			/*$( 'select#wordpress_object' ).select2();
 			$( 'select#salesforce_object' ).select2();
 			$( 'select#salesforce_record_type_default' ).select2();
 			$( 'select#pull_trigger_field' ).select2();
 			$( '.column-wordpress_field select' ).select2();
-			$( '.column-salesforce_field select' ).select2();
+			$( '.column-salesforce_field select' ).select2();*/
+			$( '.sfwp-o-fieldmap select' ).select2();
 		}
 
 		$( '#wordpress_object, #salesforce_object' ).on( 'change', function() {
