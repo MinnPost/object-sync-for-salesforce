@@ -399,7 +399,7 @@ class Object_Sync_Sf_Admin {
 							$pull_trigger_field              = $map['pull_trigger_field'];
 							$fieldmap_fields                 = $map['fields'];
 							$sync_triggers                   = $map['sync_triggers'];
-							$push_async                      = $map['push_async'];
+							$push_immediately                = $map['push_immediately'];
 							$push_drafts                     = $map['push_drafts'];
 							$pull_to_drafts                  = $map['pull_to_drafts'];
 							$weight                          = $map['weight'];

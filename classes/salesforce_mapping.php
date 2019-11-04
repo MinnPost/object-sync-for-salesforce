@@ -155,11 +155,9 @@ class Object_Sync_Sf_Mapping {
 	public function get_fieldmaps( $id = null, $conditions = array(), $reset = false ) {
 		$table = $this->fieldmap_table;
 		if ( null !== $id ) { // get one fieldmap.
-			$map                                    = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
-			$map['salesforce_record_types_allowed'] = maybe_unserialize( $map['salesforce_record_types_allowed'] );
-
-			$map['fields']        = maybe_unserialize( $map['fields'] );
-			$map['sync_triggers'] = maybe_unserialize( $map['sync_triggers'] );
+			$map        = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
+			$mappings[] = $map;
+			$map        = $this->prepare_fieldmap_data( $mappings )[0];
 			return $map;
 		} elseif ( ! empty( $conditions ) ) { // get multiple but with a limitation.
 			$mappings    = array();
@@ -396,7 +394,13 @@ class Object_Sync_Sf_Mapping {
 		if ( isset( $posted['pull_trigger_field'] ) ) {
 			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
 		}
-		$data['push_async']     = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
+		// invert immediately to get async
+
+		if ( true === filter_var( $posted['push_immediately'], FILTER_VALIDATE_BOOLEAN ) ) {
+			$data['push_async'] = '';
+		} else {
+			$data['push_async'] = '1';
+		}
 		$data['push_drafts']    = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
 		$data['pull_to_drafts'] = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
 		$data['weight']         = isset( $posted['weight'] ) ? $posted['weight'] : '';
@@ -1010,6 +1014,12 @@ class Object_Sync_Sf_Mapping {
 			$mappings[ $id ]['salesforce_record_types_allowed'] = maybe_unserialize( $mapping['salesforce_record_types_allowed'] );
 			$mappings[ $id ]['fields']                          = maybe_unserialize( $mapping['fields'] );
 			$mappings[ $id ]['sync_triggers']                   = maybe_unserialize( $mapping['sync_triggers'] );
+			// reverse async to get immediately
+			if ( true === filter_var( $mappings[ $id ]['push_async'], FILTER_VALIDATE_BOOLEAN ) ) {
+				$mappings[ $id ]['push_immediately'] = '';
+			} else {
+				$mappings[ $id ]['push_immediately'] = '1';
+			}
 			if ( '' !== $record_type && ! in_array( $record_type, $mappings[ $id ]['salesforce_record_types_allowed'], true ) ) {
 				unset( $mappings[ $id ] );
 			}
