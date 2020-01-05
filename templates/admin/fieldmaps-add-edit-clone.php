@@ -220,11 +220,9 @@
 			</tfoot>
 			<tbody>
 				<?php
-				$has_other_rows = false;
 				if ( isset( $fieldmap_fields ) && null !== $fieldmap_fields && is_array( $fieldmap_fields ) ) {
 					foreach ( $fieldmap_fields as $key => $value ) {
-						$has_other_rows = true;
-						$key            = md5( $key . time() );
+						$key = md5( $key . time() );
 						?>
 				<tr data-key="<?php echo esc_attr( $key ); ?>">
 					<td class="column-wordpress_field">
@@ -345,18 +343,20 @@
 					} // End foreach().
 				} // End if().
 				?>
-				<tr data-key="0" class="fieldmap-template<?php echo isset( $has_other_rows ) && true === $has_other_rows ? ' fieldmap-template-hidden' : ''; ?>">
+				<tr data-key="0" class="fieldmap-template">
 					<td class="column-wordpress_field">
 						<select name="wordpress_field[0]" id="wordpress_field-0">
 							<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
 							<?php
-							$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
-							foreach ( $wordpress_fields as $wordpress_field ) {
-								echo sprintf(
-									'<option value="%1$s">%2$s</option>',
-									esc_attr( $wordpress_field['key'] ),
-									esc_html( $wordpress_field['key'] )
-								);
+							if ( isset( $wordpress_object ) ) {
+								$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
+								foreach ( $wordpress_fields as $wordpress_field ) {
+									echo sprintf(
+										'<option value="%1$s">%2$s</option>',
+										esc_attr( $wordpress_field['key'] ),
+										esc_html( $wordpress_field['key'] )
+									);
+								}
 							}
 							?>
 						</select>
@@ -365,17 +365,19 @@
 						<select name="salesforce_field[0]" id="salesforce_field-0">
 							<option value="">- <?php echo esc_html__( 'Select Salesforce field', 'object-sync-for-salesforce' ); ?> -</option>
 							<?php
-							$salesforce_fields = $this->get_salesforce_object_fields(
-								array(
-									'salesforce_object' => $salesforce_object,
-								)
-							);
-							foreach ( $salesforce_fields as $salesforce_field ) {
-								echo sprintf(
-									'<option value="%1$s">%2$s</option>',
-									esc_attr( $salesforce_field['name'] ),
-									esc_html( $salesforce_field['label'] )
+							if ( isset( $salesforce_object ) ) {
+								$salesforce_fields = $this->get_salesforce_object_fields(
+									array(
+										'salesforce_object' => $salesforce_object,
+									)
 								);
+								foreach ( $salesforce_fields as $salesforce_field ) {
+									echo sprintf(
+										'<option value="%1$s">%2$s</option>',
+										esc_attr( $salesforce_field['name'] ),
+										esc_html( $salesforce_field['label'] )
+									);
+								}
 							}
 							?>
 						</select>
