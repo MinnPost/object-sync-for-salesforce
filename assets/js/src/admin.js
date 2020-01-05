@@ -1,5 +1,10 @@
 ( function( $ ) {
 
+	/**
+	 * Gets the WordPress and Salesforce field results via an Ajax call
+	 * @param string system whether we want WordPress or Salesforce data
+	 * @param string object_name the value for the object name from the the <select>
+	 */
 	function loadFieldOptions( system, object_name ) {
 		var data = {
 			'action' : 'get_' + system + '_object_fields',
@@ -57,6 +62,7 @@
 
 	/**
 	 * Generates the Salesforce object fields based on the dropdown activity and API results.
+	 * This also generates other query fields that are object-specific, like date fields, record types allowed, etc.
 	 */
 	function salesforceObjectFields() {
 
@@ -171,7 +177,7 @@
 		});
 	}
 	/**
-	 * Gets the WordPress and Salesforce field results via an Ajax call
+	 * Clones the fieldset markup provided by the server-side template and appends it at the end.
 	 * @param string oldKey the data-key attribute of the set that is being cloned
 	 * @param string newKey the data-key attribute for the one we're appending
 	 * @param object lastRow the last set of the fieldmap
@@ -303,7 +309,7 @@
 		}, 1000 );
 	});
 
-	// show wsdl field if soap is enabled
+	// Don't show the WSDL file field unless SOAP is enabled
 	$( document ).on( 'change', '.object-sync-for-salesforce-enable-soap input', function() {
 		toggleSoapFields();
 	});
@@ -330,13 +336,14 @@
 	 */
 	$( document ).ready( function() {
 
-		// for main admin settings
+		// Don't show the WSDL file field unless SOAP is enabled
 		toggleSoapFields();
 
-		// if there is already a wp or sf object, make sure it has the right fields
+		// if there is already a wp or sf object, make sure it has the right fields when the page loads
 		loadFieldOptions( 'wordpress', $( 'select#wordpress_object' ).val() );
 		loadFieldOptions( 'salesforce', $( 'select#salesforce_object' ).val() );
 
+		// setup the select2 fields if the library is present
 		if ( jQuery.fn.select2 ) {
 			$( 'select#wordpress_object' ).select2();
 			$( 'select#salesforce_object' ).select2();
@@ -346,13 +353,16 @@
 			$( '.column-salesforce_field select' ).select2();
 		}
 
+		// get the available Salesforce object choices
 		salesforceObjectFields();
+
+		// Duplicate the fields for a new row in the fieldmap options screen.
 		addFieldMappingRow();
 
-		// for push/pull methods running via ajax
+		// Handle manual push and pull of objects
 		pushAndPullObjects();
 
-		// for clearing the plugin cache
+		// Clear the plugin cache via Ajax request.
 		clearSfwpCacheLink();
 	});
 }( jQuery ) );

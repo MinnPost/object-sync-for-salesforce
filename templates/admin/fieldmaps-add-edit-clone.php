@@ -16,6 +16,7 @@
 	<fieldset class="wordpress_side">
 		<div class="wordpress_object">
 			<label for="wordpress_object"><?php echo esc_html__( 'WordPress Object', 'object-sync-for-salesforce' ); ?>: </label>
+			<div class="spinner spinner-wordpress"></div>
 			<select id="wordpress_object" name="wordpress_object" required>
 				<option value="">- <?php echo esc_html__( 'Select object type', 'object-sync-for-salesforce' ); ?> -</option>
 				<?php
@@ -40,7 +41,7 @@
 	<fieldset class="salesforce_side">
 		<div class="salesforce_object">
 			<label for="salesforce_object"><?php echo esc_html__( 'Salesforce Object', 'object-sync-for-salesforce' ); ?>: </label>
-			<div class="spinner"></div>
+			<div class="spinner spinner-salesforce"></div>
 			<select id="salesforce_object" name="salesforce_object" required>
 				<option value="">- <?php echo esc_html__( 'Select object type', 'object-sync-for-salesforce' ); ?> -</option>
 				<?php
