@@ -1,5 +1,31 @@
 ( function( $ ) {
 
+	function loadFieldOptions( system, object_name ) {
+		var data = {
+			'action' : 'get_' + system + '_object_fields',
+		}
+		var fields = '';
+		var first_field = $( '.column-' + system + '_field select option').first().text();
+		fields += '<option value="">' + first_field + '</option>';
+		if ( 'wordpress' === system ) {
+			data['wordpress_object'] = object_name;
+		} else if ( 'salesforce' === system ) {
+			data['salesforce_object'] = object_name;
+		} else {
+			return fields;
+		}
+		$.post( ajaxurl, data, function( response ) {
+			$.each( response.data.fields, function( index, value ) {
+				if ( 'wordpress' === system ) {
+					fields += '<option value="' + value.key + '">' + value.key + '</option>';
+				} else if ( 'salesforce' === system ) {
+					fields += '<option value="' + value.name + '">' + value.label + '</option>';
+				}
+			});
+			$( '.column-' + system + '_field select' ).html( fields );
+		});
+	}
+
 	/**
 	 * Don't show the WSDL file field unless SOAP is enabled
 	 */
@@ -112,60 +138,43 @@
 	 */
 	 function addFieldMappingRow() {
 		$( '#add-field-mapping' ).click( function() {
-			var salesforceObject = $( '#salesforce_object' ).val();
-			var wordpressObject = $( '#wordpress_object' ).val();
-			var rowKey;
+			var newKey = new Date().getUTCMilliseconds();
+			var lastRow = $( 'table.fields tbody tr' ).last();
+			var oldKey = lastRow.attr( 'data-key' );
+			oldKey = new RegExp( oldKey, 'g' );
 			$( this ).text( 'Add another field mapping' );
-			if ( '' !== wordpressObject && '' !== salesforceObject ) {
-				rowKey = Math.floor( Date.now() / 1000 );
-				fieldmapFields( wordpressObject, salesforceObject, rowKey );
-				$( this ).parent().find( '.missing-object' ).remove();
-			} else {
-				$( this ).parent().prepend( '<div class="error missing-object"><span>You have to pick a WordPress object and a Salesforce object to add field mapping.</span></div>' );
-			}
+			fieldmapFields( oldKey, newKey, lastRow );
+			$( this ).parent().find( '.missing-object' ).remove();
 			return false;
 		});
 	}
 	/**
 	 * Gets the WordPress and Salesforce field results via an Ajax call
-	 * @param string wordpressObject the WordPress object type
-	 * @param string salesforceObject the Salesforce object type
-	 * @param int rowKey which row we're working on
+	 * @param string oldKey the data-key attribute of the set that is being cloned
+	 * @param string newKey the data-key attribute for the one we're appending
+	 * @param object lastRow the last set of the fieldmap
 	 */
-	function fieldmapFields( wordpressObject, salesforceObject, rowKey ) {
-		var data = {
-			'action' : 'get_wp_sf_object_fields',
-			'wordpress_object' : wordpressObject,
-			'salesforce_object' : salesforceObject
-		}
-		$.post( ajaxurl, data, function( response ) {
-			var wordpress = '';
-			var salesforce = '';
-			var markup = '';
-
-			wordpress += '<select name="wordpress_field[' + rowKey + ']" id="wordpress_field-' + rowKey + '">'
-			wordpress += '<option value="">- Select WordPress field -</option>';
-			$.each( response.data.wordpress, function( index, value ) {
-				wordpress += '<option value="' + value.key + '">' + value.key + '</option>';
+	function fieldmapFields( oldKey, newKey, lastRow ) {
+		var nextRow = '';
+        if ( jQuery.fn.select2 ) {
+        	nextRow = lastRow.find( 'select' )
+	            .select2( 'destroy' )
+	            .end()
+	            .clone( true ).removeClass( 'fieldmap-template' );
+        } else {
+        	nextRow = lastRow.clone( true );
+        }
+		$( nextRow ).attr( 'data-key', newKey );
+		$( nextRow ).each(function() {
+			$( this ).html( function( i, h ) {
+				return h.replace( oldKey, newKey );
 			});
-			wordpress += '</select>';
-
-			salesforce += '<select name="salesforce_field[' + rowKey + ']" id="salesforce_field-' + rowKey + '">'
-			salesforce += '<option value="">- Select Salesforce field -</option>';
-			$.each( response.data.salesforce, function( index, value ) {
-				salesforce += '<option value="' + value.name + '">' + value.label + '</option>';
-			});
-			salesforce += '</select>';
-
-			markup = '<tr><td class="column-wordpress_field">' + wordpress + '</td><td class="column-salesforce_field">' + salesforce + '</td><td class="column-is_prematch"><input type="checkbox" name="is_prematch[' + rowKey + ']" id="is_prematch-' + rowKey + '" value="1" /><td class="column-is_key"><input type="checkbox" name="is_key[' + rowKey + ']" id="is_key-' + rowKey + '" value="1" /></td><td class="column-direction"><div class="radios"><label><input type="radio" value="sf_wp" name="direction[' + rowKey + ']" id="direction-' + rowKey + '-sf-wp">  Salesforce to WordPress</label><label><input type="radio" value="wp_sf" name="direction[' + rowKey + ']" id="direction-' + rowKey + '-wp-sf">  WordPress to Salesforce</label><label><input type="radio" value="sync" name="direction[' + rowKey + ']" id="direction-' + rowKey + '-sync" checked>  Sync</label></div></td><td class="column-is_delete"><input type="checkbox" name="is_delete[' + rowKey + ']" id="is_delete-' + rowKey + '" value="1" /></td></tr>';
-			$( 'table.fields tbody' ).append( markup );
-
-			if ( jQuery.fn.select2 ) {
-				$( '.column-wordpress_field select' ).select2();
-				$( '.column-salesforce_field select' ).select2();
-			}
-
 		});
+		$( 'table.fields tbody' ).append( nextRow );
+		if ( jQuery.fn.select2 ) {
+			lastRow.find( 'select' ).select2();
+			nextRow.find( 'select' ).select2();
+		}
 	}
 	/**
 	 * Handle manual push and pull of objects
@@ -250,6 +259,28 @@
 		});
 	}
 
+	// load available options if the wordpress object changes
+	$( document ).on( 'change', 'select#wordpress_object', function() {
+		var timeout;
+		loadFieldOptions( 'wordpress', $( this ).val() );
+		clearTimeout( timeout );
+		timeout = setTimeout( function() {
+			$( 'table.fields tbody tr' ).fadeOut();
+			$( 'table.fields tbody tr' ).not( ':last' ).remove();
+		}, 1000 );
+	});
+
+	// load available options if the salesforce object changes
+	$( document ).on( 'change', 'select#salesforce_object', function() {
+		var timeout;
+		loadFieldOptions( 'salesforce', $( this ).val() );
+		clearTimeout( timeout );
+		timeout = setTimeout( function() {
+			$( 'table.fields tbody tr' ).fadeOut();
+			$( 'table.fields tbody tr' ).not( ':last' ).remove();
+		}, 1000 );
+	});
+
 	// show wsdl field if soap is enabled
 	$( document ).on( 'change', '.object-sync-for-salesforce-enable-soap input', function() {
 		toggleSoapFields();
@@ -281,9 +312,6 @@
 		// for main admin settings
 		toggleSoapFields();
 
-		// for the fieldmap add/edit screen
-		var timeout;
-
 		if ( jQuery.fn.select2 ) {
 			$( 'select#wordpress_object' ).select2();
 			$( 'select#salesforce_object' ).select2();
@@ -292,14 +320,6 @@
 			$( '.column-wordpress_field select' ).select2();
 			$( '.column-salesforce_field select' ).select2();
 		}
-
-		$( '#wordpress_object, #salesforce_object' ).on( 'change', function() {
-			clearTimeout( timeout );
-			timeout = setTimeout( function() {
-				$( 'table.fields tbody tr' ).fadeOut();
-				$( 'table.fields tbody tr' ).remove();
-			}, 1000 );
-		});
 
 		// todo: need to fix this so it doesn't run all the spinners at the same time when there are multiples on the same page
 		$( document ).ajaxStart( function() {
