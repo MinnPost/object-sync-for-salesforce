@@ -157,6 +157,7 @@
 	}
 	/**
 	 * Duplicates the fields for a new row in the fieldmap options screen.
+	 * this appears not to work with data() instead of attr()
 	 */
 	 function addFieldMappingRow() {
 		$( '#add-field-mapping' ).click( function() {
@@ -178,8 +179,9 @@
 	}
 	/**
 	 * Clones the fieldset markup provided by the server-side template and appends it at the end.
-	 * @param string oldKey the data-key attribute of the set that is being cloned
-	 * @param string newKey the data-key attribute for the one we're appending
+	 * this appears not to work with data() instead of attr()
+	 * @param string oldKey the data key attribute of the set that is being cloned
+	 * @param string newKey the data key attribute for the one we're appending
 	 * @param object lastRow the last set of the fieldmap
 	 */
 	function fieldmapFields( oldKey, newKey, lastRow ) {
