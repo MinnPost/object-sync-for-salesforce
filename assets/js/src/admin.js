@@ -272,7 +272,7 @@
 		clearTimeout( timeout );
 		timeout = setTimeout( function() {
 			$( 'table.fields tbody tr' ).fadeOut();
-			$( 'table.fields tbody tr' ).not( ':last' ).remove();
+			$( 'table.fields tbody tr' ).not( '.fieldmap-template' ).remove();
 		}, 1000 );
 	});
 
@@ -283,7 +283,7 @@
 		clearTimeout( timeout );
 		timeout = setTimeout( function() {
 			$( 'table.fields tbody tr' ).fadeOut();
-			$( 'table.fields tbody tr' ).not( ':last' ).remove();
+			$( 'table.fields tbody tr' ).not( '.fieldmap-template' ).remove();
 		}, 1000 );
 	});
 
