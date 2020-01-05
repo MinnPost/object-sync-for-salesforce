@@ -4,8 +4,12 @@
 		var data = {
 			'action' : 'get_' + system + '_object_fields',
 		}
+		var selectField = '.column-' + system + '_field select';
 		var fields = '';
-		var first_field = $( '.column-' + system + '_field select option').first().text();
+		var first_field = $( selectField + ' option').first().text();
+		if ( '' !== $( selectField ).val() ) {
+			return;
+		}
 		fields += '<option value="">' + first_field + '</option>';
 		if ( 'wordpress' === system ) {
 			data['wordpress_object'] = object_name;
@@ -22,7 +26,7 @@
 					fields += '<option value="' + value.name + '">' + value.label + '</option>';
 				}
 			});
-			$( '.column-' + system + '_field select' ).html( fields );
+			$( selectField ).html( fields );
 		});
 	}
 
