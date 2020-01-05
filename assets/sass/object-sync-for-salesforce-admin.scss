@@ -49,6 +49,10 @@ $select-border-color: #ddd;
 			padding-top: 35px;
 		}
 
+		.fields .fieldmap-template-hidden {
+			display: none;
+		}
+
 		.sync_triggers > :nth-child(2) {
 			padding-top: 45px;
 		}

@@ -220,11 +220,13 @@
 			</tfoot>
 			<tbody>
 				<?php
+				$has_other_rows = false;
 				if ( isset( $fieldmap_fields ) && null !== $fieldmap_fields && is_array( $fieldmap_fields ) ) {
 					foreach ( $fieldmap_fields as $key => $value ) {
-						$key = md5( $key . time() );
+						$has_other_rows = true;
+						$key            = md5( $key . time() );
 						?>
-				<tr>
+				<tr data-key="<?php echo esc_attr( $key ); ?>">
 					<td class="column-wordpress_field">
 						<select name="wordpress_field[<?php echo esc_attr( $key ); ?>]" id="wordpress_field-<?php echo esc_attr( $key ); ?>">
 							<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
@@ -341,9 +343,9 @@
 				</tr>
 						<?php
 					} // End foreach().
-				} elseif ( isset( $wordpress_object ) && isset( $salesforce_object ) ) {
-					?>
-				<tr>
+				} // End if().
+				?>
+				<tr data-key="0" class="fieldmap-template<?php echo isset( $has_other_rows ) && true === $has_other_rows ? ' fieldmap-template-hidden' : ''; ?>">
 					<td class="column-wordpress_field">
 						<select name="wordpress_field[0]" id="wordpress_field-0">
 							<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
@@ -395,9 +397,6 @@
 						<input type="checkbox" name="is_delete[0]" id="is_delete-0" value="1" />
 					</td>
 				</tr>
-					<?php
-				} // End if().
-				?>
 			</tbody>
 		</table>
 		<!--<div class="spinner"></div>-->
