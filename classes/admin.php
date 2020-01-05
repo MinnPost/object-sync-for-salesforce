@@ -161,6 +161,7 @@ class Object_Sync_Sf_Admin {
 		 * @deprecated since 1.9.0
 		 */
 		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
+		add_action( 'wp_ajax_get_salesforce_object_fields', array( $this, 'get_salesforce_object_fields' ), 10, 1 );
 		add_action( 'wp_ajax_get_wordpress_object_fields', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
 		/**
 		 * method: get_wp_sf_object_fields
@@ -1301,22 +1302,35 @@ class Object_Sync_Sf_Admin {
 
 	/**
 	* Get Salesforce object fields for fieldmapping
+	* This takes either the $_POST array via ajax, or can be directly called with a $data array
 	*
 	* @param array $data
-	* data must contain a salesforce_object
-	* can optionally contain a type for the field
+	* data must contain a salesforce_object unless it is Ajax
+	* data can optionally contain a type for the field
 	* @return array $object_fields
 	*/
 	public function get_salesforce_object_fields( $data = array() ) {
-
-		if ( ! empty( $data['salesforce_object'] ) ) {
-			$object               = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
+		$ajax      = false;
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		if ( empty( $data ) ) {
+			$salesforce_object = isset( $post_data['salesforce_object'] ) ? sanitize_text_field( wp_unslash( $post_data['salesforce_object'] ) ) : '';
+			$ajax              = true;
+			$attributes        = array( 'name', 'label' );
+		} else {
+			$salesforce_object = isset( $data['salesforce_object'] ) ? sanitize_text_field( wp_unslash( $data['salesforce_object'] ) ) : '';
+		}
+		$object_fields = array();
+		if ( ! empty( $salesforce_object ) ) {
+			$object               = $this->salesforce['sfapi']->object_describe( esc_attr( $salesforce_object ) );
 			$object_fields        = array();
 			$type                 = isset( $data['type'] ) ? esc_attr( $data['type'] ) : '';
 			$include_record_types = isset( $data['include_record_types'] ) ? esc_attr( $data['include_record_types'] ) : false;
 			foreach ( $object['data']['fields'] as $key => $value ) {
 				if ( '' === $type || $type === $value['type'] ) {
 					$object_fields[ $key ] = $value;
+					if ( isset( $attributes ) ) {
+						$object_fields[ $key ] = array_intersect_key( $value, array_flip( $attributes ) );
+					}
 				}
 			}
 			if ( true === $include_record_types ) {
@@ -1329,7 +1343,14 @@ class Object_Sync_Sf_Admin {
 			}
 		}
 
-		return $object_fields;
+		if ( true === $ajax ) {
+			$ajax_response = array(
+				'fields' => $object_fields,
+			);
+			wp_send_json_success( $ajax_response );
+		} else {
+			return $object_fields;
+		}
 
 	}
 
