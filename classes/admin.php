@@ -162,6 +162,10 @@ class Object_Sync_Sf_Admin {
 		 */
 		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
 		add_action( 'wp_ajax_get_wordpress_object_fields', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
+		/**
+		 * method: get_wp_sf_object_fields
+		 * @deprecated since 1.9.0
+		 */
 		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
 
 		// Ajax events that can be manually called
@@ -1360,6 +1364,7 @@ class Object_Sync_Sf_Admin {
 	* Get WordPress and Salesforce object fields together for fieldmapping
 	* This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $salesforce_object fields
 	*
+	* @deprecated since 1.9.0
 	* @param string $wordpress_object
 	* @param string $salesforce_object
 	* @return array $object_fields
