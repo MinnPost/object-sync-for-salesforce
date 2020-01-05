@@ -4,7 +4,7 @@ Changelog
 * 1.9.0 ()
 	* Feature: when pushing or pulling the `wp_capabilities` field on a WordPress user, treat the data as WordPress needs it to assign roles. Thanks to WordPress user @emilyb6116 for reporting this and for testing the fix.
 	* Feature: Hide admin menu items that won't work pre-authorization until the plugin is authorized with Salesforce. Thanks to WordPress user mgparisi for pointing this out.
-	* Maintenance: when adding new fields to a fieldmap, we use a server-side template instead of duplicating the markup in JavaScript. This makes it easier to change the structure of the fieldmap screen.
+	* Maintenance: When adding new fields to a fieldmap, this changes the JavaScript so it clones a server-side template instead of duplicating the markup in JavaScript. This makes it easier to change the structure of the fieldmap screen.
 
 * 1.8.12 (2019-09-19)
 	* Bug fix: fix the `object_sync_for_salesforce_pull_query_modify` filter to prevent SOQL query properties from being added multiple times.
