@@ -18,15 +18,27 @@
 		} else {
 			return fields;
 		}
-		$.post( ajaxurl, data, function( response ) {
-			$.each( response.data.fields, function( index, value ) {
-				if ( 'wordpress' === system ) {
-					fields += '<option value="' + value.key + '">' + value.key + '</option>';
-				} else if ( 'salesforce' === system ) {
-					fields += '<option value="' + value.name + '">' + value.label + '</option>';
-				}
-			});
-			$( selectField ).html( fields );
+
+		$.ajax({
+			type: 'POST',
+			url: ajaxurl,
+			data: data,
+			beforeSend: function() {
+				$( '.spinner-' + system ).addClass( 'is-active' );
+			},
+    		success: function( response ) {
+    			$.each( response.data.fields, function( index, value ) {
+					if ( 'wordpress' === system ) {
+						fields += '<option value="' + value.key + '">' + value.key + '</option>';
+					} else if ( 'salesforce' === system ) {
+						fields += '<option value="' + value.name + '">' + value.label + '</option>';
+					}
+				});
+				$( selectField ).html( fields );
+    		},
+    		complete: function () {
+    			$( '.spinner-' + system ).removeClass( 'is-active' );
+    		}
 		});
 	}
 
@@ -312,7 +324,6 @@
 	 * When the plugin loads, initialize or enable things:
 	 * Select2 on select fields
 	 * Clear fields when the targeted WordPress or Salesforce object type changes
-	 * Add a spinner for Ajax requests
 	 * Manage the display for Salesforce object fields based on API reponse
 	 * Manual push and pull
 	 * Clearing the cache
@@ -335,12 +346,6 @@
 			$( '.column-salesforce_field select' ).select2();
 		}
 
-		// todo: need to fix this so it doesn't run all the spinners at the same time when there are multiples on the same page
-		$( document ).ajaxStart( function() {
-			$( '.spinner' ).addClass( 'is-active' );
-		}).ajaxStop( function() {
-			$( '.spinner' ).removeClass( 'is-active' );
-		});
 		salesforceObjectFields();
 		addFieldMappingRow();
 
