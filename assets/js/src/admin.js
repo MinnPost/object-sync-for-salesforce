@@ -138,13 +138,19 @@
 	 */
 	 function addFieldMappingRow() {
 		$( '#add-field-mapping' ).click( function() {
+			var salesforceObject = $( '#salesforce_object' ).val();
+			var wordpressObject = $( '#wordpress_object' ).val();
 			var newKey = new Date().getUTCMilliseconds();
 			var lastRow = $( 'table.fields tbody tr' ).last();
 			var oldKey = lastRow.attr( 'data-key' );
 			oldKey = new RegExp( oldKey, 'g' );
 			$( this ).text( 'Add another field mapping' );
-			fieldmapFields( oldKey, newKey, lastRow );
-			$( this ).parent().find( '.missing-object' ).remove();
+			if ( '' !== wordpressObject && '' !== salesforceObject ) {
+				fieldmapFields( oldKey, newKey, lastRow );
+				$( this ).parent().find( '.missing-object' ).remove();
+			} else {
+				$( this ).parent().prepend( '<div class="error missing-object"><span>You have to pick a WordPress object and a Salesforce object to add field mapping.</span></div>' );
+			}
 			return false;
 		});
 	}
@@ -311,6 +317,10 @@
 
 		// for main admin settings
 		toggleSoapFields();
+
+		// if there is already a wp or sf object, make sure it has the right fields
+		loadFieldOptions( 'wordpress', $( 'select#wordpress_object' ).val() );
+		loadFieldOptions( 'salesforce', $( 'select#salesforce_object' ).val() );
 
 		if ( jQuery.fn.select2 ) {
 			$( 'select#wordpress_object' ).select2();
