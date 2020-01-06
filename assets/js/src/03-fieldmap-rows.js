@@ -32,11 +32,7 @@
 function fieldmapFields( oldKey, newKey, lastRow ) {
 	var nextRow = '';
     if ( jQuery.fn.select2 ) {
-    	nextRow = lastRow.find( 'select' )
-    		.select2( 'destroy' )
-    		.end()
-    		.clone( true )
-    		.removeClass( 'fieldmap-template' );
+    	nextRow = lastRow.find( 'select' ).select2( 'destroy' ).end().clone( true ).removeClass( 'fieldmap-template' );
     } else {
     	nextRow = lastRow.clone( true );
     }
