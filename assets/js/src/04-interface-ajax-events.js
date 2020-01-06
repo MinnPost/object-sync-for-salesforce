@@ -1,7 +1,7 @@
 /**
- * Handle manual push and pull of objects
+ * Handle manual push of objects to Salesforce
  */
-function pushAndPullObjects() {
+function pushObjects() {
 	$( '.salesforce_user_ajax_message' ).hide();
 	if ( 0 < $( '#wordpress_object_ajax' ).length ) {
 		$( '.push_to_salesforce_button' ).on( 'click', function() {
@@ -24,6 +24,13 @@ function pushAndPullObjects() {
 			return false;
 		} );
 	}
+}
+
+/**
+ * Handle manual pull of objects from Salesforce
+ */
+function pullObjects() {
+	$( '.salesforce_user_ajax_message' ).hide();
 	$( '.pull_from_salesforce_button' ).on( 'click', function() {
 		var salesforceId = $( '#salesforce_id_ajax' ).val();
 		var wordpressObject = $( '#wordpress_object_ajax' ).val();
@@ -94,5 +101,8 @@ $( document ).ready( function() {
 	clearSfwpCacheLink();
 
 	// Handle manual push and pull of objects
-	pushAndPullObjects();
+	pushObjects();
+
+	// Handle manual pull of objects
+	pullObjects();
 } );
