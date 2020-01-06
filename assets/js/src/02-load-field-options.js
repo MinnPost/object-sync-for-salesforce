@@ -1,11 +1,11 @@
 /**
  * Gets the WordPress and Salesforce field results via an Ajax call
- * @param string system whether we want WordPress or Salesforce data
- * @param string object_name the value for the object name from the the <select>
+ * @param {string} system whether we want WordPress or Salesforce data
+ * @param {string} objectName the value for the object name from the the <select>
  */
-function loadFieldOptions( system, object_name ) {
+function loadFieldOptions( system, objectName ) {
 	var data = {
-		'action' : 'get_' + system + '_object_fields',
+		'action': 'get_' + system + '_object_fields'
 	};
 	var selectField = '.column-' + system + '_field select';
 	var fields = '';
@@ -15,14 +15,14 @@ function loadFieldOptions( system, object_name ) {
 	}
 	fields += '<option value="">' + firstField + '</option>';
 	if ( 'wordpress' === system ) {
-		data['wordpress_object'] = object_name;
+		data['wordpress_object'] = objectName;
 	} else if ( 'salesforce' === system ) {
-		data['salesforce_object'] = object_name;
+		data['salesforce_object'] = objectName;
 	} else {
 		return fields;
 	}
 
-	$.ajax({
+	$.ajax( {
 		type: 'POST',
 		url: ajaxurl,
 		data: data,
@@ -39,10 +39,10 @@ function loadFieldOptions( system, object_name ) {
 			});
 			$( selectField ).html( fields );
 		},
-		complete: function () {
+		complete: function() {
 			$( '.spinner-' + system ).removeClass( 'is-active' );
 		}
-	});
+	} );
 }
 
 // load available options if the wordpress object changes
@@ -54,7 +54,7 @@ $( document ).on( 'change', 'select#wordpress_object', function() {
 		$( 'table.fields tbody tr' ).fadeOut();
 		$( 'table.fields tbody tr' ).not( '.fieldmap-template' ).remove();
 	}, 1000 );
-});
+} );
 
 // load available options if the salesforce object changes
 $( document ).on( 'change', 'select#salesforce_object', function() {
@@ -65,7 +65,7 @@ $( document ).on( 'change', 'select#salesforce_object', function() {
 		$( 'table.fields tbody tr' ).fadeOut();
 		$( 'table.fields tbody tr' ).not( '.fieldmap-template' ).remove();
 	}, 1000 );
-});
+} );
 
 /**
  * When the plugin loads:
@@ -73,7 +73,8 @@ $( document ).on( 'change', 'select#salesforce_object', function() {
  * Manage the display for Salesforce object fields based on API reponse
  */
 $( document ).ready( function() {
+
 	// if there is already a wp or sf object, make sure it has the right fields when the page loads
 	loadFieldOptions( 'wordpress', $( 'select#wordpress_object' ).val() );
 	loadFieldOptions( 'salesforce', $( 'select#salesforce_object' ).val() );
-});
+} );

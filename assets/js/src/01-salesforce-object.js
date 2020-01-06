@@ -41,7 +41,7 @@ function salesforceObjectFields() {
 					recordTypesAllowedMarkup += '<label for="salesforce_record_types_allowed">Allowed Record Types:</label><div class="checkboxes">';
 					$.each( response.data.recordTypeInfos, function( index, value ) {
 						recordTypesAllowedMarkup += '<label><input type="checkbox" class="form-checkbox" value="' + index + '" name="salesforce_record_types_allowed[' + index + ']" id="salesforce_record_types_allowed-' + index + '"> ' + value + '</label>';
-					});
+					} );
 					recordTypesAllowedMarkup += '</div>';
 					recordTypeDefaultMarkup += '<label for="salesforce_record_type_default">Default Record Type:</label>';
 					recordTypeDefaultMarkup += '<select name="salesforce_record_type_default" id="salesforce_record_type_default"><option value="">- Select record type -</option>';
@@ -90,6 +90,7 @@ function salesforceObjectFields() {
  * Manage the display for Salesforce object fields based on API response
  */
 $( document ).ready( function() {
+
 	// get the available Salesforce object choices
 	salesforceObjectFields();
-});
+} );
