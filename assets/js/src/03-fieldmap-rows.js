@@ -19,7 +19,7 @@
 			$( this ).parent().prepend( '<div class="error missing-object"><span>You have to pick a WordPress object and a Salesforce object to add field mapping.</span></div>' );
 		}
 		return false;
-	});
+	} );
 }
 
 /**
@@ -35,7 +35,8 @@ function fieldmapFields( oldKey, newKey, lastRow ) {
     	nextRow = lastRow.find( 'select' )
     		.select2( 'destroy' )
     		.end()
-    		.clone( true ).removeClass( 'fieldmap-template' );
+    		.clone( true )
+    		.removeClass( 'fieldmap-template' );
     } else {
     	nextRow = lastRow.clone( true );
     }

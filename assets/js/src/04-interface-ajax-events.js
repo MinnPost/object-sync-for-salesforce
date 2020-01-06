@@ -64,6 +64,7 @@ function updateSalesforceUserSummary() {
 		}
 	} );
 }
+
 /**
  * Clear the plugin cache via Ajax request.
  */

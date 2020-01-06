@@ -36,7 +36,7 @@ function loadFieldOptions( system, objectName ) {
 				} else if ( 'salesforce' === system ) {
 					fields += '<option value="' + value.name + '">' + value.label + '</option>';
 				}
-			});
+			} );
 			$( selectField ).html( fields );
 		},
 		complete: function() {
