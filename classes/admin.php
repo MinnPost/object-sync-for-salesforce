@@ -140,6 +140,7 @@ class Object_Sync_Sf_Admin {
 		$this->action_group_suffix = '_check_records';
 
 		$this->add_actions();
+		$this->add_deprecated_actions();
 
 	}
 
@@ -156,18 +157,8 @@ class Object_Sync_Sf_Admin {
 
 		// Ajax for fieldmap forms
 		add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ), 10, 1 );
-		/**
-		 * method: get_wordpress_object_description
-		 * @deprecated since 1.9.0
-		 */
-		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
 		add_action( 'wp_ajax_get_salesforce_object_fields', array( $this, 'get_salesforce_object_fields' ), 10, 1 );
 		add_action( 'wp_ajax_get_wordpress_object_fields', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
-		/**
-		 * method: get_wp_sf_object_fields
-		 * @deprecated since 1.9.0
-		 */
-		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
 
 		// Ajax events that can be manually called
 		add_action( 'wp_ajax_push_to_salesforce', array( $this, 'push_to_salesforce' ), 10, 3 );
@@ -202,6 +193,23 @@ class Object_Sync_Sf_Admin {
 		add_action( 'admin_post_object_sync_for_salesforce_import', array( $this, 'import_json_file' ) );
 		add_action( 'admin_post_object_sync_for_salesforce_export', array( $this, 'export_json_file' ) );
 
+	}
+
+	/**
+	* Deprecated action hooks for admin pages
+	*
+	*/
+	private function add_deprecated_actions() {
+		/**
+		 * method: get_wordpress_object_description
+		 * @deprecated since 1.9.0
+		 */
+		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
+		/**
+		 * method: get_wp_sf_object_fields
+		 * @deprecated since 1.9.0
+		 */
+		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
 	}
 
 	/**
