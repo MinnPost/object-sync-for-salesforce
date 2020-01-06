@@ -64,6 +64,27 @@ $( document ).on( 'click', '.column-is_key input', function() {
 } );
 
 /**
+ * When clicking a field action, don't use the default
+ */
+$( document ).on( 'click', '.sfwp-a-fieldmap-field-action', function( event ) {
+	event.preventDefault();
+} );
+
+/**
+ * When clicking edit on a field, toggle its expanded status
+ */
+$( document ).on( 'click', '.sfwp-a-fieldmap-field-action-edit', function( event ) {
+	$( this ).closest( '.sfwp-a-fieldmap-values' ).toggleClass( 'sfwp-a-fieldmap-values-expanded' );
+} );
+
+/**
+ * When clicking delete on a field, offer to delete it
+ */
+$( document ).on( 'click', '.sfwp-a-fieldmap-field-action-delete', function( event ) {
+	//$( this ).closest( '.sfwp-a-fieldmap-values' ).toggleClass( 'sfwp-a-fieldmap-values-deleted' );
+} );
+
+/**
  * When the plugin loads:
  * Add new fieldmap rows
  * Select2 on select fields
@@ -79,7 +100,7 @@ $( document ).ready( function() {
 		$( 'select#salesforce_object' ).select2();
 		$( 'select#salesforce_record_type_default' ).select2();
 		$( 'select#pull_trigger_field' ).select2();
-		$( '.column-wordpress_field select' ).select2();
-		$( '.column-salesforce_field select' ).select2();
+		$( '.sfwp-fieldmap-form-field select' ).select2();
+		//$( '.column-salesforce_field select' ).select2();
 	}
 } );
