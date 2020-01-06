@@ -80,3 +80,15 @@ function clearSfwpCacheLink() {
 		return false;
 	});
 }
+
+/**
+ * When the plugin loads:
+ * Clear plugin cache button
+ * Manual push and pull
+ */
+$( document ).ready( function() {
+	// Clear the plugin cache via Ajax request.
+	clearSfwpCacheLink();
+	// Handle manual push and pull of objects
+	pushAndPullObjects();
+});

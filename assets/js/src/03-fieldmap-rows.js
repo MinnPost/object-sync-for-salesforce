@@ -64,3 +64,22 @@ $( document ).on( 'click', '.column-is_prematch input', function() {
 $( document ).on( 'click', '.column-is_key input', function() {
 	$( '.column-is_key input' ).not( this ).prop( 'checked', false );
 });
+
+/**
+ * When the plugin loads:
+ * Add new fieldmap rows
+ * Select2 on select fields
+ */
+$( document ).ready( function() {
+	// Duplicate the fields for a new row in the fieldmap options screen.
+	addFieldMappingRow();
+	// setup the select2 fields if the library is present
+	if ( jQuery.fn.select2 ) {
+		$( 'select#wordpress_object' ).select2();
+		$( 'select#salesforce_object' ).select2();
+		$( 'select#salesforce_record_type_default' ).select2();
+		$( 'select#pull_trigger_field' ).select2();
+		$( '.column-wordpress_field select' ).select2();
+		$( '.column-salesforce_field select' ).select2();
+	}
+});

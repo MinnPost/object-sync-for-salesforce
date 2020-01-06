@@ -6,14 +6,14 @@
 function loadFieldOptions( system, object_name ) {
 	var data = {
 		'action' : 'get_' + system + '_object_fields',
-	}
+	};
 	var selectField = '.column-' + system + '_field select';
 	var fields = '';
-	var first_field = $( selectField + ' option').first().text();
+	var firstField = $( selectField + ' option' ).first().text();
 	if ( '' !== $( selectField ).val() ) {
 		return;
 	}
-	fields += '<option value="">' + first_field + '</option>';
+	fields += '<option value="">' + firstField + '</option>';
 	if ( 'wordpress' === system ) {
 		data['wordpress_object'] = object_name;
 	} else if ( 'salesforce' === system ) {
@@ -65,4 +65,15 @@ $( document ).on( 'change', 'select#salesforce_object', function() {
 		$( 'table.fields tbody tr' ).fadeOut();
 		$( 'table.fields tbody tr' ).not( '.fieldmap-template' ).remove();
 	}, 1000 );
+});
+
+/**
+ * When the plugin loads:
+ * Clear fields when the targeted WordPress or Salesforce object type changes
+ * Manage the display for Salesforce object fields based on API reponse
+ */
+$( document ).ready( function() {
+	// if there is already a wp or sf object, make sure it has the right fields when the page loads
+	loadFieldOptions( 'wordpress', $( 'select#wordpress_object' ).val() );
+	loadFieldOptions( 'salesforce', $( 'select#salesforce_object' ).val() );
 });

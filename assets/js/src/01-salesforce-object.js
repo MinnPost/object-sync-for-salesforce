@@ -93,3 +93,12 @@ function salesforceObjectFields() {
 		}, delayTime );
 	});
 }
+
+/**
+ * When the plugin loads:
+ * Manage the display for Salesforce object fields based on API response
+ */
+$( document ).ready( function() {
+	// get the available Salesforce object choices
+	salesforceObjectFields();
+});

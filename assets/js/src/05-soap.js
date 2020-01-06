@@ -15,3 +15,8 @@ function toggleSoapFields() {
 $( document ).on( 'change', '.object-sync-for-salesforce-enable-soap input', function() {
 	toggleSoapFields();
 });
+
+$( document ).ready( function() {
+	// Don't show the WSDL file field unless SOAP is enabled
+	toggleSoapFields();
+});
