@@ -46,7 +46,7 @@ function loadFieldOptions( system, objectName ) {
 }
 
 // load available options if the wordpress object changes
-$( document ).on( 'change', 'select#wordpress_object', function() {
+$( document ).on( 'change', 'select#sfwp-wordpress-object', function() {
 	var timeout;
 	loadFieldOptions( 'wordpress', $( this ).val() );
 	clearTimeout( timeout );
@@ -57,7 +57,7 @@ $( document ).on( 'change', 'select#wordpress_object', function() {
 } );
 
 // load available options if the salesforce object changes
-$( document ).on( 'change', 'select#salesforce_object', function() {
+$( document ).on( 'change', 'select#sfwp-salesforce-object', function() {
 	var timeout;
 	loadFieldOptions( 'salesforce', $( this ).val() );
 	clearTimeout( timeout );
@@ -75,6 +75,6 @@ $( document ).on( 'change', 'select#salesforce_object', function() {
 $( document ).ready( function() {
 
 	// if there is already a wp or sf object, make sure it has the right fields when the page loads
-	loadFieldOptions( 'wordpress', $( 'select#wordpress_object' ).val() );
-	loadFieldOptions( 'salesforce', $( 'select#salesforce_object' ).val() );
+	loadFieldOptions( 'wordpress', $( 'select#sfwp-wordpress-object' ).val() );
+	loadFieldOptions( 'salesforce', $( 'select#sfwp-salesforce-object' ).val() );
 } );

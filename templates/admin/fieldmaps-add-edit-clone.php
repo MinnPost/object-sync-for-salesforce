@@ -36,18 +36,18 @@
 
 			<div class="postbox-container" id="postbox-container-2">
 				<header class="postbox sfwp-m-fieldmap-group sfwp-m-fieldmap-label">
-					<label for="sfwp_label"><?php echo esc_html__( 'Fieldmap Label', 'object-sync-for-salesforce' ); ?></label>
+					<label for="sfwp-label"><?php echo esc_html__( 'Fieldmap Label', 'object-sync-for-salesforce' ); ?></label>
 					<div class="sfwp-m-fieldmap-fields">
-						<input name="label" id="sfwp_label" type="text" required value="<?php echo isset( $label ) ? esc_html( $label ) : ''; ?>">
+						<input name="label" id="sfwp-label" type="text" required value="<?php echo isset( $label ) ? esc_html( $label ) : ''; ?>">
 					</div>
 				</header>
 				<section class="postbox sfwp-m-fieldmap-group sfwp-m-wordpress-object">
 					<header>
-						<label for="sfwp_wordpress_object"><?php echo esc_html__( 'WordPress Object', 'object-sync-for-salesforce' ); ?></label>
+						<label for="sfwp-wordpress-object"><?php echo esc_html__( 'WordPress Object', 'object-sync-for-salesforce' ); ?></label>
 					</header>
 					<div class="spinner spinner-wordpress"></div>
 					<div class="sfwp-m-fieldmap-fields">
-						<select id="sfwp_wordpress_object" name="wordpress_object" required>
+						<select id="sfwp-wordpress-object" name="wordpress_object" required>
 							<option value="">- <?php echo esc_html__( 'Select object type', 'object-sync-for-salesforce' ); ?> -</option>
 							<?php
 							$wordpress_objects = $this->wordpress->wordpress_objects;
@@ -68,28 +68,28 @@
 						</select>
 						<section class="sfwp-m-fieldmap-subgroup sfwp-m-wordpress-data-settings">
 							<!-- default post status goes here -->
-							<label for="sfwp_push_drafts"><?php echo esc_html__( 'Push Draft Posts', 'object-sync-for-salesforce' ); ?></label>
+							<label for="sfwp-push-drafts"><?php echo esc_html__( 'Push Draft Posts', 'object-sync-for-salesforce' ); ?></label>
 							<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-								<input type="checkbox" name="push_drafts" id="sfwp_push_drafts" value="1" <?php echo isset( $push_drafts ) && '1' === $push_drafts ? ' checked' : ''; ?>>
+								<input type="checkbox" name="push_drafts" id="sfwp-push-drafts" value="1" <?php echo isset( $push_drafts ) && '1' === $push_drafts ? ' checked' : ''; ?>>
 							</div>
-							<label for="sfwp_pull_to_drafts"><?php echo esc_html__( 'Pull to Draft Posts', 'object-sync-for-salesforce' ); ?></label>
+							<label for="sfwp-pull-to-drafts"><?php echo esc_html__( 'Pull to Draft Posts', 'object-sync-for-salesforce' ); ?></label>
 							<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-								<input type="checkbox" name="pull_to_drafts" id="sfwp_pull_to_drafts" value="1" <?php echo isset( $pull_to_drafts ) && '1' === $pull_to_drafts ? ' checked' : ''; ?>>
+								<input type="checkbox" name="pull_to_drafts" id="sfwp-pull-to-drafts" value="1" <?php echo isset( $pull_to_drafts ) && '1' === $pull_to_drafts ? ' checked' : ''; ?>>
 							</div>
-							<label for="sfwp_push_immediately"><?php echo esc_html__( 'Push changes immediately', 'object-sync-for-salesforce' ); ?></label>
+							<label for="sfwp-push-immediately"><?php echo esc_html__( 'Push changes immediately', 'object-sync-for-salesforce' ); ?></label>
 							<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-								<input type="checkbox" name="push_immediately" id="sfwp_push_immediately" value="1" <?php echo isset( $push_immediately ) && '1' === $push_immediately ? ' checked' : ''; ?>>
+								<input type="checkbox" name="push_immediately" id="sfwp-push-immediately" value="1" <?php echo isset( $push_immediately ) && '1' === $push_immediately ? ' checked' : ''; ?>>
 							</div>
 						</section>
 					</div>
 				</section>
 				<section class="postbox sfwp-m-fieldmap-group sfwp-m-salesforce-object">
 					<header>
-						<label for="swfp_salesforce_object"><?php echo esc_html__( 'Salesforce Object', 'object-sync-for-salesforce' ); ?></label>
+						<label for="sfwp-salesforce-object"><?php echo esc_html__( 'Salesforce Object', 'object-sync-for-salesforce' ); ?></label>
 					</header>
 					<div class="spinner spinner-salesforce"></div>
 					<div class="sfwp-m-fieldmap-fields">
-						<select id="swfp_salesforce_object" name="salesforce_object" required>
+						<select id="sfwp-salesforce-object" name="salesforce_object" required>
 							<option value="">- <?php echo esc_html__( 'Select object type', 'object-sync-for-salesforce' ); ?> -</option>
 							<?php
 							$sfapi          = $this->salesforce['sfapi'];
@@ -176,10 +176,10 @@
 								if ( isset( $record_types['recordTypeInfos'] ) ) :
 									?>
 									<header>
-										<label for="sfwp_salesforce_record_type_default"><?php echo esc_html__( 'Default Record Type', 'object-sync-for-salesforce' ); ?>:</label>
+										<label for="sfwp-salesforce-record-type-default"><?php echo esc_html__( 'Default Record Type', 'object-sync-for-salesforce' ); ?>:</label>
 									</header>
 									<div class="sfwp-m-fieldmap-subgroup-fields select">
-										<select id="sfwp_salesforce_record_type_default" name="salesforce_record_type_default" required><option value="">- <?php echo esc_html__( 'Select record type', 'object-sync-for-salesforce' ); ?> -</option>
+										<select id="sfwp-salesforce-record-type-default" name="salesforce_record_type_default" required><option value="">- <?php echo esc_html__( 'Select record type', 'object-sync-for-salesforce' ); ?> -</option>
 										<?php
 										foreach ( $record_types['recordTypeInfos'] as $key => $value ) :
 											if ( isset( $salesforce_record_type_default ) && $salesforce_record_type_default === $key ) {
@@ -207,7 +207,7 @@
 						<section class="sfwp-m-fieldmap-subgroup sfwp-m-pull-trigger-field">
 							<?php if ( isset( $pull_trigger_field ) ) : ?>
 								<header>
-									<label for="sfwp_pull_trigger_field"><?php echo esc_html__( 'Date field to trigger pull', 'object-sync-for-salesforce' ); ?></label>
+									<label for="sfwp-pull-trigger-field"><?php echo esc_html__( 'Date field to trigger pull', 'object-sync-for-salesforce' ); ?></label>
 								</header>
 								<?php
 								$object_fields = $this->get_salesforce_object_fields(
@@ -218,7 +218,7 @@
 								);
 								?>
 								<div class="sfwp-m-fieldmap-subgroup-fields select">
-									<select name="pull_trigger_field" id="sfwp_pull_trigger_field">
+									<select name="pull_trigger_field" id="sfwp-pull-trigger-field">
 									<?php
 									foreach ( $object_fields as $key => $value ) {
 										if ( $pull_trigger_field === $value['name'] ) {
@@ -246,12 +246,12 @@
 					</header>
 					<div class="sfwp-m-fieldmap-fields">
 						<ul class="sfwp-a-fieldmap-headings">
-							<li class="sfwp-fieldmap-wordpress-object">
-								<h3><?php echo esc_html__( 'WordPress Object', 'object-sync-for-salesforce' ); ?></h3>
+							<li class="sfwp-fieldmap-wordpress-field">
+								<h3><?php echo esc_html__( 'WordPress Field', 'object-sync-for-salesforce' ); ?></h3>
 							</li>
-							<li class="sfwp-fieldmap-salesforce-object">
+							<li class="sfwp-fieldmap-salesforce-field">
 								<h3>
-									<?php echo esc_html__( 'Salesforce Object', 'object-sync-for-salesforce' ); ?></h3>
+									<?php echo esc_html__( 'Salesforce Field', 'object-sync-for-salesforce' ); ?></h3>
 								</li>
 							<li class="sfwp-fieldmap-direction">
 								<h3>
@@ -379,34 +379,34 @@
 							}
 						}
 						?>
-						<label for="sfwp_sync_triggers_wordpress_create"><?php echo esc_html__( 'WordPress create', 'object-sync-for-salesforce' ); ?></label>
+						<label for="sfwp-sync-triggers-wordpress-create"><?php echo esc_html__( 'WordPress create', 'object-sync-for-salesforce' ); ?></label>
 						<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_create ); ?>" name="sync_triggers[]" id="sfwp_sync_triggers_wordpress_create" <?php echo esc_attr( $wordpress_create_checked ); ?>>
+							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_create ); ?>" name="sync_triggers[]" id="sfwp-sync-triggers-wordpress-create" <?php echo esc_attr( $wordpress_create_checked ); ?>>
 						</div>
 
-						<label for="sfwp_sync_triggers_wordpress_update"><?php echo esc_html__( 'WordPress update', 'object-sync-for-salesforce' ); ?></label>
+						<label for="sfwp-sync-triggers-wordpress-update"><?php echo esc_html__( 'WordPress update', 'object-sync-for-salesforce' ); ?></label>
 						<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_update ); ?>" name="sync_triggers[]" id="sfwp_sync_triggers_wordpress_update" <?php echo esc_attr( $wordpress_update_checked ); ?>>
+							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_update ); ?>" name="sync_triggers[]" id="sfwp-sync-triggers-wordpress-update" <?php echo esc_attr( $wordpress_update_checked ); ?>>
 						</div>
 
-						<label for="sfwp_sync_triggers_wordpress_delete"><?php echo esc_html__( 'WordPress delete', 'object-sync-for-salesforce' ); ?></label>
+						<label for="sfwp-sync-triggers-wordpress-delete"><?php echo esc_html__( 'WordPress delete', 'object-sync-for-salesforce' ); ?></label>
 						<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_delete ); ?>" name="sync_triggers[]" id="sfwp_sync_triggers_wordpress_delete" <?php echo esc_attr( $wordpress_delete_checked ); ?>>
+							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_delete ); ?>" name="sync_triggers[]" id="sfwp-sync-triggers-wordpress-delete" <?php echo esc_attr( $wordpress_delete_checked ); ?>>
 						</div>
 
-						<label for="sfwp_sync_triggers_salesforce_create"><?php echo esc_html__( 'Salesforce create', 'object-sync-for-salesforce' ); ?></label>
+						<label for="sfwp-sync-triggers-salesforce-create"><?php echo esc_html__( 'Salesforce create', 'object-sync-for-salesforce' ); ?></label>
 						<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_create ); ?>" name="sync_triggers[]" id="sfwp_sync_triggers_salesforce_create" <?php echo esc_attr( $salesforce_create_checked ); ?>>
+							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_create ); ?>" name="sync_triggers[]" id="sfwp-sync-triggers-salesforce-create" <?php echo esc_attr( $salesforce_create_checked ); ?>>
 						</div>
 
-						<label for="sfwp_sync_triggers_salesforce_update"><?php echo esc_html__( 'Salesforce update', 'object-sync-for-salesforce' ); ?></label>
+						<label for="sfwp-sync-triggers-salesforce-update"><?php echo esc_html__( 'Salesforce update', 'object-sync-for-salesforce' ); ?></label>
 						<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_update ); ?>" name="sync_triggers[]" id="sfwp_sync_triggers_salesforce_update" <?php echo esc_attr( $salesforce_update_checked ); ?>>
+							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_update ); ?>" name="sync_triggers[]" id="sfwp-sync-triggers-salesforce-update" <?php echo esc_attr( $salesforce_update_checked ); ?>>
 						</div>
 
-						<label for="sfwp_sync_triggers_salesforce_delete"><?php echo esc_html__( 'Salesforce delete', 'object-sync-for-salesforce' ); ?></label>
+						<label for="sfwp-sync-triggers-salesforce-delete"><?php echo esc_html__( 'Salesforce delete', 'object-sync-for-salesforce' ); ?></label>
 						<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_delete ); ?>" name="sync_triggers[]" id="sfwp_sync_triggers_salesforce_delete" <?php echo esc_attr( $salesforce_delete_checked ); ?>>
+							<input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_delete ); ?>" name="sync_triggers[]" id="sfwp-sync-triggers-salesforce-delete" <?php echo esc_attr( $salesforce_delete_checked ); ?>>
 						</div>
 
 						<p class="description">
