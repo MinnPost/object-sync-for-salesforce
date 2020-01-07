@@ -193,7 +193,7 @@ $body-color: rgb(68, 68, 68);
 	}
 } // end .admin-color
 
-#poststuff {
+#poststuff .sfwp-o-fieldmap {
 
 	/**
   	* Select2 elements.
@@ -259,13 +259,13 @@ $body-color: rgb(68, 68, 68);
 			height: 32px;
 
 			.select2-selection__rendered {
-				line-height: 32px;
+				line-height: 29px;
 				padding-right: 24px;
 			}
 
 			.select2-selection__arrow {
 				right: 3px;
-				height: 36px;
+				height: 30px;
 			}
 		}
 
@@ -281,193 +281,191 @@ $body-color: rgb(68, 68, 68);
 			padding: 3px 0;
 		}
 	}
+	/**
+  	* End Select2 styles for this plugin
+  	*/
 
-	.sfwp-o-fieldmap {
+	//display: flex;
+	//flex-wrap: wrap;
+	//width: 70%;
+	* {
+		box-sizing: border-box;
+	}
 
+	.sfwp-m-fieldmap-group,
+	.sfwp-m-fieldmap-subgroup,
+	.sfwp-m-fieldmap-fields {
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0;
 
-		//display: flex;
-		//flex-wrap: wrap;
-		//width: 70%;
-		* {
-			box-sizing: border-box;
+		label,
+		h2,
+		h3 {
+			font-weight: $bold-font-weight;
+			font-size: $label-font-size;
+			line-height: $label-line-height;
+			padding: 0;
 		}
+	}
 
-		.sfwp-m-fieldmap-group,
-		.sfwp-m-fieldmap-subgroup,
-		.sfwp-m-fieldmap-fields {
-			display: flex;
-			flex-wrap: wrap;
-			margin: 0;
+	.sfwp-m-fieldmap-group {
+		margin-bottom: $vertical-space;
+		padding: $main-space;
+		width: $group-width;
+	}
 
-			label,
-			h2,
-			h3 {
-				font-weight: $bold-font-weight;
-				font-size: $label-font-size;
-				line-height: $label-line-height;
-				padding: 0;
-			}
-		}
+	.sfwp-m-fieldmap-subgroup {
+		width: $subgroup-width;
+	}
 
-		.sfwp-m-fieldmap-group {
-			margin-bottom: $vertical-space;
-			padding: $main-space;
-			width: $group-width;
-		}
+	.sfwp-m-fieldmap-group > header,
+	.sfwp-m-fieldmap-group > label,
+	.sfwp-m-fieldmap-subgroup label {
+		display: block;
+		margin-right: $vertical-space;
+	}
 
-		.sfwp-m-fieldmap-subgroup {
-			width: $subgroup-width;
-		}
+	.sfwp-m-fieldmap-group > header,
+	.sfwp-m-fieldmap-group > label {
+		width: $label-width;
+		border-right: 1px solid $border-color-darker;
+	}
 
-		.sfwp-m-fieldmap-group > header,
-		.sfwp-m-fieldmap-group > label,
-		.sfwp-m-fieldmap-subgroup label {
-			display: block;
-			margin-right: $vertical-space;
-		}
+	.sfwp-m-fieldmap-subgroup header,
+	.sfwp-m-fieldmap-subgroup > label,
+	.sfwp-m-fieldmap-fields > label {
+		width: $sublabel-width;
+		align-self: baseline;
+		margin-right: 0;
+	}
 
-		.sfwp-m-fieldmap-group > header,
-		.sfwp-m-fieldmap-group > label {
-			width: $label-width;
-			border-right: 1px solid $border-color-darker;
-		}
+	.sfwp-m-fieldmap-subgroup header,
+	.sfwp-m-fieldmap-group-fields,
+	.sfwp-m-fieldmap-subgroup-fields {
+		padding: $main-space 0;
+		align-self: baseline;
+	}
 
-		.sfwp-m-fieldmap-subgroup header,
-		.sfwp-m-fieldmap-subgroup > label,
-		.sfwp-m-fieldmap-fields > label {
-			width: $sublabel-width;
-			align-self: baseline;
-			margin-right: 0;
-		}
+	.sfwp-m-fieldmap-fields,
+	.sfwp-m-fieldmap-group-fields,
+	.sfwp-m-fieldmap-subgroup-fields {
+		//margin: 0 0 0 12px;
 
-		.sfwp-m-fieldmap-subgroup header,
-		.sfwp-m-fieldmap-group-fields,
-		.sfwp-m-fieldmap-subgroup-fields {
-			padding: $main-space 0;
-			align-self: baseline;
-		}
-
-		.sfwp-m-fieldmap-fields,
-		.sfwp-m-fieldmap-group-fields,
-		.sfwp-m-fieldmap-subgroup-fields {
-			//margin: 0 0 0 12px;
-
-			input[type="text"],
-			input[type="search"],
-			input[type="email"],
-			input[type="url"],
-			input[type="password"],
-			input[type="number"],
-			input[type="tel"],
-			textarea,
-			select {
-				width: 100%;
-			}
-		}
-
-		.sfwp-m-fieldmap-fields {
-			width: $field-width;
-		}
-
-		.sfwp-m-fieldmap-subgroup-fields {
-			width: $subfield-width;
-		}
-
-		.sfwp-o-fields ul {
-			display: flex;
-			flex-wrap: wrap;
+		input[type="text"],
+		input[type="search"],
+		input[type="email"],
+		input[type="url"],
+		input[type="password"],
+		input[type="number"],
+		input[type="tel"],
+		textarea,
+		select {
 			width: 100%;
-			justify-content: space-between;
-			border-bottom: 1px solid $border-color-darker;
-			margin: 0;
+		}
+	}
 
-			li {
+	.sfwp-m-fieldmap-fields {
+		width: $field-width;
+	}
+
+	.sfwp-m-fieldmap-subgroup-fields {
+		width: $subfield-width;
+	}
+
+	.sfwp-o-fields ul {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+		justify-content: space-between;
+		border-bottom: 1px solid $border-color-darker;
+		margin: 0;
+
+		li {
+			margin: 0;
+			padding: 0;
+
+			h4 {
 				margin: 0;
 				padding: 0;
+				font-weight: $normal-font-weight;
+			}
+		}
 
-				h4 {
-					margin: 0;
-					padding: 0;
-					font-weight: $normal-font-weight;
+		// heading titles
+		&.sfwp-a-fieldmap-headings {
+			font-weight: $bold-font-weight;
+		}
+
+		// not headings
+		&.sfwp-a-fieldmap-values li {
+			padding: $main-space;
+		}
+
+		li.sfwp-fieldmap-wordpress-object,
+		.sfwp-fieldmap-salesforce-object {
+			width: 25%;
+			overflow-x: scroll;
+		}
+
+		li.sfwp-fieldmap-direction {
+			width: 15%;
+			overflow-x: scroll;
+		}
+
+		li.sfwp-fieldmap-actions {
+			width: 25%;
+			overflow-x: scroll;
+
+			a {
+				display: inline-block;
+
+				&:first-child {
+					padding-right: $horizontal-space;
+					border-right: 1px solid $select-border-color;
+					margin-right: $horizontal-space;
 				}
 			}
+		}
 
-			// heading titles
-			&.sfwp-a-fieldmap-headings {
-				font-weight: $bold-font-weight;
-			}
+		.sfwp-fieldmap-form {
+			display: none;
+			color: $body-color;
+			padding: $main-space $main-space $vertical-space $main-space;
+			width: $group-width;
+			flex-wrap: wrap;
+		}
 
-			// not headings
-			&.sfwp-a-fieldmap-values li {
-				padding: $main-space;
-			}
+		&.sfwp-a-fieldmap-values-expanded {
+			background: $link-color;
+			color: $bg-color;
 
-			li.sfwp-fieldmap-wordpress-object,
-			.sfwp-fieldmap-salesforce-object {
-				width: 25%;
-				overflow-x: scroll;
-			}
+			li {
 
-			li.sfwp-fieldmap-direction {
-				width: 15%;
-				overflow-x: scroll;
-			}
+				&.sfwp-fieldmap-actions {
 
-			li.sfwp-fieldmap-actions {
-				width: 25%;
-				overflow-x: scroll;
-
-				a {
-					display: inline-block;
-
-					&:first-child {
-						padding-right: $horizontal-space;
-						border-right: 1px solid $select-border-color;
-						margin-right: $horizontal-space;
+					a {
+						display: none;
 					}
 				}
 			}
 
 			.sfwp-fieldmap-form {
-				display: none;
-				color: $body-color;
-				padding: $main-space $main-space $vertical-space $main-space;
-				width: $group-width;
-				flex-wrap: wrap;
+				display: flex;
 			}
 
-			&.sfwp-a-fieldmap-values-expanded {
-				background: $link-color;
-				color: $bg-color;
-
-				li {
-
-					&.sfwp-fieldmap-actions {
-
-						a {
-							display: none;
-						}
-					}
-				}
-
-				.sfwp-fieldmap-form {
-					display: flex;
-				}
-
-				#finish-field-mapping {
-					margin-right: $horizontal-space;
-				}
+			#finish-field-mapping {
+				margin-right: $horizontal-space;
 			}
-
 		}
 
-		.submit {
-			clear: both;
-		}
+	}
 
-	} // end .sfwp-o-fieldmap
+	.submit {
+		clear: both;
+	}
 
-} // end #poststuff
+} // end #poststuff .sfwp-o-fieldmap
 
 // messages to display
 .salesforce_user_ajax_message {
