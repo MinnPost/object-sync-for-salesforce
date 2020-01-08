@@ -1274,8 +1274,8 @@ class Object_Sync_Sf_Admin {
 		if ( ! empty( $data['salesforce_object'] ) ) {
 			$object = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
 
-			$object_fields        = array();
-			$include_record_types = array();
+			$object_fields       = array();
+			$object_record_types = array();
 
 			// these can come from ajax
 			$include = isset( $data['include'] ) ? (array) $data['include'] : array();
