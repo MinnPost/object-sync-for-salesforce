@@ -392,6 +392,49 @@ class Object_Sync_Sf_WordPress {
 	}
 
 	/**
+	 * Get WordPress statuses based on what object it is
+	 *
+	 * @param string $object_type The type of object.
+	 * @return array $wordpress_statuses
+	 */
+	public function get_wordpress_object_statuses( $object_type ) {
+		$wordpress_statuses = array();
+
+		if ( 'user' === $object_type ) {
+			$statuses = array();
+		} elseif ( 'post' === $object_type || 'attachment' === $object_type ) {
+			$statuses = get_post_statuses();
+		} elseif ( 'category' === $object_type || 'tag' === $object_type || 'post_tag' === $object_type ) {
+			$statuses = array();
+		} elseif ( 'comment' === $object_type ) {
+			$statuses = get_comment_statuses();
+		} else { // This is for custom post types.
+			$statuses = get_post_statuses();
+		}
+
+		/*
+		 * Allow developers to change the WordPress object statuses.
+		 * The returned $wordpress_statuses needs to be an array like described above.
+		 * This is useful for custom objects, hidden fields, or custom formatting.
+		 * Here's an example of filters to add/modify data:
+		 *
+			add_filter( 'object_sync_for_salesforce_wordpress_object_statuses', 'modify_data', 10, 2 );
+			function modify_data( $wordpress_statuses, $object_type ) {
+				// Add a new status choice to specific WordPress objects such as 'post', 'page', 'user', a Custom Post Type, etc.
+				if ($object_type === 'user') {
+					$wordpress_statuses['member'] = 'Member';
+				}
+				return $wordpress_statuses;
+			}
+		*/
+
+		$wordpress_statuses = apply_filters( $this->option_prefix . 'wordpress_object_statuses', $wordpress_statuses, $object_type );
+
+		return $wordpress_statuses;
+
+	}
+
+	/**
 	 * Check to see if this API call exists in the cache
 	 * if it does, return the transient for that key
 	 *
