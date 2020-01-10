@@ -20,7 +20,7 @@ $label-width: 20%;
 $sublabel-width: 35%;
 
 $field-width: 75%;
-$subfield-width: 65%;
+$subfield-width: 60%;
 
 // from WP admin styles
 $label-font-size: 14px;
@@ -30,6 +30,7 @@ $link-color-hover: #00a0d2;
 $bg-color: #fff;
 $body-color: rgb(68, 68, 68);
 
+// Select2 styles for 5.3
 .branch-5-3 {
 
 	.select2-results {
@@ -281,6 +282,7 @@ $body-color: rgb(68, 68, 68);
 			padding: 3px 0;
 		}
 	}
+
 	/**
   	* End Select2 styles for this plugin
   	*/
@@ -317,6 +319,7 @@ $body-color: rgb(68, 68, 68);
 
 	.sfwp-m-fieldmap-subgroup {
 		width: $subgroup-width;
+		padding-top: $main-space;
 	}
 
 	.sfwp-m-fieldmap-group > header,
@@ -371,6 +374,27 @@ $body-color: rgb(68, 68, 68);
 
 	.sfwp-m-fieldmap-subgroup-fields {
 		width: $subfield-width;
+		padding: 6px 0;
+
+		> label {
+			padding-bottom: $main-space;
+			font-weight: $normal-font-weight;
+
+			&:last-child {
+				padding-bottom: 0;
+			}
+		}
+	}
+
+	.sfwp-m-fieldmap-subgroup .sfwp-m-fieldmap-group-fields {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+		padding: 12px 0 0 0;
+
+		label {
+			align-self: center;
+		}
 	}
 
 	.sfwp-o-fields ul {
@@ -461,11 +485,30 @@ $body-color: rgb(68, 68, 68);
 
 	}
 
+	p.description {
+		font-style: normal;
+		font-size: 12px;
+		line-height: 1.4;
+		margin-top: $horizontal-space;
+	}
+
 	.submit {
 		clear: both;
 	}
 
 } // end #poststuff .sfwp-o-fieldmap
+
+/* with javascript only */
+.js #poststuff .sfwp-o-fieldmap {
+	// styles for hiding field templates
+	.sfwp-m-wordpress-statuses.wordpress-statuses-template,
+	.sfwp-m-wordpress-drafts.sfwp-m-drafts-template,
+	.sfwp-m-fieldmap-subgroup.record-types-allowed-template,
+	.sfwp-m-fieldmap-subgroup.record-type-default-template,
+	.sfwp-m-fieldmap-subgroup.pull-trigger-field-template {
+		display: none;
+	}
+} // end .js #poststuff .sfwp-o-fieldmap
 
 // messages to display
 .salesforce_user_ajax_message {
