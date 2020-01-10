@@ -143,7 +143,7 @@
 								?>
 							</p>
 						<?php endif; ?>
-						<section class="sfwp-m-fieldmap-subgroup sfwp-m-salesforce-record-types-allowed">
+						<section class="sfwp-m-fieldmap-subgroup sfwp-m-salesforce-record-types-allowed record-types-allowed-template <?php echo isset( $salesforce_object ) ? 'sfwp-m-salesforce-record-types-allowed-' . esc_html( $salesforce_object ) : ''; ?>">
 							<?php
 							if ( isset( $salesforce_record_types_allowed ) ) :
 								$record_types = $this->get_salesforce_object_description(
@@ -152,34 +152,34 @@
 										'include' => 'recordTypeInfos',
 									)
 								);
-								if ( isset( $record_types['recordTypeInfos'] ) ) :
-									?>
-									<header>
-										<h3><?php echo esc_html__( 'Allowed Record Types', 'object-sync-for-salesforce' ); ?></h3>
-									</header>
-									<div class="sfwp-m-fieldmap-subgroup-fields checkboxes">
-									<?php foreach ( $record_types['recordTypeInfos'] as $key => $value ) : ?>
-										<?php
-										if ( in_array( $key, $salesforce_record_types_allowed, true ) ) {
-											$checked = ' checked';
-										} else {
-											$checked = '';
-										}
-										echo sprintf(
-											'<label><input type="checkbox" class="form-checkbox" value="%1$s" name="%2$s" id="%3$s"%4$s>%5$s</label>',
-											esc_html( $key ),
-											esc_attr( 'salesforce_record_types_allowed[' . $key . ']' ),
-											esc_attr( 'salesforce_record_types_allowed-' . $key ),
-											esc_html( $checked ),
-											esc_html( $value )
-										);
-										?>
-									<?php endforeach; ?>
-									</div>
-								<?php endif; ?>
+								?>
+								<header>
+									<h3><?php echo esc_html__( 'Allowed Record Types', 'object-sync-for-salesforce' ); ?></h3>
+								</header>
+								<div class="sfwp-m-fieldmap-subgroup-fields checkboxes">
+									<?php if ( isset( $record_types['recordTypeInfos'] ) ) : ?>
+										<?php foreach ( $record_types['recordTypeInfos'] as $key => $value ) : ?>
+											<?php
+											if ( in_array( $key, $salesforce_record_types_allowed, true ) ) {
+												$checked = ' checked';
+											} else {
+												$checked = '';
+											}
+											echo sprintf(
+												'<label><input type="checkbox" class="form-checkbox" value="%1$s" name="%2$s" id="%3$s"%4$s>%5$s</label>',
+												esc_html( $key ),
+												esc_attr( 'salesforce_record_types_allowed[' . $key . ']' ),
+												esc_attr( 'salesforce_record_types_allowed-' . $key ),
+												esc_html( $checked ),
+												esc_html( $value )
+											);
+											?>
+										<?php endforeach; ?>
+									<?php endif; ?>
+								</div>
 							<?php endif; ?>
 						</section>
-						<section class="sfwp-m-fieldmap-subgroup sfwp-m-salesforce-record-type-default">
+						<section class="sfwp-m-fieldmap-subgroup sfwp-m-salesforce-record-type-default record-type-default-template">
 							<?php
 							if ( isset( $salesforce_record_type_default ) ) :
 								$record_types = $this->get_salesforce_object_description(
@@ -188,70 +188,76 @@
 										'include' => 'recordTypeInfos',
 									)
 								);
-								if ( isset( $record_types['recordTypeInfos'] ) ) :
-									?>
-									<header>
-										<label for="sfwp-salesforce-record-type-default"><?php echo esc_html__( 'Default Record Type', 'object-sync-for-salesforce' ); ?>:</label>
-									</header>
-									<div class="sfwp-m-fieldmap-subgroup-fields select">
-										<select id="sfwp-salesforce-record-type-default" name="salesforce_record_type_default" required><option value="">- <?php echo esc_html__( 'Select record type', 'object-sync-for-salesforce' ); ?> -</option>
+								?>
+								<header>
+									<label for="sfwp-salesforce-record-type-default"><?php echo esc_html__( 'Default Record Type', 'object-sync-for-salesforce' ); ?>:</label>
+								</header>
+								<div class="sfwp-m-fieldmap-subgroup-fields select">
+									<select id="sfwp-salesforce-record-type-default" name="salesforce_record_type_default" required>
+										<option value="">- <?php echo esc_html__( 'Select record type', 'object-sync-for-salesforce' ); ?> -</option>
 										<?php
-										foreach ( $record_types['recordTypeInfos'] as $key => $value ) :
-											if ( isset( $salesforce_record_type_default ) && $salesforce_record_type_default === $key ) {
+										if ( isset( $record_types['recordTypeInfos'] ) ) {
+											foreach ( $record_types['recordTypeInfos'] as $key => $value ) {
+												if ( isset( $salesforce_record_type_default ) && $salesforce_record_type_default === $key ) {
+													$selected = ' selected';
+												} else {
+													$selected = '';
+												}
+												if ( ! isset( $salesforce_record_types_allowed ) || in_array( $key, $salesforce_record_types_allowed, true ) ) {
+													echo sprintf(
+														'<option value="%1$s"%2$s>%3$s</option>',
+														esc_attr( $key ),
+														esc_attr( $selected ),
+														esc_html( $value )
+													);
+												}
+											}
+										}
+										?>
+									</select>
+								</div>
+							<?php endif; ?>
+						</section>
+						<section class="sfwp-m-fieldmap-subgroup sfwp-m-pull-trigger-field<?php echo ! isset( $pull_trigger_field ) ? ' pull-trigger-field-template' : ''; ?> <?php echo isset( $salesforce_object ) ? 'sfwp-m-pull-trigger-field-' . esc_html( $salesforce_object ) : ''; ?>">
+							<header>
+								<label for="sfwp-pull-trigger-field"><?php echo esc_html__( 'Date field to trigger pull', 'object-sync-for-salesforce' ); ?></label>
+							</header>
+							<?php
+							$object_fields = $this->get_salesforce_object_fields(
+								array(
+									'salesforce_object' => $salesforce_object,
+									'type'              => 'datetime',
+								)
+							);
+							?>
+							<div class="sfwp-m-fieldmap-subgroup-fields select">
+								<select name="pull_trigger_field" id="sfwp-pull-trigger-field">
+									<option value="">- <?php echo esc_html__( 'Select Date field', 'object-sync-for-salesforce' ); ?> -</option>
+									<?php
+									if ( ! empty( $object_fields ) ) {
+										foreach ( $object_fields as $key => $value ) {
+											if ( $pull_trigger_field === $value['name'] ) {
 												$selected = ' selected';
 											} else {
 												$selected = '';
 											}
-											if ( ! isset( $salesforce_record_types_allowed ) || in_array( $key, $salesforce_record_types_allowed, true ) ) {
-												echo sprintf(
-													'<option value="%1$s"%2$s>%3$s</option>',
-													esc_attr( $key ),
-													esc_attr( $selected ),
-													esc_html( $value )
-												);
-											}
-										endforeach;
-										?>
-										</select>
-									</div>
-									<?php
-								endif;
-							endif;
-							?>
-						</section>
-						<section class="sfwp-m-fieldmap-subgroup sfwp-m-pull-trigger-field">
-							<?php if ( isset( $pull_trigger_field ) ) : ?>
-								<header>
-									<label for="sfwp-pull-trigger-field"><?php echo esc_html__( 'Date field to trigger pull', 'object-sync-for-salesforce' ); ?></label>
-								</header>
-								<?php
-								$object_fields = $this->get_salesforce_object_fields(
-									array(
-										'salesforce_object' => $salesforce_object,
-										'type' => 'datetime',
-									)
-								);
-								?>
-								<div class="sfwp-m-fieldmap-subgroup-fields select">
-									<select name="pull_trigger_field" id="sfwp-pull-trigger-field">
-									<?php
-									foreach ( $object_fields as $key => $value ) {
-										if ( $pull_trigger_field === $value['name'] ) {
-											$selected = ' selected';
-										} else {
-											$selected = '';
+											echo sprintf(
+												'<option value="%1$s"%2$s>%3$s</option>',
+												esc_attr( $value['name'] ),
+												esc_attr( $selected ),
+												esc_html( $value['label'] )
+											);
 										}
-										echo sprintf(
-											'<option value="%1$s"%2$s>%3$s</option>',
-											esc_attr( $value['name'] ),
-											esc_attr( $selected ),
-											esc_html( $value['label'] )
-										);
 									}
 									?>
-									</select>
-								</div>
-							<?php endif; ?>
+								</select>
+								<p class="description">
+								<?php
+								// translators: placeholder is for the class names: salesforce_pull
+								echo sprintf( esc_html__( 'These are date fields that can cause WordPress to pull an update from Salesforce, according to the %1$s class.', 'object-sync-for-salesforce' ), '<code>salesforce_pull</code>', '<code>salesforce_pull</code>' );
+								?>
+								</p>
+							</div>
 						</div>
 					</section>
 				</section>
