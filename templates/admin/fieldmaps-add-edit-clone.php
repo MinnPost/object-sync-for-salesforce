@@ -44,8 +44,8 @@
 				<section class="postbox sfwp-m-fieldmap-group sfwp-m-wordpress-object">
 					<header>
 						<label for="sfwp-wordpress-object"><?php echo esc_html__( 'WordPress Object', 'object-sync-for-salesforce' ); ?></label>
+						<div class="spinner spinner-wordpress"></div>
 					</header>
-					<div class="spinner spinner-wordpress"></div>
 					<div class="sfwp-m-fieldmap-fields">
 						<select id="sfwp-wordpress-object" name="wordpress_object" required>
 							<option value="">- <?php echo esc_html__( 'Select object type', 'object-sync-for-salesforce' ); ?> -</option>
@@ -86,8 +86,8 @@
 				<section class="postbox sfwp-m-fieldmap-group sfwp-m-salesforce-object">
 					<header>
 						<label for="sfwp-salesforce-object"><?php echo esc_html__( 'Salesforce Object', 'object-sync-for-salesforce' ); ?></label>
+						<div class="spinner spinner-salesforce"></div>
 					</header>
-					<div class="spinner spinner-salesforce"></div>
 					<div class="sfwp-m-fieldmap-fields">
 						<select id="sfwp-salesforce-object" name="salesforce_object" required>
 							<option value="">- <?php echo esc_html__( 'Select object type', 'object-sync-for-salesforce' ); ?> -</option>
