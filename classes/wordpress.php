@@ -23,6 +23,7 @@ class Object_Sync_Sf_WordPress {
 
 	public $wordpress_objects;
 	public $options;
+	public $all_draft_statuses;
 
 	public $sfwp_transients;
 	public $debug;
