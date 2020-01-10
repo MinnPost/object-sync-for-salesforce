@@ -56,6 +56,9 @@ class Object_Sync_Sf_WordPress {
 			'type'             => 'read',
 		);
 
+		// statuses that are considered drafts
+		$this->all_draft_statuses = array( 'draft', 'pending', 'hold' ); // see wp-includes/comment.php and wp-includes/post.php
+
 		$this->sfwp_transients = new Object_Sync_Sf_WordPress_Transient( 'sfwp_transients' );
 
 		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
@@ -411,6 +414,9 @@ class Object_Sync_Sf_WordPress {
 		} else { // This is for custom post types.
 			$statuses = get_post_statuses();
 		}
+
+		// in other places, we check for whether an object has drafts. this seems to be the best way to do that
+		$statuses['all_draft_statuses'] = $this->all_draft_statuses;
 
 		/*
 		 * Allow developers to change the WordPress object statuses.

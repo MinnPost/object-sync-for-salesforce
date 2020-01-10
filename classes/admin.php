@@ -158,6 +158,7 @@ class Object_Sync_Sf_Admin {
 		// Ajax for fieldmap forms
 		add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ), 10, 1 );
 		add_action( 'wp_ajax_get_salesforce_object_fields', array( $this, 'get_salesforce_object_fields' ), 10, 1 );
+		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_description' ), 10, 1 );
 		add_action( 'wp_ajax_get_wordpress_object_fields', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
 
 		// Ajax events that can be manually called
@@ -200,11 +201,6 @@ class Object_Sync_Sf_Admin {
 	*
 	*/
 	private function add_deprecated_actions() {
-		/**
-		 * method: get_wordpress_object_description
-		 * @deprecated since 1.9.0
-		 */
-		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
 		/**
 		 * method: get_wp_sf_object_fields
 		 * @deprecated since 1.9.0
@@ -1360,6 +1356,65 @@ class Object_Sync_Sf_Admin {
 			return $object_fields;
 		}
 
+	}
+
+	/**
+	* Get all the WordPress object settings for fieldmapping
+	* This takes either the $_POST array via ajax, or can be directly called with a $data array
+	*
+	* @param array $data
+	* data must contain a wordpress_object
+	* can optionally contain a type
+	* @return array $object_settings
+	*/
+	public function get_wordpress_object_description( $data = array() ) {
+		$ajax = false;
+		if ( empty( $data ) ) {
+			$data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+			$ajax = true;
+		}
+
+		$object_description = array();
+
+		if ( ! empty( $data['wordpress_object'] ) ) {
+			$object          = array();
+			$object_fields   = array();
+			$object_statuses = array();
+
+			// these can come from ajax
+			$include = isset( $data['include'] ) ? (array) $data['include'] : array();
+			$include = array_map( 'esc_attr', $include );
+
+			if ( in_array( 'fields', $include, true ) || empty( $include ) ) {
+				$fields = $this->wordpress->get_wordpress_object_fields( $data['wordpress_object'] );
+				if ( ! empty( $fields ) ) {
+					foreach ( $fields as $wordpress_field ) {
+						if ( '' === $type || $type === $value['type'] ) {
+							$object_fields[ esc_attr( $wordpress_field['key'] ) ] = esc_html( $wordpress_field['key'] );
+						}
+					}
+				}
+				$object_description['fields'] = $object_fields;
+			}
+
+			if ( in_array( 'statuses', $include, true ) ) {
+				$statuses = $this->wordpress->get_wordpress_object_statuses( $data['wordpress_object'] );
+				if ( ! empty( $statuses ) ) {
+					if ( isset( $object['data']['recordTypeInfos'] ) && count( $object['data']['recordTypeInfos'] ) > 1 ) {
+						foreach ( $object['data']['recordTypeInfos'] as $type ) {
+							$object_record_types[ $type['recordTypeId'] ] = $type['name'];
+						}
+						$object_description['recordTypeInfos'] = $object_record_types;
+					}
+				}
+			}
+		}
+
+		if ( true === $ajax ) {
+			wp_send_json_success( $object_description );
+		} else {
+			return $object_description;
+		}
 	}
 
 	/**
