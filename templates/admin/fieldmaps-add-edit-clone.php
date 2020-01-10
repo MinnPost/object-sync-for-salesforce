@@ -81,13 +81,19 @@
 									<?php endif; ?>
 								</select>
 							</div>
-							<label for="sfwp-pull-to-drafts"><?php echo esc_html__( 'Pull to Draft Posts', 'object-sync-for-salesforce' ); ?></label>
-							<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-								<input type="checkbox" name="pull_to_drafts" id="sfwp-pull-to-drafts" value="1" <?php echo isset( $pull_to_drafts ) && '1' === $pull_to_drafts ? ' checked' : ''; ?>>
+							<div class="sfwp-m-fieldmap-group-fields checkbox sfwp-m-wordpress-drafts sfwp-m-drafts-template">
+								<label>
+									<?php echo esc_html__( 'Push Drafts to Salesforce', 'object-sync-for-salesforce' ); ?>
+									<input type="checkbox" name="push_drafts" id="sfwp-push-drafts" value="1" <?php echo isset( $push_drafts ) && '1' === $push_drafts ? ' checked' : ''; ?>></label>
+								<label>
+									<?php echo esc_html__( 'Pull to Drafts in WordPress', 'object-sync-for-salesforce' ); ?><input type="checkbox" name="pull_to_drafts" id="sfwp-pull-to-drafts" value="1" <?php echo isset( $pull_to_drafts ) && '1' === $pull_to_drafts ? ' checked' : ''; ?>>
+								</label>
 							</div>
-							<label for="sfwp-push-immediately"><?php echo esc_html__( 'Push changes immediately', 'object-sync-for-salesforce' ); ?></label>
-							<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-								<input type="checkbox" name="push_immediately" id="sfwp-push-immediately" value="1" <?php echo isset( $push_immediately ) && '1' === $push_immediately ? ' checked' : ''; ?>>
+							<div class="sfwp-m-fieldmap-group-fields checkbox sfwp-m-push-immediately">
+								<label for="sfwp-push-immediately"><?php echo esc_html__( 'Push changes immediately', 'object-sync-for-salesforce' ); ?></label>
+								<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
+									<input type="checkbox" name="push_immediately" id="sfwp-push-immediately" value="1" <?php echo isset( $push_immediately ) && '1' === $push_immediately ? ' checked' : ''; ?>>
+								</div>
 							</div>
 						</section>
 					</div>
