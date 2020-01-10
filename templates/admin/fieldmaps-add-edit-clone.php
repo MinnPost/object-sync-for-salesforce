@@ -67,10 +67,19 @@
 							?>
 						</select>
 						<section class="sfwp-m-fieldmap-subgroup sfwp-m-wordpress-data-settings">
-							<!-- default post status goes here -->
-							<label for="sfwp-push-drafts"><?php echo esc_html__( 'Push Draft Posts', 'object-sync-for-salesforce' ); ?></label>
-							<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
-								<input type="checkbox" name="push_drafts" id="sfwp-push-drafts" value="1" <?php echo isset( $push_drafts ) && '1' === $push_drafts ? ' checked' : ''; ?>>
+							<div class="sfwp-m-fieldmap-group-fields select sfwp-m-wordpress-statuses wordpress-statuses-template">
+								<label for="sfwp-default-status"><?php echo esc_html__( 'Default Status', 'object-sync-for-salesforce' ); ?></label>
+								<select name="default_status" id="sfwp-default-status">
+									<option value="" selected>- <?php echo esc_html__( 'Select Default Status', 'object-sync-for-salesforce' ); ?> -</option>
+									<?php
+									$statuses = $this->wordpress->get_wordpress_object_statuses( $wordpress_object );
+									if ( ! empty( $statuses ) ) :
+										?>
+										<?php foreach ( $statuses as $key => $value ) : ?>
+											<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+										<?php endforeach; ?>
+									<?php endif; ?>
+								</select>
 							</div>
 							<label for="sfwp-pull-to-drafts"><?php echo esc_html__( 'Pull to Draft Posts', 'object-sync-for-salesforce' ); ?></label>
 							<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
