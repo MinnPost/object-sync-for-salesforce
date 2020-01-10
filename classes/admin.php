@@ -1854,13 +1854,13 @@ class Object_Sync_Sf_Admin {
 		}
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		$export    = array();
-		if ( in_array( 'fieldmaps', $post_data['export'] ) ) {
+		if ( in_array( 'fieldmaps', $post_data['export'], true ) ) {
 			$export['fieldmaps'] = $this->mappings->get_fieldmaps();
 		}
-		if ( in_array( 'object_maps', $post_data['export'] ) ) {
+		if ( in_array( 'object_maps', $post_data['export'], true ) ) {
 			$export['object_maps'] = $this->mappings->get_object_maps();
 		}
-		if ( in_array( 'plugin_settings', $post_data['export'] ) ) {
+		if ( in_array( 'plugin_settings', $post_data['export'], true ) ) {
 			$export['plugin_settings'] = $this->wpdb->get_results( 'SELECT * FROM ' . $this->wpdb->prefix . 'options' . ' WHERE option_name like "' . $this->option_prefix . '%"', ARRAY_A );
 		}
 		nocache_headers();

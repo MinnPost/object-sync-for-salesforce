@@ -47,9 +47,12 @@ class Object_Sync_Sf_WordPress {
 		$this->logging       = $logging;
 		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 
-		add_action( 'admin_init', function() {
-			$this->wordpress_objects = $this->get_object_types();
-		} );
+		add_action(
+			'admin_init',
+			function() {
+				$this->wordpress_objects = $this->get_object_types();
+			}
+		);
 
 		$this->options = array(
 			'cache'            => true,
@@ -633,11 +636,14 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'create_custom_wordpress_item' ) ) {
 					$result = $this->post_create( $params, $id_field, $name );
 				} else {
-					$result = apply_filters( $this->option_prefix . 'create_custom_wordpress_item', array(
-						'params'   => $params,
-						'name'     => $name,
-						'id_field' => $id_field,
-					) );
+					$result = apply_filters(
+						$this->option_prefix . 'create_custom_wordpress_item',
+						array(
+							'params'   => $params,
+							'name'     => $name,
+							'id_field' => $id_field,
+						)
+					);
 				}
 				break;
 		} // End switch().
@@ -721,16 +727,19 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'upsert_custom_wordpress_item' ) ) {
 					$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $name, $check_only );
 				} else {
-					$result = apply_filters( $this->option_prefix . 'upsert_custom_wordpress_item', array(
-						'key'            => $key,
-						'value'          => $value,
-						'methods'        => $methods,
-						'params'         => $params,
-						'id_field'       => $id_field,
-						'pull_to_drafts' => $pull_to_drafts,
-						'name'           => $name,
-						'check_only'     => $check_only,
-					) );
+					$result = apply_filters(
+						$this->option_prefix . 'upsert_custom_wordpress_item',
+						array(
+							'key'            => $key,
+							'value'          => $value,
+							'methods'        => $methods,
+							'params'         => $params,
+							'id_field'       => $id_field,
+							'pull_to_drafts' => $pull_to_drafts,
+							'name'           => $name,
+							'check_only'     => $check_only,
+						)
+					);
 				}
 				break;
 		} // End switch().
@@ -796,12 +805,15 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'update_custom_wordpress_item' ) ) {
 					$result = $this->post_update( $id, $params, $id_field, $name );
 				} else {
-					$result = apply_filters( $this->option_prefix . 'update_custom_wordpress_item', array(
-						'id'       => $id,
-						'params'   => $params,
-						'name'     => $name,
-						'id_field' => $id_field,
-					) );
+					$result = apply_filters(
+						$this->option_prefix . 'update_custom_wordpress_item',
+						array(
+							'id'       => $id,
+							'params'   => $params,
+							'name'     => $name,
+							'id_field' => $id_field,
+						)
+					);
 				}
 				break;
 		} // End switch().
@@ -883,10 +895,13 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'delete_custom_wordpress_item' ) ) {
 					$success = $this->post_delete( $id );
 				} else {
-					$success = apply_filters( $this->option_prefix . 'delete_custom_wordpress_item', array(
-						'id'   => $id,
-						'name' => $name,
-					) );
+					$success = apply_filters(
+						$this->option_prefix . 'delete_custom_wordpress_item',
+						array(
+							'id'   => $id,
+							'name' => $name,
+						)
+					);
 				}
 
 				$success = $this->post_delete( $id );
@@ -944,7 +959,7 @@ class Object_Sync_Sf_WordPress {
 			$content   = array();
 			$structure = $this->get_wordpress_table_structure( 'user' );
 			foreach ( $params as $key => $value ) {
-				if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+				if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 					$content[ $key ] = $value['value'];
 					unset( $params[ $key ] );
 				}
@@ -1230,7 +1245,7 @@ class Object_Sync_Sf_WordPress {
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( $post_type );
 		foreach ( $params as $key => $value ) {
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1564,7 +1579,7 @@ class Object_Sync_Sf_WordPress {
 		$structure = $this->get_wordpress_table_structure( 'attachment' );
 		// WP requires post_title, post_content (can be empty), post_status, and post_mime_type to create an attachment.
 		foreach ( $params as $key => $value ) {
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1927,7 +1942,7 @@ class Object_Sync_Sf_WordPress {
 				$name = $value['value'];
 				unset( $params[ $key ] );
 			}
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) && 'name' !== $key ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) && 'name' !== $key ) {
 				$args[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -2209,7 +2224,7 @@ class Object_Sync_Sf_WordPress {
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( 'comment' );
 		foreach ( $params as $key => $value ) {
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
