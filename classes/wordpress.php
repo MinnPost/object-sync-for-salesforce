@@ -406,22 +406,20 @@ class Object_Sync_Sf_WordPress {
 	 */
 	public function get_wordpress_object_statuses( $object_type ) {
 		$wordpress_statuses = array();
-
 		if ( 'user' === $object_type ) {
-			$statuses = array();
+			$wordpress_statuses = array();
 		} elseif ( 'post' === $object_type || 'attachment' === $object_type ) {
-			$statuses = get_post_statuses();
+			$wordpress_statuses = get_post_statuses();
 		} elseif ( 'category' === $object_type || 'tag' === $object_type || 'post_tag' === $object_type ) {
-			$statuses = array();
+			$wordpress_statuses = array();
 		} elseif ( 'comment' === $object_type ) {
-			$statuses = get_comment_statuses();
+			$wordpress_statuses = get_comment_statuses();
 		} else { // This is for custom post types.
-			$statuses = get_post_statuses();
+			$wordpress_statuses = get_post_statuses();
 		}
 
 		// in other places, we check for whether an object has drafts. this seems to be the best way to do that
-		$statuses['all_draft_statuses'] = $this->all_draft_statuses;
-
+		$wordpress_statuses['all_draft_statuses'] = array_intersect_key( $wordpress_statuses, array_flip( $this->all_draft_statuses ) );
 		/*
 		 * Allow developers to change the WordPress object statuses.
 		 * The returned $wordpress_statuses needs to be an array like described above.

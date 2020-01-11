@@ -1398,14 +1398,30 @@ class Object_Sync_Sf_Admin {
 			}
 
 			if ( in_array( 'statuses', $include, true ) ) {
-				$statuses = $this->wordpress->get_wordpress_object_statuses( $data['wordpress_object'] );
+				$object_statuses['statuses'] = array();
+				$statuses                    = $this->wordpress->get_wordpress_object_statuses( $data['wordpress_object'] );
 				if ( ! empty( $statuses ) ) {
-					if ( isset( $object['data']['recordTypeInfos'] ) && count( $object['data']['recordTypeInfos'] ) > 1 ) {
-						foreach ( $object['data']['recordTypeInfos'] as $type ) {
-							$object_record_types[ $type['recordTypeId'] ] = $type['name'];
+					foreach ( $statuses as $key => $value ) {
+						if ( is_string( $value ) ) {
+							$object_statuses['statuses'][ $key ] = $value;
 						}
-						$object_description['recordTypeInfos'] = $object_record_types;
 					}
+					$object_description['statuses'] = $object_statuses['statuses'];
+				}
+			}
+
+			if ( in_array( 'drafts', $include, true ) ) {
+				$object_statuses['drafts'] = array();
+				$statuses                  = $this->wordpress->get_wordpress_object_statuses( $data['wordpress_object'] );
+				if ( ! empty( $statuses ) ) {
+					foreach ( $statuses as $key => $value ) {
+						if ( is_array( $value ) ) {
+							foreach ( $value as $draft_key => $draft_value ) {
+								$object_statuses['drafts'][ $draft_key ] = $draft_value;
+							}
+						}
+					}
+					$object_description['drafts'] = $object_statuses['drafts'];
 				}
 			}
 		}

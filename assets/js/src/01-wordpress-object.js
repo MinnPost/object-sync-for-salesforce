@@ -7,39 +7,39 @@
 function wordpressObjectRecordSettings( wordpressObject, change ) {
 	var data = {
 		'action': 'get_wordpress_object_description',
-		'include': [ 'statuses' ],
-		//'field_type': 'datetime',
+		'include': [ 'statuses', 'drafts' ],
 		'wordpress_object': wordpressObject
 	};
 
 	// for default status picker
-	var statusesContainer = '.sfwp-m-wordpress-statuses';
-	var statusesFieldGroup = '.' + statusesContainer + '.' + statusesContainer + '-' + wordpressObject + ' #sfwp-default-status';
-	var statusOptions = '';
-	var statusesMarkup = '';
+	var selectStatusesContainer  = '.sfwp-m-wordpress-statuses';
+	var selectStatusField = '#sfwp-default-status';
+	var statusFieldOptions = '';
+	var firstStatusOption = $( selectStatusField + ' option' ).first().text();
 
 	// for draft settings
-	var draftContainer = '.sfwp-m-wordpress-drafts';
-	var draftFieldGroup = '.' + draftContainer + '.' + draftContainer + '-' + wordpressObject + ' .checkbox';
-	var draftOption = '';
+	var draftContainer = 'sfwp-m-wordpress-drafts';
+	var draftFieldGroup = draftContainer + draftContainer + '-' + wordpressObject + ' .sfwp-m-single-checkboxes';
+	var draftOptions = '';
 	var draftMarkup = '';
 
-	// add the WordPress object we're looking at to the status container
-	$( statusesContainer ).attr( 'class', 'sfwp-m-fieldmap-group-fields select ' + statusesContainer ).addClass( statusesContainer + '-' + wordpressObject );
 	// hide the containers first in case they're empty
-	$( statusesContainer ).addClass( 'wordpress-statuses-template' );
-	$( draftContainer ).addClass( 'sfwp-m-drafts-template' );
+	$( selectStatusesContainer ).addClass( 'wordpress-statuses-template' );
+	$( '.' + draftContainer ).addClass( 'sfwp-m-drafts-template' );
+	$( '.' + draftContainer ).addClass( draftContainer );
 	if ( true === change ) {
-		$( statusesFieldGroup + ' input[type="checkbox"]' ).prop( 'checked', false );
 		$( draftFieldGroup + ' input[type="checkbox"]' ).prop( 'checked', false );
 	}
-	
-	if ( 0 < $( statusesFieldGroup + 'input:checked' ).length ) {
-		$( statusesContainer ).removeClass( 'wordpress-statuses-template' );
+
+	if ( '' !== $( selectStatusField ).val() ) {
+		$( selectStatusesContainer ).removeClass( 'wordpress-statuses-template' );
+	} else {
+		firstStatusOption = '<option value="">' + firstStatusOption + '</option>';
+		statusFieldOptions += firstStatusOption;
 	}
 
 	if ( 0 < $( draftFieldGroup + 'input:checked' ).length ) {
-		$( draftContainer ).removeClass( 'sfwp-m-drafts-template' );
+		$( '.' + draftContainer ).removeClass( 'sfwp-m-drafts-template' );
 	}
 
 	$.ajax( {
@@ -52,26 +52,28 @@ function wordpressObjectRecordSettings( wordpressObject, change ) {
 		success: function( response ) {
 			if ( 0 < $( response.data.statuses ).length ) {
 				$.each( response.data.statuses, function( index, value ) {
-					allowedTypeOptions += '<label><input type="checkbox" class="form-checkbox" value="' + index + '" name="salesforce_record_types_allowed[' + index + ']" id="salesforce_record_types_allowed-' + index + '"> ' + value + '</label>';
+					statusFieldOptions += '<option value="' + value + '">' + value + '</option>';
 				} );
+				$( selectStatusField ).html( statusFieldOptions );
 			}
-			$( allowedTypesFieldGroup ).html( allowedTypeOptions );
-
-			// hold onto this
-			array1.filter(value => -1 !== array2.indexOf(value))
-
+			if ( 0 < $( response.data.drafts ).length ) {
+				$( '.' + draftContainer ).removeClass( 'sfwp-m-drafts-template' );
+			}
 		},
 		complete: function() {
 			$( '.spinner-wordpress' ).removeClass( 'is-active' );
-			if ( '' !== allowedTypeOptions ) {
-				$( allowedTypesContainer ).removeClass( 'record-types-allowed-template' );
-			}
-			if ( firstDateOption !== dateFieldOptions ) {
-				$( selectDateContainer ).removeClass( 'pull-trigger-field-template' );
+			if ( firstStatusOption !== statusFieldOptions ) {
+				$( selectStatusesContainer ).removeClass( 'wordpress-statuses-template' );
 			}
 		}
 	} );
 }
+
+// load record type settings if the WordPress object changes
+$( document ).on( 'change', 'select#sfwp-wordpress-object', function() {
+	var wordpressObject = this.value;
+	wordpressObjectRecordSettings( wordpressObject, true );
+} );
 
 /**
  * When the plugin loads:

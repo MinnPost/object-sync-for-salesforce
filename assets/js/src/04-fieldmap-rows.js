@@ -97,6 +97,7 @@ $( document ).ready( function() {
 	// setup the select2 fields if the library is present
 	if ( jQuery.fn.select2 ) {
 		$( 'select#sfwp-wordpress-object' ).select2();
+		$( 'select#sfwp-default-status' ).select2();
 		$( 'select#sfwp-salesforce-object' ).select2();
 		$( 'select#sfwp-salesforce-record-type-default' ).select2();
 		$( 'select#sfwp-pull-trigger-field' ).select2();

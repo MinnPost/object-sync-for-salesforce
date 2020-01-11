@@ -13,8 +13,8 @@ function salesforceObjectRecordSettings( salesforceObject, change ) {
 	};
 
 	// for allowed types and default type
-	var allowedTypesContainer = '.sfwp-m-salesforce-record-types-allowed';
-	var allowedTypesFieldGroup = '.sfwp-m-salesforce-record-types-allowed.sfwp-m-salesforce-record-types-allowed-' + salesforceObject + ' .checkboxes';
+	var allowedTypesContainer = 'sfwp-m-salesforce-record-types-allowed';
+	var allowedTypesFieldGroup = '.' + allowedTypesContainer + '.' + allowedTypesContainer + '-' + salesforceObject + ' .checkboxes';
 	var allowedTypeOptions = '';
 	var recordTypesAllowedMarkup = '';
 	var recordTypeDefaultMarkup = '';
@@ -27,9 +27,9 @@ function salesforceObjectRecordSettings( salesforceObject, change ) {
 	var firstDateOption = $( selectDateField + ' option' ).first().text();
 
 	// add the Salesforce object we're looking at to the allowed types container
-	$( allowedTypesContainer ).attr( 'class', 'sfwp-m-fieldmap-subgroup sfwp-m-salesforce-record-types-allowed' ).addClass( 'sfwp-m-salesforce-record-types-allowed-' + salesforceObject );
+	$( '.' + allowedTypesContainer ).attr( 'class', 'sfwp-m-fieldmap-subgroup ' + allowedTypesContainer ).addClass( allowedTypesContainer + '-' + salesforceObject );
 	// hide the containers first in case they're empty
-	$( allowedTypesContainer ).addClass( 'record-types-allowed-template' );
+	$( '.' + allowedTypesContainer ).addClass( 'record-types-allowed-template' );
 	$( selectDateContainer ).addClass( 'pull-trigger-field-template' );
 	defaultRecordTypeSettings();
 	if ( true === change ) {
@@ -44,7 +44,8 @@ function salesforceObjectRecordSettings( salesforceObject, change ) {
 	if ( '' !== $( selectDateField ).val() ) {
 		$( selectDateContainer ).removeClass( 'pull-trigger-field-template' );
 	} else {
-		dateFieldOptions += '<option value="">' + firstDateOption + '</option>';
+		firstDateOption = '<option value="">' + firstDateOption + '</option>';
+		dateFieldOptions += firstDateOption;
 	}
 
 	$.ajax( {
@@ -71,7 +72,7 @@ function salesforceObjectRecordSettings( salesforceObject, change ) {
 		complete: function() {
 			$( '.spinner-salesforce' ).removeClass( 'is-active' );
 			if ( '' !== allowedTypeOptions ) {
-				$( allowedTypesContainer ).removeClass( 'record-types-allowed-template' );
+				$( '.' + allowedTypesContainer ).removeClass( 'record-types-allowed-template' );
 			}
 			if ( firstDateOption !== dateFieldOptions ) {
 				$( selectDateContainer ).removeClass( 'pull-trigger-field-template' );
@@ -83,25 +84,27 @@ function salesforceObjectRecordSettings( salesforceObject, change ) {
 /**
  * Allow for picking the default record type, when a Salesforce object has record types.
  */
-function defaultRecordTypeSettings() {
+function defaultRecordTypeSettings( allowedTypesContainer ) {
 	var selectContainer = $( '.sfwp-m-salesforce-record-type-default' );
 	var selectDefaultField = '#sfwp-salesforce-record-type-default';
 	var recordTypeFields = '';
 	var firstRecordTypeField = $( selectDefaultField + ' option' ).first().text();
 	var selected = '';
 	recordTypeFields += '<option value="">' + firstRecordTypeField + '</option>';
-	if ( 0 === $( '.sfwp-m-salesforce-record-types-allowed input[type="checkbox"]:checked' ).length ) {
+	if ( 0 === $( '.' + allowedTypesContainer + ' input[type="checkbox"]:checked' ).length ) {
 		selectContainer.addClass( 'record-type-default-template' );
 		return;
 	}
-	$( '.sfwp-m-salesforce-record-types-allowed input[type="checkbox"]:checked' ).each( function( index ) {
-		if ( 1 === $( '.sfwp-m-salesforce-record-types-allowed input[type="checkbox"]:checked' ).length ) {
+	$( '.' + allowedTypesContainer + ' input[type="checkbox"]:checked' ).each( function( index ) {
+		if ( 1 === $( '.' + allowedTypesContainer + ' input[type="checkbox"]:checked' ).length ) {
 			selected = ' selected';
 		}
 		recordTypeFields += '<option value="' + $( this ).val() + '"' + selected +'>' + $( this ).closest( 'label' ).text() + '</option>';
 	} );
 	$( selectDefaultField ).html( recordTypeFields );
-	selectContainer.removeClass( 'record-type-default-template' );
+	if ( 1 < $( '.' + allowedTypesContainer + ' input[type="checkbox"]:checked' ).length ) {
+		selectContainer.removeClass( 'record-type-default-template' );
+	}
 };
 
 // load record type settings if the Salesforce object changes
@@ -112,7 +115,7 @@ $( document ).on( 'change', 'select#sfwp-salesforce-object', function() {
 
 // load record type default choices if the allowed record types change
 $( document ).on( 'change', '.sfwp-m-salesforce-record-types-allowed input[type="checkbox"]', function() {
-	defaultRecordTypeSettings();
+	defaultRecordTypeSettings( 'sfwp-m-salesforce-record-types-allowed' );
 } );
 
 /**

@@ -343,7 +343,7 @@ $body-color: rgb(68, 68, 68);
 		margin-right: 0;
 	}
 
-	.sfwp-m-fieldmap-subgroup header,
+	//.sfwp-m-fieldmap-subgroup header,
 	.sfwp-m-fieldmap-group-fields,
 	.sfwp-m-fieldmap-subgroup-fields {
 		padding: $main-space 0;
@@ -353,7 +353,7 @@ $body-color: rgb(68, 68, 68);
 	.sfwp-m-fieldmap-fields,
 	.sfwp-m-fieldmap-group-fields,
 	.sfwp-m-fieldmap-subgroup-fields {
-		//margin: 0 0 0 12px;
+		//margin: 0 0 0 $main-space;
 
 		input[type="text"],
 		input[type="search"],
@@ -374,7 +374,7 @@ $body-color: rgb(68, 68, 68);
 
 	.sfwp-m-fieldmap-subgroup-fields {
 		width: $subfield-width;
-		padding: 6px 0;
+		padding: $main-space / 2 0;
 
 		> label {
 			padding-bottom: $main-space;
@@ -386,14 +386,63 @@ $body-color: rgb(68, 68, 68);
 		}
 	}
 
-	.sfwp-m-fieldmap-subgroup .sfwp-m-fieldmap-group-fields {
-		display: flex;
-		flex-wrap: wrap;
-		width: 100%;
-		padding: 12px 0 0 0;
+	.sfwp-m-fieldmap-subgroup .sfwp-m-fieldmap-group-fields,
+	.sfwp-m-fieldmap-group .sfwp-m-fieldmap-fields {
 
-		label {
-			align-self: center;
+		&.sfwp-m-fieldmap-subgroup .sfwp-m-fieldmap-group-fields {
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+			padding: $main-space 0 0 0;
+		}
+
+		&.sfwp-m-single-select,
+		&.sfwp-m-single-checkboxes,
+		&.sfwp-m-single-checkbox-separate-label {
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+
+			label {
+				align-self: center;
+				width: $sublabel-width;
+			}
+		}
+
+		&.sfwp-m-single-checkbox-separate-label {
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+		}
+
+		&.sfwp-m-single-checkboxes {
+			padding: 0 0 $main-space / 2 0;
+
+			label {
+				width: 100%;
+
+				span {
+					display: inline-block;
+					width: $sublabel-width;
+					margin-right: $vertical-space;
+				}
+			}
+
+			.sfwp-a-single-checkbox {
+				width: 100%;
+				padding: $main-space + ( $main-space / 2 ) 0 0 0 0;
+			}
+		}
+	}
+
+	.sfwp-m-fieldmap-group .sfwp-m-fieldmap-fields {
+
+		&.sfwp-m-single-checkboxes {
+			width: $subfield-width;
+
+			label {
+				padding: $main-space 0 0 0;
+			}
 		}
 	}
 
