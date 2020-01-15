@@ -330,7 +330,8 @@ $body-color: rgb(68, 68, 68);
 	}
 
 	.sfwp-m-fieldmap-group > header,
-	.sfwp-m-fieldmap-group > label {
+	.sfwp-m-fieldmap-group > label,
+	.sfwp-o-fieldmap-form > header {
 		width: $label-width;
 		border-right: 1px solid $border-color-darker;
 	}
@@ -501,12 +502,10 @@ $body-color: rgb(68, 68, 68);
 			}
 		}
 
-		.sfwp-fieldmap-form {
+		li.sfwp-fieldmap-form-container {
 			display: none;
-			color: $body-color;
-			padding: $main-space $main-space $vertical-space $main-space;
 			width: $group-width;
-			flex-wrap: wrap;
+			padding: 0;
 		}
 
 		&.sfwp-a-fieldmap-values-expanded {
@@ -523,8 +522,9 @@ $body-color: rgb(68, 68, 68);
 				}
 			}
 
-			.sfwp-fieldmap-form {
+			.sfwp-fieldmap-form-container {
 				display: flex;
+				flex-wrap: wrap;
 			}
 
 			#finish-field-mapping {
@@ -532,6 +532,63 @@ $body-color: rgb(68, 68, 68);
 			}
 		}
 
+	}
+
+	.sfwp-o-fieldmap-form {
+		width: 100%;
+		background: $bg-color;
+		color: $body-color;
+		padding: 0 $main-space;
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0;
+		border-top: 0;
+		border-bottom: 0;
+
+		&:first-of-type {
+			padding-top: $main-space;
+		}
+
+		> header {
+			width: ( $sublabel-width + $label-width ) / 2;
+			margin-right: $vertical-space;
+			padding: $main-space 0 $vertical-space 0;
+		}
+
+		> .sfwp-m-fieldmap-subgroup-fields {
+			width: ( $field-width + $subfield-width ) / 2;
+			padding: $main-space 0 $vertical-space 0;
+
+			.sfwp-field-dependent-fields {
+				display: flex;
+				flex-wrap: wrap;
+				width: 100%;
+
+				label {
+					width: ( $sublabel-width + $label-width ) / 2;
+					margin-right: $vertical-space;
+					padding: $main-space 0 $vertical-space 0;
+				}
+
+				.sfwp-m-field-dependent-field {
+					width: ( $field-width + $subfield-width ) / 2;
+					padding: $main-space 0 0 0;
+				}
+
+				&:last-child {
+					padding-bottom: $vertical-space;
+				}
+
+				.description {
+					margin-top: 0;
+				}
+			}
+		}
+
+		> .sfwp-m-fieldmap-subgroup-actions {
+			margin-top: 0;
+			margin-bottom: $vertical-space;
+		}
 	}
 
 	p.description {
@@ -554,7 +611,8 @@ $body-color: rgb(68, 68, 68);
 	.sfwp-m-wordpress-drafts.sfwp-m-drafts-template,
 	.sfwp-m-fieldmap-subgroup.record-types-allowed-template,
 	.sfwp-m-fieldmap-subgroup.record-type-default-template,
-	.sfwp-m-fieldmap-subgroup.pull-trigger-field-template {
+	.sfwp-m-fieldmap-subgroup.pull-trigger-field-template,
+	.sfwp-field-dependent-fields.sfwp-field-dependent-fields-template {
 		display: none;
 	}
 } // end .js #poststuff .sfwp-o-fieldmap
@@ -594,4 +652,3 @@ $body-color: rgb(68, 68, 68);
 		width: 140px;
 	}
 }
-

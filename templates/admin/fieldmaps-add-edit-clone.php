@@ -304,6 +304,12 @@
 								} elseif ( 'wp_sf' === $value['direction'] ) {
 									$direction_label = esc_html__( 'WordPress to Salesforce', 'object-sync-for-salesforce' );
 								}
+								$salesforce_option_type = '';
+								if ( isset( $salesforce_field['name']['type'] ) ) {
+									if ( in_array( $salesforce_field['name']['type'], $this->mappings->date_types_from_salesforce, true ) ) {
+										$salesforce_option_type = ' class="date"';
+									}
+								}
 								?>
 								<ul class="sfwp-a-fieldmap-values" data-key="<?php echo $key; ?>">
 									<li class="sfwp-fieldmap-wordpress-object">
@@ -318,34 +324,110 @@
 									<li class="sfwp-fieldmap-actions">
 										<a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit"><?php echo esc_html__( 'Expand to Edit', 'object-sync-for-salesforce' ); ?></a><a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
 									</li>
-									<li class="postbox sfwp-fieldmap-form">
-										<article>
-											<div class="sfwp-fieldmap-form-field">
-												<label for="wordpress_field[<?php echo esc_attr( $key ); ?>]"><?php echo esc_html__( 'WordPress Field', 'object-sync-for-salesforce' ); ?></label>
-												<div class="sfwp-m-fieldmap-subgroup-fields select">
-													<select name="wordpress_field[<?php echo esc_attr( $key ); ?>]" id="wordpress_field-<?php echo esc_attr( $key ); ?>">
-														<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
-														<?php
-														$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
-														foreach ( $wordpress_fields as $wordpress_field ) {
-															if ( isset( $value['wordpress_field']['label'] ) && $value['wordpress_field']['label'] === $wordpress_field['key'] ) {
-																$selected = ' selected';
-															} else {
-																$selected = '';
-															}
-															echo sprintf(
-																'<option value="%1$s"%2$s>%3$s</option>',
-																esc_attr( $wordpress_field['key'] ),
-																esc_attr( $selected ),
-																esc_html( $wordpress_field['key'] )
-															);
+									<li class="sfwp-fieldmap-form-container">
+										<article class="postbox sfwp-o-fieldmap-form sfwp-fieldmap-wordpress-field">
+											<header>
+												<label for="wordpress-field[<?php echo esc_attr( $key ); ?>]"><?php echo esc_html__( 'WordPress Field', 'object-sync-for-salesforce' ); ?></label>
+											</header>
+											<div class="sfwp-m-fieldmap-subgroup-fields select">
+												<select name="wordpress_field[<?php echo esc_attr( $key ); ?>]" id="wordpress-field-<?php echo esc_attr( $key ); ?>" style="width: 100%;">
+													<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
+													<?php
+													$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
+													foreach ( $wordpress_fields as $wordpress_field ) {
+														if ( isset( $value['wordpress_field']['label'] ) && $value['wordpress_field']['label'] === $wordpress_field['key'] ) {
+															$selected = ' selected';
+														} else {
+															$selected = '';
 														}
+														echo sprintf(
+															'<option value="%1$s"%2$s>%3$s</option>',
+															esc_attr( $wordpress_field['key'] ),
+															esc_attr( $selected ),
+															esc_html( $wordpress_field['key'] )
+														);
+													}
+													?>
+												</select>
+												<p class="description">
+													<?php
+													// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
+													echo sprintf(
+														esc_html__( 'To map a custom meta field (such as wp_postmeta, wp_usermeta, wp_termmeta, etc.), WordPress must have at least one value for that field. If you add a new meta field and want to map it, make sure to add a value for it and ', 'object-sync-for-salesforce' ) . '<a href="%1$s" id="clear-sfwp-cache">%2$s</a>' . esc_html__( ' to see the field listed here.', 'object-sync-for-salesforce' ),
+														esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=clear_cache' ) ),
+														esc_html__( 'clear the plugin cache', 'object-sync-for-salesforce' )
+													);
+													?>
+												</p>
+											</div>
+										</article>
+										<article class="postbox sfwp-o-fieldmap-form sfwp-fieldmap-salesforce-field">
+											<header>
+												<label for="sfwp-salesforce-field[<?php echo esc_attr( $key ); ?>]"><?php echo esc_html__( 'Salesforce Field', 'object-sync-for-salesforce' ); ?></label>
+											</header>
+											<div class="sfwp-m-fieldmap-subgroup-fields select">
+												<select name="salesforce_field[<?php echo esc_attr( $key ); ?>]" id="sfwp-salesforce-field-<?php echo esc_attr( $key ); ?>" style="width: 100%;">
+													<option value="">- <?php echo esc_html__( 'Select Salesforce field', 'object-sync-for-salesforce' ); ?> -</option>
+													<?php
+													$salesforce_fields = $this->get_salesforce_object_fields(
+														array(
+															'salesforce_object' => $salesforce_object,
+														)
+													);
+													// allow for api name or field label to be the display value in the <select>
+													$display_value = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
+													foreach ( $salesforce_fields as $salesforce_field ) {
+														if ( isset( $value['salesforce_field']['name'] ) && $value['salesforce_field']['name'] === $salesforce_field['name'] ) {
+															$selected = ' selected';
+														} elseif ( isset( $value['salesforce_field']['label'] ) && $value['salesforce_field']['label'] === $salesforce_field['name'] ) {
+															// this conditional is for versions up to 1.1.2, but i think it's fine to leave it for now. if we remove it, people's fieldmaps will not show correctly in the admin.
+															$selected = ' selected';
+														} else {
+															$selected = '';
+														}
+														if ( 'api_name' === $display_value ) {
+															$salesforce_field['label'] = $salesforce_field['name'];
+														}
+														if ( false === $salesforce_field['nillable'] ) {
+															$salesforce_field['label'] .= ' *';
+														}
+														echo sprintf(
+															'<option value="%1$s"%2$s%3$s>%4$s</option>',
+															esc_attr( $salesforce_field['name'] ),
+															esc_attr( $selected ),
+															$salesforce_option_type,
+															esc_html( $salesforce_field['label'] ),
+														);
+													}
+													?>
+													<p class="description">
+												</select>
+												<p class="description">
+													<?php echo esc_html__( 'Salesforce fields containing a * are required fields for this object type.', 'object-sync-for-salesforce' ); ?>
+												</p>
+												<div class="sfwp-field-dependent-fields sfwp-field-date-format sfwp-field-dependent-fields-template">
+													<label for="sfwp-wordpress-date-format"><?php echo esc_html__( 'Date Format', 'object-sync-for-salesforce' ); ?></label>
+													<div class="sfwp-m-field-dependent-field">
+														<input name="date-format" id="sfwp-wordpress-date-format" type="text" value="<?php echo isset( $date_format ) ? esc_html( $date_format ) : ''; ?>">
+													</div>
+													<!-- enter a default format that users can override -->
+													<p class="description">
+														<?php
+														// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
+														echo sprintf(
+															esc_html__( 'The plugin will match this date format before saving the value of this Salesforce field into WordPress. Date fields coming from WordPress are formatted for Salesforce API requirements. Get valid PHP date formats %1$.', 'object-sync-for-salesforce' ),
+															'<a href="https://www.php.net/manual/en/function.date.php">' . esc_html__( 'directly from the PHP website', 'object-sync-for-salesforce' ) . '</a>'
+														);
 														?>
-													</select>
+													</p>
 												</div>
 											</div>
-											<p><button type="button" id="finish-field-mapping" class="button button-secondary sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit"><?php echo esc_html__( 'Finish This Field Mapping', 'object-sync-for-salesforce' ); ?></button> <a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete"><?php echo esc_html__( 'Delete This Field Mapping', 'object-sync-for-salesforce' ); ?></a></p>
 										</article>
+										<div class="postbox sfwp-o-fieldmap-form">
+											<p class="sfwp-m-fieldmap-subgroup-actions">
+												<button type="button" id="finish-field-mapping" class="button button-secondary sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit"><?php echo esc_html__( 'Finish This Field Mapping', 'object-sync-for-salesforce' ); ?></button> <a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete"><?php echo esc_html__( 'Delete This Field Mapping', 'object-sync-for-salesforce' ); ?></a>
+											</p>
+										</div>
 									</li>
 								</ul>
 								<?php

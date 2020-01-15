@@ -308,6 +308,10 @@ class Object_Sync_Sf_Mapping {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
 				$method_key = array_search( $value, array_column( $wordpress_fields, 'key' ), true );
+				// in 1.9.0 we added a date format field
+				if ( ! isset( $posted['date-format'][ $key ] ) ) {
+					$posted['date-format'][ $key ] = '';
+				}
 				if ( ! isset( $posted['direction'][ $key ] ) ) {
 					$posted['direction'][ $key ] = 'sync';
 				}
@@ -342,6 +346,7 @@ class Object_Sync_Sf_Mapping {
 							'type'    => isset( $wordpress_fields[ $method_key ]['type'] ) ? sanitize_text_field( $wordpress_fields[ $method_key ]['type'] ) : 'text',
 						),
 						'salesforce_field' => $salesforce_field_attributes,
+						'date-format'      => esc_attr( $posted['date-format'][ $key ] ),
 						'is_prematch'      => sanitize_text_field( $posted['is_prematch'][ $key ] ),
 						'is_key'           => sanitize_text_field( $posted['is_key'][ $key ] ),
 						'direction'        => sanitize_text_field( $posted['direction'][ $key ] ),
@@ -823,7 +828,7 @@ class Object_Sync_Sf_Mapping {
 				if ( isset( $salesforce_field_type ) ) {
 					// Is the Salesforce field a date, and is the WordPress value a valid date?
 					// According to https://salesforce.stackexchange.com/questions/57032/date-format-with-salesforce-rest-api
-					if ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ) {
+					if ( in_array( $salesforce_field_type, $this->date_types_from_salesforce, true ) ) {
 						if ( '' === $object[ $wordpress_field ] ) {
 							$object[ $wordpress_field ] = null;
 						} else {
@@ -889,7 +894,7 @@ class Object_Sync_Sf_Mapping {
 				//    we do not have a WordPress value for this field, or it's empty
 				//    it also means the field has not been unset by prematch, updateable, key, or directional flags prior to this check.
 				// When this happens, we should flag that we're missing a required Salesforce field
-				if ( in_array( $salesforce_field, $params ) && false === filter_var( $fieldmap['salesforce_field']['nillable'], FILTER_VALIDATE_BOOLEAN ) && ( ! isset( $object[ $wordpress_field ] ) || '' === $object[ $wordpress_field ] ) ) {
+				if ( in_array( $salesforce_field, $params, true ) && false === filter_var( $fieldmap['salesforce_field']['nillable'], FILTER_VALIDATE_BOOLEAN ) && ( ! isset( $object[ $wordpress_field ] ) || '' === $object[ $wordpress_field ] ) ) {
 					$has_missing_required_salesforce_field = true;
 				}
 
@@ -901,7 +906,7 @@ class Object_Sync_Sf_Mapping {
 				if ( isset( $salesforce_field_type ) && isset( $object[ $salesforce_field ] ) && ! is_null( $object[ $salesforce_field ] ) ) {
 					// Salesforce provides multipicklist values as a delimited string. If the
 					// destination field in WordPress accepts multiple values, explode the string into an array and then serialize it.
-					if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce ) ) {
+					if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce, true ) ) {
 						$object[ $salesforce_field ] = explode( $this->array_delimiter, $object[ $salesforce_field ] );
 						// if the WordPress field is a list of capabilities (the destination field is wp_capabilities), we need to set the array for WordPress to save it.
 						if ( 'wp_capabilities' === $wordpress_field ) {
@@ -915,7 +920,7 @@ class Object_Sync_Sf_Mapping {
 
 					// Handle specific data types from Salesforce.
 					switch ( $salesforce_field_type ) {
-						case ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ):
+						case ( in_array( $salesforce_field_type, $this->date_types_from_salesforce, true ) ):
 							$format = get_option( 'date_format', 'U' );
 							if ( isset( $fieldmap['wordpress_field']['type'] ) && 'datetime' === $fieldmap['wordpress_field']['type'] ) {
 								$format = 'Y-m-d H:i:s';
@@ -930,7 +935,7 @@ class Object_Sync_Sf_Mapping {
 							}
 							$object[ $salesforce_field ] = date_i18n( $format, strtotime( $object[ $salesforce_field ] ) );
 							break;
-						case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce ) ):
+						case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce, true ) ):
 							$object[ $salesforce_field ] = isset( $object[ $salesforce_field ] ) ? (int) $object[ $salesforce_field ] : 0;
 							break;
 						case 'text':

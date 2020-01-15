@@ -7,7 +7,7 @@ function loadFieldOptions( system, objectName ) {
 	var data = {
 		'action': 'get_' + system + '_object_fields'
 	};
-	var selectSystemField = '.column-' + system + '_field select';
+	var selectSystemField = '.sfwp-fieldmap-' + system + '-field select';
 	var systemFieldChoices = '';
 	var firstField = $( selectSystemField + ' option' ).first().text();
 	if ( '' !== $( selectSystemField ).val() ) {

@@ -101,6 +101,7 @@ $( document ).ready( function() {
 		$( 'select#sfwp-salesforce-object' ).select2();
 		$( 'select#sfwp-salesforce-record-type-default' ).select2();
 		$( 'select#sfwp-pull-trigger-field' ).select2();
-		$( '.sfwp-fieldmap-form-field select' ).select2();
+		$( '.sfwp-fieldmap-wordpress-field select' ).select2();
+		$( '.sfwp-fieldmap-salesforce-field select' ).select2();
 	}
 } );
