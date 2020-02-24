@@ -31,7 +31,7 @@ $bg-color: #fff;
 $body-color: rgb(68, 68, 68);
 
 // Select2 styles for 5.3
-.branch-5-3 {
+.branch-5-3.settings_page_object-sync-salesforce-admin {
 
 	.select2-results {
 
@@ -161,7 +161,7 @@ $body-color: rgb(68, 68, 68);
 
 	@each $name, $color in $wp_admin_colors {
 
-		&-#{$name} .branch-5-3 {
+		&-#{$name} .branch-5-3.settings_page_object-sync-salesforce-admin {
 
 			.select2-dropdown {
 				border-color: $color;
