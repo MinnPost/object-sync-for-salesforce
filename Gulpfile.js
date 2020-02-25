@@ -7,6 +7,7 @@ const cssnano = require('cssnano');
 const eslint = require('gulp-eslint');
 const fs = require('fs');
 const gulp = require('gulp');
+const iife = require('gulp-iife');
 const imagemin = require('gulp-imagemin');
 const packagejson = JSON.parse(fs.readFileSync('./package.json'));
 const mqpacker = require( 'css-mqpacker' );
@@ -88,6 +89,11 @@ function adminscripts() {
     .pipe(concat(packagejson.name + '-admin.js')) // Concatenate
     .pipe(sourcemaps.write())
     .pipe(eslint())
+    .pipe(iife({
+      useStrict: false,
+      params: ['$'],
+      args: ['jQuery']
+    }))
     .pipe(gulp.dest(config.scripts.dest))
     .pipe(browserSync.stream());
 }
