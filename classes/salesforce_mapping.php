@@ -399,13 +399,14 @@ class Object_Sync_Sf_Mapping {
 		if ( isset( $posted['pull_trigger_field'] ) ) {
 			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
 		}
-		// invert immediately to get async
 
-		if ( true === filter_var( $posted['push_immediately'], FILTER_VALIDATE_BOOLEAN ) ) {
+		// invert value of immediately to get value of async
+		if ( isset( $posted['push_immediately'] ) && true === filter_var( $posted['push_immediately'], FILTER_VALIDATE_BOOLEAN ) ) {
 			$data['push_async'] = '';
 		} else {
 			$data['push_async'] = '1';
 		}
+
 		$data['push_drafts']    = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
 		$data['pull_to_drafts'] = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
 		$data['weight']         = isset( $posted['weight'] ) ? $posted['weight'] : '';
