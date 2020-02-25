@@ -70,13 +70,25 @@
 							<?php $statuses = $this->wordpress->get_wordpress_object_statuses( $wordpress_object ); ?>
 							<div class="sfwp-m-fieldmap-group-fields sfwp-m-single-select sfwp-m-wordpress-statuses wordpress-statuses-template">
 								<label for="sfwp-default-status"><?php echo esc_html__( 'Default Status', 'object-sync-for-salesforce' ); ?></label>
-								<select name="default_status" id="sfwp-default-status" style="width: 60%;">
-									<option value="" selected>- <?php echo esc_html__( 'Select Default Status', 'object-sync-for-salesforce' ); ?> -</option>
+								<select name="wordpress_object_default_status" id="sfwp-default-status" style="width: 60%;">
+									<option value="">- <?php echo esc_html__( 'Select Default Status', 'object-sync-for-salesforce' ); ?> -</option>
 									<?php if ( ! empty( $statuses ) ) : ?>
 										<?php foreach ( $statuses as $key => $value ) : ?>
-											<?php if ( is_string( $value ) ) : ?>
-												<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
-											<?php endif; ?>
+											<?php
+											if ( isset( $wordpress_object_default_status ) && $wordpress_object_default_status === $key ) {
+												$selected = ' selected';
+											} else {
+												$selected = '';
+											}
+											if ( is_string( $value ) ) {
+												echo sprintf(
+													'<option value="%1$s"%2$s>%3$s</option>',
+													esc_attr( $key ),
+													esc_attr( $selected ),
+													esc_html( $value )
+												);
+											}
+											?>
 										<?php endforeach; ?>
 									<?php endif; ?>
 								</select>
@@ -435,11 +447,12 @@
 						}
 						?>
 
+
 						<!-- this needs to reproduce the loaded version -->
 						<ul class="sfwp-a-fieldmap-values sfwp-a-fieldmap-values-template" data-key="0">
-							<li class="sfwp-fieldmap-wordpress-object"><?php echo $value['wordpress_field']['label']; ?></li>
-							<li class="sfwp-fieldmap-salesforce-object"><?php echo $value['salesforce_field']['label']; ?></li>
-							<li class="sfwp-fieldmap-direction"><?php echo $direction_label; ?></li>
+							<li class="sfwp-fieldmap-wordpress-object"><?php echo isset( $value['wordpress_field']['label'] ) ? $value['wordpress_field']['label'] : ''; ?></li>
+							<li class="sfwp-fieldmap-salesforce-object"><?php echo isset( $value['salesforce_field']['label'] ) ? $value['salesforce_field']['label'] : ''; ?></li>
+							<li class="sfwp-fieldmap-direction"><?php echo isset( $direction_label ) ? $direction_label : ''; ?></li>
 							<li class="sfwp-fieldmap-actions">
 								<a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit"><?php echo esc_html__( 'Expand to Edit', 'object-sync-for-salesforce' ); ?></a><a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
 							</li>

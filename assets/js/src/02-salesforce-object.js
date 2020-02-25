@@ -35,11 +35,14 @@ function salesforceObjectRecordSettings( salesforceObject, change ) {
 	if ( true === change ) {
 		$( allowedTypesFieldGroup + ' input[type="checkbox"]' ).prop( 'checked', false );
 		$( selectDateField ).val( '' );
-	}
-	
-	if ( 0 < $( allowedTypesFieldGroup + 'input:checked' ).length ) {
+		if ( 0 < $( allowedTypesFieldGroup + 'input:checked' ).length ) {
+			$( allowedTypesContainer ).removeClass( 'record-types-allowed-template' );
+		}
+	} else {
 		$( allowedTypesContainer ).removeClass( 'record-types-allowed-template' );
 	}
+	
+	
 
 	if ( '' !== $( selectDateField ).val() ) {
 		$( selectDateContainer ).removeClass( 'pull-trigger-field-template' );

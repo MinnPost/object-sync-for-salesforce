@@ -52,7 +52,7 @@ function wordpressObjectRecordSettings( wordpressObject, change ) {
 		success: function( response ) {
 			if ( 0 < $( response.data.statuses ).length ) {
 				$.each( response.data.statuses, function( index, value ) {
-					statusFieldOptions += '<option value="' + value + '">' + value + '</option>';
+					statusFieldOptions += '<option value="' + index + '">' + value + '</option>';
 				} );
 				$( selectStatusField ).html( statusFieldOptions );
 			}

@@ -410,6 +410,7 @@ class Object_Sync_Sf_Admin {
 							$salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
 							$salesforce_record_type_default  = $map['salesforce_record_type_default'];
 							$wordpress_object                = $map['wordpress_object'];
+							$wordpress_object_default_status = $map['wordpress_object_default_status'];
 							$pull_trigger_field              = $map['pull_trigger_field'];
 							$fieldmap_fields                 = $map['fields'];
 							$sync_triggers                   = $map['sync_triggers'];
