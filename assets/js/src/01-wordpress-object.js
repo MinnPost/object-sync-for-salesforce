@@ -1,60 +1,79 @@
 /**
- * Generates the WordPress object fields based on the dropdown activity and API results.
+ * Generate record type choices for the WordPress object
+ * This includes possible statuses to choose from, and whether or not there are drafts
+ * @param {string} wordpressObject the WordPress object name
+ * @param {bool} change is this a change or a pageload
  */
-function wordpressObjectFields() {
+function wordpressObjectRecordSettings( wordpressObject, change ) {
+	var data = {
+		'action': 'get_wordpress_object_description',
+		'include': [ 'statuses', 'drafts' ],
+		'wordpress_object': wordpressObject
+	};
 
-	var delay = ( function() {
-		var timer = 0;
-		return function( callback, ms ) {
-			clearTimeout ( timer );
-			timer = setTimeout( callback, ms );
-		};
-	}() );
+	// for default status picker
+	var selectStatusesContainer  = '.sfwp-m-wordpress-statuses';
+	var selectStatusField = '#sfwp-default-status';
+	var statusFieldOptions = '';
+	var firstStatusOption = $( selectStatusField + ' option' ).first().text();
 
-	if ( 0 === $( '.wordpress_object_default_status > *' ).length ) {
-		$( '.wordpress_object_default_status' ).hide();
+	// for draft settings
+	var draftContainer = 'sfwp-m-wordpress-drafts';
+	var draftFieldGroup = draftContainer + draftContainer + '-' + wordpressObject + ' .sfwp-m-single-checkboxes';
+	var draftOptions = '';
+	var draftMarkup = '';
+
+	// hide the containers first in case they're empty
+	$( selectStatusesContainer ).addClass( 'wordpress-statuses-template' );
+	$( '.' + draftContainer ).addClass( 'sfwp-m-drafts-template' );
+	$( '.' + draftContainer ).addClass( draftContainer );
+	if ( true === change ) {
+		$( draftFieldGroup + ' input[type="checkbox"]' ).prop( 'checked', false );
 	}
 
-	$( '#wordpress_object' ).on( 'change', function() {
-		var that = this;
-		var delayTime = 1000;
-		delay( function() {
-			var data = {
-				'action' : 'get_wordpress_object_description',
-				'include' : [ 'statuses' ],
-				'wordpress_object' : that.value
+	if ( '' !== $( selectStatusField ).val() ) {
+		$( selectStatusesContainer ).removeClass( 'wordpress-statuses-template' );
+	} else {
+		firstStatusOption = '<option value="">' + firstStatusOption + '</option>';
+		statusFieldOptions += firstStatusOption;
+	}
+
+	if ( 0 < $( draftFieldGroup + 'input:checked' ).length ) {
+		$( '.' + draftContainer ).removeClass( 'sfwp-m-drafts-template' );
+	}
+
+	$.ajax( {
+		type: 'POST',
+		url: ajaxurl,
+		data: data,
+		beforeSend: function() {
+			$( '.spinner-wordpress' ).addClass( 'is-active' );
+		},
+		success: function( response ) {
+			if ( 0 < $( response.data.statuses ).length ) {
+				$.each( response.data.statuses, function( index, value ) {
+					statusFieldOptions += '<option value="' + index + '">' + value + '</option>';
+				} );
+				$( selectStatusField ).html( statusFieldOptions );
 			}
-			$.post( ajaxurl, data, function( response ) {
-
-				var statusesMarkup = '';
-
-				if ( 0 < $( response.data.statuses ).length ) {
-					statusesMarkup += '<label for="wordpress_object_default_status">Default ' + that.value + ' status:</label>';
-					statusesMarkup += '<select name="wordpress_object_default_status" id="wordpress_object_default_status"><option value="">- Select ' + that.value + ' status -</option>';
-					$.each( response.data.statuses, function( index, value ) {
-						statusesMarkup += '<option value="' + index + '">' + value + '</option>';
-					});
-					statusesMarkup += '</select>';
-					statusesMarkup += '<p class="description">If this fieldmap allows new records to be created from Salesforce data, you can set a default status for them. You can override this default status by making a field that maps to the status field in the field settings below, or by using a developer hook to populate it.</p>';
-					statusesMarkup += '<p class="description">The only core object that requires a status is the post. If you do not otherwise set a status, newly created posts will be drafts.</p>';
-				}
-
-				$( '.wordpress_object_default_status' ).html( statusesMarkup );
-
-				if ( '' !== statusesMarkup ) {
-					$( '.wordpress_object_default_status' ).show();
-				} else {
-					$( '.wordpress_object_default_status' ).hide();
-				}
-
-				if ( jQuery.fn.select2 ) {
-					$( 'select#wordpress_object_default_status' ).select2();
-				}
-
-			});
-		}, delayTime );
-	});
+			if ( 0 < $( response.data.drafts ).length ) {
+				$( '.' + draftContainer ).removeClass( 'sfwp-m-drafts-template' );
+			}
+		},
+		complete: function() {
+			$( '.spinner-wordpress' ).removeClass( 'is-active' );
+			if ( firstStatusOption !== statusFieldOptions ) {
+				$( selectStatusesContainer ).removeClass( 'wordpress-statuses-template' );
+			}
+		}
+	} );
 }
+
+// load record type settings if the WordPress object changes
+$( document ).on( 'change', 'select#sfwp-wordpress-object', function() {
+	var wordpressObject = this.value;
+	wordpressObjectRecordSettings( wordpressObject, true );
+} );
 
 /**
  * When the plugin loads:
@@ -63,5 +82,5 @@ function wordpressObjectFields() {
 $( document ).ready( function() {
 
 	// Load record type settings for the WordPress object
-	wordpressObjectRecordSettings();
+	wordpressObjectRecordSettings( $( 'select#sfwp-wordpress-object' ).val(), false );
 } );

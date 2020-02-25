@@ -1,25 +1,25 @@
 /**
  * Gets the WordPress and Salesforce field results via an Ajax call
  * @param {string} system whether we want WordPress or Salesforce data
- * @param {string} objectName the value for the object name from the the <select>
+ * @param {string} objectName the value for the object name from the <select>
  */
 function loadFieldOptions( system, objectName ) {
 	var data = {
 		'action': 'get_' + system + '_object_fields'
 	};
-	var selectField = '.column-' + system + '_field select';
-	var fields = '';
-	var firstField = $( selectField + ' option' ).first().text();
-	if ( '' !== $( selectField ).val() ) {
+	var selectSystemField = '.sfwp-fieldmap-' + system + '-field select';
+	var systemFieldChoices = '';
+	var firstField = $( selectSystemField + ' option' ).first().text();
+	if ( '' !== $( selectSystemField ).val() ) {
 		return;
 	}
-	fields += '<option value="">' + firstField + '</option>';
+	systemFieldChoices += '<option value="">' + firstField + '</option>';
 	if ( 'wordpress' === system ) {
 		data['wordpress_object'] = objectName;
 	} else if ( 'salesforce' === system ) {
 		data['salesforce_object'] = objectName;
 	} else {
-		return fields;
+		return systemFieldChoices;
 	}
 
 	$.ajax( {
@@ -32,12 +32,12 @@ function loadFieldOptions( system, objectName ) {
 		success: function( response ) {
 			$.each( response.data.fields, function( index, value ) {
 				if ( 'wordpress' === system ) {
-					fields += '<option value="' + value.key + '">' + value.key + '</option>';
+					systemFieldChoices += '<option value="' + value.key + '">' + value.key + '</option>';
 				} else if ( 'salesforce' === system ) {
-					fields += '<option value="' + value.name + '">' + value.label + '</option>';
+					systemFieldChoices += '<option value="' + value.name + '">' + value.label + '</option>';
 				}
 			} );
-			$( selectField ).html( fields );
+			$( selectSystemField ).html( systemFieldChoices );
 		},
 		complete: function() {
 			$( '.spinner-' + system ).removeClass( 'is-active' );
@@ -46,7 +46,7 @@ function loadFieldOptions( system, objectName ) {
 }
 
 // load available options if the wordpress object changes
-$( document ).on( 'change', 'select#wordpress_object', function() {
+$( document ).on( 'change', 'select#sfwp-wordpress-object', function() {
 	var timeout;
 	loadFieldOptions( 'wordpress', $( this ).val() );
 	clearTimeout( timeout );
@@ -57,7 +57,7 @@ $( document ).on( 'change', 'select#wordpress_object', function() {
 } );
 
 // load available options if the salesforce object changes
-$( document ).on( 'change', 'select#salesforce_object', function() {
+$( document ).on( 'change', 'select#sfwp-salesforce-object', function() {
 	var timeout;
 	loadFieldOptions( 'salesforce', $( this ).val() );
 	clearTimeout( timeout );
@@ -75,6 +75,6 @@ $( document ).on( 'change', 'select#salesforce_object', function() {
 $( document ).ready( function() {
 
 	// if there is already a wp or sf object, make sure it has the right fields when the page loads
-	loadFieldOptions( 'wordpress', $( 'select#wordpress_object' ).val() );
-	loadFieldOptions( 'salesforce', $( 'select#salesforce_object' ).val() );
+	loadFieldOptions( 'wordpress', $( 'select#sfwp-wordpress-object' ).val() );
+	loadFieldOptions( 'salesforce', $( 'select#sfwp-salesforce-object' ).val() );
 } );

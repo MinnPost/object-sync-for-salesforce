@@ -158,6 +158,7 @@ class Object_Sync_Sf_Admin {
 		// Ajax for fieldmap forms
 		add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ), 10, 1 );
 		add_action( 'wp_ajax_get_salesforce_object_fields', array( $this, 'get_salesforce_object_fields' ), 10, 1 );
+		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_description' ), 10, 1 );
 		add_action( 'wp_ajax_get_wordpress_object_fields', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
 
 		// Ajax events that can be manually called
@@ -200,11 +201,6 @@ class Object_Sync_Sf_Admin {
 	*
 	*/
 	private function add_deprecated_actions() {
-		/**
-		 * method: get_wordpress_object_description
-		 * @deprecated since 1.9.0
-		 */
-		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
 		/**
 		 * method: get_wp_sf_object_fields
 		 * @deprecated since 1.9.0
@@ -414,10 +410,11 @@ class Object_Sync_Sf_Admin {
 							$salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
 							$salesforce_record_type_default  = $map['salesforce_record_type_default'];
 							$wordpress_object                = $map['wordpress_object'];
+							$wordpress_object_default_status = $map['wordpress_object_default_status'];
 							$pull_trigger_field              = $map['pull_trigger_field'];
 							$fieldmap_fields                 = $map['fields'];
 							$sync_triggers                   = $map['sync_triggers'];
-							$push_async                      = $map['push_async'];
+							$push_immediately                = $map['push_immediately'];
 							$push_drafts                     = $map['push_drafts'];
 							$pull_to_drafts                  = $map['pull_to_drafts'];
 							$weight                          = $map['weight'];
@@ -1274,8 +1271,8 @@ class Object_Sync_Sf_Admin {
 		if ( ! empty( $data['salesforce_object'] ) ) {
 			$object = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
 
-			$object_fields        = array();
-			$include_record_types = array();
+			$object_fields       = array();
+			$object_record_types = array();
 
 			// these can come from ajax
 			$include = isset( $data['include'] ) ? (array) $data['include'] : array();
@@ -1360,6 +1357,81 @@ class Object_Sync_Sf_Admin {
 			return $object_fields;
 		}
 
+	}
+
+	/**
+	* Get all the WordPress object settings for fieldmapping
+	* This takes either the $_POST array via ajax, or can be directly called with a $data array
+	*
+	* @param array $data
+	* data must contain a wordpress_object
+	* can optionally contain a type
+	* @return array $object_settings
+	*/
+	public function get_wordpress_object_description( $data = array() ) {
+		$ajax = false;
+		if ( empty( $data ) ) {
+			$data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+			$ajax = true;
+		}
+
+		$object_description = array();
+
+		if ( ! empty( $data['wordpress_object'] ) ) {
+			$object          = array();
+			$object_fields   = array();
+			$object_statuses = array();
+
+			// these can come from ajax
+			$include = isset( $data['include'] ) ? (array) $data['include'] : array();
+			$include = array_map( 'esc_attr', $include );
+
+			if ( in_array( 'fields', $include, true ) || empty( $include ) ) {
+				$fields = $this->wordpress->get_wordpress_object_fields( $data['wordpress_object'] );
+				if ( ! empty( $fields ) ) {
+					foreach ( $fields as $wordpress_field ) {
+						if ( '' === $type || $type === $value['type'] ) {
+							$object_fields[ esc_attr( $wordpress_field['key'] ) ] = esc_html( $wordpress_field['key'] );
+						}
+					}
+				}
+				$object_description['fields'] = $object_fields;
+			}
+
+			if ( in_array( 'statuses', $include, true ) ) {
+				$object_statuses['statuses'] = array();
+				$statuses                    = $this->wordpress->get_wordpress_object_statuses( $data['wordpress_object'] );
+				if ( ! empty( $statuses ) ) {
+					foreach ( $statuses as $key => $value ) {
+						if ( is_string( $value ) ) {
+							$object_statuses['statuses'][ $key ] = $value;
+						}
+					}
+					$object_description['statuses'] = $object_statuses['statuses'];
+				}
+			}
+
+			if ( in_array( 'drafts', $include, true ) ) {
+				$object_statuses['drafts'] = array();
+				$statuses                  = $this->wordpress->get_wordpress_object_statuses( $data['wordpress_object'] );
+				if ( ! empty( $statuses ) ) {
+					foreach ( $statuses as $key => $value ) {
+						if ( is_array( $value ) ) {
+							foreach ( $value as $draft_key => $draft_value ) {
+								$object_statuses['drafts'][ $draft_key ] = $draft_value;
+							}
+						}
+					}
+					$object_description['drafts'] = $object_statuses['drafts'];
+				}
+			}
+		}
+
+		if ( true === $ajax ) {
+			wp_send_json_success( $object_description );
+		} else {
+			return $object_description;
+		}
 	}
 
 	/**
@@ -1799,13 +1871,13 @@ class Object_Sync_Sf_Admin {
 		}
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		$export    = array();
-		if ( in_array( 'fieldmaps', $post_data['export'] ) ) {
+		if ( in_array( 'fieldmaps', $post_data['export'], true ) ) {
 			$export['fieldmaps'] = $this->mappings->get_fieldmaps();
 		}
-		if ( in_array( 'object_maps', $post_data['export'] ) ) {
+		if ( in_array( 'object_maps', $post_data['export'], true ) ) {
 			$export['object_maps'] = $this->mappings->get_object_maps();
 		}
-		if ( in_array( 'plugin_settings', $post_data['export'] ) ) {
+		if ( in_array( 'plugin_settings', $post_data['export'], true ) ) {
 			$export['plugin_settings'] = $this->wpdb->get_results( 'SELECT * FROM ' . $this->wpdb->prefix . 'options' . ' WHERE option_name like "' . $this->option_prefix . '%"', ARRAY_A );
 		}
 		nocache_headers();

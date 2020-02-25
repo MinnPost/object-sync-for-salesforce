@@ -5,8 +5,8 @@
  */
  function addFieldMappingRow() {
 	$( '#add-field-mapping' ).click( function() {
-		var salesforceObject = $( '#salesforce_object' ).val();
-		var wordpressObject = $( '#wordpress_object' ).val();
+		var salesforceObject = $( '#sfwp-salesforce-object' ).val();
+		var wordpressObject = $( '#sfwp-wordpress-object' ).val();
 		var newKey = new Date().getUTCMilliseconds();
 		var lastRow = $( 'table.fields tbody tr' ).last();
 		var oldKey = lastRow.attr( 'data-key' );
@@ -64,6 +64,27 @@ $( document ).on( 'click', '.column-is_key input', function() {
 } );
 
 /**
+ * When clicking a field action, don't use the default
+ */
+$( document ).on( 'click', '.sfwp-a-fieldmap-field-action', function( event ) {
+	event.preventDefault();
+} );
+
+/**
+ * When clicking edit on a field, toggle its expanded status
+ */
+$( document ).on( 'click', '.sfwp-a-fieldmap-field-action-edit', function( event ) {
+	$( this ).closest( '.sfwp-a-fieldmap-values' ).toggleClass( 'sfwp-a-fieldmap-values-expanded' );
+} );
+
+/**
+ * When clicking delete on a field, offer to delete it
+ */
+$( document ).on( 'click', '.sfwp-a-fieldmap-field-action-delete', function( event ) {
+	//$( this ).closest( '.sfwp-a-fieldmap-values' ).toggleClass( 'sfwp-a-fieldmap-values-deleted' );
+} );
+
+/**
  * When the plugin loads:
  * Add new fieldmap rows
  * Select2 on select fields
@@ -75,11 +96,12 @@ $( document ).ready( function() {
 
 	// setup the select2 fields if the library is present
 	if ( jQuery.fn.select2 ) {
-		$( 'select#wordpress_object' ).select2();
-		$( 'select#salesforce_object' ).select2();
-		$( 'select#salesforce_record_type_default' ).select2();
-		$( 'select#pull_trigger_field' ).select2();
-		$( '.column-wordpress_field select' ).select2();
-		$( '.column-salesforce_field select' ).select2();
+		$( 'select#sfwp-wordpress-object' ).select2();
+		$( 'select#sfwp-default-status' ).select2();
+		$( 'select#sfwp-salesforce-object' ).select2();
+		$( 'select#sfwp-salesforce-record-type-default' ).select2();
+		$( 'select#sfwp-pull-trigger-field' ).select2();
+		$( '.sfwp-fieldmap-wordpress-field select' ).select2();
+		$( '.sfwp-fieldmap-salesforce-field select' ).select2();
 	}
 } );
