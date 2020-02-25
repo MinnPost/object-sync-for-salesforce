@@ -1,4 +1,6 @@
 // variables
+$normal-font-weight: 400; // sasslint will fail if we don't use the number, for some reason
+$bold-font-weight: 700; // sasslint will fail if we don't use the number, for some reason
 $box-shadow-less: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 $box-shadow-more: 0 1px 1px rgba(0, 0, 0, 0.04);
 $border-color-darker: #e1e1e1;
@@ -6,96 +8,197 @@ $border-color-lighter: #e5e5e5;
 $horizontal-space: 10px;
 $success-color: #46b450;
 $vertical-space: 15px;
-$select-border-color: #ddd;
 
-.settings_page_object-sync-salesforce-admin {
 
-	.form-table {
+$main-space: 12px;
+$select-border-color: #7e8993;
 
-		td {
+$group-width: 100%;
+$subgroup-width: 100%;
 
-			.checkbox {
-				line-height: 1.3;
-				margin-bottom: 9px;
+$label-width: 20%;
+$sublabel-width: 35%;
+
+$field-width: 75%;
+$subfield-width: 60%;
+
+// from WP admin styles
+$label-font-size: 14px;
+$label-line-height: 1.4em;
+$link-color: rgb(0, 115, 170); // 007cba
+$link-color-hover: #00a0d2;
+$bg-color: #fff;
+$body-color: rgb(68, 68, 68);
+
+// Select2 styles for 5.3
+.branch-5-3.settings_page_object-sync-salesforce-admin {
+
+	.select2-results {
+
+		.select2-results__option,
+		.select2-results__group {
+
+			&:focus {
+				outline: none;
 			}
 		}
 	}
 
-	// fieldmap form
-	.fieldmap {
+	.select2-dropdown {
+		border-color: #007cba;
 
-		.spinner {
-			display: inline-block;
-			float: none;
-		}
-
-		fieldset {
-			border: 1px solid $border-color-darker;
-			margin-bottom: $vertical-space;
-			position: relative;
-		}
-
-		.fields {
-			border: 0;
-		}
-
-		legend {
-			margin-top: $vertical-space;
-			padding-left: 12px;
+		&::after {
 			position: absolute;
+			left: 0;
+			right: 0;
+			height: 1px;
+			background: #fff;
+			content: "";
+		}
+	}
+
+	.select2-dropdown--below {
+		box-shadow: 0 0 0 1px #007cba, 0 2px 1px rgba(0, 0, 0, 0.1);
+
+		&::after {
+			top: -1px;
+		}
+	}
+
+	.select2-dropdown--above {
+		box-shadow: 0 0 0 1px #007cba, 0 -2px 1px rgba(0, 0, 0, 0.1);
+
+		&::after {
+			bottom: -1px;
+		}
+	}
+
+	.select2-container {
+
+		@media only screen and (max-width: 782px) {
+			font-size: 16px;
 		}
 
-		.fields > :nth-child(2) {
-			padding-top: 35px;
+		&:focus {
+			outline: none;
 		}
 
-		.sync_triggers > :nth-child(2) {
-			padding-top: 45px;
-		}
+		.select2-selection--single {
+			height: 30px;
+			border-color: #7e8993;
 
-		div {
-			padding: $vertical-space $horizontal-space;
-
-			label {
-				display: inline-block;
-				font-weight: 700;
-				margin-bottom: $vertical-space / 2;
+			@media only screen and (max-width: 782px) {
+				height: 40px;
 			}
 
-			input,
-			select {
-				display: block;
+			&:focus {
+				outline: none;
 			}
 
-		}
+			.select2-selection__rendered {
+				line-height: 28px;
 
-		.radios label,
-		.checkboxes label {
-			display: block;
-			font-weight: 400;
-		}
+				@media only screen and (max-width: 782px) {
+					line-height: 38px;
+				}
 
-		.radios input,
-		.checkboxes input {
-			display: inline-block;
-		}
-
-		table {
-
-			.column-direction {
-				min-width: 200px;
+				&:hover {
+					color: #007cba;
+				}
 			}
 
-			td div {
-				padding-left: 0;
-				padding-top: 0;
+			.select2-selection__arrow {
+				right: 1px;
+				height: 28px;
+				width: 28px;
+				background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E) no-repeat right 5px top 55%;
+				background-size: 16px 16px;
+
+				@media only screen and (max-width: 782px) {
+					height: 38px;
+				}
+
+				b {
+					display: none;
+				}
+			}
+		}
+
+		.select2-selection--multiple {
+			min-height: 30px;
+			border-color: #7e8993;
+			border-radius: 4px;
+		}
+
+		&.select2-container--focus .select2-selection--single,
+		&.select2-container--open .select2-selection--single,
+		&.select2-container--open .select2-selection--multiple {
+			border-color: #007cba;
+			box-shadow: 0 0 0 1px #007cba;
+		}
+
+		.select2-search--inline .select2-search__field {
+			padding: 0 0 0 3px;
+			min-height: 28px;
+		}
+
+	}
+} // end .branch-5-3
+
+/**
+  * Select2 colors for built-in admin color themes.
+  */
+.admin-color {
+	$wp_admin_colors: (
+		blue: #096484,
+		coffee: #c7a589,
+		ectoplasm: #a3b745,
+		midnight: #e14d43,
+		ocean: #9ebaa0,
+		sunrise: #dd823b,
+		light: #04a4cc
+	);
+
+	@each $name, $color in $wp_admin_colors {
+
+		&-#{$name} .branch-5-3.settings_page_object-sync-salesforce-admin {
+
+			.select2-dropdown {
+				border-color: $color;
+			}
+
+			.select2-dropdown--below {
+				box-shadow: 0 0 0 1px $color, 0 2px 1px rgba(0, 0, 0, 0.1);
+			}
+
+			.select2-dropdown--above {
+				box-shadow: 0 0 0 1px $color, 0 -2px 1px rgba(0, 0, 0, 0.1);
+			}
+
+			.select2-selection--single .select2-selection__rendered:hover {
+				color: $color;
+			}
+
+			.select2-container.select2-container--focus .select2-selection--single,
+			.select2-container.select2-container--open .select2-selection--single,
+			.select2-container.select2-container--open .select2-selection--multiple {
+				border-color: $color;
+				box-shadow: 0 0 0 1px $color;
+			}
+
+			.select2-container--default .select2-results__option--highlighted[aria-selected],
+			.select2-container--default .select2-results__option--highlighted[data-selected] {
+				background-color: $color;
 			}
 		}
 	}
+} // end .admin-color
+
+#poststuff .sfwp-o-fieldmap {
 
 	/**
-	 * Select2 elements.
-	 */
+  	* Select2 elements.
+  	*/
 	.select2-drop,
 	.select2-dropdown {
 		z-index: 999999 !important;
@@ -112,7 +215,7 @@ $select-border-color: #ddd;
 
 		.description {
 			display: block;
-			//color: #999;
+			color: #999;
 			padding-top: 4px;
 		}
 	}
@@ -131,36 +234,10 @@ $select-border-color: #ddd;
 
 	.select2-container {
 
-		.select2-selection {
-			border-color: #ddd;
-		}
-
-		.select2-search__field {
-			min-width: 150px;
-		}
-
-		.select2-selection--single {
-			height: 32px;
-
-			.select2-selection__rendered {
-				line-height: 2;
-				padding-right: 24px;
-			}
-
-			.select2-selection__arrow {
-				right: 3px;
-				height: 30px;
-			}
-		}
-
 		.select2-selection--multiple {
 			min-height: 28px;
 			border-radius: 0;
 			line-height: 1.5;
-
-			li {
-				margin: 0;
-			}
 
 			.select2-selection__choice {
 				padding: 2px 6px;
@@ -171,29 +248,374 @@ $select-border-color: #ddd;
 			}
 		}
 
+		.select2-selection {
+			border-color: $select-border-color;
+		}
+
+		.select2-search__field {
+			min-width: 150px;
+		}
+
+		.select2-selection--single {
+			height: 32px;
+
+			.select2-selection__rendered {
+				line-height: 29px;
+				padding-right: 24px;
+			}
+
+			.select2-selection__arrow {
+				right: 3px;
+				height: 30px;
+			}
+		}
+
 		.select2-selection__clear {
 			color: #999;
 			margin-top: -1px;
 		}
 
-		.select2-search--inline
-		.select2-search__field {
+		.select2-search--inline .select2-search__field {
 			font-family: inherit;
 			font-size: inherit;
 			font-weight: inherit;
 			padding: 3px 0;
 		}
+	}
 
-		.select2-selection__rendered.ui-sortable li {
-			cursor: move;
+	/**
+  	* End Select2 styles for this plugin
+  	*/
+
+	//display: flex;
+	//flex-wrap: wrap;
+	//width: 70%;
+	* {
+		box-sizing: border-box;
+	}
+
+	.sfwp-m-fieldmap-group,
+	.sfwp-m-fieldmap-subgroup,
+	.sfwp-m-fieldmap-fields {
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0;
+
+		label,
+		h2,
+		h3 {
+			font-weight: $bold-font-weight;
+			font-size: $label-font-size;
+			line-height: $label-line-height;
+			padding: 0;
 		}
 	}
 
-	/*.woocommerce table.form-table .select2-container {
-		min-width: 400px !important;
-	}*/
+	.sfwp-m-fieldmap-group {
+		margin-bottom: $vertical-space;
+		padding: $main-space;
+		width: $group-width;
+	}
 
-}
+	.sfwp-m-fieldmap-subgroup {
+		width: $subgroup-width;
+		padding-top: $main-space;
+	}
+
+	.sfwp-m-fieldmap-group > header,
+	.sfwp-m-fieldmap-group > label,
+	.sfwp-m-fieldmap-subgroup label {
+		display: block;
+		margin-right: $vertical-space;
+	}
+
+	.sfwp-m-fieldmap-group > header,
+	.sfwp-m-fieldmap-group > label,
+	.sfwp-o-fieldmap-form > header {
+		width: $label-width;
+		border-right: 1px solid $border-color-darker;
+	}
+
+	.sfwp-m-fieldmap-subgroup header,
+	.sfwp-m-fieldmap-subgroup > label,
+	.sfwp-m-fieldmap-fields > label {
+		width: $sublabel-width;
+		align-self: baseline;
+		margin-right: 0;
+	}
+
+	//.sfwp-m-fieldmap-subgroup header,
+	.sfwp-m-fieldmap-group-fields,
+	.sfwp-m-fieldmap-subgroup-fields {
+		padding: $main-space 0;
+		align-self: baseline;
+	}
+
+	.sfwp-m-fieldmap-fields,
+	.sfwp-m-fieldmap-group-fields,
+	.sfwp-m-fieldmap-subgroup-fields {
+		//margin: 0 0 0 $main-space;
+
+		input[type="text"],
+		input[type="search"],
+		input[type="email"],
+		input[type="url"],
+		input[type="password"],
+		input[type="number"],
+		input[type="tel"],
+		textarea,
+		select {
+			width: 100%;
+		}
+	}
+
+	.sfwp-m-fieldmap-fields {
+		width: $field-width;
+	}
+
+	.sfwp-m-fieldmap-subgroup-fields {
+		width: $subfield-width;
+		padding: $main-space / 2 0;
+
+		> label {
+			padding-bottom: $main-space;
+			font-weight: $normal-font-weight;
+
+			&:last-child {
+				padding-bottom: 0;
+			}
+		}
+	}
+
+	.sfwp-m-fieldmap-subgroup .sfwp-m-fieldmap-group-fields,
+	.sfwp-m-fieldmap-group .sfwp-m-fieldmap-fields {
+
+		&.sfwp-m-fieldmap-subgroup .sfwp-m-fieldmap-group-fields {
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+			padding: $main-space 0 0 0;
+		}
+
+		&.sfwp-m-single-select,
+		&.sfwp-m-single-checkboxes,
+		&.sfwp-m-single-checkbox-separate-label {
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+
+			label {
+				align-self: center;
+				width: $sublabel-width;
+			}
+		}
+
+		&.sfwp-m-single-checkbox-separate-label {
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+		}
+
+		&.sfwp-m-single-checkboxes {
+			padding: 0 0 $main-space / 2 0;
+
+			label {
+				width: 100%;
+
+				span {
+					display: inline-block;
+					width: $sublabel-width;
+					margin-right: $vertical-space;
+				}
+			}
+
+			.sfwp-a-single-checkbox {
+				width: 100%;
+				padding: $main-space + ( $main-space / 2 ) 0 0 0 0;
+			}
+		}
+	}
+
+	.sfwp-m-fieldmap-group .sfwp-m-fieldmap-fields {
+
+		&.sfwp-m-single-checkboxes {
+			width: $subfield-width;
+
+			label {
+				padding: $main-space 0 0 0;
+			}
+		}
+	}
+
+	.sfwp-o-fields ul {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+		justify-content: space-between;
+		border-bottom: 1px solid $border-color-darker;
+		margin: 0;
+
+		li {
+			margin: 0;
+			padding: 0;
+
+			h4 {
+				margin: 0;
+				padding: 0;
+				font-weight: $normal-font-weight;
+			}
+		}
+
+		// heading titles
+		&.sfwp-a-fieldmap-headings {
+			font-weight: $bold-font-weight;
+		}
+
+		// not headings
+		&.sfwp-a-fieldmap-values li {
+			padding: $main-space;
+		}
+
+		li.sfwp-fieldmap-wordpress-object,
+		.sfwp-fieldmap-salesforce-object {
+			width: 25%;
+			overflow-x: scroll;
+		}
+
+		li.sfwp-fieldmap-direction {
+			width: 15%;
+			overflow-x: scroll;
+		}
+
+		li.sfwp-fieldmap-actions {
+			width: 25%;
+			overflow-x: scroll;
+
+			a {
+				display: inline-block;
+
+				&:first-child {
+					padding-right: $horizontal-space;
+					border-right: 1px solid $select-border-color;
+					margin-right: $horizontal-space;
+				}
+			}
+		}
+
+		li.sfwp-fieldmap-form-container {
+			display: none;
+			width: $group-width;
+			padding: 0;
+		}
+
+		&.sfwp-a-fieldmap-values-expanded {
+			background: $link-color;
+			color: $bg-color;
+
+			li {
+
+				&.sfwp-fieldmap-actions {
+
+					a {
+						display: none;
+					}
+				}
+			}
+
+			.sfwp-fieldmap-form-container {
+				display: flex;
+				flex-wrap: wrap;
+			}
+
+			#finish-field-mapping {
+				margin-right: $horizontal-space;
+			}
+		}
+
+	}
+
+	.sfwp-o-fieldmap-form {
+		width: 100%;
+		background: $bg-color;
+		color: $body-color;
+		padding: 0 $main-space;
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0;
+		border-top: 0;
+		border-bottom: 0;
+
+		&:first-of-type {
+			padding-top: $main-space;
+		}
+
+		> header {
+			width: ( $sublabel-width + $label-width ) / 2;
+			margin-right: $vertical-space;
+			padding: $main-space 0 $vertical-space 0;
+		}
+
+		> .sfwp-m-fieldmap-subgroup-fields {
+			width: ( $field-width + $subfield-width ) / 2;
+			padding: $main-space 0 $vertical-space 0;
+
+			.sfwp-field-dependent-fields {
+				display: flex;
+				flex-wrap: wrap;
+				width: 100%;
+
+				label {
+					width: ( $sublabel-width + $label-width ) / 2;
+					margin-right: $vertical-space;
+					padding: $main-space 0 $vertical-space 0;
+				}
+
+				.sfwp-m-field-dependent-field {
+					width: ( $field-width + $subfield-width ) / 2;
+					padding: $main-space 0 0 0;
+				}
+
+				&:last-child {
+					padding-bottom: $vertical-space;
+				}
+
+				.description {
+					margin-top: 0;
+				}
+			}
+		}
+
+		> .sfwp-m-fieldmap-subgroup-actions {
+			margin-top: 0;
+			margin-bottom: $vertical-space;
+		}
+	}
+
+	p.description {
+		font-style: normal;
+		font-size: 12px;
+		line-height: 1.4;
+		margin-top: $horizontal-space;
+	}
+
+	.submit {
+		clear: both;
+	}
+
+} // end #poststuff .sfwp-o-fieldmap
+
+/* with javascript only */
+.js #poststuff .sfwp-o-fieldmap {
+	// styles for hiding field templates
+	.sfwp-m-wordpress-statuses.wordpress-statuses-template,
+	.sfwp-m-wordpress-drafts.sfwp-m-drafts-template,
+	.sfwp-m-fieldmap-subgroup.record-types-allowed-template,
+	.sfwp-m-fieldmap-subgroup.record-type-default-template,
+	.sfwp-m-fieldmap-subgroup.pull-trigger-field-template,
+	.sfwp-field-dependent-fields.sfwp-field-dependent-fields-template {
+		display: none;
+	}
+} // end .js #poststuff .sfwp-o-fieldmap
 
 // messages to display
 .salesforce_user_ajax_message {
@@ -230,4 +652,3 @@ $select-border-color: #ddd;
 		width: 140px;
 	}
 }
-

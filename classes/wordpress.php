@@ -23,6 +23,7 @@ class Object_Sync_Sf_WordPress {
 
 	public $wordpress_objects;
 	public $options;
+	public $all_draft_statuses;
 
 	public $sfwp_transients;
 	public $debug;
@@ -46,15 +47,21 @@ class Object_Sync_Sf_WordPress {
 		$this->logging       = $logging;
 		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 
-		add_action( 'admin_init', function() {
-			$this->wordpress_objects = $this->get_object_types();
-		} );
+		add_action(
+			'admin_init',
+			function() {
+				$this->wordpress_objects = $this->get_object_types();
+			}
+		);
 
 		$this->options = array(
 			'cache'            => true,
 			'cache_expiration' => $this->cache_expiration( 'wordpress_data_cache', 86400 ),
 			'type'             => 'read',
 		);
+
+		// statuses that are considered drafts
+		$this->all_draft_statuses = array( 'draft', 'pending', 'hold' ); // see wp-includes/comment.php and wp-includes/post.php
 
 		$this->sfwp_transients = new Object_Sync_Sf_WordPress_Transient( 'sfwp_transients' );
 
@@ -392,6 +399,50 @@ class Object_Sync_Sf_WordPress {
 	}
 
 	/**
+	 * Get WordPress statuses based on what object it is
+	 *
+	 * @param string $object_type The type of object.
+	 * @return array $wordpress_statuses
+	 */
+	public function get_wordpress_object_statuses( $object_type ) {
+		$wordpress_statuses = array();
+		if ( 'user' === $object_type ) {
+			$wordpress_statuses = array();
+		} elseif ( 'post' === $object_type || 'attachment' === $object_type ) {
+			$wordpress_statuses = get_post_statuses();
+		} elseif ( 'category' === $object_type || 'tag' === $object_type || 'post_tag' === $object_type ) {
+			$wordpress_statuses = array();
+		} elseif ( 'comment' === $object_type ) {
+			$wordpress_statuses = get_comment_statuses();
+		} else { // This is for custom post types.
+			$wordpress_statuses = get_post_statuses();
+		}
+
+		// in other places, we check for whether an object has drafts. this seems to be the best way to do that
+		$wordpress_statuses['all_draft_statuses'] = array_intersect_key( $wordpress_statuses, array_flip( $this->all_draft_statuses ) );
+		/*
+		 * Allow developers to change the WordPress object statuses.
+		 * The returned $wordpress_statuses needs to be an array like described above.
+		 * This is useful for custom objects, hidden fields, or custom formatting.
+		 * Here's an example of filters to add/modify data:
+		 *
+			add_filter( 'object_sync_for_salesforce_wordpress_object_statuses', 'modify_data', 10, 2 );
+			function modify_data( $wordpress_statuses, $object_type ) {
+				// Add a new status choice to specific WordPress objects such as 'post', 'page', 'user', a Custom Post Type, etc.
+				if ($object_type === 'user') {
+					$wordpress_statuses['member'] = 'Member';
+				}
+				return $wordpress_statuses;
+			}
+		*/
+
+		$wordpress_statuses = apply_filters( $this->option_prefix . 'wordpress_object_statuses', $wordpress_statuses, $object_type );
+
+		return $wordpress_statuses;
+
+	}
+
+	/**
 	 * Check to see if this API call exists in the cache
 	 * if it does, return the transient for that key
 	 *
@@ -583,11 +634,14 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'create_custom_wordpress_item' ) ) {
 					$result = $this->post_create( $params, $id_field, $name );
 				} else {
-					$result = apply_filters( $this->option_prefix . 'create_custom_wordpress_item', array(
-						'params'   => $params,
-						'name'     => $name,
-						'id_field' => $id_field,
-					) );
+					$result = apply_filters(
+						$this->option_prefix . 'create_custom_wordpress_item',
+						array(
+							'params'   => $params,
+							'name'     => $name,
+							'id_field' => $id_field,
+						)
+					);
 				}
 				break;
 		} // End switch().
@@ -671,16 +725,19 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'upsert_custom_wordpress_item' ) ) {
 					$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $name, $check_only );
 				} else {
-					$result = apply_filters( $this->option_prefix . 'upsert_custom_wordpress_item', array(
-						'key'            => $key,
-						'value'          => $value,
-						'methods'        => $methods,
-						'params'         => $params,
-						'id_field'       => $id_field,
-						'pull_to_drafts' => $pull_to_drafts,
-						'name'           => $name,
-						'check_only'     => $check_only,
-					) );
+					$result = apply_filters(
+						$this->option_prefix . 'upsert_custom_wordpress_item',
+						array(
+							'key'            => $key,
+							'value'          => $value,
+							'methods'        => $methods,
+							'params'         => $params,
+							'id_field'       => $id_field,
+							'pull_to_drafts' => $pull_to_drafts,
+							'name'           => $name,
+							'check_only'     => $check_only,
+						)
+					);
 				}
 				break;
 		} // End switch().
@@ -746,12 +803,15 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'update_custom_wordpress_item' ) ) {
 					$result = $this->post_update( $id, $params, $id_field, $name );
 				} else {
-					$result = apply_filters( $this->option_prefix . 'update_custom_wordpress_item', array(
-						'id'       => $id,
-						'params'   => $params,
-						'name'     => $name,
-						'id_field' => $id_field,
-					) );
+					$result = apply_filters(
+						$this->option_prefix . 'update_custom_wordpress_item',
+						array(
+							'id'       => $id,
+							'params'   => $params,
+							'name'     => $name,
+							'id_field' => $id_field,
+						)
+					);
 				}
 				break;
 		} // End switch().
@@ -833,10 +893,13 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'delete_custom_wordpress_item' ) ) {
 					$success = $this->post_delete( $id );
 				} else {
-					$success = apply_filters( $this->option_prefix . 'delete_custom_wordpress_item', array(
-						'id'   => $id,
-						'name' => $name,
-					) );
+					$success = apply_filters(
+						$this->option_prefix . 'delete_custom_wordpress_item',
+						array(
+							'id'   => $id,
+							'name' => $name,
+						)
+					);
 				}
 
 				$success = $this->post_delete( $id );
@@ -894,7 +957,7 @@ class Object_Sync_Sf_WordPress {
 			$content   = array();
 			$structure = $this->get_wordpress_table_structure( 'user' );
 			foreach ( $params as $key => $value ) {
-				if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+				if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 					$content[ $key ] = $value['value'];
 					unset( $params[ $key ] );
 				}
@@ -1180,7 +1243,7 @@ class Object_Sync_Sf_WordPress {
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( $post_type );
 		foreach ( $params as $key => $value ) {
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1514,7 +1577,7 @@ class Object_Sync_Sf_WordPress {
 		$structure = $this->get_wordpress_table_structure( 'attachment' );
 		// WP requires post_title, post_content (can be empty), post_status, and post_mime_type to create an attachment.
 		foreach ( $params as $key => $value ) {
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1877,7 +1940,7 @@ class Object_Sync_Sf_WordPress {
 				$name = $value['value'];
 				unset( $params[ $key ] );
 			}
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) && 'name' !== $key ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) && 'name' !== $key ) {
 				$args[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -2159,7 +2222,7 @@ class Object_Sync_Sf_WordPress {
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( 'comment' );
 		foreach ( $params as $key => $value ) {
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}

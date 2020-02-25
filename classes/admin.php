@@ -140,6 +140,7 @@ class Object_Sync_Sf_Admin {
 		$this->action_group_suffix = '_check_records';
 
 		$this->add_actions();
+		$this->add_deprecated_actions();
 
 	}
 
@@ -156,9 +157,10 @@ class Object_Sync_Sf_Admin {
 
 		// Ajax for fieldmap forms
 		add_action( 'wp_ajax_get_salesforce_object_description', array( $this, 'get_salesforce_object_description' ), 10, 1 );
-		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
-		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
 		add_action( 'wp_ajax_get_salesforce_field_info', array( $this, 'get_salesforce_field_info' ), 10, 2 );
+		add_action( 'wp_ajax_get_salesforce_object_fields', array( $this, 'get_salesforce_object_fields' ), 10, 1 );
+		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_description' ), 10, 1 );
+		add_action( 'wp_ajax_get_wordpress_object_fields', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
 
 		// Ajax events that can be manually called
 		add_action( 'wp_ajax_push_to_salesforce', array( $this, 'push_to_salesforce' ), 10, 3 );
@@ -193,6 +195,18 @@ class Object_Sync_Sf_Admin {
 		add_action( 'admin_post_object_sync_for_salesforce_import', array( $this, 'import_json_file' ) );
 		add_action( 'admin_post_object_sync_for_salesforce_export', array( $this, 'export_json_file' ) );
 
+	}
+
+	/**
+	* Deprecated action hooks for admin pages
+	*
+	*/
+	private function add_deprecated_actions() {
+		/**
+		 * method: get_wp_sf_object_fields
+		 * @deprecated since 1.9.0
+		 */
+		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
 	}
 
 	/**
@@ -397,10 +411,11 @@ class Object_Sync_Sf_Admin {
 							$salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
 							$salesforce_record_type_default  = $map['salesforce_record_type_default'];
 							$wordpress_object                = $map['wordpress_object'];
+							$wordpress_object_default_status = $map['wordpress_object_default_status'];
 							$pull_trigger_field              = $map['pull_trigger_field'];
 							$fieldmap_fields                 = $map['fields'];
 							$sync_triggers                   = $map['sync_triggers'];
-							$push_async                      = $map['push_async'];
+							$push_immediately                = $map['push_immediately'];
 							$push_drafts                     = $map['push_drafts'];
 							$pull_to_drafts                  = $map['pull_to_drafts'];
 							$weight                          = $map['weight'];
@@ -497,12 +512,14 @@ class Object_Sync_Sf_Admin {
 					break;
 			} // End switch().
 		} catch ( SalesforceApiException $ex ) {
-			echo sprintf( '<p>Error <strong>%1$s</strong>: %2$s</p>',
+			echo sprintf(
+				'<p>Error <strong>%1$s</strong>: %2$s</p>',
 				absint( $ex->getCode() ),
 				esc_html( $ex->getMessage() )
 			);
 		} catch ( Exception $ex ) {
-			echo sprintf( '<p>Error <strong>%1$s</strong>: %2$s</p>',
+			echo sprintf(
+				'<p>Error <strong>%1$s</strong>: %2$s</p>',
 				absint( $ex->getCode() ),
 				esc_html( $ex->getMessage() )
 			);
@@ -582,8 +599,9 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'url',
 					'validate' => 'sanitize_validate_text',
-					// translators: %1$s is the admin URL for the Authorize tab
-					'desc'     => sprintf( __( 'In most cases, you will want to use %1$s for this value.', 'object-sync-for-salesforce' ),
+					'desc'     => sprintf(
+						// translators: %1$s is the admin URL for the Authorize tab
+						__( 'In most cases, you will want to use %1$s for this value.', 'object-sync-for-salesforce' ),
 						get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=authorize' )
 					),
 					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL',
@@ -597,8 +615,9 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'url',
 					'validate' => 'sanitize_validate_text',
-					// translators: 1) production salesforce login, 2) sandbox salesforce login
-					'desc'     => sprintf( __( 'For most Salesforce setups, you should use %1$s for production and %2$s for sandbox. If you try to use an instance name as the URL, you may encounter Salesforce errors.', 'object-sync-for-salesforce' ),
+					'desc'     => sprintf(
+						// translators: 1) production salesforce login, 2) sandbox salesforce login
+						__( 'For most Salesforce setups, you should use %1$s for production and %2$s for sandbox. If you try to use an instance name as the URL, you may encounter Salesforce errors.', 'object-sync-for-salesforce' ),
 						esc_url( 'https://login.salesforce.com' ),
 						esc_url( 'https://test.salesforce.com' )
 					),
@@ -1253,8 +1272,8 @@ class Object_Sync_Sf_Admin {
 		if ( ! empty( $data['salesforce_object'] ) ) {
 			$object = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
 
-			$object_fields        = array();
-			$include_record_types = array();
+			$object_fields       = array();
+			$object_record_types = array();
 
 			// these can come from ajax
 			$include = isset( $data['include'] ) ? (array) $data['include'] : array();
@@ -1289,22 +1308,35 @@ class Object_Sync_Sf_Admin {
 
 	/**
 	* Get Salesforce object fields for fieldmapping
+	* This takes either the $_POST array via ajax, or can be directly called with a $data array
 	*
 	* @param array $data
-	* data must contain a salesforce_object
-	* can optionally contain a type for the field
+	* data must contain a salesforce_object unless it is Ajax
+	* data can optionally contain a type for the field
 	* @return array $object_fields
 	*/
 	public function get_salesforce_object_fields( $data = array() ) {
-
-		if ( ! empty( $data['salesforce_object'] ) ) {
-			$object               = $this->salesforce['sfapi']->object_describe( esc_attr( $data['salesforce_object'] ) );
+		$ajax      = false;
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		if ( empty( $data ) ) {
+			$salesforce_object = isset( $post_data['salesforce_object'] ) ? sanitize_text_field( wp_unslash( $post_data['salesforce_object'] ) ) : '';
+			$ajax              = true;
+			$attributes        = array( 'name', 'label' );
+		} else {
+			$salesforce_object = isset( $data['salesforce_object'] ) ? sanitize_text_field( wp_unslash( $data['salesforce_object'] ) ) : '';
+		}
+		$object_fields = array();
+		if ( ! empty( $salesforce_object ) ) {
+			$object               = $this->salesforce['sfapi']->object_describe( esc_attr( $salesforce_object ) );
 			$object_fields        = array();
 			$type                 = isset( $data['type'] ) ? esc_attr( $data['type'] ) : '';
 			$include_record_types = isset( $data['include_record_types'] ) ? esc_attr( $data['include_record_types'] ) : false;
 			foreach ( $object['data']['fields'] as $key => $value ) {
 				if ( '' === $type || $type === $value['type'] ) {
 					$object_fields[ $key ] = $value;
+					if ( isset( $attributes ) ) {
+						$object_fields[ $key ] = array_intersect_key( $value, array_flip( $attributes ) );
+					}
 				}
 			}
 			if ( true === $include_record_types ) {
@@ -1317,8 +1349,90 @@ class Object_Sync_Sf_Admin {
 			}
 		}
 
-		return $object_fields;
+		if ( true === $ajax ) {
+			$ajax_response = array(
+				'fields' => $object_fields,
+			);
+			wp_send_json_success( $ajax_response );
+		} else {
+			return $object_fields;
+		}
 
+	}
+
+	/**
+	* Get all the WordPress object settings for fieldmapping
+	* This takes either the $_POST array via ajax, or can be directly called with a $data array
+	*
+	* @param array $data
+	* data must contain a wordpress_object
+	* can optionally contain a type
+	* @return array $object_settings
+	*/
+	public function get_wordpress_object_description( $data = array() ) {
+		$ajax = false;
+		if ( empty( $data ) ) {
+			$data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+			$ajax = true;
+		}
+
+		$object_description = array();
+
+		if ( ! empty( $data['wordpress_object'] ) ) {
+			$object          = array();
+			$object_fields   = array();
+			$object_statuses = array();
+
+			// these can come from ajax
+			$include = isset( $data['include'] ) ? (array) $data['include'] : array();
+			$include = array_map( 'esc_attr', $include );
+
+			if ( in_array( 'fields', $include, true ) || empty( $include ) ) {
+				$fields = $this->wordpress->get_wordpress_object_fields( $data['wordpress_object'] );
+				if ( ! empty( $fields ) ) {
+					foreach ( $fields as $wordpress_field ) {
+						if ( '' === $type || $type === $value['type'] ) {
+							$object_fields[ esc_attr( $wordpress_field['key'] ) ] = esc_html( $wordpress_field['key'] );
+						}
+					}
+				}
+				$object_description['fields'] = $object_fields;
+			}
+
+			if ( in_array( 'statuses', $include, true ) ) {
+				$object_statuses['statuses'] = array();
+				$statuses                    = $this->wordpress->get_wordpress_object_statuses( $data['wordpress_object'] );
+				if ( ! empty( $statuses ) ) {
+					foreach ( $statuses as $key => $value ) {
+						if ( is_string( $value ) ) {
+							$object_statuses['statuses'][ $key ] = $value;
+						}
+					}
+					$object_description['statuses'] = $object_statuses['statuses'];
+				}
+			}
+
+			if ( in_array( 'drafts', $include, true ) ) {
+				$object_statuses['drafts'] = array();
+				$statuses                  = $this->wordpress->get_wordpress_object_statuses( $data['wordpress_object'] );
+				if ( ! empty( $statuses ) ) {
+					foreach ( $statuses as $key => $value ) {
+						if ( is_array( $value ) ) {
+							foreach ( $value as $draft_key => $draft_value ) {
+								$object_statuses['drafts'][ $draft_key ] = $draft_value;
+							}
+						}
+					}
+					$object_description['drafts'] = $object_statuses['drafts'];
+				}
+			}
+		}
+
+		if ( true === $ajax ) {
+			wp_send_json_success( $object_description );
+		} else {
+			return $object_description;
+		}
 	}
 
 	/**
@@ -1339,7 +1453,10 @@ class Object_Sync_Sf_Admin {
 		$object_fields = $this->wordpress->get_wordpress_object_fields( $wordpress_object );
 
 		if ( true === $ajax ) {
-			wp_send_json_success( $object_fields );
+			$ajax_response = array(
+				'fields' => $object_fields,
+			);
+			wp_send_json_success( $ajax_response );
 		} else {
 			return $object_fields;
 		}
@@ -1349,6 +1466,7 @@ class Object_Sync_Sf_Admin {
 	* Get WordPress and Salesforce object fields together for fieldmapping
 	* This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $salesforce_object fields
 	*
+	* @deprecated since 1.9.0
 	* @param string $wordpress_object
 	* @param string $salesforce_object
 	* @return array $object_fields
@@ -1790,13 +1908,13 @@ class Object_Sync_Sf_Admin {
 		}
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		$export    = array();
-		if ( in_array( 'fieldmaps', $post_data['export'] ) ) {
+		if ( in_array( 'fieldmaps', $post_data['export'], true ) ) {
 			$export['fieldmaps'] = $this->mappings->get_fieldmaps();
 		}
-		if ( in_array( 'object_maps', $post_data['export'] ) ) {
+		if ( in_array( 'object_maps', $post_data['export'], true ) ) {
 			$export['object_maps'] = $this->mappings->get_object_maps();
 		}
-		if ( in_array( 'plugin_settings', $post_data['export'] ) ) {
+		if ( in_array( 'plugin_settings', $post_data['export'], true ) ) {
 			$export['plugin_settings'] = $this->wpdb->get_results( 'SELECT * FROM ' . $this->wpdb->prefix . 'options' . ' WHERE option_name like "' . $this->option_prefix . '%"', ARRAY_A );
 		}
 		nocache_headers();
@@ -1842,7 +1960,8 @@ class Object_Sync_Sf_Admin {
 				$value = $args['default'];
 			}
 
-			echo sprintf( '<input type="%1$s" value="%2$s" name="%3$s" id="%4$s" class="%5$s"%6$s>',
+			echo sprintf(
+				'<input type="%1$s" value="%2$s" name="%3$s" id="%4$s" class="%5$s"%6$s>',
 				esc_attr( $type ),
 				esc_attr( $value ),
 				esc_attr( $name ),
@@ -1851,12 +1970,14 @@ class Object_Sync_Sf_Admin {
 				esc_html( $checked )
 			);
 			if ( '' !== $desc ) {
-				echo sprintf( '<p class="description">%1$s</p>',
+				echo sprintf(
+					'<p class="description">%1$s</p>',
 					esc_html( $desc )
 				);
 			}
 		} else {
-			echo sprintf( '<p><code>%1$s</code></p>',
+			echo sprintf(
+				'<p><code>%1$s</code></p>',
 				esc_html__( 'Defined in wp-config.php', 'object-sync-for-salesforce' )
 			);
 		}
@@ -1884,7 +2005,8 @@ class Object_Sync_Sf_Admin {
 					$checked = 'checked';
 				}
 			}
-			echo sprintf( '<div class="checkbox"><label><input type="%1$s" value="%2$s" name="%3$s[]" id="%4$s"%5$s>%6$s</label></div>',
+			echo sprintf(
+				'<div class="checkbox"><label><input type="%1$s" value="%2$s" name="%3$s[]" id="%4$s"%5$s>%6$s</label></div>',
 				esc_attr( $type ),
 				esc_attr( $key ),
 				esc_attr( $name ),
@@ -1893,7 +2015,8 @@ class Object_Sync_Sf_Admin {
 				esc_html( $text )
 			);
 			if ( '' !== $desc ) {
-				echo sprintf( '<p class="description">%1$s</p>',
+				echo sprintf(
+					'<p class="description">%1$s</p>',
 					esc_html( $desc )
 				);
 			}
@@ -1913,7 +2036,8 @@ class Object_Sync_Sf_Admin {
 		if ( ! isset( $args['constant'] ) || ! defined( $args['constant'] ) ) {
 			$current_value = get_option( $name );
 
-			echo sprintf( '<div class="select"><select id="%1$s" name="%2$s"><option value="">- ' . __( 'Select one', 'object-sync-for-salesforce' ) . ' -</option>',
+			echo sprintf(
+				'<div class="select"><select id="%1$s" name="%2$s"><option value="">- ' . __( 'Select one', 'object-sync-for-salesforce' ) . ' -</option>',
 				esc_attr( $id ),
 				esc_attr( $name )
 			);
@@ -1926,7 +2050,8 @@ class Object_Sync_Sf_Admin {
 					$selected = ' selected';
 				}
 
-				echo sprintf( '<option value="%1$s"%2$s>%3$s</option>',
+				echo sprintf(
+					'<option value="%1$s"%2$s>%3$s</option>',
 					esc_attr( $value ),
 					esc_attr( $selected ),
 					esc_html( $text )
@@ -1935,13 +2060,15 @@ class Object_Sync_Sf_Admin {
 			}
 			echo '</select>';
 			if ( '' !== $desc ) {
-				echo sprintf( '<p class="description">%1$s</p>',
+				echo sprintf(
+					'<p class="description">%1$s</p>',
 					esc_html( $desc )
 				);
 			}
 			echo '</div>';
 		} else {
-			echo sprintf( '<p><code>%1$s</code></p>',
+			echo sprintf(
+				'<p><code>%1$s</code></p>',
 				esc_html__( 'Defined in wp-config.php', 'object-sync-for-salesforce' )
 			);
 		}
@@ -1977,20 +2104,23 @@ class Object_Sync_Sf_Admin {
 		$desc  = $args['desc'];
 		$url   = $args['url'];
 		if ( isset( $args['link_class'] ) ) {
-			echo sprintf( '<p><a class="%1$s" href="%2$s">%3$s</a></p>',
+			echo sprintf(
+				'<p><a class="%1$s" href="%2$s">%3$s</a></p>',
 				esc_attr( $args['link_class'] ),
 				esc_url( $url ),
 				esc_html( $label )
 			);
 		} else {
-			echo sprintf( '<p><a href="%1$s">%2$s</a></p>',
+			echo sprintf(
+				'<p><a href="%1$s">%2$s</a></p>',
 				esc_url( $url ),
 				esc_html( $label )
 			);
 		}
 
 		if ( '' !== $desc ) {
-			echo sprintf( '<p class="description">%1$s</p>',
+			echo sprintf(
+				'<p class="description">%1$s</p>',
 				esc_html( $desc )
 			);
 		}
@@ -2037,8 +2167,9 @@ class Object_Sync_Sf_Admin {
 			$versions_from_cache = esc_html__( 'items were not loaded from the cache', 'object-sync-salesforce' );
 		}
 
-		// translators: 1) $versions_is_cached is the "This list is/is not cached, and/but" line, 2) $versions_from_cache is the "items were/were not loaded from the cache" line
-		$versions_apicall_summary = sprintf( esc_html__( 'Available Salesforce API versions. %1$s %2$s. This is not an authenticated request, so it does not touch the Salesforce token.', 'object-sync-for-salesforce' ),
+		$versions_apicall_summary = sprintf(
+			// translators: 1) $versions_is_cached is the "This list is/is not cached, and/but" line, 2) $versions_from_cache is the "items were/were not loaded from the cache" line
+			esc_html__( 'Available Salesforce API versions. %1$s %2$s. This is not an authenticated request, so it does not touch the Salesforce token.', 'object-sync-for-salesforce' ),
 			$versions_is_cached,
 			$versions_from_cache
 		);
@@ -2092,7 +2223,8 @@ class Object_Sync_Sf_Admin {
 		$this->access_token  = delete_option( $this->option_prefix . 'access_token' );
 		$this->instance_url  = delete_option( $this->option_prefix . 'instance_url' );
 		$this->refresh_token = delete_option( $this->option_prefix . 'refresh_token' );
-		echo sprintf( '<p>You have been logged out. You can use the <a href="%1$s">%2$s</a> tab to log in again.</p>',
+		echo sprintf(
+			'<p>You have been logged out. You can use the <a href="%1$s">%2$s</a> tab to log in again.</p>',
 			esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=authorize' ) ),
 			esc_html__( 'Authorize', 'object-sync-for-salesforce' )
 		);
@@ -2238,8 +2370,17 @@ class Object_Sync_Sf_Admin {
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $tab_key => $tab_caption ) {
 			$active = $current_tab === $tab_key ? ' nav-tab-active' : '';
-			if ( 'settings' === $tab_key || ( isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) ) {
-				echo sprintf( '<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
+
+			if ( true === $this->salesforce['is_authorized'] ) {
+				echo sprintf(
+					'<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
+					esc_attr( $active ),
+					esc_url( '?page=object-sync-salesforce-admin&tab=' . $tab_key ),
+					esc_html( $tab_caption )
+				);
+			} elseif ( 'settings' === $tab_key || ( 'authorize' === $tab_key && isset( $consumer_key ) && isset( $consumer_secret ) && ! empty( $consumer_key ) && ! empty( $consumer_secret ) ) ) {
+				echo sprintf(
+					'<a class="nav-tab%1$s" href="%2$s">%3$s</a>',
 					esc_attr( $active ),
 					esc_url( '?page=object-sync-salesforce-admin&tab=' . $tab_key ),
 					esc_html( $tab_caption )
@@ -2277,20 +2418,24 @@ class Object_Sync_Sf_Admin {
 	*/
 	private function get_schedule_count( $schedule_name = '' ) {
 		if ( '' !== $schedule_name ) {
-			$count       = count( $this->queue->search(
-				array(
-					'group'  => $schedule_name,
-					'status' => ActionScheduler_Store::STATUS_PENDING,
-				),
-				'ARRAY_A'
-			) );
-			$group_count = count( $this->queue->search(
-				array(
-					'group'  => $schedule_name . $this->action_group_suffix,
-					'status' => ActionScheduler_Store::STATUS_PENDING,
-				),
-				'ARRAY_A'
-			) );
+			$count       = count(
+				$this->queue->search(
+					array(
+						'group'  => $schedule_name,
+						'status' => ActionScheduler_Store::STATUS_PENDING,
+					),
+					'ARRAY_A'
+				)
+			);
+			$group_count = count(
+				$this->queue->search(
+					array(
+						'group'  => $schedule_name . $this->action_group_suffix,
+						'status' => ActionScheduler_Store::STATUS_PENDING,
+					),
+					'ARRAY_A'
+				)
+			);
 			return $count + $group_count;
 		} else {
 			return 0;

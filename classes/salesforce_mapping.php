@@ -155,16 +155,13 @@ class Object_Sync_Sf_Mapping {
 	public function get_fieldmaps( $id = null, $conditions = array(), $reset = false ) {
 		$table = $this->fieldmap_table;
 		if ( null !== $id ) { // get one fieldmap.
-			$map                                    = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
-			$map['salesforce_record_types_allowed'] = maybe_unserialize( $map['salesforce_record_types_allowed'] );
-
-			$map['fields']        = maybe_unserialize( $map['fields'] );
-			$map['sync_triggers'] = maybe_unserialize( $map['sync_triggers'] );
+			$map        = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
+			$mappings[] = $map;
+			$map        = $this->prepare_fieldmap_data( $mappings )[0];
 			return $map;
 		} elseif ( ! empty( $conditions ) ) { // get multiple but with a limitation.
 			$mappings    = array();
 			$record_type = '';
-
 			// Assemble the SQL.
 			if ( ! empty( $conditions ) ) {
 				$where = ' WHERE ';
@@ -183,19 +180,18 @@ class Object_Sync_Sf_Mapping {
 			} else {
 				$where = '';
 			}
-
 			$mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . ' ORDER BY `weight`', ARRAY_A );
-
 			if ( ! empty( $mappings ) ) {
 				$mappings = $this->prepare_fieldmap_data( $mappings, $record_type );
 			}
-
 			return $mappings;
-
-		} else { // get all of the mappings. ALL THE MAPPINGS.
-
-			// if the version is greater than or equal to 1.5.0, the fieldmap table has a pull_to_drafts column
-			if ( version_compare( $this->version, '1.5.0', '>=' ) ) {
+		} else {
+			// get all of the mappings. ALL THE MAPPINGS.
+			if ( version_compare( $this->version, '1.9.0', '>=' ) ) {
+				// if the version is greater than or equal to 1.9.0, the fieldmap table has a wordpress_object_default_status column
+				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `wordpress_object_default_status`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
+			} elseif ( version_compare( $this->version, '1.5.0', '>=' ) ) {
+				// if the version is greater than or equal to 1.5.0, the fieldmap table has a pull_to_drafts column
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
 			} elseif ( version_compare( $this->version, '1.2.5', '>=' ) ) {
 				// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column
@@ -203,11 +199,9 @@ class Object_Sync_Sf_Mapping {
 			} else {
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
 			}
-
 			if ( ! empty( $mappings ) ) {
 				$mappings = $this->prepare_fieldmap_data( $mappings );
 			}
-
 			return $mappings;
 		} // End if().
 	}
@@ -223,23 +217,25 @@ class Object_Sync_Sf_Mapping {
 	 */
 	public function get_mapped_fields( $mapping, $directions = array() ) {
 		$mapped_fields = array();
-		foreach ( $mapping['fields'] as $fields ) {
-			if ( empty( $directions ) || in_array( $fields['direction'], $directions, true ) ) {
+		if ( is_array( $mapping['fields'] ) ) {
+			foreach ( $mapping['fields'] as $fields ) {
+				if ( empty( $directions ) || in_array( $fields['direction'], $directions, true ) ) {
 
-				// in version 1.2.0, we provided an option for API name vs label for Salesforce fields
-				if ( version_compare( $this->version, '1.2.0', '>=' ) && isset( $fields['salesforce_field']['name'] ) ) {
-					$array_key = 'name';
-				} else {
-					$array_key = 'label';
-				}
-
-				// Some field map types (Relation) store a collection of SF objects.
-				if ( is_array( $fields['salesforce_field'] ) && ! isset( $fields['salesforce_field'][ $array_key ] ) ) {
-					foreach ( $fields['salesforce_field'] as $sf_field ) {
-						$mapped_fields[ $sf_field[ $array_key ] ] = $sf_field[ $array_key ];
+					// in version 1.2.0, we provided an option for API name vs label for Salesforce fields
+					if ( version_compare( $this->version, '1.2.0', '>=' ) && isset( $fields['salesforce_field']['name'] ) ) {
+						$array_key = 'name';
+					} else {
+						$array_key = 'label';
 					}
-				} else { // The rest are just a name/value pair.
-					$mapped_fields[ $fields['salesforce_field'][ $array_key ] ] = $fields['salesforce_field'][ $array_key ];
+
+					// Some field map types (Relation) store a collection of SF objects.
+					if ( is_array( $fields['salesforce_field'] ) && ! isset( $fields['salesforce_field'][ $array_key ] ) ) {
+						foreach ( $fields['salesforce_field'] as $sf_field ) {
+							$mapped_fields[ $sf_field[ $array_key ] ] = $sf_field[ $array_key ];
+						}
+					} else { // The rest are just a name/value pair.
+						$mapped_fields[ $fields['salesforce_field'][ $array_key ] ] = $fields['salesforce_field'][ $array_key ];
+					}
 				}
 			}
 		}
@@ -306,10 +302,16 @@ class Object_Sync_Sf_Mapping {
 			'salesforce_object' => $posted['salesforce_object'],
 			'wordpress_object'  => $posted['wordpress_object'],
 		);
+		// added in version 1.9.0.
+		$data['wordpress_object_default_status'] = isset( $posted['wordpress_object_default_status'] ) ? sanitize_text_field( $posted['wordpress_object_default_status'] ) : '';
 		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
 				$method_key = array_search( $value, array_column( $wordpress_fields, 'key' ), true );
+				// in 1.9.0 we added a date format field
+				if ( ! isset( $posted['date-format'][ $key ] ) ) {
+					$posted['date-format'][ $key ] = '';
+				}
 				if ( ! isset( $posted['direction'][ $key ] ) ) {
 					$posted['direction'][ $key ] = 'sync';
 				}
@@ -344,6 +346,7 @@ class Object_Sync_Sf_Mapping {
 							'type'    => isset( $wordpress_fields[ $method_key ]['type'] ) ? sanitize_text_field( $wordpress_fields[ $method_key ]['type'] ) : 'text',
 						),
 						'salesforce_field' => $salesforce_field_attributes,
+						'date-format'      => esc_attr( $posted['date-format'][ $key ] ),
 						'is_prematch'      => sanitize_text_field( $posted['is_prematch'][ $key ] ),
 						'is_key'           => sanitize_text_field( $posted['is_key'][ $key ] ),
 						'direction'        => sanitize_text_field( $posted['direction'][ $key ] ),
@@ -396,7 +399,14 @@ class Object_Sync_Sf_Mapping {
 		if ( isset( $posted['pull_trigger_field'] ) ) {
 			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
 		}
-		$data['push_async']     = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
+
+		// invert value of immediately to get value of async
+		if ( isset( $posted['push_immediately'] ) && true === filter_var( $posted['push_immediately'], FILTER_VALIDATE_BOOLEAN ) ) {
+			$data['push_async'] = '';
+		} else {
+			$data['push_async'] = '1';
+		}
+
 		$data['push_drafts']    = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
 		$data['pull_to_drafts'] = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
 		$data['weight']         = isset( $posted['weight'] ) ? $posted['weight'] : '';
@@ -772,7 +782,7 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Map values between WordPress and Salesforce objects.
 	 *
-	 * @param array  $mapping Mapping object.
+	 * @param array  $mapping The fieldmap that maps these types together.
 	 * @param array  $object WordPress or Salesforce object data.
 	 * @param array  $trigger The thing that triggered this mapping.
 	 * @param bool   $use_soap Flag to enforce use of the SOAP API.
@@ -785,11 +795,12 @@ class Object_Sync_Sf_Mapping {
 
 		$params = array();
 
+		// these are the triggers that define whether the action was from WordPress or Salesforce.
+		$wordpress_haystack  = array_values( $this->wordpress_events );
+		$salesforce_haystack = array_values( $this->salesforce_events );
+
 		$has_missing_required_salesforce_field = false;
 		foreach ( $mapping['fields'] as $fieldmap ) {
-
-			$wordpress_haystack  = array_values( $this->wordpress_events );
-			$salesforce_haystack = array_values( $this->salesforce_events );
 
 			$fieldmap['wordpress_field']['methods'] = maybe_unserialize( $fieldmap['wordpress_field']['methods'] );
 
@@ -819,7 +830,7 @@ class Object_Sync_Sf_Mapping {
 				if ( isset( $salesforce_field_type ) ) {
 					// Is the Salesforce field a date, and is the WordPress value a valid date?
 					// According to https://salesforce.stackexchange.com/questions/57032/date-format-with-salesforce-rest-api
-					if ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ) {
+					if ( in_array( $salesforce_field_type, $this->date_types_from_salesforce, true ) ) {
 						if ( '' === $object[ $wordpress_field ] ) {
 							$object[ $wordpress_field ] = null;
 						} else {
@@ -885,7 +896,7 @@ class Object_Sync_Sf_Mapping {
 				//    we do not have a WordPress value for this field, or it's empty
 				//    it also means the field has not been unset by prematch, updateable, key, or directional flags prior to this check.
 				// When this happens, we should flag that we're missing a required Salesforce field
-				if ( in_array( $salesforce_field, $params ) && false === filter_var( $fieldmap['salesforce_field']['nillable'], FILTER_VALIDATE_BOOLEAN ) && ( ! isset( $object[ $wordpress_field ] ) || '' === $object[ $wordpress_field ] ) ) {
+				if ( in_array( $salesforce_field, $params, true ) && false === filter_var( $fieldmap['salesforce_field']['nillable'], FILTER_VALIDATE_BOOLEAN ) && ( ! isset( $object[ $wordpress_field ] ) || '' === $object[ $wordpress_field ] ) ) {
 					$has_missing_required_salesforce_field = true;
 				}
 
@@ -897,7 +908,7 @@ class Object_Sync_Sf_Mapping {
 				if ( isset( $salesforce_field_type ) && isset( $object[ $salesforce_field ] ) && ! is_null( $object[ $salesforce_field ] ) ) {
 					// Salesforce provides multipicklist values as a delimited string. If the
 					// destination field in WordPress accepts multiple values, explode the string into an array and then serialize it.
-					if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce ) ) {
+					if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce, true ) ) {
 						$object[ $salesforce_field ] = explode( $this->array_delimiter, $object[ $salesforce_field ] );
 						// if the WordPress field is a list of capabilities (the destination field is wp_capabilities), we need to set the array for WordPress to save it.
 						if ( 'wp_capabilities' === $wordpress_field ) {
@@ -911,7 +922,7 @@ class Object_Sync_Sf_Mapping {
 
 					// Handle specific data types from Salesforce.
 					switch ( $salesforce_field_type ) {
-						case ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ):
+						case ( in_array( $salesforce_field_type, $this->date_types_from_salesforce, true ) ):
 							$format = get_option( 'date_format', 'U' );
 							if ( isset( $fieldmap['wordpress_field']['type'] ) && 'datetime' === $fieldmap['wordpress_field']['type'] ) {
 								$format = 'Y-m-d H:i:s';
@@ -926,7 +937,7 @@ class Object_Sync_Sf_Mapping {
 							}
 							$object[ $salesforce_field ] = date_i18n( $format, strtotime( $object[ $salesforce_field ] ) );
 							break;
-						case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce ) ):
+						case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce, true ) ):
 							$object[ $salesforce_field ] = isset( $object[ $salesforce_field ] ) ? (int) $object[ $salesforce_field ] : 0;
 							break;
 						case 'text':
@@ -935,6 +946,14 @@ class Object_Sync_Sf_Mapping {
 						case 'url':
 							$object[ $salesforce_field ] = esc_url_raw( $object[ $salesforce_field ] );
 							break;
+					}
+
+					// set a default WordPress status value, if there is one and it's not already set by the object map
+					$post_status = array_search( 'post_status', array_column( $fieldmap['wordpress_field'], 'label' ), true );
+					if ( false === $post_status ) {
+						error_log( 'there is no post status' );
+					} else {
+						error_log( 'there is a post status' );
 					}
 				}
 
@@ -1010,6 +1029,12 @@ class Object_Sync_Sf_Mapping {
 			$mappings[ $id ]['salesforce_record_types_allowed'] = maybe_unserialize( $mapping['salesforce_record_types_allowed'] );
 			$mappings[ $id ]['fields']                          = maybe_unserialize( $mapping['fields'] );
 			$mappings[ $id ]['sync_triggers']                   = maybe_unserialize( $mapping['sync_triggers'] );
+			// reverse async to get immediately
+			if ( true === filter_var( $mappings[ $id ]['push_async'], FILTER_VALIDATE_BOOLEAN ) ) {
+				$mappings[ $id ]['push_immediately'] = '';
+			} else {
+				$mappings[ $id ]['push_immediately'] = '1';
+			}
 			if ( '' !== $record_type && ! in_array( $record_type, $mappings[ $id ]['salesforce_record_types_allowed'], true ) ) {
 				unset( $mappings[ $id ] );
 			}
