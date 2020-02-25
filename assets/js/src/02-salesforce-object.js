@@ -93,17 +93,20 @@ function defaultRecordTypeSettings( allowedTypesContainer ) {
 	recordTypeFields += '<option value="">' + firstRecordTypeField + '</option>';
 	if ( 0 === $( '.' + allowedTypesContainer + ' input[type="checkbox"]:checked' ).length ) {
 		selectContainer.addClass( 'record-type-default-template' );
+		$( selectDefaultField ).prop( 'required', false );
 		return;
 	}
 	$( '.' + allowedTypesContainer + ' input[type="checkbox"]:checked' ).each( function( index ) {
 		if ( 1 === $( '.' + allowedTypesContainer + ' input[type="checkbox"]:checked' ).length ) {
 			selected = ' selected';
+			selectContainer.addClass( 'record-type-default-template' );
 		}
 		recordTypeFields += '<option value="' + $( this ).val() + '"' + selected +'>' + $( this ).closest( 'label' ).text() + '</option>';
 	} );
 	$( selectDefaultField ).html( recordTypeFields );
 	if ( 1 < $( '.' + allowedTypesContainer + ' input[type="checkbox"]:checked' ).length ) {
 		selectContainer.removeClass( 'record-type-default-template' );
+		$( selectDefaultField ).prop( 'required', true );
 	}
 };
 
