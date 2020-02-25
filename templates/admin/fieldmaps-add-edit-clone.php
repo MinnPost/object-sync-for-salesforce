@@ -15,19 +15,22 @@
 			<div class="postbox-container" id="postbox-container-1">
 				<div class="meta-box-sortables ui-sortable">
 					<div class="postbox">
-						<button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text"><?php echo esc_html__( 'Toggle panel: Save Fieldmap', 'object-sync-for-salesforce' ); ?></span><span class="toggle-indicator" aria-hidden="true"></span></button>
+						<button type="button" class="handlediv" aria-expanded="true">
+							<span class="screen-reader-text"><?php echo esc_html__( 'Toggle panel: Save Fieldmap', 'object-sync-for-salesforce' ); ?></span>
+							<span class="toggle-indicator" aria-hidden="true"></span>
+						</button>
 						<h2 class="hndle ui-sortable-handle"><span><?php echo esc_html__( 'Save Fieldmap', 'object-sync-for-salesforce' ); ?></span></h2>
 						<div class="submitpost">
 							<div id="major-publishing-actions">
 								<div id="delete-action">
-								<a class="submitdelete deletion" href="#"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a></div>
-
-							<div id="publishing-action">
-								<span class="spinner spinner-save"></span>
-										<input name="original_publish" type="hidden" id="original_publish" value="<?php echo esc_html__( 'Update', 'object-sync-for-salesforce' ); ?>">
-									<input name="save" type="submit" class="button button-primary button-large" id="publish" value="<?php echo esc_html__( 'Update', 'object-sync-for-salesforce' ); ?>">
-									</div>
-							<div class="clear"></div>
+									<a class="submitdelete deletion" href="#"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
+								</div>
+								<div id="publishing-action">
+									<span class="spinner spinner-save"></span>
+									<input name="original_publish" type="hidden" id="original_publish" value="<?php echo esc_html__( 'Save', 'object-sync-for-salesforce' ); ?>">
+									<input name="save" type="submit" class="button button-primary button-large" id="save" value="<?php echo esc_html__( 'Save', 'object-sync-for-salesforce' ); ?>">
+								</div>
+								<div class="clear"></div>
 							</div>
 						</div>
 					</div>
