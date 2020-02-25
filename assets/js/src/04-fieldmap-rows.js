@@ -50,6 +50,46 @@ function fieldmapFields( oldKey, newKey, lastRow ) {
 }
 
 /**
+ * Gets information about the Salesforce field based on its value
+ * @param {string} salesforceObject the name of the Salesforce object type
+ * @param {string} salesforceField the name of the Salesforce field
+ * @param {string} key of the fieldmap we're dealing with
+ */
+ function loadSalesforceFieldInfo( salesforceObject, salesforceField, key ) {
+	var data = {
+		'action'            : 'get_salesforce_field_info',
+		'salesforce_object' : salesforceObject,
+		'salesforce_field'  : salesforceField
+	}
+	var dependentTemplateClass = 'sfwp-field-dependent-fields-template';
+	$.ajax( {
+		type: 'POST',
+		url: ajaxurl,
+		data: data,
+		beforeSend: function() {
+			$( '.spinner-salesforce-field-' + key ).addClass( 'is-active' );
+		},
+		success: function( response ) {
+			$( '.sfwp-field-dependent-fields-' + key ).addClass( dependentTemplateClass );
+			if ( '' !== response.data.type ) {
+				$( '.sfwp-field-dependent-fields-' + key + '.sfwp-field-dependent-fields-' + response.data.type ).removeClass( dependentTemplateClass );
+			}
+		},
+		complete: function() {
+			$( '.spinner-salesforce-field-' + key ).removeClass( 'is-active' );
+		}
+	} );
+ }
+
+ // load available options if the salesforce field changes
+$( document ).on( 'change', '[id^=sfwp-salesforce-field-]', function() {
+	var salesforceObject = $( 'select#sfwp-salesforce-object' ).val();
+	var salesforceField = $( this ).val();
+	var key = $( this ).closest( '.sfwp-a-fieldmap-values-expanded' ).data( 'key' );
+	loadSalesforceFieldInfo( salesforceObject, salesforceField, key );
+});
+
+/**
  * As the Drupal plugin does, we only allow one field to be a prematch
  */
 $( document ).on( 'click', '.column-is_prematch input', function() {
@@ -74,7 +114,15 @@ $( document ).on( 'click', '.sfwp-a-fieldmap-field-action', function( event ) {
  * When clicking edit on a field, toggle its expanded status
  */
 $( document ).on( 'click', '.sfwp-a-fieldmap-field-action-edit', function( event ) {
-	$( this ).closest( '.sfwp-a-fieldmap-values' ).toggleClass( 'sfwp-a-fieldmap-values-expanded' );
+	var salesforceObject = $( 'select#sfwp-salesforce-object' ).val();
+	var container = $( this ).closest( '.sfwp-a-fieldmap-values' );
+	var key = container.data( 'key' );
+	var salesforceField = $( '#sfwp-salesforce-field-' + key ).val();
+	var expandedClass = 'sfwp-a-fieldmap-values-expanded';
+	if ( false === $( container ).hasClass( expandedClass ) ) {
+		loadSalesforceFieldInfo( salesforceObject, salesforceField, key );
+	}
+	container.toggleClass( expandedClass );
 } );
 
 /**

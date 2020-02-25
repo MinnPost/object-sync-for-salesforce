@@ -96,7 +96,6 @@
 									<?php endif; ?>
 								</select>
 							</div>
->>>>>>> 328-fieldmap-screen-design-updates
 							<?php
 							$template_class = '';
 							if ( empty( $statuses['all_draft_statuses'] ) ) {
@@ -327,7 +326,7 @@
 									}
 								}
 								?>
-								<ul class="sfwp-a-fieldmap-values" data-key="<?php echo $key; ?>">
+								<ul class="sfwp-a-fieldmap-values" data-key="<?php echo esc_attr( $key ); ?>">
 									<li class="sfwp-fieldmap-wordpress-object">
 										<h4><?php echo $value['wordpress_field']['label']; ?></h4>
 									</li>
@@ -344,6 +343,7 @@
 										<article class="postbox sfwp-o-fieldmap-form sfwp-fieldmap-wordpress-field">
 											<header>
 												<label for="wordpress-field-<?php echo esc_attr( $key ); ?>"><?php echo esc_html__( 'WordPress Field', 'object-sync-for-salesforce' ); ?></label>
+												<div class="spinner spinner-wordpress-field-<?php echo esc_attr( $key ); ?>"></div>
 											</header>
 											<div class="sfwp-m-fieldmap-subgroup-fields select">
 												<select name="wordpress_field[<?php echo esc_attr( $key ); ?>]" id="wordpress-field-<?php echo esc_attr( $key ); ?>" style="width: 100%;">
@@ -365,7 +365,6 @@
 													}
 													?>
 												</select>
-												<div class="sfwp-wordpresss-field-options"></div>
 												<p class="description">
 													<?php
 													// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
@@ -381,6 +380,7 @@
 										<article class="postbox sfwp-o-fieldmap-form sfwp-fieldmap-salesforce-field">
 											<header>
 												<label for="sfwp-salesforce-field-<?php echo esc_attr( $key ); ?>"><?php echo esc_html__( 'Salesforce Field', 'object-sync-for-salesforce' ); ?></label>
+												<div class="spinner spinner-salesforce-field-<?php echo esc_attr( $key ); ?>"></div>
 											</header>
 											<div class="sfwp-m-fieldmap-subgroup-fields select">
 												<select name="salesforce_field[<?php echo esc_attr( $key ); ?>]" id="sfwp-salesforce-field-<?php echo esc_attr( $key ); ?>" style="width: 100%;">
@@ -422,27 +422,27 @@
 												<p class="description">
 													<?php echo esc_html__( 'Salesforce fields containing a * are required fields for this object type.', 'object-sync-for-salesforce' ); ?>
 												</p>
-												<div class="sfwp-field-dependent-fields sfwp-field-date-format sfwp-field-dependent-fields-template">
-													<label for="sfwp-wordpress-date-format-<?php echo $key; ?>"><?php echo esc_html__( 'Date Format', 'object-sync-for-salesforce' ); ?></label>
+												<div class="sfwp-field-dependent-fields sfwp-field-dependent-fields-<?php echo esc_attr( $key ); ?> sfwp-field-dependent-fields-template sfwp-field-dependent-fields-date sfwp-field-date-format">
+													<label for="sfwp-wordpress-date-format-<?php echo esc_attr( $key ); ?>"><?php echo esc_html__( 'Date Format', 'object-sync-for-salesforce' ); ?></label>
 													<div class="sfwp-m-field-dependent-field">
-														<input name="date-format[<?php echo esc_attr( $key ); ?>]" id="sfwp-wordpress-date-format-<?php echo $key; ?>" type="text" value="<?php echo isset( $date_format ) ? esc_html( $date_format ) : ''; ?>">
+														<input name="date-format[<?php echo esc_attr( $key ); ?>]" id="sfwp-wordpress-date-format-<?php echo esc_attr( $key ); ?>" type="text" value="<?php echo isset( $date_format ) ? esc_html( $date_format ) : ''; ?>">
 													</div>
 													<!-- enter a default format that users can override -->
 													<p class="description">
-														<?php
-														// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
-														echo sprintf(
-															esc_html__( 'The plugin will match this date format before saving the value of this Salesforce field into WordPress. Date fields coming from WordPress are formatted for Salesforce API requirements. Get valid PHP date formats %1$.', 'object-sync-for-salesforce' ),
-															'<a href="https://www.php.net/manual/en/function.date.php">' . esc_html__( 'directly from the PHP website', 'object-sync-for-salesforce' ) . '</a>'
-														);
-														?>
-													</p>
+													<?php
+													// translators: placeholders are for the class names: salesforce_push and salesforce_pull
+													echo sprintf(
+														esc_html__( 'The plugin will match this date format before saving the value of this Salesforce field into WordPress. Date fields coming from WordPress are formatted for Salesforce API requirements. Get valid PHP date formats %1$s.', 'object-sync-for-salesforce' ),
+														'<a href="https://www.php.net/manual/en/function.date.php">' . esc_html__( 'directly from the PHP website', 'object-sync-for-salesforce' ) . '</a>'
+													);
+													?>
+												</p>
 												</div>
 											</div>
 										</article>
 										<div class="postbox sfwp-o-fieldmap-form">
 											<p class="sfwp-m-fieldmap-subgroup-actions">
-												<button type="button" id="finish-field-mapping-<?php echo $key; ?>" class="button button-secondary sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit"><?php echo esc_html__( 'Finish This Field Mapping', 'object-sync-for-salesforce' ); ?></button> <a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete"><?php echo esc_html__( 'Delete This Field Mapping', 'object-sync-for-salesforce' ); ?></a>
+												<button type="button" id="finish-field-mapping-<?php echo esc_attr( $key ); ?>" class="button button-secondary sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit"><?php echo esc_html__( 'Finish This Field Mapping', 'object-sync-for-salesforce' ); ?></button> <a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete"><?php echo esc_html__( 'Delete This Field Mapping', 'object-sync-for-salesforce' ); ?></a>
 											</p>
 										</div>
 									</li>
