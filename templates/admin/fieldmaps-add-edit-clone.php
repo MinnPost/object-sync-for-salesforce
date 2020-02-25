@@ -327,7 +327,7 @@
 									<li class="sfwp-fieldmap-form-container">
 										<article class="postbox sfwp-o-fieldmap-form sfwp-fieldmap-wordpress-field">
 											<header>
-												<label for="wordpress-field[<?php echo esc_attr( $key ); ?>]"><?php echo esc_html__( 'WordPress Field', 'object-sync-for-salesforce' ); ?></label>
+												<label for="wordpress-field-<?php echo esc_attr( $key ); ?>"><?php echo esc_html__( 'WordPress Field', 'object-sync-for-salesforce' ); ?></label>
 											</header>
 											<div class="sfwp-m-fieldmap-subgroup-fields select">
 												<select name="wordpress_field[<?php echo esc_attr( $key ); ?>]" id="wordpress-field-<?php echo esc_attr( $key ); ?>" style="width: 100%;">
@@ -363,7 +363,7 @@
 										</article>
 										<article class="postbox sfwp-o-fieldmap-form sfwp-fieldmap-salesforce-field">
 											<header>
-												<label for="sfwp-salesforce-field[<?php echo esc_attr( $key ); ?>]"><?php echo esc_html__( 'Salesforce Field', 'object-sync-for-salesforce' ); ?></label>
+												<label for="sfwp-salesforce-field-<?php echo esc_attr( $key ); ?>"><?php echo esc_html__( 'Salesforce Field', 'object-sync-for-salesforce' ); ?></label>
 											</header>
 											<div class="sfwp-m-fieldmap-subgroup-fields select">
 												<select name="salesforce_field[<?php echo esc_attr( $key ); ?>]" id="sfwp-salesforce-field-<?php echo esc_attr( $key ); ?>" style="width: 100%;">
