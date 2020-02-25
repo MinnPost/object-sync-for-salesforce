@@ -127,6 +127,7 @@ $( document ).on( 'click', '.sfwp-a-fieldmap-field-action-edit', function( event
 
 /**
  * When clicking delete on a field, offer to delete it
+ * todo: make this work
  */
 $( document ).on( 'click', '.sfwp-a-fieldmap-field-action-delete', function( event ) {
 	//$( this ).closest( '.sfwp-a-fieldmap-values' ).toggleClass( 'sfwp-a-fieldmap-values-deleted' );

@@ -427,11 +427,11 @@
 													<div class="sfwp-m-field-dependent-field">
 														<input name="date-format[<?php echo esc_attr( $key ); ?>]" id="sfwp-wordpress-date-format-<?php echo esc_attr( $key ); ?>" type="text" value="<?php echo isset( $date_format ) ? esc_html( $date_format ) : ''; ?>">
 													</div>
-													<!-- enter a default format that users can override -->
+													<!-- todo: enter a default format that users can override -->
 													<p class="description">
 													<?php
-													// translators: placeholders are for the class names: salesforce_push and salesforce_pull
 													echo sprintf(
+														// translators: placeholder is for a tet link to the PHP date format section. This URL and the link text are language specific.
 														esc_html__( 'The plugin will match this date format before saving the value of this Salesforce field into WordPress. Date fields coming from WordPress are formatted for Salesforce API requirements. Get valid PHP date formats %1$s.', 'object-sync-for-salesforce' ),
 														'<a href="https://www.php.net/manual/en/function.date.php">' . esc_html__( 'directly from the PHP website', 'object-sync-for-salesforce' ) . '</a>'
 													);
