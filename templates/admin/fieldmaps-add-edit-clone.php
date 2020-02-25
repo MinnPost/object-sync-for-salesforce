@@ -406,9 +406,9 @@
 													<?php echo esc_html__( 'Salesforce fields containing a * are required fields for this object type.', 'object-sync-for-salesforce' ); ?>
 												</p>
 												<div class="sfwp-field-dependent-fields sfwp-field-date-format sfwp-field-dependent-fields-template">
-													<label for="sfwp-wordpress-date-format"><?php echo esc_html__( 'Date Format', 'object-sync-for-salesforce' ); ?></label>
+													<label for="sfwp-wordpress-date-format-<?php echo $key; ?>"><?php echo esc_html__( 'Date Format', 'object-sync-for-salesforce' ); ?></label>
 													<div class="sfwp-m-field-dependent-field">
-														<input name="date-format" id="sfwp-wordpress-date-format" type="text" value="<?php echo isset( $date_format ) ? esc_html( $date_format ) : ''; ?>">
+														<input name="date-format[<?php echo esc_attr( $key ); ?>]" id="sfwp-wordpress-date-format-<?php echo $key; ?>" type="text" value="<?php echo isset( $date_format ) ? esc_html( $date_format ) : ''; ?>">
 													</div>
 													<!-- enter a default format that users can override -->
 													<p class="description">
@@ -425,7 +425,7 @@
 										</article>
 										<div class="postbox sfwp-o-fieldmap-form">
 											<p class="sfwp-m-fieldmap-subgroup-actions">
-												<button type="button" id="finish-field-mapping" class="button button-secondary sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit"><?php echo esc_html__( 'Finish This Field Mapping', 'object-sync-for-salesforce' ); ?></button> <a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete"><?php echo esc_html__( 'Delete This Field Mapping', 'object-sync-for-salesforce' ); ?></a>
+												<button type="button" id="finish-field-mapping-<?php echo $key; ?>" class="button button-secondary sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit"><?php echo esc_html__( 'Finish This Field Mapping', 'object-sync-for-salesforce' ); ?></button> <a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete"><?php echo esc_html__( 'Delete This Field Mapping', 'object-sync-for-salesforce' ); ?></a>
 											</p>
 										</div>
 									</li>
