@@ -1584,6 +1584,10 @@ class Object_Sync_Sf_WordPress {
 		// Load all params with a method_modify of the object structure's content_method into $content
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( 'attachment' );
+
+		// Developers can use this hook to pass filename and parent data for the attachment.
+		$params = apply_filters( $this->option_prefix . 'set_initial_attachment_data', $params );
+
 		// WP requires post_title, post_content (can be empty), post_status, and post_mime_type to create an attachment.
 		foreach ( $params as $key => $value ) {
 			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
@@ -1592,17 +1596,28 @@ class Object_Sync_Sf_WordPress {
 			}
 		}
 
-		// Developers can use this hook to pass filename and parent data for the attachment.
-		$params = apply_filters( $this->option_prefix . 'set_initial_attachment_data', $params );
+		// WordPress post creation will fail with an object of 0 if there is no title or content
+		// I think we should allow this to happen and not make users' data decisions, so
+		// if we're receiving nothing for either of these, create a blank one so it doesn't fail
+		// here we have to use $content because $params has already been unset
+		if ( ! isset( $content['post_title'] ) ) {
+			$content['post_title'] = ' ';
+		}
+		if ( ! isset( $content['post_content'] ) ) {
+			$content['post_content'] = ' ';
+		}
+		if ( ! isset( $content['post_status'] ) && isset( $content['default_status'] ) ) {
+			$content['post_status'] = $content['default_status'];
+		}
 
-		if ( isset( $params['filename']['value'] ) ) {
-			$filename = $params['filename']['value'];
+		if ( isset( $content['filename']['value'] ) ) {
+			$filename = $content['filename']['value'];
 		} else {
 			$filename = false;
 		}
 
-		if ( isset( $params['parent']['value'] ) ) {
-			$parent = $params['parent']['value'];
+		if ( isset( $content['parent']['value'] ) ) {
+			$parent = $content['parent']['value'];
 		} else {
 			$parent = 0;
 		}
@@ -1832,6 +1847,10 @@ class Object_Sync_Sf_WordPress {
 	private function attachment_update( $attachment_id, $params, $id_field = 'ID' ) {
 		$content              = array();
 		$content[ $id_field ] = $attachment_id;
+
+		// Developers can use this hook to pass filename and parent data for the attachment.
+		$params = apply_filters( $this->option_prefix . 'set_initial_attachment_data', $params );
+
 		foreach ( $params as $key => $value ) {
 			if ( 'wp_insert_attachment' === $value['method_modify'] ) { // Should also be insert attachment maybe.
 				$content[ $key ] = $value['value'];
@@ -1839,14 +1858,28 @@ class Object_Sync_Sf_WordPress {
 			}
 		}
 
-		if ( isset( $params['filename']['value'] ) ) {
-			$filename = $params['filename']['value'];
+		// WordPress post creation will fail with an object of 0 if there is no title or content
+		// I think we should allow this to happen and not make users' data decisions, so
+		// if we're receiving nothing for either of these, create a blank one so it doesn't fail
+		// here we have to use $content because $params has already been unset
+		if ( ! isset( $content['post_title'] ) ) {
+			$content['post_title'] = ' ';
+		}
+		if ( ! isset( $content['post_content'] ) ) {
+			$content['post_content'] = ' ';
+		}
+		if ( ! isset( $content['post_status'] ) && isset( $content['default_status'] ) ) {
+			$content['post_status'] = $content['default_status'];
+		}
+
+		if ( isset( $content['filename']['value'] ) ) {
+			$filename = $content['filename']['value'];
 		} else {
 			$filename = false;
 		}
 
-		if ( isset( $params['parent']['value'] ) ) {
-			$parent = $params['parent']['value'];
+		if ( isset( $content['parent']['value'] ) ) {
+			$parent = $content['parent']['value'];
 		} else {
 			$parent = 0;
 		}
