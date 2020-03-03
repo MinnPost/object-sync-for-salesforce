@@ -946,16 +946,11 @@ class Object_Sync_Sf_Mapping {
 						case 'url':
 							$object[ $salesforce_field ] = esc_url_raw( $object[ $salesforce_field ] );
 							break;
-					}
+					} // end switch
 
-					// set a default WordPress status value, if there is one and it's not already set by the object map
-					$post_status = array_search( 'post_status', array_column( $fieldmap['wordpress_field'], 'label' ), true );
-					if ( false === $post_status ) {
-						error_log( 'there is no post status' );
-					} else {
-						error_log( 'there is a post status' );
-					}
-				}
+					// set a default WordPress status value based on the fieldmap
+					$params['default_status'] = $mapping['wordpress_object_default_status'];
+				} // end if for Salesforce event
 
 				// Make an array because we need to store the methods for each field as well.
 				if ( isset( $object[ $salesforce_field ] ) && '' !== $object[ $salesforce_field ] ) {

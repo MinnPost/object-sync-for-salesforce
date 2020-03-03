@@ -1263,6 +1263,10 @@ class Object_Sync_Sf_WordPress {
 		if ( ! isset( $content['post_content'] ) ) {
 			$content['post_content'] = ' ';
 		}
+		// use the default post status from the fieldmap if it exists
+		if ( ! isset( $content['post_status'] ) && isset( $content['default_status'] ) ) {
+			$content['post_status'] = $content['default_status'];
+		}
 
 		if ( 'tribe_events' === $content['post_type'] && function_exists( 'tribe_create_event' ) ) {
 			// borrowing some code from https://github.com/tacjtg/rhp-tribe-events/blob/master/rhp-tribe-events.php
@@ -1516,6 +1520,11 @@ class Object_Sync_Sf_WordPress {
 
 		if ( '' !== $post_type ) {
 			$content['post_type'] = $post_type;
+		}
+
+		// use the default post status from the fieldmap if it exists
+		if ( ! isset( $content['post_status'] ) && isset( $content['default_status'] ) ) {
+			$content['post_status'] = $content['default_status'];
 		}
 
 		$post_id = wp_update_post( $content, true ); // return an error instead of a 0 id
@@ -2244,6 +2253,10 @@ class Object_Sync_Sf_WordPress {
 		if ( ! isset( $content['comment_type'] ) ) {
 			$content['comment_type'] = '';
 		}
+		// use the default comment status from the fieldmap if it exists
+		if ( ! isset( $content['comment_approved'] ) && isset( $content['default_status'] ) ) {
+			$content['comment_approved'] = $content['default_status'];
+		}
 
 		$comment_id = wp_new_comment( $content );
 
@@ -2481,6 +2494,11 @@ class Object_Sync_Sf_WordPress {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
+		}
+
+		// use the default comment status from the fieldmap if it exists
+		if ( ! isset( $content['comment_approved'] ) && isset( $content['default_status'] ) ) {
+			$content['comment_approved'] = $content['default_status'];
 		}
 
 		$updated = wp_update_comment( $content );
