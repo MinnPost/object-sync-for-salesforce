@@ -1368,8 +1368,8 @@ class Object_Sync_Sf_Salesforce_Push {
 			$structure               = $this->wordpress->get_wordpress_table_structure( $object_type );
 			$wordpress_id_field_name = $structure['id_field'];
 			// we only need to check against the first mapping object, if it exists. we don't need to loop through them.
-			$object_map = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] )[0];
-			if ( empty( $object_map ) ) {
+			$object_map = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
+			if ( isset( $object_map[0] ) && empty( $object_map[0] ) ) {
 				$push_allowed = false;
 			}
 		}
