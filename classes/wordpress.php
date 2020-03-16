@@ -1181,7 +1181,7 @@ class Object_Sync_Sf_WordPress {
 				continue;
 			}
 
-			if ( 'wp_update_user' === $value['method_modify'] ) {
+			if ( isset( $value['method_modify'] ) && 'wp_update_user' === $value['method_modify'] ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1512,7 +1512,7 @@ class Object_Sync_Sf_WordPress {
 		$content              = array();
 		$content[ $id_field ] = $post_id;
 		foreach ( $params as $key => $value ) {
-			if ( 'wp_update_post' === $value['method_modify'] ) {
+			if ( isset( $value['method_modify'] ) && 'wp_update_post' === $value['method_modify'] ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1852,7 +1852,7 @@ class Object_Sync_Sf_WordPress {
 		$params = apply_filters( $this->option_prefix . 'set_initial_attachment_data', $params );
 
 		foreach ( $params as $key => $value ) {
-			if ( 'wp_insert_attachment' === $value['method_modify'] ) { // Should also be insert attachment maybe.
+			if ( isset( $value['method_modify'] ) && 'wp_insert_attachment' === $value['method_modify'] ) { // Should also be insert attachment maybe.
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -2192,7 +2192,7 @@ class Object_Sync_Sf_WordPress {
 		}
 		$args = array();
 		foreach ( $params as $key => $value ) {
-			if ( 'wp_update_term' === $value['method_modify'] ) {
+			if ( isset( $value['method_modify'] ) && 'wp_update_term' === $value['method_modify'] ) {
 				$args[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -2523,7 +2523,7 @@ class Object_Sync_Sf_WordPress {
 		$content              = array();
 		$content[ $id_field ] = $comment_id;
 		foreach ( $params as $key => $value ) {
-			if ( 'wp_update_comment' === $value['method_modify'] ) {
+			if ( isset( $value['method_modify'] ) && 'wp_update_comment' === $value['method_modify'] ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -2637,8 +2637,11 @@ class Object_Sync_Sf_WordPress {
 		if ( ! is_wp_error( $parent_object_id ) && is_array( $params ) && ! empty( $params ) ) {
 			$changed = true;
 			foreach ( $params as $key => $value ) {
-				$modify = $value['method_modify'];
-				$read   = $value['method_read'];
+				$modify = isset( $value['method_modify'] ) ? $value['method_modify'] : '';
+				$read   = isset( $value['method_read'] ) ? $value['method_read'] : '';
+				if ( '' === $modify ) {
+					continue;
+				}
 				// todo: we could provide a way for passing the values in a custom order here
 				$meta_id = $modify( $parent_object_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
@@ -2650,6 +2653,10 @@ class Object_Sync_Sf_WordPress {
 						$new_value = maybe_serialize( $value['value'] );
 					} else {
 						$new_value = (string) $value['value'];
+					}
+
+					if ( '' === $read ) {
+						continue;
 					}
 
 					if ( is_array( $read( $parent_object_id, $key, true ) ) ) {
