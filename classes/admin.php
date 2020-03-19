@@ -1548,6 +1548,10 @@ class Object_Sync_Sf_Admin {
 					$url = esc_url_raw( $post_data['redirect_url_error'] ) . '&transient=' . $cachekey;
 				}
 			} else {
+				// if the user has saved a fieldmap, clear the currently running query value if there is one
+				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $post_data['salesforce_object'], '' ) ) {
+					$this->pull->clear_current_type_query( $post_data['salesforce_object'] );
+				}
 				if ( isset( $post_data['transient'] ) ) { // there was previously an error saved. can delete it now.
 					$this->sfwp_transients->delete( esc_attr( $post_data['map_transient'] ) );
 				}
