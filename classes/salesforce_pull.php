@@ -493,7 +493,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// translators: placeholders are: 1) the log status, 2) the server error code, and 3) the name of the Salesforce object
 					esc_html__( '%1$s: %2$s when pulling %3$s data from Salesforce', 'object-sync-for-salesforce' ),
 					ucfirst( esc_attr( $status ) ),
-					absint( $response['errorCode'] ),
+					esc_attr( $response['errorCode'] ),
 					esc_attr( $salesforce_mapping['salesforce_object'] )
 				);
 
