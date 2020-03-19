@@ -487,6 +487,16 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$this->clear_current_type_query( $type );
 				}
 			} elseif ( isset( $response['errorCode'] ) ) {
+
+				// catch specific error codes from Salesforce when possible
+
+				// if it's an invalid field, try to clear the cached query so it can try again next time
+				if ( 'INVALID_FIELD' === $response['errorCode'] ) {
+					if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
+						$this->clear_current_type_query( $type );
+					}
+				}
+
 				// create log entry for failed pull
 				$status = 'error';
 				$title  = sprintf(
