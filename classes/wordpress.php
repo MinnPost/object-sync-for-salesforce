@@ -2481,6 +2481,12 @@ class Object_Sync_Sf_WordPress {
 		$errors  = array();
 		if ( ! is_wp_error( $parent_object_id ) && is_array( $params ) && ! empty( $params ) ) {
 			foreach ( $params as $key => $value ) {
+
+				// if the value is empty, skip it
+				if ( '' === $value ) {
+					continue;
+				}
+
 				$modify = $value['method_modify'];
 				// todo: we could provide a way for passing the values in a custom order here
 				$meta_id = $modify( $parent_object_id, $key, $value['value'] );
@@ -2524,7 +2530,13 @@ class Object_Sync_Sf_WordPress {
 			$changed = true;
 			foreach ( $params as $key => $value ) {
 				$modify = $value['method_modify'];
-				$read   = $value['method_read'];
+
+				// if the value is empty, use the delete method to modify it
+				if ( '' === $value ) {
+					$modify = isset( $value['method_delete'] ) ? $value['method_delete'] : $value['method_modify'];
+				}
+
+				$read = $value['method_read'];
 				// todo: we could provide a way for passing the values in a custom order here
 				$meta_id = $modify( $parent_object_id, $key, $value['value'] );
 				if ( false === $meta_id ) {

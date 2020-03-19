@@ -939,11 +939,11 @@ class Object_Sync_Sf_Mapping {
 				}
 
 				// Make an array because we need to store the methods for each field as well.
-				if ( isset( $object[ $salesforce_field ] ) && '' !== $object[ $salesforce_field ] ) {
+				if ( isset( $object[ $salesforce_field ] ) ) {
 					$params[ $wordpress_field ]          = array();
 					$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
 				} else {
-					// If we try to save certain fields with empty values, WordPress will silently start skipping stuff. This keeps that from happening.
+					// prevent fields that don't exist from being passed
 					continue;
 				}
 
