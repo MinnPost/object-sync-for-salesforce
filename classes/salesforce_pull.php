@@ -2211,7 +2211,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*   e.g. "Contact", "Account", etc.
 	*
 	*/
-	private function clear_current_type_query( $type ) {
+	public function clear_current_type_query( $type ) {
 		// update the last sync timestamp for this content type
 		$this->increment_current_type_datetime( $type );
 		// delete the option value for the currently pulling query for this type
