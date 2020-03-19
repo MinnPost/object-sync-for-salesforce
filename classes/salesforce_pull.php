@@ -486,17 +486,48 @@ class Object_Sync_Sf_Salesforce_Pull {
 				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
 					$this->clear_current_type_query( $type );
 				}
-			} elseif ( isset( $response['errorCode'] ) ) {
-
-				// catch specific error codes from Salesforce when possible
+				// try to check for specific error codes from Salesforce
+			} elseif ( isset( $response['errorCode'] ) && 'INVALID_FIELD' === $response['errorCode'] ) {
+				// set up log entry
+				$status    = 'error';
+				$log_title = sprintf(
+					// translators: placeholders are: 1) the log status, 2) the server error code, and 3) the name of the Salesforce object
+					esc_html__( '%1$s: %2$s when pulling %3$s data from Salesforce.', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
+					esc_attr( $response['errorCode'] ),
+					esc_attr( $salesforce_mapping['salesforce_object'] )
+				);
+				$log_body = '<p>' . esc_html__( 'A field may have been deleted from Salesforce, or it has otherwise become invalid.', 'object-sync-for-salesforce' ) . '</p>';
 
 				// if it's an invalid field, try to clear the cached query so it can try again next time
-				if ( 'INVALID_FIELD' === $response['errorCode'] ) {
-					if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
-						$this->clear_current_type_query( $type );
-					}
+				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
+					$this->clear_current_type_query( $type );
+					$log_title .= esc_html__( ' Stored query cleared.', 'object-sync-for-salesforce' );
+					$log_body  .= '<p>' . esc_html__( 'The currently stored query for this object type has been deleted.', 'object-sync-for-salesforce' ) . '</p>';
 				}
 
+				$log_body .= sprintf(
+					// translators: placeholders are: 1) the Salesforce API response message
+					'<p>' . esc_html__( 'Salesforce API Response: %1$s', 'object-sync-for-salesforce' ) . '</p>',
+					$response['message']
+				);
+
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+				}
+
+				$result = array(
+					'title'   => $log_title,
+					'message' => $log_body,
+					'trigger' => 0,
+					'parent'  => '',
+					'status'  => $status,
+				);
+
+				$logging->setup( $result );
+			} elseif ( isset( $response['errorCode'] ) ) {
 				// create log entry for failed pull
 				$status = 'error';
 				$title  = sprintf(
@@ -1821,7 +1852,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			$body = sprintf(
 				// translators: placeholders are: 1) the name of the WordPress object type, 2) the WordPress id field name, 3) the WordPress id field value, 4) the array of errors
-				'<p>' . esc_html__( 'Object: %1$s with %2$s of %3$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: ', 'object-sync-for-salesforce' ) . '%4$s',
+				'<p>' . esc_html__( 'Object: %1$s with %2$s of %3$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: ', 'object-sync-for-salesforce' ) . '%4$s' . '</p>',
 				esc_attr( $salesforce_mapping['wordpress_object'] ),
 				esc_attr( $wordpress_id_field_name ),
 				esc_attr( $wordpress_id ),
