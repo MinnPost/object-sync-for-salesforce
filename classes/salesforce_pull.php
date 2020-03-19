@@ -492,17 +492,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$status    = 'error';
 				$log_title = sprintf(
 					// translators: placeholders are: 1) the log status, 2) the server error code, and 3) the name of the Salesforce object
-					esc_html__( '%1$s: %2$s when pulling %3$s data from Salesforce.', 'object-sync-for-salesforce' ),
+					esc_html__( '%1$s: %2$s when pulling %3$s data from Salesforce. Check and resave the fieldmap.', 'object-sync-for-salesforce' ),
 					ucfirst( esc_attr( $status ) ),
 					esc_attr( $response['errorCode'] ),
 					esc_attr( $salesforce_mapping['salesforce_object'] )
 				);
-				$log_body = '<p>' . esc_html__( 'A field may have been deleted from Salesforce, or it has otherwise become invalid.', 'object-sync-for-salesforce' ) . '</p>';
+				$log_body = '<p>' . esc_html__( 'A field may have been deleted from Salesforce, or it has otherwise become invalid. You may need to check and resave your fieldmap.', 'object-sync-for-salesforce' ) . '</p>';
 
 				// if it's an invalid field, try to clear the cached query so it can try again next time
 				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
 					$this->clear_current_type_query( $type );
-					$log_title .= esc_html__( ' Stored query cleared.', 'object-sync-for-salesforce' );
+					$log_title .= esc_html__( ' The stored query has been cleared.', 'object-sync-for-salesforce' );
 					$log_body  .= '<p>' . esc_html__( 'The currently stored query for this object type has been deleted.', 'object-sync-for-salesforce' ) . '</p>';
 				}
 
