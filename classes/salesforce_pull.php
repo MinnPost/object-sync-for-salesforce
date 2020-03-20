@@ -175,7 +175,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$this->get_deleted_records();
 
 			// Store this request time for the throttle check.
-			update_option( $this->option_prefix . 'pull_last_sync', current_time( 'timestamp', true ) );
+			update_option( $this->option_prefix . 'pull_last_sync', time() );
 			return true;
 
 		} else {
@@ -196,7 +196,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$pull_throttle = get_option( $this->option_prefix . 'pull_throttle', 5 );
 		$last_sync     = get_option( $this->option_prefix . 'pull_last_sync', 0 );
 
-		if ( current_time( 'timestamp', true ) > ( $last_sync + $pull_throttle ) ) {
+		if ( time() > ( $last_sync + $pull_throttle ) ) {
 			return true;
 		} else {
 			return false;
@@ -880,13 +880,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// Iterate over each field mapping to determine our query parameters.
 			foreach ( $mappings as $salesforce_mapping ) {
-				$last_merge_sync = get_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], current_time( 'timestamp', true ) );
-				$now             = current_time( 'timestamp', true );
+				$last_merge_sync = get_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], time() );
+				$now             = time();
 				update_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], $now );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
 				// (using an incompatible date may lead to exceptions).
-				$last_merge_sync = $last_merge_sync > ( current_time( 'timestamp', true ) - 2505600 ) ? $last_merge_sync : ( current_time( 'timestamp', true ) - 2505600 );
+				$last_merge_sync = $last_merge_sync > ( time() - 2505600 ) ? $last_merge_sync : ( time() - 2505600 );
 
 				// get_deleted() constraint: startDate must be at least one minute greater
 				// than endDate.
@@ -1020,13 +1020,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// Iterate over each field mapping to determine our query parameters.
 			foreach ( $mappings as $salesforce_mapping ) {
 
-				$last_delete_sync = get_option( $this->option_prefix . 'pull_delete_last_' . $type, current_time( 'timestamp', true ) );
-				$now              = current_time( 'timestamp', true );
+				$last_delete_sync = get_option( $this->option_prefix . 'pull_delete_last_' . $type, time() );
+				$now              = time();
 				update_option( $this->option_prefix . 'pull_delete_last_' . $type, $now );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
 				// (using an incompatible date may lead to exceptions).
-				$last_delete_sync = $last_delete_sync > ( current_time( 'timestamp', true ) - 2505600 ) ? $last_delete_sync : ( current_time( 'timestamp', true ) - 2505600 );
+				$last_delete_sync = $last_delete_sync > ( time() - 2505600 ) ? $last_delete_sync : ( time() - 2505600 );
 
 				// get_deleted() constraint: startDate must be at least one minute greater
 				// than endDate.
@@ -1118,7 +1118,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				}
 
-				update_option( $this->option_prefix . 'pull_delete_last_' . $type, current_time( 'timestamp', true ) );
+				update_option( $this->option_prefix . 'pull_delete_last_' . $type, time() );
 
 			} // End foreach().
 		} // End foreach().
@@ -1248,8 +1248,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		foreach ( $salesforce_mappings as $salesforce_mapping ) {
 
-			// this returns the row that maps the individual Salesforce row to the individual WordPress row
-			// todo: this is where we'd start to address issue #135. we'd have to loop through mapping_objects if any existed.
+			// this returns the row that maps an individual Salesforce row to an individual WordPress row
 			if ( isset( $object['Id'] ) ) {
 				$mapping_objects = $this->mappings->load_all_by_salesforce( $object['Id'] );
 			} else {
@@ -2232,7 +2231,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	private function increment_current_type_datetime( $type, $next_query_modified_date = '' ) {
 		// update the last sync timestamp for this content type
 		if ( '' === $next_query_modified_date ) {
-			$next_query_modified_date = current_time( 'timestamp', true );
+			$next_query_modified_date = time();
 		} else {
 			$next_query_modified_date = strtotime( $next_query_modified_date );
 		}
