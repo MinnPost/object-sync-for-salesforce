@@ -808,7 +808,12 @@ class Object_Sync_Sf_Mapping {
 
 				// Is the field in WordPress an array, if we unserialize it? Salesforce wants it to be an imploded string.
 				if ( is_array( maybe_unserialize( $object[ $wordpress_field ] ) ) ) {
-					$object[ $wordpress_field ] = implode( $this->array_delimiter, $object[ $wordpress_field ] );
+					// if the WordPress field is a list of capabilities (the source field is wp_capabilities), we need to get the array keys from WordPress to send them to Salesforce.
+					if ( 'wp_capabilities' === $wordpress_field ) {
+						$object[ $wordpress_field ] = implode( $this->array_delimiter, array_keys( $object[ $wordpress_field ] ) );
+					} else {
+						$object[ $wordpress_field ] = implode( $this->array_delimiter, $object[ $wordpress_field ] );
+					}
 				}
 
 				if ( isset( $salesforce_field_type ) ) {
@@ -894,6 +899,14 @@ class Object_Sync_Sf_Mapping {
 					// destination field in WordPress accepts multiple values, explode the string into an array and then serialize it.
 					if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce ) ) {
 						$object[ $salesforce_field ] = explode( $this->array_delimiter, $object[ $salesforce_field ] );
+						// if the WordPress field is a list of capabilities (the destination field is wp_capabilities), we need to set the array for WordPress to save it.
+						if ( 'wp_capabilities' === $wordpress_field ) {
+							$capabilities = array();
+							foreach ( $object[ $salesforce_field ] as $capability ) {
+								$capabilities[ $capability ] = true;
+							}
+							$object[ $salesforce_field ] = $capabilities;
+						}
 					}
 
 					// Handle specific data types from Salesforce.
@@ -926,11 +939,15 @@ class Object_Sync_Sf_Mapping {
 				}
 
 				// Make an array because we need to store the methods for each field as well.
-				if ( isset( $object[ $salesforce_field ] ) && '' !== $object[ $salesforce_field ] ) {
+				if ( isset( $object[ $salesforce_field ] ) ) {
 					$params[ $wordpress_field ]          = array();
 					$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
+				} elseif ( is_null( $object[ $salesforce_field ] ) ) {
+					// Salesforce returns blank fields as null fields; set them to blank
+					$params[ $wordpress_field ]          = array();
+					$params[ $wordpress_field ]['value'] = '';
 				} else {
-					// If we try to save certain fields with empty values, WordPress will silently start skipping stuff. This keeps that from happening.
+					// prevent fields that don't exist from being passed
 					continue;
 				}
 
@@ -969,7 +986,9 @@ class Object_Sync_Sf_Mapping {
 						break;
 				}
 
-				$params[ $wordpress_field ]['method_read'] = $fieldmap['wordpress_field']['methods']['read'];
+				// always allow for the delete and read methods
+				$params[ $wordpress_field ]['method_delete'] = $fieldmap['wordpress_field']['methods']['delete'];
+				$params[ $wordpress_field ]['method_read']   = $fieldmap['wordpress_field']['methods']['read'];
 
 			} // End if().
 		} // End foreach().
