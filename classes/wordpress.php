@@ -2484,7 +2484,6 @@ class Object_Sync_Sf_WordPress {
 
 				// if the value is empty, skip it
 				if ( '' === $value['value'] ) {
-					error_log( 'key ' . $key . ' has an empty value. do not create it.' );
 					continue;
 				}
 
@@ -2535,7 +2534,6 @@ class Object_Sync_Sf_WordPress {
 				// if the value is empty, use the delete method to modify it
 				if ( '' === $value['value'] ) {
 					$modify = isset( $value['method_delete'] ) ? $value['method_delete'] : $value['method_modify'];
-					error_log( 'value array is ' . print_r( $value, true ) );
 				}
 
 				$read = $value['method_read'];
