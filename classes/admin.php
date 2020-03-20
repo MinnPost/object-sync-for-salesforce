@@ -291,7 +291,7 @@ class Object_Sync_Sf_Admin {
 
 		// create new recurring task for action-scheduler to check for data to pull from salesforce
 		$this->queue->schedule_recurring(
-			current_time( 'timestamp', true ), // plugin seems to expect UTC
+			time(), // plugin seems to expect UTC
 			$this->queue->get_frequency( $schedule_name, 'seconds' ),
 			$this->schedulable_classes[ $schedule_name ]['initializer'],
 			array(),
