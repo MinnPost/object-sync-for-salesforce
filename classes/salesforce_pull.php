@@ -1248,8 +1248,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		foreach ( $salesforce_mappings as $salesforce_mapping ) {
 
-			// this returns the row that maps the individual Salesforce row to the individual WordPress row
-			// todo: this is where we'd start to address issue #135. we'd have to loop through mapping_objects if any existed.
+			// this returns the row that maps an individual Salesforce row to an individual WordPress row
 			if ( isset( $object['Id'] ) ) {
 				$mapping_objects = $this->mappings->load_all_by_salesforce( $object['Id'] );
 			} else {
