@@ -2483,7 +2483,7 @@ class Object_Sync_Sf_WordPress {
 			foreach ( $params as $key => $value ) {
 
 				// if the value is empty, skip it
-				if ( '' === $value ) {
+				if ( '' === $value['value'] ) {
 					continue;
 				}
 
@@ -2532,7 +2532,7 @@ class Object_Sync_Sf_WordPress {
 				$modify = $value['method_modify'];
 
 				// if the value is empty, use the delete method to modify it
-				if ( '' === $value ) {
+				if ( '' === $value['value'] ) {
 					$modify = isset( $value['method_delete'] ) ? $value['method_delete'] : $value['method_modify'];
 				}
 
