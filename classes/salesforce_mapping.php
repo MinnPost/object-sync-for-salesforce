@@ -942,6 +942,10 @@ class Object_Sync_Sf_Mapping {
 				if ( isset( $object[ $salesforce_field ] ) ) {
 					$params[ $wordpress_field ]          = array();
 					$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
+				} elseif ( is_null( $object[ $salesforce_field ] ) ) {
+					// Salesforce returns blank fields as null fields; set them to blank
+					$params[ $wordpress_field ]          = array();
+					$params[ $wordpress_field ]['value'] = '';
 				} else {
 					// prevent fields that don't exist from being passed
 					continue;
