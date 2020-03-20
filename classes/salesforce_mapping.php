@@ -988,7 +988,7 @@ class Object_Sync_Sf_Mapping {
 
 				// always allow for the delete and read methods
 				$params[ $wordpress_field ]['method_delete'] = $fieldmap['wordpress_field']['methods']['delete'];
-				$params[ $wordpress_field ]['method_read'] = $fieldmap['wordpress_field']['methods']['read'];
+				$params[ $wordpress_field ]['method_read']   = $fieldmap['wordpress_field']['methods']['read'];
 
 			} // End if().
 		} // End foreach().
