@@ -2530,13 +2530,7 @@ class Object_Sync_Sf_WordPress {
 			$changed = true;
 			foreach ( $params as $key => $value ) {
 				$modify = $value['method_modify'];
-
-				// if the value is empty, use the delete method to modify it
-				if ( '' === $value['value'] ) {
-					$modify = isset( $value['method_delete'] ) ? $value['method_delete'] : $value['method_modify'];
-				}
-
-				$read = $value['method_read'];
+				$read   = $value['method_read'];
 				// todo: we could provide a way for passing the values in a custom order here
 				$meta_id = $modify( $parent_object_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
