@@ -1,6 +1,15 @@
 Changelog
 =========
 
+* 1.9.0 (2020-03-20)
+	* Feature: when pushing or pulling the `wp_capabilities` field on a WordPress user, treat the data as WordPress needs it to assign roles. Thanks to WordPress user @emilyb6116 for reporting this and for testing the fix.
+	* Feature: Hide admin menu items that won't work pre-authorization until the plugin is authorized with Salesforce. Thanks to WordPress user @mgparisi for pointing this out.
+	* Bug fix: Correctly handle empty values for fields coming from Salesforce. Thanks to everyone who pointed out this issue and eventually discovered the cause: @prowp on GitHub and WordPress users @rickymortimer, @emilyb6116, @zumajoe.
+	* Bug fix: When a Salesforce query has invalid fields, clear it from the plugin's storage. Thanks to WordPress users @nishithmistry, @zumajoe, @alexeympw, and @jesodoth.
+	* Maintenance: Adding new fields to a fieldmap is faster and involves less code duplication.
+	* Maintenance: For WordPress 5.3 compatibility, replace `current_time( 'timestamp' )` with `time()`.
+	* Maintenance: Update Salesforce app setup instructions for Lightning.
+
 * 1.8.12 (2019-09-19)
 	* Bug fix: fix the `object_sync_for_salesforce_pull_query_modify` filter to prevent SOQL query properties from being added multiple times.
 	* Developers: clean up Travis config to stop its builds from failing.

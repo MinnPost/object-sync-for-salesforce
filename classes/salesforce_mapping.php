@@ -953,11 +953,15 @@ class Object_Sync_Sf_Mapping {
 				} // end if for Salesforce event
 
 				// Make an array because we need to store the methods for each field as well.
-				if ( isset( $object[ $salesforce_field ] ) && '' !== $object[ $salesforce_field ] ) {
+				if ( isset( $object[ $salesforce_field ] ) ) {
 					$params[ $wordpress_field ]          = array();
 					$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
+				} elseif ( is_null( $object[ $salesforce_field ] ) ) {
+					// Salesforce returns blank fields as null fields; set them to blank
+					$params[ $wordpress_field ]          = array();
+					$params[ $wordpress_field ]['value'] = '';
 				} else {
-					// If we try to save certain fields with empty values, WordPress will silently start skipping stuff. This keeps that from happening.
+					// prevent fields that don't exist from being passed
 					continue;
 				}
 
@@ -996,7 +1000,9 @@ class Object_Sync_Sf_Mapping {
 						break;
 				}
 
-				$params[ $wordpress_field ]['method_read'] = $fieldmap['wordpress_field']['methods']['read'];
+				// always allow for the delete and read methods
+				$params[ $wordpress_field ]['method_delete'] = $fieldmap['wordpress_field']['methods']['delete'];
+				$params[ $wordpress_field ]['method_read']   = $fieldmap['wordpress_field']['methods']['read'];
 
 			} // End if().
 		} // End foreach().

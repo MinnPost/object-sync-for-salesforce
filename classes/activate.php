@@ -147,7 +147,7 @@ class Object_Sync_Sf_Activate {
 		}
 
 		// store right now as the time for the plugin's activation
-		update_option( $this->option_prefix . 'activate_time', current_time( 'timestamp', true ) );
+		update_option( $this->option_prefix . 'activate_time', time() );
 
 		// utf8mb4 conversion.
 		maybe_convert_table_to_utf8mb4( $field_map_table );
@@ -245,7 +245,7 @@ class Object_Sync_Sf_Activate {
 				}
 				// create new recurring task for action-scheduler to check for data to pull from Salesforce
 				$this->queue->schedule_recurring(
-					current_time( 'timestamp', true ), // plugin seems to expect UTC
+					time(), // plugin seems to expect UTC
 					$this->queue->get_frequency( $schedule_name, 'seconds' ),
 					$this->schedulable_classes[ $schedule_name ]['initializer'],
 					array(),

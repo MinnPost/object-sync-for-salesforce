@@ -175,7 +175,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$this->get_deleted_records();
 
 			// Store this request time for the throttle check.
-			update_option( $this->option_prefix . 'pull_last_sync', current_time( 'timestamp', true ) );
+			update_option( $this->option_prefix . 'pull_last_sync', time() );
 			return true;
 
 		} else {
@@ -196,7 +196,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$pull_throttle = get_option( $this->option_prefix . 'pull_throttle', 5 );
 		$last_sync     = get_option( $this->option_prefix . 'pull_last_sync', 0 );
 
-		if ( current_time( 'timestamp', true ) > ( $last_sync + $pull_throttle ) ) {
+		if ( time() > ( $last_sync + $pull_throttle ) ) {
 			return true;
 		} else {
 			return false;
@@ -486,6 +486,47 @@ class Object_Sync_Sf_Salesforce_Pull {
 				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
 					$this->clear_current_type_query( $type );
 				}
+				// try to check for specific error codes from Salesforce
+			} elseif ( isset( $response['errorCode'] ) && 'INVALID_FIELD' === $response['errorCode'] ) {
+				// set up log entry
+				$status    = 'error';
+				$log_title = sprintf(
+					// translators: placeholders are: 1) the log status, 2) the server error code, and 3) the name of the Salesforce object
+					esc_html__( '%1$s: %2$s when pulling %3$s data from Salesforce. Check and resave the fieldmap.', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
+					esc_attr( $response['errorCode'] ),
+					esc_attr( $salesforce_mapping['salesforce_object'] )
+				);
+				$log_body = '<p>' . esc_html__( 'A field may have been deleted from Salesforce, or it has otherwise become invalid. You may need to check and resave your fieldmap.', 'object-sync-for-salesforce' ) . '</p>';
+
+				// if it's an invalid field, try to clear the cached query so it can try again next time
+				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
+					$this->clear_current_type_query( $type );
+					$log_title .= esc_html__( ' The stored query has been cleared.', 'object-sync-for-salesforce' );
+					$log_body  .= '<p>' . esc_html__( 'The currently stored query for this object type has been deleted.', 'object-sync-for-salesforce' ) . '</p>';
+				}
+
+				$log_body .= sprintf(
+					// translators: placeholders are: 1) the Salesforce API response message
+					'<p>' . esc_html__( 'Salesforce API Response: %1$s', 'object-sync-for-salesforce' ) . '</p>',
+					$response['message']
+				);
+
+				if ( isset( $this->logging ) ) {
+					$logging = $this->logging;
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+				}
+
+				$result = array(
+					'title'   => $log_title,
+					'message' => $log_body,
+					'trigger' => 0,
+					'parent'  => '',
+					'status'  => $status,
+				);
+
+				$logging->setup( $result );
 			} elseif ( isset( $response['errorCode'] ) ) {
 				// create log entry for failed pull
 				$status = 'error';
@@ -493,7 +534,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// translators: placeholders are: 1) the log status, 2) the server error code, and 3) the name of the Salesforce object
 					esc_html__( '%1$s: %2$s when pulling %3$s data from Salesforce', 'object-sync-for-salesforce' ),
 					ucfirst( esc_attr( $status ) ),
-					absint( $response['errorCode'] ),
+					esc_attr( $response['errorCode'] ),
 					esc_attr( $salesforce_mapping['salesforce_object'] )
 				);
 
@@ -839,13 +880,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// Iterate over each field mapping to determine our query parameters.
 			foreach ( $mappings as $salesforce_mapping ) {
-				$last_merge_sync = get_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], current_time( 'timestamp', true ) );
-				$now             = current_time( 'timestamp', true );
+				$last_merge_sync = get_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], time() );
+				$now             = time();
 				update_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], $now );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
 				// (using an incompatible date may lead to exceptions).
-				$last_merge_sync = $last_merge_sync > ( current_time( 'timestamp', true ) - 2505600 ) ? $last_merge_sync : ( current_time( 'timestamp', true ) - 2505600 );
+				$last_merge_sync = $last_merge_sync > ( time() - 2505600 ) ? $last_merge_sync : ( time() - 2505600 );
 
 				// get_deleted() constraint: startDate must be at least one minute greater
 				// than endDate.
@@ -979,13 +1020,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// Iterate over each field mapping to determine our query parameters.
 			foreach ( $mappings as $salesforce_mapping ) {
 
-				$last_delete_sync = get_option( $this->option_prefix . 'pull_delete_last_' . $type, current_time( 'timestamp', true ) );
-				$now              = current_time( 'timestamp', true );
+				$last_delete_sync = get_option( $this->option_prefix . 'pull_delete_last_' . $type, time() );
+				$now              = time();
 				update_option( $this->option_prefix . 'pull_delete_last_' . $type, $now );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
 				// (using an incompatible date may lead to exceptions).
-				$last_delete_sync = $last_delete_sync > ( current_time( 'timestamp', true ) - 2505600 ) ? $last_delete_sync : ( current_time( 'timestamp', true ) - 2505600 );
+				$last_delete_sync = $last_delete_sync > ( time() - 2505600 ) ? $last_delete_sync : ( time() - 2505600 );
 
 				// get_deleted() constraint: startDate must be at least one minute greater
 				// than endDate.
@@ -1077,7 +1118,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				}
 
-				update_option( $this->option_prefix . 'pull_delete_last_' . $type, current_time( 'timestamp', true ) );
+				update_option( $this->option_prefix . 'pull_delete_last_' . $type, time() );
 
 			} // End foreach().
 		} // End foreach().
@@ -1207,8 +1248,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		foreach ( $salesforce_mappings as $salesforce_mapping ) {
 
-			// this returns the row that maps the individual Salesforce row to the individual WordPress row
-			// todo: this is where we'd start to address issue #135. we'd have to loop through mapping_objects if any existed.
+			// this returns the row that maps an individual Salesforce row to an individual WordPress row
 			if ( isset( $object['Id'] ) ) {
 				$mapping_objects = $this->mappings->load_all_by_salesforce( $object['Id'] );
 			} else {
@@ -1811,7 +1851,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			$body = sprintf(
 				// translators: placeholders are: 1) the name of the WordPress object type, 2) the WordPress id field name, 3) the WordPress id field value, 4) the array of errors
-				'<p>' . esc_html__( 'Object: %1$s with %2$s of %3$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: ', 'object-sync-for-salesforce' ) . '%4$s',
+				'<p>' . esc_html__( 'Object: %1$s with %2$s of %3$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: ', 'object-sync-for-salesforce' ) . '%4$s' . '</p>',
 				esc_attr( $salesforce_mapping['wordpress_object'] ),
 				esc_attr( $wordpress_id_field_name ),
 				esc_attr( $wordpress_id ),
@@ -2170,7 +2210,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	*   e.g. "Contact", "Account", etc.
 	*
 	*/
-	private function clear_current_type_query( $type ) {
+	public function clear_current_type_query( $type ) {
 		// update the last sync timestamp for this content type
 		$this->increment_current_type_datetime( $type );
 		// delete the option value for the currently pulling query for this type
@@ -2191,7 +2231,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	private function increment_current_type_datetime( $type, $next_query_modified_date = '' ) {
 		// update the last sync timestamp for this content type
 		if ( '' === $next_query_modified_date ) {
-			$next_query_modified_date = current_time( 'timestamp', true );
+			$next_query_modified_date = time();
 		} else {
 			$next_query_modified_date = strtotime( $next_query_modified_date );
 		}
