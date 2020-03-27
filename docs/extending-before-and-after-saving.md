@@ -16,25 +16,25 @@ The action hooks that run on around the save on a `pull` event are:
 
 #### Before pull
 
-```
+```php
 add_action( 'object_sync_for_salesforce_pre_pull', 'before_pull', 10, 5 );
-function before_pull( $wordpress_id, $mapping, $object, $object_id, $params ) {
+function before_pull( $wordpress_id, $mapping, $object, $wordpress_id_field_name, $params ) {
     // do things before the plugin saves any data in wordpress
     // $wordpress_id is the object id
     // $mapping is the field map between the object types
     // $object is the object data
-    // $object_id is the wordpress id field's name
+    // $wordpress_id_field_name is the wordpress id field's name
     // $params is the data mapping between the two systems
 }
 ```
 
 #### After fail
 
-```
+```php
 add_action( 'object_sync_for_salesforce_pull_fail', 'pull_fail', 10, 5 );
 function pull_fail( $op, $result, $synced_object ) {
     // do things if the save failed
-    // $op is what the plugin tried to do - create, update, upsert, delete
+    // $op is what the plugin tried to do - Create, Update, Upsert, Delete
     // $result is what was returned by the $wordpress class
     // $synced_object is an array like this:
     /*
@@ -49,11 +49,11 @@ function pull_fail( $op, $result, $synced_object ) {
 
 #### After success
 
-```
+```php
 add_action( 'object_sync_for_salesforce_pull_success', 'pull_success', 10, 3 );
 function pull_success( $op, $result, $synced_object ) {
     // do things if the save succeeded
-    // $op is what the plugin did - create, update, upsert, delete
+    // $op is what the plugin did - Create, Update, Upsert, Delete
     // $result is what was returned by the $wordpress class
     // $synced_object is an array like this:
     /*
@@ -78,25 +78,25 @@ The action hooks that run on around the save on a `push` event are:
 
 #### Before push
 
-```
+```php
 add_action( 'object_sync_for_salesforce_pre_push', 'before_push', 10, 5 );
-function before_push( $salesforce_id, $mapping, $object, $object_id, $params ) {
+function before_push( $salesforce_id, $mapping, $object, $wordpress_id_field_name, $params ) {
     // do things before the plugin saves any data in salesforce
     // $salesforce_id is the object id
     // $mapping is the field map between the object types
     // $object is the object data
-    // $object_id is the wordpress id field's name
+    // $wordpress_id_field_name is the wordpress id field's name
     // $params is the data mapping between the two systems
 }
 ```
 
 #### After fail
 
-```
+```php
 add_action( 'object_sync_for_salesforce_push_fail', 'push_fail', 10, 5 );
 function push_fail( $op, $response, $synced_object ) {
     // do things if the save failed
-    // $op is what the plugin tried to do - create, update, upsert, delete
+    // $op is what the plugin tried to do - Create, Update, Upsert, Delete
     // $response is what was returned by the $salesforce class. sfapi->response
     // $synced_object is an array like this:
     /*
@@ -112,11 +112,11 @@ function push_fail( $op, $response, $synced_object ) {
 
 #### After success
 
-```
-add_action( 'object_sync_for_salesforce_push_success', 'push_success', 10, 3 );
-function push_success( $op, $response, $synced_object, $object_id ) {
+```php
+add_action( 'object_sync_for_salesforce_push_success', 'push_success', 10, 5 );
+function push_success( $op, $response, $synced_object, $object_id, $wordpress_id_field_name ) {
     // do things if the save succeeded
-    // $op is what the plugin did - create, update, upsert, delete
+    // $op is what the plugin did - Create, Update, Upsert, Delete
     // $response is what was returned by the $salesforce class. sfapi->response
     // $synced_object is an array like this:
     /*
@@ -128,5 +128,6 @@ function push_success( $op, $response, $synced_object, $object_id ) {
     );
     */
     // $object_id is the salesforce object id
+    // $wordpress_id_field_name is the name of the ID field in WordPress
 }
 ```

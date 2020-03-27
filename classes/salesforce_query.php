@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for the Object_Sync_Sf_Select_Query class.
+ *
  * @file
  */
 
@@ -10,10 +12,10 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * Class representing a Salesforce SELECT SOQL query.
  */
-class Salesforce_Select_Query {
+class Object_Sync_Sf_Salesforce_Select_Query {
 
 	public $fields = array();
-	public $order = array();
+	public $order  = array();
 	public $object_type;
 	public $limit;
 	public $offset;
@@ -46,14 +48,14 @@ class Salesforce_Select_Query {
 			$value = "('" . implode( "','", $value ) . "')";
 
 			// Set operator to IN if wasn't already changed from the default.
-			if ( '=' == $operator ) {
+			if ( '=' === $operator ) {
 				$operator = 'IN';
 			}
 		}
 		$this->conditions[] = array(
-			'field' => $field,
+			'field'    => $field,
 			'operator' => $operator,
-			'value' => $value,
+			'value'    => $value,
 		);
 	}
 
@@ -67,7 +69,7 @@ class Salesforce_Select_Query {
 	*/
 	public function __toString() {
 
-		$query = 'SELECT ';
+		$query  = 'SELECT ';
 		$query .= implode( ', ', $this->fields );
 		$query .= ' FROM ' . $this->object_type;
 

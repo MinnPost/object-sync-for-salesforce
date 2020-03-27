@@ -22,6 +22,10 @@ The `salesforce` class of this plugin brings in the Salesforce REST API, and use
 
 The plugin contains a few hooks to perform actions right before, and right after, data is saved in Salesforce. These are [documented](./extending-before-and-after-saving.md#salesforce-push).
 
+### Preventing a push
+
+The plugin provides a hook that can prevent data from being sent to Salesforce based on information about the object in WordPress. This is [documented](./extending-sync-allowed.md#push).
+
 ## Using the API directly
 
 The Salesforce REST API includes many other methods, and we don't currently use all of them. However, if you need to extend what can be done in Salesforce, the plugin always provides access to an instance of the API itself. We have [documented](./accessing-salesforce-object.md) how to access this.

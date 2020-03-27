@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for the Object_Sync_Sf_Salesforce class.
+ *
  * @file
  */
 
@@ -8,9 +10,29 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 }
 
 /**
- * Ability to authorize and communicate with the Salesforce APIs. This class can make read and write calls to Salesforce, and also cache the responses in WordPress
+ * Ability to authorize and communicate with the Salesforce REST API. This class can make read and write calls to Salesforce, and also cache the responses in WordPress.
  */
-class Salesforce {
+class Object_Sync_Sf_Salesforce {
+
+	protected $consumer_key;
+	protected $consumer_secret;
+	protected $login_url;
+	protected $callback_url;
+	protected $authorize_path;
+	protected $token_path;
+	protected $rest_api_version;
+	protected $wordpress;
+	protected $slug;
+	protected $logging;
+	protected $schedulable_classes;
+	protected $option_prefix;
+
+	public $options;
+	public $success_codes;
+	public $refresh_code;
+	public $success_or_refresh_codes;
+
+	public $debug;
 
 	public $response;
 
@@ -33,36 +55,41 @@ class Salesforce {
 	*   What version of the Salesforce REST API to use
 	* @param object $wordpress
 	*   Object for doing things to WordPress - retrieving data, cache, etc.
-	* @param string $text_domain
-	*   Text domain for this plugin. Would be used in any future translations.
+	* @param string $slug
+	*   Slug for this plugin. Can be used for file including, especially
 	* @param object $logging
-	*	Logging object for this plugin.
+	*   Logging object for this plugin.
 	* @param array $schedulable_classes
-	*	array of classes that can have scheduled tasks specific to them
+	*   array of classes that can have scheduled tasks specific to them
+	* @param string $option_prefix
+	*   Option prefix for this plugin. Used for getting and setting options, actions, etc.
 	*/
-	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $text_domain, $logging, $schedulable_classes ) {
-		$this->consumer_key = $consumer_key;
-		$this->consumer_secret = $consumer_secret;
-		$this->login_url = $login_url;
-		$this->callback_url = $callback_url;
-		$this->authorize_path = $authorize_path;
-		$this->token_path = $token_path;
-		$this->rest_api_version = $rest_api_version;
-		$this->wordpress = $wordpress;
-		$this->text_domain = $text_domain;
-		$this->logging = $logging;
+	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes, $option_prefix = '' ) {
+		$this->consumer_key        = $consumer_key;
+		$this->consumer_secret     = $consumer_secret;
+		$this->login_url           = $login_url;
+		$this->callback_url        = $callback_url;
+		$this->authorize_path      = $authorize_path;
+		$this->token_path          = $token_path;
+		$this->rest_api_version    = $rest_api_version;
+		$this->wordpress           = $wordpress;
+		$this->slug                = $slug;
+		$this->logging             = $logging;
 		$this->schedulable_classes = $schedulable_classes;
+		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
+
 		$this->options = array(
-			'cache' => true,
+			'cache'            => true,
 			'cache_expiration' => $this->cache_expiration(),
-			'type' => 'read',
+			'type'             => 'read',
 		);
-		$this->success_codes = array( 200, 201, 204 );
-		$this->refresh_code = 401;
-		$this->success_or_refresh_codes = $this->success_codes;
+
+		$this->success_codes              = array( 200, 201, 204 );
+		$this->refresh_code               = 401;
+		$this->success_or_refresh_codes   = $this->success_codes;
 		$this->success_or_refresh_codes[] = $this->refresh_code;
 
-		$this->debug = get_option( 'object_sync_for_salesforce_debug_mode', false );
+		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
 
 	}
 
@@ -80,14 +107,14 @@ class Salesforce {
 			return $sf_id_15;
 		}
 		$chunks = str_split( $sf_id_15, 5 );
-		$extra = '';
+		$extra  = '';
 		foreach ( $chunks as $chunk ) {
 			$chars = str_split( $chunk, 1 );
-			$bits = '';
+			$bits  = '';
 			foreach ( $chars as $char ) {
-				$bits .= ( ! is_numeric( $char ) && $char === strtoupper( $char ) ) ? '1' : '0';
+				$bits .= ( ! is_numeric( $char ) && strtoupper( $char ) === $char ) ? '1' : '0';
 			}
-			$map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345';
+			$map    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345';
 			$extra .= substr( $map, base_convert( strrev( $bits ), 2, 10 ), 1 );
 		}
 		return $sf_id_15 . $extra;
@@ -103,7 +130,7 @@ class Salesforce {
 	* @return string
 	*   sObject name, e.g. "Account", "Contact", "my__Custom_Object__c" or FALSE
 	*   if no match could be found.
-	* @throws SalesforceException
+	* @throws Object_Sync_Sf_Exception
 	*/
 	public function get_sobject_type( $sf_id ) {
 		$objects = $this->objects(
@@ -135,7 +162,7 @@ class Salesforce {
 	public function get_api_versions() {
 		$options = array(
 			'authenticated' => false,
-			'full_url' => true,
+			'full_url'      => true,
 		);
 		return $this->api_call( $this->get_instance_url() . '/services/data', [], 'GET', $options );
 	}
@@ -151,15 +178,15 @@ class Salesforce {
 	*   Method to initiate the call, such as GET or POST. Defaults to GET.
 	* @param array $options
 	*   Any method can supply options for the API call, and they'll be preserved as far as the curl request
-	*	They get merged with the class options
+	*   They get merged with the class options
 	* @param string $type
 	*   Type of call. Defaults to 'rest' - currently we don't support other types.
-	*	Other exammple in Drupal is 'apexrest'
+	*   Other exammple in Drupal is 'apexrest'
 	*
 	* @return mixed
 	*   The requested response.
 	*
-	* @throws SalesforceException
+	* @throws Object_Sync_Sf_Exception
 	*/
 	public function api_call( $path, $params = array(), $method = 'GET', $options = array(), $type = 'rest' ) {
 		if ( ! $this->get_access_token() ) {
@@ -179,19 +206,19 @@ class Salesforce {
 				$this->refresh_token();
 				// Rebuild our request and repeat request.
 				$options['is_redo'] = true;
-				$this->response = $this->api_http_request( $path, $params, $method, $options, $type );
+				$this->response     = $this->api_http_request( $path, $params, $method, $options, $type );
 				// Throw an error if we still have bad response.
-				if ( ! in_array( $this->response['code'], $this->success_codes ) ) {
-					throw new SalesforceException( $this->response['data'][0]['message'], $this->response['code'] );
+				if ( ! in_array( $this->response['code'], $this->success_codes, true ) ) {
+					throw new Object_Sync_Sf_Exception( $this->response['data'][0]['message'], $this->response['code'] );
 				}
 				break;
-			case in_array( $this->response['code'], $this->success_codes ):
+			case in_array( $this->response['code'], $this->success_codes, true ):
 				// All clear.
 				break;
 			default:
 				// We have problem and no specific Salesforce error provided.
 				if ( empty( $this->response['data'] ) ) {
-					throw new SalesforceException( $this->response['error'], $this->response['code'] );
+					throw new Object_Sync_Sf_Exception( $this->response['error'], $this->response['code'] );
 				}
 		}
 
@@ -200,12 +227,13 @@ class Salesforce {
 		}
 
 		if ( isset( $this->response['data']['error'] ) ) {
-			throw new SalesforceException( $this->response['data']['error_description'], $this->response['data']['error'] );
+			throw new Object_Sync_Sf_Exception( $this->response['data']['error_description'], $this->response['data']['error'] );
 		}
 
 		if ( ! empty( $this->response['data']['errorCode'] ) ) {
-			throw new SalesforceException( $this->response['data']['message'], $this->response['code'] );
+			return $this->response;
 		}
+
 		return $this->response;
 	}
 
@@ -221,27 +249,33 @@ class Salesforce {
 	*   Method to initiate the call, such as GET or POST.  Defaults to GET.
 	* @param array $options
 	*   This is the options array from the api_call method
-	*	This is where it gets merged with $this->options
+	*   This is where it gets merged with $this->options
 	* @param string $type
 	*   Type of call. Defaults to 'rest' - currently we don't support other types
-	*	Other exammple in Drupal is 'apexrest'
+	*   Other exammple in Drupal is 'apexrest'
 	*
 	* @return array
 	*   The requested data.
 	*/
 	protected function api_http_request( $path, $params, $method, $options = array(), $type = 'rest' ) {
 		$options = array_merge( $this->options, $options ); // this will override a value in $this->options with the one in $options if there is a matching key
-		$url = $this->get_api_endpoint( $type ) . $path;
+		$url     = $this->get_api_endpoint( $type ) . $path;
 		if ( isset( $options['full_url'] ) && true === $options['full_url'] ) {
 			$url = $path;
 		}
 		$headers = array(
-		  'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
-		  'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
+			'Authorization'   => 'Authorization: OAuth ' . $this->get_access_token(),
+			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
 		);
 		if ( 'POST' === $method || 'PATCH' === $method ) {
 			$headers['Content-Type'] = 'Content-Type: application/json';
 		}
+
+		// if headers are being passed in the $options, use them.
+		if ( isset( $options['headers'] ) ) {
+			$headers = array_merge( $headers, $options['headers'] );
+		}
+
 		if ( isset( $options['authenticated'] ) && true === $options['authenticated'] ) {
 			$headers = false;
 		}
@@ -252,24 +286,24 @@ class Salesforce {
 			$cached = $this->wordpress->cache_get( $url, $params );
 			// some api calls can send a reset option, in which case we should redo the request anyway
 			if ( is_array( $cached ) && ( ! isset( $options['reset'] ) || true !== $options['reset'] ) ) {
-				$result = $cached;
+				$result               = $cached;
 				$result['from_cache'] = true;
-				$result['cached'] = true;
+				$result['cached']     = true;
 			} else {
-				$data = wp_json_encode( $params );
+				$data   = wp_json_encode( $params );
 				$result = $this->http_request( $url, $data, $headers, $method, $options );
-				if ( in_array( $result['code'], $this->success_codes ) ) {
+				if ( in_array( $result['code'], $this->success_codes, true ) ) {
 					$result['cached'] = $this->wordpress->cache_set( $url, $params, $result, $options['cache_expiration'] );
 				} else {
 					$result['cached'] = false;
 				}
 				$result['from_cache'] = false;
-    		}
+			}
 		} else {
-			$data = wp_json_encode( $params );
-			$result = $this->http_request( $url, $data, $headers, $method, $options );
+			$data                 = wp_json_encode( $params );
+			$result               = $this->http_request( $url, $data, $headers, $method, $options );
 			$result['from_cache'] = false;
-			$result['cached'] = false;
+			$result['cached']     = false;
 		}
 
 		if ( isset( $options['is_redo'] ) && true === $options['is_redo'] ) {
@@ -282,16 +316,23 @@ class Salesforce {
 		if ( 1 === (int) $this->debug ) {
 			// create log entry for the api call if debug is true
 			$status = 'debug';
-			$title = ucfirst( $status ) . ': on Salesforce API HTTP Request to URL: ' . $url;
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
-			} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-				$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				global $wpdb;
+				$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 			}
 
+			$title = sprintf(
+				// translators: placeholders are: 1) the log status, 2) the URL of the Salesforce API request
+				esc_html__( '%1$s: on Salesforce API HTTP Request to URL: %2$s.', 'object-sync-for-salesforce' ),
+				ucfirst( esc_attr( $status ) ),
+				esc_url( $url )
+			);
+
 			$logging->setup(
-				__( $title, $this->text_domain ),
-				print_r( $result, true ),
+				$title,
+				print_r( $result, true ), // log the result because we are debugging the whole api call
 				0,
 				0,
 				$status
@@ -320,6 +361,12 @@ class Salesforce {
 	*/
 	protected function http_request( $url, $data, $headers = array(), $method = 'GET', $options = array() ) {
 		// Build the request, including path and headers. Internal use.
+
+		/*
+		 * Note: curl is used because wp_remote_get, wp_remote_post, wp_remote_request don't work. Salesforce returns various errors.
+		 * There is a GitHub branch attempting with the goal of addressing this in a future version: https://github.com/MinnPost/object-sync-for-salesforce/issues/94
+		*/
+
 		$curl = curl_init();
 		curl_setopt( $curl, CURLOPT_URL, $url );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
@@ -338,20 +385,36 @@ class Salesforce {
 			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
 		}
 		$json_response = curl_exec( $curl ); // this is possibly gzipped json data
-		$code = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+		$code          = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
 
 		if ( ( 'PATCH' === $method || 'DELETE' === $method ) && '' === $json_response && 204 === $code ) {
 			// delete and patch requests return a 204 with an empty body upon success for whatever reason
 			$data = array(
 				'success' => true,
-				'body' => '',
+				'body'    => '',
 			);
 			curl_close( $curl );
-			return array(
-				'json' => wp_json_encode( $data ),
+
+			$result = array(
 				'code' => $code,
-				'data' => $data,
 			);
+
+			$return_format = isset( $options['return_format'] ) ? $options['return_format'] : 'array';
+
+			switch ( $return_format ) {
+				case 'array':
+					$result['data'] = $data;
+					break;
+				case 'json':
+					$result['json'] = wp_json_encode( $data );
+					break;
+				case 'both':
+					$result['json'] = wp_json_encode( $data );
+					$result['data'] = $data;
+					break;
+			}
+
+			return $result;
 		}
 
 		if ( ( ord( $json_response[0] ) == 0x1f ) && ( ord( $json_response[1] ) == 0x8b ) ) {
@@ -361,20 +424,27 @@ class Salesforce {
 		$data = json_decode( $json_response, true ); // decode it into an array
 
 		// don't use the exception if the status is a success one, or if it just needs a refresh token (salesforce uses 401 for this)
-		if ( ! in_array( $code, $this->success_or_refresh_codes ) ) {
+		if ( ! in_array( $code, $this->success_or_refresh_codes, true ) ) {
 			$curl_error = curl_error( $curl );
 			if ( '' !== $curl_error ) {
 				// create log entry for failed curl
 				$status = 'error';
-				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					global $wpdb;
+					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 				}
 
+				$title = sprintf(
+					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request
+					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
+					absint( $code )
+				);
+
 				$logging->setup(
-					__( $title, $this->text_domain ),
+					$title,
 					$curl_error,
 					0,
 					0,
@@ -383,16 +453,31 @@ class Salesforce {
 			} elseif ( isset( $data[0]['errorCode'] ) && '' !== $data[0]['errorCode'] ) { // salesforce uses this structure to return errors
 				// create log entry for failed curl
 				$status = 'error';
-				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					global $wpdb;
+					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 				}
 
+				$title = sprintf(
+					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request
+					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
+					absint( $code )
+				);
+
+				$body = sprintf(
+					// translators: placeholders are: 1) the URL requested, 2) the message returned by the error, 3) the server code returned
+					'<p>' . esc_html__( 'URL: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: %2$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Code: %3$s', 'object-sync-for-salesforce' ),
+					esc_attr( $url ),
+					esc_html( $data[0]['message'] ),
+					absint( $code )
+				);
+
 				$logging->setup(
-					__( $title, $this->text_domain ),
-					esc_html__( 'URL: ' . $url . ' Message: ' . $data[0]['message'] . '  Code: ' . $code, $this->text_domain ),
+					$title,
+					$body,
 					0,
 					0,
 					$status
@@ -400,29 +485,53 @@ class Salesforce {
 			} else {
 				// create log entry for failed curl
 				$status = 'error';
-				$title = ucfirst( $status ) . ': ' . $code . ': on Salesforce curl request';
 				if ( isset( $this->logging ) ) {
 					$logging = $this->logging;
-				} elseif ( class_exists( 'Salesforce_Logging' ) ) {
-					$logging = new Salesforce_Logging( $this->wpdb, $this->version, $this->text_domain );
+				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+					global $wpdb;
+					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 				}
+
+				$title = sprintf(
+					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request
+					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
+					absint( $code )
+				);
+
 				$logging->setup(
-					__( $title, $this->text_domain ),
-					print_r( $data, true ),
+					$title,
+					print_r( $data, true ), // log the result because we are debugging the whole api call
 					0,
 					0,
 					$status
 				);
-			}
-		}
+			} // End if().
+		} // End if().
 
 		curl_close( $curl );
 
-		return array(
-			'json' => $json_response,
+		$result = array(
 			'code' => $code,
-			'data' => $data,
 		);
+
+		$return_format = isset( $options['return_format'] ) ? $options['return_format'] : 'array';
+
+		switch ( $return_format ) {
+			case 'array':
+				$result['data'] = $data;
+				break;
+			case 'json':
+				$result['json'] = $json_response;
+				break;
+			case 'both':
+				$result['json'] = $json_response;
+				$result['data'] = $data;
+				break;
+		}
+
+		return $result;
+
 	}
 
 	/**
@@ -440,7 +549,7 @@ class Salesforce {
 			$url = $this->get_instance_url() . '/services/apexrest/';
 		} else {
 			$identity = $this->get_identity();
-			$url = str_replace( '{version}', $this->rest_api_version, $identity['urls'][ $api_type ] );
+			$url      = str_replace( '{version}', $this->rest_api_version, $identity['urls'][ $api_type ] );
 			if ( '' === $identity ) {
 				$url = $this->get_instance_url() . '/services/data/v' . $this->rest_api_version . '/';
 			}
@@ -452,7 +561,7 @@ class Salesforce {
 	* Get the SF instance URL. Useful for linking to objects.
 	*/
 	public function get_instance_url() {
-		return get_option( 'object_sync_for_salesforce_instance_url', '' );
+		return get_option( $this->option_prefix . 'instance_url', '' );
 	}
 
 	/**
@@ -462,14 +571,14 @@ class Salesforce {
 	*   URL to set.
 	*/
 	protected function set_instance_url( $url ) {
-		update_option( 'object_sync_for_salesforce_instance_url', $url );
+		update_option( $this->option_prefix . 'instance_url', $url );
 	}
 
 	/**
 	* Get the access token.
 	*/
 	public function get_access_token() {
-		return get_option( 'object_sync_for_salesforce_access_token', '' );
+		return get_option( $this->option_prefix . 'access_token', '' );
 	}
 
 	/**
@@ -481,14 +590,14 @@ class Salesforce {
 	*   Access token from Salesforce.
 	*/
 	protected function set_access_token( $token ) {
-		update_option( 'object_sync_for_salesforce_access_token', $token );
+		update_option( $this->option_prefix . 'access_token', $token );
 	}
 
 	/**
 	* Get refresh token.
 	*/
 	protected function get_refresh_token() {
-		return get_option( 'object_sync_for_salesforce_refresh_token', '' );
+		return get_option( $this->option_prefix . 'refresh_token', '' );
 	}
 
 	/**
@@ -498,7 +607,7 @@ class Salesforce {
 	*   Refresh token from Salesforce.
 	*/
 	protected function set_refresh_token( $token ) {
-		update_option( 'object_sync_for_salesforce_refresh_token', $token );
+		update_option( $this->option_prefix . 'refresh_token', $token );
 	}
 
 	/**
@@ -508,40 +617,46 @@ class Salesforce {
 	* this is a scheduleable class and so we could add a method from this class to run every 24 hours, but it's unclear to me that we need it. salesforce seems to refresh itself as it needs to.
 	* but it could be a performance boost to do it at scheduleable intervals instead.
 	*
-	* @throws SalesforceException
+	* @throws Object_Sync_Sf_Exception
 	*/
 	protected function refresh_token() {
 		$refresh_token = $this->get_refresh_token();
 		if ( empty( $refresh_token ) ) {
-			throw new SalesforceException( esc_html__( 'There is no refresh token.', $this->text_domain ) );
+			throw new Object_Sync_Sf_Exception( esc_html__( 'There is no refresh token.', 'object-sync-for-salesforce' ) );
 		}
 
 		$data = array(
-			'grant_type' => 'refresh_token',
+			'grant_type'    => 'refresh_token',
 			'refresh_token' => $refresh_token,
-			'client_id' => $this->consumer_key,
+			'client_id'     => $this->consumer_key,
 			'client_secret' => $this->consumer_secret,
 		);
 
-		$url = $this->login_url . $this->token_path;
-		$headers = array(
+		$url      = $this->login_url . $this->token_path;
+		$headers  = array(
 			// This is an undocumented requirement on Salesforce's end.
-			'Content-Type' => 'Content-Type: application/x-www-form-urlencoded',
+			'Content-Type'    => 'Content-Type: application/x-www-form-urlencoded',
 			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
-			'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
+			'Authorization'   => 'Authorization: OAuth ' . $this->get_access_token(),
 		);
-		$headers = false;
+		$headers  = false;
 		$response = $this->http_request( $url, $data, $headers, 'POST' );
 
 		if ( 200 !== $response['code'] ) {
-			// @TODO: Deal with error better.
-			throw new SalesforceException( esc_html__( 'Unable to get a Salesforce access token.', $this->text_domain ), $response['code'] );
+			throw new Object_Sync_Sf_Exception(
+				esc_html(
+					sprintf(
+						__( 'Unable to get a Salesforce access token. Salesforce returned the following errorCode: ', 'object-sync-for-salesforce' ) . $response['code']
+					)
+				),
+				$response['code']
+			);
 		}
 
 		$data = $response['data'];
 
 		if ( is_array( $data ) && isset( $data['error'] ) ) {
-			throw new SalesforceException( $data['error_description'], $data['error'] );
+			throw new Object_Sync_Sf_Exception( $data['error_description'], $data['error'] );
 		}
 
 		$this->set_access_token( $data['access_token'] );
@@ -555,20 +670,20 @@ class Salesforce {
 	* @param string $id
 	*   Identity URL.
 	*
-	* @throws SalesforceException
+	* @throws Object_Sync_Sf_Exception
 	*/
 	protected function set_identity( $id ) {
-		$headers = array(
-			'Authorization' => 'Authorization: OAuth ' . $this->get_access_token(),
-			//'Content-type' => 'application/json',
+		$headers  = array(
+			'Authorization'   => 'Authorization: OAuth ' . $this->get_access_token(),
+			//'Content-type'  => 'application/json',
 			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
 		);
 		$response = $this->http_request( $id, null, $headers );
 		if ( 200 !== $response['code'] ) {
-			throw new SalesforceException( esc_html__( 'Unable to access identity service.', $this->text_domain ), $response['code'] );
+			throw new Object_Sync_Sf_Exception( esc_html__( 'Unable to access identity service.', 'object-sync-for-salesforce' ), $response['code'] );
 		}
 		$data = $response['data'];
-		update_option( 'object_sync_for_salesforce_identity', $data );
+		update_option( $this->option_prefix . 'identity', $data );
 	}
 
 	/**
@@ -578,7 +693,7 @@ class Salesforce {
 	*   Returns FALSE if no identity has been stored.
 	*/
 	public function get_identity() {
-		return get_option( 'object_sync_for_salesforce_identity', false );
+		return get_option( $this->option_prefix . 'identity', false );
 	}
 
 	/**
@@ -588,8 +703,8 @@ class Salesforce {
 		$url = add_query_arg(
 			array(
 				'response_type' => 'code',
-				'client_id' => $this->consumer_key,
-				'redirect_uri' => $this->callback_url,
+				'client_id'     => $this->consumer_key,
+				'redirect_uri'  => $this->callback_url,
 			),
 			$this->login_url . $this->authorize_path
 		);
@@ -604,17 +719,17 @@ class Salesforce {
 	*/
 	public function request_token( $code ) {
 		$data = array(
-			'code' => $code,
-			'grant_type' => 'authorization_code',
-			'client_id' => $this->consumer_key,
+			'code'          => $code,
+			'grant_type'    => 'authorization_code',
+			'client_id'     => $this->consumer_key,
 			'client_secret' => $this->consumer_secret,
-			'redirect_uri' => $this->callback_url,
+			'redirect_uri'  => $this->callback_url,
 		);
 
-		$url = $this->login_url . $this->token_path;
-		$headers = array(
+		$url      = $this->login_url . $this->token_path;
+		$headers  = array(
 			// This is an undocumented requirement on SF's end.
-			//'Content-Type' => 'application/x-www-form-urlencoded',
+			//'Content-Type'  => 'application/x-www-form-urlencoded',
 			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
 		);
 		$response = $this->http_request( $url, $data, $headers, 'POST' );
@@ -623,7 +738,7 @@ class Salesforce {
 
 		if ( 200 !== $response['code'] ) {
 			$error = isset( $data['error_description'] ) ? $data['error_description'] : $response['error'];
-			throw new SalesforceException( $error, $response['code'] );
+			throw new Object_Sync_Sf_Exception( $error, $response['code'] );
 		}
 
 		// Ensure all required attributes are returned. They can be omitted if the
@@ -662,12 +777,18 @@ class Salesforce {
 	*
 	* updateable is really how the api spells it
 	*/
-	public function objects( $conditions = array( 'updateable' => true, 'triggerable' => true ), $reset = false ) {
+	public function objects(
+		$conditions = array(
+			'updateable'  => true,
+			'triggerable' => true,
+		),
+		$reset = false
+	) {
 
 		$options = array(
 			'reset' => $reset,
 		);
-		$result = $this->api_call( 'sobjects', array(), 'GET', $options );
+		$result  = $this->api_call( 'sobjects', array(), 'GET', $options );
 
 		if ( ! empty( $conditions ) ) {
 			foreach ( $result['data']['sobjects'] as $key => $object ) {
@@ -740,7 +861,7 @@ class Salesforce {
 		$options = array(
 			'reset' => $reset,
 		);
-		$object = $this->api_call( "sobjects/{$name}/describe", array(), 'GET', $options );
+		$object  = $this->api_call( "sobjects/{$name}/describe", array(), 'GET', $options );
 		// Sort field properties, because salesforce API always provides them in a
 		// random order. We sort them so that stored and exported data are
 		// standardized and predictable.
@@ -768,8 +889,8 @@ class Salesforce {
 	*   Values of the fields to set for the object.
 	*
 	* @return array
-	*	json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
-	*	code: 201
+	*   json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
+	*   code: 201
 	*   data:
 	*     "id" : "00190000001pPvHAAU",
 	*     "success" : true
@@ -784,7 +905,7 @@ class Salesforce {
 		$options = array(
 			'type' => 'write',
 		);
-		$result = $this->api_call( "sobjects/{$name}", $params, 'POST', $options );
+		$result  = $this->api_call( "sobjects/{$name}", $params, 'POST', $options );
 		return $result;
 	}
 
@@ -805,8 +926,8 @@ class Salesforce {
 	*   Values of the fields to set for the object.
 	*
 	* @return array
-	*	json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
-	*	code: 201
+	*   json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
+	*   code: 201
 	*   data:
 	*     "id" : "00190000001pPvHAAU",
 	*     "success" : true
@@ -827,8 +948,8 @@ class Salesforce {
 		}
 
 		// allow developers to change both the key and value by which objects should be matched
-		$key = apply_filters( 'object_sync_for_salesforce_modify_upsert_key', $key );
-		$value = apply_filters( 'object_sync_for_salesforce_modify_upsert_value', $value );
+		$key   = apply_filters( $this->option_prefix . 'modify_upsert_key', $key );
+		$value = apply_filters( $this->option_prefix . 'modify_upsert_value', $value );
 
 		$data = $this->api_call( "sobjects/{$name}/{$key}/{$value}", $params, 'PATCH', $options );
 		if ( 300 === $this->response['code'] ) {
@@ -850,20 +971,20 @@ class Salesforce {
 	* part of core API calls
 	*
 	* @return array
-	*	json: {"success":true,"body":""}
-	*	code: 204
-	*	data:
+	*   json: {"success":true,"body":""}
+	*   code: 204
+	*   data:
 		success: 1
 		body:
-	*	from_cache:
-	*	cached:
-	*	is_redo:
+	*   from_cache:
+	*   cached:
+	*   is_redo:
 	*/
 	public function object_update( $name, $id, $params ) {
 		$options = array(
 			'type' => 'write',
 		);
-		$result = $this->api_call( "sobjects/{$name}/{$id}", $params, 'PATCH', $options );
+		$result  = $this->api_call( "sobjects/{$name}/{$id}", $params, 'PATCH', $options );
 		return $result;
 	}
 
@@ -874,14 +995,16 @@ class Salesforce {
 	*   Object type name, E.g., Contact, Account.
 	* @param string $id
 	*   Salesforce id of the object.
+	* @param array $options
+	*   Optional options to pass to the API call
 	*
 	* @return object
 	*   Object of the requested Salesforce object.
 	*
 	* part of core API calls
 	*/
-	public function object_read( $name, $id ) {
-		return $this->api_call( "sobjects/{$name}/{$id}", array(), 'GET' );
+	public function object_read( $name, $id, $options = array() ) {
+		return $this->api_call( "sobjects/{$name}/{$id}", array(), 'GET', $options );
 	}
 
 	/**
@@ -925,7 +1048,8 @@ class Salesforce {
 	* part of core API calls
 	*/
 	public function run_analytics_report( $id, $async = true, $clear_cache = false, $params = array(), $method = 'GET', $report_cache_expiration = '', $cache_instance = true, $instance_cache_expiration = '' ) {
-		$id = $this->convert_id( $id );
+
+		$id         = $this->convert_id( $id );
 		$report_url = 'analytics/reports/' . $id . '/' . 'instances';
 
 		if ( true === $clear_cache ) {
@@ -949,32 +1073,32 @@ class Salesforce {
 				$params = array(
 					'reportMetadata' => $result['data']['reportMetadata'],
 				);
-	            $report = $this->analytics_api(
-	                'reports',
-	                $id,
-	                'instances',
-	                $params,
-	                'POST'
-	            );
-	            // if we get an id from the post, that is the instance id
-	            if ( isset( $report['data']['id'] ) ) {
-	            	$instance_id = $report['data']['id'];
-	            } else {
-	        		// run the call again if we don't have an instance id
-	        		//error_log('run report again. we have no instance id.');
-	        		$this->run_analytics_report( $id, true );
-	        	}
+				$report = $this->analytics_api(
+					'reports',
+					$id,
+					'instances',
+					$params,
+					'POST'
+				);
+				// if we get an id from the post, that is the instance id
+				if ( isset( $report['data']['id'] ) ) {
+					$instance_id = $report['data']['id'];
+				} else {
+					// run the call again if we don't have an instance id
+					//error_log('run report again. we have no instance id.');
+					$this->run_analytics_report( $id, true );
+				}
 
-	            // cache the instance id so we can get the report results if they are applicable
-	            if ( '' === $report_cache_expiration ) {
-	            	$report_cache_expiration = $this->cache_expiration();
-	            }
-	            $this->wordpress->cache_set( $report_url, '', $instance_id, $report_cache_expiration );
-	        } else {
-	        	// run the call again if we don't have a reportMetadata array
-	        	//error_log('run report again. we have no reportmetadata.');
-	        	$this->run_analytics_report( $id, true );
-	        }
+				// cache the instance id so we can get the report results if they are applicable
+				if ( '' === $report_cache_expiration ) {
+					$report_cache_expiration = $this->cache_expiration();
+				}
+				$this->wordpress->cache_set( $report_url, '', $instance_id, $report_cache_expiration );
+			} else {
+				// run the call again if we don't have a reportMetadata array
+				//error_log('run report again. we have no reportmetadata.');
+				$this->run_analytics_report( $id, true );
+			}
 		} // End if().
 
 		$result = $this->api_call( $report_url . "/{$instance_id}", array(), $method );
@@ -988,20 +1112,20 @@ class Salesforce {
 		// cache the instance results as a long fallback if the setting says so
 		// do this because salesforce will have errors if the instance has expired or is currently running
 		// remember: the result of the above api_call is already cached (or not) according to the plugin's generic settings
-		// this is fine i think, although it is a bit of redundancy in this case
+		// this is fine I think, although it is a bit of redundancy in this case
 		if ( true === $cache_instance ) {
 			$cached = $this->wordpress->cache_get( $report_url . '_instance_cached', '' );
 			if ( is_array( $cached ) ) {
-	            $result = $cached;
-	        } else {
-	        	if ( 'Success' === $result['data']['attributes']['status'] ) {
-		            if ( '' === $instance_cache_expiration ) {
-		            	$instance_cache_expiration = $this->cache_expiration();
-		            }
-		            $this->wordpress->cache_set( $report_url . '_instance_cached', '', $result, $instance_cache_expiration );
-		        }
-	        }
-	    }
+				$result = $cached;
+			} else {
+				if ( 'Success' === $result['data']['attributes']['status'] ) {
+					if ( '' === $instance_cache_expiration ) {
+						$instance_cache_expiration = $this->cache_expiration();
+					}
+					$this->wordpress->cache_set( $report_url . '_instance_cached', '', $result, $instance_cache_expiration );
+				}
+			}
+		}
 
 		return $result;
 
@@ -1016,14 +1140,16 @@ class Salesforce {
 	*   Salesforce external id field name.
 	* @param string $value
 	*   Value of external id.
+	* @param array $options
+	*   Optional options to pass to the API call
 	*
 	* @return object
 	*   Object of the requested Salesforce object.
 	*
 	* part of core API calls
 	*/
-	public function object_readby_external_id( $name, $field, $value ) {
-		return $this->api_call( "sobjects/{$name}/{$field}/{$value}" );
+	public function object_readby_external_id( $name, $field, $value, $options = array() ) {
+		return $this->api_call( "sobjects/{$name}/{$field}/{$value}", array(), 'GET', $options );
 	}
 
 	/**
@@ -1042,7 +1168,7 @@ class Salesforce {
 		$options = array(
 			'type' => 'write',
 		);
-		$result = $this->api_call( "sobjects/{$name}/{$id}", array(), 'DELETE', $options );
+		$result  = $this->api_call( "sobjects/{$name}/{$id}", array(), 'DELETE', $options );
 		return $result;
 	}
 
@@ -1056,7 +1182,7 @@ class Salesforce {
 	*   Start date to check for deleted objects (in ISO 8601 format).
 	* @param string $endDate
 	*   End date to check for deleted objects (in ISO 8601 format).
-	* @return GetDeletedResult
+	* @return mixed $result
 	*/
 	public function get_deleted( $type, $start_date, $end_date ) {
 		$options = array(
@@ -1112,12 +1238,12 @@ class Salesforce {
 		if ( empty( $start ) ) {
 			$start = strtotime( '-29 days' );
 		}
-		$start = urlencode( gmdate( DATE_ATOM, $start ) );
+		$start = rawurlencode( gmdate( DATE_ATOM, $start ) );
 
 		if ( empty( $end ) ) {
 			$end = time();
 		}
-		$end = urlencode( gmdate( DATE_ATOM, $end ) );
+		$end = rawurlencode( gmdate( DATE_ATOM, $end ) );
 
 		$options = array(
 			'cache' => false,
@@ -1149,10 +1275,10 @@ class Salesforce {
 			return ! empty( $cached[ $name ][ $devname ] ) ? $cached[ $name ][ $devname ]['Id'] : null;
 		}
 
-		$query = new Salesforce_Select_Query( 'RecordType' );
+		$query         = new Object_Sync_Sf_Salesforce_Select_Query( 'RecordType' );
 		$query->fields = array( 'Id', 'Name', 'DeveloperName', 'SobjectType' );
 
-		$result = $this->query( $query );
+		$result       = $this->query( $query );
 		$record_types = array();
 
 		foreach ( $result['data']['records'] as $record_type ) {
@@ -1171,14 +1297,11 @@ class Salesforce {
 	*
 	*/
 	private function cache_expiration() {
-		$cache_expiration = $this->wordpress->cache_expiration( 'object_sync_for_salesforce_cache_expiration', 86400 );
+		$cache_expiration = $this->wordpress->cache_expiration( $this->option_prefix . 'cache_expiration', 86400 );
 		return $cache_expiration;
 	}
 
 }
 
-class SalesforceException extends Exception {
-}
-
-class SalesforcePullException extends SalesforceException {
+class Object_Sync_Sf_Exception extends Exception {
 }

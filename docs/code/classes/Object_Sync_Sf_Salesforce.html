@@ -1,0 +1,2523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">258</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">4</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-111546339"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-111546339" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Activate.html">Object_Sync_Sf_Activate</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Admin.html">Object_Sync_Sf_Admin</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Admin_Notice.html">Object_Sync_Sf_Admin_Notice</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Deactivate.html">Object_Sync_Sf_Deactivate</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Exception.html">Object_Sync_Sf_Exception</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Logging.html">Object_Sync_Sf_Logging</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Mapping.html">Object_Sync_Sf_Mapping</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Queue.html">Object_Sync_Sf_Queue</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Rest.html">Object_Sync_Sf_Rest</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce.html">Object_Sync_Sf_Salesforce</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_WordPress_Transient.html">Object_Sync_Sf_WordPress_Transient</a></li>
+                                                    <li class="class"><a href="../classes/WordpressException.html">WordpressException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>Object_Sync_Sf_Salesforce</h1>
+                    <p><em>Ability to authorize and communicate with the Salesforce REST API. This class can make read and write calls to Salesforce, and also cache the responses in WordPress.</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_convert_id" class="">convert_id()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_get_sobject_type" class="">get_sobject_type()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_is_authorized" class="">is_authorized()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_get_api_versions" class="">get_api_versions()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_api_call" class="">api_call()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_get_api_endpoint" class="">get_api_endpoint()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_get_instance_url" class="">get_instance_url()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_get_access_token" class="">get_access_token()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_get_identity" class="">get_identity()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_get_authorization_code" class="">get_authorization_code()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_request_token" class="">request_token()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_objects" class="">objects()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_query" class="">query()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_object_describe" class="">object_describe()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_object_create" class="">object_create()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_object_upsert" class="">object_upsert()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_object_update" class="">object_update()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_object_read" class="">object_read()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_analytics_api" class="">analytics_api()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_run_analytics_report" class="">run_analytics_report()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_object_readby_external_id" class="">object_readby_external_id()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_object_delete" class="">object_delete()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_get_deleted" class="">get_deleted()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_list_resources" class="">list_resources()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_get_updated" class="">get_updated()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_get_record_type_id_by_developer_name" class="">get_record_type_id_by_developer_name()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_options" class="">$options</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_success_codes" class="">$success_codes</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_refresh_code" class="">$refresh_code</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_success_or_refresh_codes" class="">$success_or_refresh_codes</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_debug" class="">$debug</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_response" class="">$response</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_api_http_request" class="">api_http_request()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_http_request" class="">http_request()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_set_instance_url" class="">set_instance_url()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_set_access_token" class="">set_access_token()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_get_refresh_token" class="">get_refresh_token()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_set_refresh_token" class="">set_refresh_token()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_refresh_token" class="">refresh_token()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_set_identity" class="">set_identity()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_consumer_key" class="">$consumer_key</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_consumer_secret" class="">$consumer_secret</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_login_url" class="">$login_url</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_callback_url" class="">$callback_url</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_authorize_path" class="">$authorize_path</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_token_path" class="">$token_path</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_rest_api_version" class="">$rest_api_version</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_wordpress" class="">$wordpress</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_slug" class="">$slug</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_logging" class="">$logging</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_schedulable_classes" class="">$schedulable_classes</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#property_option_prefix" class="">$option_prefix</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce.html#method_cache_expiration" class="">cache_expiration()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/classes.salesforce.html"><div class="path-wrapper">classes/salesforce.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Object_Sync_Sf_Salesforce</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_options" name="property_options" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$options</h3>
+                <pre class="signature">$options : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_success_codes" name="property_success_codes" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$success_codes</h3>
+                <pre class="signature">$success_codes : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_refresh_code" name="property_refresh_code" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$refresh_code</h3>
+                <pre class="signature">$refresh_code : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_success_or_refresh_codes" name="property_success_or_refresh_codes" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$success_or_refresh_codes</h3>
+                <pre class="signature">$success_or_refresh_codes : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_debug" name="property_debug" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$debug</h3>
+                <pre class="signature">$debug : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_response" name="property_response" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$response</h3>
+                <pre class="signature">$response : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_consumer_key" name="property_consumer_key" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$consumer_key</h3>
+                <pre class="signature">$consumer_key : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_consumer_secret" name="property_consumer_secret" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$consumer_secret</h3>
+                <pre class="signature">$consumer_secret : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_login_url" name="property_login_url" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$login_url</h3>
+                <pre class="signature">$login_url : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_callback_url" name="property_callback_url" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$callback_url</h3>
+                <pre class="signature">$callback_url : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_authorize_path" name="property_authorize_path" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$authorize_path</h3>
+                <pre class="signature">$authorize_path : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_token_path" name="property_token_path" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$token_path</h3>
+                <pre class="signature">$token_path : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_rest_api_version" name="property_rest_api_version" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$rest_api_version</h3>
+                <pre class="signature">$rest_api_version : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_wordpress" name="property_wordpress" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$wordpress</h3>
+                <pre class="signature">$wordpress : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_slug" name="property_slug" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$slug</h3>
+                <pre class="signature">$slug : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_logging" name="property_logging" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$logging</h3>
+                <pre class="signature">$logging : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_schedulable_classes" name="property_schedulable_classes" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$schedulable_classes</h3>
+                <pre class="signature">$schedulable_classes : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_option_prefix" name="property_option_prefix" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$option_prefix</h3>
+                <pre class="signature">$option_prefix : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(string  <span class="argument">$consumer_key</span>, string  <span class="argument">$consumer_secret</span>, string  <span class="argument">$login_url</span>, string  <span class="argument">$callback_url</span>, string  <span class="argument">$authorize_path</span>, string  <span class="argument">$token_path</span>, string  <span class="argument">$rest_api_version</span>, object  <span class="argument">$wordpress</span>, string  <span class="argument">$slug</span>, object  <span class="argument">$logging</span>, array  <span class="argument">$schedulable_classes</span>, string  <span class="argument">$option_prefix = &#039;&#039;</span>) </pre>
+                <p><em>Constructor which initializes the Salesforce APIs.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$consumer_key </td>
+                                <td><p>Salesforce key to connect to your Salesforce instance.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$consumer_secret </td>
+                                <td><p>Salesforce secret to connect to your Salesforce instance.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$login_url </td>
+                                <td><p>Login URL for Salesforce auth requests - differs for production and sandbox</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$callback_url </td>
+                                <td><p>WordPress URL where Salesforce should send you after authentication</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$authorize_path </td>
+                                <td><p>Oauth path that Salesforce wants</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$token_path </td>
+                                <td><p>Path Salesforce uses to give you a token</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$rest_api_version </td>
+                                <td><p>What version of the Salesforce REST API to use</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$wordpress </td>
+                                <td><p>Object for doing things to WordPress - retrieving data, cache, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$slug </td>
+                                <td><p>Slug for this plugin. Can be used for file including, especially</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$logging </td>
+                                <td><p>Logging object for this plugin.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$schedulable_classes </td>
+                                <td><p>array of classes that can have scheduled tasks specific to them</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$option_prefix </td>
+                                <td><p>Option prefix for this plugin. Used for getting and setting options, actions, etc.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_convert_id" name="method_convert_id" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">convert_id()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">convert_id(string  <span class="argument">$sf_id_15</span>) : string</pre>
+                <p><em>Converts a 15-character case-sensitive Salesforce ID to 18-character
+case-insensitive ID. If input is not 15-characters, return input unaltered.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sf_id_15 </td>
+                                <td><p>15-character case-sensitive Salesforce ID</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>18-character case-insensitive Salesforce ID</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_sobject_type" name="method_get_sobject_type" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_sobject_type()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_sobject_type(string  <span class="argument">$sf_id</span>) : string</pre>
+                <p><em>Given a Salesforce ID, return the corresponding SObject name. (Based on
+ keyPrefix from object definition, @see
+ https://developer.salesforce.com/forums/?id=906F0000000901ZIAQ )</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sf_id </td>
+                                <td><p>15- or 18-character Salesforce ID</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Object_Sync_Sf_Exception</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>sObject name, e.g. &quot;Account&quot;, &quot;Contact&quot;, &quot;my__Custom_Object__c&quot; or FALSE
+if no match could be found.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_is_authorized" name="method_is_authorized" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">is_authorized()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">is_authorized() </pre>
+                <p><em>Determine if this SF instance is fully configured.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_api_versions" name="method_get_api_versions" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_api_versions()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_api_versions() </pre>
+                <p><em>Get REST API versions available on this Salesforce organization
+This is not an authenticated call, so it would not be a helpful test</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_api_call" name="method_api_call" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">api_call()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">api_call(string  <span class="argument">$path</span>, array  <span class="argument">$params = array()</span>, string  <span class="argument">$method = &#039;GET&#039;</span>, array  <span class="argument">$options = array()</span>, string  <span class="argument">$type = &#039;rest&#039;</span>) : mixed</pre>
+                <p><em>Make a call to the Salesforce REST API.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$path </td>
+                                <td><p>Path to resource.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Parameters to provide.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$method </td>
+                                <td><p>Method to initiate the call, such as GET or POST. Defaults to GET.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$options </td>
+                                <td><p>Any method can supply options for the API call, and they'll be preserved as far as the curl request
+They get merged with the class options</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>Type of call. Defaults to 'rest' - currently we don't support other types.
+Other exammple in Drupal is 'apexrest'</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Object_Sync_Sf_Exception</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>The requested response.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_api_endpoint" name="method_get_api_endpoint" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_api_endpoint()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_api_endpoint(string  <span class="argument">$api_type = &#039;rest&#039;</span>) : string</pre>
+                <p><em>Get the API end point for a given type of the API.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$api_type </td>
+                                <td><p>E.g., rest, partner, enterprise.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Complete URL endpoint for API access.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_instance_url" name="method_get_instance_url" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_instance_url()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_instance_url() </pre>
+                <p><em>Get the SF instance URL. Useful for linking to objects.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_access_token" name="method_get_access_token" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_access_token()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_access_token() </pre>
+                <p><em>Get the access token.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_identity" name="method_get_identity" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_identity()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_identity() : array</pre>
+                <p><em>Return the Salesforce identity, which is stored in a variable.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>Returns FALSE if no identity has been stored.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_authorization_code" name="method_get_authorization_code" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_authorization_code()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_authorization_code() </pre>
+                <p><em>OAuth step 1: Redirect to Salesforce and request and authorization code.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_request_token" name="method_request_token" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">request_token()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">request_token(string  <span class="argument">$code</span>) </pre>
+                <p><em>OAuth step 2: Exchange an authorization code for an access token.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$code </td>
+                                <td><p>Code from Salesforce.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_objects" name="method_objects" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">objects()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">objects(array  <span class="argument">$conditions = array(&#039;updateable&#039; =&gt; true, &#039;triggerable&#039; =&gt; true)</span>, boolean  <span class="argument">$reset = false</span>) : array</pre>
+                <p><em>Available objects and their metadata for your organization&#039;s data.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$conditions </td>
+                                <td><p>Associative array of filters to apply to the returned objects. Filters
+are applied after the list is returned from Salesforce.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$reset </td>
+                                <td><p>Whether to reset the cache and retrieve a fresh version from Salesforce.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>Available objects and metadata.</p>
+<p>part of core API calls. this call does require authentication, and the basic url it becomes is like this:
+<a href="https://instance.salesforce.com/services/data/v#.0/sobjects">https://instance.salesforce.com/services/data/v#.0/sobjects</a></p>
+<p>updateable is really how the api spells it</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_query" name="method_query" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">query()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">query(string  <span class="argument">$query</span>, array  <span class="argument">$options = array()</span>, boolean  <span class="argument">$all = false</span>, boolean  <span class="argument">$explain = false</span>) : array</pre>
+                <p><em>Use SOQL to get objects based on query string.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$query </td>
+                                <td><p>The SOQL query.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$options </td>
+                                <td><p>Allow for the query to have options based on what the user needs from it, ie caching, read/write, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$all </td>
+                                <td><p>Whether this should get all results for the query</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$explain </td>
+                                <td><p>If set, Salesforce will return feedback on the query performance</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>Array of Salesforce objects that match the query.</p>
+<p>part of core API calls</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_object_describe" name="method_object_describe" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">object_describe()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">object_describe(string  <span class="argument">$name</span>, boolean  <span class="argument">$reset = false</span>) : array</pre>
+                <p><em>Retrieve all the metadata for an object.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>Object type name, E.g., Contact, Account, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$reset </td>
+                                <td><p>Whether to reset the cache and retrieve a fresh version from Salesforce.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>All the metadata for an object, including information about each field,
+URLs, and child relationships.</p>
+<p>part of core API calls</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_object_create" name="method_object_create" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">object_create()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">object_create(string  <span class="argument">$name</span>, array  <span class="argument">$params</span>) : array</pre>
+                <p><em>Create a new object of the given type.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>Object type name, E.g., Contact, Account, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Values of the fields to set for the object.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>json: {&quot;id&quot;:&quot;00190000001pPvHAAU&quot;,&quot;success&quot;:true,&quot;errors&quot;:[]}
+code: 201
+data:
+&quot;id&quot; : &quot;00190000001pPvHAAU&quot;,
+&quot;success&quot; : true
+&quot;errors&quot; : [ ],
+from_cache:
+cached:
+is_redo:</p>
+<p>part of core API calls</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_object_upsert" name="method_object_upsert" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">object_upsert()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">object_upsert(string  <span class="argument">$name</span>, string  <span class="argument">$key</span>, string  <span class="argument">$value</span>, array  <span class="argument">$params</span>) : array</pre>
+                <p><em>Create new records or update existing records.</em></p>
+                <p>The new records or updated records are based on the value of the specified
+field.  If the value is not unique, REST API returns a 300 response with
+the list of matching records.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>Object type name, E.g., Contact, Account.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$key </td>
+                                <td><p>The field to check if this record should be created or updated.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$value </td>
+                                <td><p>The value for this record of the field specified for $key.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Values of the fields to set for the object.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>json: {&quot;id&quot;:&quot;00190000001pPvHAAU&quot;,&quot;success&quot;:true,&quot;errors&quot;:[]}
+code: 201
+data:
+&quot;id&quot; : &quot;00190000001pPvHAAU&quot;,
+&quot;success&quot; : true
+&quot;errors&quot; : [ ],
+from_cache:
+cached:
+is_redo:</p>
+<p>part of core API calls</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_object_update" name="method_object_update" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">object_update()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">object_update(string  <span class="argument">$name</span>, string  <span class="argument">$id</span>, array  <span class="argument">$params</span>) : array</pre>
+                <p><em>Update an existing object.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>Object type name, E.g., Contact, Account.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td><p>Salesforce id of the object.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Values of the fields to set for the object.</p>
+<p>part of core API calls</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>json: {&quot;success&quot;:true,&quot;body&quot;:&quot;&quot;}
+code: 204
+data:
+success: 1
+body:
+from_cache:
+cached:
+is_redo:</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_object_read" name="method_object_read" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">object_read()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">object_read(string  <span class="argument">$name</span>, string  <span class="argument">$id</span>, array  <span class="argument">$options = array()</span>) : object</pre>
+                <p><em>Return a full loaded Salesforce object.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>Object type name, E.g., Contact, Account.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td><p>Salesforce id of the object.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$options </td>
+                                <td><p>Optional options to pass to the API call</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    object
+                                            &mdash; <p>Object of the requested Salesforce object.</p>
+<p>part of core API calls</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_analytics_api" name="method_analytics_api" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">analytics_api()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">analytics_api(string  <span class="argument">$name</span>, string  <span class="argument">$id</span>, string  <span class="argument">$route = &#039;&#039;</span>, array  <span class="argument">$params = array()</span>, string  <span class="argument">$method = &#039;GET&#039;</span>) : object</pre>
+                <p><em>Make a call to the Analytics API</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>Object type name, E.g., Report</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td><p>Salesforce id of the object.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$route </td>
+                                <td><p>What comes after the ID? E.g. instances, ?includeDetails=True</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Params to put with the request</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$method </td>
+                                <td><p>GET or POST</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    object
+                                            &mdash; <p>Object of the requested Salesforce object.</p>
+<p>part of core API calls</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_run_analytics_report" name="method_run_analytics_report" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">run_analytics_report()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">run_analytics_report(string  <span class="argument">$id</span>, boolean  <span class="argument">$async = true</span>,   <span class="argument">$clear_cache = false</span>, array  <span class="argument">$params = array()</span>, string  <span class="argument">$method = &#039;GET&#039;</span>,   <span class="argument">$report_cache_expiration = &#039;&#039;</span>,   <span class="argument">$cache_instance = true</span>,   <span class="argument">$instance_cache_expiration = &#039;&#039;</span>) : object</pre>
+                <p><em>Run a specific Analytics report</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td><p>Salesforce id of the object.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$async </td>
+                                <td><p>Whether the report is asynchronous</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$clear_cache </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Params to put with the request</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$method </td>
+                                <td><p>GET or POST</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$report_cache_expiration </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$cache_instance </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$instance_cache_expiration </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    object
+                                            &mdash; <p>Object of the requested Salesforce object.</p>
+<p>part of core API calls</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_object_readby_external_id" name="method_object_readby_external_id" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">object_readby_external_id()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">object_readby_external_id(string  <span class="argument">$name</span>, string  <span class="argument">$field</span>, string  <span class="argument">$value</span>, array  <span class="argument">$options = array()</span>) : object</pre>
+                <p><em>Return a full loaded Salesforce object from External ID.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>Object type name, E.g., Contact, Account.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$field </td>
+                                <td><p>Salesforce external id field name.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$value </td>
+                                <td><p>Value of external id.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$options </td>
+                                <td><p>Optional options to pass to the API call</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    object
+                                            &mdash; <p>Object of the requested Salesforce object.</p>
+<p>part of core API calls</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_object_delete" name="method_object_delete" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">object_delete()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">object_delete(string  <span class="argument">$name</span>, string  <span class="argument">$id</span>) : array</pre>
+                <p><em>Delete a Salesforce object.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>Object type name, E.g., Contact, Account.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td><p>Salesforce id of the object.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>part of core API calls</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_deleted" name="method_get_deleted" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_deleted()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_deleted(string  <span class="argument">$type</span>,   <span class="argument">$start_date</span>,   <span class="argument">$end_date</span>) : mixed</pre>
+                <p><em>Retrieves the list of individual objects that have been deleted within the
+given timespan for a specified object type.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>Object type name, E.g., Contact, Account.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$start_date </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$end_date </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>$result</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_list_resources" name="method_list_resources" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">list_resources()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">list_resources() : array</pre>
+                <p><em>Return a list of available resources for the configured API version.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>Associative array keyed by name with a URI value.</p>
+<p>part of core API calls</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_updated" name="method_get_updated" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_updated()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_updated(string  <span class="argument">$type</span>, integer  <span class="argument">$start = null</span>, integer  <span class="argument">$end = null</span>) : array</pre>
+                <p><em>Return a list of SFIDs for the given object, which have been created or
+updated in the given timeframe.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>Object type name, E.g., Contact, Account.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$start </td>
+                                <td><p>unix timestamp for older timeframe for updates.
+Defaults to &quot;-29 days&quot; if empty.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$end </td>
+                                <td><p>unix timestamp for end of timeframe for updates.
+Defaults to now if empty</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>return array has 2 indexes:
+&quot;ids&quot;: a list of SFIDs of those records which have been created or
+updated in the given timeframe.
+&quot;latestDateCovered&quot;: ISO 8601 format timestamp (UTC) of the last date
+covered in the request.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper">part of core API calls</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_record_type_id_by_developer_name" name="method_get_record_type_id_by_developer_name" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_record_type_id_by_developer_name()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_record_type_id_by_developer_name(string  <span class="argument">$name</span>, string  <span class="argument">$devname</span>,   <span class="argument">$reset = false</span>) : string</pre>
+                <p><em>Given a DeveloperName and SObject Name, return the SFID of the
+corresponding RecordType. DeveloperName doesn&#039;t change between Salesforce
+environments, so it&#039;s safer to rely on compared to SFID.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>Object type name, E.g., Contact, Account.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$devname </td>
+                                <td><p>RecordType DeveloperName, e.g. Donation, Membership, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$reset </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>SFID
+The Salesforce ID of the given Record Type, or null.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_api_http_request" name="method_api_http_request" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">api_http_request()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">api_http_request(string  <span class="argument">$path</span>, array  <span class="argument">$params</span>, string  <span class="argument">$method</span>, array  <span class="argument">$options = array()</span>, string  <span class="argument">$type = &#039;rest&#039;</span>) : array</pre>
+                <p><em>Private helper to issue an SF API request.</em></p>
+                <p>This method is the only place where we read to or write from the cache</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$path </td>
+                                <td><p>Path to resource.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Parameters to provide.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$method </td>
+                                <td><p>Method to initiate the call, such as GET or POST.  Defaults to GET.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$options </td>
+                                <td><p>This is the options array from the api_call method
+This is where it gets merged with $this-&gt;options</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>Type of call. Defaults to 'rest' - currently we don't support other types
+Other exammple in Drupal is 'apexrest'</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>The requested data.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_http_request" name="method_http_request" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">http_request()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">http_request(string  <span class="argument">$url</span>, array  <span class="argument">$data</span>, array  <span class="argument">$headers = array()</span>, string  <span class="argument">$method = &#039;GET&#039;</span>, array  <span class="argument">$options = array()</span>) : array</pre>
+                <p><em>Make the HTTP request. Wrapper around curl().</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$url </td>
+                                <td><p>Path to make request from.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$data </td>
+                                <td><p>The request body.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$headers </td>
+                                <td><p>Request headers to send as name =&gt; value.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$method </td>
+                                <td><p>Method to initiate the call, such as GET or POST. Defaults to GET.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$options </td>
+                                <td><p>This is the options array from the api_http_request method</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>Salesforce response object.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_instance_url" name="method_set_instance_url" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">set_instance_url()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_instance_url(string  <span class="argument">$url</span>) </pre>
+                <p><em>Set the SF instanc URL.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$url </td>
+                                <td><p>URL to set.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_access_token" name="method_set_access_token" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">set_access_token()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_access_token(string  <span class="argument">$token</span>) </pre>
+                <p><em>Set the access token.</em></p>
+                <p>It is stored in session.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$token </td>
+                                <td><p>Access token from Salesforce.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_refresh_token" name="method_get_refresh_token" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">get_refresh_token()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_refresh_token() </pre>
+                <p><em>Get refresh token.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_refresh_token" name="method_set_refresh_token" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">set_refresh_token()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_refresh_token(string  <span class="argument">$token</span>) </pre>
+                <p><em>Set refresh token.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$token </td>
+                                <td><p>Refresh token from Salesforce.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_refresh_token" name="method_refresh_token" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">refresh_token()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">refresh_token() </pre>
+                <p><em>Refresh access token based on the refresh token. Updates session variable.</em></p>
+                <p>todo: figure out how to do this as part of the schedule class
+this is a scheduleable class and so we could add a method from this class to run every 24 hours, but it's unclear to me that we need it. salesforce seems to refresh itself as it needs to.
+but it could be a performance boost to do it at scheduleable intervals instead.</p>
+
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Object_Sync_Sf_Exception</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_identity" name="method_set_identity" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">set_identity()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_identity(string  <span class="argument">$id</span>) </pre>
+                <p><em>Retrieve and store the Salesforce identity given an ID url.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td><p>Identity URL.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Object_Sync_Sf_Exception</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_cache_expiration" name="method_cache_expiration" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">cache_expiration()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">cache_expiration() </pre>
+                <p><em>If there is a WordPress setting for how long to keep the cache, return it and set the object property
+Otherwise, return seconds in 24 hours</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">salesforce.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/classes/salesforce.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on March 20th, 2020 at 23:38.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

@@ -1,5 +1,7 @@
 <?php
 /**
+ * Class file for the Object_Sync_Sf_Deactivate class.
+ *
  * @file
  */
 
@@ -10,27 +12,46 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
 /**
  * What to do when the plugin is deactivated
  */
-class Wordpress_Salesforce_Deactivate {
+class Object_Sync_Sf_Deactivate {
 
 	protected $wpdb;
 	protected $version;
+	protected $slug;
+	protected $schedulable_classes;
+	protected $option_prefix;
+	protected $queue;
+
+	private $action_group_suffix;
 
 	/**
 	* Constructor which sets up deactivate hooks
 	* @param object $wpdb
 	* @param string $version
-	* @param string $text_domain
+	* @param string $slug
 	* @param array $schedulable_classes
+	* @param string $option_prefix
+	* @param object $queue
 	*
 	*/
-	public function __construct( $wpdb, $version, $text_domain, $schedulable_classes ) {
-		$this->wpdb = &$wpdb;
-		$this->version = $version;
+	public function __construct( $wpdb, $version, $slug, $schedulable_classes, $option_prefix = '', $queue = '' ) {
+		$this->wpdb                = $wpdb;
+		$this->version             = $version;
+		$this->slug                = $slug;
+		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->schedulable_classes = $schedulable_classes;
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'clear_schedule' ) );
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'delete_log_post_type' ) );
-		register_deactivation_hook( dirname( __DIR__ ) . '/' . $text_domain . '.php', array( $this, 'remove_roles_capabilities' ) );
+		$this->queue               = $queue;
+
+		$this->action_group_suffix = '_check_records';
+		$delete_data               = (int) get_option( $this->option_prefix . 'delete_data_on_uninstall', 0 );
+		if ( 1 === $delete_data ) {
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'clear_schedule' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'delete_log_post_type' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'remove_roles_capabilities' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'flush_plugin_cache' )
+			);
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'delete_plugin_options' ) );
+		}
 	}
 
 	/**
@@ -39,11 +60,11 @@ class Wordpress_Salesforce_Deactivate {
 	*
 	*/
 	public function wordpress_salesforce_drop_tables() {
-		$field_map_table = $this->wpdb->prefix . 'salesforce_field_map';
-		$object_map_table = $this->wpdb->prefix . 'salesforce_object_map';
+		$field_map_table  = $this->wpdb->prefix . 'object_sync_sf_field_map';
+		$object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 		$this->wpdb->query( 'DROP TABLE IF EXISTS ' . $field_map_table );
 		$this->wpdb->query( 'DROP TABLE IF EXISTS ' . $object_map_table );
-		delete_option( 'object_sync_for_salesforce_db_version' );
+		delete_option( $this->option_prefix . 'db_version' );
 	}
 
 	/**
@@ -52,8 +73,13 @@ class Wordpress_Salesforce_Deactivate {
 	*
 	*/
 	public function clear_schedule() {
+		if ( '' === $this->queue ) {
+			return;
+		}
 		foreach ( $this->schedulable_classes as $key => $value ) {
-			wp_clear_scheduled_hook( $key );
+			$schedule_name     = $key;
+			$action_group_name = $schedule_name . $this->action_group_suffix;
+			$this->queue->cancel( $action_group_name );
 		}
 	}
 
@@ -80,7 +106,7 @@ class Wordpress_Salesforce_Deactivate {
 		$role->remove_cap( 'configure_salesforce' );
 
 		// hook that allows other roles to configure the plugin as well
-		$roles = apply_filters( 'object_sync_for_salesforce_roles_configure_salesforce', null );
+		$roles = apply_filters( $this->option_prefix . 'roles_configure_salesforce', null );
 
 		// for each role that we have, remove the configure salesforce capability
 		if ( null !== $roles ) {
@@ -89,6 +115,27 @@ class Wordpress_Salesforce_Deactivate {
 			}
 		}
 
+	}
+
+	/**
+	* Flush the plugin cache
+	*
+	*/
+	public function flush_plugin_cache() {
+		$sfwp_transients = new Object_Sync_Sf_WordPress_Transient( 'sfwp_transients' );
+		$sfwp_transients->flush();
+	}
+
+	/**
+	* Clear the plugin options
+	*
+	*/
+	public function delete_plugin_options() {
+		$table          = $this->wpdb->prefix . 'options';
+		$plugin_options = $this->wpdb->get_results( 'SELECT option_name FROM ' . $table . ' WHERE option_name LIKE "object_sync_for_salesforce_%"', ARRAY_A );
+		foreach ( $plugin_options as $option ) {
+			delete_option( $option['option_name'] );
+		}
 	}
 
 }

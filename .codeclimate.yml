@@ -1,0 +1,27 @@
+engines:
+  phpcodesniffer:
+    enabled: true
+    config:
+      file_extensions: "php"
+      standard: "WordPress-Core"
+  csslint:
+    enabled: true
+  eslint:
+    enabled: true
+ratings:
+  paths:
+  - classes/**
+  - templates/**
+  - "**.php"
+  - "**.css"
+  - "**.js"
+exclude_paths:
+  - docs/**/*
+  - node_modules/**/*
+  - tests/**/*
+  - vendor/**/*
+  - assets/css/vendor/*
+  - assets/js/vendor/*
+  - "**.min.css"
+  - "**.min.js"
+  - "Gulpfile.js"

@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">258</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">4</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-395380050"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-395380050" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Object_Sync_Salesforce.html">Object_Sync_Salesforce</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Activate.html">Object_Sync_Sf_Activate</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Admin.html">Object_Sync_Sf_Admin</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Admin_Notice.html">Object_Sync_Sf_Admin_Notice</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Deactivate.html">Object_Sync_Sf_Deactivate</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Exception.html">Object_Sync_Sf_Exception</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Logging.html">Object_Sync_Sf_Logging</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Mapping.html">Object_Sync_Sf_Mapping</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Queue.html">Object_Sync_Sf_Queue</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Rest.html">Object_Sync_Sf_Rest</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce.html">Object_Sync_Sf_Salesforce</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Pull.html">Object_Sync_Sf_Salesforce_Pull</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Push.html">Object_Sync_Sf_Salesforce_Push</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Select_Query.html">Object_Sync_Sf_Salesforce_Select_Query</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_Salesforce_Soap_Partner.html">Object_Sync_Sf_Salesforce_Soap_Partner</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_WordPress.html">Object_Sync_Sf_WordPress</a></li>
+                                                    <li class="class"><a href="../classes/Object_Sync_Sf_WordPress_Transient.html">Object_Sync_Sf_WordPress_Transient</a></li>
+                                                    <li class="class"><a href="../classes/WordpressException.html">WordpressException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>Object_Sync_Sf_Salesforce_Pull</h1>
+                    <p><em>Pull data from Salesforce into WordPress</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_add_actions" class="">add_actions()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_salesforce_pull_webhook" class="">salesforce_pull_webhook()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_salesforce_pull" class="">salesforce_pull()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_manual_pull" class="">manual_pull()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_salesforce_pull_process_records" class="">salesforce_pull_process_records()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_clear_current_type_query" class="">clear_current_type_query()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_debug" class="">$debug</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_schedule_name" class="">$schedule_name</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_wpdb" class="">$wpdb</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_version" class="">$version</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_login_credentials" class="">$login_credentials</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_slug" class="">$slug</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_wordpress" class="">$wordpress</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_salesforce" class="">$salesforce</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_mappings" class="">$mappings</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_logging" class="">$logging</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_schedulable_classes" class="">$schedulable_classes</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_queue" class="">$queue</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_option_prefix" class="">$option_prefix</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_batch_soql_queries" class="">batch_soql_queries()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_check_throttle" class="">check_throttle()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_updated_records" class="">get_updated_records()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_next_record_batch" class="">get_next_record_batch()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_check_offset_query" class="">check_offset_query()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_pull_query" class="">get_pull_query()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_pull_offset" class="">get_pull_offset()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_pull_date_value" class="">get_pull_date_value()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_merged_records" class="">get_merged_records()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_respond_to_salesforce_merge" class="">respond_to_salesforce_merge()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_deleted_records" class="">get_deleted_records()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_get_synced_object" class="">get_synced_object()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_create_called_from_salesforce" class="">create_called_from_salesforce()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_update_called_from_salesforce" class="">update_called_from_salesforce()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_delete_called_from_salesforce" class="">delete_called_from_salesforce()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_increment_current_type_datetime" class="">increment_current_type_datetime()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_create_object_map" class="">create_object_map()</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#method_is_pull_allowed" class="">is_pull_allowed()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_batch_soql_queries" class="">$batch_soql_queries</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_min_soql_batch_size" class="">$min_soql_batch_size</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_max_soql_size" class="">$max_soql_size</a><br />
+                                                                    <a href="../classes/Object_Sync_Sf_Salesforce_Pull.html#property_mergeable_record_types" class="">$mergeable_record_types</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/classes.salesforce_pull.html"><div class="path-wrapper">classes/salesforce_pull.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Object_Sync_Sf_Salesforce_Pull</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_debug" name="property_debug" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$debug</h3>
+                <pre class="signature">$debug : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_schedule_name" name="property_schedule_name" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$schedule_name</h3>
+                <pre class="signature">$schedule_name : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_wpdb" name="property_wpdb" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$wpdb</h3>
+                <pre class="signature">$wpdb : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_version" name="property_version" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$version</h3>
+                <pre class="signature">$version : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_login_credentials" name="property_login_credentials" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$login_credentials</h3>
+                <pre class="signature">$login_credentials : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_slug" name="property_slug" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$slug</h3>
+                <pre class="signature">$slug : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_wordpress" name="property_wordpress" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$wordpress</h3>
+                <pre class="signature">$wordpress : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_salesforce" name="property_salesforce" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$salesforce</h3>
+                <pre class="signature">$salesforce : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_mappings" name="property_mappings" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$mappings</h3>
+                <pre class="signature">$mappings : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_logging" name="property_logging" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$logging</h3>
+                <pre class="signature">$logging : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_schedulable_classes" name="property_schedulable_classes" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$schedulable_classes</h3>
+                <pre class="signature">$schedulable_classes : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_queue" name="property_queue" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$queue</h3>
+                <pre class="signature">$queue : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_option_prefix" name="property_option_prefix" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$option_prefix</h3>
+                <pre class="signature">$option_prefix : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_batch_soql_queries" name="property_batch_soql_queries" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$batch_soql_queries</h3>
+                <pre class="signature">$batch_soql_queries : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_min_soql_batch_size" name="property_min_soql_batch_size" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$min_soql_batch_size</h3>
+                <pre class="signature">$min_soql_batch_size : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_max_soql_size" name="property_max_soql_size" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$max_soql_size</h3>
+                <pre class="signature">$max_soql_size : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_mergeable_record_types" name="property_mergeable_record_types" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$mergeable_record_types</h3>
+                <pre class="signature">$mergeable_record_types : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(object  <span class="argument">$wpdb</span>, string  <span class="argument">$version</span>, array  <span class="argument">$login_credentials</span>, string  <span class="argument">$slug</span>, object  <span class="argument">$wordpress</span>, object  <span class="argument">$salesforce</span>, object  <span class="argument">$mappings</span>, object  <span class="argument">$logging</span>, array  <span class="argument">$schedulable_classes</span>, object  <span class="argument">$queue = &#039;&#039;</span>, string  <span class="argument">$option_prefix = &#039;&#039;</span>) </pre>
+                <p><em>Constructor which sets up pull schedule</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>object</td>
+                                <td>$wpdb </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$version </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$login_credentials </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$slug </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$wordpress </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$salesforce </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$mappings </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$logging </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$schedulable_classes </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$queue </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$option_prefix </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_add_actions" name="method_add_actions" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">add_actions()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">add_actions() </pre>
+                <p><em>Create the action hooks based on what object maps exist from the admin settings
+route is http://example.com/wp-json/salesforce-rest-api/pull/ plus params we decide to accept</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_salesforce_pull_webhook" name="method_salesforce_pull_webhook" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">salesforce_pull_webhook()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">salesforce_pull_webhook(object  <span class="argument">$request</span>) : array</pre>
+                <p><em>REST API callback for salesforce pull. Returns status of 200 for successful
+attempt or 403 for a failed pull attempt (SF not authorized, threshhold
+reached, etc.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>object</td>
+                                <td>$request </td>
+                                <td><p>This is a merged object of all the arguments from the API request</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>code: 201
+data:
+success : true</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_salesforce_pull" name="method_salesforce_pull" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">salesforce_pull()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">salesforce_pull() </pre>
+                <p><em>Callback for the standard pull process used by webhooks and cron.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_manual_pull" name="method_manual_pull" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">manual_pull()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">manual_pull(string  <span class="argument">$object_type</span>, string  <span class="argument">$salesforce_id = &#039;&#039;</span>) : array</pre>
+                <p><em>Method for ajax hooks to call for pulling manually</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$object_type </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$salesforce_id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$result</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_salesforce_pull_process_records" name="method_salesforce_pull_process_records" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">salesforce_pull_process_records()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">salesforce_pull_process_records(string  <span class="argument">$object_type</span>, array|string  <span class="argument">$object</span>, integer  <span class="argument">$sf_sync_trigger</span>) : true</pre>
+                <p><em>Sync WordPress objects and Salesforce objects from the queue using the REST API.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$object_type </td>
+                                <td><p>Type of Salesforce object.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array|string</td>
+                                <td>$object </td>
+                                <td><p>The Salesforce data or its Id value.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$sf_sync_trigger </td>
+                                <td><p>Trigger for this sync.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    true
+                                            &mdash; <p>or exit the method</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_clear_current_type_query" name="method_clear_current_type_query" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">clear_current_type_query()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">clear_current_type_query(string  <span class="argument">$type</span>) </pre>
+                <p><em>Clear the currently stored query for the specified content type</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_batch_soql_queries" name="method_batch_soql_queries" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">batch_soql_queries()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">batch_soql_queries(boolean  <span class="argument">$batch_soql_queries</span>) : boolean</pre>
+                <p><em>Whether to use the batchSize parameter on SOQL queries</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$batch_soql_queries </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>$batch_soql_queries</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_check_throttle" name="method_check_throttle" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">check_throttle()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check_throttle() : boolean</pre>
+                <p><em>Determines if the Salesforce pull should be allowed, or throttled.</em></p>
+                <p>Prevents too many pull processes from running at once.</p>
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>Returns false if the time elapsed between recent pulls is too short.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_updated_records" name="method_get_updated_records" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_updated_records()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_updated_records() </pre>
+                <p><em>Pull updated records from Salesforce and place them in the queue.</em></p>
+                <p>Executes a SOQL query based on defined mappings, loops through the results,
+and places each updated SF object into the queue for later processing.</p>
+<p>We copy the convention from the Drupal module here, and run a separate SOQL query for each type of object in SF</p>
+<p>If we return something here, it's because there is an error.</p>
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_next_record_batch" name="method_get_next_record_batch" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_next_record_batch()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_next_record_batch(\datetime  <span class="argument">$last_sync</span>, array  <span class="argument">$salesforce_mapping</span>, array  <span class="argument">$map_sync_triggers</span>, string  <span class="argument">$type</span>, string  <span class="argument">$version_path</span>, array  <span class="argument">$query_options</span>, array  <span class="argument">$response</span>) </pre>
+                <p><em>Pull the next batch of records from the Salesforce API, if applicable</em></p>
+                <p>Executes a nextRecordsUrl SOQL query based on the previous result,
+and places each updated SF object into the queue for later processing.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\datetime</td>
+                                <td>$last_sync </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$salesforce_mapping </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$map_sync_triggers </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$version_path </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$query_options </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$response </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_check_offset_query" name="method_check_offset_query" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">check_offset_query()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check_offset_query(string  <span class="argument">$type</span>, array  <span class="argument">$salesforce_mapping</span>, array  <span class="argument">$query_options</span>) : object|boolean</pre>
+                <p><em>Get the next offset query. If check is true, only see if that query would have results. Otherwise, return the SOQL object.</em></p>
+                <p>When batchSize is not in use, run a check with an offset.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>the Salesforce object type</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$salesforce_mapping </td>
+                                <td><p>the map between object types</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$query_options </td>
+                                <td><p>the options for the SOQL query</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    object|boolean
+                                            &mdash; <p>$soql|$does_next_offset_have_results</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_pull_query" name="method_get_pull_query" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_pull_query()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_pull_query(string  <span class="argument">$type</span>, array  <span class="argument">$salesforce_mapping = array()</span>) : \Object_Sync_Sf_Salesforce_Select_Query</pre>
+                <p><em>Given a SObject type name, build an SOQL query to include all fields for all
+SalesforceMappings mapped to that SObject.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$salesforce_mapping </td>
+                                <td><p>the fieldmap that maps the two object types</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    <a href="../classes/Object_Sync_Sf_Salesforce_Select_Query.html">\Object_Sync_Sf_Salesforce_Select_Query</a>
+                                            &mdash; <p>or null if no mappings or no mapped fields
+were found.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper">\Object_Sync_Sf_Mapping::get_mapped_fields</span></a></dd>
+                                            <dd><a href=""><span class="namespace-wrapper">\Object_Sync_Sf_Mapping::get_mapped_record_types</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_pull_offset" name="method_get_pull_offset" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_pull_offset()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_pull_offset(string  <span class="argument">$type</span>, object  <span class="argument">$soql</span>, boolean  <span class="argument">$reset = false</span>) </pre>
+                <p><em>Determine the offset for the SOQL query to run</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>object</td>
+                                <td>$soql </td>
+                                <td><p>the SOQL object</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$reset </td>
+                                <td><p>whether to reset the offset</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_pull_date_value" name="method_get_pull_date_value" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_pull_date_value()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_pull_date_value(string  <span class="argument">$type</span>,   <span class="argument">$soql</span>) : \timestamp</pre>
+                <p><em>Given a SObject type name, determine the datetime value the SOQL object should use to filter results. Often this will be LastModifiedDate.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$soql </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    \timestamp
+                                            &mdash; <p>$pull_trigger_field_value</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_merged_records" name="method_get_merged_records" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_merged_records()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_merged_records() </pre>
+                <p><em>Get merged records from Salesforce.</em></p>
+                <p>Note that merges can currently only work if the Soap API is enabled.</p>
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_respond_to_salesforce_merge" name="method_respond_to_salesforce_merge" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">respond_to_salesforce_merge()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">respond_to_salesforce_merge(string  <span class="argument">$object_type</span>, array  <span class="argument">$merged_record</span>) </pre>
+                <p><em>Respond to Salesforce merge events
+This means we update the mapping object to contain the new Salesforce Id, and pull its data</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$object_type </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$merged_record </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_deleted_records" name="method_get_deleted_records" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_deleted_records()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_deleted_records() </pre>
+                <p><em>Get deleted records from salesforce.</em></p>
+                <p>Note that deletions can only be queried via REST with an API version &gt;= 29.0.</p>
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_synced_object" name="method_get_synced_object" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_synced_object()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_synced_object(array  <span class="argument">$object</span>, array  <span class="argument">$mapping_object</span>, array  <span class="argument">$salesforce_mapping</span>) : array</pre>
+                <p><em>Generate the synced_object array</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$object </td>
+                                <td><p>The data for the Salesforce object</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$mapping_object </td>
+                                <td><p>The data for the mapping object between the individual Salesforce and WordPress items</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$salesforce_mapping </td>
+                                <td><p>The data for the fieldmap between the object types</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$synced_object
+The combined array of these items. It allows for filtering of, at least, the mapping_object.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_create_called_from_salesforce" name="method_create_called_from_salesforce" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">create_called_from_salesforce()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">create_called_from_salesforce(string  <span class="argument">$sf_sync_trigger</span>, array  <span class="argument">$synced_object</span>, array  <span class="argument">$params</span>, array  <span class="argument">$prematch</span>, string  <span class="argument">$wordpress_id_field_name</span>, integer  <span class="argument">$seconds</span>) : array</pre>
+                <p><em>Create records in WordPress from a Salesforce pull</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sf_sync_trigger </td>
+                                <td><p>The current operation's trigger</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$synced_object </td>
+                                <td><p>Combined data for fieldmap, mapping object, and Salesforce object data</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Array of mapped key value pairs between WordPress and Salesforce fields.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$prematch </td>
+                                <td><p>Array of criteria to determine what to do on upsert operations</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_id_field_name </td>
+                                <td><p>The name of the ID field for this particular WordPress object type</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$seconds </td>
+                                <td><p>Timeout for the transient value to determine the direction for a sync.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$results
+Currently this contains an array of log entries for each attempt.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_update_called_from_salesforce" name="method_update_called_from_salesforce" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">update_called_from_salesforce()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">update_called_from_salesforce(string  <span class="argument">$sf_sync_trigger</span>, array  <span class="argument">$synced_object</span>, array  <span class="argument">$params</span>, string  <span class="argument">$wordpress_id_field_name</span>, integer  <span class="argument">$seconds</span>) : array</pre>
+                <p><em>Update records in WordPress from a Salesforce pull</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sf_sync_trigger </td>
+                                <td><p>The current operation's trigger</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$synced_object </td>
+                                <td><p>Combined data for fieldmap, mapping object, and Salesforce object data</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Array of mapped key value pairs between WordPress and Salesforce fields.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_id_field_name </td>
+                                <td><p>The name of the ID field for this particular WordPress object type</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$seconds </td>
+                                <td><p>Timeout for the transient value to determine the direction for a sync.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$results
+Currently this contains an array of log entries for each attempt.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_delete_called_from_salesforce" name="method_delete_called_from_salesforce" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">delete_called_from_salesforce()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">delete_called_from_salesforce(string  <span class="argument">$sf_sync_trigger</span>, array  <span class="argument">$synced_object</span>, string  <span class="argument">$wordpress_id_field_name</span>, integer  <span class="argument">$seconds</span>, array  <span class="argument">$mapping_objects</span>) : array</pre>
+                <p><em>Delete records in WordPress from a Salesforce pull</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sf_sync_trigger </td>
+                                <td><p>The current operation's trigger</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$synced_object </td>
+                                <td><p>Combined data for fieldmap, mapping object, and Salesforce object data</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_id_field_name </td>
+                                <td><p>The name of the ID field for this particular WordPress object type</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$seconds </td>
+                                <td><p>Timeout for the transient value to determine the direction for a sync.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$mapping_objects </td>
+                                <td><p>The data for the mapping objects between the individual Salesforce and WordPress items. We only pass this because of the need to count before deleting records.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$results
+Currently this contains an array of log entries for each attempt.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_increment_current_type_datetime" name="method_increment_current_type_datetime" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">increment_current_type_datetime()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">increment_current_type_datetime(string  <span class="argument">$type</span>, \timestamp  <span class="argument">$next_query_modified_date = &#039;&#039;</span>) </pre>
+                <p><em>Increment the currently running query&#039;s datetime</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$type </td>
+                                <td><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>\timestamp</td>
+                                <td>$next_query_modified_date </td>
+                                <td><p>the last record's modified datetime, or the current time if there isn't one</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_create_object_map" name="method_create_object_map" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">create_object_map()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">create_object_map(array  <span class="argument">$salesforce_object</span>, string  <span class="argument">$wordpress_id</span>, array  <span class="argument">$field_mapping</span>) : integer</pre>
+                <p><em>Create an object map between a Salesforce object and a WordPress object</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$salesforce_object </td>
+                                <td><p>Array of the salesforce object's data</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$wordpress_id </td>
+                                <td><p>Unique identifier for the WordPress object</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$field_mapping </td>
+                                <td><p>The row that maps the object types together, including which fields match which other fields</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    integer
+                                            &mdash; <p>$wpdb-&gt;insert_id
+This is the database row for the map object</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_is_pull_allowed" name="method_is_pull_allowed" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">is_pull_allowed()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">is_pull_allowed(string  <span class="argument">$object_type</span>, array  <span class="argument">$object</span>, string  <span class="argument">$sf_sync_trigger</span>,   <span class="argument">$salesforce_mapping</span>, array  <span class="argument">$map_sync_triggers</span>) : boolean</pre>
+                <p><em>Find out if pull is allowed for this record</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$object_type </td>
+                                <td><p>Salesforce object type</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$object </td>
+                                <td><p>Array of the salesforce object's data</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sf_sync_trigger </td>
+                                <td><p>The current operation's trigger</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$salesforce_mapping </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$map_sync_triggers </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar:///Users/jstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>$pull_allowed
+Whether all this stuff allows the $result to be pulled into WordPress</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">salesforce_pull.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/classes/salesforce_pull.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on March 20th, 2020 at 23:38.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

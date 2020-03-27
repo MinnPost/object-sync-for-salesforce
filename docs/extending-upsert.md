@@ -24,8 +24,8 @@ This is an example where email fields are mapped between Salesforce Contacts and
 
 The hook use expands the matching to check any of the email addresses associated with that Contact, and return the Contact ID for the object map if a match is found.
 
-```
-add_filter( 'object_sync_for_salesforce_find_sf_object_match', find_sf_object_match', 10, 4 );
+```php
+add_filter( 'object_sync_for_salesforce_find_sf_object_match', 'find_sf_object_match', 10, 4 );
 function find_sf_object_match( $salesforce_id, $wordpress_object, $mapping = array(), $action ) {
     if ( $action === 'push' && $mapping['wordpress_object'] === 'user' ) {
         if ( is_object( $this->salesforce ) ) {
@@ -34,7 +34,7 @@ function find_sf_object_match( $salesforce_id, $wordpress_object, $mapping = arr
             $salesforce = $this->salesforce();
             $salesforce_api = $salesforce->salesforce['sfapi'];
         }
-        
+
         if ( is_object( $salesforce_api ) ) {
 
             // we want to see if the user's email address exists as a primary on any contact and use that contact if so

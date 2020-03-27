@@ -11,7 +11,7 @@ Both methods send the URL and parameters to the plugin's `api_call()` method whe
 
 Assuming you have the plugin's Salesforce API object in the `$salesforce_api` variable, it works like this:
 
-```
+```php
 $salesforce_api->run_analytics_report(
     $id,
     $async, // boolean

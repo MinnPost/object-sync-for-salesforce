@@ -7,20 +7,28 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `object_sync_for_salesforce_roles_configure_salesforce`:
     - description: allow other plugins to give the `configure_salesforce` capability to WordPress roles in addition to the `administrator` role.
     - code: [classes/activate.php](../classes/activate.php) and [classes/deactivate.php](../classes/deactivate.php)
-    - documentation: [extending roles](./docs/extending-roles.md)
+    - documentation: [extending roles](extending-roles.md)
+- `object_sync_for_salesforce_logging_post_type_args`:
+	- description: allow other plugins to modify the `post_type` arguments used to create the Log post type.
+	- code: [classes/logging.php](../classes/logging.php)
+	- documentation: [extending roles](extending-logging.md)
 - `object_sync_for_salesforce_push_object_allowed`:
     - description: prevent a push per-mapping.
-    - code: (should document with push stuff)
-    - documentation: [classes/salesforce_push.php](../classes/salesforce_push.php)
+    - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
+    - documentation: [extending sync allowed](extending-sync-allowed.md#push)
+- `object_sync_for_salesforce_pull_query_modify`:
+    - description: modify the Salesforce query (SOQL) before it is sent to Salesforce to pull records.
+    - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
+    - documentation: [extending pull](extending-pull.md)
 - `object_sync_for_salesforce_pull_object_allowed`:
     - description: prevent a pull per-mapping.
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
-    - documentation: (should document with pull stuff)
+    - documentation: [extending sync allowed](extending-sync-allowed.md#pull)
 - `object_sync_for_salesforce_pull_params_modify`:
     - description: change what parameters are being sent to WordPress before syncing occurs
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
-    - documentation: [extend parameters](extending-parameters.md#salesforce-push)
-- `salesforce_pull_mapping_object`:
+    - documentation: [extend parameters](extending-parameters.md#salesforce-pull)
+- `object_sync_for_salesforce_pull_mapping_object`:
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
     - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
     - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-pull)
@@ -32,7 +40,11 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: change what parameters are being sent to Salesforce before syncing occurs
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extend parameters](extending-parameters.md#salesforce-push)
-- `salesforce_push_mapping_object`:
+- `object_sync_for_salesforce_push_update_params_modify`:
+    - description: change what parameters are being sent to Salesforce before syncing occurs, after checking to see if there is already an existing match in Salesforce.
+    - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
+    - documentation: [extend parameters](extending-parameters.md#salesforce-push)
+- `object_sync_for_salesforce_push_mapping_object`:
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
     - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
     - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-push)
@@ -43,23 +55,27 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `object_sync_for_salesforce_settings_tabs`:
     - description: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
     - code: [classes/admin.php](../classes/admin.php)
-    - documentation: [add a settings tab](./docs/adding-settings.md#add-a-settings-tab)
+    - documentation: [add a settings tab](./adding-settings.md#add-a-settings-tab)
 - `object_sync_for_salesforce_settings_tab_include_settings`:
     - description: when adding tabs to the Salesforce Settings screen, determine whether or not to include the default settings PHP template, which we use to render the form.
     - code: [classes/admin.php](../classes/admin.php)
-    - documentation: [change the template](./docs/adding-settings.md#change-the-template)
+    - documentation: [change the template](./adding-settings.md#change-the-template)
 - `object_sync_for_salesforce_settings_tab_content_before`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display before the settings form.
     - code: [classes/admin.php](../classes/admin.php)
-    - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
+    - documentation: [adding settings](./adding-settings.md#add-content-to-a-tab)
 - `object_sync_for_salesforce_settings_tab_content_after`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form.
     - code: [classes/admin.php](../classes/admin.php)
-    - documentation: [adding settings](./docs/adding-settings.md#add-content-to-a-tab)
+    - documentation: [adding settings](./adding-settings.md#add-content-to-a-tab)
 - `object_sync_for_salesforce_modify_schedulable_classes`:
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
-    - code: [object-sync-for-salesforce.php](../../object-sync-for-salesforce.php)
+    - code: [object-sync-for-salesforce.php](../object-sync-for-salesforce.php)
     - documentation: [extending scheduling](./extending-scheduling.md)
+- `object_sync_for_salesforce_select_library`:
+	- description: modify the `select` library used for choosing WordPress and Salesforce fields on fieldmaps. By default, we add the selectWoo library.
+	- code: [object-sync-for-salesforce.php](../object-sync-for-salesforce.php)
+	- documentation: [extending mapping options](./extending-mapping-options.md#administration-interface)
 - `object_sync_for_salesforce_add_more_wordpress_types`:
     - description: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
     - code: [classes/wordpress.php](../classes/wordpress.php)

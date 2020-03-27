@@ -1,328 +1,190 @@
 // Require our dependencies
-const autoprefixer = require( 'autoprefixer' );
-const babel = require( 'gulp-babel' );
-const browserSync = require( 'browser-sync' );
-const cheerio = require( 'gulp-cheerio' );
-const concat = require( 'gulp-concat' );
-const cssnano = require( 'gulp-cssnano' );
-const del = require( 'del' );
-const eslint = require( 'gulp-eslint' );
-const gulp = require( 'gulp' );
-const gutil = require( 'gulp-util' );
-const globbing = require( 'gulp-css-globbing' );
-const imagemin = require( 'gulp-imagemin' );
+const autoprefixer = require('autoprefixer');
+const babel = require('gulp-babel');
+const browserSync = require('browser-sync').create();
+const concat = require('gulp-concat');
+const cssnano = require('cssnano');
+const eslint = require('gulp-eslint');
+const fs = require('fs');
+const gulp = require('gulp');
+const iife = require('gulp-iife');
+const imagemin = require('gulp-imagemin');
+const packagejson = JSON.parse(fs.readFileSync('./package.json'));
 const mqpacker = require( 'css-mqpacker' );
-const notify = require( 'gulp-notify' );
-const plumber = require( 'gulp-plumber' );
-const postcss = require( 'gulp-postcss' );
-const reload = browserSync.reload;
-const rename = require( 'gulp-rename' );
-const sass = require( 'gulp-sass' );
-const sassLint = require( 'gulp-sass-lint' );
+const plumber = require('gulp-plumber');
+const postcss = require('gulp-postcss');
+const rename = require('gulp-rename');
+const sass = require('gulp-sass');
+const sassGlob = require('gulp-sass-glob');
 const sort = require( 'gulp-sort' );
-const sourcemaps = require( 'gulp-sourcemaps' );
-const svgmin = require( 'gulp-svgmin' );
-const svgstore = require( 'gulp-svgstore' );
-const uglify = require( 'gulp-uglify' );
-const wpPot = require( 'gulp-wp-pot' );
+const gulpStylelint = require('gulp-stylelint');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
+const wpPot = require('gulp-wp-pot');
 
-// Set assets paths.
-const paths = {
-	'css': [ 'assets/css/*.css', '!*.min.css' ],
-	'icons': 'assets/img/svg-icons/*.svg',
-	'images': [ 'assets/img/*', '!assets/img/*.svg', 'docs/assets/img/**/*' ],
-	'php': [ './*.php', './**/*.php' ],
-	'sass': 'assets/sass/**/*.scss',
-	'concat_scripts': 'assets/js/src/*.js',
-	'scripts': [ 'assets/js/*.js', '!assets/js/*.min.js' ]
+// Some config data for our tasks
+const config = {
+  styles: {
+    admin_src: 'assets/sass/**/*.scss',
+    lint_dest: 'assets/sass/',
+    dest: 'assets/css'
+  },
+  scripts: {
+    admin_src: './assets/js/src/*.js',
+    uglify: [ 'assets/js/*.js', '!assets/js/*.min.js' ],
+    dest: './assets/js'
+  },
+  images: {
+  	docs_src: './docs/assets/img/**/*',
+  	docs_dest: './docs/assets/img/'
+  },
+  languages: {
+    src: [ './**/*.php', '!.git/*', '!.svn/*', '!bin/**/*', '!node_modules/*', '!release/**/*', '!vendor/**/*' ],
+    dest: './languages/' + packagejson.name + '.pot'
+  },
+  changelog: {
+    src: 'changelog.md',
+    edit: 'changelog.txt',
+    dest: '.'
+  },
+  browserSync: {
+    active: false,
+    localURL: 'mylocalsite.local'
+  }
 };
 
-/**
- * Handle errors and alert the user.
- */
-function handleErrors () {
-	const args = Array.prototype.slice.call( arguments );
-
-	notify.onError( {
-		'title': 'Task Failed [<%= error.message %>',
-		'message': 'See console.',
-		'sound': 'Sosumi' // See: https://github.com/mikaelbr/node-notifier#all-notification-options-with-their-defaults
-	} ).apply( this, args );
-
-	gutil.beep(); // Beep 'sosumi' again.
-
-	// Prevent the 'watch' task from stopping.
-	this.emit( 'end' );
+function adminstyles() {
+  return gulp.src(config.styles.admin_src)
+    .pipe(sourcemaps.init()) // Sourcemaps need to init before compilation
+    .pipe(sassGlob()) // Allow for globbed @import statements in SCSS
+    .pipe(sass()) // Compile
+    .on('error', sass.logError) // Error reporting
+    .pipe(postcss([
+      mqpacker( {
+        'sort': true
+      } ),
+      cssnano( {
+        'safe': true // Use safe optimizations.
+      } ) // Minify
+    ]))
+    .pipe(sourcemaps.write()) // Write the sourcemap files
+    .pipe(gulp.dest(config.styles.dest)) // Drop the resulting CSS file in the specified dir
+    .pipe(browserSync.stream());
 }
 
-/**
- * Delete object-sync-for-salesforce-admin.css and object-sync-for-salesforce-admin.min.css before we minify and optimize
- */
-gulp.task( 'clean:styles', () =>
-	del( [ 'assets/css/object-sync-for-salesforce-admin.css', 'assets/css/object-sync-for-salesforce-admin.min.css' ] )
-);
+function sasslint() {
+  return gulp.src(config.styles.admin_src)
+    .pipe(gulpStylelint({
+      fix: true
+    }))
+    .pipe(gulp.dest(config.styles.lint_dest));
+}
 
-/**
- * Compile Sass and run stylesheet through PostCSS.
- *
- * https://www.npmjs.com/package/gulp-sass
- * https://www.npmjs.com/package/gulp-postcss
- * https://www.npmjs.com/package/gulp-autoprefixer
- * https://www.npmjs.com/package/css-mqpacker
- */
-gulp.task( 'postcss', [ 'clean:styles' ], () =>
-	gulp.src( 'assets/sass/*.scss', paths.css )
+function adminscripts() {
+  return gulp.src(config.scripts.admin_src)
+    .pipe(sourcemaps.init())
+    .pipe(babel({
+      presets: ['@babel/preset-env']
+    }))
+    .pipe(concat(packagejson.name + '-admin.js')) // Concatenate
+    .pipe(sourcemaps.write())
+    .pipe(eslint())
+    .pipe(iife({
+      useStrict: false,
+      params: ['$'],
+      args: ['jQuery']
+    }))
+    .pipe(gulp.dest(config.scripts.dest))
+    .pipe(browserSync.stream());
+}
 
-		// Deal with errors.
-		.pipe( plumber( {'errorHandler': handleErrors} ) )
+function uglifyscripts() {
+  return gulp.src(config.scripts.uglify)
+    .pipe(uglify()) // Minify + compress
+    .pipe(rename({
+      suffix: '.min'
+    }))
+    //.pipe(sourcemaps.write())
+    .pipe(gulp.dest(config.scripts.dest))
+    .pipe(browserSync.stream());
+}
 
-		// Wrap tasks in a sourcemap.
-		.pipe( sourcemaps.init() )
+// Optimize Images
+function images() {
+  return gulp.src(config.images.docs_src)
+    .pipe(
+      imagemin([
+        imagemin.gifsicle({ interlaced: true }),
+        imagemin.mozjpeg({ quality: 90, progressive: true }),
+        imagemin.optipng({ optimizationLevel: 5 }),
+        imagemin.svgo({
+          plugins: [
+            {
+              removeViewBox: false,
+              collapseGroups: true
+            }
+          ]
+        })
+      ])
+    )
+    .pipe(gulp.dest(config.images.docs_dest));
+}
 
-			// glob files together
-			.pipe(globbing({
-		        // Configure it to use SCSS files
-		        extensions: ['.scss']
-		    }))
+// Generates translation file.
+function translate() {
+    return gulp
+      .src( config.languages.src )
+      .pipe( wpPot( {
+        domain: packagejson.name,
+        package: packagejson.name
+      } ) )
+      .pipe( gulp.dest( config.languages.dest ) );
+}
 
-			// Compile Sass using LibSass.
-			.pipe( sass( {
-				'errLogToConsole': true,
-				'outputStyle': 'expanded' // Options: nested, expanded, compact, compressed
-			} ) )
+// Generates changelog.txt as a copy of changelog.md
+function changelog() {
+  return gulp
+    .src( config.changelog.src )
+    .pipe( rename( config.changelog.edit ) )
+    .pipe( gulp.dest( config.changelog.dest ) );
+}
 
-			// Parse with PostCSS plugins.
-			.pipe( postcss( [
-				autoprefixer( {
-					'browsers': [ 'last 2 version' ]
-				} ),
-				mqpacker( {
-					'sort': true
-				} )
-			] ) )
+// Injects changes into browser
+function browserSyncTask() {
+  if (config.browserSync.active) {
+    browserSync.init({
+      proxy: config.browserSync.localURL
+    });
+  }
+}
 
-		// Create sourcemap.
-		.pipe( sourcemaps.write() )
+// Reloads browsers that are using browsersync
+function browserSyncReload(done) {
+  browserSync.reload();
+  done();
+}
 
-		// Create object-sync-for-salesforce-admin.css.
-		.pipe( gulp.dest( 'assets/css/' ) )
-		.pipe( browserSync.stream() )
-);
+// Watch directories, and run specific tasks on file changes
+function watch() {
+  gulp.watch(config.styles.admin_src, adminstyles);
+  gulp.watch(config.scripts.admin_src, adminscripts);
+  
+  // Reload browsersync when PHP files change, if active
+  if (config.browserSync.active) {
+    gulp.watch('./**/*.php', browserSyncReload);
+  }
+}
 
-/**
- * Minify and optimize object-sync-for-salesforce-admin.css.
- *
- * https://www.npmjs.com/package/gulp-cssnano
- */
-gulp.task( 'cssnano', [ 'postcss' ], () =>
-	gulp.src( 'assets/css/object-sync-for-salesforce-admin.css' )
-		.pipe( plumber( {'errorHandler': handleErrors} ) )
-		.pipe( cssnano( {
-			'safe': true // Use safe optimizations.
-		} ) )
-		.pipe( rename( 'object-sync-for-salesforce-admin.min.css' ) )
-		.pipe( gulp.dest( 'assets/css' ) )
-		.pipe( browserSync.stream() )
-);
+// define complex gulp tasks
+const styles  = gulp.series(sasslint, adminstyles);
+const scripts = gulp.series(adminscripts, uglifyscripts);
+const build   = gulp.series(gulp.parallel(styles, scripts, images, translate, changelog));
 
-/**
- * Delete the svg-icons.svg before we minify, concat.
- */
-gulp.task( 'clean:icons', () =>
-	del( [ 'assets/img/svg-icons.svg' ] )
-);
-
-/**
- * Minify, concatenate, and clean SVG icons.
- *
- * https://www.npmjs.com/package/gulp-svgmin
- * https://www.npmjs.com/package/gulp-svgstore
- * https://www.npmjs.com/package/gulp-cheerio
- */
-gulp.task( 'svg', [ 'clean:icons' ], () =>
-	gulp.src( paths.icons )
-
-		// Deal with errors.
-		.pipe( plumber( {'errorHandler': handleErrors} ) )
-
-		// Minify SVGs.
-		.pipe( svgmin() )
-
-		// Add a prefix to SVG IDs.
-		.pipe( rename( {'prefix': 'icon-'} ) )
-
-		// Combine all SVGs into a single <symbol>
-		.pipe( svgstore( {'inlineSvg': true} ) )
-
-		// Clean up the <symbol> by removing the following cruft...
-		.pipe( cheerio( {
-			'run': function ( $, file ) {
-				$( 'svg' ).attr( 'style', 'display:none' );
-				$( '[fill]' ).removeAttr( 'fill' );
-				$( 'path' ).removeAttr( 'class' );
-			},
-			'parserOptions': {'xmlMode': true}
-		} ) )
-
-		// Save svg-icons.svg.
-		.pipe( gulp.dest( 'assets/img/' ) )
-		.pipe( browserSync.stream() )
-);
-
-/**
- * Optimize images.
- *
- * https://www.npmjs.com/package/gulp-imagemin
- */
-gulp.task( 'imagemin', () =>
-	gulp.src( paths.images, {base: "./"} )
-		.pipe( plumber( {'errorHandler': handleErrors} ) )
-		.pipe( imagemin( {
-			'optimizationLevel': 5,
-			'progressive': true,
-			'interlaced': true
-		} ) )
-		.pipe( gulp.dest("./") )
-);
-
-/**
- * Concatenate and transform JavaScript.
- *
- * https://www.npmjs.com/package/gulp-concat
- * https://github.com/babel/gulp-babel
- * https://www.npmjs.com/package/gulp-sourcemaps
- */
-gulp.task( 'concat', () =>
-	gulp.src( paths.concat_scripts )
-
-		// Deal with errors.
-		.pipe( plumber(
-			{'errorHandler': handleErrors}
-		) )
-
-		// Start a sourcemap.
-		.pipe( sourcemaps.init() )
-
-		// Convert ES6+ to ES2015.
-		.pipe( babel( {
-			presets: [ 'es2015' ]
-		} ) )
-
-		// Concatenate partials into a single script.
-		.pipe( concat( 'object-sync-for-salesforce-admin.js' ) )
-
-		// Append the sourcemap to object-sync-for-salesforce-admin.js.
-		.pipe( sourcemaps.write() )
-
-		// Save object-sync-for-salesforce-admin.js
-		.pipe( gulp.dest( 'assets/js' ) )
-		.pipe( browserSync.stream() )
-);
-
-/**
-  * Minify compiled JavaScript.
-  *
-  * https://www.npmjs.com/package/gulp-uglify
-  */
-gulp.task( 'uglify', [ 'concat' ], () =>
-	gulp.src( paths.scripts )
-		.pipe( rename( {'suffix': '.min'} ) )
-		.pipe( uglify( {
-			'mangle': false
-		} ) )
-		.pipe( gulp.dest( 'assets/js' ) )
-);
-
-/**
- * Delete the theme's .pot before we create a new one.
- */
-gulp.task( 'clean:pot', () =>
-	del( [ 'languages/object-sync-for-salesforce.pot' ] )
-);
-
-/**
- * Scan the plugin and create a POT file.
- *
- * https://www.npmjs.com/package/gulp-wp-pot
- */
-gulp.task( 'wp-pot', [ 'clean:pot' ], () =>
-	gulp.src( paths.php )
-		.pipe( plumber( {'errorHandler': handleErrors} ) )
-		.pipe( sort() )
-		.pipe( wpPot( {
-			'domain': 'object-sync-for-salesforce',
-			'package': 'object-sync-for-salesforce',
-		} ) )
-		.pipe( gulp.dest( 'languages/object-sync-for-salesforce.pot' ) )
-);
-
-/**
- * Sass linting.
- *
- * https://www.npmjs.com/package/sass-lint
- */
-gulp.task( 'sass:lint', () =>
-	gulp.src( [
-		'assets/sass/**/*.scss',
-		'!node_modules/**'
-	] )
-		.pipe( sassLint() )
-		.pipe( sassLint.format() )
-		.pipe( sassLint.failOnError() )
-);
-
-/**
- * JavaScript linting.
- *
- * https://www.npmjs.com/package/gulp-eslint
- */
-gulp.task( 'js:lint', () =>
-	gulp.src( [
-		'assets/js/*.js',
-		'assets/js/*.js',
-		'!assets/js/object-sync-for-salesforce-admin.js',
-		'!assets/js/*.min.js',
-		'!Gruntfile.js',
-		'!Gulpfile.js',
-		'!node_modules/**'
-	] )
-		.pipe( eslint() )
-		.pipe( eslint.format() )
-		.pipe( eslint.failAfterError() )
-);
-
-/**
- * Process tasks and reload browsers on file changes.
- *
- * https://www.npmjs.com/package/browser-sync
- */
-gulp.task( 'watch', function () {
-
-	// Kick off BrowserSync.
-	browserSync( {
-		'open': false,             // Open project in a new tab?
-		'injectChanges': true,     // Auto inject changes instead of full reload.
-		'proxy': 'testing.dev',    // Use http://largo.com:3000 to use BrowserSync.
-		'watchOptions': {
-			'debounceDelay': 1000  // Wait 1 second before injecting.
-		}
-	} );
-
-	// Run tasks when files change.
-	gulp.watch( paths.icons, [ 'icons' ] );
-	gulp.watch( paths.sass, [ 'styles' ] );
-	gulp.watch( paths.scripts, [ 'scripts' ] );
-	gulp.watch( paths.concat_scripts, [ 'scripts' ] );
-	gulp.watch( paths.php, [ 'markup' ] );
-} );
-
-/**
- * Create individual tasks.
- */
-gulp.task( 'markup', browserSync.reload );
-gulp.task( 'i18n', [ 'wp-pot' ] );
-gulp.task( 'icons', [ 'svg' ] );
-gulp.task( 'scripts', [ 'uglify' ] );
-gulp.task( 'styles', [ 'cssnano' ] );
-gulp.task( 'lint', [ 'sass:lint', 'js:lint' ] );
-gulp.task( 'default', [ 'i18n', 'icons', 'styles', 'scripts', 'imagemin'] );
+// export tasks
+exports.styles    = styles;
+exports.scripts   = scripts;
+exports.images    = images;
+exports.translate = translate;
+exports.changelog = changelog;
+exports.watch     = watch;
+exports.default   = build;
