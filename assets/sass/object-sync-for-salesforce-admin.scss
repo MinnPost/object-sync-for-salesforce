@@ -7,6 +7,7 @@ $horizontal-space: 10px;
 $success-color: #46b450;
 $vertical-space: 15px;
 $select-border-color: #ddd;
+$active-color: #00b9eb;
 
 .settings_page_object-sync-salesforce-admin {
 
@@ -18,6 +19,16 @@ $select-border-color: #ddd;
 				line-height: 1.3;
 				margin-bottom: 9px;
 			}
+		}
+	}
+
+	// salesforce version list
+	.sfwp-salesforce-version-list {
+
+		> tbody > tr.current,
+		> tbody > tr.current td {
+			background: $active-color;
+			color: #fff;
 		}
 	}
 
