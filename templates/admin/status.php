@@ -8,29 +8,31 @@
 	);
 	?>
 </p>
-<table class="widefat striped">
+<table class="widefat striped sfwp-salesforce-version-list">
 	<thead>
 		<summary>
 			<h4><?php echo $versions_apicall_summary; ?></h4>
 		</summary>
 		<tr>
-			<th><?php echo esc_html__( 'Label', 'object-sync-for-salesforce' ); ?></th>
+			<th><?php echo esc_html__( 'Version Number', 'object-sync-for-salesforce' ); ?></th>
 			<th><?php echo esc_html__( 'URL', 'object-sync-for-salesforce' ); ?></th>
-			<th><?php echo esc_html__( 'Version', 'object-sync-for-salesforce' ); ?></th>
+			<th><?php echo esc_html__( 'Label', 'object-sync-for-salesforce' ); ?></th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php foreach ( $versions['data'] as $version ) { ?>
 			<?php
-			$class = '';
+			$class      = '';
+			$is_current = '';
 			if ( $version['version'] === $this->login_credentials['rest_api_version'] ) {
-				$class = ' class="current"';
+				$class      = ' class="current"';
+				$is_current = '&nbsp;' . esc_html__( 'This is the currently active version.', 'object-sync-for-salesforce' );
 			}
 			?>
-			<tr<?php echo esc_attr( $class ); ?>>
-				<td><?php echo esc_html( $version['label'] ); ?></td>
+			<tr<?php echo $class; ?>>
+				<td><strong><?php echo esc_html( $version['version'] ); ?></strong><?php echo $is_current; ?></td>
 				<td><?php echo esc_html( $version['url'] ); ?></td>
-				<td><?php echo esc_html( $version['version'] ); ?></td>
+				<td><?php echo esc_html( $version['label'] ); ?></td>
 			</tr>
 		<?php } ?>
 	</tbody>
