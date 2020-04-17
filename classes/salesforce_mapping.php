@@ -1031,10 +1031,13 @@ class Object_Sync_Sf_Mapping {
 	 * @return array $errors Associative array of rows that failed to finish from either system
 	 */
 	public function get_failed_object_maps() {
-		$table       = $this->object_map_table;
-		$errors      = array();
-		$push_errors = $this->wpdb->get_results( 'SELECT * FROM ' . $table . ' WHERE salesforce_id LIKE "tmp_sf_%"', ARRAY_A );
-		$pull_errors = $this->wpdb->get_results( 'SELECT * FROM ' . $table . ' WHERE wordpress_id LIKE "tmp_wp_%"', ARRAY_A );
+		$table          = $this->object_map_table;
+		$errors         = array();
+		$items_per_page = 50;
+		$error_page     = isset( $_GET['error_page'] ) ? (int) $_GET['error_page'] : 1;
+		$offset         = ( $error_page * $items_per_page ) - $items_per_page;
+		$push_errors    = $this->wpdb->get_results( "SELECT * FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' LIMIT ${offset}, ${items_per_page}", ARRAY_A );
+		$pull_errors    = $this->wpdb->get_results( "SELECT * FROM ${table} WHERE wordpress_id LIKE 'tmp_wp_%' LIMIT ${offset}, ${items_per_page}", ARRAY_A );
 		if ( ! empty( $push_errors ) ) {
 			$errors['push_errors'] = $push_errors;
 		}
