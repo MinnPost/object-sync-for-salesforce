@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 1.9.1 (2020-04-17)
+	* Feature: add a checkbox to the Mapping Errors screen to allow selecting all the errors for deletion at once.
+	* Bug fix: check for a WordPress ID before creating an object map. This prevents a possible MySQL error that could occur in some cases.
+	* Maintenance: note WordPress 5.4 support.
+
 * 1.9.0 (2020-03-20)
 	* Feature: when pushing or pulling the `wp_capabilities` field on a WordPress user, treat the data as WordPress needs it to assign roles. Thanks to WordPress user @emilyb6116 for reporting this and for testing the fix.
 	* Feature: Hide admin menu items that won't work pre-authorization until the plugin is authorized with Salesforce. Thanks to WordPress user @mgparisi for pointing this out.
