@@ -625,47 +625,57 @@ class Object_Sync_Sf_Mapping {
 	private function setup_object_map_data( $posted = array() ) {
 		$allowed_fields   = $this->wpdb->get_col( "DESC {$this->object_map_table}", 0 );
 		$allowed_fields[] = 'action'; // we use this in both directions even though it isn't in the database; we remove it from the array later if it is present
-
-		$data = array_intersect_key( $posted, array_flip( $allowed_fields ) );
-
+		$data             = array_intersect_key( $posted, array_flip( $allowed_fields ) );
 		// temporary variable to allow us to check the data to make sure it isn't missing anything it needs.
 		$data['status'] = 'ready';
-
 		if ( ! isset( $data['wordpress_id'] ) || substr( $data['salesforce_id'], 0, 7 ) === 'tmp_sf_' ) {
-			$status         = 'error';
-			$data['status'] = $status; // error
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-			}
+			$data['status'] = 'error'; // error
 			if ( ! isset( $data['wordpress_id'] ) ) {
-				$log_title = sprintf(
-					// translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of the Salesforce object.
-					esc_html__( '%1$s Mapping: caused by trying to map the WordPress %2$s with no ID value to Salesforce ID %3$s. It may have been deleted.', 'object-sync-for-salesforce' ),
-					ucfirst( esc_attr( $status ) ),
-					esc_attr( $data['wordpress_object'] ),
+				$finish = sprintf(
+					// translators: %1$s is the Id of the Salesforce object.
+					esc_html__( 'The Salesforce ID is %1$s. The WordPress ID does not exist. It may have been deleted.', 'object-sync-for-salesforce' ),
 					esc_attr( $data['salesforce_id'] )
 				);
-				
 			} elseif ( substr( $data['salesforce_id'], 0, 7 ) === 'tmp_sf_' ) {
-				$log_title = sprintf(
-					// translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of that object.
-					esc_html__( '%1$s Mapping: caused by trying to map the WordPress %2$s with ID of %3$s to Salesforce ID starting with "tmp_sf_", which is invalid.', 'object-sync-for-salesforce' ),
-					ucfirst( esc_attr( $status ) ),
-					esc_attr( $data['wordpress_object'] ),
+				$finish = sprintf(
+					// translators: %1$s is the Id of the Salesforce object.
+					esc_html__( 'The WordPress ID is %1$s. The Salesforce ID starts with "tmp_sf_", which is invalid.', 'object-sync-for-salesforce' ),
 					absint( $data['wordpress_id'] )
 				);
 			}
-			$logging->setup(
-				$log_title,
-				'',
-				0,
-				0,
-				$status
-			);
+			$data = $this->log_object_map_error( $finish, $data );
 		}
 		return $data;
+	}
+
+	/**
+	 * Setup the error log when an objet map fails
+	 *
+	 * @param string $finish_title is a processed string depending on the error
+	 * @param array $data is what the object map was trying to do.
+	 */
+	private function log_object_map_error( $finish_title, $data ) {
+		$status = $data['status'];
+		if ( isset( $this->logging ) ) {
+			$logging = $this->logging;
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+		}
+		// log message title
+		$log_title = sprintf(
+			// translators: %1$s is the log status, %2$s is the type of WordPress object. %3$s is the finish value from the setup method, which depends on the error.
+			esc_html__( '%1$s Mapping: caused by trying to map a WordPress %2$s to Salesforce. %3$s', 'object-sync-for-salesforce' ),
+			ucfirst( esc_attr( $status ) ),
+			esc_attr( $data['wordpress_object'] ),
+			$finish_title
+		);
+		$logging->setup(
+			$log_title,
+			'',
+			0,
+			0,
+			$status
+		);
 	}
 
 	/**
