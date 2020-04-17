@@ -1347,26 +1347,26 @@ class Object_Sync_Sf_Salesforce_Push {
 			$action = 'created';
 		}
 
-		// Create object map and save it
-		$mapping_object = $this->mappings->create_object_map(
-			array(
-				'wordpress_id'      => $wordpress_object[ $id_field_name ], // wordpress unique id
-				'salesforce_id'     => $salesforce_id, // salesforce unique id. we don't care what kind of object it is at this point
-				'wordpress_object'  => $field_mapping['wordpress_object'], // keep track of what kind of wp object this is
-				'last_sync'         => current_time( 'mysql' ),
-				'last_sync_action'  => 'push',
-				'last_sync_status'  => $this->mappings->status_success,
-				'last_sync_message' => sprintf(
-					// translators: placeholder is for the action that occurred on the mapping object (pending or created)
-					esc_html__( 'Mapping object %1$s via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__,
-					esc_attr( $action )
-				),
-				'action'            => $action,
-			)
-		);
-
-		return $mapping_object;
-
+		// Create object map and save it. Only do this if we have a valid WordPress ID.
+		if ( isset( $wordpress_object[ $id_field_name ] ) ) {
+			$mapping_object = $this->mappings->create_object_map(
+				array(
+					'wordpress_id'      => $wordpress_object[ $id_field_name ], // wordpress unique id
+					'salesforce_id'     => $salesforce_id, // salesforce unique id. we don't care what kind of object it is at this point
+					'wordpress_object'  => $field_mapping['wordpress_object'], // keep track of what kind of wp object this is
+					'last_sync'         => current_time( 'mysql' ),
+					'last_sync_action'  => 'push',
+					'last_sync_status'  => $this->mappings->status_success,
+					'last_sync_message' => sprintf(
+						// translators: placeholder is for the action that occurred on the mapping object (pending or created)
+						esc_html__( 'Mapping object %1$s via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__,
+						esc_attr( $action )
+					),
+					'action'            => $action,
+				)
+			);
+			return $mapping_object;
+		}
 	}
 
 	/**
