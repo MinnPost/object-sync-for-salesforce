@@ -631,48 +631,39 @@ class Object_Sync_Sf_Mapping {
 		// temporary variable to allow us to check the data to make sure it isn't missing anything it needs.
 		$data['status'] = 'ready';
 
-		if ( ! isset( $data['wordpress_id'] ) ) {
-			$status = 'error';
+		if ( ! isset( $data['wordpress_id'] ) || substr( $data['salesforce_id'], 0, 7 ) === 'tmp_sf_' ) {
+			$status         = 'error';
+			$data['status'] = $status; // error
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
 			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 			}
-			$logging->setup(
-				sprintf(
+			if ( ! isset( $data['wordpress_id'] ) ) {
+				$log_title = sprintf(
 					// translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of the Salesforce object.
 					esc_html__( '%1$s Mapping: caused by trying to map the WordPress %2$s with no ID value to Salesforce ID %3$s. It may have been deleted.', 'object-sync-for-salesforce' ),
 					ucfirst( esc_attr( $status ) ),
 					esc_attr( $data['wordpress_object'] ),
 					esc_attr( $data['salesforce_id'] )
-				),
-				'',
-				0,
-				0,
-				$status
-			);
-			$data['status'] = $status; // error
-		} elseif ( substr( $data['salesforce_id'], 0, 7 ) === 'tmp_sf_' ) {
-			$status = 'error';
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-			}
-			$logging->setup(
-				sprintf(
+				);
+				
+			} elseif ( substr( $data['salesforce_id'], 0, 7 ) === 'tmp_sf_' ) {
+				$log_title = sprintf(
 					// translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of that object.
 					esc_html__( '%1$s Mapping: caused by trying to map the WordPress %2$s with ID of %3$s to Salesforce ID starting with "tmp_sf_", which is invalid.', 'object-sync-for-salesforce' ),
 					ucfirst( esc_attr( $status ) ),
 					esc_attr( $data['wordpress_object'] ),
 					absint( $data['wordpress_id'] )
-				),
+				);
+			}
+			$logging->setup(
+				$log_title,
 				'',
 				0,
 				0,
 				$status
 			);
-			$data['status'] = $status; // error
 		}
 		return $data;
 	}
