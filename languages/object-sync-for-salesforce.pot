@@ -630,7 +630,7 @@ msgstr ""
 msgid "Direction"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:197, templates/admin/fieldmaps-list.php:41, templates/admin/mapping-errors.php:75, templates/admin/mapping-errors.php:103, templates/admin/user-profile-salesforce.php:14
+#: templates/admin/fieldmaps-add-edit-clone.php:197, templates/admin/fieldmaps-list.php:41, templates/admin/mapping-errors.php:98, templates/admin/user-profile-salesforce.php:14
 msgid "Delete"
 msgstr ""
 
@@ -759,7 +759,7 @@ msgstr ""
 msgid " to make sure you can map the most recent data structures."
 msgstr ""
 
-#: templates/admin/fieldmaps-list.php:35, templates/admin/mapping-errors.php:72, templates/admin/mapping-errors.php:100, templates/admin/user-profile-salesforce.php:13
+#: templates/admin/fieldmaps-list.php:35, templates/admin/mapping-errors.php:95, templates/admin/user-profile-salesforce.php:13
 msgid "Edit"
 msgstr ""
 
@@ -853,16 +853,12 @@ msgstr ""
 msgid "Delete selected rows"
 msgstr ""
 
-#: templates/admin/mapping-errors.php:63, templates/admin/mapping-errors.php:91
-msgid "Select Error"
-msgstr ""
-
-#: templates/admin/mapping-errors.php:66, templates/admin/user-profile-salesforce.php:41
+#: templates/admin/mapping-errors.php:79, templates/admin/user-profile-salesforce.php:41
 msgid "Pull from Salesforce"
 msgstr ""
 
-#: templates/admin/mapping-errors.php:94, templates/admin/user-profile-salesforce.php:40
-msgid "Push to Salesforce"
+#: templates/admin/mapping-errors.php:86
+msgid "Select Error"
 msgstr ""
 
 #: templates/admin/settings.php:4
@@ -928,4 +924,8 @@ msgstr ""
 
 #: templates/admin/user-profile-salesforce.php:33
 msgid "Last Sync"
+msgstr ""
+
+#: templates/admin/user-profile-salesforce.php:40
+msgid "Push to Salesforce"
 msgstr ""

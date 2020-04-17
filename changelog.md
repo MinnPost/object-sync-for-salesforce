@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.9.2 (2020-04-17)
+	* Feature: add pagination links to the Mapping Errors screen if there are more than 50 errors. This prevents results that are too large from loading.
+
 * 1.9.1 (2020-04-17)
 	* Feature: add a checkbox to the Mapping Errors screen to allow selecting all the errors for deletion at once.
 	* Bug fix: check for a WordPress ID before creating an object map. This prevents a possible MySQL error that could occur in some cases.
