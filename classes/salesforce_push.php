@@ -655,6 +655,34 @@ class Object_Sync_Sf_Salesforce_Push {
 		$structure               = $this->wordpress->get_wordpress_table_structure( $object_type );
 		$wordpress_id_field_name = $structure['id_field'];
 
+		// check to make sure we have a value for the WordPress ID
+		if ( ! isset( $object[ $wordpress_id_field_name ] ) ) {
+			// create log entry for missing WordPress ID
+			$status = 'error';
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+			}
+			$title = sprintf(
+				// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the name of the WordPress object type, 5) the WordPress id field name
+				esc_html__( '%1$s: %2$s Salesforce %3$s. The WordPress %4$s %5$s is missing. It may have been deleted.', 'object-sync-for-salesforce' ),
+				ucfirst( esc_attr( $status ) ),
+				esc_attr( $op ),
+				esc_attr( $mapping['salesforce_object'] ),
+				esc_attr( $mapping['wordpress_object'] ),
+				esc_attr( $wordpress_id_field_name )
+			);
+			$result = array(
+				'title'   => $title,
+				'message' => '',
+				'trigger' => $sf_sync_trigger,
+				'parent'  => 0,
+				'status'  => $status,
+			);
+			$logging->setup( $result );
+		}
+
 		// this returns the row that maps the individual WordPress row to the individual Salesfoce row
 		// todo: we might need to loop through these?
 		$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
