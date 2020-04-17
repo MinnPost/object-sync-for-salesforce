@@ -108,6 +108,23 @@ $active-color: #00b9eb;
 		}
 	}
 
+	// error table
+	form.error-rows {
+
+		.tablenav-pages-mappingerrors {
+			// from the button on the left, use the same styles
+			margin: 2px 0 0.8em;
+			padding-top: 10px;
+			text-align: right;
+
+			.displaying-num {
+				display: inline-block;
+				margin-right: 10px;
+			}
+		}
+	}
+
+
 	/**
 	 * Select2 elements.
 	 */
@@ -245,4 +262,3 @@ $active-color: #00b9eb;
 		width: 140px;
 	}
 }
-

@@ -39,18 +39,33 @@
 				<th class="manage-column" colspan="2"><?php echo esc_html__( 'Actions', 'object-sync-for-salesforce' ); ?></th>
 			</tr>
 			<tr>
-				<td colspan="8">
+				<td colspan="4">
 					<?php
 						submit_button(
 							esc_html__( 'Delete selected rows', 'object-sync-for-salesforce' )
 						);
 						?>
 				</td>
+				<td colspan="4">
+					<?php
+					$output  = '<div class="tablenav-pages tablenav-pages-mappingerrors">';
+					$output .= '<span class="displaying-num">' . sprintf(
+						/* translators: %s: Number of items. */
+						_n( '%s item', '%s items', $mapping_errors['total'] ),
+						number_format_i18n( $mapping_errors['total'] )
+					) . '</span>';
+					if ( $mapping_errors['pagination'] ) {
+						$output .= $mapping_errors['pagination'];
+					}
+					$output .= '</div>';
+					echo $output;
+					?>
+				</td>
 			</tr>
 		</tfoot>
 		<tbody>
-			<?php if ( ! empty( $mapping_errors['pull_errors'] ) ) : ?>
-				<?php foreach ( $mapping_errors['pull_errors'] as $error ) { ?>
+			<?php if ( ! empty( $mapping_errors['all_errors'] ) ) : ?>
+				<?php foreach ( $mapping_errors['all_errors'] as $error ) { ?>
 			<tr>
 					<?php
 					if ( in_array( $error['id'], $ids ) ) {
@@ -58,40 +73,20 @@
 					} else {
 						$checked = '';
 					}
-					?>
-				<th scope="row" class="check-column">
-					<label class="screen-reader-text" for="delete_<?php echo $error['id']; ?>"><?php echo esc_html__( 'Select Error', 'object-sync-for-salesforce' ); ?></label>
-					<input id="delete_<?php echo $error['id']; ?>" type="checkbox" name="delete[<?php echo $error['id']; ?>]"<?php echo $checked; ?>>
-				</th>
-				<td><?php echo esc_html__( 'Pull from Salesforce', 'object-sync-for-salesforce' ); ?></td>
-				<td><?php echo $error['wordpress_id']; ?></td>
-				<td><?php echo $error['wordpress_object']; ?></td>
-				<td><?php echo $error['salesforce_id']; ?></td>
-				<td><?php echo date_i18n( 'Y-m-d g:i:sa', strtotime( $error['created'] ) ); ?></td>
-				<td>
-					<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=edit&id=' . $error['id'] ) ); ?>"><?php echo esc_html__( 'Edit', 'object-sync-for-salesforce' ); ?></a>
-				</td>
-				<td>
-					<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=delete&id=' . $error['id'] ) ); ?>"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
-				</td>
-			</tr>
-				<?php } ?>
-			<?php endif; ?>
-			<?php if ( ! empty( $mapping_errors['push_errors'] ) ) : ?>
-				<?php foreach ( $mapping_errors['push_errors'] as $error ) { ?>
-			<tr>
-					<?php
-					if ( is_array( array_keys( $ids ) ) && in_array( $error['id'], array_keys( $ids ) ) ) {
-						$checked = ' checked';
-					} else {
-						$checked = '';
+					$type = '';
+					if ( isset( $error['salesforce_id'] ) || isset( $error['wordpress_id'] ) ) {
+						if ( strpos( $error['salesforce_id'], 'tmp_sf_' ) === 0 ) {
+							$type = esc_html__( 'Pull from Salesforce', 'object-sync-for-salesforce' );
+						} elseif ( strpos( $error['wordpress_id'], 'tmp_wp_' ) === 0 ) {
+							$type = esc_html__( 'Push to Salesforce', 'object-sync-for-salesforce' );
+						}
 					}
 					?>
 				<th scope="row" class="check-column">
 					<label class="screen-reader-text" for="delete_<?php echo $error['id']; ?>"><?php echo esc_html__( 'Select Error', 'object-sync-for-salesforce' ); ?></label>
 					<input id="delete_<?php echo $error['id']; ?>" type="checkbox" name="delete[<?php echo $error['id']; ?>]"<?php echo $checked; ?>>
 				</th>
-				<td><?php echo esc_html__( 'Push to Salesforce', 'object-sync-for-salesforce' ); ?></td>
+				<td><?php echo $type; ?></td>
 				<td><?php echo $error['wordpress_id']; ?></td>
 				<td><?php echo $error['wordpress_object']; ?></td>
 				<td><?php echo $error['salesforce_id']; ?></td>
