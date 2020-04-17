@@ -13,16 +13,31 @@
 	<table class="widefat striped">
 		<thead>
 			<tr>
-				<th>&nbsp;</th>
-				<th><?php echo esc_html__( 'Type', 'object-sync-for-salesforce' ); ?></th>
-				<th><?php echo esc_html__( 'WordPress ID', 'object-sync-for-salesforce' ); ?></th>
-				<th><?php echo esc_html__( 'WordPress Object Type', 'object-sync-for-salesforce' ); ?></th>
-				<th><?php echo esc_html__( 'Salesforce ID', 'object-sync-for-salesforce' ); ?></th>
-				<th><?php echo esc_html__( 'Created Date/Time', 'object-sync-for-salesforce' ); ?></th>
-				<th colspan="2"><?php echo esc_html__( 'Actions', 'object-sync-for-salesforce' ); ?></th>
+				<td id="cb" class="manage-column column-cb check-column">
+					<label class="screen-reader-text" for="cb-select-all-1"><?php echo esc_html__( 'Select All', 'object-sync-for-salesforce' ); ?></label>
+					<input id="cb-select-all-1" type="checkbox">
+				</td>
+				<th id="mapping-error-type" class="manage-column"><?php echo esc_html__( 'Type', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-wordpress-id" class="manage-column"><?php echo esc_html__( 'WordPress ID', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-wordpress-type" class="manage-column"><?php echo esc_html__( 'WordPress Object Type', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-salesforce-id" class="manage-column"><?php echo esc_html__( 'Salesforce ID', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-created" class="manage-column"><?php echo esc_html__( 'Created Date/Time', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-actions" class="manage-column" colspan="2"><?php echo esc_html__( 'Actions', 'object-sync-for-salesforce' ); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
+			<tr>
+				<td class="manage-column column-cb check-column">
+					<label class="screen-reader-text" for="cb-select-all-2"><?php echo esc_html__( 'Select All', 'object-sync-for-salesforce' ); ?></label>
+					<input id="cb-select-all-2" type="checkbox">
+				</td>
+				<th class="manage-column"><?php echo esc_html__( 'Type', 'object-sync-for-salesforce' ); ?></th>
+				<th class="manage-column"><?php echo esc_html__( 'WordPress ID', 'object-sync-for-salesforce' ); ?></th>
+				<th class="manage-column"><?php echo esc_html__( 'WordPress Object Type', 'object-sync-for-salesforce' ); ?></th>
+				<th class="manage-column"><?php echo esc_html__( 'Salesforce ID', 'object-sync-for-salesforce' ); ?></th>
+				<th class="manage-column"><?php echo esc_html__( 'Created Date/Time', 'object-sync-for-salesforce' ); ?></th>
+				<th class="manage-column" colspan="2"><?php echo esc_html__( 'Actions', 'object-sync-for-salesforce' ); ?></th>
+			</tr>
 			<tr>
 				<td colspan="8">
 					<?php
@@ -44,7 +59,10 @@
 						$checked = '';
 					}
 					?>
-				<td><input type="checkbox" name="delete[<?php echo $error['id']; ?>]" id="delete_<?php echo $error['id']; ?>"<?php echo $checked; ?>></td>
+				<th scope="row" class="check-column">
+					<label class="screen-reader-text" for="delete_<?php echo $error['id']; ?>"><?php echo esc_html__( 'Select Error', 'object-sync-for-salesforce' ); ?></label>
+					<input id="delete_<?php echo $error['id']; ?>" type="checkbox" name="delete[<?php echo $error['id']; ?>]"<?php echo $checked; ?>>
+				</th>
 				<td><?php echo esc_html__( 'Pull from Salesforce', 'object-sync-for-salesforce' ); ?></td>
 				<td><?php echo $error['wordpress_id']; ?></td>
 				<td><?php echo $error['wordpress_object']; ?></td>
@@ -69,7 +87,10 @@
 						$checked = '';
 					}
 					?>
-				<td><input type="checkbox" name="delete[<?php echo $error['id']; ?>]" id="delete_<?php echo $error['id']; ?>"<?php echo $checked; ?>></td>
+				<th scope="row" class="check-column">
+					<label class="screen-reader-text" for="delete_<?php echo $error['id']; ?>"><?php echo esc_html__( 'Select Error', 'object-sync-for-salesforce' ); ?></label>
+					<input id="delete_<?php echo $error['id']; ?>" type="checkbox" name="delete[<?php echo $error['id']; ?>]"<?php echo $checked; ?>>
+				</th>
 				<td><?php echo esc_html__( 'Push to Salesforce', 'object-sync-for-salesforce' ); ?></td>
 				<td><?php echo $error['wordpress_id']; ?></td>
 				<td><?php echo $error['wordpress_object']; ?></td>
