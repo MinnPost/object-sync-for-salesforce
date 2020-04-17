@@ -1031,32 +1031,27 @@ class Object_Sync_Sf_Mapping {
 	 * @return array $errors Associative array of rows that failed to finish from either system
 	 */
 	public function get_failed_object_maps() {
-		$table               = $this->object_map_table;
-		$errors              = array();
-		$items_per_page      = 50;
-		$current_error_page  = isset( $_GET['error_page'] ) ? (int) $_GET['error_page'] : 1;
-		$offset              = ( $current_error_page * $items_per_page ) - $items_per_page;
-		$all_errors          = $this->wpdb->get_results( "SELECT * FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%' LIMIT ${offset}, ${items_per_page}", ARRAY_A );
-		$errors_total        = $this->wpdb->get_var( "SELECT COUNT(`id`) FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%'" );
-		$errors_pages_number = ceil( $errors_total / $items_per_page );
-		$pagination          = paginate_links(
+		$table                 = $this->object_map_table;
+		$errors                = array();
+		$items_per_page        = 50;
+		$current_error_page    = isset( $_GET['error_page'] ) ? (int) $_GET['error_page'] : 1;
+		$offset                = ( $current_error_page * $items_per_page ) - $items_per_page;
+		$all_errors            = $this->wpdb->get_results( "SELECT * FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%' LIMIT ${offset}, ${items_per_page}", ARRAY_A );
+		$errors_total          = $this->wpdb->get_var( "SELECT COUNT(`id`) FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%'" );
+		$errors['total_pages'] = ceil( $errors_total / $items_per_page );
+		$errors['pagination']  = paginate_links(
 			array(
 				'base'      => add_query_arg( 'error_page', '%#%' ),
 				'format'    => '',
-				'total'     => $errors_pages_number,
+				'total'     => $errors['total_pages'],
 				'prev_text' => __( '&laquo;', 'text-domain' ),
 				'next_text' => __( '&raquo;', 'text-domain' ),
 				'current'   => $current_error_page,
 			)
 		);
-
-		$errors['pagination'] = $pagination;
-		if ( ! empty( $all_errors ) ) {
-			$errors['total_pages'] = $errors_pages_number;
-			$errors['error_page']  = $current_error_page;
-			$errors['all_errors']  = $all_errors;
-			$errors['total']       = $errors_total;
-		}
+		$errors['error_page']  = $current_error_page;
+		$errors['all_errors']  = $all_errors;
+		$errors['total']       = $errors_total;
 		return $errors;
 	}
 
