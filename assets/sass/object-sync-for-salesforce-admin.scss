@@ -195,6 +195,23 @@ $body-color: rgb(68, 68, 68);
 
 #poststuff .sfwp-o-fieldmap {
 
+	// error table
+	form.error-rows {
+
+		.tablenav-pages-mappingerrors {
+			// from the button on the left, use the same styles
+			margin: 2px 0 0.8em;
+			padding-top: 10px;
+			text-align: right;
+
+			.displaying-num {
+				display: inline-block;
+				margin-right: 10px;
+			}
+		}
+	}
+
+
 	/**
   	* Select2 elements.
   	*/

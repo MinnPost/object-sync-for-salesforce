@@ -3,8 +3,8 @@ Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations, harmoney
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
-Tested up to: 5.3
-Stable tag: 1.9.0
+Tested up to: 5.4
+Stable tag: 1.9.2
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -264,6 +264,14 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
+* 1.9.2 (2020-04-17)
+    * Feature: add pagination links to the Mapping Errors screen if there are more than 50 errors. This prevents results that are too large from loading.
+
+* 1.9.1 (2020-04-17)
+    * Feature: add a checkbox to the Mapping Errors screen to allow selecting all the errors for deletion at once.
+    * Bug fix: check for a WordPress ID before creating an object map. This prevents a possible MySQL error that could occur in some cases.
+    * Maintenance: note WordPress 5.4 support.
+
 * 1.9.0 (2020-03-20)
     * Feature: when pushing or pulling the `wp_capabilities` field on a WordPress user, treat the data as WordPress needs it to assign roles. Thanks to WordPress user @emilyb6116 for reporting this and for testing the fix.
     * Feature: Hide admin menu items that won't work pre-authorization until the plugin is authorized with Salesforce. Thanks to WordPress user @mgparisi for pointing this out.
@@ -272,74 +280,5 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
     * Maintenance: Adding new fields to a fieldmap is faster and involves less code duplication.
     * Maintenance: For WordPress 5.3 compatibility, replace `current_time( 'timestamp' )` with `time()`.
     * Maintenance: Update Salesforce app setup instructions for Lightning.* 1.9.0 (2020-03-20)
-
-* 1.8.12 (2019-09-19)
-    * Bug fix: fix the `object_sync_for_salesforce_pull_query_modify` filter to prevent SOQL query properties from being added multiple times.
-    * Developers: clean up Travis config to stop its builds from failing.
-
-* 1.8.11 (2019-09-17)
-    * Bug fix: fix Ajax call for pushing data to Salesforce, and allow it to return JSON instead of echoing it. Thanks to WordPress user @graces25 for the report and the fix.
-    * Maintenance: use the log entry status variable in the title of all the log entries.
-    * Maintenance: when a fieldmap doesn't allow an operation, log it as a notice instead of an error.
-    * Developers: add the WordPress object type to the object_sync_for_salesforce_wordpress_object_data filter, allowing developers to alter WordPress data by the current object type. Thanks to GitHub user @DonnyVO for this work.
-
-* 1.8.10 (2019-09-12)
-    * Bug fix: Prevent PHP errors when API requests on empty Salesforce objects also return errors
-    * Bug fix: Fix authorize settings tab to prevent errors when there are no Salesforce Contacts (#303)
-    * Bug fix: Fix activation issue with $query object that occurred in some environments. Thanks to @yetanotherse for the fix.
-    * Maintenance: update some multiline function calls to match current WPCS standards.
-
-* 1.8.9 (2019-09-03)
-    * Feature: Provide an optional setting for how many log entries to clear at a time.
-    * Bug fix: Unify push success hook parameters so they match the (until now, inconsistently incorrect) documentation.
-    * Bug fix: Prevent duplicate admin display when multiple plugins try to filter the admin for logs.
-
-* 1.8.8 (2019-08-26)
-    * Feature: Make plugin logs sortable and filterable by type value.
-    * Feature: Add Salesforce info block to user profiles that have the `configure_salesforce` capability. Thanks to @ddoddsr for the report and the fix.
-    * Bug fix: Fix log scheduling so it resets the schedule when the log settings change.
-    * Bug fix: Fix log slug generation so it stops worrying about unique slugs every time.
-    * Maintenance: Fix docs links in All Developer Hooks. Thanks to @ddoddsr for the fix.
-
-* 1.8.7 (2019-07-22)
-    * Bug fix: Stop the plugin from breaking when SOAP is missing from the server. Thanks to GitHub user @Ethanb00 for the report.
-    * Fix issues with pull success method/docs. Thanks to @mistermarco for the report and the fix.
-    * Maintenance: Improve documentation in various places, notably for object map issues caused by Salesforce permissions.
-    * Maintenance: Update Gulp to 4.x.
-
-* 1.8.6 (2019-05-13)
-    * Feature: Add object type parameter to `push_update_params_modify` developer hook.
-    * Maintenance: Centralize documentation of SQL table structure.
-    * Maintenance: Replace the various calls to create/update metadata with just one for easier management.
-    * Maintenance: Update supported WordPress version to 5.2 and PHP version to 5.6.20 to match the new minimum for WordPress. 
-    * Developers: Update ActionScheduler to 2.2.5.
-
-* 1.8.5 (2019-03-30)
-    * Bug fix: This fixes a possible issue in which the plugin would fail to realize that its database version was up to date.
-
-* 1.8.4 (2019-03-27)
-    * Bug fix: Dates used by The Event Calendar plugin were not correctly saved. This could cause TEC events not to appear on the calendar. Thanks to @vajeshrathor for reporting this issue. The fix also improves overall date formatting within this plugin.
-    * Bug fix: The edit profile screen for users mapped to Salesforce could incorrectly be changed to a blank value, which did not delete the map. This release adds a delete link for this purpose.
-    * Bug fix: When doing error logging for metadata, the plugin was not always correctly checking for success, and could have false positives for errors.
-
-* 1.8.3 (2019-03-17)
-    * Bug fix: In what seemed to be rare cases, manual push or pull requests from the WordPress admin were failing to actually save any data.
-
-* 1.8.2 (2019-03-16)
-    * Bug fix: 1.8.0 accidentally disabled a developer filter. This re-enables it.
-
-* 1.8.1 (2019-03-16)
-    * Bug fix: 1.8.0 introduced a possible issue with checking for updated records.
-
-* 1.8.0 (2019-03-15)
-    * New: we can now map multiple WordPress objects to the same Salesforce object. Each WordPress record will update the Salesforce record, and the Salesforce record can update each WordPress record, all according to the fieldmap. Thanks to WordPress forum user @joecanas1 for the initial report some time ago.
-    * New: if Soap is enabled in the plugin settings, it is capable of responding to merge events. For example, if two Contacts are merged in Salesforce and a user is mapped to the old one, it will become mapped to the new one.
-    * New: WordPress 5.1 changed its new user notification parameters. Thanks to GitHub user @synthetiv for the fix.
-    * New: we've added a few additional debug log entries.
-    * New: there is better error checking on saving metadata for users, posts, and comments.
-    * Bug fix: 1.7.0 introduced an activation issue that this release fixes. There is also improved database versioning that occurs upon activation.
-    * Bug fix: a bug existed in fieldmaps that had a Salesforce field like a record ID, which cannot be pushed to Salesforce but can be pulled from Salesforce, but the sync was failing. Thanks to WordPress forum user @walexparadis for the report on this.
-    * Developers: we've updated our included version of ActionScheduler to 2.2.1.
-    * Developers: the `load_by_wordpress` and `load_by_salesforce` methods on the `salesforce_mapping` class have been deprecated in favor of `load_all_by_wordpress` and `load_all_by_salesforce`, though the deprecated methods have not been removed.
 
 See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/changelog.md) on GitHub or in changelog.txt in the installed plugin.
