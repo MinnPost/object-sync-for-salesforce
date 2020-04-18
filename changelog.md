@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 1.9.3 ()
+	* Feature: add a settings field for mapping errors per page. Defaults to 50.
+
 * 1.9.2 (2020-04-17)
 	* Feature: add pagination links to the Mapping Errors screen if there are more than 50 errors. This prevents results that are too large from loading.
 

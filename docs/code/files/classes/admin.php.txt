@@ -555,6 +555,7 @@ class Object_Sync_Sf_Admin {
 		$this->fields_fieldmaps( 'fieldmaps', 'objects' );
 		$this->fields_scheduling( 'schedule', 'schedule', $all_field_callbacks );
 		$this->fields_log_settings( 'log_settings', 'log_settings', $all_field_callbacks );
+		$this->fields_errors( 'mapping_errors', 'mapping_errors', $all_field_callbacks );
 	}
 
 	/**
@@ -1170,6 +1171,54 @@ class Object_Sync_Sf_Admin {
 			add_settings_field( $id, $title, $callback, $page, $section, $args );
 			register_setting( $page, $id );
 		}
+	}
+
+	/**
+	* Fields for the Mapping errors tab
+	* This runs add_settings_section once
+	*
+	* @param string $page
+	* @param string $section
+	* @param string $input_callback
+	*/
+	private function fields_errors( $page, $section, $callbacks ) {
+
+		add_settings_section( $section, __( 'Mapping Error Settings', 'object-sync-for-salesforce' ), null, $page );
+		$error_settings = array(
+			'errors_per_page' => array(
+				'title'    => __( 'Errors per page', 'object-sync-for-salesforce' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'number',
+					'validate' => 'absint',
+					'default'  => 50,
+					'desc'     => __( 'Set how many mapping errors to show on a single page.', 'object-sync-for-salesforce' ),
+					'constant' => '',
+				),
+			),
+		);
+
+		foreach ( $error_settings as $key => $attributes ) {
+			$id       = $this->option_prefix . $key;
+			$name     = $this->option_prefix . $key;
+			$title    = $attributes['title'];
+			$callback = $attributes['callback'];
+			$page     = $attributes['page'];
+			$section  = $attributes['section'];
+			$args     = array_merge(
+				$attributes['args'],
+				array(
+					'title'     => $title,
+					'id'        => $id,
+					'label_for' => $id,
+					'name'      => $name,
+				)
+			);
+			add_settings_field( $id, $title, $callback, $page, $section, $args );
+			register_setting( $page, $id );
+		} // End foreach().
 	}
 
 	/**
