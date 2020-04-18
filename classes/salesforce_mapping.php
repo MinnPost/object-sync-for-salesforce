@@ -1033,7 +1033,7 @@ class Object_Sync_Sf_Mapping {
 	public function get_failed_object_maps() {
 		$table                 = $this->object_map_table;
 		$errors                = array();
-		$items_per_page        = 50;
+		$items_per_page        = (int) get_option( $this->option_prefix . 'errors_per_page', 50 );
 		$current_error_page    = isset( $_GET['error_page'] ) ? (int) $_GET['error_page'] : 1;
 		$offset                = ( $current_error_page * $items_per_page ) - $items_per_page;
 		$all_errors            = $this->wpdb->get_results( "SELECT * FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%' LIMIT ${offset}, ${items_per_page}", ARRAY_A );

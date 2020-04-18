@@ -3,6 +3,8 @@
 <p><?php echo esc_html__( 'For any mapping object error, you can edit (if, for example, you know the ID of the item that should be in place) or delete each database row, or you can try to track down what the plugin was doing based on the other data displayed here.', 'object-sync-for-salesforce' ); ?></p>
 <p><?php echo esc_html__( 'If you edit one of these items, and it correctly maps data between the two systems, the sync for those items will behave as normal going forward, so any edits you do after that will sync as they should.', 'object-sync-for-salesforce' ); ?></p>
 
+<?php require_once( 'settings.php' ); ?>
+
 <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="error-rows">
 	<input type="hidden" name="redirect_url_error" value="<?php echo esc_url( $error_url ); ?>">
 	<input type="hidden" name="redirect_url_success" value="<?php echo esc_url( $success_url ); ?>">
