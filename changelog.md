@@ -1,8 +1,9 @@
 Changelog
 =========
 
-* 1.9.3 ()
+* 1.9.3 (2020-04-20)
 	* Feature: add a settings field for mapping errors per page. Defaults to 50.
+	* Bug fix: make sure a WordPress record is an object before loading its data and processing it. This is related to the fix in 1.9.1.
 
 * 1.9.2 (2020-04-17)
 	* Feature: add pagination links to the Mapping Errors screen if there are more than 50 errors. This prevents results that are too large from loading.

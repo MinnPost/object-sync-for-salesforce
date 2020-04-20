@@ -331,8 +331,9 @@ class Object_Sync_Sf_Admin {
 		$logging_enabled      = get_option( $this->option_prefix . 'enable_logging', false );
 		$tabs['log_settings'] = __( 'Log Settings', 'object-sync-for-salesforce' );
 
-		$mapping_errors = $this->mappings->get_failed_object_maps();
-		if ( ! empty( $mapping_errors ) ) {
+		$mapping_errors       = $this->mappings->get_failed_object_maps();
+		$mapping_errors_total = isset( $mapping_errors['total'] ) ? $mapping_errors['total'] : 0;
+		if ( 0 < $mapping_errors_total ) {
 			$tabs['mapping_errors'] = __( 'Mapping Errors', 'object-sync-for-salesforce' );
 		}
 

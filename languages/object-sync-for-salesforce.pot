@@ -21,7 +21,7 @@ msgstr ""
 msgid "Salesforce"
 msgstr ""
 
-#: classes/admin.php:328, classes/admin.php:2173
+#: classes/admin.php:328, classes/admin.php:2174
 msgid "Authorize"
 msgstr ""
 
@@ -41,339 +41,339 @@ msgstr ""
 msgid "Log Settings"
 msgstr ""
 
-#: classes/admin.php:340, templates/admin/mapping-errors.php:1
+#: classes/admin.php:341, templates/admin/mapping-errors.php:1
 msgid "Mapping Errors"
 msgstr ""
 
-#: classes/admin.php:356
+#: classes/admin.php:357
 msgid "Authorize tab"
 msgstr ""
 
-#: classes/admin.php:363
+#: classes/admin.php:364
 msgid "Fieldmaps tab"
 msgstr ""
 
-#: classes/admin.php:573
+#: classes/admin.php:574
 msgid "Consumer Key"
 msgstr ""
 
-#: classes/admin.php:586
+#: classes/admin.php:587
 msgid "Consumer Secret"
 msgstr ""
 
-#: classes/admin.php:598
+#: classes/admin.php:599
 msgid "Callback URL"
 msgstr ""
 
 #. translators: %1$s is the admin URL for the Authorize tab
-#: classes/admin.php:607
+#: classes/admin.php:608
 msgid "In most cases, you will want to use %1$s for this value."
 msgstr ""
 
-#: classes/admin.php:614
+#: classes/admin.php:615
 msgid "Login Base URL"
 msgstr ""
 
 #. translators: 1) production salesforce login, 2) sandbox salesforce login
-#: classes/admin.php:623
+#: classes/admin.php:624
 msgid "For most Salesforce setups, you should use %1$s for production and %2$s for sandbox. If you try to use an instance name as the URL, you may encounter Salesforce errors."
 msgstr ""
 
-#: classes/admin.php:631
+#: classes/admin.php:632
 msgid "Authorize URL Path"
 msgstr ""
 
-#: classes/admin.php:638, classes/admin.php:651
+#: classes/admin.php:639, classes/admin.php:652
 msgid "For most Salesforce installs, this should not be changed."
 msgstr ""
 
-#: classes/admin.php:644
+#: classes/admin.php:645
 msgid "Token URL Path"
 msgstr ""
 
-#: classes/admin.php:657, classes/admin.php:805
+#: classes/admin.php:658, classes/admin.php:806
 msgid "Salesforce API Version"
 msgstr ""
 
-#: classes/admin.php:670
+#: classes/admin.php:671
 msgid "Limit Salesforce Objects"
 msgstr ""
 
-#: classes/admin.php:677
+#: classes/admin.php:678
 msgid "Allows you to limit which Salesforce objects can be mapped"
 msgstr ""
 
-#: classes/admin.php:680
+#: classes/admin.php:681
 msgid "Only Triggerable objects"
 msgstr ""
 
-#: classes/admin.php:686
+#: classes/admin.php:687
 msgid "Only Updateable objects"
 msgstr ""
 
-#: classes/admin.php:695
+#: classes/admin.php:696
 msgid "Salesforce Field Display Value"
 msgstr ""
 
-#: classes/admin.php:702
+#: classes/admin.php:703
 msgid "When choosing Salesforce fields to map, this value determines how the dropdown will identify Salesforce fields."
 msgstr ""
 
-#: classes/admin.php:706
+#: classes/admin.php:707
 msgid "Field Label"
 msgstr ""
 
-#: classes/admin.php:714
+#: classes/admin.php:715
 msgid "API Name"
 msgstr ""
 
-#: classes/admin.php:721
+#: classes/admin.php:722
 msgid "Pull query record limit"
 msgstr ""
 
-#: classes/admin.php:728
+#: classes/admin.php:729
 msgid "Limit the number of records that can be pulled from Salesforce in a single query."
 msgstr ""
 
-#: classes/admin.php:734
+#: classes/admin.php:735
 msgid "Pull throttle (seconds)"
 msgstr ""
 
-#: classes/admin.php:741
+#: classes/admin.php:742
 msgid "Number of seconds to wait between repeated salesforce pulls. Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage."
 msgstr ""
 
-#: classes/admin.php:751
+#: classes/admin.php:752
 msgid "Enable the Salesforce SOAP API?"
 msgstr ""
 
-#: classes/admin.php:759
+#: classes/admin.php:760
 msgid "Check this to enable the SOAP API and use it instead of the REST API when the plugin supports it. https://developer.salesforce.com/blogs/tech-pubs/2011/10/salesforce-apis-what-they-are-when-to-use-them.html to compare the two. Note: if you need to detect Salesforce merges in this plugin, you will need to enable SOAP."
 msgstr ""
 
-#: classes/admin.php:764
+#: classes/admin.php:765
 msgid "Path to SOAP WSDL file"
 msgstr ""
 
-#: classes/admin.php:772
+#: classes/admin.php:773
 msgid "Optionally add a path to your own WSDL file. If you do not, the plugin will use the default partner.wsdl.xml from the Force.com toolkit."
 msgstr ""
 
-#: classes/admin.php:779
+#: classes/admin.php:780
 msgid "Debug mode?"
 msgstr ""
 
-#: classes/admin.php:786
+#: classes/admin.php:787
 msgid "Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment."
 msgstr ""
 
-#: classes/admin.php:791
+#: classes/admin.php:792
 msgid "Delete plugin data on uninstall?"
 msgstr ""
 
-#: classes/admin.php:798
+#: classes/admin.php:799
 msgid "If checked, the plugin will delete the tables and other data it creates when you uninstall it. Unchecking this field can be useful if you need to reactivate the plugin for any reason without losing data."
 msgstr ""
 
-#: classes/admin.php:871
+#: classes/admin.php:872
 msgid "Batch Settings"
 msgstr ""
 
-#: classes/admin.php:875
+#: classes/admin.php:876
 msgid "Batch size"
 msgstr ""
 
-#: classes/admin.php:883
+#: classes/admin.php:884
 msgid "Set how many actions (checking for data changes, syncing a record, etc. all count as individual actions) can be run in a batch. Start with a low number here, like 5, if you are unsure."
 msgstr ""
 
-#: classes/admin.php:889
+#: classes/admin.php:890
 msgid "Concurrent batches"
 msgstr ""
 
-#: classes/admin.php:897
+#: classes/admin.php:898
 msgid "Set how many batches of actions can be run at once. Start with a low number here, like 3, if you are unsure."
 msgstr ""
 
-#: classes/admin.php:907
+#: classes/admin.php:908
 msgid "Run schedule every"
 msgstr ""
 
-#: classes/admin.php:919, classes/admin.php:1074
+#: classes/admin.php:920, classes/admin.php:1075
 msgid "Time unit"
 msgstr ""
 
-#: classes/admin.php:929, classes/admin.php:1084
+#: classes/admin.php:930, classes/admin.php:1085
 msgid "Minutes"
 msgstr ""
 
-#: classes/admin.php:933, classes/admin.php:1088
+#: classes/admin.php:934, classes/admin.php:1089
 msgid "Hours"
 msgstr ""
 
-#: classes/admin.php:937, classes/admin.php:1092
+#: classes/admin.php:938, classes/admin.php:1093
 msgid "Days"
 msgstr ""
 
 #. translators: $this->get_schedule_count is an integer showing how many items are in the current queue
-#: classes/admin.php:946
+#: classes/admin.php:947
 msgid "%s item"
 msgid_plural "%s items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/admin.php:951
+#: classes/admin.php:952
 msgid "Clear this queue"
 msgstr ""
 
-#: classes/admin.php:991
+#: classes/admin.php:992
 msgid "Enable Logging?"
 msgstr ""
 
-#: classes/admin.php:1003
+#: classes/admin.php:1004
 msgid "Statuses to log"
 msgstr ""
 
-#: classes/admin.php:1010
+#: classes/admin.php:1011
 msgid "these are the statuses to log"
 msgstr ""
 
-#: classes/admin.php:1013
+#: classes/admin.php:1014
 msgid "Error"
 msgstr ""
 
-#: classes/admin.php:1018
+#: classes/admin.php:1019
 msgid "Success"
 msgstr ""
 
-#: classes/admin.php:1023
+#: classes/admin.php:1024
 msgid "Notice"
 msgstr ""
 
-#: classes/admin.php:1028
+#: classes/admin.php:1029
 msgid "Debug"
 msgstr ""
 
-#: classes/admin.php:1036
+#: classes/admin.php:1037
 msgid "Automatically delete old log entries?"
 msgstr ""
 
-#: classes/admin.php:1048
+#: classes/admin.php:1049
 msgid "Age to delete log entries"
 msgstr ""
 
-#: classes/admin.php:1055
+#: classes/admin.php:1056
 msgid "If automatic deleting is enabled, it will affect logs this old."
 msgstr ""
 
-#: classes/admin.php:1061
+#: classes/admin.php:1062
 msgid "Check for old logs every"
 msgstr ""
 
-#: classes/admin.php:1081
+#: classes/admin.php:1082
 msgid "These two fields are how often the site will check for logs to delete."
 msgstr ""
 
-#: classes/admin.php:1099
+#: classes/admin.php:1100
 msgid "Clear this many log entries"
 msgstr ""
 
-#: classes/admin.php:1106
+#: classes/admin.php:1107
 msgid "This number is how many log entries the plugin will try to clear at a time. If you do not enter a number, the default is 100."
 msgstr ""
 
-#: classes/admin.php:1112
+#: classes/admin.php:1113
 msgid "Triggers to log"
 msgstr ""
 
-#: classes/admin.php:1119
+#: classes/admin.php:1120
 msgid "these are the triggers to log"
 msgstr ""
 
-#: classes/admin.php:1122, templates/admin/fieldmaps-add-edit-clone.php:451
+#: classes/admin.php:1123, templates/admin/fieldmaps-add-edit-clone.php:451
 msgid "WordPress create"
 msgstr ""
 
-#: classes/admin.php:1127, templates/admin/fieldmaps-add-edit-clone.php:452
+#: classes/admin.php:1128, templates/admin/fieldmaps-add-edit-clone.php:452
 msgid "WordPress update"
 msgstr ""
 
-#: classes/admin.php:1132, templates/admin/fieldmaps-add-edit-clone.php:453
+#: classes/admin.php:1133, templates/admin/fieldmaps-add-edit-clone.php:453
 msgid "WordPress delete"
 msgstr ""
 
-#: classes/admin.php:1137, templates/admin/fieldmaps-add-edit-clone.php:454
+#: classes/admin.php:1138, templates/admin/fieldmaps-add-edit-clone.php:454
 msgid "Salesforce create"
 msgstr ""
 
-#: classes/admin.php:1142, templates/admin/fieldmaps-add-edit-clone.php:455
+#: classes/admin.php:1143, templates/admin/fieldmaps-add-edit-clone.php:455
 msgid "Salesforce update"
 msgstr ""
 
-#: classes/admin.php:1147, templates/admin/fieldmaps-add-edit-clone.php:456
+#: classes/admin.php:1148, templates/admin/fieldmaps-add-edit-clone.php:456
 msgid "Salesforce delete"
 msgstr ""
 
-#: classes/admin.php:1186
+#: classes/admin.php:1187
 msgid "Mapping Error Settings"
 msgstr ""
 
-#: classes/admin.php:1189
+#: classes/admin.php:1190
 msgid "Errors per page"
 msgstr ""
 
-#: classes/admin.php:1197
+#: classes/admin.php:1198
 msgid "Set how many mapping errors to show on a single page."
 msgstr ""
 
-#: classes/admin.php:1241
+#: classes/admin.php:1242
 msgid "Your account does not have permission to edit the Salesforce REST API plugin's settings."
 msgstr ""
 
-#: classes/admin.php:1247
+#: classes/admin.php:1248
 msgid "Errors kept this fieldmap from being saved."
 msgstr ""
 
-#: classes/admin.php:1253
+#: classes/admin.php:1254
 msgid "Errors kept this object map from being saved."
 msgstr ""
 
-#: classes/admin.php:1259
+#: classes/admin.php:1260
 msgid "This data was successfully saved."
 msgstr ""
 
-#: classes/admin.php:1265
+#: classes/admin.php:1266
 msgid "This data was not successfully saved. Try again."
 msgstr ""
 
-#: classes/admin.php:1271
+#: classes/admin.php:1272
 msgid "Errors kept these mapping errors from being deleted."
 msgstr ""
 
-#: classes/admin.php:1984
+#: classes/admin.php:1985
 msgid "Select one"
 msgstr ""
 
 #. translators: 1) $versions_is_cached is the "This list is/is not cached, and/but" line, 2) $versions_from_cache is the "items were/were not loaded from the cache" line
-#: classes/admin.php:2116
+#: classes/admin.php:2117
 msgid "Available Salesforce API versions. %1$s %2$s. This is not an authenticated request, so it does not touch the Salesforce token."
 msgstr ""
 
 #. translators: 1) $contacts['data']['totalSize'] is the number of items loaded, 2) $contacts['data']['records'][0]['attributes']['type'] is the name of the Salesforce object, 3) $contacts_is_cached is the "They are/are not cached, and/but" line, 4) $contacts_from_cache is the "they were/were not loaded from the cache" line, 5) is the "this request did/did not require refreshing the Salesforce token" line
-#: classes/admin.php:2146
+#: classes/admin.php:2147
 msgid "Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s."
 msgstr ""
 
-#: classes/admin.php:2196
+#: classes/admin.php:2197
 msgid "The plugin cache has been cleared."
 msgstr ""
 
 #. translators: $schedule_name is the name of the current queue. Defaults: salesforce_pull, salesforce_push, salesforce
-#: classes/admin.php:2352
+#: classes/admin.php:2353
 msgid "You have cleared the %s schedule."
 msgstr ""
 
-#: classes/admin.php:2415, classes/salesforce_pull.php:1925, classes/salesforce_push.php:1095
+#: classes/admin.php:2416, classes/salesforce_pull.php:1925, classes/salesforce_push.php:1095
 msgid "Mapping object updated via function: "
 msgstr ""
 
@@ -530,42 +530,42 @@ msgid "Mapping object %1$s via function: "
 msgstr ""
 
 #. translators: 1) is log status, 2) is object type, 3) is id value
-#: classes/wordpress.php:763
+#: classes/wordpress.php:767
 msgid "%1$s: WordPress update for %2$s ID %3$s was unsuccessful with these errors:"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status
-#: classes/wordpress.php:1077
+#: classes/wordpress.php:1081
 msgid "%1$s: Users: Tried to run user_upsert, and ended up without a user id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status
-#: classes/wordpress.php:1416
+#: classes/wordpress.php:1420
 msgid "%1$s: Posts: Tried to run post_upsert, and ended up without a post id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status
-#: classes/wordpress.php:1731
+#: classes/wordpress.php:1735
 msgid "%1$s: Attachments: Tried to run attachment_upsert, and ended up without an attachment id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status
-#: classes/wordpress.php:2057
+#: classes/wordpress.php:2061
 msgid "%1$s: Terms: Tried to run term_upsert, and ended up without a term id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status
-#: classes/wordpress.php:2387
+#: classes/wordpress.php:2391
 msgid "%1$s: Comments: Tried to run comment_upsert, and ended up without a comment id"
 msgstr ""
 
 #. translators: 1) is the WordPress object type, 2) is the method that should be used to save the value.
-#: classes/wordpress.php:2498
+#: classes/wordpress.php:2502
 msgid "Tried to add %1$s meta with method %2$s."
 msgstr ""
 
 #. translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save
-#: classes/wordpress.php:2563
+#: classes/wordpress.php:2567
 msgid "Unable to update %1$s meta key %2$s with method %3$s. The stored value is %4$s and the new value should be %5$s."
 msgstr ""
 

@@ -4,7 +4,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
 Tested up to: 5.4
-Stable tag: 1.9.2
+Stable tag: 1.9.3
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -263,6 +263,10 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 - **Build other integrations in WordPress** this plugin focuses on the Salesforce REST API, as it covers the integration needs we have. Salesforce also has many other developer options: the SOAP API (we hope to incorporate this into Object Sync for Salesforce at some point), the Bulk API, and the Metadata API. Developers could extend this plugin to integrate with one of these. We would welcome any pull requests!
 
 == Changelog ==
+
+* 1.9.3 (2020-04-20)
+    * Feature: add a settings field for mapping errors per page. Defaults to 50.
+    * Bug fix: make sure a WordPress record is an object before loading its data and processing it. This is related to the fix in 1.9.1.
 
 * 1.9.2 (2020-04-17)
     * Feature: add pagination links to the Mapping Errors screen if there are more than 50 errors. This prevents results that are too large from loading.
