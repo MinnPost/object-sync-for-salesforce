@@ -626,7 +626,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	*/
 	public function salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger ) {
 
-		// when using async, this task receives the WordPress object id value as an integer. otherwise, it receives the WordPress object data
+		// when using async, this task receives the WordPress object id value as an integer. otherwise, it receives the WordPress object data as an array
 		if ( is_int( $object ) ) {
 			$wordpress_id = $object;
 			// if this is NOT a deletion, try to get all of the object's data

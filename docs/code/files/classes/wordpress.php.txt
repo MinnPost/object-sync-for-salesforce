@@ -362,6 +362,10 @@ class Object_Sync_Sf_WordPress {
 			$data = get_post( $object_id );
 		}
 
+		if ( ! is_object( $data ) ) {
+			return $wordpress_object;
+		}
+
 		$fields = $this->get_wordpress_object_fields( $object_type );
 		foreach ( $fields as $key => $value ) {
 			$field                      = $value['key'];
