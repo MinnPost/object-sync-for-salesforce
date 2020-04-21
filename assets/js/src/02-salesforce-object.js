@@ -97,6 +97,7 @@ function defaultRecordTypeSettings( allowedTypesContainer ) {
 	if ( 0 === $( '.' + allowedTypesContainer + ' input[type="checkbox"]:checked' ).length ) {
 		selectContainer.addClass( 'record-type-default-template' );
 		$( selectDefaultField ).prop( 'required', false );
+		$( selectDefaultField ).val('');
 		return;
 	}
 	$( '.' + allowedTypesContainer + ' input[type="checkbox"]:checked' ).each( function( index ) {
