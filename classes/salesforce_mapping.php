@@ -379,7 +379,7 @@ class Object_Sync_Sf_Mapping {
 				)
 			);
 		}
-		if ( isset( $posted['salesforce_record_type_default'] ) ) {
+		if ( isset( $posted['salesforce_record_type_default'] ) && '' !== $posted['salesforce_record_type_default'] ) {
 			$data['salesforce_record_type_default'] = $posted['salesforce_record_type_default'];
 		} else {
 			$data['salesforce_record_type_default'] = maybe_serialize( $this->salesforce_default_record_type );
