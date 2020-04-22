@@ -675,7 +675,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			);
 			$result = array(
 				'title'   => $title,
-				'message' => '',
+				'message' => print_r( $object, true ), // log as much info as possible about this
 				'trigger' => $sf_sync_trigger,
 				'parent'  => 0,
 				'status'  => $status,
