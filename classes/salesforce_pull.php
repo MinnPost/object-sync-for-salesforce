@@ -1907,7 +1907,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// if the last sync is greater than the last time this object was updated by Salesforce, skip it
 		// this keeps us from doing redundant syncs
 		// because SF stores all DateTimes in UTC.
-		$mapping_object['object_updated'] = current_time( 'mysql' );
+		$mapping_object['object_updated'] = current_time( 'mysql', true );
 
 		$pull_trigger_field = $salesforce_mapping['pull_trigger_field'];
 		$pull_trigger_value = $object[ $pull_trigger_field ];
@@ -2014,7 +2014,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// maybe can check to see if we actually updated anything in WordPress
 		// tell the mapping object - whether it is new or already existed - how we just used it
 		$mapping_object['last_sync_action'] = 'pull';
-		$mapping_object['last_sync']        = current_time( 'mysql' );
+		$mapping_object['last_sync']        = current_time( 'mysql', true );
 
 		// update that mapping object. the Salesforce data version will be set here as well because we set it earlier
 		$update_object_map = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
@@ -2259,7 +2259,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				'wordpress_id'      => $wordpress_id, // wordpress unique id
 				'salesforce_id'     => $salesforce_object['Id'], // salesforce unique id. we don't care what kind of object it is at this point
 				'wordpress_object'  => $field_mapping['wordpress_object'], // keep track of what kind of wp object this is
-				'last_sync'         => current_time( 'mysql' ),
+				'last_sync'         => current_time( 'mysql', true ),
 				'last_sync_action'  => 'pull',
 				'last_sync_status'  => $this->mappings->status_success,
 				'last_sync_message' => esc_html__( 'Mapping object created via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__,

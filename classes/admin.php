@@ -2410,7 +2410,7 @@ class Object_Sync_Sf_Admin {
 				'wordpress_id'      => $wordpress_id, // wordpress unique id
 				'salesforce_id'     => $salesforce_id, // salesforce unique id. we don't care what kind of object it is at this point
 				'wordpress_object'  => $wordpress_object, // keep track of what kind of wp object this is
-				'last_sync'         => current_time( 'mysql' ),
+				'last_sync'         => current_time( 'mysql', true ),
 				'last_sync_action'  => $action,
 				'last_sync_status'  => $this->mappings->status_success,
 				'last_sync_message' => __( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__,

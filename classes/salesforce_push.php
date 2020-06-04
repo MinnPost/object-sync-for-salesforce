@@ -1164,7 +1164,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			// there is an existing object link
 			// if the last sync is greater than the last time this object was updated, skip it
 			// this keeps us from doing redundant syncs
-			$mapping_object['object_updated'] = current_time( 'mysql' );
+			$mapping_object['object_updated'] = current_time( 'mysql', true );
 			if ( $mapping_object['last_sync'] > $mapping_object['object_updated'] ) {
 				$status = 'notice';
 				if ( isset( $this->logging ) ) {
@@ -1312,7 +1312,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 			// tell the mapping object - whether it is new or already existed - how we just used it
 			$mapping_object['last_sync_action'] = 'push';
-			$mapping_object['last_sync']        = current_time( 'mysql' );
+			$mapping_object['last_sync']        = current_time( 'mysql', true );
 
 			// update that mapping object
 			$map_result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
@@ -1354,7 +1354,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					'wordpress_id'      => $wordpress_object[ $id_field_name ], // wordpress unique id
 					'salesforce_id'     => $salesforce_id, // salesforce unique id. we don't care what kind of object it is at this point
 					'wordpress_object'  => $field_mapping['wordpress_object'], // keep track of what kind of wp object this is
-					'last_sync'         => current_time( 'mysql' ),
+					'last_sync'         => current_time( 'mysql', true ),
 					'last_sync_action'  => 'push',
 					'last_sync_status'  => $this->mappings->status_success,
 					'last_sync_message' => sprintf(

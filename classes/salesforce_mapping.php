@@ -431,7 +431,7 @@ class Object_Sync_Sf_Mapping {
 	 */
 	public function create_object_map( $posted = array() ) {
 		$data            = $this->setup_object_map_data( $posted );
-		$data['created'] = current_time( 'mysql' );
+		$data['created'] = current_time( 'mysql', true );
 		// Check to see if we don't know the salesforce id and it is not a temporary id, or if this is pending.
 		// If it is using a temporary id, the map will get updated after it finishes running; it won't call this method unless there's an error, which we should log.
 		if ( substr( $data['salesforce_id'], 0, 7 ) !== 'tmp_sf_' || ( isset( $data['action'] ) && 'pending' === $data['action'] ) ) {
@@ -583,7 +583,7 @@ class Object_Sync_Sf_Mapping {
 	public function update_object_map( $posted = array(), $id = '' ) {
 		$data = $this->setup_object_map_data( $posted );
 		if ( ! isset( $data['object_updated'] ) ) {
-			$data['object_updated'] = current_time( 'mysql' );
+			$data['object_updated'] = current_time( 'mysql', true );
 		}
 		$update = $this->wpdb->update(
 			$this->object_map_table,
