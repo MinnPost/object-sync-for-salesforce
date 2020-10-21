@@ -216,6 +216,11 @@
 							echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' when mapping Salesforce fields, a * in the field name designates a required field for this object type.', 'object-sync-for-salesforce' ) );
 							?>
 						</small></p>
+						<p><small>
+							<?php
+							echo sprintf( '<strong>' . esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' when mapping Salesforce fields, a 🔒 in the field name designates a locked Salesforce field. This means you can pull data from that field but you cannot push data to it.', 'object-sync-for-salesforce' ) );
+							?>
+						</small></p>
 					</td>
 				</tr>
 			</tfoot>
@@ -277,11 +282,18 @@
 									$salesforce_field['label'] .= ' *';
 								}
 
+								if ( false === $salesforce_field['updateable'] ) {
+									$locked = ' 🔒';
+								} else {
+									$locked = '';
+								}
+
 								echo sprintf(
-									'<option value="%1$s"%2$s>%3$s</option>',
+									'<option value="%1$s"%2$s>%3$s%4$s</option>',
 									esc_attr( $salesforce_field['name'] ),
 									esc_attr( $selected ),
-									esc_html( $salesforce_field['label'] )
+									esc_html( $salesforce_field['label'] ),
+									$locked
 								);
 							}
 							?>
