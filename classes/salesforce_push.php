@@ -605,7 +605,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				$push      = $this->salesforce_push_sync_rest( $object_type, $object, $mapping, $sf_sync_trigger );
 				$results[] = $push;
 			} // End if().
-		} // End foreach().
+		} // End foreach() on fieldmaps.
 		return $results;
 	}
 
@@ -675,7 +675,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			);
 			$result = array(
 				'title'   => $title,
-				'message' => '',
+				'message' => print_r( $object, true ), // log as much info as possible about this
 				'trigger' => $sf_sync_trigger,
 				'parent'  => 0,
 				'status'  => $status,
