@@ -2,7 +2,7 @@
 /*
 Plugin Name: Object Sync for Salesforce
 Description: Object Sync for Salesforce maps and syncs data between Salesforce objects and WordPress objects.
-Version: 1.9.3
+Version: 1.10.0
 Author: MinnPost
 Author URI: https://code.minnpost.com
 License: GPL2+
@@ -50,6 +50,12 @@ class Object_Sync_Salesforce {
 	* Current version of the plugin
 	*/
 	private $version;
+
+	/**
+	* @var string
+	* Current installed version of the plugin as indicated in the database
+	*/
+	private $user_installed_version;
 
 	/**
 	* @var object
@@ -140,11 +146,12 @@ class Object_Sync_Salesforce {
 
 		global $wpdb;
 
-		$this->wpdb              = $wpdb;
-		$this->version           = '1.9.3';
-		$this->slug              = 'object-sync-for-salesforce';
-		$this->option_prefix     = 'object_sync_for_salesforce_';
-		$this->login_credentials = $this->get_login_credentials();
+		$this->wpdb                   = $wpdb;
+		$this->version                = '1.10.0';
+		$this->user_installed_version = get_option( $this->option_prefix . 'db_version', '' );
+		$this->slug                   = 'object-sync-for-salesforce';
+		$this->option_prefix          = 'object_sync_for_salesforce_';
+		$this->login_credentials      = $this->get_login_credentials();
 
 		$this->schedulable_classes = array(
 			'salesforce_push' => array(
@@ -188,7 +195,7 @@ class Object_Sync_Salesforce {
 
 		$this->queue = $this->queue( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
 
-		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
+		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue, $this->user_installed_version );
 
 		// Run non-activation things. We do this early because ActionScheduler has to have access to plugins_loaded with priority of zero.
 		add_action( 'plugins_loaded', array( $this, 'run' ), -10 );
@@ -207,7 +214,7 @@ class Object_Sync_Salesforce {
 
 		$this->logging = $this->logging( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
 
-		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->logging );
+		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->logging, '', $this->user_installed_version );
 
 		$this->wordpress  = $this->wordpress( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->mappings, $this->logging );
 		$this->salesforce = $this->salesforce_get_api();

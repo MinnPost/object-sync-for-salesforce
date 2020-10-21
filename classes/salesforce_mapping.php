@@ -16,6 +16,7 @@ class Object_Sync_Sf_Mapping {
 
 	protected $wpdb;
 	protected $version;
+	protected $user_installed_version;
 	protected $slug;
 	protected $logging;
 	protected $option_prefix;
@@ -64,12 +65,13 @@ class Object_Sync_Sf_Mapping {
 	 * @param string $option_prefix The plugin option prefix
 	 * @throws \Exception
 	 */
-	public function __construct( $wpdb, $version, $slug, $logging, $option_prefix = '' ) {
-		$this->wpdb          = $wpdb;
-		$this->version       = $version;
-		$this->slug          = $slug;
-		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
-		$this->logging       = $logging;
+	public function __construct( $wpdb, $version, $slug, $logging, $option_prefix = '', $user_installed_version = '' ) {
+		$this->wpdb                   = $wpdb;
+		$this->version                = $version;
+		$this->slug                   = $slug;
+		$this->logging                = $logging;
+		$this->option_prefix          = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
+		$this->user_installed_version = isset( $user_installed_version ) ? $user_installed_version : $version;
 
 		$this->fieldmap_table   = $this->wpdb->prefix . 'object_sync_sf_field_map';
 		$this->object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
@@ -132,8 +134,8 @@ class Object_Sync_Sf_Mapping {
 	 */
 	public function create_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array() ) {
 		$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
-		if ( version_compare( $this->version, '1.2.5', '>=' ) ) {
-			$data['version'] = $this->version;
+		if ( version_compare( $this->user_installed_version, '1.2.5', '>=' ) ) {
+			$data['version'] = $this->user_installed_version;
 		}
 		$insert = $this->wpdb->insert( $this->fieldmap_table, $data );
 		if ( 1 === $insert ) {
@@ -153,6 +155,7 @@ class Object_Sync_Sf_Mapping {
 	 * @throws \Exception
 	 */
 	public function get_fieldmaps( $id = null, $conditions = array(), $reset = false ) {
+		error_log( 'get fieldmaps' );
 		$table = $this->fieldmap_table;
 		if ( null !== $id ) { // get one fieldmap.
 			$map        = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
@@ -187,13 +190,13 @@ class Object_Sync_Sf_Mapping {
 			return $mappings;
 		} else {
 			// get all of the mappings. ALL THE MAPPINGS.
-			if ( version_compare( $this->version, '1.9.0', '>=' ) ) {
+			if ( version_compare( $this->user_installed_version, '1.10.0', '>=' ) ) {
 				// if the version is greater than or equal to 1.9.0, the fieldmap table has a wordpress_object_default_status column
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `wordpress_object_default_status`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
-			} elseif ( version_compare( $this->version, '1.5.0', '>=' ) ) {
+			} elseif ( version_compare( $this->user_installed_version, '1.5.0', '>=' ) ) {
 				// if the version is greater than or equal to 1.5.0, the fieldmap table has a pull_to_drafts column
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
-			} elseif ( version_compare( $this->version, '1.2.5', '>=' ) ) {
+			} elseif ( version_compare( $this->user_installed_version, '1.2.5', '>=' ) ) {
 				// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight`, `version` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
 			} else {
@@ -222,7 +225,7 @@ class Object_Sync_Sf_Mapping {
 				if ( empty( $directions ) || in_array( $fields['direction'], $directions, true ) ) {
 
 					// in version 1.2.0, we provided an option for API name vs label for Salesforce fields
-					if ( version_compare( $this->version, '1.2.0', '>=' ) && isset( $fields['salesforce_field']['name'] ) ) {
+					if ( version_compare( $this->user_installed_version, '1.2.0', '>=' ) && isset( $fields['salesforce_field']['name'] ) ) {
 						$array_key = 'name';
 					} else {
 						$array_key = 'label';
@@ -269,8 +272,8 @@ class Object_Sync_Sf_Mapping {
 	 */
 	public function update_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array(), $id = '' ) {
 		$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
-		if ( version_compare( $this->version, '1.2.5', '>=' ) && ! isset( $data['updated'] ) ) {
-			$data['version'] = $this->version;
+		if ( version_compare( $this->user_installed_version, '1.2.5', '>=' ) && ! isset( $data['updated'] ) ) {
+			$data['version'] = $this->user_installed_version;
 		}
 		$update = $this->wpdb->update(
 			$this->fieldmap_table,
@@ -806,7 +809,7 @@ class Object_Sync_Sf_Mapping {
 
 			$wordpress_field = $fieldmap['wordpress_field']['label'];
 
-			if ( version_compare( $this->version, '1.2.0', '>=' ) && isset( $fieldmap['salesforce_field']['name'] ) ) {
+			if ( version_compare( $this->user_installed_version, '1.2.0', '>=' ) && isset( $fieldmap['salesforce_field']['name'] ) ) {
 				$salesforce_field = $fieldmap['salesforce_field']['name'];
 				// Load the type of the Salesforce field. We can use this to handle Salesforce field value issues that come up based on what the field sends into WordPress or expects from WordPress.
 				$salesforce_field_type = $fieldmap['salesforce_field']['type'];
