@@ -201,10 +201,8 @@ class Object_Sync_Sf_Activate {
 
 		// user is running a version less than the current one
 		if ( version_compare( $this->user_installed_version, $this->version, '<' ) ) {
-			error_log('versions do not match');
 			$this->wordpress_salesforce_tables();
 		} else {
-			error_log('version ' . $this->user_installed_version . ' does match ' . $this->version);
 			return true;
 		}
 	}

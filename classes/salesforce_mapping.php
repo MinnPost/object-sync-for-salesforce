@@ -155,7 +155,6 @@ class Object_Sync_Sf_Mapping {
 	 * @throws \Exception
 	 */
 	public function get_fieldmaps( $id = null, $conditions = array(), $reset = false ) {
-		error_log( 'get fieldmaps' );
 		$table = $this->fieldmap_table;
 		if ( null !== $id ) { // get one fieldmap.
 			$map        = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
