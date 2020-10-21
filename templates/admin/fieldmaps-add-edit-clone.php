@@ -406,6 +406,11 @@
 														if ( false === $salesforce_field['nillable'] ) {
 															$salesforce_field['label'] .= ' *';
 														}
+
+														if ( false === $salesforce_field['updateable'] ) {
+															$salesforce_field['label'] .= ' 🔒';
+														}
+
 														echo sprintf(
 															'<option value="%1$s"%2$s%3$s>%4$s</option>',
 															esc_attr( $salesforce_field['name'] ),
@@ -419,6 +424,9 @@
 												</select>
 												<p class="description">
 													<?php echo esc_html__( 'Salesforce fields containing a * are required fields for this object type.', 'object-sync-for-salesforce' ); ?>
+												</p>
+												<p class="description">
+													<?php echo esc_html__( 'Salesforce fields containing a 🔒 are locked fields for this object type. This means you can pull data from them into WordPress, but you cannot push data to them from WordPress.', 'object-sync-for-salesforce' ); ?>
 												</p>
 												<div class="sfwp-field-dependent-fields sfwp-field-date-format sfwp-field-dependent-fields-template">
 													<label for="sfwp-wordpress-date-format-<?php echo $key; ?>"><?php echo esc_html__( 'Date Format', 'object-sync-for-salesforce' ); ?></label>
