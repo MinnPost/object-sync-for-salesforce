@@ -36,6 +36,7 @@ function fieldmapFields( oldKey, newKey, lastRow ) {
 	} else {
 		nextRow = lastRow.clone( true );
 	}
+	console.log('nextRow is ' + nextRow);
 	$( nextRow ).attr( 'data-key', newKey );
 	$( nextRow ).each( function() {
 		$( this ).html( function( i, h ) {
