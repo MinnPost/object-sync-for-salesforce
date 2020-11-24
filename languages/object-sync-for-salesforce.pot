@@ -21,7 +21,7 @@ msgstr ""
 msgid "Salesforce"
 msgstr ""
 
-#: classes/admin.php:328, classes/admin.php:2174
+#: classes/admin.php:328, classes/admin.php:2180
 msgid "Authorize"
 msgstr ""
 
@@ -294,27 +294,27 @@ msgstr ""
 msgid "these are the triggers to log"
 msgstr ""
 
-#: classes/admin.php:1123, templates/admin/fieldmaps-add-edit-clone.php:451
+#: classes/admin.php:1123, templates/admin/fieldmaps-add-edit-clone.php:463
 msgid "WordPress create"
 msgstr ""
 
-#: classes/admin.php:1128, templates/admin/fieldmaps-add-edit-clone.php:452
+#: classes/admin.php:1128, templates/admin/fieldmaps-add-edit-clone.php:464
 msgid "WordPress update"
 msgstr ""
 
-#: classes/admin.php:1133, templates/admin/fieldmaps-add-edit-clone.php:453
+#: classes/admin.php:1133, templates/admin/fieldmaps-add-edit-clone.php:465
 msgid "WordPress delete"
 msgstr ""
 
-#: classes/admin.php:1138, templates/admin/fieldmaps-add-edit-clone.php:454
+#: classes/admin.php:1138, templates/admin/fieldmaps-add-edit-clone.php:466
 msgid "Salesforce create"
 msgstr ""
 
-#: classes/admin.php:1143, templates/admin/fieldmaps-add-edit-clone.php:455
+#: classes/admin.php:1143, templates/admin/fieldmaps-add-edit-clone.php:467
 msgid "Salesforce update"
 msgstr ""
 
-#: classes/admin.php:1148, templates/admin/fieldmaps-add-edit-clone.php:456
+#: classes/admin.php:1148, templates/admin/fieldmaps-add-edit-clone.php:468
 msgid "Salesforce delete"
 msgstr ""
 
@@ -354,41 +354,41 @@ msgstr ""
 msgid "Errors kept these mapping errors from being deleted."
 msgstr ""
 
-#: classes/admin.php:1926, classes/admin.php:2017
+#: classes/admin.php:1932, classes/admin.php:2023
 msgid "Defined in wp-config.php"
 msgstr ""
 
-#: classes/admin.php:1985
+#: classes/admin.php:1991
 msgid "Select one"
 msgstr ""
 
 #. translators: 1) $versions_is_cached is the "This list is/is not cached, and/but" line, 2) $versions_from_cache is the "items were/were not loaded from the cache" line
-#: classes/admin.php:2117
+#: classes/admin.php:2123
 msgid "Available Salesforce API versions. %1$s %2$s. This is not an authenticated request, so it does not touch the Salesforce token."
 msgstr ""
 
 #. translators: 1) $contacts['data']['totalSize'] is the number of items loaded, 2) $contacts['data']['records'][0]['attributes']['type'] is the name of the Salesforce object, 3) $contacts_is_cached is the "They are/are not cached, and/but" line, 4) $contacts_from_cache is the "they were/were not loaded from the cache" line, 5) is the "this request did/did not require refreshing the Salesforce token" line
-#: classes/admin.php:2147
+#: classes/admin.php:2153
 msgid "Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s."
 msgstr ""
 
-#: classes/admin.php:2199
+#: classes/admin.php:2205
 msgid "There was an error clearing the plugin cache. Try refreshing this page."
 msgstr ""
 
-#: classes/admin.php:2197
+#: classes/admin.php:2203
 msgid "The plugin cache has been cleared."
 msgstr ""
 
-#: classes/admin.php:2355
+#: classes/admin.php:2361
 msgid "You need to specify the name of the schedule you want to clear."
 msgstr ""
 
-#: classes/admin.php:2353
+#: classes/admin.php:2359
 msgid "You have cleared the %s schedule."
 msgstr ""
 
-#: classes/admin.php:2416, classes/salesforce_pull.php:1925, classes/salesforce_push.php:1222, classes/salesforce_push.php:1095
+#: classes/admin.php:2422, classes/salesforce_pull.php:1925, classes/salesforce_push.php:1222, classes/salesforce_push.php:1095
 msgid "Mapping object updated via function: "
 msgstr ""
 
@@ -823,7 +823,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:208, templates/admin/fieldmaps-add-edit-clone.php:216
+#: templates/admin/fieldmaps-add-edit-clone.php:208, templates/admin/fieldmaps-add-edit-clone.php:216, templates/admin/fieldmaps-add-edit-clone.php:221
 msgid "Note:"
 msgstr ""
 
@@ -843,82 +843,86 @@ msgstr ""
 msgid " when mapping Salesforce fields, a * in the field name designates a required field for this object type."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:231, templates/admin/fieldmaps-add-edit-clone.php:350
+#: templates/admin/fieldmaps-add-edit-clone.php:221
+msgid " when mapping Salesforce fields, a 🔒 in the field name designates a locked Salesforce field. This means you can pull data from that field but you cannot push data to it."
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:236, templates/admin/fieldmaps-add-edit-clone.php:362
 msgid "Select WordPress field"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:253, templates/admin/fieldmaps-add-edit-clone.php:367
+#: templates/admin/fieldmaps-add-edit-clone.php:258, templates/admin/fieldmaps-add-edit-clone.php:379
 msgid "Select Salesforce field"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:299
+#: templates/admin/fieldmaps-add-edit-clone.php:311
 msgid "This pair should be checked for existing matches in Salesforce before adding"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:309
+#: templates/admin/fieldmaps-add-edit-clone.php:321
 msgid "This Salesforce field is an External ID in Salesforce"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:334, templates/admin/fieldmaps-add-edit-clone.php:394
+#: templates/admin/fieldmaps-add-edit-clone.php:346, templates/admin/fieldmaps-add-edit-clone.php:406
 msgid "Salesforce to WordPress"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:335, templates/admin/fieldmaps-add-edit-clone.php:395
+#: templates/admin/fieldmaps-add-edit-clone.php:347, templates/admin/fieldmaps-add-edit-clone.php:407
 msgid "WordPress to Salesforce"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:336, templates/admin/fieldmaps-add-edit-clone.php:396
+#: templates/admin/fieldmaps-add-edit-clone.php:348, templates/admin/fieldmaps-add-edit-clone.php:408
 msgid "Sync"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:410
+#: templates/admin/fieldmaps-add-edit-clone.php:422
 msgid "Add field mapping"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:408
+#: templates/admin/fieldmaps-add-edit-clone.php:420
 msgid "Add another field mapping"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:414
+#: templates/admin/fieldmaps-add-edit-clone.php:426
 msgid "A checked Prematch (when saving data in either WordPress or Salesforce) or Salesforce Key (only when saving data from WordPress to Salesforce) field will cause the plugin to check for a match on that value before creating new records."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:417
+#: templates/admin/fieldmaps-add-edit-clone.php:429
 msgid "Action triggers"
 msgstr ""
 
 #. translators: placeholders are for the class names: salesforce_push and salesforce_pull
-#: templates/admin/fieldmaps-add-edit-clone.php:460
+#: templates/admin/fieldmaps-add-edit-clone.php:472
 msgid "Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. These settings are used by the %1$s and %2$s classes respectively."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:465
+#: templates/admin/fieldmaps-add-edit-clone.php:477
 msgid "Process asynchronously"
 msgstr ""
 
 #. translators: placeholder is for WordPress cron method name
-#: templates/admin/fieldmaps-add-edit-clone.php:469
+#: templates/admin/fieldmaps-add-edit-clone.php:481
 msgid "If selected, push data will be queued for processing and synchronized when %s is run. This may increase site performance, but changes will not be reflected in real time."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:474
+#: templates/admin/fieldmaps-add-edit-clone.php:486
 msgid "Push drafts"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:475
+#: templates/admin/fieldmaps-add-edit-clone.php:487
 msgid "If selected, WordPress will send drafts of this object type (if it creates drafts for it) to Salesforce."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:478
+#: templates/admin/fieldmaps-add-edit-clone.php:490
 msgid "Pull to drafts"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:479
+#: templates/admin/fieldmaps-add-edit-clone.php:491
 msgid "If selected, WordPress will check for matches against existing drafts of this object type, and will also update existing drafts."
 msgstr ""
 
 #. translators: the placeholder refers to the currently selected method (add, edit, or clone)
-#: templates/admin/fieldmaps-add-edit-clone.php:485
+#: templates/admin/fieldmaps-add-edit-clone.php:497
 msgid "%1$s fieldmap"
 msgstr ""
 
