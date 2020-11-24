@@ -1392,18 +1392,22 @@ class Object_Sync_Sf_Salesforce_Push {
 		$push_allowed = true;
 
 		// if the current fieldmap does not allow the wp create trigger, we need to check if there is an object map for the WordPress object ID. if not, set push_allowed to false.
-		if ( ! in_array( $this->mappings->sync_wordpress_create, $map_sync_triggers ) ) {
+		if ( ! in_array( $this->mappings->sync_wordpress_create, $map_sync_triggers, true ) ) {
 			$structure               = $this->wordpress->get_wordpress_table_structure( $object_type );
 			$wordpress_id_field_name = $structure['id_field'];
+			$object_map              = array();
 			// we only need to check against the first mapping object, if it exists. we don't need to loop through them.
-			$object_map = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] )[0];
+			$object_maps = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
+			if ( ! empty( $object_maps ) ) {
+				$object_map = $object_maps[0];
+			}
 			if ( empty( $object_map ) ) {
 				$push_allowed = false;
 			}
 		}
 
 		// these are bit operators, so we leave out the strict
-		if ( ! in_array( $sf_sync_trigger, $map_sync_triggers ) ) {
+		if ( ! in_array( $sf_sync_trigger, $map_sync_triggers, true ) ) {
 			$push_allowed = false;
 		}
 
