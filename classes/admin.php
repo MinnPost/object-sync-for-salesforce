@@ -1816,7 +1816,13 @@ class Object_Sync_Sf_Admin {
 		if ( isset( $data['object_maps'] ) ) {
 			foreach ( $data['object_maps'] as $object_map ) {
 				unset( $object_map['id'] );
-				$create = $this->mappings->create_object_map( $object_map );
+
+				if ( $object_map['object_type'] ) {
+					$sf_sync_trigger = $this->mappings->sync_sf_create;
+					$create          = $this->pull->salesforce_pull_process_records( $object_map['object_type'], $object_map['salesforce_id'], $sf_sync_trigger );
+				} else {
+					$create = $this->mappings->create_object_map( $object_map );
+				}
 				if ( false === $create ) {
 					$success = false;
 				}
