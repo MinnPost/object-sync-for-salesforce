@@ -96,4 +96,4 @@ This is the full documentation for this plugin, extending the information in [th
 
     This is an auto generated system that documents all of the PHP classes in the plugin. This is a good way for PHP developers to look through what the code is doing.
 
-    If you've installed the plugin, you can browse this code documentation at `https://<your site>/wp-content/plugins/object-sync-for-salesforce/docs/code`.
+    If you've installed the plugin, you can browse this code documentation at `https://<your site>/wp-content/plugins/object-sync-for-salesforce/docs/code/` (make sure to add the trailing slash).

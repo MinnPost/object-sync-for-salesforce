@@ -1,8 +1,10 @@
+
+Deprecated: array_key_exists(): Using array_key_exists() on objects is deprecated. Use isset() or property_exists() instead in phar:///Users/jonathanstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Template.php on line 527
 <?php
 /*
 Plugin Name: Object Sync for Salesforce
 Description: Object Sync for Salesforce maps and syncs data between Salesforce objects and WordPress objects.
-Version: 1.9.3
+Version: 1.9.4
 Author: MinnPost
 Author URI: https://code.minnpost.com
 License: GPL2+
@@ -141,7 +143,7 @@ class Object_Sync_Salesforce {
 		global $wpdb;
 
 		$this->wpdb              = $wpdb;
-		$this->version           = '1.9.3';
+		$this->version           = '1.9.4';
 		$this->slug              = 'object-sync-for-salesforce';
 		$this->option_prefix     = 'object_sync_for_salesforce_';
 		$this->login_credentials = $this->get_login_credentials();
