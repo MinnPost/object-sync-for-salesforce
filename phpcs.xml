@@ -4,7 +4,6 @@
 	<config name="testVersion" value="5.6.20-"/>
 
 	<rule ref="WordPress-Core" />
-	<rule ref="VariableAnalysis" />
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>

@@ -71,8 +71,14 @@
         "version_normalized": "2.2.5.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/prospress/action-scheduler.git",
+            "url": "https://github.com/woocommerce/action-scheduler.git",
             "reference": "fd7c6b76a7af27d6403ffe39b0963dbd8ce50488"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/woocommerce/action-scheduler/zipball/fd7c6b76a7af27d6403ffe39b0963dbd8ce50488",
+            "reference": "fd7c6b76a7af27d6403ffe39b0963dbd8ce50488",
+            "shasum": ""
         },
         "require-dev": {
             "wp-cli/wp-cli": "1.5.1"
@@ -83,6 +89,7 @@
         "license": [
             "GPL-3.0"
         ],
-        "description": "Action Scheduler for WordPress and WooCommerce"
+        "description": "Action Scheduler for WordPress and WooCommerce",
+        "abandoned": "woocommerce/action-scheduler"
     }
 ]
