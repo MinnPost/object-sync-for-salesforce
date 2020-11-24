@@ -265,7 +265,9 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 == Changelog ==
 
 * 1.9.4 (2020-11-24)
-
+	* Feature: create new WordPress records when importing Salesforce objects. Thanks to WordPress user @afgarcia86.
+	* Feature: add a lock emoji to locked Salesforce fields in the mapping screen. Thanks to WordPress user @OfficeBureau for the request.
+	* Bug fix: prevent PHP error when a filter does not allow a record to be pushed to Salesforce.
 
 * 1.9.3 (2020-04-20)
     * Feature: add a settings field for mapping errors per page. Defaults to 50.
