@@ -1406,8 +1406,9 @@ class Object_Sync_Sf_Salesforce_Push {
 			}
 		}
 
-		// these are bit operators, so we leave out the strict
-		if ( ! in_array( $sf_sync_trigger, $map_sync_triggers, true ) ) {
+		// these are bit operators, so we leave out the strict.
+		// So don't ever put true in here even though WPCS complains.
+		if ( ! in_array( $sf_sync_trigger, $map_sync_triggers ) ) {
 			$push_allowed = false;
 		}
 
