@@ -264,6 +264,9 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
+* 1.9.5 (2020-12-02)
+	* Bug fix: remove a strict array check that was incorrectly added. This could affect whether a push is allowed. Thanks to @afgarcia86 for the report.
+
 * 1.9.4 (2020-11-24)
 	* Feature: create new WordPress records when importing Salesforce objects. Thanks to WordPress user @afgarcia86.
 	* Feature: add a lock emoji to locked Salesforce fields in the mapping screen. Thanks to WordPress user @OfficeBureau for the request.
