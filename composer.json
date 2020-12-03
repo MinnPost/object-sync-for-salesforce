@@ -37,7 +37,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "7.5.15",
-        "johnpbloch/wordpress": "dev-master"
+        "johnpbloch/wordpress-core-installer": "^2.0"
     },
     "scripts": {
         "test": [
