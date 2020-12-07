@@ -1,8 +1,9 @@
 Changelog
 =========
 
-* draft
-	* Feature: Update the default Salesforce REST API version to 50.0 (Winter '21)
+* 1.9.6 (2020-12-07)
+	* Feature: update the default Salesforce REST API version to 50.0 (Winter '21).
+	* Bug fix: more incorrect strict array checking. This is the rest of what was broken in #371.
 
 * 1.9.5 (2020-12-02)
 	* Bug fix: remove a strict array check that was incorrectly added. This could affect whether a push is allowed. Thanks to @afgarcia86 for the report.
