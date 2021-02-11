@@ -1373,7 +1373,14 @@ class Object_Sync_Sf_Admin {
 		if ( empty( $data ) ) {
 			$salesforce_object = isset( $post_data['salesforce_object'] ) ? sanitize_text_field( wp_unslash( $post_data['salesforce_object'] ) ) : '';
 			$ajax              = true;
-			$attributes        = array( 'name', 'label' );
+			// here, we should respect the decision of whether to show the API name or the label
+			$display_value = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
+			if ( 'api_name' === $display_value ) {
+				$visible_label_field = 'name';
+			} else {
+				$visible_label_field = 'label';
+			}
+			$attributes = array( 'name', $visible_label_field );
 		} else {
 			$salesforce_object = isset( $data['salesforce_object'] ) ? sanitize_text_field( wp_unslash( $data['salesforce_object'] ) ) : '';
 		}
