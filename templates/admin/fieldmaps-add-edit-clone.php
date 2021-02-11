@@ -384,11 +384,28 @@
 										'salesforce_object' => $salesforce_object,
 									)
 								);
+								$display_value     = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
 								foreach ( $salesforce_fields as $salesforce_field ) {
+
+									if ( 'api_name' === $display_value ) {
+										$salesforce_field['label'] = $salesforce_field['name'];
+									}
+
+									if ( false === $salesforce_field['nillable'] ) {
+										$salesforce_field['label'] .= ' *';
+									}
+
+									if ( false === $salesforce_field['updateable'] ) {
+										$locked = ' 🔒';
+									} else {
+										$locked = '';
+									}
+
 									echo sprintf(
-										'<option value="%1$s">%2$s</option>',
+										'<option value="%1$s">%2$s%3$s</option>',
 										esc_attr( $salesforce_field['name'] ),
-										esc_html( $salesforce_field['label'] )
+										esc_html( $salesforce_field['label'] ),
+										$locked
 									);
 								}
 							}
