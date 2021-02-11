@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 1.9.7 (2021-02-11)
+	* Bug fix: update the Salesforce field dropdown so it respects the API Name/Label settings value. Thanks to @CodeZeno.
+	* Maintenance: add documentation on how the plugin handles fields with different data types.
+
 * 1.9.6 (2020-12-07)
 	* Feature: update the default Salesforce REST API version to 50.0 (Winter '21).
 	* Bug fix: more incorrect strict array checking. This is the rest of what was broken in #371.
