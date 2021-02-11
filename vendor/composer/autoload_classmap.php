@@ -9,7 +9,6 @@ return array(
     'AllowFieldTruncationHeader' => $vendorDir . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
     'AssignmentRuleHeader' => $vendorDir . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
     'CallOptions' => $vendorDir . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
-    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Email' => $vendorDir . '/developerforce/force.com-toolkit-for-php/soapclient/SforceEmail.php',
     'EmailHeader' => $vendorDir . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
     'LocaleOptions' => $vendorDir . '/developerforce/force.com-toolkit-for-php/soapclient/SforceHeaderOptions.php',
