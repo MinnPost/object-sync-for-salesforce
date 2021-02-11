@@ -57,10 +57,10 @@ If you load this plugin and then store data for a new meta field after this load
 
 This plugin supports syncing (at least) the following WordPress field types. When the plugin needs to send a value from one of these fields to Salesforce, it tries to handle it in the following ways:
 
-- Serialized array: this value is converted to an imploded string. Salesforce is then able to store it as a Multi-Picklist.
-- Date: this value is converted to a timestamp, and then to `'Y-m-d'`, the date format that the Salesforce API expects.
-- Date/Time: this value is converted to a timestamp, and then to `'c'`, the DateTime format that the Salesforce API expects.
-- Boolean: WordPress often stores boolean values as strings, so these values are converted to actual booleans.
+- **Checkboxes (or other serialized arrays)**: this value is converted to an imploded string. Salesforce is then able to store it as a Multi-Picklist.
+- **Date**: this value is converted to a timestamp, and then to `'Y-m-d'`, the date format that the Salesforce API expects.
+- **Date/Time**: this value is converted to a timestamp, and then to `'c'`, the DateTime format that the Salesforce API expects.
+- **Boolean**: WordPress often stores boolean values as strings, so these values are converted to actual booleans.
 
 The plugin also has a hook to modify what fields are included for an object. You can read more about this in the [extending mapping options documentation](./extending-mapping-options.md#available-wordpress-fields).
 
@@ -68,12 +68,12 @@ The plugin also has a hook to modify what fields are included for an object. You
 
 Salesforce fields come from the `object_describe` API method. This plugin supports syncing (at least) the following Salesforce field types. When the plugin receives a value from one of these fields, it tries to handle it in the following ways:
 
-- Picklist: this value should be capable of being synced to any WordPress field.
-- Picklist (Multi-Select): this value is exploded into an array. The data assumption is that you'll then be storing it as a serialized array, for example as a list of checkboxes.
-- Date: this value is converted to the default date format in WordPress, which is set in General Options. If there is no value for the default format, the plugin uses the MySQL date format.
-- Date/Time: if the WordPress field where the Salesforce value is being saved has already been defined as a datetime field, OR if it is a field from The Events Calendar, the plugin will format the Salesforce value with this date format: `'Y-m-d H:i:s'`. If the Salesforce field is set as a datetime field instead of a date field, the Salesforce API will always return the value as a GMT value. The plugin then uses `get_date_from_gmt( $object[ $salesforce_field ], 'Y-m-d\TH:i:s\Z' )` to convert the date to the WordPress timezone.
-- Text: these values are converted to `string`.
-- URL: these values are run through the WordPress `esc_url_raw` function.
+- **Picklist**: this value should be capable of being synced to any WordPress field.
+- **Picklist (Multi-Select)**: this value is exploded into an array. The data assumption is that you'll then be storing it as a serialized array, for example as a list of checkboxes.
+- **Date**: this value is converted to the default date format in WordPress, which is set in General Options. If there is no value for the default format, the plugin uses the MySQL date format.
+- **Date/Time**: if the WordPress field where the Salesforce value is being saved has already been defined as a datetime field, OR if it is a field from The Events Calendar, the plugin will format the Salesforce value with this date format: `'Y-m-d H:i:s'`. If the Salesforce field is set as a datetime field instead of a date field, the Salesforce API will always return the value as a GMT value. The plugin then uses `get_date_from_gmt( $object[ $salesforce_field ], 'Y-m-d\TH:i:s\Z' )` to convert the date to the WordPress timezone.
+- **Text**: these values are converted to `string`.
+- **URL**: these values are run through the WordPress `esc_url_raw` function.
 
 **Note:** How well these fields sync may vary if your method of storing WordPress fields differs greatly from the default meta system, or from the above defaults.
 
