@@ -3,7 +3,9 @@
 	<config name="minimum_supported_wp_version" value="4.6" />
 	<config name="testVersion" value="5.6.20-"/>
 
-	<rule ref="WordPress-Core" />
+	<rule ref="WordPress-Core"/>
+	<rule ref="WordPress-Docs"/>
+	<rule ref="WordPress-Extra"/>
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
