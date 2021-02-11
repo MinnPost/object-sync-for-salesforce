@@ -1,6 +1,6 @@
 # Object Sync for Salesforce
 
-[![Build Status](https://travis-ci.org/MinnPost/object-sync-for-salesforce.svg?branch=master)](https://travis-ci.org/MinnPost/object-sync-for-salesforce) [![Code Climate](https://codeclimate.com/github/MinnPost/object-sync-for-salesforce/badges/gpa.svg)](https://codeclimate.com/github/MinnPost/object-sync-for-salesforce) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MinnPost/object-sync-for-salesforce/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MinnPost/object-sync-for-salesforce/?branch=master)
+![PHPCS Inspections](https://github.com/MinnPost/object-sync-for-salesforce/workflows/Inspections/badge.svg) [![Code Climate](https://codeclimate.com/github/MinnPost/object-sync-for-salesforce/badges/gpa.svg)](https://codeclimate.com/github/MinnPost/object-sync-for-salesforce) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MinnPost/object-sync-for-salesforce/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MinnPost/object-sync-for-salesforce/?branch=master)
 
 Object Sync for Salesforce is a WordPress plugin that maps and syncs data between Salesforce objects and WordPress content types.
 
