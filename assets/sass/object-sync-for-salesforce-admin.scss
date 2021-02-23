@@ -1,13 +1,11 @@
 // variables
 $box-shadow-less: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 $box-shadow-more: 0 1px 1px rgba(0, 0, 0, 0.04);
-$border-color-darker: #e1e1e1;
-$border-color-lighter: #e5e5e5;
+$border-color: #dcdcde;
 $horizontal-space: 10px;
-$success-color: #46b450;
+$success-color: #00a32a;
 $vertical-space: 15px;
-$select-border-color: #ddd;
-$active-color: #00b9eb;
+$active-color: #72aee6;
 
 .settings_page_object-sync-salesforce-admin {
 
@@ -41,7 +39,7 @@ $active-color: #00b9eb;
 		}
 
 		fieldset {
-			border: 1px solid $border-color-darker;
+			border: 1px solid $border-color;
 			margin-bottom: $vertical-space;
 			position: relative;
 		}
@@ -144,13 +142,13 @@ $active-color: #00b9eb;
 
 		.description {
 			display: block;
-			//color: #999;
+			//color: #8c8f94;
 			padding-top: 4px;
 		}
 	}
 
 	.select2-dropdown {
-		border-color: $select-border-color;
+		border-color: $border-color;
 	}
 
 	.select2-dropdown--below {
@@ -245,7 +243,7 @@ $active-color: #00b9eb;
 	width: auto;
 
 	caption {
-		border: 1px solid $border-color-darker;
+		border: 1px solid $border-color;
 		border-bottom: 0;
 		box-shadow: $box-shadow-more;
 		color: #555;
@@ -257,7 +255,7 @@ $active-color: #00b9eb;
 	}
 
 	tr th {
-		border-right: 1px solid $border-color-lighter;
+		border-right: 1px solid $border-color;
 		font-size: 13px;
 		width: 140px;
 	}
