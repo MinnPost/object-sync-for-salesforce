@@ -744,6 +744,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// Set a limit on the number of records that can be retrieved from the API at one time.
 			$soql->limit = filter_var( get_option( $this->option_prefix . 'pull_query_limit', 25 ), FILTER_VALIDATE_INT );
+
+			// if there are record types on this fieldmap, use them as a conditional.
+			if ( ! empty( $mapped_record_types ) ) {
+				$soql->add_condition( 'RecordTypeId', array_values( $mapped_record_types ), 'IN' );
+			}
 		} else {
 			$soql = $saved_query;
 		}
@@ -795,11 +800,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$soql->fields     = array_map( 'unserialize', array_unique( array_map( 'serialize', $soql->fields ) ) );
 			$soql->order      = array_map( 'unserialize', array_unique( array_map( 'serialize', $soql->order ) ) );
 			$soql->conditions = array_map( 'unserialize', array_unique( array_map( 'serialize', $soql->conditions ) ) );
-		}
-
-		// if there are record types on this fieldmap, use them as a conditional.
-		if ( ! empty( $mapped_record_types ) ) {
-			$soql->add_condition( 'RecordTypeId', array_values( $mapped_record_types ), 'IN' );
 		}
 
 		// serialize the currently running SOQL query and store it for this type.
