@@ -797,6 +797,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$soql->conditions = array_map( 'unserialize', array_unique( array_map( 'serialize', $soql->conditions ) ) );
 		}
 
+		// if there are record types on this fieldmap, use them as a conditional
+		if ( ! empty( $mapped_record_types ) ) {
+			$soql->add_condition( 'RecordTypeId', array_values( $mapped_record_types ), 'IN' );
+		}
+
 		// serialize the currently running SOQL query and store it for this type
 		$serialized_current_query = maybe_serialize( $soql );
 		update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query, false );
