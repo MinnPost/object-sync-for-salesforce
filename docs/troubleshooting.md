@@ -39,8 +39,20 @@ Sometimes Salesforce returns a 401 error. This means the session ID or OAuth tok
 If the plugin allows you to authorize in Salesforce, but does not finish activating in WordPress, consider these possible issues:
 
 1. Insufficient app permissions in Salesforce. Make sure the app's permissions are at least "Perform requests on your behalf at any time" for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select "Access and manage your data (api)" as one of these scopes. If you change permissions, give Salesforce a few minutes before trying to connect again.
-2. The plugin may have been unable to create its required database tables.
+2. The plugin may have been unable to create its required database tables. If you think this may be the case, refer to [this document](./troubleshooting-unable-to-create-database-tables.md) for the necessary SQL.
 3. Mismatched settings between the plugin and the expected values in Salesforce.
+
+## Object map issues
+
+If you are successfully authenticated with Salesforce, but you are unable to create an object map, there are several ways to troubleshoot. Always check your PHP error logs first.
+
+### There are no Salesforce objects in the dropdown
+
+When there are no values in the list of Salesforce objects, this means the plugin can’t access any of the objects in your Salesforce. There are three likely causes for this:
+
+1. You need to change the OAuth scope on the app you created in Salesforce. For most uses with this plugin, you’ll want to use "Perform requests on your behalf at any time" and "Access and manage your data (api)."" If you do change these, you’ll need to wait several minutes before trying again, as Salesforce is rather slow on this.
+2. Your Salesforce objects might not be accessible to the Salesforce user who has authenticated with WordPress via this plugin.
+3. The Salesforce objects might have other restrictive permissions.
 
 ## Fieldmap issues
 
@@ -50,30 +62,7 @@ If you are successfully authenticated with Salesforce, but you have a fieldmap t
 
 There appear to be some server configurations that have trouble creating the required database tables for this plugin to run. If you are unable to create fieldmaps, check to see if the `wp_object_sync_sf_field_map` table exists.
 
-If this table does not exist, and you have access to create database tables directly, run the following SQL query:
-
-```sql
-CREATE TABLE `wp_object_sync_sf_field_map` (
-	`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-	`label` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-	`name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-	`wordpress_object` varchar(128) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-	`salesforce_object` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-	`salesforce_record_types_allowed` longblob,
-	`salesforce_record_type_default` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-	`fields` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
-	`pull_trigger_field` varchar(128) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'LastModifiedDate',
-	`sync_triggers` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
-	`push_async` tinyint(1) NOT NULL DEFAULT '0',
-	`push_drafts` tinyint(1) NOT NULL DEFAULT '0',
-	`pull_to_drafts` tinyint(1) NOT NULL DEFAULT '0',
-	`weight` tinyint(1) NOT NULL DEFAULT '0',
-	`version` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `name` (`name`),
-	KEY `name_sf_type_wordpress_type` (`wordpress_object`,`salesforce_object`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
-```
+If this table does not exist, and you have access to create database tables directly, refer to [this document](./troubleshooting-unable-to-create-database-tables.md) for the correct SQL to create them.
 
 ### A successfully created fieldmap does not pass data
 

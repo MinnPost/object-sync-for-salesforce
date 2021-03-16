@@ -1,3 +1,5 @@
+
+Deprecated: array_key_exists(): Using array_key_exists() on objects is deprecated. Use isset() or property_exists() instead in phar:///Users/jonathanstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Template.php on line 527
 <?php
 /**
  * Class file for the Object_Sync_Sf_Admin_Notice class.

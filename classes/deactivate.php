@@ -21,6 +21,8 @@ class Object_Sync_Sf_Deactivate {
 	protected $option_prefix;
 	protected $queue;
 
+	private $action_group_suffix;
+
 	/**
 	* Constructor which sets up deactivate hooks
 	* @param object $wpdb

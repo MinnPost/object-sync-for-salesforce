@@ -3,9 +3,9 @@ Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations, harmoney
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
-Tested up to: 5.0
-Stable tag: 1.6.0
-Requires PHP: 5.5
+Tested up to: 5.6
+Stable tag: 1.9.8
+Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,7 +27,7 @@ This plugin also includes developer hooks that allow for additional plugins to m
 
 To install the plugin in WordPress, your PHP environment needs the following:
 
-1. At least version 5.5.
+1. At least version 5.6.20.
 2. SSL support (this is required to connect to Salesforce).
 3. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
 
@@ -49,7 +49,9 @@ For purposes of this documentation, we'll assume that your name, as defined in S
 
 #### Create an App
 
-1. In Salesforce, go to `Your Name > Setup`. Then on the left sidebar, under `App Setup`, click `Create > Apps`. In the **Connected Apps** section of this page, click New to create a new app.
+1. In Salesforce, create a new Connected App. This differs between Lightning and Classic Salesforce.
+    - **Lightning:** Click on the cog icon at the top right of the browser window and click on `Setup`. Then on the left sidebar, under `App Setup`, click `Platform Tools > Apps > App Manager`. In the **Lightning Experience App Manager** section of this page, click `New Connected App` to create a new app.
+    - **Classic:** At the top right of the browser window, go to `Your Name > Setup`. Then on the left sidebar, under `App Setup`, click `Create > Apps`. In the **Connected Apps** section of this page, click New to create a new app.
 2. Enable OAuth Settings
 3. Set the callback URL to: `https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize` (must use HTTPS).
 4. Select at least "Perform requests on your behalf at any time" for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select "Access and manage your data (api)" as one of these scopes.
@@ -139,6 +141,10 @@ Object Sync for Salesforce, however, cannot see meta fields before the field has
 
 If you load Object Sync for Salesforce and then store data for a new meta field after this load, make sure you click the "Clear the plugin cache" link on the Fieldmaps tab.
 
+### Syncing pre-existing data
+
+This plugin was built to sync data that is created after it was installed. However, there are some techniques that can import pre-existing data. See the [Import & Export](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/import-export.md) section of the documentation for methods you can use for this.
+
 ### Using with ACF (Advanced Custom Fields)
 
 Object Sync for Salesforce does not and will not "officially" support ACF because you don't have to use ACF to use WordPress or to use Salesforce. However, they are **generally** usable together.
@@ -197,12 +203,24 @@ Sometimes Salesforce returns a 401 error. This means the session ID or OAuth tok
 If the plugin allows you to authorize in Salesforce, but does not finish activating in WordPress, consider these possible issues:
 
 1. Insufficient app permissions in Salesforce. Make sure the app's permissions are at least "Perform requests on your behalf at any time" for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select "Access and manage your data (api)" as one of these scopes. If you change permissions, give Salesforce a few minutes before trying to connect again.
-2. The plugin may have been unable to create its required database tables.
+2. The plugin may have been unable to create its required database tables. If you think this may be the case, refer to [this document](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting-unable-to-create-database-tables.md) for the necessary SQL.
 3. Mismatched settings between the plugin and the expected values in Salesforce.
 
-### Troubleshooting Fieldmaps
+### Troubleshooting object maps
 
-If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in [the plugin documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
+If you are successfully authenticated with Salesforce, but you are unable to create object maps, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in the [troubleshooting](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting.md) section of the plugin's documentation.
+
+**There are no Salesforce objects in the dropdown**
+
+When there are no values in the list of Salesforce objects, this means the plugin can’t access any of the objects in your Salesforce. There are three likely causes for this:
+
+- You need to change the OAuth scope on the app you created in Salesforce. For most uses with this plugin, you’ll want to use "Perform requests on your behalf at any time" and "Access and manage your data (api)."" If you do change these, you’ll need to wait several minutes before trying again, as Salesforce is rather slow on this.
+- Your Salesforce objects might not be accessible to the Salesforce user who has authenticated with WordPress via this plugin.
+- The Salesforce objects might have other restrictive permissions.
+
+### Troubleshooting fieldmaps
+
+If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in the [troubleshooting](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting.md) section of the plugin's documentation.
 
 **Plugin configuration**
 
@@ -231,6 +249,12 @@ We welcome contributions to this project from other developers. See our [contrib
 
 There is extensive documentation of this plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
 
+### Getting support using this plugin
+
+We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). Please do not send them by email.
+
+While MinnPost's nonprofit newsroom does welcome [donations](https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY) to support our work, this plugin does not have a paid version.
+
 ### Finding other options to sync Salesforce and WordPress
 
 This plugin can be relatively complicated, and sometimes other plugins can effectively integrate Salesforce and WordPress, especially if there are more limited, specific requirements. If one of these can meet those requirements, use it. We're happy to link to additional choices here, as well.
@@ -238,21 +262,51 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 - [WordPress-to-Lead for Salesforce CRM](https://appexchange.salesforce.com/listingDetail?listingId=a0N30000003GxgkEAC) can be installed through the Salesforce AppExchange. It allows you to run a contact form which users on your WordPress site can submit, and the results are added to Salesforce as a Lead object.
 - [Brilliant Web-to-Lead for Salesforce](https://wordpress.org/plugins/salesforce-wordpress-to-lead/) can be installed through the WordPress plugin directory. This is rather similar to the first option, but is a bit more customizable. By customizable, you can select the fields in WordPress and theme it in your WordPress theme.
 - [Gravity Forms Salesforce Add-on](https://wordpress.org/plugins/gravity-forms-salesforce/) can be installed through the WordPress plugin directory. It is quite powerful, as it can send form submissions from your WordPress site to Salesforce as whatever object you need. It's important to mention that this works for any form created with the [Gravity Forms](http://www.gravityforms.com/) plugin. It's also important to mention that this does not sync data back from Salesforce into Wordpress.
+- [WP Fusion Lite](https://wordpress.org/plugins/wp-fusion-lite/) can be installed through the WordPress plugin directory. This plugin is able to sync WordPress user records with contacts from different CRMs (including Salesforce) and manage content access based on tags it uses. This plugin also has a paid version that integrates with other WordPress plugins.
 - **Third party integration apps** such as [Zapier](https://zapier.com/) are subscription-based, paid ways to integrate different systems, and they offer differing amounts of customizability. They will usually sync in both directions, so in this case from WordPress to Salesforce and vice versa. The only limitations of something like this are the cost over time, and the possible vulnerability of basing an integration on a third party that could, at some point, go away.
 - [Visualforce](https://developer.salesforce.com/page/An_Introduction_to_Visualforce) If you are or have a Salesforce developer, you can build MVC based applications that integrate with Salesforce. It would be possible to build a system that uses, for example, the [WordPress REST API](https://developer.wordpress.org/rest-api/) to send and receive data to and from WordPress. This could be, in many ways, the flip side of what our plugin here does, but the complexity would be the same if the scope was the same.
 - **Build other integrations in WordPress** this plugin focuses on the Salesforce REST API, as it covers the integration needs we have. Salesforce also has many other developer options: the SOAP API (we hope to incorporate this into Object Sync for Salesforce at some point), the Bulk API, and the Metadata API. Developers could extend this plugin to integrate with one of these. We would welcome any pull requests!
 
 == Changelog ==
 
-* 1.x.x (2019-)
-    * New: improve handling of custom meta fields that are required by Salesforce. This plugin would fail to create objects if required fields were missing when a record was created. It should handle these situations much better.
-    * New: update to version 2.2.0 of the ActionScheduler library.
-* 1.6.0 (2019-01-15)
-	* New: we have added some basic REST API endpoints to the plugin. They can be used to check for updated/deleted records in Salesforce, pull a specific record from Salesforce by ID, or push a specific record from WordPress by Id and type.
-	* Bug fix: pull queries were sometimes skipping records that should have been processed, especially when some records in the group were not allowed by the fieldmap.
-	* Bug fix: as of 1.5.0, Salesforce records were not being deleted when a corresponding WordPress record was deleted. This release restorese that functionality.
-	* Developers: the `object_sync_for_salesforce_pull_object_allowed` and `object_sync_for_salesforce_push_object_allowed` hooks now require that a value be returned, regardless of whether it is true or false. This was always the better way of handling these hook, but it was possible to use them without, and the documentation was incorrectly written.
+* 1.9.8 (2021-02-11)
+    * Bug fix: fix PHP composer error.
 
-== Upgrade Notice ==
-= 1.6.0
-The primary purpose of this update is to introduce REST API endpoints for developers to use. There are also some bug and developer hook fixes.
+* 1.9.7 (2021-02-11)
+	* Bug fix: update the Salesforce field dropdown so it respects the API Name/Label settings value. Thanks to @CodeZeno.
+	* Maintenance: add documentation on how the plugin handles fields with different data types.
+
+* 1.9.6 (2020-12-07)
+	* Feature: update the default Salesforce REST API version to 50.0 (Winter '21).
+	* Bug fix: more incorrect strict array checking. This is the rest of what was broken in 1.9.4.
+
+* 1.9.5 (2020-12-02)
+	* Bug fix: remove a strict array check that was incorrectly added. This could affect whether a push is allowed. Thanks to @afgarcia86 for the report.
+
+* 1.9.4 (2020-11-24)
+	* Feature: create new WordPress records when importing Salesforce objects. Thanks to WordPress user @afgarcia86.
+	* Feature: add a lock emoji to locked Salesforce fields in the mapping screen. Thanks to WordPress user @OfficeBureau for the request.
+	* Bug fix: prevent PHP error when a filter does not allow a record to be pushed to Salesforce.
+
+* 1.9.3 (2020-04-20)
+    * Feature: add a settings field for mapping errors per page. Defaults to 50.
+    * Bug fix: make sure a WordPress record is an object before loading its data and processing it. This is related to the fix in 1.9.1.
+
+* 1.9.2 (2020-04-17)
+    * Feature: add pagination links to the Mapping Errors screen if there are more than 50 errors. This prevents results that are too large from loading.
+
+* 1.9.1 (2020-04-17)
+    * Feature: add a checkbox to the Mapping Errors screen to allow selecting all the errors for deletion at once.
+    * Bug fix: check for a WordPress ID before creating an object map. This prevents a possible MySQL error that could occur in some cases.
+    * Maintenance: note WordPress 5.4 support.
+
+* 1.9.0 (2020-03-20)
+    * Feature: when pushing or pulling the `wp_capabilities` field on a WordPress user, treat the data as WordPress needs it to assign roles. Thanks to WordPress user @emilyb6116 for reporting this and for testing the fix.
+    * Feature: Hide admin menu items that won't work pre-authorization until the plugin is authorized with Salesforce. Thanks to WordPress user @mgparisi for pointing this out.
+    * Bug fix: Correctly handle empty values for fields coming from Salesforce. Thanks to everyone who pointed out this issue and eventually discovered the cause: @prowp on GitHub and WordPress users @rickymortimer, @emilyb6116, @zumajoe.
+    * Bug fix: When a Salesforce query has invalid fields, clear it from the plugin's storage. Thanks to WordPress users @nishithmistry, @zumajoe, @alexeympw, and @jesodoth.
+    * Maintenance: Adding new fields to a fieldmap is faster and involves less code duplication.
+    * Maintenance: For WordPress 5.3 compatibility, replace `current_time( 'timestamp' )` with `time()`.
+    * Maintenance: Update Salesforce app setup instructions for Lightning.* 1.9.0 (2020-03-20)
+
+See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/changelog.md) on GitHub or in changelog.txt in the installed plugin.

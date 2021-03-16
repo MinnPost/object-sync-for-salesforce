@@ -21,6 +21,12 @@ class Object_Sync_Sf_WordPress {
 	protected $logging;
 	protected $option_prefix;
 
+	public $wordpress_objects;
+	public $options;
+
+	public $sfwp_transients;
+	public $debug;
+
 	/**
 	 * Constructor which discovers objects in WordPress
 	 *
@@ -36,9 +42,9 @@ class Object_Sync_Sf_WordPress {
 		$this->wpdb          = $wpdb;
 		$this->version       = $version;
 		$this->slug          = $slug;
-		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 		$this->mappings      = $mappings;
 		$this->logging       = $logging;
+		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
 
 		add_action( 'admin_init', function() {
 			$this->wordpress_objects = $this->get_object_types();
@@ -85,8 +91,8 @@ class Object_Sync_Sf_WordPress {
 		// this should be all the objects
 		$wordpress_objects = apply_filters( $this->option_prefix . 'add_more_wordpress_types', $wordpress_objects );
 
-		// by default, only remove the log type we use in this plugin
-		$types_to_remove = apply_filters( $this->option_prefix . 'remove_wordpress_types', array( 'wp_log' ) );
+		// by default, only remove the revision, log, and scheduled-action types that we use in this plugin
+		$types_to_remove = apply_filters( $this->option_prefix . 'remove_wordpress_types', array( 'wp_log', 'scheduled-action', 'revision' ) );
 
 		// if the hook filters out any types, remove them from the visible list
 		if ( ! empty( $types_to_remove ) ) {
@@ -131,22 +137,12 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( 'user' === $object_type ) {
 			// User meta fields need to use update_user_meta for create as well, otherwise it'll just get created twice because apparently when the post is created it's already there.
 
-			// if the user is on WordPress VIP, the meta method is get_user_attribute
-			if ( ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) ) {
-				$user_meta_methods = array(
-					'create' => 'update_user_attribute',
-					'read'   => 'get_user_attribute',
-					'update' => 'update_user_attribute',
-					'delete' => 'delete_user_attribute',
-				);
-			} else {
-				$user_meta_methods = array(
-					'create' => 'update_user_meta',
-					'read'   => 'get_user_meta',
-					'update' => 'update_user_meta',
-					'delete' => 'delete_user_meta',
-				);
-			}
+			$user_meta_methods = array(
+				'create' => 'update_user_meta',
+				'read'   => 'get_user_meta',
+				'update' => 'update_user_meta',
+				'delete' => 'delete_user_meta',
+			);
 
 			$object_table_structure = array(
 				'object_name'     => 'user',
@@ -331,7 +327,7 @@ class Object_Sync_Sf_WordPress {
 	 * Get WordPress data based on what object it is
 	 *
 	 * @param string $object_type The type of object.
-	 * @param string $object_id The ID of the object.
+	 * @param int $object_id The ID of the object.
 	 * @param bool $is_deleted Whether the WordPress object has been deleted
 	 * @return array $wordpress_object
 	 */
@@ -366,6 +362,10 @@ class Object_Sync_Sf_WordPress {
 			$data = get_post( $object_id );
 		}
 
+		if ( ! is_object( $data ) ) {
+			return $wordpress_object;
+		}
+
 		$fields = $this->get_wordpress_object_fields( $object_type );
 		foreach ( $fields as $key => $value ) {
 			$field                      = $value['key'];
@@ -378,14 +378,18 @@ class Object_Sync_Sf_WordPress {
 		 * This is useful for custom objects, hidden fields, or custom formatting.
 		 * Here's an example of filters to add/modify data:
 		 *
-			add_filter( 'object_sync_for_salesforce_wordpress_object_data', 'modify_data', 10, 1 );
-			function modify_data( $wordpress_object ) {
+			add_filter( 'object_sync_for_salesforce_wordpress_object_data', 'modify_data', 10, 2 );
+			function modify_data( $wordpress_object, $object_type ) {
 				$wordpress_object['field_a'] = 'i am a field value that salesforce wants to store but WordPress does not care about';
+				// Add field values to specific WordPress objects such as 'post', 'page', 'user', a Custom Post Type, etc.
+				if ($object_type === 'user') {
+					$wordpress_object['field_b'] = 'i am a field value that salesforce wants to store but WordPress does not care about';
+				}
 				return $wordpress_object;
 			}
 		*/
 
-		$wordpress_object = apply_filters( $this->option_prefix . 'wordpress_object_data', $wordpress_object );
+		$wordpress_object = apply_filters( $this->option_prefix . 'wordpress_object_data', $wordpress_object, $object_type );
 
 		return $wordpress_object;
 
@@ -693,7 +697,7 @@ class Object_Sync_Sf_WordPress {
 	 * Update an existing object.
 	 *
 	 * @param string $name Object type name, E.g., user, post, comment.
-	 * @param string $id WordPress id of the object.
+	 * @param int $id WordPress id of the object.
 	 * @param array  $params Values of the fields to set for the object.
 	 *
 	 * part of CRUD for WordPress objects
@@ -756,6 +760,32 @@ class Object_Sync_Sf_WordPress {
 				break;
 		} // End switch().
 
+		if ( isset( $result['errors'] ) && ! empty( $result['errors'] ) ) {
+			$status = 'error';
+			$title  = sprintf(
+				// translators: 1) is log status, 2) is object type, 3) is id value
+				esc_html__( '%1$s: WordPress update for %2$s ID %3$s was unsuccessful with these errors:', 'object-sync-for-salesforce' ),
+				ucfirst( esc_attr( $status ) ),
+				esc_attr( $name ),
+				esc_attr( $id )
+			);
+
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+			}
+
+			$error_log = array(
+				'title'   => $title,
+				'message' => esc_html( print_r( $result['errors'], true ) ),
+				'trigger' => 0,
+				'parent'  => '',
+				'status'  => $status,
+			);
+			$logging->setup( $error_log );
+		}
+
 		return $result;
 	}
 
@@ -763,7 +793,7 @@ class Object_Sync_Sf_WordPress {
 	 * Delete a WordPress object.
 	 *
 	 * @param string $name Object type name, E.g., user, post, comment.
-	 * @param string $id WordPress id of the object.
+	 * @param int $id WordPress id of the object.
 	 *
 	 * @return array
 	 *   data:
@@ -880,32 +910,16 @@ class Object_Sync_Sf_WordPress {
 				$success = false;
 				$errors  = $user_id;
 			} else {
-				$success = true;
-				$errors  = array();
-				foreach ( $params as $key => $value ) {
-					$method = $value['method_modify'];
-					// we need to provide a way for passing the values in a custom order here
-					$meta_id = $method( $user_id, $key, $value['value'] );
-					if ( false === $meta_id ) {
-						$success  = false;
-						$errors[] = array(
-							'message' => sprintf(
-								// translators: %1$s is a method name.
-								esc_html__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
-								esc_html( $method )
-							),
-							'key'     => $key,
-							'value'   => $value,
-						);
-					}
-				}
+				$meta_result = $this->create_wp_meta( $params, $user_id, 'user' );
+				$success     = $meta_result['success'];
+				$errors      = $meta_result['errors'];
 
 				// Developers can use this hook to set any other user data - permissions, etc.
 				do_action( $this->option_prefix . 'set_more_user_data', $user_id, $params, 'create' );
 
 				// Send notification of new user.
 				// todo: Figure out what permissions ought to get notifications for this and make sure it works the right way.
-				wp_new_user_notification( $user_id, null, 'admin user' );
+				wp_new_user_notification( $user_id, null, 'both' );
 
 			}
 		} else {
@@ -1060,13 +1074,21 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
+
+		$status = 'error';
+		$title  = sprintf(
+			// translators: placeholders are: 1) the log status
+			esc_html__( '%1$s: Users: Tried to run user_upsert, and ended up without a user id', 'object-sync-for-salesforce' ),
+			ucfirst( esc_attr( $status ) )
+		);
+
 		$logging->setup(
 			// todo: can we get any more specific about this?
-			esc_html__( 'Error: Users: Tried to run user_upsert, and ended up without a user id', 'object-sync-for-salesforce' ),
+			$title,
 			'',
 			0,
 			0,
-			'error'
+			$status
 		);
 
 	}
@@ -1087,6 +1109,19 @@ class Object_Sync_Sf_WordPress {
 		$content              = array();
 		$content[ $id_field ] = $user_id;
 		foreach ( $params as $key => $value ) {
+
+			// if the update value for email already exists on another user, don't fail this update; keep the user's email address
+			if ( 'user_email' === $key && email_exists( $value['value'] ) ) {
+				unset( $params[ $key ] );
+				continue;
+			}
+
+			// if the update value for login already exists on another user, don't fail this update; keep the user's login
+			if ( 'user_login' === $key && username_exists( $value['value'] ) ) {
+				unset( $params[ $key ] );
+				continue;
+			}
+
 			if ( 'wp_update_user' === $value['method_modify'] ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
@@ -1099,24 +1134,12 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $user_id;
 		} else {
-			$success = true;
-			$errors  = array();
-			foreach ( $params as $key => $value ) {
-				$method  = $value['method_modify'];
-				$meta_id = $method( $user_id, $key, $value['value'] );
-				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'key'   => $key,
-						'value' => $value,
-					);
-				}
-			}
-
+			$meta_result = $this->update_wp_meta( $params, $user_id, 'user' );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other user data - permissions, etc.
 			do_action( $this->option_prefix . 'set_more_user_data', $user_id, $params, 'update' );
-
-		}
+		} // End if().
 
 		$result = array(
 			'data'   => array(
@@ -1138,7 +1161,7 @@ class Object_Sync_Sf_WordPress {
 	 */
 	private function user_delete( $id, $reassign = null ) {
 		// According to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error.
-		require_once( './wp-admin/includes/user.php' );
+		require_once( ABSPATH . 'wp-admin/includes/user.php' );
 		$result = wp_delete_user( $id, $reassign );
 		return $result;
 	}
@@ -1182,37 +1205,36 @@ class Object_Sync_Sf_WordPress {
 			$content['post_content'] = ' ';
 		}
 
-		$post_id = wp_insert_post( $content, true ); // return an error instead of a 0 id
+		if ( 'tribe_events' === $content['post_type'] && function_exists( 'tribe_create_event' ) ) {
+			// borrowing some code from https://github.com/tacjtg/rhp-tribe-events/blob/master/rhp-tribe-events.php
+			if ( isset( $params['_EventStartDate'] ) ) {
+				$content = $this->append_tec_event_dates( $params['_EventStartDate']['value'], 'start', $content );
+				unset( $params['_EventStartDate'] );
+			}
+			if ( isset( $params['_EventEndDate'] ) ) {
+				$content = $this->append_tec_event_dates( $params['_EventEndDate']['value'], 'end', $content );
+				unset( $params['_EventEndDate'] );
+			}
+			$post_id = tribe_create_event( $content );
+		} else {
+			$post_id = wp_insert_post( $content, true ); // return an error instead of a 0 id
+		}
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
 			$errors  = $post_id;
 		} else {
-			$success = true;
-			$errors  = array();
-			// If it's a custom post type, fix the methods.
+			// If it's a custom record type, fix the methods.
 			if ( isset( $params['RecordTypeId']['value'] ) ) {
 				$params['RecordTypeId']['method_modify'] = 'update_post_meta';
 				$params['RecordTypeId']['method_read']   = 'get_post_meta';
 			}
-			if ( is_array( $params ) && ! empty( $params ) ) {
-				foreach ( $params as $key => $value ) {
-					$method  = $value['method_modify'];
-					$meta_id = $method( $post_id, $key, $value['value'] );
-					if ( false === $meta_id ) {
-						$success  = false;
-						$errors[] = array(
-							'key'   => $key,
-							'value' => $value,
-						);
-					}
-				}
-			}
-
+			$meta_result = $this->create_wp_meta( $params, $post_id, 'post' );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other post data.
 			do_action( $this->option_prefix . 'set_more_post_data', $post_id, $params, 'create' );
-
-		}
+		} // End if().
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
@@ -1391,13 +1413,21 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
+
+		$status = 'error';
+		$title  = sprintf(
+			// translators: placeholders are: 1) the log status
+			esc_html__( '%1$s: Posts: Tried to run post_upsert, and ended up without a post id', 'object-sync-for-salesforce' ),
+			ucfirst( esc_attr( $status ) )
+		);
+
 		$logging->setup(
 			// todo: can we be more explicit here about what post upsert failed?
-			esc_html__( 'Error: Posts: Tried to run post_upsert, and ended up without a post id', 'object-sync-for-salesforce' ),
+			$title,
 			'',
 			0,
 			0,
-			'error'
+			$status
 		);
 
 	}
@@ -1435,31 +1465,17 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $post_id;
 		} else {
-			$success = true;
-			$errors  = array();
-			// If it's a custom post type, fix the methods.
+			// If it's a custom record type, fix the methods.
 			if ( isset( $params['RecordTypeId']['value'] ) ) {
 				$params['RecordTypeId']['method_modify'] = 'update_post_meta';
 				$params['RecordTypeId']['method_read']   = 'get_post_meta';
 			}
-			if ( is_array( $params ) && ! empty( $params ) ) {
-				foreach ( $params as $key => $value ) {
-					$method  = $value['method_modify'];
-					$meta_id = $method( $post_id, $key, $value['value'] );
-					if ( false === $meta_id ) {
-						$success  = false;
-						$errors[] = array(
-							'key'   => $key,
-							'value' => $value,
-						);
-					}
-				}
-			}
-
+			$meta_result = $this->update_wp_meta( $params, $post_id, 'post' );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other post data.
 			do_action( $this->option_prefix . 'set_more_post_data', $post_id, $params, 'update' );
-
-		}
+		} // End if().
 
 		$result = array(
 			'data'   => array(
@@ -1712,14 +1728,21 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
+
+		$status = 'error';
+		$title  = sprintf(
+			// translators: placeholders are: 1) the log status
+			esc_html__( '%1$s: Attachments: Tried to run attachment_upsert, and ended up without an attachment id', 'object-sync-for-salesforce' ),
+			ucfirst( esc_attr( $status ) )
+		);
+
 		$logging->setup(
-			esc_html__( 'Error: Attachment: Tried to run attachment_upsert, and ended up without an attachment id', 'object-sync-for-salesforce' ),
+			$title,
 			'',
 			0,
 			0,
-			'error'
+			$status
 		);
-
 	}
 
 	/**
@@ -1871,30 +1894,13 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $term;
 		} else {
-			$term_id = $term[ "$id_field" ];
-			$success = true;
-			$errors  = array();
-			foreach ( $params as $key => $value ) {
-				$method  = $value['method_modify'];
-				$meta_id = $method( $term_id, $key, $value['value'] );
-				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'message' => sprintf(
-							// translators: %1$s is a method name.
-							esc_html__( 'Tried to upsert meta with method %1$s.', 'object-sync-for-salesforce' ),
-							esc_html( $method )
-						),
-						'key'     => $key,
-						'value'   => $value,
-					);
-				}
-			}
-
+			$term_id     = $term[ "$id_field" ];
+			$meta_result = $this->create_wp_meta( $params, $term_id, 'term' );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other term data.
 			do_action( $this->option_prefix . 'set_more_term_data', $term_id, $params, 'create' );
-
-		}
+		} // End if().
 
 		if ( is_wp_error( $term ) ) {
 			$success = false;
@@ -2048,12 +2054,20 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
+
+		$status = 'error';
+		$title  = sprintf(
+			// translators: placeholders are: 1) the log status
+			esc_html__( '%1$s: Terms: Tried to run term_upsert, and ended up without a term id', 'object-sync-for-salesforce' ),
+			ucfirst( esc_attr( $status ) )
+		);
+
 		$logging->setup(
-			esc_html__( 'Error: Terms: Tried to run term_upsert, and ended up without a term id', 'object-sync-for-salesforce' ),
+			$title,
 			'',
 			0,
 			0,
-			'error'
+			$status
 		);
 
 	}
@@ -2061,7 +2075,7 @@ class Object_Sync_Sf_WordPress {
 	/**
 	 * Update a WordPress term.
 	 *
-	 * @param string $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
+	 * @param int $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
 	 * @param array  $params Array of term data params.
 	 * @param string $taxonomy The taxonomy to which to add the term. this is required.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
@@ -2088,30 +2102,13 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $term;
 		} else {
-			$term_id = $term[ "$id_field" ];
-			$success = true;
-			$errors  = array();
-			foreach ( $params as $key => $value ) {
-				$method  = $value['method_modify'];
-				$meta_id = $method( $term_id, $key, $value['value'] );
-				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'message' => sprintf(
-							// translators: %1$s is a method name.
-							esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
-							esc_html( $method )
-						),
-						'key'     => $key,
-						'value'   => $value,
-					);
-				}
-			}
-
+			$term_id     = $term[ "$id_field" ];
+			$meta_result = $this->update_wp_meta( $params, $term_id, 'term' );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other term data.
 			do_action( $this->option_prefix . 'set_more_term_data', $term_id, $params, 'update' );
-
-		}
+		} // End if().
 
 		if ( is_wp_error( $term ) ) {
 			$success = false;
@@ -2136,7 +2133,7 @@ class Object_Sync_Sf_WordPress {
 	/**
 	 * Delete a WordPress term.
 	 *
-	 * @param string $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
+	 * @param int $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
 	 * @param string $taxonomy The taxonomy from which to delete the term. this is required.
 	 *
 	 * @return bool True if successful, false if failed.
@@ -2195,29 +2192,12 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $comment_id;
 		} else {
-			$success = true;
-			$errors  = array();
-			foreach ( $params as $key => $value ) {
-				$method  = $value['method_modify'];
-				$meta_id = $method( $comment_id, $key, $value['value'] );
-				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'message' => sprintf(
-							// translators: %1$s is a method name.
-							esc_html__( 'Tried to add meta with method %1$s.', 'object-sync-for-salesforce' ),
-							esc_html( $method )
-						),
-						'key'     => $key,
-						'value'   => $value,
-					);
-				}
-			}
-
+			$meta_result = $this->create_wp_meta( $params, $comment_id, 'comment' );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other comment data.
 			do_action( $this->option_prefix . 'set_more_comment_data', $comment_id, $params, 'create' );
-
-		}
+		} // End if()
 
 		if ( is_wp_error( $comment_id ) ) {
 			$success = false;
@@ -2321,8 +2301,9 @@ class Object_Sync_Sf_WordPress {
 				}
 				$logging->setup(
 					sprintf(
-						// translators: %1$s is a number. %2$s is a key. %3$s is the value of that key. %4$s is a var_export'd array of comments.
-						esc_html__( 'Error: Comments: there are %1$s comment matches for the Salesforce key %2$s with the value of %3$s. Here they are: %4$s', 'object-sync-for-salesforce' ),
+						// translators: %1$s is the log status. %2$s is a number. %3$s is a key. %4$s is the value of that key. %5$s is a var_export'd array of comments.
+						esc_html__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', 'object-sync-for-salesforce' ),
+						ucfirst( esc_attr( $status ) ),
 						absint( count( $comments ) ),
 						esc_html( $key ),
 						esc_html( $value ),
@@ -2403,12 +2384,20 @@ class Object_Sync_Sf_WordPress {
 		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
 			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
 		}
+
+		$status = 'error';
+		$title  = sprintf(
+			// translators: placeholders are: 1) the log status
+			esc_html__( '%1$s: Comments: Tried to run comment_upsert, and ended up without a comment id', 'object-sync-for-salesforce' ),
+			ucfirst( esc_attr( $status ) )
+		);
+
 		$logging->setup(
-			esc_html__( 'Error: Comments: Tried to run comment_upsert, and ended up without a comment id', 'object-sync-for-salesforce' ),
+			$title,
 			'',
 			0,
 			0,
-			'error'
+			$status
 		);
 
 	}
@@ -2416,7 +2405,7 @@ class Object_Sync_Sf_WordPress {
 	/**
 	 * Update a WordPress comment.
 	 *
-	 * @param string $comment_id The ID for the comment to be updated. This value needs to be in the array that is sent to wp_update_comment.
+	 * @param int $comment_id The ID for the comment to be updated. This value needs to be in the array that is sent to wp_update_comment.
 	 * @param array  $params Array of comment data params.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
 	 *
@@ -2441,29 +2430,12 @@ class Object_Sync_Sf_WordPress {
 			$success = false;
 			$errors  = $updated;
 		} else {
-			$success = true;
-			$errors  = array();
-			foreach ( $params as $key => $value ) {
-				$method  = $value['method_modify'];
-				$meta_id = $method( $comment_id, $key, $value['value'] );
-				if ( false === $meta_id ) {
-					$success  = false;
-					$errors[] = array(
-						'message' => sprintf(
-							// Translators: %1$s is a method name.
-							esc_html__( 'Tried to update meta with method %1$s.', 'object-sync-for-salesforce' ),
-							esc_html( $method )
-						),
-						'key'     => $key,
-						'value'   => $value,
-					);
-				}
-			}
-
+			$meta_result = $this->update_wp_meta( $params, $comment_id, 'comment' );
+			$success     = $meta_result['success'];
+			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other comment data.
 			do_action( $this->option_prefix . 'set_more_comment_data', $comment_id, $params, 'update' );
-
-		}
+		} // End if().
 
 		if ( is_wp_error( $updated ) ) {
 			$success = false;
@@ -2498,6 +2470,143 @@ class Object_Sync_Sf_WordPress {
 		return $result;
 	}
 
+	/**
+	 * Standard method for creating meta values
+	 * This works for users, posts, terms, and comments. It does not work for attachments.
+	 *
+	 * @param array $params the values to be saved.
+	 * @param int|wp_error $parent_object_id the WordPress object ID that this metadata is associated with. It shouldn't ever end up here as an error, but it's worth documenting.
+	 * @param string $parent_object_type the WordPress object type.
+	 *
+	 * @return array $meta_result contains the success flag and the array of errors
+	 */
+	private function create_wp_meta( $params, $parent_object_id, $parent_object_type ) {
+		$success = true;
+		$errors  = array();
+		if ( ! is_wp_error( $parent_object_id ) && is_array( $params ) && ! empty( $params ) ) {
+			foreach ( $params as $key => $value ) {
+
+				// if the value is empty, skip it
+				if ( '' === $value['value'] ) {
+					continue;
+				}
+
+				$modify = $value['method_modify'];
+				// todo: we could provide a way for passing the values in a custom order here
+				$meta_id = $modify( $parent_object_id, $key, $value['value'] );
+				if ( false === $meta_id ) {
+					$success  = false;
+					$errors[] = array(
+						'message' => sprintf(
+							// translators: 1) is the WordPress object type, 2) is the method that should be used to save the value.
+							esc_html__( 'Tried to add %1$s meta with method %2$s.', 'object-sync-for-salesforce' ),
+							esc_attr( $parent_object_type ),
+							esc_html( $method )
+						),
+						'key'     => $key,
+						'value'   => $value,
+					);
+				}
+			} // End foreach.
+		}
+		$meta_result = array(
+			'success' => $success,
+			'errors'  => $errors,
+		);
+		return $meta_result;
+	}
+
+	/**
+	 * Standard method for updating meta values
+	 * This works for users, posts, terms, and comments. It does not work for attachments.
+	 *
+	 * @param array $params the values to be saved.
+	 * @param int|wp_error $parent_object_id the WordPress object ID that this metadata is associated with. It shouldn't ever end up here as an error, but it's worth documenting.
+	 * @param string $parent_object_type the WordPress object type.
+	 *
+	 * @return array $meta_result contains the success flag, the changed flag, and the array of errors
+	 */
+	private function update_wp_meta( $params, $parent_object_id, $parent_object_type ) {
+		$success = true;
+		$changed = false;
+		$errors  = array();
+		if ( ! is_wp_error( $parent_object_id ) && is_array( $params ) && ! empty( $params ) ) {
+			$changed = true;
+			foreach ( $params as $key => $value ) {
+				$modify = $value['method_modify'];
+
+				// if the value is empty, use the delete method to modify it
+				if ( '' === $value['value'] ) {
+					$modify = isset( $value['method_delete'] ) ? $value['method_delete'] : $value['method_modify'];
+				}
+
+				$read = $value['method_read'];
+				// todo: we could provide a way for passing the values in a custom order here
+				$meta_id = $modify( $parent_object_id, $key, $value['value'] );
+				if ( false === $meta_id ) {
+					$changed = false;
+					// Check and make sure the stored value matches $value['value'], otherwise it's an error.
+					// In some cases, such as picklists, WordPress is dealing with an array that came from Salesforce at this point, so we need to serialize the value before assuming it's an error.
+
+					if ( is_array( $value['value'] ) ) {
+						$new_value = maybe_serialize( $value['value'] );
+					} else {
+						$new_value = (string) $value['value'];
+					}
+
+					if ( is_array( $read( $parent_object_id, $key, true ) ) ) {
+						$stored_value = maybe_serialize( $read( $parent_object_id, $key, true ) );
+					} else {
+						$stored_value = (string) $read( $parent_object_id, $key, true );
+					}
+
+					if ( $stored_value !== $new_value ) {
+						$errors[] = array(
+							'message' => sprintf(
+								// Translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save
+								esc_html__( 'Unable to update %1$s meta key %2$s with method %3$s. The stored value is %4$s and the new value should be %5$s.', 'object-sync-for-salesforce' ),
+								esc_attr( $parent_object_type ),
+								esc_attr( $key ),
+								esc_attr( $modify ),
+								wp_kses_post( $stored_value ),
+								wp_kses_post( $new_value )
+							),
+						);
+					}
+				}
+			} // End foreach.
+		}
+		$meta_result = array(
+			'success' => $success,
+			'changed' => $changed,
+			'errors'  => $errors,
+		);
+		return $meta_result;
+	}
+
+	/**
+	 * Generate date formats for The Event Calendar plugin
+	 *
+	 * @param string $date the string value of the date from Salesforce
+	 * @param string $type this should be start or end
+	 * @param array $content the other mapped params
+	 *
+	 * @return array $content
+	 */
+	private function append_tec_event_dates( $date, $type, $content ) {
+		if ( ( 'start' === $type || 'end' === $type ) && class_exists( 'Tribe__Date_Utils' ) ) {
+			$dates                                      = array();
+			$date_type                                  = ucfirst( $type );
+			$timestamp                                  = strtotime( $date );
+			$dates[ 'Event' . $date_type . 'Date' ]     = $timestamp;
+			$dates[ 'Event' . $date_type . 'Hour' ]     = date( Tribe__Date_Utils::HOURFORMAT, $timestamp );
+			$dates[ 'Event' . $date_type . 'Minute' ]   = date( Tribe__Date_Utils::MINUTEFORMAT, $timestamp );
+			$dates[ 'Event' . $date_type . 'Meridian' ] = date( Tribe__Date_Utils::MERIDIANFORMAT, $timestamp );
+			$content                                    = $content + $dates;
+		}
+		return $content;
+	}
+
 }
 
 /**
@@ -2512,6 +2621,8 @@ class WordpressException extends Exception {
 class Object_Sync_Sf_WordPress_Transient {
 
 	protected $name;
+
+	public $cache_prefix;
 
 	/**
 	 * Constructor which sets cache options and the name of the field that lists this plugin's cache keys.
@@ -2584,8 +2695,10 @@ class Object_Sync_Sf_WordPress_Transient {
 	public function flush() {
 		$keys   = $this->all_keys();
 		$result = true;
-		foreach ( $keys as $key ) {
-			$result = delete_transient( $key );
+		if ( ! empty( $keys ) ) {
+			foreach ( $keys as $key ) {
+				$result = delete_transient( $key );
+			}
 		}
 		$result = delete_transient( $this->name );
 		return $result;

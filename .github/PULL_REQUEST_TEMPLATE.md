@@ -1,6 +1,6 @@
-## What does this PR do?
+## What does this Pull Request do?
 
-## How do I test this PR?
+## How do I test this Pull Request?
 
 - click a button
 - view the cat

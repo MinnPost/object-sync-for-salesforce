@@ -15,7 +15,7 @@ if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
  */
 class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 
-	protected $sf_api;
+	protected $salesforce_api;
 	protected $is_authorized;
 	private $refreshed;
 
@@ -26,6 +26,9 @@ class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 	*
 	*/
 	public function __construct( Object_Sync_Sf_Salesforce $sfapi, $wsdl = null ) {
+		if ( false === $this->salesforce_api['soap_available'] ) {
+			return;
+		}
 		if ( ! class_exists( 'SforceBaseClient' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
 			require_once plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/SforcePartnerClient.php';
 		}
@@ -81,7 +84,7 @@ class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 				// only once.
 				$this->refreshed = true;
 				$this->salesforce_api->refresh_token();
-				return $this->trySoap( $function, $args );
+				return $this->try_soap( $function, $args );
 			}
 
 			// If we've already tried a refresh, this refresh token is probably

@@ -1,8 +1,10 @@
+
+Deprecated: array_key_exists(): Using array_key_exists() on objects is deprecated. Use isset() or property_exists() instead in phar:///Users/jonathanstegall/Sites/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Template.php on line 527
 <?php
 /*
 Plugin Name: Object Sync for Salesforce
 Description: Object Sync for Salesforce maps and syncs data between Salesforce objects and WordPress objects.
-Version: 1.6.0
+Version: 1.9.4
 Author: MinnPost
 Author URI: https://code.minnpost.com
 License: GPL2+
@@ -57,6 +59,11 @@ class Object_Sync_Salesforce {
 	private $queue;
 
 	/**
+	* @var bool
+	*/
+	private $load;
+
+	/**
 	* @var object
 	*/
 	private $activated;
@@ -80,8 +87,8 @@ class Object_Sync_Salesforce {
 	private $wordpress;
 
 	/**
-	* @var object
-	* Load and initialize the Object_Sync_Sf_Salesforce class.
+	* @var array
+	* Load and initialize the API on the Object_Sync_Sf_Salesforce class.
 	* This contains the Salesforce API methods
 	*/
 	public $salesforce;
@@ -97,6 +104,12 @@ class Object_Sync_Salesforce {
 	* Load and initialize the Object_Sync_Sf_Salesforce_Pull class
 	*/
 	private $pull;
+
+	/**
+	* @var object
+	* Load and initialize the Object_Sync_Sf_Rest class
+	*/
+	private $rest;
 
 	/**
 	 * @var object
@@ -130,7 +143,7 @@ class Object_Sync_Salesforce {
 		global $wpdb;
 
 		$this->wpdb              = $wpdb;
-		$this->version           = '1.6.0';
+		$this->version           = '1.9.4';
 		$this->slug              = 'object-sync-for-salesforce';
 		$this->option_prefix     = 'object_sync_for_salesforce_';
 		$this->login_credentials = $this->get_login_credentials();
@@ -175,11 +188,23 @@ class Object_Sync_Salesforce {
 		 * }
 		*/
 
-		$this->load = $this->load( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
-
 		$this->queue = $this->queue( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
 
 		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
+
+		// Run non-activation things. We do this early because ActionScheduler has to have access to plugins_loaded with priority of zero.
+		add_action( 'plugins_loaded', array( $this, 'run' ), -10 );
+
+	}
+
+	/**
+	 * run the plugin, independent of activation methods.
+	 *
+	 */
+	public function run() {
+
+		$this->load = $this->load( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
+
 		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
 
 		$this->logging = $this->logging( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
@@ -196,7 +221,6 @@ class Object_Sync_Salesforce {
 		$this->rest = $this->rest( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull );
 
 		$this->load_admin( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull, $this->logging, $this->schedulable_classes, $this->queue );
-
 	}
 
 	/**
@@ -206,10 +230,12 @@ class Object_Sync_Salesforce {
 	 * @param string $version
 	 * @param string $slug
 	 * @param string $option_prefix
+	 * @return bool true
 	 *
 	 */
 	private function load( $wpdb, $version, $slug, $option_prefix ) {
 		require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+		return true;
 	}
 
 	/**
@@ -293,6 +319,10 @@ class Object_Sync_Salesforce {
 	public function salesforce_get_api() {
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce.php' );
 		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_query.php' ); // this can be used to generate soql queries, but we don't often need it so it gets initialized whenever it's needed
+
+		$soap_available = $this->is_soap_available();
+		$soap_loaded    = $this->is_soap_loaded();
+
 		$consumer_key        = $this->login_credentials['consumer_key'];
 		$consumer_secret     = $this->login_credentials['consumer_secret'];
 		$login_url           = $this->login_credentials['login_url'];
@@ -309,13 +339,16 @@ class Object_Sync_Salesforce {
 		$sfapi               = '';
 		if ( $consumer_key && $consumer_secret ) {
 			$sfapi = new Object_Sync_Sf_Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes, $option_prefix );
-			if ( $sfapi->is_authorized() === true ) {
+			if ( true === $sfapi->is_authorized() ) {
 				$is_authorized = true;
 			}
 		}
+
 		return array(
-			'is_authorized' => $is_authorized,
-			'sfapi'         => $sfapi,
+			'is_authorized'  => $is_authorized,
+			'sfapi'          => $sfapi,
+			'soap_available' => $soap_available,
+			'soap_loaded'    => $soap_loaded,
 		);
 	}
 
@@ -510,7 +543,7 @@ class Object_Sync_Salesforce {
 
 		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/object-sync-for-salesforce-admin.min.js', __FILE__ ), $javascript_dependencies, filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/object-sync-for-salesforce-admin.min.js' ), true );
 
-		wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/object-sync-for-salesforce-admin.min.css', __FILE__ ), $css_dependencies, filemtime( plugin_dir_path( __FILE__ ) . 'assets/css/object-sync-for-salesforce-admin.min.css' ), 'all' );
+		wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/object-sync-for-salesforce-admin.css', __FILE__ ), $css_dependencies, filemtime( plugin_dir_path( __FILE__ ) . 'assets/css/object-sync-for-salesforce-admin.css' ), 'all' );
 	}
 
 	/**
@@ -554,7 +587,42 @@ class Object_Sync_Salesforce {
 
 	}
 
+	/**
+	 * Check the server to see if Soap is available
+	 *
+	 * @return bool $is_soap_available
+	 */
+	private function is_soap_available() {
+		$is_soap_available = false;
+		if ( extension_loaded( 'soap' ) && class_exists( 'SoapClient' ) ) {
+			$is_soap_available = true;
+		}
+		return $is_soap_available;
+	}
+
+	/**
+	 * Check the plugin to see if the Soap option has been enabled and the class has been loaded
+	 *
+	 * @return bool $is_soap_loaded
+	 */
+	private function is_soap_loaded() {
+		$is_soap_loaded = false;
+		if ( false === $this->is_soap_available() ) {
+			return $is_soap_loaded;
+		}
+		$use_soap = filter_var( get_option( 'object_sync_for_salesforce_use_soap', false ), FILTER_VALIDATE_BOOLEAN );
+		if ( false === $use_soap ) {
+			return $is_soap_loaded;
+		}
+		require_once( plugin_dir_path( __FILE__ ) . 'classes/salesforce_soap_partner.php' );
+		if ( class_exists( 'Object_Sync_Sf_Salesforce_Soap_Partner' ) ) {
+			$is_soap_loaded = true;
+		}
+		return $is_soap_loaded;
+	}
+
 } // end class
-// Instantiate our class
+
+// Instantiate our class.
 $object_sync_salesforce = Object_Sync_Salesforce::get_instance();
 

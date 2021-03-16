@@ -18,12 +18,12 @@ The action hooks that run on around the save on a `pull` event are:
 
 ```php
 add_action( 'object_sync_for_salesforce_pre_pull', 'before_pull', 10, 5 );
-function before_pull( $wordpress_id, $mapping, $object, $object_id, $params ) {
+function before_pull( $wordpress_id, $mapping, $object, $wordpress_id_field_name, $params ) {
     // do things before the plugin saves any data in wordpress
     // $wordpress_id is the object id
     // $mapping is the field map between the object types
     // $object is the object data
-    // $object_id is the wordpress id field's name
+    // $wordpress_id_field_name is the wordpress id field's name
     // $params is the data mapping between the two systems
 }
 ```
@@ -80,12 +80,12 @@ The action hooks that run on around the save on a `push` event are:
 
 ```php
 add_action( 'object_sync_for_salesforce_pre_push', 'before_push', 10, 5 );
-function before_push( $salesforce_id, $mapping, $object, $object_id, $params ) {
+function before_push( $salesforce_id, $mapping, $object, $wordpress_id_field_name, $params ) {
     // do things before the plugin saves any data in salesforce
     // $salesforce_id is the object id
     // $mapping is the field map between the object types
     // $object is the object data
-    // $object_id is the wordpress id field's name
+    // $wordpress_id_field_name is the wordpress id field's name
     // $params is the data mapping between the two systems
 }
 ```
@@ -113,8 +113,8 @@ function push_fail( $op, $response, $synced_object ) {
 #### After success
 
 ```php
-add_action( 'object_sync_for_salesforce_push_success', 'push_success', 10, 3 );
-function push_success( $op, $response, $synced_object, $object_id ) {
+add_action( 'object_sync_for_salesforce_push_success', 'push_success', 10, 5 );
+function push_success( $op, $response, $synced_object, $object_id, $wordpress_id_field_name ) {
     // do things if the save succeeded
     // $op is what the plugin did - Create, Update, Upsert, Delete
     // $response is what was returned by the $salesforce class. sfapi->response
@@ -128,5 +128,6 @@ function push_success( $op, $response, $synced_object, $object_id ) {
     );
     */
     // $object_id is the salesforce object id
+    // $wordpress_id_field_name is the name of the ID field in WordPress
 }
 ```

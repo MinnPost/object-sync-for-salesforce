@@ -9,7 +9,10 @@
 		<tr>
 			<th><?php echo esc_html__( 'Salesforce Id', 'object-sync-for-salesforce' ); ?></th>
 			<td><a href="<?php echo esc_url( $this->salesforce['sfapi']->get_instance_url() . '/' . $mapping['salesforce_id'] ); ?>"><?php echo esc_attr( $mapping['salesforce_id'] ); ?></a></td>
-			<td><a href="<?php echo esc_url( get_admin_url( null, 'user-edit.php?user_id=' . $user->ID ) . '&amp;edit_salesforce_mapping=true' ); ?>" class="edit-salesforce-mapping"><?php echo esc_html__( 'Edit', 'object-sync-for-salesforce' ); ?></a></td>
+			<td>
+				<a href="<?php echo esc_url( get_admin_url( null, 'user-edit.php?user_id=' . $user->ID ) . '&amp;edit_salesforce_mapping=true' ); ?>" class="edit-salesforce-mapping"><?php echo esc_html__( 'Edit', 'object-sync-for-salesforce' ); ?></a>&nbsp;|&nbsp;
+				<a href="<?php echo esc_url( get_admin_url( null, 'user-edit.php?user_id=' . $user->ID ) . '&amp;delete_salesforce_mapping=true' ); ?>" class="delete-salesforce-mapping"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
+			</td>
 		</tr>
 		<tr>
 			<th><?php echo esc_html__( 'Last Sync Message', 'object-sync-for-salesforce' ); ?></th>

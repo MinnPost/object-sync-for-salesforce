@@ -219,13 +219,13 @@ class Object_Sync_Sf_Queue {
 	 * @param string $hook Hook name.
 	 * @param array  $args Arguments.
 	 * @param string $group Group name.
-	 * @return time|null The date and time for the next occurrence, or null if there is no pending, scheduled action for the given hook.
+	 * @return timestamp|null The date and time for the next occurrence, or null if there is no pending, scheduled action for the given hook.
 	 */
 	public function get_next( $hook, $args = null, $group = '' ) {
 
 		$next_timestamp = as_next_scheduled_action( $hook, $args, $group );
 
-		if ( $next_timestamp ) {
+		if ( false !== $next_timestamp ) {
 			return $next_timestamp;
 		}
 
