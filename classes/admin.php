@@ -1243,6 +1243,12 @@ class Object_Sync_Sf_Admin {
 				'type'        => 'error',
 				'dismissible' => false,
 			),
+			'not_secure'             => array(
+				'condition'   => false === $this->check_wordpress_ssl(),
+				'message'     => __( "Your website must use HTTPS to connect with Salesforce.", 'object-sync-for-salesforce' ),
+				'type'        => 'error',
+				'dismissible' => false,
+			),
 			'fieldmap'                => array(
 				'condition'   => isset( $get_data['transient'] ),
 				'message'     => __( 'Errors kept this fieldmap from being saved.', 'object-sync-for-salesforce' ),
@@ -2223,10 +2229,37 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-	* Check WordPress Admin permissions
-	* Check if the current user is allowed to access the Salesforce plugin options
-	*/
+	 * Check WordPress Admin permissions.
+	 * Check if the current user is allowed to access the Salesforce plugin options.
+	 */
 	private function check_wordpress_admin_permissions() {
+
+		// one programmatic way to give this capability to additional user roles is the
+		// object_sync_for_salesforce_roles_configure_salesforce hook
+		// it runs on activation of this plugin, and will assign the below capability to any role
+		// coming from the hook
+
+		// alternatively, other roles can get this capability in whatever other way you like
+		// point is: to administer this plugin, you need this capability
+
+		if ( ! current_user_can( 'configure_salesforce' ) ) {
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+
+	/**
+	 * Check WordPress SSL status.
+	 * HTTPS is required to connect to Salesforce.
+	 */
+	private function check_wordpress_ssl() {
+
+		// the wp_is_using_https() function was added in WordPress 5.7.
+		if ( ! function_exists( 'wp_is_using_https' ) ) {
+			return true;
+		}
 
 		// one programmatic way to give this capability to additional user roles is the
 		// object_sync_for_salesforce_roles_configure_salesforce hook
