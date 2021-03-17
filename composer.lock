@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eeb5f1d236c804338ad7a3b9031c829c",
+    "content-hash": "93fabcd886830e7d14cf6bfd6cfcfb10",
     "packages": [
         {
             "name": "developerforce/force.com-toolkit-for-php",
@@ -421,12 +421,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "e3324ecbde7319b0bbcf0fd7ca4af19469c38da9"
+                "reference": "f8d350d8514ff60b5993dd0121c62299480c989c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/e3324ecbde7319b0bbcf0fd7ca4af19469c38da9",
-                "reference": "e3324ecbde7319b0bbcf0fd7ca4af19469c38da9",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/f8d350d8514ff60b5993dd0121c62299480c989c",
+                "reference": "f8d350d8514ff60b5993dd0121c62299480c989c",
                 "shasum": ""
             },
             "require": {
@@ -465,7 +465,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2020-11-18T14:27:38+00:00"
+            "time": "2021-03-07T11:12:25+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -514,16 +514,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.12.2",
+            "version": "1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "245710e971a030f42e08f4912863805570f23d39"
+                "reference": "be1996ed8adc35c3fd795488a653f4b518be70ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/245710e971a030f42e08f4912863805570f23d39",
-                "reference": "245710e971a030f42e08f4912863805570f23d39",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/be1996ed8adc35c3fd795488a653f4b518be70ea",
+                "reference": "be1996ed8adc35c3fd795488a653f4b518be70ea",
                 "shasum": ""
             },
             "require": {
@@ -573,7 +573,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2020-12-19T10:15:11+00:00"
+            "time": "2021-03-17T13:42:18+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1678,12 +1678,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozarts/assert.git",
-                "reference": "9c89b265ccc4092d58e66d72af5d343ee77a41ae"
+                "reference": "f07851c5b43e4cb502c24068620e9af6cbdd953f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/9c89b265ccc4092d58e66d72af5d343ee77a41ae",
-                "reference": "9c89b265ccc4092d58e66d72af5d343ee77a41ae",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/f07851c5b43e4cb502c24068620e9af6cbdd953f",
+                "reference": "f07851c5b43e4cb502c24068620e9af6cbdd953f",
                 "shasum": ""
             },
             "require": {
@@ -1692,7 +1692,7 @@
             },
             "conflict": {
                 "phpstan/phpstan": "<0.12.20",
-                "vimeo/psalm": "<3.9.1"
+                "vimeo/psalm": "<4.6.1 || 4.6.2"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5.13"
@@ -1724,7 +1724,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2021-01-18T12:52:36+00:00"
+            "time": "2021-03-11T07:08:13+00:00"
         }
     ],
     "aliases": [],
