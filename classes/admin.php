@@ -1239,7 +1239,7 @@ class Object_Sync_Sf_Admin {
 		$notices = array(
 			'permission'              => array(
 				'condition'   => false === $this->check_wordpress_admin_permissions(),
-				'message'     => __( "Your account does not have permission to edit the Salesforce REST API plugin's settings.", 'object-sync-for-salesforce' ),
+				'message'     => esc_html__( "Your account does not have permission to edit the Salesforce REST API plugin's settings.", 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => false,
 			),
@@ -1251,31 +1251,31 @@ class Object_Sync_Sf_Admin {
 			),
 			'fieldmap'                => array(
 				'condition'   => isset( $get_data['transient'] ),
-				'message'     => __( 'Errors kept this fieldmap from being saved.', 'object-sync-for-salesforce' ),
+				'message'     => esc_html__( 'Errors kept this fieldmap from being saved.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
 			'object_map'              => array(
 				'condition'   => isset( $get_data['map_transient'] ),
-				'message'     => __( 'Errors kept this object map from being saved.', 'object-sync-for-salesforce' ),
+				'message'     => esc_html__( 'Errors kept this object map from being saved.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
 			'data_saved'              => array(
 				'condition'   => isset( $get_data['data_saved'] ) && 'true' === $get_data['data_saved'],
-				'message'     => __( 'This data was successfully saved.', 'object-sync-for-salesforce' ),
+				'message'     => esc_html__( 'This data was successfully saved.', 'object-sync-for-salesforce' ),
 				'type'        => 'success',
 				'dismissible' => true,
 			),
 			'data_save_error'         => array(
 				'condition'   => isset( $get_data['data_saved'] ) && 'false' === $get_data['data_saved'],
-				'message'     => __( 'This data was not successfully saved. Try again.', 'object-sync-for-salesforce' ),
+				'message'     => esc_html__( 'This data was not successfully saved. Try again.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
 			'mapping_error_transient' => array(
 				'condition'   => isset( $get_data['mapping_error_transient'] ),
-				'message'     => __( 'Errors kept these mapping errors from being deleted.', 'object-sync-for-salesforce' ),
+				'message'     => esc_html__( 'Errors kept these mapping errors from being deleted.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
