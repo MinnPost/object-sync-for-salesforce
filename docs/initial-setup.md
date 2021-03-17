@@ -6,14 +6,18 @@
 
 To install the plugin in WordPress, your PHP environment needs the following:
 
-1. At least version 5.5.
+#### To run the plugin on a website
+
+1. At least version 5.6.20.
 2. SSL support (this is required to connect to Salesforce). You can do this in a local development environment without purchasing a certificate. If you develop on a Mac, you can use [a guide](https://getgrav.org/blog/macos-sierra-apache-ssl) like this one.
 3. If you'll be using the SOAP API, PHP needs to be compiled with SOAP web services and
   OpenSSL support, as per:
   - [http://php.net/soap](http://php.net/soap)
   - [http://php.net/openssl](http://php.net/openssl)
-4. [Composer](https://getcomposer.org). You'll need to have the composer executable in your path, or be able to call it in another way (one recommended way of doing this is [Homebrew](http://brew.sh/)).
-5. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
+4. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
+
+#### To contribute code to the plugin, or run it from a GitHub install
+5. [Composer](https://getcomposer.org). You'll need to have the composer executable in your path, or be able to call it in another way (one recommended way of doing this is [Homebrew](http://brew.sh/)).
 6. If you intend to contribute interface work, for example on the admin settings design, or translation work, to translate all or some of the plugin's text into another language, you will need Node.js and Gulp installed as well. You can use [this guide](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md) to set it up, and this plugin already includes a `package.json` and `Gulpfile.js`.
 
 *Note*: if you would like to contribute translation work, as defined in #6, but are uncomfortable using Node and Gulp, you can always submit your changes as [one or more issues](https://github.com/minnpost/object-sync-for-salesforce/issues) instead. Please indicate what the text you want to translate currently says, where in the plugin you can find it, what it should say in the additional language, and of course what language it is.
@@ -26,7 +30,7 @@ Most users should install the plugin from the [WordPress plugin directory](https
 2. Run `git clone https://github.com/MinnPost/object-sync-for-salesforce.git`
 3. Run `cd object-sync-for-salesforce`
 4. Run `composer install`
-5. This will take a little while as Composer installs third-party libraries the plugin needs. You can then activate the plugin as you would a normal WordPress plugin.
+5. This will take a little while as Composer installs third-party libraries the plugin needs. You can then activate the plugin as you would a normal WordPress plugin. To install the libraries that the plugin runs in production only, you can use `composer install --no-dev --prefer-dist;` instead.
 6. If you are doing interface or translation work, as defined above, run `npm install` to install the Gulp plugins. Run `gulp` when you make changes to Sass, JavaScript, or when you create new translations.
 7. If you intent to contribute PHP work, you may want to install [phpDocumentor](https://phpdoc.org/) to generate code documentation. You can use [this link](https://phpdoc.org) to set it up. At this time, it is not included with this plugin. We recommend that you use  `phpDocumentor.phar` and run it in the plugin's root directory when you make relevant changes. For example, if you have this file installed in your `~/Sites` directory, you would run `php ~/Sites/phpDocumentor.phar`. You can check these changes in to the Git repository.
 
