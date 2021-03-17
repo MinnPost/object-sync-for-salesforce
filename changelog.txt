@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 1.9.9 (2021-03-17)
+	* Bug fix: If a fieldmap has allowed record types, use them to constrain the SOQL sent to Salesforce. Thanks to WordPress user @esowers for the report.
+	* Maintenance: Standardize WP-Admin color usage to match WordPress 5.7.
+	* Start setup for using GitHub Actions instead of Travis
+
 * 1.9.8 (2021-02-11)
     * Bug fix: fix PHP composer error.
 
