@@ -72,10 +72,9 @@ class Object_Sync_Sf_Salesforce_Push {
 	}
 
 	/**
-	* Create the action hooks based on what object maps exist from the admin settings.
-	* We do not have any actions for blogroll at this time.
-	*
-	*/
+	 * Create the action hooks based on what object maps exist from the admin settings.
+	 * We do not have any actions for blogroll at this time.
+	 */
 	public function add_actions() {
 		$db_version = get_option( $this->option_prefix . 'db_version', false );
 		if ( $db_version === $this->version ) {
@@ -91,6 +90,10 @@ class Object_Sync_Sf_Salesforce_Push {
 					add_action( 'delete_user', array( $this, 'delete_user' ) );
 				} elseif ( 'post' === $object_type ) {
 					add_action( 'save_post', array( $this, 'post_actions' ), 11, 2 );
+					if ( class_exists( 'ACF' ) ) {
+						// front end forms on ACF use this hook.
+						add_action( 'acf/save_post', array( $this, 'acf_save' ), 10 );
+					}
 				} elseif ( 'attachment' === $object_type ) {
 					add_action( 'add_attachment', array( $this, 'add_attachment' ) );
 					add_action( 'edit_attachment', array( $this, 'edit_attachment' ) );
@@ -102,15 +105,19 @@ class Object_Sync_Sf_Salesforce_Push {
 				} elseif ( 'comment' === $object_type ) {
 					add_action( 'comment_post', array( $this, 'add_comment' ), 11, 3 );
 					add_action( 'edit_comment', array( $this, 'edit_comment' ) );
-					add_action( 'delete_comment', array( $this, 'delete_comment' ) ); // to be clear: this only runs when the comment gets deleted from the trash, either manually or automatically
+					add_action( 'delete_comment', array( $this, 'delete_comment' ) ); // to be clear: this only runs when the comment gets deleted from the trash, either manually or automatically.
 				} else { // this is for custom post types
-					// we still have to use save_post because save_post_type fails to pull in the metadata
+					// we still have to use save_post because save_post_type fails to pull in the metadata.
 					add_action( 'save_post', array( $this, 'post_actions' ), 11, 2 );
+					if ( class_exists( 'ACF' ) ) {
+						// front end forms on ACF use this hook.
+						add_action( 'acf/save_post', array( $this, 'acf_save' ), 10 );
+					}
 				}
 			}
 		}
 
-		// hook that action-scheduler can call
+		// hook that action-scheduler can call.
 		add_action( $this->option_prefix . 'push_record', array( $this, 'salesforce_push_sync_rest' ), 10, 4 );
 
 	}
@@ -200,6 +207,21 @@ class Object_Sync_Sf_Salesforce_Push {
 		// flag that this item has been deleted
 		$user = $this->wordpress->get_wordpress_object_data( 'user', $user_id, true );
 		$this->object_delete( $user, 'user' );
+	}
+
+	/**
+	 * Callback method for saving a post with ACF. If it's a front end save, send the data to post_actions.
+	 *
+	 * @param int $post_id the ID of the post.
+	 */
+	public function acf_save( $post_id ) {
+		if ( is_admin() ) {
+			return;
+		}
+		$post = get_post( $post_id );
+		if ( null !== $post ) {
+			$this->post_actions( $post_id, $post );
+		}
 	}
 
 	/**
