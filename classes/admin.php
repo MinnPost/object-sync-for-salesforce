@@ -1304,14 +1304,12 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-	* Get all the Salesforce object settings for fieldmapping
-	* This takes either the $_POST array via ajax, or can be directly called with a $data array
-	*
-	* @param array $data
-	* data must contain a salesforce_object
-	* can optionally contain a type
-	* @return array $object_settings
-	*/
+	 * Get all the Salesforce object settings for fieldmapping
+	 * This takes either the $_POST array via ajax, or can be directly called with a $data array
+	 *
+	 * @param array $data data must contain a salesforce_object, can optionally contain a type.
+	 * @return array $object_settings
+	 */
 	public function get_salesforce_object_description( $data = array() ) {
 		$ajax = false;
 		if ( empty( $data ) ) {
@@ -1327,15 +1325,28 @@ class Object_Sync_Sf_Admin {
 			$object_fields        = array();
 			$include_record_types = array();
 
-			// these can come from ajax
+			// these can come from ajax.
 			$include = isset( $data['include'] ) ? (array) $data['include'] : array();
 			$include = array_map( 'esc_attr', $include );
 
 			if ( in_array( 'fields', $include, true ) || empty( $include ) ) {
-				$type = isset( $data['field_type'] ) ? esc_attr( $data['field_type'] ) : ''; // can come from ajax
+				$type = isset( $data['field_type'] ) ? esc_attr( $data['field_type'] ) : ''; // can come from ajax.
+
+				// here, we should respect the decision of whether to show the API name or the label.
+				$display_value = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
+				if ( 'api_name' === $display_value ) {
+					$visible_label_field = 'name';
+				} else {
+					$visible_label_field = 'label';
+				}
+				$attributes = array( 'name', $visible_label_field );
+
 				foreach ( $object['data']['fields'] as $key => $value ) {
 					if ( '' === $type || $type === $value['type'] ) {
 						$object_fields[ $key ] = $value;
+						if ( isset( $attributes ) ) {
+							$object_fields[ $key ] = array_intersect_key( $value, array_flip( $attributes ) );
+						}
 					}
 				}
 				$object_description['fields'] = $object_fields;

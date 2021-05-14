@@ -55,7 +55,14 @@
 					$conditions['triggerable'] = true;
 				}
 				$salesforce_objects = $sfapi->objects( $conditions );
+				// allow for api name or field label to be the display value in the <select>.
+				$display_value = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
 				foreach ( $salesforce_objects as $object ) {
+
+					if ( 'api_name' === $display_value ) {
+						$object['label'] = $object['name'];
+					}
+
 					if ( isset( $salesforce_object ) && $salesforce_object === $object['name'] ) {
 						$selected = ' selected';
 					} else {
@@ -165,7 +172,11 @@
 				?>
 				<select name="pull_trigger_field" id="pull_trigger_field">
 				<?php
+				$display_value = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
 				foreach ( $object_fields as $key => $value ) {
+					if ( 'api_name' === $display_value ) {
+						$value['label'] = $value['name'];
+					}
 					if ( $pull_trigger_field === $value['name'] ) {
 						$selected = ' selected';
 					} else {
