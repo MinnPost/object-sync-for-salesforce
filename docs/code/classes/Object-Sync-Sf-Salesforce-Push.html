@@ -204,6 +204,13 @@
 <dd>Constructor which sets up push schedule</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_acf_save">acf_save()</a>
+    <span>
+                        &nbsp;: mixed    </span>
+</dt>
+<dd>Callback method for saving a post with ACF. If it&#039;s a front end save, send the data to post_actions.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_add_actions">add_actions()</a>
     <span>
                         &nbsp;: mixed    </span>
@@ -924,6 +931,52 @@ This calls the overall push crud method, which controls queuing and sending data
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_acf_save">
+        acf_save()
+        <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_acf_save" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">217</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Callback method for saving a post with ACF. If it&#039;s a front end save, send the data to post_actions.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">acf_save</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$post_id</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>the ID of the post.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+            <section class="phpdocumentor-description"></section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_add_actions">
         add_actions()
         <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_add_actions" class="headerlink"><i class="fas fa-link"></i></a>
@@ -931,7 +984,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">79</span>
+    <span class="phpdocumentor-element-found-in__line">78</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create the action hooks based on what object maps exist from the admin settings.</p>
@@ -966,7 +1019,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">268</span>
+    <span class="phpdocumentor-element-found-in__line">290</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for adding an attachment</p>
@@ -1011,7 +1064,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">338</span>
+    <span class="phpdocumentor-element-found-in__line">360</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for adding a comment</p>
@@ -1072,7 +1125,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">301</span>
+    <span class="phpdocumentor-element-found-in__line">323</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for adding a term</p>
@@ -1133,7 +1186,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">169</span>
+    <span class="phpdocumentor-element-found-in__line">176</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for adding a user</p>
@@ -1178,7 +1231,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">288</span>
+    <span class="phpdocumentor-element-found-in__line">310</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for editing an attachment</p>
@@ -1223,7 +1276,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">358</span>
+    <span class="phpdocumentor-element-found-in__line">380</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for deleting a comment</p>
@@ -1268,7 +1321,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">325</span>
+    <span class="phpdocumentor-element-found-in__line">347</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for deleting a term</p>
@@ -1338,7 +1391,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">199</span>
+    <span class="phpdocumentor-element-found-in__line">206</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for deleting a user</p>
@@ -1383,7 +1436,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">278</span>
+    <span class="phpdocumentor-element-found-in__line">300</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for editing an attachment</p>
@@ -1428,7 +1481,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">348</span>
+    <span class="phpdocumentor-element-found-in__line">370</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for editing a comment</p>
@@ -1473,7 +1526,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">312</span>
+    <span class="phpdocumentor-element-found-in__line">334</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for editing a term</p>
@@ -1526,7 +1579,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">189</span>
+    <span class="phpdocumentor-element-found-in__line">196</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for editing a user</p>
@@ -1579,7 +1632,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">126</span>
+    <span class="phpdocumentor-element-found-in__line">133</span>
 </aside>
 
         <p class="phpdocumentor-summary">Method for ajax hooks to call for pushing manually</p>
@@ -1640,7 +1693,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">212</span>
+    <span class="phpdocumentor-element-found-in__line">234</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for posts of any type
@@ -1694,7 +1747,7 @@ This can handle create, update, and delete actions</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">627</span>
+    <span class="phpdocumentor-element-found-in__line">649</span>
 </aside>
 
         <p class="phpdocumentor-summary">Sync WordPress objects and Salesforce objects using the REST API.</p>
@@ -1764,7 +1817,7 @@ This can handle create, update, and delete actions</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">179</span>
+    <span class="phpdocumentor-element-found-in__line">186</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback method for adding a user via the Ultimate Member plugin</p>
@@ -1816,7 +1869,7 @@ This can handle create, update, and delete actions</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1342</span>
+    <span class="phpdocumentor-element-found-in__line">1364</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create an object map between a WordPress object and a Salesforce object</p>
@@ -1898,7 +1951,7 @@ This is the database row for the map object</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1389</span>
+    <span class="phpdocumentor-element-found-in__line">1411</span>
 </aside>
 
         <p class="phpdocumentor-summary">Find out if push is allowed for this record</p>
@@ -1979,7 +2032,7 @@ Whether all this stuff allows the $api_result to be pushed to Salesforce</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">384</span>
+    <span class="phpdocumentor-element-found-in__line">406</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete an existing object
@@ -2031,7 +2084,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">368</span>
+    <span class="phpdocumentor-element-found-in__line">390</span>
 </aside>
 
         <p class="phpdocumentor-summary">Insert a new object
@@ -2083,7 +2136,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">376</span>
+    <span class="phpdocumentor-element-found-in__line">398</span>
 </aside>
 
         <p class="phpdocumentor-summary">Update an existing object
@@ -2135,7 +2188,7 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_push.php"><a href="files/classes-salesforce-push.html"><abbr title="classes/salesforce_push.php">salesforce_push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">402</span>
+    <span class="phpdocumentor-element-found-in__line">424</span>
 </aside>
 
         <p class="phpdocumentor-summary">Push objects to Salesforce.</p>

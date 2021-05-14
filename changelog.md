@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 1.10.0 (2021-05-14)
+    * Feature: Add support for Advanced Custom Fields forms that save posts on the front end. Thanks to WordPress user @grayzee for the request.
+    * Bug fix: Fix the API Name settings so the value shows up correctly. Thanks to WordPress user @dcleslie777 for the report.
+
 * 1.9.9 (2021-03-17)
 	* Bug fix: If a fieldmap has allowed record types, use them to constrain the SOQL sent to Salesforce. Thanks to WordPress user @esowers for the report.
 	* Maintenance: Standardize WP-Admin color usage to match WordPress 5.7.
