@@ -6,39 +6,7 @@ description: Learn how to use the Action Scheduler background processing job que
 Using Action Scheduler requires:
 
 1. installing the library
-1. scheduling and action
-1. attaching a callback to that action
-
-## Scheduling an Action
-
-To schedule an action, call the [API function](/api/) for the desired schedule type passing in the required parameters.
-
-The example code below shows everything needed to schedule a function to run at midnight, if it's not already scheduled:
-
-```php
-require_once( plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php' );
-
-/**
- * Schedule an action with the hook 'eg_midnight_log' to run at midnight each day
- * so that our callback is run then.
- */
-function eg_schedule_midnight_log() {
-	if ( false === as_next_scheduled_action( 'eg_midnight_log' ) ) {
-		as_schedule_recurring_action( strtotime( 'midnight tonight' ), DAY_IN_SECONDS, 'eg_midnight_log' );
-	}
-}
-add_action( 'init', 'eg_schedule_midnight_log' );
-
-/**
- * A callback to run when the 'eg_midnight_log' scheduled action is run.
- */
-function eg_log_action_data() {
-	error_log( 'It is just after midnight on ' . date( 'Y-m-d' ) );
-}
-add_action( 'eg_midnight_log', 'eg_log_action_data' );
-```
-
-For more details on all available API functions, and the data they accept, refer to the [API Reference](/api/).
+1. scheduling an action
 
 ## Installation
 
@@ -53,7 +21,7 @@ Action Scheduler includes the necessary file headers to be used as a standard Wo
 
 To install it as a plugin:
 
-1. Download the .zip archive of the latest [stable release](https://github.com/Prospress/action-scheduler/releases)
+1. Download the .zip archive of the latest [stable release](https://github.com/woocommerce/action-scheduler/releases)
 1. Go to the **Plugins > Add New > Upload** administration screen on your WordPress site
 1. Select the archive file you just downloaded
 1. Click **Install Now**
@@ -77,7 +45,7 @@ To include Action Scheduler as a git subtree:
 #### Step 1. Add the Repository as a Remote
 
 ```
-git remote add -f subtree-action-scheduler https://github.com/Prospress/action-scheduler.git
+git remote add -f subtree-action-scheduler https://github.com/woocommerce/action-scheduler.git
 ```
 
 Adding the subtree as a remote allows us to refer to it in short from via the name `subtree-action-scheduler`, instead of the full GitHub URL.
@@ -112,7 +80,7 @@ require_once( plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-
 
 There is no need to call any functions or do else to initialize Action Scheduler.
 
-When the `action-scheduler.php` file is included, Action Scheduler will register the version in that file and then load the most recent version of itself on the site. It will also load the most recent version of [all API functions](https://github.com/prospress/action-scheduler#api-functions).
+When the `action-scheduler.php` file is included, Action Scheduler will register the version in that file and then load the most recent version of itself on the site. It will also load the most recent version of [all API functions](https://actionscheduler.org/api/).
 
 ### Load Order
 
@@ -121,3 +89,38 @@ Action Scheduler will register its version on `'plugins_loaded'` with priority `
 It is recommended to load it _when the file including it is included_. However, if you need to load it on a hook, then the hook must occur before `'plugins_loaded'`, or you can use `'plugins_loaded'` with negative priority, like `-10`.
 
 Action Scheduler will later initialize itself on `'init'` with priority `1`.  Action Scheduler APIs should not be used until after `'init'` with priority `1`.
+
+### Usage in Themes
+
+When using Action Scheduler in themes, it's important to note that if Action Scheduler has been registered by a plugin, then the latest version registered by a plugin will be used, rather than the version included in the theme. This is because of the version dependency handling code using `'plugins_loaded'` since version 1.0.
+
+## Scheduling an Action
+
+To schedule an action, call the [API function](/api/) for the desired schedule type passing in the required parameters.
+
+The example code below shows everything needed to schedule a function to run at midnight, if it's not already scheduled:
+
+```php
+require_once( plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php' );
+
+/**
+ * Schedule an action with the hook 'eg_midnight_log' to run at midnight each day
+ * so that our callback is run then.
+ */
+function eg_schedule_midnight_log() {
+	if ( false === as_next_scheduled_action( 'eg_midnight_log' ) ) {
+		as_schedule_recurring_action( strtotime( 'tomorrow' ), DAY_IN_SECONDS, 'eg_midnight_log' );
+	}
+}
+add_action( 'init', 'eg_schedule_midnight_log' );
+
+/**
+ * A callback to run when the 'eg_midnight_log' scheduled action is run.
+ */
+function eg_log_action_data() {
+	error_log( 'It is just after midnight on ' . date( 'Y-m-d' ) );
+}
+add_action( 'eg_midnight_log', 'eg_log_action_data' );
+```
+
+For more details on all available API functions, and the data they accept, refer to the [API Reference](/api/).

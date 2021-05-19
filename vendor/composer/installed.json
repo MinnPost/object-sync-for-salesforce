@@ -67,29 +67,40 @@
     },
     {
         "name": "prospress/action-scheduler",
-        "version": "2.2.5",
-        "version_normalized": "2.2.5.0",
+        "version": "3.1.6",
+        "version_normalized": "3.1.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/woocommerce/action-scheduler.git",
-            "reference": "fd7c6b76a7af27d6403ffe39b0963dbd8ce50488"
+            "reference": "275d0ba54b1c263dfc62688de2fa9a25a373edf8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/woocommerce/action-scheduler/zipball/fd7c6b76a7af27d6403ffe39b0963dbd8ce50488",
-            "reference": "fd7c6b76a7af27d6403ffe39b0963dbd8ce50488",
+            "url": "https://api.github.com/repos/woocommerce/action-scheduler/zipball/275d0ba54b1c263dfc62688de2fa9a25a373edf8",
+            "reference": "275d0ba54b1c263dfc62688de2fa9a25a373edf8",
             "shasum": ""
         },
         "require-dev": {
-            "wp-cli/wp-cli": "1.5.1"
+            "phpunit/phpunit": "^5.6",
+            "woocommerce/woocommerce-sniffs": "0.0.8",
+            "wp-cli/wp-cli": "~1.5.1"
         },
-        "time": "2019-04-24T12:45:40+00:00",
+        "time": "2020-05-12T16:22:33+00:00",
         "type": "wordpress-plugin",
+        "extra": {
+            "scripts-description": {
+                "test": "Run unit tests",
+                "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
+                "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
+            }
+        },
         "installation-source": "source",
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPL-3.0"
+            "GPL-3.0-or-later"
         ],
         "description": "Action Scheduler for WordPress and WooCommerce",
+        "homepage": "https://actionscheduler.org/",
         "abandoned": "woocommerce/action-scheduler"
     }
 ]
