@@ -7,7 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInit349f5103cbe1b0a436d5aa7044a26865
 {
     public static $files = array (
-        '712263cd6b22ec9ea795d59ae1ebda80' => __DIR__ . '/..' . '/prospress/action-scheduler/action-scheduler.php',
+        '52ff0eda13f9332d23f053df62788b8e' => __DIR__ . '/..' . '/woocommerce/action-scheduler/action-scheduler.php',
     );
 
     public static $classMap = array (
