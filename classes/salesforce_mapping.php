@@ -529,50 +529,6 @@ class Object_Sync_Sf_Mapping {
 	}
 
 	/**
-	 * Get one or more object map rows between WordPress and Salesforce objects
-	 *
-	 * @deprecated since 1.8.0
-	 * @param array $conditions Limitations on the SQL query for object mapping rows.
-	 * @param bool  $reset Unused parameter.
-	 * @return array $map or $mappings
-	 * @throws \Exception
-	 */
-	public function get_object_maps( $conditions = array(), $reset = false ) {
-		$table = $this->object_map_table;
-		$order = ' ORDER BY object_updated, created';
-		if ( ! empty( $conditions ) ) { // get multiple but with a limitation.
-			$mappings = array();
-
-			if ( ! empty( $conditions ) ) {
-				$where = ' WHERE ';
-				$i     = 0;
-				foreach ( $conditions as $key => $value ) {
-					$i++;
-					if ( $i > 1 ) {
-						$where .= ' AND ';
-					}
-					$where .= '`' . $key . '` = "' . $value . '"';
-				}
-			} else {
-				$where = '';
-			}
-
-			$mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . $order, ARRAY_A );
-			if ( ! empty( $mappings ) && 1 === $this->wpdb->num_rows ) {
-				$mappings = $mappings[0];
-			}
-		} else { // get all of the mappings. ALL THE MAPPINGS.
-			$mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $order, ARRAY_A );
-			if ( ! empty( $mappings ) && 1 === $this->wpdb->num_rows ) {
-				$mappings = $mappings[0];
-			}
-		}
-
-		return $mappings;
-
-	}
-
-	/**
 	 * Update an object map row between a WordPress and Salesforce object
 	 *
 	 * @param array $posted It's $_POST.
@@ -677,25 +633,6 @@ class Object_Sync_Sf_Mapping {
 	}
 
 	/**
-	 * Returns one or more Salesforce object mappings for a given WordPress object.
-	 *
-	 * @deprecated since 1.8.0
-	 * @param string $object_type Type of object to load.
-	 * @param int    $object_id Unique identifier of the target object to load.
-	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
-	 *
-	 * @return SalesforceMappingObject
-	 *   The requested SalesforceMappingObject or FALSE if none was found.
-	 */
-	public function load_by_wordpress( $object_type, $object_id, $reset = false ) {
-		$conditions = array(
-			'wordpress_id'     => $object_id,
-			'wordpress_object' => $object_type,
-		);
-		return $this->get_object_maps( $conditions, $reset );
-	}
-
-	/**
 	 * Returns Salesforce object mappings for a given Salesforce object.
 	 *
 	 * @param string $salesforce_id Type of object to load.
@@ -711,62 +648,6 @@ class Object_Sync_Sf_Mapping {
 		$maps = $this->get_all_object_maps( $conditions, $reset );
 
 		return $maps;
-	}
-
-	/**
-	 * Returns one or more Salesforce object mappings for a given Salesforce object.
-	 *
-	 * @deprecated since 1.8.0
-	 * @param string $salesforce_id Type of object to load.
-	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
-	 *
-	 * @return array $map
-	 *   The most recent fieldmap
-	 */
-	public function load_by_salesforce( $salesforce_id, $reset = false ) {
-		$conditions = array(
-			'salesforce_id' => $salesforce_id,
-		);
-
-		$map = $this->get_object_maps( $conditions, $reset );
-
-		if ( isset( $map[0] ) && is_array( $map[0] ) && count( $map ) > 1 ) {
-			$status = 'notice';
-			$log    = '';
-			$log   .= 'Mapping: there is more than one mapped WordPress object for the Salesforce object ' . $salesforce_id . '. These WordPress IDs are: ';
-			$i      = 0;
-			foreach ( $map as $mapping ) {
-				$i++;
-				if ( isset( $mapping['wordpress_id'] ) ) {
-					$log .= 'object type: ' . $mapping['wordpress_object'] . ', id: ' . $mapping['wordpress_id'];
-				}
-				if ( count( $map ) !== $i ) {
-					$log .= '; ';
-				} else {
-					$log .= '.';
-				}
-			}
-			$map = $map[0];
-			// Create log entry for multiple maps.
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-			}
-			$logging->setup(
-				sprintf(
-					// translators: %1$s is the Id of a Salesforce object.
-					esc_html__( 'Notice: Mapping: there is more than one mapped WordPress object for the Salesforce object %2$s', 'object-sync-for-salesforce' ),
-					esc_attr( $salesforce_id )
-				),
-				$log,
-				0,
-				0,
-				$status
-			);
-		} // End if().
-
-		return $map;
 	}
 
 	/**

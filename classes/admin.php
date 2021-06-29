@@ -140,7 +140,6 @@ class Object_Sync_Sf_Admin {
 		$this->action_group_suffix = '_check_records';
 
 		$this->add_actions();
-		$this->add_deprecated_actions();
 
 	}
 
@@ -193,23 +192,6 @@ class Object_Sync_Sf_Admin {
 		add_action( 'admin_post_object_sync_for_salesforce_import', array( $this, 'import_json_file' ) );
 		add_action( 'admin_post_object_sync_for_salesforce_export', array( $this, 'export_json_file' ) );
 
-	}
-
-	/**
-	* Deprecated action hooks for admin pages
-	*
-	*/
-	private function add_deprecated_actions() {
-		/**
-		 * method: get_wordpress_object_description
-		 * @deprecated since 1.9.0
-		 */
-		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
-		/**
-		 * method: get_wp_sf_object_fields
-		 * @deprecated since 1.9.0
-		 */
-		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
 	}
 
 	/**
@@ -1452,38 +1434,6 @@ class Object_Sync_Sf_Admin {
 				'fields' => $object_fields,
 			);
 			wp_send_json_success( $ajax_response );
-		} else {
-			return $object_fields;
-		}
-	}
-
-	/**
-	* Get WordPress and Salesforce object fields together for fieldmapping
-	* This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $salesforce_object fields
-	*
-	* @deprecated since 1.9.0
-	* @param string $wordpress_object
-	* @param string $salesforce_object
-	* @return array $object_fields
-	*/
-	public function get_wp_sf_object_fields( $wordpress_object = '', $salesforce = '' ) {
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-		if ( empty( $wordpress_object ) ) {
-			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
-		}
-		if ( empty( $salesforce_object ) ) {
-			$salesforce_object = isset( $post_data['salesforce_object'] ) ? sanitize_text_field( wp_unslash( $post_data['salesforce_object'] ) ) : '';
-		}
-
-		$object_fields['wordpress']  = $this->get_wordpress_object_fields( $wordpress_object );
-		$object_fields['salesforce'] = $this->get_salesforce_object_fields(
-			array(
-				'salesforce_object' => $salesforce_object,
-			)
-		);
-
-		if ( ! empty( $post_data ) ) {
-			wp_send_json_success( $object_fields );
 		} else {
 			return $object_fields;
 		}
