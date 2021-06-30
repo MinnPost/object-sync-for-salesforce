@@ -1564,15 +1564,19 @@ class Object_Sync_Sf_Salesforce_Pull {
 				// find out if there is a mapping object for this WordPress object already
 				// don't do it if the WordPress id is 0.
 				if ( 0 !== $wordpress_id ) {
-					$mapping_object = $this->mappings->get_object_maps(
+					$mapping_object  = array();
+					$mapping_objects = $this->mappings->get_all_object_maps(
 						array(
 							'wordpress_id'     => $wordpress_id,
 							'wordpress_object' => $salesforce_mapping['wordpress_object'],
 						)
 					);
+					if ( isset( $mapping_objects[0] ) && is_array( $mapping_objects[0] ) ) {
+						$mapping_object = $mapping_objects[0];
+					}
 				} else {
 					// if the wp object is 0, check to see if there are any object maps that have an id of 0. if there are any, log them.
-					$mapping_object_debug = $this->mappings->get_object_maps(
+					$mapping_object_debug = $this->mappings->get_all_object_maps(
 						array(
 							'wordpress_id' => $wordpress_id,
 						)
@@ -1691,7 +1695,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
 				set_transient( 'salesforce_pulling_' . $object['Id'], 1, $seconds );
 				set_transient( 'salesforce_pulling_object_id', $object['Id'] );
-				$mapping_object = $this->mappings->get_object_maps(
+				$mapping_object = $this->mappings->get_all_object_maps(
 					array(
 						'id' => $mapping_object_id,
 					)
@@ -1707,7 +1711,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
 				set_transient( 'salesforce_pulling_' . $mapping_object_id, 1, $seconds );
 				set_transient( 'salesforce_pulling_object_id', $mapping_object_id );
-				$mapping_object = $this->mappings->get_object_maps(
+				$mapping_object = $this->mappings->get_all_object_maps(
 					array(
 						'id' => $mapping_object_id,
 					)
