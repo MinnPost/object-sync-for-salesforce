@@ -233,6 +233,11 @@ class Object_Sync_Sf_Salesforce_Push {
 	*/
 	public function post_actions( $post_id, $post ) {
 
+		// if this runs on a non-object due to another operation, don't continue.
+		if ( ! is_object( $post ) ) {
+			return;
+		}
+
 		$post_type = $post->post_type;
 
 		if ( isset( $post->post_status ) && 'auto-draft' === $post->post_status ) {
