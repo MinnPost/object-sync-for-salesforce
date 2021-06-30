@@ -274,4 +274,4 @@ See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/
 == Upgrade Notice ==
 
 = 2.0.0 =
-2.0.0 includes a major upgrade to ActionScheduler, the underlying queue technology that runs syncing. You may want to make a full site backup before upgrading.
+2.0.0 includes a major upgrade to ActionScheduler, the underlying queue technology that runs syncing for this plugin. You may want to make a full site backup before upgrading, and if you have access to a staging environment you may want to run it there before you run it on your production website.
