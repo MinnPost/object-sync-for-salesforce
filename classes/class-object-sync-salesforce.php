@@ -215,7 +215,7 @@ class Object_Sync_Salesforce {
 		static $plugin;
 
 		if ( is_null( $plugin ) ) {
-			$plugin = new Object_Sync_Salesforce( OBJECT_SYNC_SALESFORCE_VERSION, OBJECT_SYNC_SALESFORCE_FILE );
+			$plugin = new Object_Sync_Salesforce( OBJECT_SYNC_SF_VERSION, OBJECT_SYNC_SF_FILE );
 		}
 
 		return $plugin;

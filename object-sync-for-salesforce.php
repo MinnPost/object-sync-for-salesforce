@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 2.0.0
  * @var string
  */
-define( 'OBJECT_SYNC_SALESFORCE_FILE', __FILE__ );
+define( 'OBJECT_SYNC_SF_FILE', __FILE__ );
 
 /**
  * The plugin's current version
@@ -35,7 +35,15 @@ define( 'OBJECT_SYNC_SALESFORCE_FILE', __FILE__ );
  * @since 2.0.0
  * @var string
  */
-define( 'OBJECT_SYNC_SALESFORCE_VERSION', '2.0.0' );
+define( 'OBJECT_SYNC_SF_VERSION', '2.0.0' );
+
+/**
+ * The default Salesforce API version for new installs
+ *
+ * @since 2.0.0
+ * @var string
+ */
+define( 'OBJECT_SYNC_SF_DEFAULT_API_VERSION', '52.0' );
 
 // Load the autoloader.
 require_once 'lib/autoloader.php';
@@ -50,7 +58,7 @@ function object_sync_for_salesforce() {
 	static $plugin;
 
 	if ( is_null( $plugin ) ) {
-		$plugin = new Object_Sync_Salesforce( OBJECT_SYNC_SALESFORCE_VERSION, __FILE__ );
+		$plugin = new Object_Sync_Salesforce( OBJECT_SYNC_SF_VERSION, OBJECT_SYNC_SF_FILE );
 	}
 
 	return $plugin;
