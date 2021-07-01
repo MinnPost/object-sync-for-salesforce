@@ -1,16 +1,15 @@
 <?php
 /**
- * Class file for the Object_Sync_Sf_Admin class.
+ * Create default WordPress admin functionality to configure the plugin.
  *
- * @file
+ * @class   Object_Sync_Sf_Admin
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Create default WordPress admin functionality to configure the plugin.
+ * Object_Sync_Sf_Admin class.
  */
 class Object_Sync_Sf_Admin {
 
@@ -105,20 +104,22 @@ class Object_Sync_Sf_Admin {
 	* @param object $queue
 	* @throws \Exception
 	*/
-	public function __construct( $wpdb, $version, $login_credentials, $slug, $wordpress, $salesforce, $mappings, $push, $pull, $logging, $schedulable_classes, $queue = '', $option_prefix = '' ) {
-		$this->wpdb                = $wpdb;
-		$this->version             = $version;
-		$this->login_credentials   = $login_credentials;
-		$this->slug                = $slug;
-		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
-		$this->wordpress           = $wordpress;
-		$this->salesforce          = $salesforce;
-		$this->mappings            = $mappings;
-		$this->push                = $push;
-		$this->pull                = $pull;
-		$this->logging             = $logging;
-		$this->schedulable_classes = $schedulable_classes;
-		$this->queue               = $queue;
+	public function __construct() {
+		$this->wpdb          = object_sync_for_salesforce()->wpdb;
+		$this->option_prefix = object_sync_for_salesforce()->option_prefix;
+		$this->file          = object_sync_for_salesforce()->file;
+		$this->version       = object_sync_for_salesforce()->version;
+		$this->slug          = object_sync_for_salesforce()->slug;
+
+		$this->login_credentials   = object_sync_for_salesforce()->login_credentials;
+		$this->wordpress           = object_sync_for_salesforce()->wordpress;
+		$this->salesforce          = object_sync_for_salesforce()->salesforce;
+		$this->mappings            = object_sync_for_salesforce()->mappings;
+		$this->push                = object_sync_for_salesforce()->push;
+		$this->pull                = object_sync_for_salesforce()->pull;
+		$this->logging             = object_sync_for_salesforce()->logging;
+		$this->schedulable_classes = object_sync_for_salesforce()->schedulable_classes;
+		$this->queue               = object_sync_for_salesforce()->queue;
 
 		$this->sfwp_transients = $this->wordpress->sfwp_transients;
 
@@ -149,7 +150,15 @@ class Object_Sync_Sf_Admin {
 	*
 	*/
 	public function add_actions() {
+
+		// settings link.
+		add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 5 );
+
+		// CSS and Javascript.
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_and_styles' ) );
+
 		// Settings API forms and notices
+		add_action( 'admin_menu', array( $this, 'create_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'salesforce_settings_forms' ) );
 		add_action( 'admin_init', array( $this, 'notices' ) );
 		add_action( 'admin_post_post_fieldmap', array( $this, 'prepare_fieldmap_data' ) );
@@ -210,6 +219,54 @@ class Object_Sync_Sf_Admin {
 		 * @deprecated since 1.9.0
 		 */
 		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
+	}
+
+	/**
+	 * Display a Settings link on the main Plugins page
+	 *
+	 * @param array  $links the array of links for the main plugins page.
+	 * @param string $file the filename.
+	 * @return array $links the array of links for the main plugins page
+	 */
+	public function plugin_action_links( $links, $file ) {
+		if ( plugin_basename( $this->file ) === $file ) {
+			$settings = '<a href="' . get_admin_url() . 'options-general.php?page=' . $this->slug . '-admin">' . __( 'Settings', 'object-sync-for-salesforce' ) . '</a>';
+			array_unshift( $links, $settings );
+		}
+		return $links;
+	}
+
+	/**
+	 * Admin styles. Load the CSS and JavaScript for the plugin's settings
+	 */
+	public function admin_scripts_and_styles() {
+
+		// Developers might not want to bother with select2 or selectwoo, so we allow that to be changeable.
+		$select_library = apply_filters( $this->option_prefix . 'select_library', 'selectwoo' );
+
+		/*
+		 * example to modify the select library
+		 * add_filter( 'object_sync_for_salesforce_select_library', 'select_library', 10, 1 );
+		 * function select_library( $select_library ) {
+		 * 	$select_library = 'select2';
+		 *  // this could also be empty; in that case we would just use default browser select
+		 * 	return $select_library;
+		 * }
+		*/
+
+		$javascript_dependencies = array( 'jquery' );
+		$css_dependencies        = array();
+		if ( '' !== $select_library ) {
+			wp_enqueue_script( $select_library . 'js', plugins_url( 'assets/js/vendor/' . $select_library . '.min.js', $this->file ), array( 'jquery' ), filemtime( plugin_dir_path( $this->file ) . 'assets/js/vendor/' . $select_library . '.min.js' ), true );
+			$javascript_dependencies[] = $select_library . 'js';
+
+			wp_enqueue_style( $select_library . 'css', plugins_url( 'assets/css/vendor/' . $select_library . '.min.css', $this->file ), array(), filemtime( plugin_dir_path( $this->file ) . 'assets/css/vendor/' . $select_library . '.min.css' ), 'all' );
+			$css_dependencies[] = $select_library . 'css';
+		}
+
+		wp_enqueue_script( $this->slug . '-admin', plugins_url( 'assets/js/object-sync-for-salesforce-admin.min.js', $this->file ), $javascript_dependencies, filemtime( plugin_dir_path( $this->file ) . 'assets/js/object-sync-for-salesforce-admin.min.js' ), true );
+
+		wp_enqueue_style( $this->slug . '-admin', plugins_url( 'assets/css/object-sync-for-salesforce-admin.css', $this->file ), $css_dependencies, filemtime( plugin_dir_path( $this->file ) . 'assets/css/object-sync-for-salesforce-admin.css' ), 'all' );
 	}
 
 	/**
@@ -1234,7 +1291,6 @@ class Object_Sync_Sf_Admin {
 		}
 
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
-		require_once plugin_dir_path( __FILE__ ) . '../classes/admin-notice.php';
 
 		$notices = array(
 			'permission'              => array(

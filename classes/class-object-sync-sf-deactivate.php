@@ -1,16 +1,15 @@
 <?php
 /**
- * Class file for the Object_Sync_Sf_Deactivate class.
+ * What to do when the plugin is deactivated
  *
- * @file
+ * @class   Object_Sync_Sf_Deactivate
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * What to do when the plugin is deactivated
+ * Object_Sync_Sf_Deactivate class.
  */
 class Object_Sync_Sf_Deactivate {
 

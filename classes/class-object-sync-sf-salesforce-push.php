@@ -1,16 +1,15 @@
 <?php
 /**
- * Class file for the Object_Sync_Sf_Salesforce_Push class.
+ * Push data from WordPress into Salesforce
  *
- * @file
+ * @class   Object_Sync_Sf_Salesforce_Push
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Push data from WordPress into Salesforce
+ * Object_Sync_Sf_Salesforce_Push class.
  */
 class Object_Sync_Sf_Salesforce_Push {
 

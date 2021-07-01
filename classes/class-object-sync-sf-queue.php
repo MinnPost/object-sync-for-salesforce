@@ -1,17 +1,15 @@
 <?php
 /**
- * Object Sync for Salesforce Queue
+ * Manage the task queue.
+ *
+ * @class   Object_Sync_Sf_Queue
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Object_Sync_Sf_Queue
- *
- * Manage the queue
- *
+ * Object_Sync_Sf_Queue class.
  */
 class Object_Sync_Sf_Queue {
 

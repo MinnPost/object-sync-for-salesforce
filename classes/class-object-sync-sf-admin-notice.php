@@ -1,16 +1,15 @@
 <?php
 /**
- * Class file for the Object_Sync_Sf_Admin_Notice class.
+ * Generate notices in the WordPress admin
  *
- * @file
+ * @class   Object_Sync_Sf_Admin_Notice
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Generate notices in the WordPress admin
+ * Object_Sync_Sf_Admin_Notice class.
  */
 class Object_Sync_Sf_Admin_Notice {
 

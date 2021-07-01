@@ -1,16 +1,15 @@
 <?php
 /**
- * Class file for the Object_Sync_Sf_Select_Query class.
+ * Class representing a Salesforce SELECT SOQL query.
  *
- * @file
+ * @class   Object_Sync_Sf_Salesforce_Select_Query
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Class representing a Salesforce SELECT SOQL query.
+ * Object_Sync_Sf_Salesforce_Select_Query class.
  */
 class Object_Sync_Sf_Salesforce_Select_Query {
 

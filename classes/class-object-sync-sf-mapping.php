@@ -1,16 +1,15 @@
 <?php
 /**
- * Class file for the Object_Sync_Sf_Mapping class.
+ * Map objects and records between WordPress and Salesforce
  *
- * @file
+ * @class   Object_Sync_Sf_Mapping
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Map objects and records between WordPress and Salesforce
+ * Object_Sync_Sf_Mapping class.
  */
 class Object_Sync_Sf_Mapping {
 

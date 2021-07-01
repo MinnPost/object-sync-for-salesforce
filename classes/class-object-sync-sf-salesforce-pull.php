@@ -1,16 +1,15 @@
 <?php
 /**
- * Class file for the Object_Sync_Sf_Salesforce_Pull class.
+ * Pull data from Salesforce into WordPress
  *
- * @file
+ * @class   Object_Sync_Sf_Salesforce_Pull
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Pull data from Salesforce into WordPress
+ * Object_Sync_Sf_Salesforce_Pull class.
  */
 class Object_Sync_Sf_Salesforce_Pull {
 

@@ -1,16 +1,15 @@
 <?php
 /**
- * Class file for the Object_Sync_Sf_Rest class.
+ * Create WordPress REST API functionality
  *
- * @file
+ * @class   Object_Sync_Sf_Rest
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Create WordPress REST API functionality
+ * Object_Sync_Sf_Rest class.
  */
 class Object_Sync_Sf_Rest {
 

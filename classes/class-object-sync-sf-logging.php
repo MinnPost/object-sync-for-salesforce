@@ -1,16 +1,15 @@
 <?php
 /**
- * Class file for the Object_Sync_Sf_Logging class. Extend the WP_Logging class for the purposes of Object Sync for Salesforce.
+ * Log events based on plugin settings. Extend the WP_Logging class for the purposes of Object Sync for Salesforce.
  *
- * @file
+ * @class   Object_Sync_Sf_Logging
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Log events based on plugin settings
+ * Object_Sync_Sf_Logging class.
  */
 class Object_Sync_Sf_Logging extends WP_Logging {
 

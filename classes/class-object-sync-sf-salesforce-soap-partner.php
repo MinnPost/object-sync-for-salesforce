@@ -1,17 +1,16 @@
 <?php
 /**
- * Class file for the Object_Sync_Sf_Salesforce_Soap_Partner class.
- *
- * @file
- */
-
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
-
-/**
  * Expose the partner SOAP API by extending SforcePartnerClient and configuring
  * it with the OAUTH credentials and endpoints from the Salesforce API class.
+ *
+ * @class   Object_Sync_Sf_Salesforce_Soap_Partner
+ * @package Object_Sync_Salesforce
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Object_Sync_Sf_Salesforce_Soap_Partner class.
  */
 class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 

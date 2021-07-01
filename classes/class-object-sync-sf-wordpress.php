@@ -1,16 +1,15 @@
 <?php
 /**
- * Class file for Object_Sync_Sf_WordPress.
+ * Work with the WordPress data. This class can make read and write calls to the WordPress database, and also cache the responses.
  *
- * @file
+ * @class   Object_Sync_Sf_WordPress
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Work with the WordPress $wpdb object. This class can make read and write calls to the WordPress database, and also cache the responses.
+ * Object_Sync_Sf_WordPress class.
  */
 class Object_Sync_Sf_WordPress {
 
