@@ -70,18 +70,18 @@ class Object_Sync_Salesforce {
 	public $queue;
 
 	/**
-	 * Tells us if composer has been autoloaded
-	 *
-	 * @var bool
-	 */
-	private $composer_loaded;
-
-	/**
 	 * Object_Sync_Sf_Activate class
 	 *
 	 * @var object
 	 */
 	private $activated;
+
+	/**
+	 * Tells us if composer has been autoloaded
+	 *
+	 * @var bool
+	 */
+	private $composer_loaded;
 
 	/**
 	 * Object_Sync_Sf_Logging class
@@ -228,6 +228,9 @@ class Object_Sync_Salesforce {
 	 */
 	public function init() {
 
+		// methods for the ActionScheduler queue. This needs to be loaded early because it is used during activation.
+		$this->queue = new Object_Sync_Sf_Queue();
+
 		// methods for activation.
 		$this->activated = new Object_Sync_Sf_Activate();
 
@@ -259,9 +262,6 @@ class Object_Sync_Salesforce {
 
 		// logging methods.
 		$this->logging = new Object_Sync_Sf_Logging();
-
-		// methods for the ActionScheduler queue.
-		$this->queue = new Object_Sync_Sf_Queue();
 
 		// methods for fieldmaps and object maps.
 		$this->mappings = new Object_Sync_Sf_Mapping();
