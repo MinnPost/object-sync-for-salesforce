@@ -217,6 +217,7 @@ class Object_Sync_Sf_Salesforce {
 
 	/**
 	 * Given a Salesforce ID, return the corresponding SObject name. (Based on keyPrefix from object definition,
+	 *
 	 * @see https://developer.salesforce.com/forums/?id=906F0000000901ZIAQ )
 	 *
 	 * @param string $sf_id 15- or 18-character Salesforce ID.
@@ -247,7 +248,7 @@ class Object_Sync_Sf_Salesforce {
 	/**
 	 * Get REST API versions available on this Salesforce organization
 	 * This is not an authenticated call, so it would not be a helpful test
-	*/
+	 */
 	public function get_api_versions() {
 		$options = array(
 			'authenticated' => false,
@@ -259,13 +260,13 @@ class Object_Sync_Sf_Salesforce {
 	/**
 	 * Make a call to the Salesforce REST API.
 	 *
-	 * @param string $path Path to resource.  
+	 * @param string $path Path to resource.
 	 * @param array  $params Parameters to provide.
 	 * @param string $method Method to initiate the call, such as GET or POST. Defaults to GET.
 	 * @param array  $options Any method can supply options for the API call, and they'll be preserved as far as the curl request. They get merged with the class options.
 	 * @param string $type Type of call. Defaults to 'rest' - currently we don't support other types. Other exammple in Drupal is 'apexrest'.
 	 * @return mixed The requested response.
-	 * @throws Object_Sync_Sf_Exception
+	 * @throws Object_Sync_Sf_Exception The plugin's exception class.
 	 */
 	public function api_call( $path, $params = array(), $method = 'GET', $options = array(), $type = 'rest' ) {
 		if ( ! $this->get_access_token() ) {
@@ -328,7 +329,8 @@ class Object_Sync_Sf_Salesforce {
 	 * @return array The requested data.
 	 */
 	protected function api_http_request( $path, $params, $method, $options = array(), $type = 'rest' ) {
-		$options = array_merge( $this->options, $options ); // this will override a value in $this->options with the one in $options if there is a matching key.
+		// this merge will override a value in $this->options with the one in $options parameter if there is a matching key.
+		$options = array_merge( $this->options, $options );
 		$url     = $this->get_api_endpoint( $type ) . $path;
 		if ( isset( $options['full_url'] ) && true === $options['full_url'] ) {
 			$url = $path;
@@ -673,7 +675,7 @@ class Object_Sync_Sf_Salesforce {
 	 * This is a scheduleable class and so we could add a method from this class to run every 24 hours, but it's unclear to me that we need it. salesforce seems to refresh itself as it needs to.
 	 * but it could be a performance boost to do it at scheduleable intervals instead.
 	 *
-	 * @throws Object_Sync_Sf_Exception
+	 * @throws Object_Sync_Sf_Exception The plugin's exception class.
 	 */
 	protected function refresh_token() {
 		$refresh_token = $this->get_refresh_token();
@@ -725,12 +727,12 @@ class Object_Sync_Sf_Salesforce {
 	 *
 	 * @param string $id Identity URL.
 	 *
-	 * @throws Object_Sync_Sf_Exception
+	 * @throws Object_Sync_Sf_Exception The plugin's exception class.
 	 */
 	protected function set_identity( $id ) {
 		$headers  = array(
 			'Authorization'   => 'Authorization: OAuth ' . $this->get_access_token(),
-			//'Content-type'  => 'application/json', todo: remove this if it's not necessary
+			// 'Content-type'  => 'application/json', todo: remove this if it's not necessary
 			'Accept-Encoding' => 'Accept-Encoding: gzip, deflate',
 		);
 		$response = $this->http_request( $id, null, $headers );
@@ -769,6 +771,7 @@ class Object_Sync_Sf_Salesforce {
 	 * OAuth step 2: Exchange an authorization code for an access token.
 	 *
 	 * @param string $code Code from Salesforce.
+	 * @throws Object_Sync_Sf_Exception The plugin's exception class.
 	 */
 	public function request_token( $code ) {
 		$data = array(
@@ -915,7 +918,7 @@ class Object_Sync_Sf_Salesforce {
 	 * Create a new object of the given type. Part of core API calls.
 	 *
 	 * @param string $name Object type name, E.g., Contact, Account, etc.
-	 * @param array $params Values of the fields to set for the object.
+	 * @param array  $params Values of the fields to set for the object.
 	 * @return array
 	 *   json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
 	 *   code: 201
@@ -944,7 +947,7 @@ class Object_Sync_Sf_Salesforce {
 	 * @param string $name Object type name, E.g., Contact, Account.
 	 * @param string $key The field to check if this record should be created or updated.
 	 * @param string $value The value for this record of the field specified for $key.
-	 * @param array $params Values of the fields to set for the object.
+	 * @param array  $params Values of the fields to set for the object.
 	 * @return array
 	 *   json: {"id":"00190000001pPvHAAU","success":true,"errors":[]}
 	 *   code: 201
@@ -1181,8 +1184,8 @@ class Object_Sync_Sf_Salesforce {
 	 * updated in the given timeframe. Part of core API calls.
 	 *
 	 * @param string $type Object type name, E.g., Contact, Account.
-	 * @param int $start unix timestamp for older timeframe for updates. Defaults to "-29 days" if empty.
-	 * @param int $end unix timestamp for end of timeframe for updates. Defaults to now if empty.
+	 * @param int    $start unix timestamp for older timeframe for updates. Defaults to "-29 days" if empty.
+	 * @param int    $end unix timestamp for end of timeframe for updates. Defaults to now if empty.
 	 * @return array
 	 *   return array has 2 indexes:
 	 *     "ids": a list of SFIDs of those records which have been created or
@@ -1216,6 +1219,7 @@ class Object_Sync_Sf_Salesforce {
 	 *
 	 * @param string $name Object type name, E.g., Contact, Account.
 	 * @param string $devname RecordType DeveloperName, e.g. Donation, Membership, etc.
+	 * @param bool   $reset whether this is resetting the cache.
 	 * @return string SFID The Salesforce ID of the given Record Type, or null.
 	 */
 	public function get_record_type_id_by_developer_name( $name, $devname, $reset = false ) {
