@@ -13,62 +13,234 @@ defined( 'ABSPATH' ) || exit;
  */
 class Object_Sync_Sf_Mapping {
 
-	protected $wpdb;
-	protected $version;
-	protected $slug;
-	protected $logging;
-	protected $option_prefix;
+	/**
+	 * Current version of the plugin
+	 *
+	 * @var string
+	 */
+	public $version;
 
-	protected $fieldmap_table;
-	protected $object_map_table;
+	/**
+	 * The main plugin file
+	 *
+	 * @var string
+	 */
+	public $file;
 
+	/**
+	 * Global object of `$wpdb`, the WordPress database
+	 *
+	 * @var object
+	 */
+	public $wpdb;
+
+	/**
+	 * The plugin's slug so we can include it when necessary
+	 *
+	 * @var string
+	 */
+	public $slug;
+
+	/**
+	 * The plugin's prefix when saving options to the database
+	 *
+	 * @var string
+	 */
+	public $option_prefix;
+
+	/**
+	 * Object_Sync_Sf_Logging class
+	 *
+	 * @var object
+	 */
+	public $logging;
+
+	/**
+	 * The database table for fieldmaps
+	 *
+	 * @var string
+	 */
+	public $fieldmap_table;
+
+	/**
+	 * The database table for object maps
+	 *
+	 * @var string
+	 */
+	public $object_map_table;
+
+	/**
+	 * Bitmap value for when sync is off
+	 *
+	 * @var string
+	 */
 	public $sync_off;
+
+	/**
+	 * Bitmap value for when sync is is on for WordPress create events
+	 *
+	 * @var string
+	 */
 	public $sync_wordpress_create;
+
+	/**
+	 * Bitmap value for when sync is is on for WordPress update events
+	 *
+	 * @var string
+	 */
 	public $sync_wordpress_update;
+
+	/**
+	 * Bitmap value for when sync is is on for WordPress delete events
+	 *
+	 * @var string
+	 */
 	public $sync_wordpress_delete;
+
+	/**
+	 * Bitmap value for when sync is is on for Salesforce create events
+	 *
+	 * @var string
+	 */
 	public $sync_sf_create;
+
+	/**
+	 * Bitmap value for when sync is is on for Salesforce update events
+	 *
+	 * @var string
+	 */
 	public $sync_sf_update;
+
+	/**
+	 * Bitmap value for when sync is is on for Salesforce delete events
+	 *
+	 * @var string
+	 */
 	public $sync_sf_delete;
+
+	/**
+	 * Which events are run by WordPress
+	 *
+	 * @var string
+	 */
 	public $wordpress_events;
+
+	/**
+	 * Which events are run by Salesforce
+	 *
+	 * @var string
+	 */
 	public $salesforce_events;
 
+	/**
+	 * The direction from WordPress to Salesforce
+	 *
+	 * @var string
+	 */
 	public $direction_wordpress_sf;
+
+	/**
+	 * The direction from Salesforce to WordPress
+	 *
+	 * @var string
+	 */
 	public $direction_sf_wordpress;
+
+	/**
+	 * The direction to sync both ways
+	 *
+	 * @var string
+	 */
 	public $direction_sync;
 
+	/**
+	 * WordPress directions, including sync
+	 *
+	 * @var string
+	 */
 	public $direction_wordpress;
+
+	/**
+	 * Salesforce directions, including sync
+	 *
+	 * @var string
+	 */
 	public $direction_salesforce;
 
+	/**
+	 * Default record type when using a Salesforce object that has a default or Master record type
+	 *
+	 * @var string
+	 */
 	public $salesforce_default_record_type;
 
+	/**
+	 * Delimiter for arrays coming from Salesforce
+	 *
+	 * @var string
+	 */
 	public $array_delimiter;
+
+	/**
+	 * Data in Salesforce that is stored as an array
+	 *
+	 * @var string
+	 */
 	public $array_types_from_salesforce;
+
+	/**
+	 * Data in Salesforce that is stored as a date
+	 *
+	 * @var string
+	 */
 	public $date_types_from_salesforce;
+
+	/**
+	 * Data in Salesforce that is stored as an integer
+	 *
+	 * @var string
+	 */
 	public $int_types_from_salesforce;
 
+	/**
+	 * How long can a mapping field be
+	 *
+	 * @var int
+	 */
 	public $name_length;
 
+	/**
+	 * Status flag for success
+	 *
+	 * @var int
+	 */
 	public $status_success;
+
+	/**
+	 * Status flag for error
+	 *
+	 * @var int
+	 */
 	public $status_error;
 
+	/**
+	 * Option value for whether the plugin is in debug mode
+	 *
+	 * @var string
+	 */
 	public $debug;
 
 	/**
-	 * Constructor which sets up links between the systems
-	 *
-	 * @param object $wpdb A WPDB object.
-	 * @param string $version The plugin version.
-	 * @param string $slug The plugin slug.
-	 * @param object $logging Object_Sync_Sf_Logging.
-	 * @param string $option_prefix The plugin option prefix
-	 * @throws \Exception
+	 * Constructor for mapping class
 	 */
-	public function __construct( $wpdb, $version, $slug, $logging, $option_prefix = '' ) {
-		$this->wpdb          = $wpdb;
-		$this->version       = $version;
-		$this->slug          = $slug;
-		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
-		$this->logging       = $logging;
+	public function __construct() {
+		$this->version       = object_sync_for_salesforce()->version;
+		$this->file          = object_sync_for_salesforce()->file;
+		$this->wpdb          = object_sync_for_salesforce()->wpdb;
+		$this->slug          = object_sync_for_salesforce()->slug;
+		$this->option_prefix = object_sync_for_salesforce()->option_prefix;
+
+		$this->logging = object_sync_for_salesforce()->logging;
 
 		$this->fieldmap_table   = $this->wpdb->prefix . 'object_sync_sf_field_map';
 		$this->object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
@@ -127,7 +299,7 @@ class Object_Sync_Sf_Mapping {
 	 * @param array $posted The results of $_POST.
 	 * @param array $wordpress_fields The fields for the WordPress side of the mapping.
 	 * @param array $salesforce_fields The fields for the Salesforce side of the mapping.
-	 * @throws \Exception
+	 * @return int  the last inserted ID.
 	 */
 	public function create_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array() ) {
 		$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
@@ -149,7 +321,6 @@ class Object_Sync_Sf_Mapping {
 	 * @param array $conditions Array of key=>value to match the mapping by.
 	 * @param bool  $reset Unused parameter.
 	 * @return array $map a single mapping or $mappings, an array of mappings.
-	 * @throws \Exception
 	 */
 	public function get_fieldmaps( $id = null, $conditions = array(), $reset = false ) {
 		$table = $this->fieldmap_table;
@@ -193,11 +364,11 @@ class Object_Sync_Sf_Mapping {
 
 		} else { // get all of the mappings. ALL THE MAPPINGS.
 
-			// if the version is greater than or equal to 1.5.0, the fieldmap table has a pull_to_drafts column
+			// if the version is greater than or equal to 1.5.0, the fieldmap table has a pull_to_drafts column.
 			if ( version_compare( $this->version, '1.5.0', '>=' ) ) {
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
 			} elseif ( version_compare( $this->version, '1.2.5', '>=' ) ) {
-				// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column
+				// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column.
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight`, `version` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
 			} else {
 				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table", ARRAY_A ); // WPCS: unprepared SQL OK.
@@ -208,24 +379,23 @@ class Object_Sync_Sf_Mapping {
 			}
 
 			return $mappings;
-		} // End if().
+		} // End if statement.
 	}
 
 	/**
 	 * For a mapping, get the fieldmaps associated with it.
 	 *
-	 * @param Array $mapping The mapping for which we are getting the fieldmaps.
-	 * @param Array $directions The direction of the mapping: from WP to SF or vice-versa.
+	 * @param array $mapping The mapping for which we are getting the fieldmaps.
+	 * @param array $directions The direction of the mapping: from WP to SF or vice-versa.
 	 * @see Object_Sync_Sf_Salesforce_Pull::get_pull_query()
-	 *
-	 * @return Array of mapped fields
+	 * @return array of mapped fields
 	 */
 	public function get_mapped_fields( $mapping, $directions = array() ) {
 		$mapped_fields = array();
 		foreach ( $mapping['fields'] as $fields ) {
 			if ( empty( $directions ) || in_array( $fields['direction'], $directions, true ) ) {
 
-				// in version 1.2.0, we provided an option for API name vs label for Salesforce fields
+				// in version 1.2.0, we provided an option for API name vs label for Salesforce fields.
 				if ( version_compare( $this->version, '1.2.0', '>=' ) && isset( $fields['salesforce_field']['name'] ) ) {
 					$array_key = 'name';
 				} else {
@@ -253,8 +423,8 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Get the mapped record types for a given mapping.
 	 *
-	 * @param Array $mapping A mapping from which we wish to estract the record type.
-	 * @return Array of mappings. Empty if the mapping's record type is default, else full of the record types.
+	 * @param array $mapping A mapping from which we wish to estract the record type.
+	 * @return array of mappings. Empty if the mapping's record type is default, else full of the record types.
 	 */
 	public function get_mapped_record_types( $mapping ) {
 		return $mapping['salesforce_record_type_default'] === $this->salesforce_default_record_type ? array() : array_filter( maybe_unserialize( $mapping['salesforce_record_types_allowed'] ) );
@@ -267,8 +437,7 @@ class Object_Sync_Sf_Mapping {
 	 * @param array $wordpress_fields The fields for the WordPress side of the mapping.
 	 * @param array $salesforce_fields The fields for the Salesforce side of the mapping.
 	 * @param int   $id The ID of the mapping.
-	 * @return boolean
-	 * @throws \Exception
+	 * @return boolean whether it was updated
 	 */
 	public function update_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array(), $id = '' ) {
 		$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
@@ -362,7 +531,7 @@ class Object_Sync_Sf_Mapping {
 			} // End foreach() on WordPress fields.
 			$data['fields'] = maybe_serialize( $setup['fields'] );
 		} elseif ( isset( $posted['fields'] ) && is_array( $posted['fields'] ) ) {
-			// if $posted['fields'] is already set, use that
+			// if $posted['fields'] is already set, use that.
 			$data['fields'] = maybe_serialize( $posted['fields'] );
 		} // End if() WordPress fields are present.
 
@@ -406,8 +575,7 @@ class Object_Sync_Sf_Mapping {
 	 * Delete a fieldmap row between a WordPress and Salesforce object
 	 *
 	 * @param int $id The ID of a field mapping.
-	 * @return Boolean
-	 * @throws \Exception
+	 * @return bool whether it was deleted
 	 */
 	public function delete_fieldmap( $id = '' ) {
 		$data   = array(
@@ -425,8 +593,7 @@ class Object_Sync_Sf_Mapping {
 	 * Create an object map row between a WordPress and Salesforce object
 	 *
 	 * @param array $posted It's $_POST.
-	 * @return false|Int of field mapping between WordPress and Salesforce objects
-	 * @throws \Exception
+	 * @return false|int of field mapping between WordPress and Salesforce objects
 	 */
 	public function create_object_map( $posted = array() ) {
 		$data            = $this->setup_object_map_data( $posted );
@@ -478,7 +645,7 @@ class Object_Sync_Sf_Mapping {
 					esc_attr( $data['salesforce_id'] ),
 					absint( $id )
 				),
-				print_r( $mapping, true ), // log whatever we have for the mapping object, so print the array
+				print_r( $mapping, true ), // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 				0,
 				0,
 				$status
@@ -495,7 +662,7 @@ class Object_Sync_Sf_Mapping {
 	 * This replaces previous functionality that would return a single object map if there was only one, rather than a multi-dimensional array.
 	 *
 	 * @param array $conditions Limitations on the SQL query for object mapping rows.
-	 * @param bool $reset Unused parameter.
+	 * @param bool  $reset Unused parameter.
 	 * @return $mappings
 	 */
 	public function get_all_object_maps( $conditions = array(), $reset = false ) {
@@ -534,7 +701,6 @@ class Object_Sync_Sf_Mapping {
 	 * @param array $conditions Limitations on the SQL query for object mapping rows.
 	 * @param bool  $reset Unused parameter.
 	 * @return array $map or $mappings
-	 * @throws \Exception
 	 */
 	public function get_object_maps( $conditions = array(), $reset = false ) {
 		$table = $this->object_map_table;
@@ -576,8 +742,7 @@ class Object_Sync_Sf_Mapping {
 	 *
 	 * @param array $posted It's $_POST.
 	 * @param array $id The ID of the object map row.
-	 * @return boolean
-	 * @throws \Exception
+	 * @return boolean whether it was updated
 	 */
 	public function update_object_map( $posted = array(), $id = '' ) {
 		$data = $this->setup_object_map_data( $posted );
@@ -606,7 +771,7 @@ class Object_Sync_Sf_Mapping {
 	 */
 	private function setup_object_map_data( $posted = array() ) {
 		$allowed_fields   = $this->wpdb->get_col( "DESC {$this->object_map_table}", 0 );
-		$allowed_fields[] = 'action'; // we use this in both directions even though it isn't in the database; we remove it from the array later if it is present
+		$allowed_fields[] = 'action'; // we use this in both directions even though it isn't in the database; we remove it from the array later if it is present.
 
 		$data = array_intersect_key( $posted, array_flip( $allowed_fields ) );
 		return $data;
@@ -616,8 +781,7 @@ class Object_Sync_Sf_Mapping {
 	 * Delete an object map row between a WordPress and Salesforce object
 	 *
 	 * @param int|array $id The ID or IDs of the object map row(s).
-	 * @return boolean
-	 * @throws \Exception
+	 * @return bool whether it was deleted
 	 */
 	public function delete_object_map( $id = '' ) {
 		if ( is_string( $id ) || is_int( $id ) ) {
@@ -644,8 +808,8 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Generate a temporary ID to store while waiting for a push or pull to complete, before the record has been assigned a new ID
 	 *
-	 * @param string $direction Whether this is part of a push or pull action
-	 * @return string $id is a temporary string that will be replaced if the modification is successful
+	 * @param string $direction Whether this is part of a push or pull action.
+	 * @return string $id is a temporary string that will be replaced if the modification is successful.
 	 */
 	public function generate_temporary_id( $direction ) {
 		if ( 'push' === $direction ) {
@@ -664,8 +828,7 @@ class Object_Sync_Sf_Mapping {
 	 * @param int    $object_id Unique identifier of the target object to load.
 	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
 	 *
-	 * @return SalesforceMappingObject
-	 *   The requested SalesforceMappingObject or FALSE if none was found.
+	 * @return array of object maps
 	 */
 	public function load_all_by_wordpress( $object_type, $object_id, $reset = false ) {
 		$conditions = array(
@@ -683,8 +846,7 @@ class Object_Sync_Sf_Mapping {
 	 * @param int    $object_id Unique identifier of the target object to load.
 	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
 	 *
-	 * @return SalesforceMappingObject
-	 *   The requested SalesforceMappingObject or FALSE if none was found.
+	 * @return array of a single object map
 	 */
 	public function load_by_wordpress( $object_type, $object_id, $reset = false ) {
 		$conditions = array(
@@ -719,8 +881,7 @@ class Object_Sync_Sf_Mapping {
 	 * @param string $salesforce_id Type of object to load.
 	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
 	 *
-	 * @return array $map
-	 *   The most recent fieldmap
+	 * @return array $map The most recent fieldmap
 	 */
 	public function load_by_salesforce( $salesforce_id, $reset = false ) {
 		$conditions = array(
@@ -763,7 +924,7 @@ class Object_Sync_Sf_Mapping {
 				0,
 				$status
 			);
-		} // End if().
+		} // End if() statement.
 
 		return $map;
 	}
@@ -776,8 +937,7 @@ class Object_Sync_Sf_Mapping {
 	 * @param array  $trigger The thing that triggered this mapping.
 	 * @param bool   $use_soap Flag to enforce use of the SOAP API.
 	 * @param bool   $is_new Indicates whether a mapping object for this entity already exists.
-	 * @param string $object_id_field optionally pass the object id field name
-	 *
+	 * @param string $object_id_field optionally pass the object id field name.
 	 * @return array Associative array of key value pairs.
 	 */
 	public function map_params( $mapping, $object, $trigger, $use_soap = false, $is_new = true, $object_id_field = '' ) {
@@ -817,8 +977,8 @@ class Object_Sync_Sf_Mapping {
 
 				if ( isset( $salesforce_field_type ) ) {
 					// Is the Salesforce field a date, and is the WordPress value a valid date?
-					// According to https://salesforce.stackexchange.com/questions/57032/date-format-with-salesforce-rest-api
-					if ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ) {
+					// According to https://salesforce.stackexchange.com/questions/57032/date-format-with-salesforce-rest-api.
+					if ( in_array( $salesforce_field_type, $this->date_types_from_salesforce, true ) ) {
 						if ( '' === $object[ $wordpress_field ] ) {
 							$object[ $wordpress_field ] = null;
 						} else {
@@ -879,16 +1039,16 @@ class Object_Sync_Sf_Mapping {
 				}
 
 				// This case means the following:
-				//    this field is expected by the fieldmap
-				//    Salesforce's api reports that this field is required
-				//    we do not have a WordPress value for this field, or it's empty
-				//    it also means the field has not been unset by prematch, updateable, key, or directional flags prior to this check.
-				// When this happens, we should flag that we're missing a required Salesforce field
-				if ( in_array( $salesforce_field, $params ) && false === filter_var( $fieldmap['salesforce_field']['nillable'], FILTER_VALIDATE_BOOLEAN ) && ( ! isset( $object[ $wordpress_field ] ) || '' === $object[ $wordpress_field ] ) ) {
+				// this field is expected by the fieldmap
+				// Salesforce's api reports that this field is required
+				// we do not have a WordPress value for this field, or it's empty
+				// it also means the field has not been unset by prematch, updateable, key, or directional flags prior to this check.
+				// When this happens, we should flag that we're missing a required Salesforce field.
+				if ( in_array( $salesforce_field, $params, true ) && false === filter_var( $fieldmap['salesforce_field']['nillable'], FILTER_VALIDATE_BOOLEAN ) && ( ! isset( $object[ $wordpress_field ] ) || '' === $object[ $wordpress_field ] ) ) {
 					$has_missing_required_salesforce_field = true;
 				}
 
-				// we don't need a continue with the unset methods because there's no array being created down here
+				// we don't need a continue with the unset methods because there's no array being created down here.
 			} elseif ( in_array( $trigger, $salesforce_haystack, true ) ) {
 
 				// A Salesforce event caused this.
@@ -896,7 +1056,7 @@ class Object_Sync_Sf_Mapping {
 				if ( isset( $salesforce_field_type ) && isset( $object[ $salesforce_field ] ) && ! is_null( $object[ $salesforce_field ] ) ) {
 					// Salesforce provides multipicklist values as a delimited string. If the
 					// destination field in WordPress accepts multiple values, explode the string into an array and then serialize it.
-					if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce ) ) {
+					if ( in_array( $salesforce_field_type, $this->array_types_from_salesforce, true ) ) {
 						$object[ $salesforce_field ] = explode( $this->array_delimiter, $object[ $salesforce_field ] );
 						// if the WordPress field is a list of capabilities (the destination field is wp_capabilities), we need to set the array for WordPress to save it.
 						if ( 'wp_capabilities' === $wordpress_field ) {
@@ -910,7 +1070,7 @@ class Object_Sync_Sf_Mapping {
 
 					// Handle specific data types from Salesforce.
 					switch ( $salesforce_field_type ) {
-						case ( in_array( $salesforce_field_type, $this->date_types_from_salesforce ) ):
+						case ( in_array( $salesforce_field_type, $this->date_types_from_salesforce, true ) ):
 							$format = get_option( 'date_format', 'U' );
 							if ( isset( $fieldmap['wordpress_field']['type'] ) && 'datetime' === $fieldmap['wordpress_field']['type'] ) {
 								$format = 'Y-m-d H:i:s';
@@ -925,7 +1085,7 @@ class Object_Sync_Sf_Mapping {
 							}
 							$object[ $salesforce_field ] = date_i18n( $format, strtotime( $object[ $salesforce_field ] ) );
 							break;
-						case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce ) ):
+						case ( in_array( $salesforce_field_type, $this->int_types_from_salesforce, true ) ):
 							$object[ $salesforce_field ] = isset( $object[ $salesforce_field ] ) ? (int) $object[ $salesforce_field ] : 0;
 							break;
 						case 'text':
@@ -942,11 +1102,11 @@ class Object_Sync_Sf_Mapping {
 					$params[ $wordpress_field ]          = array();
 					$params[ $wordpress_field ]['value'] = $object[ $salesforce_field ];
 				} elseif ( is_null( $object[ $salesforce_field ] ) ) {
-					// Salesforce returns blank fields as null fields; set them to blank
+					// Salesforce returns blank fields as null fields; set them to blank.
 					$params[ $wordpress_field ]          = array();
 					$params[ $wordpress_field ]['value'] = '';
 				} else {
-					// prevent fields that don't exist from being passed
+					// prevent fields that don't exist from being passed.
 					continue;
 				}
 
@@ -969,7 +1129,7 @@ class Object_Sync_Sf_Mapping {
 				if ( ! in_array( $fieldmap['direction'], array_values( $this->direction_salesforce ), true ) ) {
 					// The trigger is a Salesforce trigger, but the fieldmap direction is not a Salesforce direction.
 					unset( $params[ $wordpress_field ] );
-					// we also need to continue here, so it doesn't create an empty array below for fields that are WordPress -> Salesforce only
+					// we also need to continue here, so it doesn't create an empty array below for fields that are WordPress -> Salesforce only.
 					continue;
 				}
 
@@ -985,12 +1145,12 @@ class Object_Sync_Sf_Mapping {
 						break;
 				}
 
-				// always allow for the delete and read methods
+				// always allow for the delete and read methods.
 				$params[ $wordpress_field ]['method_delete'] = $fieldmap['wordpress_field']['methods']['delete'];
 				$params[ $wordpress_field ]['method_read']   = $fieldmap['wordpress_field']['methods']['read'];
 
-			} // End if().
-		} // End foreach().
+			} // End if() statement.
+		} // End foreach() loop.
 
 		if ( true === $has_missing_required_salesforce_field ) {
 			update_option( $this->option_prefix . 'missing_required_data_id_' . $object[ $object_id_field ], true, false );
@@ -1043,8 +1203,8 @@ class Object_Sync_Sf_Mapping {
 				'base'      => add_query_arg( 'error_page', '%#%' ),
 				'format'    => '',
 				'total'     => $errors['total_pages'],
-				'prev_text' => __( '&laquo;', 'text-domain' ),
-				'next_text' => __( '&raquo;', 'text-domain' ),
+				'prev_text' => __( '&laquo;', 'object-sync-for-salesforce' ),
+				'next_text' => __( '&raquo;', 'object-sync-for-salesforce' ),
 				'current'   => $current_error_page,
 			)
 		);
@@ -1057,8 +1217,7 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Check object map table to see if there have been any failed object map create attempts
 	 *
-	 * @param int   $id The ID of a desired mapping.
-	 *
+	 * @param int $id The ID of a desired mapping.
 	 * @return array $error Associative array of single row that failed to finish based on id
 	 */
 	public function get_failed_object_map( $id ) {

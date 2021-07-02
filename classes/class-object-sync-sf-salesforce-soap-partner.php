@@ -14,16 +14,40 @@ defined( 'ABSPATH' ) || exit;
  */
 class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 
-	protected $salesforce_api;
-	protected $is_authorized;
-	private $refreshed;
+	/**
+	 * The Salesforce API
+	 *
+	 * @var array
+	 */
+	public $salesforce_api;
 
+	/**
+	 * Whether Salesforce is authorized
+	 *
+	 * @var bool
+	 */
+	public $is_authorized;
+
+	/**
+	 * Whether Salesforce is refreshed
+	 *
+	 * @var bool
+	 */
+	public $refreshed;
+
+	/**
+	 * The path to the WSDL file
+	 *
+	 * @var string
+	 */
 	public $wsdl;
 
 	/**
-	* Constructor which loads the SOAP client
-	*
-	*/
+	 * Constructor for soap class
+	 *
+	 * @param Object_Sync_Sf_Salesforce $sfapi is the Object_Sync_Sf_Salesforce class.
+	 * @param string                    $wsdl is the path to the WSDL file.
+	 */
 	public function __construct( Object_Sync_Sf_Salesforce $sfapi, $wsdl = null ) {
 		if ( false === $this->salesforce_api['soap_available'] ) {
 			return;
@@ -48,19 +72,35 @@ class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 			$this->setEndPoint( $this->salesforce_api->get_api_endpoint( 'partner' ) );
 			$this->set_authorized( true );
 		} else {
-			error_log( 'salesforce is not authorized so we cannot use soap' );
 			$this->set_authorized( false );
 		}
 	}
 
+	/**
+	 * Set whether Salesforce is authorized
+	 *
+	 * @param bool $is_authorized whether Salesforce is authorized.
+	 */
 	protected function set_authorized( $is_authorized ) {
 		$this->is_authorized = $is_authorized;
 	}
 
+	/**
+	 * Get whether Salesforce is authorized
+	 *
+	 * @return bool $is_authorized whether Salesforce is authorized.
+	 */
 	public function is_authorized() {
 		return $this->is_authorized;
 	}
 
+	/**
+	 * Try to use the SOAP API
+	 *
+	 * @param string $function function we want to call.
+	 * @return array $results
+	 * @throws $e if there is an error from SOAP.
+	 */
 	public function try_soap( $function ) {
 		$args = func_get_args();
 		array_shift( $args );
@@ -89,11 +129,9 @@ class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 			// If we've already tried a refresh, this refresh token is probably
 			// invalid. Kill it, log, and bubble the exception.
 			$this->set_authorized( false );
-			error_log( 'website is not authorized to connect to salesforce. visit authorize page.' );
 			throw $e;
 
 		}
-
 	}
 
 }

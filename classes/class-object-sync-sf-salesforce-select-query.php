@@ -13,35 +13,68 @@ defined( 'ABSPATH' ) || exit;
  */
 class Object_Sync_Sf_Salesforce_Select_Query {
 
-	public $fields = array();
-	public $order  = array();
+	/**
+	 * Salesforce object type
+	 *
+	 * @var string
+	 */
 	public $object_type;
-	public $limit;
-	public $offset;
-	public $conditions = array();
 
 	/**
-	* Constructor which sets the query object type.
-	*
-	* @param string $object_type
-	*   Salesforce object type to query.
-	*/
+	 * Fields for the SOQL query
+	 *
+	 * @var array
+	 */
+	public $fields;
+
+	/**
+	 * Order for the SOQL query
+	 *
+	 * @var array
+	 */
+	public $order;
+
+	/**
+	 * Limit for the SOQL query
+	 *
+	 * @var string
+	 */
+	public $limit;
+
+	/**
+	 * Offset for the SOQL query
+	 *
+	 * @var string
+	 */
+	public $offset;
+
+	/**
+	 * Conditions for the SOQL query
+	 *
+	 * @var array
+	 */
+	public $conditions;
+
+	/**
+	 * Constructor for mapping class
+	 *
+	 * @param string $object_type Salesforce object type to query.
+	 */
 	public function __construct( $object_type = '' ) {
 		$this->object_type = $object_type;
+
+		$this->fields     = array();
+		$this->order      = array();
+		$this->conditions = array();
 	}
 
 	/**
-	* Add a condition to the query.
-	*
-	* @param string $field
-	*   Field name.
-	* @param mixed $value
-	*   Condition value. If an array, it will be split into quote enclosed
-	*   strings separated by commas inside of parenthesis. Note that the caller
-	*   must enclose the value in quotes as needed by the SF API.
-	* @param string $operator
-	*   Conditional operator. One of '=', '!=', '<', '>', 'LIKE, 'IN', 'NOT IN'.
-	*/
+	 * Add a condition to the query.
+	 *
+	 * @param string $field Field name.
+	 * @param mixed  $value Condition value. If an array, it will be split into quote enclosed strings separated by commas inside of parenthesis. Note that the caller must enclose the value in quotes as needed by the SF API.
+	 * @param string $operator Conditional operator. One of '=', '!=', '<', '>', 'LIKE, 'IN', 'NOT IN'.
+	 */
 	public function add_condition( $field, $value, $operator = '=' ) {
 		if ( is_array( $value ) ) {
 			$value = "('" . implode( "','", $value ) . "')";
@@ -59,13 +92,12 @@ class Object_Sync_Sf_Salesforce_Select_Query {
 	}
 
 	/**
-	* Implements PHP's magic __toString().
-	*
-	* Function to convert the query to a string to pass to the SF API.
-	*
-	* @return string
-	*   SOQL query ready to be executed the SF API.
-	*/
+	 * Implements PHP's magic __toString().
+	 * Function to convert the query to a string to pass to the SF API.
+	 *
+	 * @return string
+	 *   SOQL query ready to be executed the SF API.
+	 */
 	public function __toString() {
 
 		$query  = 'SELECT ';

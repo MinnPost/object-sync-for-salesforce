@@ -13,41 +13,102 @@ defined( 'ABSPATH' ) || exit;
  */
 class Object_Sync_Sf_WordPress {
 
-	protected $wpdb;
-	protected $version;
-	protected $slug;
-	protected $mappings;
-	protected $logging;
-	protected $option_prefix;
+	/**
+	 * Current version of the plugin
+	 *
+	 * @var string
+	 */
+	public $version;
 
+	/**
+	 * The main plugin file
+	 *
+	 * @var string
+	 */
+	public $file;
+
+	/**
+	 * Global object of `$wpdb`, the WordPress database
+	 *
+	 * @var object
+	 */
+	public $wpdb;
+
+	/**
+	 * The plugin's slug so we can include it when necessary
+	 *
+	 * @var string
+	 */
+	public $slug;
+
+	/**
+	 * The plugin's prefix when saving options to the database
+	 *
+	 * @var string
+	 */
+	public $option_prefix;
+
+	/**
+	 * Object_Sync_Sf_Logging class
+	 *
+	 * @var object
+	 */
+	public $logging;
+
+	/**
+	 * Object_Sync_Sf_Mapping class
+	 *
+	 * @var object
+	 */
+	public $mappings;
+
+	/**
+	 * Supported WordPress objects
+	 *
+	 * @var array
+	 */
 	public $wordpress_objects;
+
+	/**
+	 * Method call options
+	 *
+	 * @var array
+	 */
 	public $options;
 
+	/**
+	 * Object_Sync_Sf_WordPress_Transient class
+	 *
+	 * @var object
+	 */
 	public $sfwp_transients;
+
+	/**
+	 * Whether the plugin is in debug mode
+	 *
+	 * @var string
+	 */
 	public $debug;
 
 	/**
-	 * Constructor which discovers objects in WordPress
-	 *
-	 * @param object $wpdb A wpdb object.
-	 * @param string $version The plugin version.
-	 * @param string $slug The plugin slug.
-	 * @param object $mappings Mapping objects.
-	 * @param object $logging a Object_Sync_Sf_Logging instance.
-	 * @param string $option_prefix The plugin's option prefix
-	 * @throws \Exception
+	 * Constructor for WordPress class
 	 */
-	public function __construct( $wpdb, $version, $slug, $mappings, $logging, $option_prefix = '' ) {
-		$this->wpdb          = $wpdb;
-		$this->version       = $version;
-		$this->slug          = $slug;
-		$this->mappings      = $mappings;
-		$this->logging       = $logging;
-		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
+	public function __construct() {
+		$this->version       = object_sync_for_salesforce()->version;
+		$this->file          = object_sync_for_salesforce()->file;
+		$this->wpdb          = object_sync_for_salesforce()->wpdb;
+		$this->slug          = object_sync_for_salesforce()->slug;
+		$this->option_prefix = object_sync_for_salesforce()->option_prefix;
 
-		add_action( 'admin_init', function() {
-			$this->wordpress_objects = $this->get_object_types();
-		} );
+		$this->logging  = object_sync_for_salesforce()->logging;
+		$this->mappings = object_sync_for_salesforce()->mappings;
+
+		add_action(
+			'admin_init',
+			function() {
+				$this->wordpress_objects = $this->get_object_types();
+			}
+		);
 
 		$this->options = array(
 			'cache'            => true,
@@ -84,16 +145,16 @@ class Object_Sync_Sf_WordPress {
 			}
 		*/
 
-		// this should include the available object types and send them to the hook
+		// this should include the available object types and send them to the hook.
 		$wordpress_types_not_posts_include = array( 'user', 'comment', 'category', 'tag' );
 		$wordpress_objects                 = array_merge( get_post_types(), $wordpress_types_not_posts_include );
-		// this should be all the objects
+		// this should be all the objects.
 		$wordpress_objects = apply_filters( $this->option_prefix . 'add_more_wordpress_types', $wordpress_objects );
 
-		// by default, only remove the revision, log, and scheduled-action types that we use in this plugin
+		// by default, only remove the revision, log, and scheduled-action types that we use in this plugin.
 		$types_to_remove = apply_filters( $this->option_prefix . 'remove_wordpress_types', array( 'wp_log', 'scheduled-action', 'revision' ) );
 
-		// if the hook filters out any types, remove them from the visible list
+		// if the hook filters out any types, remove them from the visible list.
 		if ( ! empty( $types_to_remove ) ) {
 			$wordpress_objects = array_diff( $wordpress_objects, $types_to_remove );
 		}
@@ -261,7 +322,7 @@ class Object_Sync_Sf_WordPress {
 				'where'           => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
 				'ignore_keys'     => array(),
 			);
-		} // End if().
+		} // End if() statement.
 
 		return $object_table_structure;
 	}
@@ -326,8 +387,8 @@ class Object_Sync_Sf_WordPress {
 	 * Get WordPress data based on what object it is
 	 *
 	 * @param string $object_type The type of object.
-	 * @param int $object_id The ID of the object.
-	 * @param bool $is_deleted Whether the WordPress object has been deleted
+	 * @param int    $object_id The ID of the object.
+	 * @param bool   $is_deleted Whether the WordPress object has been deleted.
 	 * @return array $wordpress_object
 	 */
 	public function get_wordpress_object_data( $object_type, $object_id, $is_deleted = false ) {
@@ -586,19 +647,20 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'create_custom_wordpress_item' ) ) {
 					$result = $this->post_create( $params, $id_field, $name );
 				} else {
-					$result = apply_filters( $this->option_prefix . 'create_custom_wordpress_item', array(
-						'params'   => $params,
-						'name'     => $name,
-						'id_field' => $id_field,
-					) );
+					$result = apply_filters(
+						$this->option_prefix . 'create_custom_wordpress_item',
+						array(
+							'params'   => $params,
+							'name'     => $name,
+							'id_field' => $id_field,
+						)
+					);
 				}
 				break;
-		} // End switch().
+		} // End switch() method.
 
 		return $result;
-
 	}
-
 
 	/**
 	 * Create new records or update existing records.
@@ -674,33 +736,32 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'upsert_custom_wordpress_item' ) ) {
 					$result = $this->post_upsert( $key, $value, $methods, $params, $id_field, $pull_to_drafts, $name, $check_only );
 				} else {
-					$result = apply_filters( $this->option_prefix . 'upsert_custom_wordpress_item', array(
-						'key'            => $key,
-						'value'          => $value,
-						'methods'        => $methods,
-						'params'         => $params,
-						'id_field'       => $id_field,
-						'pull_to_drafts' => $pull_to_drafts,
-						'name'           => $name,
-						'check_only'     => $check_only,
-					) );
+					$result = apply_filters(
+						$this->option_prefix . 'upsert_custom_wordpress_item',
+						array(
+							'key'            => $key,
+							'value'          => $value,
+							'methods'        => $methods,
+							'params'         => $params,
+							'id_field'       => $id_field,
+							'pull_to_drafts' => $pull_to_drafts,
+							'name'           => $name,
+							'check_only'     => $check_only,
+						)
+					);
 				}
 				break;
-		} // End switch().
+		} // End switch() method.
 
 		return $result;
-
 	}
 
 	/**
-	 * Update an existing object.
+	 * Update an existing object. Part of CRUD for WordPress objects
 	 *
 	 * @param string $name Object type name, E.g., user, post, comment.
-	 * @param int $id WordPress id of the object.
+	 * @param int    $id WordPress id of the object.
 	 * @param array  $params Values of the fields to set for the object.
-	 *
-	 * part of CRUD for WordPress objects
-	 *
 	 * @return array
 	 *   data:
 	 *     success: 1
@@ -749,20 +810,23 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'update_custom_wordpress_item' ) ) {
 					$result = $this->post_update( $id, $params, $id_field, $name );
 				} else {
-					$result = apply_filters( $this->option_prefix . 'update_custom_wordpress_item', array(
-						'id'       => $id,
-						'params'   => $params,
-						'name'     => $name,
-						'id_field' => $id_field,
-					) );
+					$result = apply_filters(
+						$this->option_prefix . 'update_custom_wordpress_item',
+						array(
+							'id'       => $id,
+							'params'   => $params,
+							'name'     => $name,
+							'id_field' => $id_field,
+						)
+					);
 				}
 				break;
-		} // End switch().
+		} // End switch() method.
 
 		if ( isset( $result['errors'] ) && ! empty( $result['errors'] ) ) {
 			$status = 'error';
 			$title  = sprintf(
-				// translators: 1) is log status, 2) is object type, 3) is id value
+				// translators: 1) is log status, 2) is object type, 3) is id value.
 				esc_html__( '%1$s: WordPress update for %2$s ID %3$s was unsuccessful with these errors:', 'object-sync-for-salesforce' ),
 				ucfirst( esc_attr( $status ) ),
 				esc_attr( $name ),
@@ -777,7 +841,7 @@ class Object_Sync_Sf_WordPress {
 
 			$error_log = array(
 				'title'   => $title,
-				'message' => esc_html( print_r( $result['errors'], true ) ),
+				'message' => esc_html( print_r( $result['errors'], true ) ), // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 				'trigger' => 0,
 				'parent'  => '',
 				'status'  => $status,
@@ -792,7 +856,7 @@ class Object_Sync_Sf_WordPress {
 	 * Delete a WordPress object.
 	 *
 	 * @param string $name Object type name, E.g., user, post, comment.
-	 * @param int $id WordPress id of the object.
+	 * @param int    $id WordPress id of the object.
 	 *
 	 * @return array
 	 *   data:
@@ -836,15 +900,18 @@ class Object_Sync_Sf_WordPress {
 				if ( ! has_filter( $this->option_prefix . 'delete_custom_wordpress_item' ) ) {
 					$success = $this->post_delete( $id );
 				} else {
-					$success = apply_filters( $this->option_prefix . 'delete_custom_wordpress_item', array(
-						'id'   => $id,
-						'name' => $name,
-					) );
+					$success = apply_filters(
+						$this->option_prefix . 'delete_custom_wordpress_item',
+						array(
+							'id'   => $id,
+							'name' => $name,
+						)
+					);
 				}
 
 				$success = $this->post_delete( $id );
 				break;
-		} // End switch().
+		} // End switch() method.
 
 		$result = array(
 			'data'   => array(
@@ -893,11 +960,11 @@ class Object_Sync_Sf_WordPress {
 				'method_modify' => 'wp_insert_user',
 				'method_read'   => 'get_user_by',
 			);
-			// Load all params with a method_modify of the object structure's content_method into $content
+			// Load all params with a method_modify of the object structure's content_method into $content.
 			$content   = array();
 			$structure = $this->get_wordpress_table_structure( 'user' );
 			foreach ( $params as $key => $value ) {
-				if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+				if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 					$content[ $key ] = $value['value'];
 					unset( $params[ $key ] );
 				}
@@ -923,7 +990,7 @@ class Object_Sync_Sf_WordPress {
 			}
 		} else {
 			$user_id = username_exists( $username );
-		} // End if().
+		} // End if() statement.
 
 		if ( is_wp_error( $user_id ) ) {
 			$success = false;
@@ -942,7 +1009,6 @@ class Object_Sync_Sf_WordPress {
 		);
 
 		return $result;
-
 	}
 
 	/**
@@ -968,7 +1034,7 @@ class Object_Sync_Sf_WordPress {
 		$method = $methods['method_match'];
 		if ( '' !== $method ) {
 			// These methods should give us the user object if we are matching for one.
-			// if we are trying to match to a meta field, the method is an object
+			// if we are trying to match to a meta field, the method is an object.
 			if ( class_exists( $method ) ) {
 				$args        = array(
 					'meta_query' => array(
@@ -1025,7 +1091,7 @@ class Object_Sync_Sf_WordPress {
 			} else {
 				// Check only is true but there's not a user yet.
 				return null;
-			} // End if().
+			} // End if() statement.
 		} else {
 			// There is no method by which to check the user. we can check other ways here.
 			$params[ $key ] = array(
@@ -1057,7 +1123,7 @@ class Object_Sync_Sf_WordPress {
 				// User does exist based on username, and we aren't doing a check only. we want to update the wp user here.
 				$user_id = $existing_id;
 			}
-		} // End if().
+		} // End if() statement.
 
 		if ( isset( $user_id ) ) {
 			foreach ( $params as $key => $value ) {
@@ -1076,7 +1142,7 @@ class Object_Sync_Sf_WordPress {
 
 		$status = 'error';
 		$title  = sprintf(
-			// translators: placeholders are: 1) the log status
+			// translators: placeholders are: 1) the log status.
 			esc_html__( '%1$s: Users: Tried to run user_upsert, and ended up without a user id', 'object-sync-for-salesforce' ),
 			ucfirst( esc_attr( $status ) )
 		);
@@ -1109,13 +1175,13 @@ class Object_Sync_Sf_WordPress {
 		$content[ $id_field ] = $user_id;
 		foreach ( $params as $key => $value ) {
 
-			// if the update value for email already exists on another user, don't fail this update; keep the user's email address
+			// if the update value for email already exists on another user, don't fail this update; keep the user's email address.
 			if ( 'user_email' === $key && email_exists( $value['value'] ) ) {
 				unset( $params[ $key ] );
 				continue;
 			}
 
-			// if the update value for login already exists on another user, don't fail this update; keep the user's login
+			// if the update value for login already exists on another user, don't fail this update; keep the user's login.
 			if ( 'user_login' === $key && username_exists( $value['value'] ) ) {
 				unset( $params[ $key ] );
 				continue;
@@ -1138,7 +1204,7 @@ class Object_Sync_Sf_WordPress {
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other user data - permissions, etc.
 			do_action( $this->option_prefix . 'set_more_user_data', $user_id, $params, 'update' );
-		} // End if().
+		} // End if() statement.
 
 		$result = array(
 			'data'   => array(
@@ -1160,7 +1226,7 @@ class Object_Sync_Sf_WordPress {
 	 */
 	private function user_delete( $id, $reassign = null ) {
 		// According to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error.
-		require_once( ABSPATH . 'wp-admin/includes/user.php' );
+		require_once ABSPATH . 'wp-admin/includes/user.php';
 		$result = wp_delete_user( $id, $reassign );
 		return $result;
 	}
@@ -1179,11 +1245,11 @@ class Object_Sync_Sf_WordPress {
 	 *   "errors" : [ ],
 	 */
 	private function post_create( $params, $id_field = 'ID', $post_type = 'post' ) {
-		// Load all params with a method_modify of the object structure's content_method into $content
+		// Load all params with a method_modify of the object structure's content_method into $content.
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( $post_type );
 		foreach ( $params as $key => $value ) {
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1196,7 +1262,7 @@ class Object_Sync_Sf_WordPress {
 		// WordPress post creation will fail with an object of 0 if there is no title or content
 		// I think we should allow this to happen and not make users' data decisions, so
 		// if we're receiving nothing for either of these, create a blank one so it doesn't fail
-		// here we have to use $content because $params has already been unset
+		// here we have to use $content because $params has already been unset.
 		if ( ! isset( $content['post_title'] ) ) {
 			$content['post_title'] = ' ';
 		}
@@ -1205,7 +1271,7 @@ class Object_Sync_Sf_WordPress {
 		}
 
 		if ( 'tribe_events' === $content['post_type'] && function_exists( 'tribe_create_event' ) ) {
-			// borrowing some code from https://github.com/tacjtg/rhp-tribe-events/blob/master/rhp-tribe-events.php
+			// borrowing some code from https://github.com/tacjtg/rhp-tribe-events/blob/master/rhp-tribe-events.php.
 			if ( isset( $params['_EventStartDate'] ) ) {
 				$content = $this->append_tec_event_dates( $params['_EventStartDate']['value'], 'start', $content );
 				unset( $params['_EventStartDate'] );
@@ -1216,7 +1282,7 @@ class Object_Sync_Sf_WordPress {
 			}
 			$post_id = tribe_create_event( $content );
 		} else {
-			$post_id = wp_insert_post( $content, true ); // return an error instead of a 0 id
+			$post_id = wp_insert_post( $content, true ); // return an error instead of a 0 id.
 		}
 
 		if ( is_wp_error( $post_id ) ) {
@@ -1233,7 +1299,7 @@ class Object_Sync_Sf_WordPress {
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other post data.
 			do_action( $this->option_prefix . 'set_more_post_data', $post_id, $params, 'create' );
-		} // End if().
+		} // End if() statement.
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
@@ -1252,7 +1318,6 @@ class Object_Sync_Sf_WordPress {
 		);
 
 		return $result;
-
 	}
 
 	/**
@@ -1300,7 +1365,7 @@ class Object_Sync_Sf_WordPress {
 			}
 			$args['post_status'] = $post_statuses;
 
-			// if we are trying to match to a meta field, the method is an object
+			// if we are trying to match to a meta field, the method is an object.
 			if ( class_exists( $method ) ) {
 				unset( $args[ $key ] );
 				$args['meta_query'] = array(
@@ -1353,7 +1418,7 @@ class Object_Sync_Sf_WordPress {
 			} else {
 				// Check only is true but there's not a post yet.
 				return null;
-			} // End if().
+			} // End if() statement.
 		} else {
 			// There is no method by which to check the post. we can check other ways here.
 			$params[ $key ] = array(
@@ -1397,7 +1462,7 @@ class Object_Sync_Sf_WordPress {
 
 			return $result;
 
-		} // End if().
+		} // End if() statement.
 
 		if ( isset( $post_id ) ) {
 			foreach ( $params as $key => $value ) {
@@ -1415,7 +1480,7 @@ class Object_Sync_Sf_WordPress {
 
 		$status = 'error';
 		$title  = sprintf(
-			// translators: placeholders are: 1) the log status
+			// translators: placeholders are: 1) the log status.
 			esc_html__( '%1$s: Posts: Tried to run post_upsert, and ended up without a post id', 'object-sync-for-salesforce' ),
 			ucfirst( esc_attr( $status ) )
 		);
@@ -1458,7 +1523,7 @@ class Object_Sync_Sf_WordPress {
 			$content['post_type'] = $post_type;
 		}
 
-		$post_id = wp_update_post( $content, true ); // return an error instead of a 0 id
+		$post_id = wp_update_post( $content, true ); // return an error instead of a 0 id.
 
 		if ( is_wp_error( $post_id ) ) {
 			$success = false;
@@ -1474,7 +1539,7 @@ class Object_Sync_Sf_WordPress {
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other post data.
 			do_action( $this->option_prefix . 'set_more_post_data', $post_id, $params, 'update' );
-		} // End if().
+		} // End if() statement.
 
 		$result = array(
 			'data'   => array(
@@ -1512,12 +1577,12 @@ class Object_Sync_Sf_WordPress {
 	 *   "errors" : [ ],
 	 */
 	private function attachment_create( $params, $id_field = 'ID' ) {
-		// Load all params with a method_modify of the object structure's content_method into $content
+		// Load all params with a method_modify of the object structure's content_method into $content.
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( 'attachment' );
 		// WP requires post_title, post_content (can be empty), post_status, and post_mime_type to create an attachment.
 		foreach ( $params as $key => $value ) {
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1549,7 +1614,7 @@ class Object_Sync_Sf_WordPress {
 
 			if ( false !== $filename ) {
 				// According to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file.
-				require_once( ABSPATH . 'wp-admin/includes/image.php' );
+				require_once ABSPATH . 'wp-admin/includes/image.php';
 				// Generate metadata for the attachment.
 				$attach_data = wp_generate_attachment_metadata( $attachment_id, $filename );
 				wp_update_attachment_metadata( $attachment_id, $attach_data );
@@ -1614,7 +1679,7 @@ class Object_Sync_Sf_WordPress {
 			}
 			$args['post_type'] = 'attachment';
 
-			// if we are trying to match to a meta field, the method is an object
+			// if we are trying to match to a meta field, the method is an object.
 			if ( class_exists( $method ) ) {
 				unset( $args[ $key ] );
 				$args['meta_query'] = array(
@@ -1667,7 +1732,7 @@ class Object_Sync_Sf_WordPress {
 			} else {
 				// Check only is true but there's not an attachment yet.
 				return null;
-			} // End if().
+			} // End if() statement.
 		} else {
 			// There is no method by which to check the post. we can check other ways here.
 			$params[ $key ] = array(
@@ -1711,7 +1776,7 @@ class Object_Sync_Sf_WordPress {
 
 			return $result;
 
-		} // End if().
+		} // End if() statement.
 
 		if ( isset( $attachment_id ) ) {
 			foreach ( $params as $key => $value ) {
@@ -2612,95 +2677,4 @@ class Object_Sync_Sf_WordPress {
  * WordpressException is a placeholder class in the event that we want to modify Exception for our own purposes.
  */
 class WordpressException extends Exception {
-}
-
-/**
- * Class to store all theme/plugin transients as an array in one WordPress transient
- **/
-class Object_Sync_Sf_WordPress_Transient {
-
-	protected $name;
-
-	public $cache_prefix;
-
-	/**
-	 * Constructor which sets cache options and the name of the field that lists this plugin's cache keys.
-	 *
-	 * @param string $name The name of the field that lists all cache keys.
-	 */
-	public function __construct( $name ) {
-		$this->name         = $name;
-		$this->cache_prefix = esc_sql( 'sfwp_' );
-	}
-
-	/**
-	 * Get the transient that lists all the other transients for this plugin.
-	 *
-	 * @return mixed value of transient. False of empty, otherwise array.
-	 */
-	public function all_keys() {
-		return get_transient( $this->name );
-	}
-
-	/**
-	 * Set individual transient, and add its key to the list of this plugin's transients.
-	 *
-	 * @param string $cachekey the key for this cache item
-	 * @param mixed $value the value of the cache item
-	 * @param int $cache_expiration. How long the plugin key cache, and this individual item cache, should last before expiring.
-	 * @return mixed value of transient. False of empty, otherwise array.
-	 */
-	public function set( $cachekey, $value, $cache_expiration = 0 ) {
-
-		$prefix   = $this->cache_prefix;
-		$cachekey = $prefix . $cachekey;
-
-		$keys   = $this->all_keys();
-		$keys[] = $cachekey;
-		set_transient( $this->name, $keys, $cache_expiration );
-
-		return set_transient( $cachekey, $value, $cache_expiration );
-	}
-
-	/**
-	 * Get the individual cache value
-	 *
-	 * @param string $cachekey the key for this cache item
-	 * @return mixed value of transient. False of empty, otherwise array.
-	 */
-	public function get( $cachekey ) {
-		$prefix   = $this->cache_prefix;
-		$cachekey = $prefix . $cachekey;
-		return get_transient( $cachekey );
-	}
-
-	/**
-	 * Delete the individual cache value
-	 *
-	 * @param string $cachekey the key for this cache item
-	 * @return bool True if successful, false otherwise.
-	 */
-	public function delete( $cachekey ) {
-		$prefix   = $this->cache_prefix;
-		$cachekey = $prefix . $cachekey;
-		return delete_transient( $cachekey );
-	}
-
-	/**
-	 * Delete the entire cache for this plugin
-	 *
-	 * @return bool True if successful, false otherwise.
-	 */
-	public function flush() {
-		$keys   = $this->all_keys();
-		$result = true;
-		if ( ! empty( $keys ) ) {
-			foreach ( $keys as $key ) {
-				$result = delete_transient( $key );
-			}
-		}
-		$result = delete_transient( $this->name );
-		return $result;
-	}
-
 }

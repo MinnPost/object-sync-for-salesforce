@@ -13,69 +13,167 @@ defined( 'ABSPATH' ) || exit;
  */
 class Object_Sync_Sf_Salesforce {
 
-	protected $consumer_key;
-	protected $consumer_secret;
-	protected $login_url;
-	protected $callback_url;
-	protected $authorize_path;
-	protected $token_path;
-	protected $rest_api_version;
-	protected $wordpress;
-	protected $slug;
-	protected $logging;
-	protected $schedulable_classes;
-	protected $option_prefix;
+	/**
+	 * Current version of the plugin
+	 *
+	 * @var string
+	 */
+	public $version;
 
+	/**
+	 * The main plugin file
+	 *
+	 * @var string
+	 */
+	public $file;
+
+	/**
+	 * The plugin's slug so we can include it when necessary
+	 *
+	 * @var string
+	 */
+	public $slug;
+
+	/**
+	 * The plugin's prefix when saving options to the database
+	 *
+	 * @var string
+	 */
+	public $option_prefix;
+
+	/**
+	 * Array of what classes in the plugin can be scheduled to occur with `wp_cron` events
+	 *
+	 * @var array
+	 */
+	public $schedulable_classes;
+
+	/**
+	 * Object_Sync_Sf_Logging class
+	 *
+	 * @var object
+	 */
+	public $logging;
+
+	/**
+	 * Object_Sync_Sf_WordPress class
+	 *
+	 * @var object
+	 */
+	public $wordpress;
+
+	/**
+	 * Path for the Salesforce authorize URL
+	 *
+	 * @var string
+	 */
+	public $authorize_path;
+
+	/**
+	 * Path for the Salesforce token URL
+	 *
+	 * @var string
+	 */
+	public $token_path;
+
+	/**
+	 * Callback URL for the Salesforce API
+	 *
+	 * @var string
+	 */
+	public $callback_url;
+
+	/**
+	 * Login URL for the Salesforce API
+	 *
+	 * @var string
+	 */
+	public $login_url;
+
+	/**
+	 * REST API version for Salesforce
+	 *
+	 * @var string
+	 */
+	public $rest_api_version;
+
+	/**
+	 * Salesforce consumer key
+	 *
+	 * @var string
+	 */
+	public $consumer_key;
+
+	/**
+	 * Salesforce consumer secret
+	 *
+	 * @var string
+	 */
+	public $consumer_secret;
+
+	/**
+	 * API call options
+	 *
+	 * @var array
+	 */
 	public $options;
+
+	/**
+	 * API success return codes
+	 *
+	 * @var array
+	 */
 	public $success_codes;
+
+	/**
+	 * API refresh return code
+	 *
+	 * @var int
+	 */
 	public $refresh_code;
+
+	/**
+	 * API success or refresh return codes
+	 *
+	 * @var array
+	 */
 	public $success_or_refresh_codes;
 
+	/**
+	 * Whether the plugin is in debug mode
+	 *
+	 * @var string
+	 */
 	public $debug;
 
+	/**
+	 * API response from Salesforce
+	 *
+	 * @var array
+	 */
 	public $response;
 
 	/**
-	* Constructor which initializes the Salesforce APIs.
-	*
-	* @param string $consumer_key
-	*   Salesforce key to connect to your Salesforce instance.
-	* @param string $consumer_secret
-	*   Salesforce secret to connect to your Salesforce instance.
-	* @param string $login_url
-	*   Login URL for Salesforce auth requests - differs for production and sandbox
-	* @param string $callback_url
-	*   WordPress URL where Salesforce should send you after authentication
-	* @param string $authorize_path
-	*   Oauth path that Salesforce wants
-	* @param string $token_path
-	*   Path Salesforce uses to give you a token
-	* @param string $rest_api_version
-	*   What version of the Salesforce REST API to use
-	* @param object $wordpress
-	*   Object for doing things to WordPress - retrieving data, cache, etc.
-	* @param string $slug
-	*   Slug for this plugin. Can be used for file including, especially
-	* @param object $logging
-	*   Logging object for this plugin.
-	* @param array $schedulable_classes
-	*   array of classes that can have scheduled tasks specific to them
-	* @param string $option_prefix
-	*   Option prefix for this plugin. Used for getting and setting options, actions, etc.
-	*/
-	public function __construct( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes, $option_prefix = '' ) {
-		$this->consumer_key        = $consumer_key;
-		$this->consumer_secret     = $consumer_secret;
-		$this->login_url           = $login_url;
-		$this->callback_url        = $callback_url;
-		$this->authorize_path      = $authorize_path;
-		$this->token_path          = $token_path;
-		$this->rest_api_version    = $rest_api_version;
-		$this->wordpress           = $wordpress;
-		$this->slug                = $slug;
-		$this->logging             = $logging;
-		$this->schedulable_classes = $schedulable_classes;
-		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
+	 * Constructor for Salesforce class
+	 */
+	public function __construct() {
+		$this->version       = object_sync_for_salesforce()->version;
+		$this->file          = object_sync_for_salesforce()->file;
+		$this->slug          = object_sync_for_salesforce()->slug;
+		$this->option_prefix = object_sync_for_salesforce()->option_prefix;
+
+		$this->login_credentials   = object_sync_for_salesforce()->login_credentials;
+		$this->wordpress           = object_sync_for_salesforce()->wordpress;
+		$this->logging             = object_sync_for_salesforce()->logging;
+		$this->schedulable_classes = object_sync_for_salesforce()->schedulable_classes;
+
+		$this->consumer_key     = $this->login_credentials['consumer_key'];
+		$this->consumer_secret  = $this->login_credentials['consumer_secret'];
+		$this->login_url        = $this->login_credentials['login_url'];
+		$this->callback_url     = $this->login_credentials['callback_url'];
+		$this->authorize_path   = $this->login_credentials['authorize_path'];
+		$this->token_path       = $this->login_credentials['token_path'];
+		$this->rest_api_version = $this->login_credentials['rest_api_version'];
 
 		$this->options = array(
 			'cache'            => true,

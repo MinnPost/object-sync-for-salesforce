@@ -227,18 +227,12 @@ class Object_Sync_Salesforce {
 	 * We run this separately because activate can't run without the right priority.
 	 */
 	public function init() {
-		$this->activated = $this->activate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
-		$this->add_actions();
-	}
 
-	/**
-	 * What to do upon activation of the plugin
-	 *
-	 * @return object $activate
-	 */
-	private function activate() {
-		$activate = new Object_Sync_Sf_Activate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
-		return $activate;
+		// methods for activation.
+		$this->activated = new Object_Sync_Sf_Activate();
+
+		// action hooks.
+		$this->add_actions();
 	}
 
 	/**
@@ -260,23 +254,33 @@ class Object_Sync_Salesforce {
 
 		$this->login_credentials = $this->get_login_credentials();
 
-		$this->deactivate( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes, $this->queue );
+		// methods for deactivation.
+		$deactivate = new Object_Sync_Sf_Deactivate();
 
-		$this->logging = $this->logging( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
+		// logging methods.
+		$this->logging = new Object_Sync_Sf_Logging();
 
-		$this->queue = $this->queue( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
+		// methods for the ActionScheduler queue.
+		$this->queue = new Object_Sync_Sf_Queue();
 
-		$this->mappings = $this->mappings( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->logging );
+		// methods for fieldmaps and object maps.
+		$this->mappings = new Object_Sync_Sf_Mapping();
 
-		$this->wordpress  = $this->wordpress( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->mappings, $this->logging );
+		// methods for WordPress.
+		$this->wordpress = new Object_Sync_Sf_WordPress();
+
+		// methods for calling the Salesforce API.
 		$this->salesforce = $this->salesforce_get_api();
 
-		$this->push = $this->push( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes, $this->queue );
+		// methods to push to Salesforce.
+		$this->push = new Object_Sync_Sf_Salesforce_Push();
 
-		$this->pull = $this->pull( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes, $this->queue );
+		// methods to pull from Salesforce.
+		$this->pull = new Object_Sync_Sf_Salesforce_Pull();
 
-		$this->rest = $this->rest( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull );
+		$this->rest = new Object_Sync_Sf_Rest();
 
+		// admin functionality.
 		new Object_Sync_Sf_Admin();
 	}
 
@@ -321,53 +325,6 @@ class Object_Sync_Salesforce {
 	}
 
 	/**
-	 * What to do upon deactivation of the plugin
-	 */
-	private function deactivate() {
-		$deactivate = new Object_Sync_Sf_Deactivate( $this->wpdb, $this->version, $this->slug, $this->schedulable_classes, $this->option_prefix, $this->queue );
-	}
-
-	/**
-	 * Log plugin events
-	 *
-	 * @return object $logging
-	 */
-	private function logging() {
-		$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version, $this->slug, $this->option_prefix );
-		return $logging;
-	}
-
-	/**
-	 * Get queue instance
-	 *
-	 * @return object $queue
-	 */
-	public function queue() {
-		$queue = new Object_Sync_Sf_Queue( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->schedulable_classes );
-		return $queue;
-	}
-
-	/**
-	 * Map the Salesforce and WordPress objects and fields to each other
-	 *
-	 * @return object $mappings
-	 */
-	public function mappings() {
-		$mappings = new Object_Sync_Sf_Mapping( $this->wpdb, $this->version, $this->slug, $this->logging, $this->option_prefix );
-		return $mappings;
-	}
-
-	/**
-	 * Load methods for manipulating core WordPress data across the plugin
-	 *
-	 * @return object $wordpress
-	 */
-	public function wordpress() {
-		$wordpress = new Object_Sync_Sf_WordPress( $this->wpdb, $this->version, $this->slug, $this->mappings, $this->logging, $this->option_prefix );
-		return $wordpress;
-	}
-
-	/**
 	 * Public helper to load the Salesforce API and see if it is authenticated.
 	 * This is public so other plugins can access the same SF API instance we use.
 	 *
@@ -378,22 +335,12 @@ class Object_Sync_Salesforce {
 		$soap_available = $this->is_soap_available();
 		$soap_loaded    = $this->is_soap_loaded();
 
-		$consumer_key        = $this->login_credentials['consumer_key'];
-		$consumer_secret     = $this->login_credentials['consumer_secret'];
-		$login_url           = $this->login_credentials['login_url'];
-		$callback_url        = $this->login_credentials['callback_url'];
-		$authorize_path      = $this->login_credentials['authorize_path'];
-		$token_path          = $this->login_credentials['token_path'];
-		$rest_api_version    = $this->login_credentials['rest_api_version'];
-		$slug                = $this->slug;
-		$option_prefix       = $this->option_prefix;
-		$wordpress           = $this->wordpress;
-		$logging             = $this->logging;
-		$schedulable_classes = $this->schedulable_classes;
-		$is_authorized       = false;
-		$sfapi               = '';
+		$consumer_key    = $this->login_credentials['consumer_key'];
+		$consumer_secret = $this->login_credentials['consumer_secret'];
+		$is_authorized   = false;
+		$sfapi           = '';
 		if ( $consumer_key && $consumer_secret ) {
-			$sfapi = new Object_Sync_Sf_Salesforce( $consumer_key, $consumer_secret, $login_url, $callback_url, $authorize_path, $token_path, $rest_api_version, $wordpress, $slug, $logging, $schedulable_classes, $option_prefix );
+			$sfapi = new Object_Sync_Sf_Salesforce();
 			if ( true === $sfapi->is_authorized() ) {
 				$is_authorized = true;
 			}
@@ -405,36 +352,6 @@ class Object_Sync_Salesforce {
 			'soap_available' => $soap_available,
 			'soap_loaded'    => $soap_loaded,
 		);
-	}
-
-	/**
-	 * Methods to push data from WordPress to Salesforce
-	 *
-	 * @return object $push
-	 */
-	public function push() {
-		$push = new Object_Sync_Sf_Salesforce_Push( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes, $this->queue, $this->option_prefix );
-		return $push;
-	}
-
-	/**
-	 * Methods to pull data from Salesforce to WordPress
-	 *
-	 * @return object $pull
-	 */
-	public function pull() {
-		$pull = new Object_Sync_Sf_Salesforce_Pull( $this->wpdb, $this->version, $this->login_credentials, $this->slug, $this->wordpress, $this->salesforce, $this->mappings, $this->logging, $this->schedulable_classes, $this->queue, $this->option_prefix );
-		return $pull;
-	}
-
-	/**
-	 * REST API methods
-	 *
-	 * @return object $rest
-	 */
-	private function rest() {
-		$rest = new Object_Sync_Sf_Rest( $this->wpdb, $this->version, $this->slug, $this->option_prefix, $this->wordpress, $this->salesforce, $this->mappings, $this->push, $this->pull );
-		return $rest;
 	}
 
 	/**
