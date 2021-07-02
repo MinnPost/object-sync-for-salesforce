@@ -2672,9 +2672,3 @@ class Object_Sync_Sf_WordPress {
 	}
 
 }
-
-/**
- * WordpressException is a placeholder class in the event that we want to modify Exception for our own purposes.
- */
-class WordpressException extends Exception {
-}
