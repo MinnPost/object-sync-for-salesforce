@@ -13,61 +13,109 @@ defined( 'ABSPATH' ) || exit;
  */
 class Object_Sync_Sf_Activate {
 
-	protected $wpdb;
-	protected $version;
-	protected $slug;
-	protected $option_prefix;
-	protected $schedulable_classes;
-	protected $queue;
-
-	private $action_group_suffix;
-	private $user_installed_version;
+	/**
+	 * Current version of the plugin
+	 *
+	 * @var string
+	 */
+	public $version;
 
 	/**
-	* Constructor which sets up activate hooks
-	*
-	* @param object $wpdb
-	* @param string $version
-	* @param string $slug
-	* @param string $option_prefix
-	* @param array $schedulable_classes
-	* @param object $queue
-	*
-	*/
-	public function __construct( $wpdb, $version, $slug, $option_prefix = '', $schedulable_classes = array(), $queue = '' ) {
-		$this->wpdb                = $wpdb;
-		$this->version             = $version;
-		$this->slug                = $slug;
-		$this->option_prefix       = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
-		$this->schedulable_classes = $schedulable_classes;
-		$this->queue               = $queue;
+	 * The main plugin file
+	 *
+	 * @var string
+	 */
+	public $file;
 
-		$this->action_group_suffix    = '_check_records';
+	/**
+	 * Global object of `$wpdb`, the WordPress database
+	 *
+	 * @var object
+	 */
+	public $wpdb;
+
+	/**
+	 * The plugin's slug so we can include it when necessary
+	 *
+	 * @var string
+	 */
+	public $slug;
+
+	/**
+	 * The plugin's prefix when saving options to the database
+	 *
+	 * @var string
+	 */
+	public $option_prefix;
+
+	/**
+	 * Suffix for group name in ActionScheduler
+	 *
+	 * @var string
+	 */
+	public $action_group_suffix;
+
+	/**
+	 * Array of what classes in the plugin can be scheduled to occur with `wp_cron` events
+	 *
+	 * @var array
+	 */
+	public $schedulable_classes;
+
+	/**
+	 * Array of what classes in the plugin can be scheduled to occur with `wp_cron` events
+	 *
+	 * @var array
+	 */
+	public $queue;
+
+	/**
+	 * The version of this plugin's database setup
+	 *
+	 * @var string
+	 */
+	public $user_installed_version;
+
+	/**
+	 * Constructor for activate class
+	 */
+	public function __construct() {
+		$this->version             = object_sync_for_salesforce()->version;
+		$this->file                = object_sync_for_salesforce()->file;
+		$this->wpdb                = object_sync_for_salesforce()->wpdb;
+		$this->slug                = object_sync_for_salesforce()->slug;
+		$this->option_prefix       = object_sync_for_salesforce()->option_prefix;
+		$this->action_group_suffix = object_sync_for_salesforce()->action_group_suffix;
+
+		$this->schedulable_classes = object_sync_for_salesforce()->schedulable_classes;
+		$this->queue               = object_sync_for_salesforce()->queue;
+
+		// database version.
 		$this->user_installed_version = get_option( $this->option_prefix . 'db_version', '' );
 
 		$this->add_actions();
 	}
 
 	/**
-	* Activation hooks
-	*/
+	 * Activation hooks
+	 */
 	private function add_actions() {
 
-		// on initial activation, run these hooks
+		// on initial activation, run these hooks.
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'php_requirements' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'wordpress_salesforce_tables' ) );
 		register_activation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'add_roles_capabilities' ) );
 
-		// this should run when the user is in the admin area to make sure the database gets updated
+		// this should run when the user is in the admin area to make sure the database gets updated.
 		add_action( 'admin_init', array( $this, 'wordpress_salesforce_update_db_check' ), 10 );
 
-		// when users upgrade the plugin, run these hooks
+		// when users upgrade the plugin, run these hooks.
 		add_action( 'upgrader_process_complete', array( $this, 'check_for_action_scheduler' ), 10, 2 );
 	}
 
 	/**
-	* Check for the minimum required version of php
-	*/
+	 * Check for the minimum required version of php
+	 */
 	public function php_requirements() {
 		if ( version_compare( PHP_VERSION, '5.6.20', '<' ) ) {
 			deactivate_plugins( plugin_basename( __FILE__ ) );
@@ -76,11 +124,10 @@ class Object_Sync_Sf_Activate {
 	}
 
 	/**
-	* Create database tables for Salesforce
-	* This creates tables for fieldmaps (between types of objects) and object maps (between individual instances of objects).
-	* Important requirement for developers: when you update the SQL for either of these tables, also update it in the documentation file located at /docs/troubleshooting-unable-to-create-database-tables.md and make sure that is included in your commit(s).
-	*
-	*/
+	 * Create database tables for Salesforce
+	 * This creates tables for fieldmaps (between types of objects) and object maps (between individual instances of objects).
+	 * Important requirement for developers: when you update the SQL for either of these tables, also update it in the documentation file located at /docs/troubleshooting-unable-to-create-database-tables.md and make sure that is included in your commit(s).
+	 */
 	public function wordpress_salesforce_tables() {
 
 		$charset_collate = $this->wpdb->get_charset_collate();
@@ -144,7 +191,7 @@ class Object_Sync_Sf_Activate {
 			$result_key = true;
 		}
 
-		// store right now as the time for the plugin's activation
+		// store right now as the time for the plugin's activation.
 		update_option( $this->option_prefix . 'activate_time', time() );
 
 		// utf8mb4 conversion.
@@ -156,31 +203,28 @@ class Object_Sync_Sf_Activate {
 		}
 
 		if ( ! isset( $result_key ) && empty( $result_field_map ) && empty( $result_object_map ) ) {
-			// No changes, database already exists and is up-to-date
+			// No changes, database already exists and is up-to-date.
 			return;
 		}
-
-		return;
 
 	}
 
 	/**
-	* Add roles and capabilities
-	* This adds the configure_salesforce capability to the admin role
-	*
-	* It also allows other plugins to add the capability to other roles
-	*
-	*/
+	 * Add roles and capabilities
+	 * This adds the configure_salesforce capability to the admin role
+	 *
+	 * It also allows other plugins to add the capability to other roles
+	 */
 	public function add_roles_capabilities() {
 
-		// by default, only administrators can configure the plugin
+		// by default, only administrators can configure the plugin.
 		$role = get_role( 'administrator' );
 		$role->add_cap( 'configure_salesforce' );
 
-		// hook that allows other roles to configure the plugin as well
+		// hook that allows other roles to configure the plugin as well.
 		$roles = apply_filters( $this->option_prefix . 'roles_configure_salesforce', null );
 
-		// for each role that we have, give it the configure salesforce capability
+		// for each role that we have, give it the configure salesforce capability.
 		if ( null !== $roles ) {
 			foreach ( $roles as $role ) {
 				$role = get_role( $role );
@@ -191,13 +235,12 @@ class Object_Sync_Sf_Activate {
 	}
 
 	/**
-	* Check for database version
-	* When the plugin is loaded in the admin, if the database version does not match the current version, perform these methods
-	*
-	*/
+	 * Check for database version
+	 * When the plugin is loaded in the admin, if the database version does not match the current version, perform these methods
+	 */
 	public function wordpress_salesforce_update_db_check() {
 
-		// user is running a version less than the current one
+		// user is running a version less than the current one.
 		if ( version_compare( $this->user_installed_version, $this->version, '<' ) ) {
 			$this->wordpress_salesforce_tables();
 		} else {
@@ -206,26 +249,24 @@ class Object_Sync_Sf_Activate {
 	}
 
 	/**
-	* Check whether the user has action scheduler tasks when they upgrade
-	*
-	* @param object $upgrader_object
-	* @param array $hook_extra
-	*
-	* See https://developer.wordpress.org/reference/hooks/upgrader_process_complete/
-	*
-	*/
+	 * Check whether the user has action scheduler tasks when they upgrade
+	 *
+	 * @param object $upgrader_object this is the WP_Upgrader object.
+	 * @param array  $hook_extra the array of bulk item update data.
+	 * @see https://developer.wordpress.org/reference/hooks/upgrader_process_complete/
+	 */
 	public function check_for_action_scheduler( $upgrader_object, $hook_extra ) {
 
-		// skip if this action isn't this plugin being updated
+		// skip if this action isn't this plugin being updated.
 		if ( 'plugin' !== $hook_extra['type'] && 'update' !== $hook_extra['action'] && $hook_extra['plugin'] !== $this->slug ) {
 			return;
 		}
 
-		// user is running a version less than 1.4.0
+		// user is running a version of this plugin that is less than 1.4.0.
 		$action_scheduler_version = '1.4.0';
 		$previous_version         = get_transient( $this->option_prefix . 'installed_version' );
 		if ( version_compare( $previous_version, $action_scheduler_version, '<' ) ) {
-			// delete old options
+			// delete old options.
 			delete_option( $this->option_prefix . 'push_schedule_number' );
 			delete_option( $this->option_prefix . 'push_schedule_unit' );
 			delete_option( $this->option_prefix . 'salesforce_schedule_number' );
@@ -237,13 +278,13 @@ class Object_Sync_Sf_Activate {
 			foreach ( $this->schedulable_classes as $key => $schedule ) {
 				$schedule_name     = $key;
 				$action_group_name = $schedule_name . $this->action_group_suffix;
-				// exit if there is no initializer property on this schedule
+				// exit if there is no initializer property on this schedule.
 				if ( ! isset( $this->schedulable_classes[ $schedule_name ]['initializer'] ) ) {
 					continue;
 				}
-				// create new recurring task for action-scheduler to check for data to pull from Salesforce
+				// create new recurring task for ActionScheduler to check for data to pull from Salesforce.
 				$this->queue->schedule_recurring(
-					time(), // plugin seems to expect UTC
+					time(), // plugin seems to expect UTC.
 					$this->queue->get_frequency( $schedule_name, 'seconds' ),
 					$this->schedulable_classes[ $schedule_name ]['initializer'],
 					array(),

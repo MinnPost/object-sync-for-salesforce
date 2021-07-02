@@ -49,6 +49,13 @@ class Object_Sync_Sf_Admin {
 	public $option_prefix;
 
 	/**
+	 * Suffix for group name in ActionScheduler
+	 *
+	 * @var string
+	 */
+	public $action_group_suffix;
+
+	/**
 	 * Login credentials for the Salesforce API; comes from wp-config or from the plugin settings
 	 *
 	 * @var array
@@ -199,21 +206,15 @@ class Object_Sync_Sf_Admin {
 	public $default_updateable;
 
 	/**
-	 * Suffix for group name in ActionScheduler
-	 *
-	 * @var string
-	 */
-	public $action_group_suffix;
-
-	/**
 	 * Constructor for admin class
 	 */
 	public function __construct() {
-		$this->wpdb          = object_sync_for_salesforce()->wpdb;
-		$this->option_prefix = object_sync_for_salesforce()->option_prefix;
-		$this->file          = object_sync_for_salesforce()->file;
-		$this->version       = object_sync_for_salesforce()->version;
-		$this->slug          = object_sync_for_salesforce()->slug;
+		$this->version             = object_sync_for_salesforce()->version;
+		$this->file                = object_sync_for_salesforce()->file;
+		$this->wpdb                = object_sync_for_salesforce()->wpdb;
+		$this->slug                = object_sync_for_salesforce()->slug;
+		$this->option_prefix       = object_sync_for_salesforce()->option_prefix;
+		$this->action_group_suffix = object_sync_for_salesforce()->action_group_suffix;
 
 		$this->login_credentials   = object_sync_for_salesforce()->login_credentials;
 		$this->wordpress           = object_sync_for_salesforce()->wordpress;
@@ -242,8 +243,6 @@ class Object_Sync_Sf_Admin {
 		$this->default_triggerable = true;
 		// default setting for updateable items.
 		$this->default_updateable = true;
-		// suffix for action groups.
-		$this->action_group_suffix = '_check_records';
 
 		$this->add_actions();
 
