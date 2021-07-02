@@ -13,23 +13,45 @@ defined( 'ABSPATH' ) || exit;
  */
 class Object_Sync_Sf_Admin_Notice {
 
-	protected $condition;
-	protected $message;
-	protected $dismissible;
-	protected $type;
-	protected $template;
+	/**
+	 * The condition the notice is checking
+	 *
+	 * @var string
+	 */
+	public $condition;
 
 	/**
-	* Constructor which sets up the admin_notices hook for rendering
-	*
-	* @param mixed $condition
-	* @param string $message
-	* @param bool $dismissible
-	* @param string $type
-	* @param string $template
-	*
-	*/
-	public function __construct( $condition, $message, $dismissible = false, $type = '', $template = '' ) {
+	 * The message that is being displayed
+	 *
+	 * @var string
+	 */
+	public $message;
+
+	/**
+	 * What type of notice it is
+	 *
+	 * @var string
+	 */
+	public $type;
+
+	/**
+	 * Whether the notice is dismisable or not
+	 *
+	 * @var bool
+	 */
+	public $dismissible;
+
+	/**
+	 * Which template is used for display
+	 *
+	 * @var string
+	 */
+	public $template;
+
+	/**
+	 * Constructor for admin notice class
+	 */
+	public function __construct() {
 		$this->condition   = $condition;
 		$this->message     = $message;
 		$this->dismissible = $dismissible;
@@ -41,12 +63,13 @@ class Object_Sync_Sf_Admin_Notice {
 	}
 
 	/**
-	* Render an admin notice
-	*
-	*/
+	 * Render an admin notice
+	 */
 	public function render() {
 
-		// class for the notice to use
+		$default_template = plugin_dir_path( $this->file ) . '/templates/admin/notice.php';
+
+		// class for the notice to use.
 		$class = '';
 		if ( '' !== $this->type ) {
 			$class = ' notice-' . $this->type;
@@ -57,9 +80,9 @@ class Object_Sync_Sf_Admin_Notice {
 			$dismissible = ' is-dismissible';
 		}
 
-		// template for notice has a default
-		if ( '' === $this->template ) {
-			$template = plugin_dir_path( __FILE__ ) . '/../templates/admin/notice.php';
+		// template for notice has a default.
+		if ( '' === $this->template || ! file_exists( $template ) ) {
+			$template = $default_template;
 		} else {
 			$template = $this->template;
 		}
@@ -67,7 +90,7 @@ class Object_Sync_Sf_Admin_Notice {
 		$condition = $this->condition;
 		$message   = $this->message;
 
-		require_once( $template );
+		require_once $template;
 
 	}
 
