@@ -199,7 +199,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	 */
 	public function manual_push( $object_type, $wordpress_id, $http_method ) {
 		$object = $this->wordpress->get_wordpress_object_data( $object_type, $wordpress_id );
-		// run the WordPress trigger that corresponds to the HTTP method
+		// run the WordPress trigger that corresponds to the HTTP method.
 		switch ( $http_method ) {
 			case 'POST':
 				$trigger = $this->mappings->sync_wordpress_create;
@@ -413,7 +413,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	 * Callback method for deleting a term
 	 *
 	 * @param int    $term (id).
-	 * @param int    $term_taxonomy_id the term taxonomy ID.
+	 * @param int    $tt_id the term taxonomy ID.
 	 * @param string $taxonomy (slug).
 	 * @param object $deleted_term the deleted term object.
 	 */
@@ -494,9 +494,9 @@ class Object_Sync_Sf_Salesforce_Push {
 	 * This method decides whether to do the processing immediately or queue it to the schedule class (or skip it based on another plugin's activity)
 	 *
 	 * @param string $object_type Type of WordPress object.
-	 * @param array $object The WordPress data that needs to be sent to Salesforce.
-	 * @param int $sf_sync_trigger The trigger being responded to.   
-	 * @param bool $manual check if we are calling this manually.
+	 * @param array  $object The WordPress data that needs to be sent to Salesforce.
+	 * @param int    $sf_sync_trigger The trigger being responded to.
+	 * @param bool   $manual check if we are calling this manually.
 	 */
 	private function salesforce_push_object_crud( $object_type, $object, $sf_sync_trigger, $manual = false ) {
 
@@ -889,7 +889,7 @@ class Object_Sync_Sf_Salesforce_Push {
 						do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $mapping_object['salesforce_id'], $wordpress_id_field_name );
 					}
 				} else {
-					$more_ids = __( '<p>The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are:</p>', 'object-sync-for-salesforce' );
+					$more_ids = '<p>' . esc_html__( 'The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are:', 'object-sync-for-salesforce' ) . '</p>';
 
 					$more_ids .= '<ul>';
 					foreach ( $mapping_objects as $match ) {
@@ -897,7 +897,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					}
 					$more_ids .= '</ul>';
 
-					$more_ids .= __( '<p>The map row between this WordPress object and the Salesforce object, as stored in the WordPress database, will be deleted, and this WordPress object has been deleted, but Salesforce will remain untouched.</p>', 'object-sync-for-salesforce' );
+					$more_ids .= '<p>' . esc_html__( 'The map row between this WordPress object and the Salesforce object, as stored in the WordPress database, will be deleted, and this WordPress object has been deleted, but Salesforce will remain untouched.', 'object-sync-for-salesforce' ) . '</p>';
 
 					$status = 'notice';
 					if ( isset( $this->logging ) ) {
@@ -1090,7 +1090,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					// No key or prematch field exists on this field map object, create a new object in Salesforce.
 					$op         = 'Create';
 					$api_result = $sfapi->object_create( $mapping['salesforce_object'], $params );
-				} // End if().
+				} // End if() statement.
 			} catch ( Object_Sync_Sf_Exception $e ) {
 				// create log entry for failed create or upsert.
 				$status = 'error';

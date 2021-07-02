@@ -183,7 +183,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 *
 	 * @param bool $batch_soql_queries whether to batch the queries.
 	 * @return bool $batch_soql_queries
-	*/
+	 */
 	private function batch_soql_queries( $batch_soql_queries ) {
 		// as of version 34.0, the Salesforce REST API accepts a batchSize option on the Sforce-Call-Options header.
 		if ( version_compare( $this->login_credentials['rest_api_version'], '34.0', '<' ) ) {
@@ -420,7 +420,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					// Only queue when the record's trigger is configured for the mapping
 					// these are bit operators, so we leave out the strict.
-					if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
+					if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event.
 						$data = array(
 							'object_type'     => $type,
 							'object'          => $result,
@@ -646,15 +646,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 * Executes a nextRecordsUrl SOQL query based on the previous result,
 	 * and places each updated SF object into the queue for later processing.
 	 *
-	 * @param datetime $last_sync when it was last synced
-	 * @param array $salesforce_mapping the fieldmap.
-	 * @param array $map_sync_triggers the sync trigger bit values.
-	 * @param string $type the Salesforce object type.
-	 * @param string $version_path the API path for the Salesforce version.
-	 * @param array $query_options the SOQL query options.
-	 * @param array $response the previous response.
-	*
-	*/
+	 * @param datetime $last_sync when it was last synced.
+	 * @param array    $salesforce_mapping the fieldmap.
+	 * @param array    $map_sync_triggers the sync trigger bit values.
+	 * @param string   $type the Salesforce object type.
+	 * @param string   $version_path the API path for the Salesforce version.
+	 * @param array    $query_options the SOQL query options.
+	 * @param array    $response the previous response.
+	 */
 	private function get_next_record_batch( $last_sync, $salesforce_mapping, $map_sync_triggers, $type, $version_path, $query_options, $response ) {
 		// Handle next batch of records if it exists.
 		$next_records_url = isset( $response['nextRecordsUrl'] ) ? str_replace( $version_path, '', $response['nextRecordsUrl'] ) : false;
@@ -678,7 +677,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					}
 					// Only queue when the record's trigger is configured for the mapping
 					// these are bit operators, so we leave out the strict.
-					if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event
+					if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event.
 						$data = array(
 							'object_type'     => $type,
 							'object'          => $result,
@@ -831,7 +830,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// we check to see if the stored date is the same as the new one. if it is not, we will want to reset the offset.
 		$reset_offset = false;
 		$has_date     = false;
-		$key          = array_search( $salesforce_mapping['pull_trigger_field'], array_column( $soql->conditions, 'field' ) );
+		$key          = array_search( $salesforce_mapping['pull_trigger_field'], array_column( $soql->conditions, 'field' ), true );
 		if ( false !== $key ) {
 			$has_date = true;
 			if ( $soql->conditions[ $key ]['value'] !== $pull_trigger_field_value ) {
@@ -1012,7 +1011,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 * This means we update the mapping object to contain the new Salesforce Id, and pull its data
 	 *
 	 * @param string $object_type what type of Salesforce object it is.
-	 * @param array $merged_record the record that was merged.
+	 * @param array  $merged_record the record that was merged.
 	 */
 	private function respond_to_salesforce_merge( $object_type, $merged_record ) {
 		$op = 'Merge';
@@ -1230,10 +1229,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 	/**
 	 * Sync WordPress objects and Salesforce objects from the queue using the REST API.
 	 *
-	 * @param string $object_type Type of Salesforce object.
+	 * @param string       $object_type Type of Salesforce object.
 	 * @param array|string $object The Salesforce data or its Id value.
-	 * @param int $sf_sync_trigger Trigger for this sync.
+	 * @param int          $sf_sync_trigger Trigger for this sync.
 	 * @return bool true or exit the method
+	 * @throws Object_Sync_Sf_Exception Exception $e.
 	 */
 	public function salesforce_pull_process_records( $object_type, $object, $sf_sync_trigger ) {
 
@@ -1900,7 +1900,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			$body = sprintf(
 				// translators: placeholders are: 1) the name of the WordPress object type, 2) the WordPress id field name, 3) the WordPress id field value, 4) the array of errors.
-				'<p>' . esc_html__( 'Object: %1$s with %2$s of %3$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: ', 'object-sync-for-salesforce' ) . '%4$s' . '</p>',
+				'<p>' . esc_html__( 'Object: %1$s with %2$s of %3$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: ', 'object-sync-for-salesforce' ) . '%4$s</p>',
 				esc_attr( $salesforce_mapping['wordpress_object'] ),
 				esc_attr( $wordpress_id_field_name ),
 				esc_attr( $wordpress_id ),
@@ -2198,7 +2198,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					}
 					$more_ids .= '</ul>';
 
-					$more_ids .= __( '<p>The map row between this Salesforce object and the WordPress object, as stored in the WordPress database, will be deleted, and this Salesforce object has been deleted, but WordPress object data will remain untouched.</p>', 'object-sync-for-salesforce' );
+					$more_ids .= '<p>' . esc_html__( 'The map row between this Salesforce object and the WordPress object, as stored in the WordPress database, will be deleted, and this Salesforce object has been deleted, but WordPress object data will remain untouched.', 'object-sync-for-salesforce' ) . '</p>';
 
 					$status = 'notice';
 					if ( isset( $this->logging ) ) {
@@ -2244,7 +2244,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 * Clear the currently stored query for the specified content type
 	 *
 	 * @param string $type e.g. "Contact", "Account", etc.
-	 *
 	 */
 	public function clear_current_type_query( $type ) {
 		// update the last sync timestamp for this content type.

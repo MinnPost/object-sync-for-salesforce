@@ -99,7 +99,7 @@ class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 	 *
 	 * @param string $function function we want to call.
 	 * @return array $results
-	 * @throws $e if there is an error from SOAP.
+	 * @throws SoapFault $e If there is an error from SOAP.
 	 */
 	public function try_soap( $function ) {
 		$args = func_get_args();

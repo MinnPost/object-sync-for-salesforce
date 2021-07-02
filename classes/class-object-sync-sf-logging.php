@@ -508,7 +508,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 *
 	 * @uses        self::insert_log()
 	 * @param       string $message The log message.
-	 * @param       int $parent The parent WordPress object.
+	 * @param       int    $parent The parent WordPress object.
 	 * @param       string $type The type of log message; defaults to 'salesforce'.
 	 *
 	 * @return      int The ID of the new log entry
@@ -533,9 +533,9 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @access      private
 	 * @since       1.0
 	 *
-	 * @param       int $object_id A WordPress object ID.
+	 * @param       int    $object_id A WordPress object ID.
 	 * @param       string $type The type of log item; defaults to 'salesforce' because that's the type of logs we create.
-	 * @param       int $paged Which page of results do we want?
+	 * @param       int    $paged show which page of results we want.
 	 *
 	 * @uses        self::get_connected_logs()
 	 *
@@ -612,9 +612,9 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @access  private
 	 * @since   1.0
 	 *
-	 * @param       int $object_id A WordPress object ID.
+	 * @param       int    $object_id A WordPress object ID.
 	 * @param       string $type The type of log item; defaults to 'salesforce' because that's the type of logs we create.
-	 * @param       Array $meta_query A WordPress meta query, parseable by WP_Meta_Query.
+	 * @param       array  $meta_query A WordPress meta query, parseable by WP_Meta_Query.
 	 *
 	 * @uses    WP_Query()
 	 * @uses    self::valid_type()

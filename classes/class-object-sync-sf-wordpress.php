@@ -537,7 +537,7 @@ class Object_Sync_Sf_WordPress {
 		// Maybe a box for a custom query, since custom fields get done in so many ways.
 		// Eventually this would be the kind of thing we could use fields api for, if it ever gets done.
 		$data_fields      = $this->wpdb->get_col( "DESC {$content_table}", 0 );
-		$data_field_types = $this->wpdb->get_col( "DESC {$content_table}", 1 ); // get the database field types
+		$data_field_types = $this->wpdb->get_col( "DESC {$content_table}", 1 ); // get the database field types.
 
 		if ( is_array( $meta_table ) ) {
 			$tax_table  = $meta_table[1];
@@ -1795,7 +1795,7 @@ class Object_Sync_Sf_WordPress {
 
 		$status = 'error';
 		$title  = sprintf(
-			// translators: placeholders are: 1) the log status
+			// translators: placeholders are: 1) the log status.
 			esc_html__( '%1$s: Attachments: Tried to run attachment_upsert, and ended up without an attachment id', 'object-sync-for-salesforce' ),
 			ucfirst( esc_attr( $status ) )
 		);
@@ -1858,7 +1858,7 @@ class Object_Sync_Sf_WordPress {
 
 			if ( false !== $filename ) {
 				// According to https://codex.wordpress.org/Function_Reference/wp_insert_attachment we need this file.
-				require_once( ABSPATH . 'wp-admin/includes/image.php' );
+				require_once ABSPATH . 'wp-admin/includes/image.php';
 				// Generate metadata for the attachment.
 				$attach_data = wp_generate_attachment_metadata( $attachment_id, $filename );
 			}
@@ -1893,7 +1893,7 @@ class Object_Sync_Sf_WordPress {
 			// Developers can use this hook to set any other attachment data.
 			do_action( $this->option_prefix . 'set_more_attachment_data', $attachment_id, $params, 'update' );
 
-		} // End if().
+		} // End if() statement.
 
 		$result = array(
 			'data'   => array(
@@ -1936,7 +1936,7 @@ class Object_Sync_Sf_WordPress {
 		if ( 'tag' === $taxonomy ) {
 			$taxonomy = 'post_tag';
 		}
-		// Load all params with a method_modify of the object structure's content_method into $content
+		// Load all params with a method_modify of the object structure's content_method into $content.
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( $taxonomy );
 		$args      = array();
@@ -1945,7 +1945,7 @@ class Object_Sync_Sf_WordPress {
 				$name = $value['value'];
 				unset( $params[ $key ] );
 			}
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) && 'name' !== $key ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) && 'name' !== $key ) {
 				$args[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -1964,7 +1964,7 @@ class Object_Sync_Sf_WordPress {
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other term data.
 			do_action( $this->option_prefix . 'set_more_term_data', $term_id, $params, 'create' );
-		} // End if().
+		} // End if() statement.
 
 		if ( is_wp_error( $term ) ) {
 			$success = false;
@@ -2011,7 +2011,7 @@ class Object_Sync_Sf_WordPress {
 		$method = $methods['method_match'];
 		if ( '' !== $method ) {
 			// These methods should give us the term object if we are matching for one.
-			// if we are trying to match to a meta field, the method is an object
+			// If we are trying to match to a meta field, the method is an object.
 			if ( class_exists( $method ) ) {
 				$args        = array(
 					'taxonomy'   => $taxonomy,
@@ -2065,7 +2065,7 @@ class Object_Sync_Sf_WordPress {
 			} else {
 				// Check only is true but there's not a term yet.
 				return null;
-			} // End if().
+			} // End if() statement.
 		} else {
 			// There is no method by which to check the term. we can check other ways here.
 			$params[ $key ] = array(
@@ -2103,7 +2103,7 @@ class Object_Sync_Sf_WordPress {
 				// Term does exist based on criteria, and we aren't doing a check only. we want to update the wp term here.
 				$term_id = $existing_id;
 			}
-		} // End if().
+		} // End if() statement.
 
 		if ( isset( $term_id ) ) {
 			foreach ( $params as $key => $value ) {
@@ -2121,7 +2121,7 @@ class Object_Sync_Sf_WordPress {
 
 		$status = 'error';
 		$title  = sprintf(
-			// translators: placeholders are: 1) the log status
+			// translators: placeholders are: 1) the log status.
 			esc_html__( '%1$s: Terms: Tried to run term_upsert, and ended up without a term id', 'object-sync-for-salesforce' ),
 			ucfirst( esc_attr( $status ) )
 		);
@@ -2139,7 +2139,7 @@ class Object_Sync_Sf_WordPress {
 	/**
 	 * Update a WordPress term.
 	 *
-	 * @param int $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
+	 * @param int    $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
 	 * @param array  $params Array of term data params.
 	 * @param string $taxonomy The taxonomy to which to add the term. this is required.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
@@ -2172,7 +2172,7 @@ class Object_Sync_Sf_WordPress {
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other term data.
 			do_action( $this->option_prefix . 'set_more_term_data', $term_id, $params, 'update' );
-		} // End if().
+		} // End if() statement.
 
 		if ( is_wp_error( $term ) ) {
 			$success = false;
@@ -2197,7 +2197,7 @@ class Object_Sync_Sf_WordPress {
 	/**
 	 * Delete a WordPress term.
 	 *
-	 * @param int $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
+	 * @param int    $term_id The ID for the term to be updated. This value needs to be in the array that is sent to wp_update_term.
 	 * @param string $taxonomy The taxonomy from which to delete the term. this is required.
 	 *
 	 * @return bool True if successful, false if failed.
@@ -2223,11 +2223,11 @@ class Object_Sync_Sf_WordPress {
 	 *   "errors" : [ ],
 	 */
 	private function comment_create( $params, $id_field = 'comment_ID' ) {
-		// Load all params with a method_modify of the object structure's content_method into $content
+		// Load all params with a method_modify of the object structure's content_method into $content.
 		$content   = array();
 		$structure = $this->get_wordpress_table_structure( 'comment' );
 		foreach ( $params as $key => $value ) {
-			if ( in_array( $value['method_modify'], $structure['content_methods'] ) ) {
+			if ( in_array( $value['method_modify'], $structure['content_methods'], true ) ) {
 				$content[ $key ] = $value['value'];
 				unset( $params[ $key ] );
 			}
@@ -2261,7 +2261,7 @@ class Object_Sync_Sf_WordPress {
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other comment data.
 			do_action( $this->option_prefix . 'set_more_comment_data', $comment_id, $params, 'create' );
-		} // End if()
+		} // End if() statement.
 
 		if ( is_wp_error( $comment_id ) ) {
 			$success = false;
@@ -2308,7 +2308,7 @@ class Object_Sync_Sf_WordPress {
 		if ( '' !== $method ) {
 
 			// These methods should give us the comment object if we are matching for one.
-			// if we are trying to match to a meta field, the method is an object
+			// If we are trying to match to a meta field, the method is an object.
 			if ( class_exists( $method ) ) {
 				$args        = array(
 					'meta_query' => array(
@@ -2371,7 +2371,7 @@ class Object_Sync_Sf_WordPress {
 						absint( count( $comments ) ),
 						esc_html( $key ),
 						esc_html( $value ),
-						esc_html( var_export( $comments ) ) // Debugging code in production because having useful error messages is good.
+						esc_html( var_export( $comments ) ) // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 					),
 					'',
 					0,
@@ -2396,7 +2396,7 @@ class Object_Sync_Sf_WordPress {
 			} else {
 				// Check only is true but there's not a comment yet.
 				return null;
-			} // End if().
+			} // End if() statement.
 		} else {
 			// There is no method by which to check the comment. We can check other ways here.
 			$params[ $key ] = array(
@@ -2419,7 +2419,7 @@ class Object_Sync_Sf_WordPress {
 				$timezone = 'blog';
 			}
 
-			$existing_id = comment_exists( $comment_author, $comment_date, $timezone ); // Returns an id if there is a result. Uses $wpdb->get_var, so it returns null if there is no value
+			$existing_id = comment_exists( $comment_author, $comment_date, $timezone ); // Returns an id if there is a result. Uses $wpdb->get_var, so it returns null if there is no value.
 
 			// Comment does not exist after more checking. We want to create it.
 			if ( null === $existing_id && false === $check_only ) {
@@ -2451,7 +2451,7 @@ class Object_Sync_Sf_WordPress {
 
 		$status = 'error';
 		$title  = sprintf(
-			// translators: placeholders are: 1) the log status
+			// translators: placeholders are: 1) the log status.
 			esc_html__( '%1$s: Comments: Tried to run comment_upsert, and ended up without a comment id', 'object-sync-for-salesforce' ),
 			ucfirst( esc_attr( $status ) )
 		);
@@ -2469,7 +2469,7 @@ class Object_Sync_Sf_WordPress {
 	/**
 	 * Update a WordPress comment.
 	 *
-	 * @param int $comment_id The ID for the comment to be updated. This value needs to be in the array that is sent to wp_update_comment.
+	 * @param int    $comment_id The ID for the comment to be updated. This value needs to be in the array that is sent to wp_update_comment.
 	 * @param array  $params Array of comment data params.
 	 * @param string $id_field Optional string of what the ID field is, if it is ever not ID.
 	 *
@@ -2499,7 +2499,7 @@ class Object_Sync_Sf_WordPress {
 			$errors      = $meta_result['errors'];
 			// Developers can use this hook to set any other comment data.
 			do_action( $this->option_prefix . 'set_more_comment_data', $comment_id, $params, 'update' );
-		} // End if().
+		} // End if() statement.
 
 		if ( is_wp_error( $updated ) ) {
 			$success = false;
@@ -2538,9 +2538,9 @@ class Object_Sync_Sf_WordPress {
 	 * Standard method for creating meta values
 	 * This works for users, posts, terms, and comments. It does not work for attachments.
 	 *
-	 * @param array $params the values to be saved.
+	 * @param array        $params the values to be saved.
 	 * @param int|wp_error $parent_object_id the WordPress object ID that this metadata is associated with. It shouldn't ever end up here as an error, but it's worth documenting.
-	 * @param string $parent_object_type the WordPress object type.
+	 * @param string       $parent_object_type the WordPress object type.
 	 *
 	 * @return array $meta_result contains the success flag and the array of errors
 	 */
@@ -2550,13 +2550,13 @@ class Object_Sync_Sf_WordPress {
 		if ( ! is_wp_error( $parent_object_id ) && is_array( $params ) && ! empty( $params ) ) {
 			foreach ( $params as $key => $value ) {
 
-				// if the value is empty, skip it
+				// if the value is empty, skip it.
 				if ( '' === $value['value'] ) {
 					continue;
 				}
 
 				$modify = $value['method_modify'];
-				// todo: we could provide a way for passing the values in a custom order here
+				// Todo: we could provide a way for passing the values in a custom order here.
 				$meta_id = $modify( $parent_object_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
 					$success  = false;
@@ -2584,9 +2584,9 @@ class Object_Sync_Sf_WordPress {
 	 * Standard method for updating meta values
 	 * This works for users, posts, terms, and comments. It does not work for attachments.
 	 *
-	 * @param array $params the values to be saved.
+	 * @param array        $params the values to be saved.
 	 * @param int|wp_error $parent_object_id the WordPress object ID that this metadata is associated with. It shouldn't ever end up here as an error, but it's worth documenting.
-	 * @param string $parent_object_type the WordPress object type.
+	 * @param string       $parent_object_type the WordPress object type.
 	 *
 	 * @return array $meta_result contains the success flag, the changed flag, and the array of errors
 	 */
@@ -2599,13 +2599,13 @@ class Object_Sync_Sf_WordPress {
 			foreach ( $params as $key => $value ) {
 				$modify = $value['method_modify'];
 
-				// if the value is empty, use the delete method to modify it
+				// if the value is empty, use the delete method to modify it.
 				if ( '' === $value['value'] ) {
 					$modify = isset( $value['method_delete'] ) ? $value['method_delete'] : $value['method_modify'];
 				}
 
 				$read = $value['method_read'];
-				// todo: we could provide a way for passing the values in a custom order here
+				// todo: we could provide a way for passing the values in a custom order here.
 				$meta_id = $modify( $parent_object_id, $key, $value['value'] );
 				if ( false === $meta_id ) {
 					$changed = false;
@@ -2627,7 +2627,7 @@ class Object_Sync_Sf_WordPress {
 					if ( $stored_value !== $new_value ) {
 						$errors[] = array(
 							'message' => sprintf(
-								// Translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save
+								// Translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save.
 								esc_html__( 'Unable to update %1$s meta key %2$s with method %3$s. The stored value is %4$s and the new value should be %5$s.', 'object-sync-for-salesforce' ),
 								esc_attr( $parent_object_type ),
 								esc_attr( $key ),
@@ -2651,9 +2651,9 @@ class Object_Sync_Sf_WordPress {
 	/**
 	 * Generate date formats for The Event Calendar plugin
 	 *
-	 * @param string $date the string value of the date from Salesforce
-	 * @param string $type this should be start or end
-	 * @param array $content the other mapped params
+	 * @param string $date the string value of the date from Salesforce.
+	 * @param string $type this should be start or end.
+	 * @param array  $content the other mapped params.
 	 *
 	 * @return array $content
 	 */
@@ -2663,9 +2663,9 @@ class Object_Sync_Sf_WordPress {
 			$date_type                                  = ucfirst( $type );
 			$timestamp                                  = strtotime( $date );
 			$dates[ 'Event' . $date_type . 'Date' ]     = $timestamp;
-			$dates[ 'Event' . $date_type . 'Hour' ]     = date( Tribe__Date_Utils::HOURFORMAT, $timestamp );
-			$dates[ 'Event' . $date_type . 'Minute' ]   = date( Tribe__Date_Utils::MINUTEFORMAT, $timestamp );
-			$dates[ 'Event' . $date_type . 'Meridian' ] = date( Tribe__Date_Utils::MERIDIANFORMAT, $timestamp );
+			$dates[ 'Event' . $date_type . 'Hour' ]     = gmdate( Tribe__Date_Utils::HOURFORMAT, $timestamp );
+			$dates[ 'Event' . $date_type . 'Minute' ]   = gmdate( Tribe__Date_Utils::MINUTEFORMAT, $timestamp );
+			$dates[ 'Event' . $date_type . 'Meridian' ] = gmdate( Tribe__Date_Utils::MERIDIANFORMAT, $timestamp );
 			$content                                    = $content + $dates;
 		}
 		return $content;

@@ -193,7 +193,7 @@ class Object_Sync_Sf_Rest {
 	/**
 	 * Check to see if the user has permission to do this
 	 *
-	 * @param WP_REST_Request $request
+	 * @param WP_REST_Request $request the request object sent to the API.
 	 */
 	public function can_process( WP_REST_Request $request ) {
 		// unless we specify it here, the method will not be allowed unless the user has configure_salesforce capability.
@@ -240,7 +240,7 @@ class Object_Sync_Sf_Rest {
 	 *
 	 * @param WP_REST_Request $request the request that was made.
 	 * @return array $result
-	*/
+	 */
 	public function process( WP_REST_Request $request ) {
 		// see methods: https://developer.wordpress.org/reference/classes/wp_rest_request/
 		// use error_log( 'request is ' . print_r( $request, true ) ); to log the request.
