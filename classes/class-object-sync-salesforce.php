@@ -49,11 +49,11 @@ class Object_Sync_Salesforce {
 	public $option_prefix;
 
 	/**
-	 * Login credentials for the Salesforce API; comes from wp-config or from the plugin settings
+	 * Suffix for group name in ActionScheduler
 	 *
-	 * @var array
+	 * @var string
 	 */
-	public $login_credentials;
+	public $action_group_suffix;
 
 	/**
 	 * Array of what classes in the plugin can be scheduled to occur with `wp_cron` events
@@ -61,6 +61,14 @@ class Object_Sync_Salesforce {
 	 * @var array
 	 */
 	public $schedulable_classes;
+
+	/**
+	 * Legacy property that holds an instance of the plugin class.
+	 *
+	 * @var object
+	 * @deprecated since 2.0.0
+	 */
+	public static $instance;
 
 	/**
 	 * Array of what classes in the plugin can be scheduled to occur with `wp_cron` events
@@ -82,6 +90,13 @@ class Object_Sync_Salesforce {
 	 * @var bool
 	 */
 	private $composer_loaded;
+
+	/**
+	 * Login credentials for the Salesforce API; comes from wp-config or from the plugin settings
+	 *
+	 * @var array
+	 */
+	public $login_credentials;
 
 	/**
 	 * Object_Sync_Sf_Logging class
@@ -132,14 +147,6 @@ class Object_Sync_Salesforce {
 	 * @var object
 	 */
 	private $rest;
-
-	/**
-	 * Legacy property that holds an instance of the plugin class.
-	 *
-	 * @var object
-	 * @deprecated since 2.0.0
-	 */
-	public static $instance;
 
 	/**
 	 * This is our constructor
