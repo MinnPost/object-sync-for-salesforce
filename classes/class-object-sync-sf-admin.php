@@ -1381,8 +1381,8 @@ class Object_Sync_Sf_Admin {
 
 		$notices = array(
 			'permission'              => array(
-				'condition'   => false === $this->check_wordpress_admin_permissions(),
-				'message'     => __( "Your account does not have permission to edit the Salesforce REST API plugin's settings.", 'object-sync-for-salesforce' ),
+				'condition'   => ( false === $this->check_wordpress_admin_permissions() ),
+				'message'     => __( "Your account does not have permission to edit the Object Sync for Salesforce plugin's settings.", 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => false,
 			),
@@ -1420,7 +1420,7 @@ class Object_Sync_Sf_Admin {
 
 		foreach ( $notices as $key => $value ) {
 
-			$condition = $value['condition'];
+			$condition = (bool) $value['condition'];
 			$message   = $value['message'];
 
 			if ( isset( $value['dismissible'] ) ) {

@@ -14,6 +14,13 @@ defined( 'ABSPATH' ) || exit;
 class Object_Sync_Sf_Admin_Notice {
 
 	/**
+	 * The main plugin file
+	 *
+	 * @var string
+	 */
+	public $file;
+
+	/**
 	 * The condition the notice is checking
 	 *
 	 * @var string
@@ -50,8 +57,17 @@ class Object_Sync_Sf_Admin_Notice {
 
 	/**
 	 * Constructor for admin notice class
+	 *
+	 * @param bool   $condition whether the condition for the notice was met.
+	 * @param string $message the message to show to the user.
+	 * @param bool   $dismissible whether the user can dismiss this message.
+	 * @param string $type what type of message this is.
+	 * @param string $template the template to render this message.
 	 */
-	public function __construct() {
+	public function __construct( $condition, $message, $dismissible, $type, $template ) {
+
+		$this->file = object_sync_for_salesforce()->file;
+
 		$this->condition   = $condition;
 		$this->message     = $message;
 		$this->dismissible = $dismissible;
