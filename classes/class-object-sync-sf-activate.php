@@ -242,9 +242,51 @@ class Object_Sync_Sf_Activate {
 
 		// user is running a version less than the current one.
 		if ( version_compare( $this->user_installed_version, $this->version, '<' ) ) {
+			$this->log_trigger_settings();
 			$this->wordpress_salesforce_tables();
 		} else {
 			return true;
+		}
+	}
+
+	/**
+	 * Check for log trigger settings based on plugin version
+	 * When the plugin is loaded in the admin, if the previously installed version is below 2.0.0, update the values for the log trigger settings.
+	 */
+	private function log_trigger_settings() {
+		$triggers_to_log = get_option( $this->option_prefix . 'triggers_to_log', array() );
+		if ( ! empty( $triggers_to_log ) ) {
+			// in version 2.0.0 of this plugin, we replaced the bit flags with strings to make them more legible.
+			// when the database version changes to 2.0.0, we should update the option value to use the new strings.
+			if ( version_compare( $this->version, '2.0.0', '==' ) && version_compare( $this->user_installed_version, '2.0.0', '<' ) ) {
+				$mappings                = new Object_Sync_Sf_Mapping();
+				$updated_triggers_to_log = array();
+				foreach ( $triggers_to_log as $key => $value ) {
+					if ( (string) $value === (string) $mappings->sync_off_v1 ) {
+						$updated_triggers_to_log[] = $mappings->sync_off;
+					}
+					if ( (string) $value === (string) $mappings->sync_wordpress_create_v1 ) {
+						$updated_triggers_to_log[] = $mappings->sync_wordpress_create;
+					}
+					if ( (string) $value === (string) $mappings->sync_wordpress_update_v1 ) {
+						$updated_triggers_to_log[] = $mappings->sync_wordpress_update;
+					}
+					if ( (string) $value === (string) $mappings->sync_wordpress_delete_v1 ) {
+						$updated_triggers_to_log[] = $mappings->sync_wordpress_delete;
+					}
+					if ( (string) $value === (string) $mappings->sync_sf_create_v1 ) {
+						$updated_triggers_to_log[] = $mappings->sync_sf_create;
+					}
+					if ( (string) $value === (string) $mappings->sync_sf_update_v1 ) {
+						$updated_triggers_to_log[] = $mappings->sync_sf_update;
+					}
+					if ( (string) $value === (string) $mappings->sync_sf_delete_v1 ) {
+						$updated_triggers_to_log[] = $mappings->sync_sf_delete;
+					}
+				}
+				$triggers_to_log = $updated_triggers_to_log;
+				update_option( $this->option_prefix . 'triggers_to_log', $triggers_to_log );
+			}
 		}
 	}
 

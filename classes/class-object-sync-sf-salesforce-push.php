@@ -724,7 +724,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		if ( is_int( $object ) ) {
 			$wordpress_id = $object;
 			// if this is NOT a deletion, try to get all of the object's data.
-			if ( $sf_sync_trigger != $this->mappings->sync_wordpress_delete ) { // this is a bit flag.
+			if ( $sf_sync_trigger !== $this->mappings->sync_wordpress_delete ) {
 				$object = $this->wordpress->get_wordpress_object_data( $object_type, $wordpress_id );
 			} else {
 				// otherwise, flag it as a delete and limit what we try to get.
@@ -798,9 +798,8 @@ class Object_Sync_Sf_Salesforce_Push {
 		$op     = '';
 		$result = '';
 
-		// deleting mapped objects
-		// these are bit operators, so we leave out the strict.
-		if ( $sf_sync_trigger == $this->mappings->sync_wordpress_delete ) {
+		// deleting mapped objects.
+		if ( $sf_sync_trigger === $this->mappings->sync_wordpress_delete ) {
 			if ( isset( $mapping_object['id'] ) ) {
 				$op = 'Delete';
 
@@ -1473,9 +1472,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		$push_allowed = true;
 
 		// if the current fieldmap does not allow the wp create trigger, we need to check if there is an object map for the WordPress object ID. if not, set push_allowed to false.
-		// these are bit operators, so we leave out the strict.
-		// So don't ever put true in here even though WPCS complains.
-		if ( ! in_array( $this->mappings->sync_wordpress_create, $map_sync_triggers ) ) {
+		if ( ! in_array( $this->mappings->sync_wordpress_create, $map_sync_triggers, true ) ) {
 			$structure               = $this->wordpress->get_wordpress_table_structure( $object_type );
 			$wordpress_id_field_name = $structure['id_field'];
 			$object_map              = array();
@@ -1489,9 +1486,8 @@ class Object_Sync_Sf_Salesforce_Push {
 			}
 		}
 
-		// these are bit operators, so we leave out the strict.
-		// So don't ever put true in here even though WPCS complains.
-		if ( ! in_array( $sf_sync_trigger, $map_sync_triggers ) ) {
+		// check if this is a Salesforce sync trigger.
+		if ( ! in_array( $sf_sync_trigger, $map_sync_triggers, true ) ) {
 			$push_allowed = false;
 		}
 

@@ -248,19 +248,31 @@ class Object_Sync_Sf_Mapping {
 		/*
 		 * These parameters are how we define when syncing should occur on each field map.
 		 * They get used in the admin settings, as well as the push/pull methods to see if something should happen.
-		 * It is unclear why the Drupal module used bit flags, but it seems reasonable to keep the convention.
 		*/
-		$this->sync_off              = 0x0000;
-		$this->sync_wordpress_create = 0x0001;
-		$this->sync_wordpress_update = 0x0002;
-		$this->sync_wordpress_delete = 0x0004;
-		$this->sync_sf_create        = 0x0008;
-		$this->sync_sf_update        = 0x0010;
-		$this->sync_sf_delete        = 0x0020;
+		$this->sync_off              = 'off';
+		$this->sync_wordpress_create = 'wp_create';
+		$this->sync_wordpress_update = 'wp_update';
+		$this->sync_wordpress_delete = 'wp_delete';
+		$this->sync_sf_create        = 'sf_create';
+		$this->sync_sf_update        = 'sf_update';
+		$this->sync_sf_delete        = 'sf_delete';
+
+		// deprecated bit flags from version 1.x.
+		$this->sync_off_v1              = 0x0000;
+		$this->sync_wordpress_create_v1 = 0x0001;
+		$this->sync_wordpress_update_v1 = 0x0002;
+		$this->sync_wordpress_delete_v1 = 0x0004;
+		$this->sync_sf_create_v1        = 0x0008;
+		$this->sync_sf_update_v1        = 0x0010;
+		$this->sync_sf_delete_v1        = 0x0020;
 
 		// Define which events are initialized by which system.
 		$this->wordpress_events  = array( $this->sync_wordpress_create, $this->sync_wordpress_update, $this->sync_wordpress_delete );
 		$this->salesforce_events = array( $this->sync_sf_create, $this->sync_sf_update, $this->sync_sf_delete );
+
+		// deprecated bit flags from version 1.x.
+		$this->wordpress_events_v1  = array( $this->sync_wordpress_create_v1, $this->sync_wordpress_update_v1, $this->sync_wordpress_delete_v1 );
+		$this->salesforce_events_v1 = array( $this->sync_sf_create_v1, $this->sync_sf_update_v1, $this->sync_sf_delete_v1 );
 
 		// Constants for the directions to map things.
 		$this->direction_wordpress_sf = 'wp_sf';
@@ -325,11 +337,11 @@ class Object_Sync_Sf_Mapping {
 	public function get_fieldmaps( $id = null, $conditions = array(), $reset = false ) {
 		$table = $this->fieldmap_table;
 		if ( null !== $id ) { // get one fieldmap.
-			$map                                    = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
-			$map['salesforce_record_types_allowed'] = maybe_unserialize( $map['salesforce_record_types_allowed'] );
-
-			$map['fields']        = maybe_unserialize( $map['fields'] );
-			$map['sync_triggers'] = maybe_unserialize( $map['sync_triggers'] );
+			$map        = $this->wpdb->get_row( 'SELECT * FROM ' . $table . ' WHERE id = ' . $id, ARRAY_A );
+			$mappings   = array();
+			$mappings[] = $map;
+			$mappings   = $this->prepare_fieldmap_data( $mappings );
+			$map        = $mappings[0];
 			return $map;
 		} elseif ( ! empty( $conditions ) ) { // get multiple but with a limitation.
 			$mappings    = array();
@@ -1177,6 +1189,62 @@ class Object_Sync_Sf_Mapping {
 			$mappings[ $id ]['sync_triggers']                   = maybe_unserialize( $mapping['sync_triggers'] );
 			if ( '' !== $record_type && ! in_array( $record_type, $mappings[ $id ]['salesforce_record_types_allowed'], true ) ) {
 				unset( $mappings[ $id ] );
+			}
+
+			// in v2 of this plugin, we replaced the bit flags with strings to make them more legible.
+			if ( version_compare( $this->version, '2.0.0', '>=' ) ) {
+
+				$sync_triggers = $mappings[ $id ]['sync_triggers'];
+
+				// check if the triggers stored in the database are up to date. if not, update them.
+				$intersect = array_intersect( $sync_triggers, array_merge( $this->wordpress_events, $this->salesforce_events ) );
+
+				if ( empty( $intersect ) ) {
+					$updated_sync_triggers = array();
+
+					foreach ( $sync_triggers as $key => $value ) {
+						if ( $value === (string) $this->sync_off_v1 ) {
+							$updated_sync_triggers[] = $this->sync_off;
+						}
+						if ( $value === (string) $this->sync_wordpress_create_v1 ) {
+							$updated_sync_triggers[] = $this->sync_wordpress_create;
+						}
+						if ( $value === (string) $this->sync_wordpress_update_v1 ) {
+							$updated_sync_triggers[] = $this->sync_wordpress_update;
+						}
+						if ( $value === (string) $this->sync_wordpress_delete_v1 ) {
+							$updated_sync_triggers[] = $this->sync_wordpress_delete;
+						}
+						if ( $value === (string) $this->sync_sf_create_v1 ) {
+							$updated_sync_triggers[] = $this->sync_sf_create;
+						}
+						if ( $value === (string) $this->sync_sf_update_v1 ) {
+							$updated_sync_triggers[] = $this->sync_sf_update;
+						}
+						if ( $value === (string) $this->sync_sf_delete_v1 ) {
+							$updated_sync_triggers[] = $this->sync_sf_delete;
+						}
+					}
+					$mappings[ $id ]['sync_triggers'] = maybe_unserialize( $updated_sync_triggers );
+
+					$data = array();
+					if ( ! empty( $mappings[ $id ]['sync_triggers'] ) ) {
+						$data['sync_triggers'] = array();
+						foreach ( $mappings[ $id ]['sync_triggers'] as $key => $value ) {
+							$mappings[ $id ]['sync_triggers'][ $key ] = esc_html( $mappings[ $id ]['sync_triggers'][ $key ] );
+						}
+						$data['sync_triggers'] = maybe_serialize( $mappings[ $id ]['sync_triggers'] );
+						// update the sync triggers field to use the new variable name.
+						$update = $this->wpdb->update(
+							$this->fieldmap_table,
+							$data,
+							array(
+								'id' => $mappings[ $id ]['id'],
+							)
+						);
+					}
+					continue;
+				}
 			}
 		}
 
