@@ -129,7 +129,7 @@ class Object_Sync_Sf_Admin {
 	/**
 	 * URL fragment for the plugin's settings page
 	 *
-	 * @var object
+	 * @var string
 	 */
 	private $admin_settings_url_param;
 
