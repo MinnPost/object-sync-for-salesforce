@@ -51,9 +51,9 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	/**
 	 * The setting value for whether logging is enabled
 	 *
-	 * @var string
+	 * @var bool
 	 */
-	public $public;
+	public $enabled;
 
 	/**
 	 * Which statuses to log, from the settings value
@@ -80,6 +80,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		$this->option_prefix = object_sync_for_salesforce()->option_prefix;
 
 		$this->enabled         = get_option( $this->option_prefix . 'enable_logging', false );
+		$this->enabled         = filter_var( $this->enabled, FILTER_VALIDATE_BOOLEAN );
 		$this->statuses_to_log = get_option( $this->option_prefix . 'statuses_to_log', array() );
 
 		$this->schedule_name = 'wp_logging_prune_routine';
@@ -94,7 +95,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * Initialize. This creates a schedule for pruning logs, and also the custom content type
 	 */
 	private function init() {
-		if ( true === filter_var( $this->enabled, FILTER_VALIDATE_BOOLEAN ) ) {
+		if ( true === $this->enabled ) {
 			add_filter( 'cron_schedules', array( $this, 'add_prune_interval' ) );
 			add_filter( 'wp_log_types', array( $this, 'set_log_types' ), 10, 1 );
 			add_filter( 'wp_logging_should_we_prune', array( $this, 'set_prune_option' ), 10, 1 );
@@ -483,7 +484,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			}
 		}
 
-		if ( true === filter_var( $this->enabled, FILTER_VALIDATE_BOOLEAN ) && in_array( $status, maybe_unserialize( $this->statuses_to_log ), true ) ) {
+		if ( true === $this->enabled && in_array( $status, maybe_unserialize( $this->statuses_to_log ), true ) ) {
 			$triggers_to_log = get_option( $this->option_prefix . 'triggers_to_log', array() );
 			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in Object_Sync_Sf_Mapping class's method __construct().
 			// todo: make this not use bit operators so we can use a strict in_array.
