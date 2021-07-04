@@ -42,6 +42,13 @@ class Object_Sync_Sf_Salesforce {
 	public $option_prefix;
 
 	/**
+	 * Login credentials for the Salesforce API; comes from wp-config or from the plugin settings
+	 *
+	 * @var array
+	 */
+	public $login_credentials;
+
+	/**
 	 * Array of what classes in the plugin can be scheduled to occur with `wp_cron` events
 	 *
 	 * @var array
