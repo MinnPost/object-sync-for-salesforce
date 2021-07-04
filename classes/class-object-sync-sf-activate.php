@@ -254,6 +254,7 @@ class Object_Sync_Sf_Activate {
 	 * @param object $upgrader_object this is the WP_Upgrader object.
 	 * @param array  $hook_extra the array of bulk item update data.
 	 * @see https://developer.wordpress.org/reference/hooks/upgrader_process_complete/
+	 * @deprecated since 2.0.0.
 	 */
 	public function check_for_action_scheduler( $upgrader_object, $hook_extra ) {
 
