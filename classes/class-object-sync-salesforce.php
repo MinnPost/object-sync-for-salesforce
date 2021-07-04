@@ -71,9 +71,9 @@ class Object_Sync_Salesforce {
 	public static $instance;
 
 	/**
-	 * Array of what classes in the plugin can be scheduled to occur with `wp_cron` events
+	 * Object_Sync_Sf_Queue class
 	 *
-	 * @var array
+	 * @var object
 	 */
 	public $queue;
 
