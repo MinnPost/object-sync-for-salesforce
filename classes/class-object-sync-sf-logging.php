@@ -364,7 +364,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * interval must be in seconds for the class to use it
 	 *
 	 * @param string $unit A unit of time.
-	 * @param number $number The number of those units.
+	 * @param string $number The number of those units.
 	 * @return array
 	 */
 	public function get_schedule_frequency( $unit, $number ) {
