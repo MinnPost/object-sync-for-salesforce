@@ -63,9 +63,9 @@ class Object_Sync_Sf_Deactivate {
 	public $schedulable_classes;
 
 	/**
-	 * Array of what classes in the plugin can be scheduled to occur with `wp_cron` events
+	 * Object_Sync_Sf_Queue class
 	 *
-	 * @var array
+	 * @var object
 	 */
 	public $queue;
 
@@ -111,13 +111,12 @@ class Object_Sync_Sf_Deactivate {
 	 * This removes all the scheduled tasks that are included in the plugin's $schedulable_classes array
 	 */
 	public function clear_schedule() {
-		if ( '' === $this->queue ) {
-			return;
-		}
-		foreach ( $this->schedulable_classes as $key => $value ) {
-			$schedule_name     = $key;
-			$action_group_name = $schedule_name . $this->action_group_suffix;
-			$this->queue->cancel( $action_group_name );
+		if ( ! empty( $this->schedulable_classes ) ) {
+			foreach ( $this->schedulable_classes as $key => $value ) {
+				$schedule_name     = $key;
+				$action_group_name = $schedule_name . $this->action_group_suffix;
+				$this->queue->cancel( $action_group_name );
+			}
 		}
 	}
 

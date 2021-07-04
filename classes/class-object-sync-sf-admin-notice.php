@@ -23,7 +23,7 @@ class Object_Sync_Sf_Admin_Notice {
 	/**
 	 * The condition the notice is checking
 	 *
-	 * @var string
+	 * @var bool
 	 */
 	public $condition;
 

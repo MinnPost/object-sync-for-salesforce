@@ -63,9 +63,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 	public $schedulable_classes;
 
 	/**
-	 * Array of what classes in the plugin can be scheduled to occur with `wp_cron` events
+	 * Object_Sync_Sf_Queue class
 	 *
-	 * @var array
+	 * @var object
 	 */
 	public $queue;
 
@@ -106,16 +106,16 @@ class Object_Sync_Sf_Salesforce_Pull {
 	private $batch_soql_queries;
 
 	/**
-	 * Minimum ize of a SOQL batch
+	 * Minimum size of a SOQL batch
 	 *
-	 * @var bool
+	 * @var int
 	 */
 	private $min_soql_batch_size;
 
 	/**
-	 * Maximum ize of a SOQL batch
+	 * Maximum size of a SOQL batch
 	 *
-	 * @var bool
+	 * @var int
 	 */
 	private $max_soql_size;
 
