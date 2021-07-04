@@ -2324,9 +2324,18 @@ class Object_Sync_Sf_Admin {
 	 * For this plugin at this time, that is the decision we are making: don't do any kind of authorization stuff inside Salesforce
 	 */
 	private function logout() {
-		$this->access_token  = delete_option( $this->option_prefix . 'access_token' );
-		$this->instance_url  = delete_option( $this->option_prefix . 'instance_url' );
-		$this->refresh_token = delete_option( $this->option_prefix . 'refresh_token' );
+		$delete_access_token = delete_option( $this->option_prefix . 'access_token' );
+		if ( true === $delete_access_token ) {
+			$this->access_token = '';
+		}
+		$delete_instance_url = delete_option( $this->option_prefix . 'instance_url' );
+		if ( true === $delete_instance_url ) {
+			$this->instance_url  = '';
+		}
+		$delete_refresh_token = delete_option( $this->option_prefix . 'refresh_token' );
+		if ( true === $delete_refresh_token ) {
+			$this->refresh_token = '';
+		}
 		echo sprintf(
 			'<p>You have been logged out. You can use the <a href="%1$s">%2$s</a> tab to log in again.</p>',
 			esc_url( get_admin_url( null, 'options-general.php?page' . $this->admin_settings_url_param . '&tab=authorize' ) ),
