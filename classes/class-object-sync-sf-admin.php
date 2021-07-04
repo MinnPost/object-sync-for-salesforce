@@ -131,7 +131,7 @@ class Object_Sync_Sf_Admin {
 	 *
 	 * @var object
 	 */
-	private $admin_settings_url;
+	private $admin_settings_url_param;
 
 	/**
 	 * Salesforce access token
