@@ -93,17 +93,25 @@ class Object_Sync_Sf_WordPress_Transient {
 	/**
 	 * Delete the entire cache for this plugin
 	 *
-	 * @return bool True if successful, false otherwise.
+	 * @return array $result has the success result and how many entries were cleared.
 	 */
 	public function flush() {
-		$keys   = $this->all_keys();
-		$result = true;
+		$keys    = $this->all_keys();
+		$success = true;
+		$count   = 0;
 		if ( ! empty( $keys ) ) {
 			foreach ( $keys as $key ) {
-				$result = delete_transient( $key );
+				$success = delete_transient( $key );
+				$count++;
 			}
 		}
-		$result = delete_transient( $this->name );
+		$success           = delete_transient( $this->name );
+		if ( true === $success ) {
+			$count++;
+		}
+		$result            = array();
+		$result['success'] = $success;
+		$result['count']   = $count;
 		return $result;
 	}
 

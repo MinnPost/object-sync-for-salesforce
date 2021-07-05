@@ -2363,11 +2363,17 @@ class Object_Sync_Sf_Admin {
 	 * @return array
 	 */
 	private function clear_cache( $ajax = false ) {
-		$result = (bool) $this->wordpress->sfwp_transients->flush();
-		if ( true === $result ) {
-			$message = __( 'The plugin cache has been cleared.', 'object-sync-for-salesforce' );
+		$result  = $this->wordpress->sfwp_transients->flush();
+		$success = $result['success'];
+		if ( 0 < $result['count'] ) {
+			if ( true === $success ) {
+				$message = esc_html__( 'The plugin cache has been cleared.', 'object-sync-for-salesforce' );
+			} else {
+				$message = esc_html__( 'There was an error clearing the plugin cache. Try refreshing this page.', 'object-sync-for-salesforce' );
+			}
 		} else {
-			$message = __( 'There was an error clearing the plugin cache. Try refreshing this page.', 'object-sync-for-salesforce' );
+			$success = true;
+			$message = esc_html__( 'The cache was not cleared because it is empty. You can try again later.', 'object-sync-for-salesforce' );
 		}
 		if ( false === $ajax ) {
 			// translators: parameter 1 is the result message.
@@ -2375,7 +2381,7 @@ class Object_Sync_Sf_Admin {
 		} else {
 			return array(
 				'message' => $message,
-				'success' => $result,
+				'success' => $success,
 			);
 		}
 	}
