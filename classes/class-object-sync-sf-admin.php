@@ -2330,7 +2330,7 @@ class Object_Sync_Sf_Admin {
 		}
 		$delete_instance_url = delete_option( $this->option_prefix . 'instance_url' );
 		if ( true === $delete_instance_url ) {
-			$this->instance_url  = '';
+			$this->instance_url = '';
 		}
 		$delete_refresh_token = delete_option( $this->option_prefix . 'refresh_token' );
 		if ( true === $delete_refresh_token ) {
