@@ -15,7 +15,23 @@ defined( 'ABSPATH' ) || exit;
 class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 
 	/**
-	 * The Salesforce API
+	 * The main plugin file
+	 *
+	 * @var string
+	 */
+	public $file;
+
+	/**
+	 * The salesforce_get_api() helper method from root class
+	 * This contains Salesforce API methods and flags.
+	 *
+	 * @var array
+	 */
+	public $salesforce_get_api;
+
+	/**
+	 * Object_Sync_Sf_Salesforce class
+	 * This contains Salesforce API methods
 	 *
 	 * @var array
 	 */
@@ -44,24 +60,37 @@ class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 
 	/**
 	 * Constructor for soap class
-	 *
-	 * @param Object_Sync_Sf_Salesforce $sfapi is the Object_Sync_Sf_Salesforce class.
-	 * @param string                    $wsdl is the path to the WSDL file.
 	 */
-	public function __construct( Object_Sync_Sf_Salesforce $sfapi, $wsdl = null ) {
-		if ( false === $this->salesforce_api['soap_available'] ) {
+	public function __construct() {
+
+		$this->file = object_sync_for_salesforce()->file;
+		$this->wsdl = get_option( 'object_sync_for_salesforce_soap_wsdl_path', plugin_dir_path( $this->file ) . 'vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml' );
+
+		$this->salesforce_get_api = object_sync_for_salesforce()->salesforce;
+		parent::__construct();
+
+		$this->init();
+	}
+
+	/**
+	 * Initialize.
+	 */
+	private function init() {
+		if ( false === $this->salesforce_get_api['soap_available'] ) {
 			return;
 		}
-		if ( ! class_exists( 'SforceBaseClient' ) && file_exists( plugin_dir_path( __FILE__ ) . '../vendor/autoload.php' ) ) {
-			require_once plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/SforcePartnerClient.php';
+		if ( ! class_exists( 'SforceBaseClient' ) && file_exists( plugin_dir_path( $this->file ) . 'vendor/autoload.php' ) ) {
+			require_once plugin_dir_path( $this->file ) . 'vendor/developerforce/force.com-toolkit-for-php/soapclient/SforcePartnerClient.php';
 		}
-		parent::__construct();
+
 		if ( empty( $wsdl ) ) {
-			$wsdl = plugin_dir_path( __FILE__ ) . '../vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml';
+			$this->wsdl = plugin_dir_path( $this->file ) . 'vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml';
 		}
+
 		$this->set_authorized( false );
-		$this->createConnection( $wsdl );
-		$this->salesforce_api = $sfapi;
+		$this->createConnection( $this->wsdl );
+
+		$this->salesforce_api = $this->salesforce_get_api['sfapi'];
 
 		if ( $this->salesforce_api->is_authorized() ) {
 			$token = $this->salesforce_api->get_access_token();
