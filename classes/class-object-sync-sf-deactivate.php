@@ -85,12 +85,12 @@ class Object_Sync_Sf_Deactivate {
 
 		$delete_data = (int) get_option( $this->option_prefix . 'delete_data_on_uninstall', 0 );
 		if ( 1 === $delete_data ) {
-			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
-			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'clear_schedule' ) );
-			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'delete_log_post_type' ) );
-			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'remove_roles_capabilities' ) );
-			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'flush_plugin_cache' ) );
-			register_deactivation_hook( dirname( __DIR__ ) . '/' . $slug . '.php', array( $this, 'delete_plugin_options' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'wordpress_salesforce_drop_tables' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'clear_schedule' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'delete_log_post_type' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'remove_roles_capabilities' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'flush_plugin_cache' ) );
+			register_deactivation_hook( dirname( __DIR__ ) . '/' . $this->slug . '.php', array( $this, 'delete_plugin_options' ) );
 		}
 	}
 
