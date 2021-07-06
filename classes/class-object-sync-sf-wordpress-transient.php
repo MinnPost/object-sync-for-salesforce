@@ -105,7 +105,7 @@ class Object_Sync_Sf_WordPress_Transient {
 				$count++;
 			}
 		}
-		$success           = delete_transient( $this->name );
+		$success = delete_transient( $this->name );
 		if ( true === $success ) {
 			$count++;
 		}
