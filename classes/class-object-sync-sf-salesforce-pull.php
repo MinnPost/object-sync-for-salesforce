@@ -1053,6 +1053,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				$logging->setup( $result );
 
+				// after it has been merged, pull it.
+				$result = $this->manual_pull( $object_type, $new_sf_id );
+
 			}
 		}
 	}
