@@ -164,8 +164,9 @@ class Object_Sync_Sf_Deactivate {
 	 * Clear the plugin options
 	 */
 	public function delete_plugin_options() {
-		$table          = $this->wpdb->prefix . 'options';
-		$plugin_options = $this->wpdb->get_results( 'SELECT option_name FROM ' . $table . ' WHERE option_name LIKE "object_sync_for_salesforce_%"', ARRAY_A );
+		$wpdb           = $this->wpdb;
+		$plugin_options = $wpdb->get_results( $wpdb->prepare( "SELECT option_name FROM `{$wpdb->base_prefix}options` WHERE option_name LIKE %s;", $wpdb->esc_like( $this->option_prefix ) . '%' ), ARRAY_A );
+
 		foreach ( $plugin_options as $option ) {
 			delete_option( $option['option_name'] );
 		}
