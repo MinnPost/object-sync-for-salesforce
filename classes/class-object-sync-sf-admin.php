@@ -2019,7 +2019,9 @@ class Object_Sync_Sf_Admin {
 			$export['object_maps'] = $this->mappings->get_object_maps();
 		}
 		if ( in_array( 'plugin_settings', $post_data['export'], true ) ) {
-			$export['plugin_settings'] = $this->wpdb->get_results( 'SELECT * FROM ' . $this->wpdb->prefix . 'options WHERE option_name like "' . $this->option_prefix . '%"', ARRAY_A );
+			$wpdb                      = $this->wpdb;
+			$export_results            = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$wpdb->base_prefix}options` WHERE option_name LIKE %s;", $wpdb->esc_like( $this->option_prefix ) . '%' ), ARRAY_A );
+			$export['plugin_settings'] = $export_results;
 		}
 		nocache_headers();
 		header( 'Content-Type: application/json; charset=utf-8' );
