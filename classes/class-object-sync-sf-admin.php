@@ -2330,7 +2330,7 @@ class Object_Sync_Sf_Admin {
 		}
 		$delete_instance_url = delete_option( $this->option_prefix . 'instance_url' );
 		if ( true === $delete_instance_url ) {
-			$this->instance_url  = '';
+			$this->instance_url = '';
 		}
 		$delete_refresh_token = delete_option( $this->option_prefix . 'refresh_token' );
 		if ( true === $delete_refresh_token ) {
@@ -2367,20 +2367,19 @@ class Object_Sync_Sf_Admin {
 		$success = $result['success'];
 		if ( 0 < $result['count'] ) {
 			if ( true === $success ) {
-				$message = esc_html__( 'The plugin cache has been cleared.', 'object-sync-for-salesforce' );
+				$message = __( 'The plugin cache has been cleared.', 'object-sync-for-salesforce' );
 			} else {
-				$message = esc_html__( 'There was an error clearing the plugin cache. Try refreshing this page.', 'object-sync-for-salesforce' );
+				$message = __( 'There was an error clearing the plugin cache. Try refreshing this page.', 'object-sync-for-salesforce' );
 			}
 		} else {
 			$success = true;
-			$message = esc_html__( 'The cache was not cleared because it is empty. You can try again later.', 'object-sync-for-salesforce' );
+			$message = __( 'The cache was not cleared because it is empty. You can try again later.', 'object-sync-for-salesforce' );
 		}
 		if ( false === $ajax ) {
-			// translators: parameter 1 is the result message.
-			echo sprintf( '<p>%1$s</p>', $message );
+			echo '<p>' . esc_html( $message ) . '</p>';
 		} else {
 			return array(
-				'message' => $message,
+				'message' => esc_html( $message ),
 				'success' => $success,
 			);
 		}
