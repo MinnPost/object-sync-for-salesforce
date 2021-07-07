@@ -1,46 +1,86 @@
 <?php
 /**
- * Class file for the Object_Sync_Sf_Logging class. Extend the WP_Logging class for the purposes of Object Sync for Salesforce.
+ * Log events based on plugin settings. Extend the WP_Logging class for the purposes of Object Sync for Salesforce.
  *
- * @file
+ * @class   Object_Sync_Sf_Logging
+ * @package Object_Sync_Salesforce
  */
 
-if ( ! class_exists( 'Object_Sync_Salesforce' ) ) {
-	die();
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Log events based on plugin settings
+ * Object_Sync_Sf_Logging class.
  */
 class Object_Sync_Sf_Logging extends WP_Logging {
 
-	protected $wpdb;
-	protected $version;
-	protected $slug;
-	protected $option_prefix;
-
-	public $enabled;
-	public $statuses_to_log;
-
-	private $schedule_name;
-
+	/**
+	 * Current version of the plugin
+	 *
+	 * @var string
+	 */
+	public $version;
 
 	/**
-	 * Constructor which sets content type and pruning for logs
+	 * The main plugin file
 	 *
-	 * @param object $wpdb An instance of the wpdb class.
-	 * @param string $version The version of this plugin.
-	 * @param string $slug The plugin slug
-	 * @param string $option_prefix The plugin's option prefix
-	 * @throws \Exception
+	 * @var string
 	 */
-	public function __construct( $wpdb, $version, $slug = '', $option_prefix = '' ) {
-		$this->wpdb          = $wpdb;
-		$this->version       = $version;
-		$this->slug          = $slug;
-		$this->option_prefix = isset( $option_prefix ) ? $option_prefix : 'object_sync_for_salesforce_';
+	public $file;
+
+	/**
+	 * Global object of `$wpdb`, the WordPress database
+	 *
+	 * @var object
+	 */
+	public $wpdb;
+
+	/**
+	 * The plugin's slug so we can include it when necessary
+	 *
+	 * @var string
+	 */
+	public $slug;
+
+	/**
+	 * The plugin's prefix when saving options to the database
+	 *
+	 * @var string
+	 */
+	public $option_prefix;
+
+	/**
+	 * The setting value for whether logging is enabled
+	 *
+	 * @var bool
+	 */
+	public $enabled;
+
+	/**
+	 * Which statuses to log, from the settings value
+	 *
+	 * @var array
+	 */
+	public $statuses_to_log;
+
+	/**
+	 * The name of the schedule to prune logs
+	 *
+	 * @var string
+	 */
+	public $schedule_name;
+
+	/**
+	 * Constructor for logging class
+	 */
+	public function __construct() {
+		$this->version       = object_sync_for_salesforce()->version;
+		$this->file          = object_sync_for_salesforce()->file;
+		$this->wpdb          = object_sync_for_salesforce()->wpdb;
+		$this->slug          = object_sync_for_salesforce()->slug;
+		$this->option_prefix = object_sync_for_salesforce()->option_prefix;
 
 		$this->enabled         = get_option( $this->option_prefix . 'enable_logging', false );
+		$this->enabled         = filter_var( $this->enabled, FILTER_VALIDATE_BOOLEAN );
 		$this->statuses_to_log = get_option( $this->option_prefix . 'statuses_to_log', array() );
 
 		$this->schedule_name = 'wp_logging_prune_routine';
@@ -52,12 +92,10 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	}
 
 	/**
-	 * Start. This creates a schedule for pruning logs, and also the custom content type
-	 *
-	 * @throws \Exception
+	 * Initialize. This creates a schedule for pruning logs, and also the custom content type
 	 */
 	private function init() {
-		if ( true === filter_var( $this->enabled, FILTER_VALIDATE_BOOLEAN ) ) {
+		if ( true === $this->enabled ) {
 			add_filter( 'cron_schedules', array( $this, 'add_prune_interval' ) );
 			add_filter( 'wp_log_types', array( $this, 'set_log_types' ), 10, 1 );
 			add_filter( 'wp_logging_should_we_prune', array( $this, 'set_prune_option' ), 10, 1 );
@@ -66,22 +104,22 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			add_filter( 'wp_logging_post_type_args', array( $this, 'set_log_visibility' ), 10, 1 );
 			add_filter( 'pre_wp_unique_post_slug', array( $this, 'set_log_slug' ), 10, 5 );
 
-			// add a filter to check for other plugins that might be filtering the log screen
+			// add a filter to check for other plugins that might be filtering the log screen.
 			$are_logs_filtered = apply_filters( 'wp_logging_manage_logs_filtered', false );
 			add_filter( 'wp_logging_manage_logs_filtered', '__return_true' );
 
 			if ( false === $are_logs_filtered ) {
-				// add a sortable Type column to the posts admin
+				// add a sortable Type column to the posts admin.
 				add_filter( 'manage_edit-wp_log_columns', array( $this, 'type_column' ), 10, 1 );
 				add_filter( 'manage_edit-wp_log_sortable_columns', array( $this, 'sortable_columns' ), 10, 1 );
 				add_action( 'manage_wp_log_posts_custom_column', array( $this, 'type_column_content' ), 10, 2 );
 
-				// filter the log posts admin by log type
+				// filter the log posts admin by log type.
 				add_filter( 'parse_query', array( $this, 'posts_filter' ), 10, 1 );
 				add_action( 'restrict_manage_posts', array( $this, 'restrict_logs_by_type' ), 10, 1 );
 			}
 
-			// when the schedule might change
+			// when the schedule might change.
 			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_unit', array( $this, 'check_log_schedule' ), 10, 3 );
 			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_number', array( $this, 'check_log_schedule' ), 10, 3 );
 
@@ -92,14 +130,14 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	/**
 	 * Set visibility for the post type
 	 *
-	 * @param array $log_args The post arguments
+	 * @param array $log_args The post arguments.
 	 * @return array $log_args
 	 */
 	public function set_log_visibility( $log_args ) {
 		// set public to true overrides the WP_DEBUG setting that is the default on the class
 		// capabilities makes it so (currently) only admin users can see the log posts in their admin view
 		// note: a public value of true is required to show Logs as a nav menu item on the admin.
-		// however, if we don't set exclude_from_search to true and publicly_queryable to false, logs *can* appear in search results
+		// however, if we don't set exclude_from_search to true and publicly_queryable to false, logs *can* appear in search results.
 		$log_args['public']              = true;
 		$log_args['publicly_queryable']  = false;
 		$log_args['exclude_from_search'] = true;
@@ -124,9 +162,9 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 *
 	 * @param string $override_slug Short-circuit return value.
 	 * @param string $slug The desired slug (post_name).
-	 * @param int $post_ID The post ID
-	 * @param string $post_status The post status
-	 * @param string $post_type The post type
+	 * @param int    $post_ID The post ID.
+	 * @param string $post_status The post status.
+	 * @param string $post_type The post type.
 	 * @return string
 	 */
 	public function set_log_slug( $override_slug, $slug, $post_ID, $post_status, $post_type ) {
@@ -139,7 +177,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	/**
 	 * Add a Type column to the posts admin for this post type
 	 *
-	 * @param array $columns
+	 * @param array $columns the columns for the post list table.
 	 * @return array $columns
 	 */
 	public function type_column( $columns ) {
@@ -150,7 +188,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	/**
 	 * Make the Type column in the posts admin for this post type sortable
 	 *
-	 * @param array $columns
+	 * @param array $columns the sortable columns for the post list table.
 	 * @return array $columns
 	 */
 	public function sortable_columns( $columns ) {
@@ -161,14 +199,14 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	/**
 	 * Add the content for the Type column in the posts admin for this post type
 	 *
-	 * @param string $column_name
-	 * @param int $post_id
+	 * @param string $column_name the value for the type column on the list table.
+	 * @param int    $post_id the ID of the currently listed post in the table.
 	 */
 	public function type_column_content( $column_name, $post_id ) {
-		if ( 'type' != $column_name ) {
+		if ( 'type' !== $column_name ) {
 			return;
 		}
-		// get wp_log_type
+		// get wp_log_type.
 		$terms = wp_get_post_terms(
 			$post_id,
 			'wp_log_type',
@@ -184,8 +222,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	/**
 	 * Filter log posts by the taxonomy from the dropdown when a value is present
 	 *
-	 * @param object $query
-	 * @return object $query
+	 * @param object $query the current WP query for the list table.
 	 */
 	public function posts_filter( $query ) {
 		global $pagenow;
@@ -210,22 +247,22 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	/**
 	 * Add a filter form for the log admin so we can filter by wp_log_type taxonomy values
 	 *
-	 * @param string $post_type
+	 * @param string $post_type what type of log we want to show.
 	 */
 	public function restrict_logs_by_type( $post_type ) {
 		$type     = 'wp_log';
 		$taxonomy = 'wp_log_type';
-		// only add filter to post type you want
+		// only add filter to post type you want.
 		if ( 'wp_log' === $post_type ) {
-			// get wp_log_type
+			// get wp_log_type.
 			$terms = get_terms(
-				[
+				array(
 					'taxonomy'   => $taxonomy,
 					'hide_empty' => true,
-				]
+				)
 			);
 			if ( is_wp_error( $terms ) || empty( $terms ) ) {
-				// no terms, or the taxonomy doesn't exist, skip
+				// no terms, or the taxonomy doesn't exist, skip.
 				return;
 			}
 			?>
@@ -250,9 +287,9 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	/**
 	 * When the cron settings change, clear the relevant schedule
 	 *
-	 * @param mixed $old_value Previous option value
-	 * @param mixed $new_value New option value
-	 * @param string $option Name of option
+	 * @param string $old_value Previous option value.
+	 * @param string $new_value New option value.
+	 * @param string $option Name of option.
 	 */
 	public function check_log_schedule( $old_value, $new_value, $option ) {
 		$clear_schedule  = false;
@@ -284,7 +321,6 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 
 	/**
 	 * Save a cron schedule
-	 *
 	 */
 	public function save_log_schedule() {
 		global $pagenow;
@@ -328,7 +364,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * interval must be in seconds for the class to use it
 	 *
 	 * @param string $unit A unit of time.
-	 * @param number $number The number of those units.
+	 * @param string $number The number of those units.
 	 * @return array
 	 */
 	public function get_schedule_frequency( $unit, $number ) {
@@ -417,11 +453,11 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @access      public
 	 * @since       1.0
 	 *
-	 * @param       string|array $title_or_params A log post title, or the full array of parameters
-	 * @param       string $message The log message.
-	 * @param       string|0 $trigger The type of log triggered. Usually one of: debug, notice, warning, error.
-	 * @param       int $parent The parent WordPress object.
-	 * @param       string $status The log status.
+	 * @param       string|array $title_or_params A log post title, or the full array of parameters.
+	 * @param       string       $message The log message.
+	 * @param       string|0     $trigger The type of log triggered. Usually one of: debug, notice, warning, error.
+	 * @param       int          $parent The parent WordPress object.
+	 * @param       string       $status The log status.
 	 *
 	 * @uses        self::add()
 	 * @see         Object_Sync_Sf_Mapping::__construct()    the location of the bitmasks that define the logging triggers.
@@ -448,10 +484,11 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			}
 		}
 
-		if ( true === filter_var( $this->enabled, FILTER_VALIDATE_BOOLEAN ) && in_array( $status, maybe_unserialize( $this->statuses_to_log ), true ) ) {
+		if ( true === $this->enabled && in_array( $status, maybe_unserialize( $this->statuses_to_log ), true ) ) {
 			$triggers_to_log = get_option( $this->option_prefix . 'triggers_to_log', array() );
-			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in Object_Sync_Sf_Mapping class's method __construct()
-			if ( in_array( $trigger, maybe_unserialize( $triggers_to_log ) ) || 0 === $trigger ) {
+			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in Object_Sync_Sf_Mapping class's method __construct().
+			// todo: make this not use bit operators so we can use a strict in_array.
+			if ( in_array( $trigger, maybe_unserialize( $triggers_to_log ), true ) || 0 === $trigger ) {
 				$this->add( $title, $message, $parent );
 			} elseif ( is_array( $trigger ) && array_intersect( $trigger, maybe_unserialize( $triggers_to_log ) ) ) {
 				$this->add( $title, $message, $parent );
@@ -472,7 +509,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 *
 	 * @uses        self::insert_log()
 	 * @param       string $message The log message.
-	 * @param       int $parent The parent WordPress object.
+	 * @param       int    $parent The parent WordPress object.
 	 * @param       string $type The type of log message; defaults to 'salesforce'.
 	 *
 	 * @return      int The ID of the new log entry
@@ -497,9 +534,9 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @access      private
 	 * @since       1.0
 	 *
-	 * @param       int $object_id A WordPress object ID.
+	 * @param       int    $object_id A WordPress object ID.
 	 * @param       string $type The type of log item; defaults to 'salesforce' because that's the type of logs we create.
-	 * @param       int $paged Which page of results do we want?
+	 * @param       int    $paged show which page of results we want.
 	 *
 	 * @uses        self::get_connected_logs()
 	 *
@@ -576,9 +613,9 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @access  private
 	 * @since   1.0
 	 *
-	 * @param       int $object_id A WordPress object ID.
+	 * @param       int    $object_id A WordPress object ID.
 	 * @param       string $type The type of log item; defaults to 'salesforce' because that's the type of logs we create.
-	 * @param       Array $meta_query A WordPress meta query, parseable by WP_Meta_Query.
+	 * @param       array  $meta_query A WordPress meta query, parseable by WP_Meta_Query.
 	 *
 	 * @uses    WP_Query()
 	 * @uses    self::valid_type()
