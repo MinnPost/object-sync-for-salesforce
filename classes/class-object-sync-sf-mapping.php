@@ -257,7 +257,7 @@ class Object_Sync_Sf_Mapping {
 		$this->sync_sf_update        = 'sf_update';
 		$this->sync_sf_delete        = 'sf_delete';
 
-		// deprecated bit flags from version 1.x.
+		// deprecated bit flags from version 1.x. Deprecated since 2.0.0.
 		$this->sync_off_v1              = 0x0000;
 		$this->sync_wordpress_create_v1 = 0x0001;
 		$this->sync_wordpress_update_v1 = 0x0002;
@@ -270,7 +270,7 @@ class Object_Sync_Sf_Mapping {
 		$this->wordpress_events  = array( $this->sync_wordpress_create, $this->sync_wordpress_update, $this->sync_wordpress_delete );
 		$this->salesforce_events = array( $this->sync_sf_create, $this->sync_sf_update, $this->sync_sf_delete );
 
-		// deprecated bit flags from version 1.x.
+		// deprecated bit flags from version 1.x. Deprecated since 2.0.0.
 		$this->wordpress_events_v1  = array( $this->sync_wordpress_create_v1, $this->sync_wordpress_update_v1, $this->sync_wordpress_delete_v1 );
 		$this->salesforce_events_v1 = array( $this->sync_sf_create_v1, $this->sync_sf_update_v1, $this->sync_sf_delete_v1 );
 
