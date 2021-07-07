@@ -1699,15 +1699,23 @@ class Object_Sync_Sf_Admin {
 		if ( empty( $mapping_id ) ) {
 			$mapping_id = isset( $post_data['mapping_id'] ) ? absint( $post_data['mapping_id'] ) : '';
 		}
-		$result = $this->mappings->get_object_maps(
+		$result = $this->mappings->get_all_object_maps(
 			array(
 				'id' => $mapping_id,
 			)
 		);
+
+		$object_map = array();
+
+		// result is an array of arrays, not just one array.
+		if ( 1 === count( $result ) ) {
+			$object_map = $result[0];
+		}
+
 		if ( ! empty( $post_data ) ) {
-			wp_send_json_success( $result );
+			wp_send_json_success( $object_map );
 		} else {
-			return $result;
+			return $object_map;
 		}
 	}
 
