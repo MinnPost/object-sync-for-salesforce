@@ -90,7 +90,7 @@ Go to the Settings tab for the plugin. It is the default URL that opens when you
 4. Login Base URL: For most Salesforce environments, you can use `https://test.salesforce.com` for sandbox, and `https://login.salesforce.com` for production.
 5. Authorize URL Path: The plugin starts with a default of `/services/oauth2/authorize`. You should generally not have to change this.
 6. Token URL Path: The plugin starts with a default of `/services/oauth2/token`. You should generally not have to change this.
-7. Salesforce API Version: You should generally use the latest version your install has access to. This plugin starts with 42.0, but once it is authenticated the text field will be replaced with a dropdown of your available versions from which you can choose.
+7. Salesforce API Version: You should generally use the latest version your install has access to. This plugin starts with 52.0, but once it is authenticated the text field will be replaced with a dropdown of your available versions from which you can choose.
 8. Limit Salesforce Objects: These allow you to indicate whether Salesforce should relate to objects that can't be triggered or updated via the API. Generally it's a good idea to have these boxes checked to avoid errors.
 9. Salesforce Field Display Value: When mapping Salesforce fields, you can choose whether the plugin will display a field's Field Label (possibly a more user friendly value) or the API Name (which is always unique). Neither choice changes how the plugin functions on the back end, but making a choice can sometimes make the mapping choices easier to find.
 10. Pull Throttle (seconds): This plugin starts with 5 seconds, but you can change it based on your server's needs.
@@ -119,7 +119,7 @@ define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY', 'valuefromsalesforce');
 define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET', 'valuefromsalesforce');
 define('OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL', 'https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize');
 define('OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL', 'https://test.salesforce.com');
-define('OBJECT_SYNC_SF_SALESFORCE_API_VERSION', '42.0');
+define('OBJECT_SYNC_SF_SALESFORCE_API_VERSION', '52.0');
 define('OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH', '/services/oauth2/authorize');
 define('OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH', '/services/oauth2/token');
 ```
