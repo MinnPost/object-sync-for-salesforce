@@ -1944,13 +1944,7 @@ class Object_Sync_Sf_Admin {
 				}
 			}
 			if ( isset( $data['object_maps'] ) ) {
-				$object_maps = $this->mappings->get_object_maps();
-
-				// if there is only one existing object map, fix the array.
-				if ( count( $object_maps ) === count( $object_maps, COUNT_RECURSIVE ) ) {
-					$object_maps = array( 0 => $object_maps );
-				}
-
+				$object_maps = $this->mappings->get_all_object_maps();
 				foreach ( $object_maps as $object_map ) {
 					$id     = $object_map['id'];
 					$delete = $this->mappings->delete_object_map( $id );
