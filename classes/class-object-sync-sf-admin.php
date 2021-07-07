@@ -2489,15 +2489,16 @@ class Object_Sync_Sf_Admin {
 	public function save_salesforce_user_fields( $user_id ) {
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		if ( isset( $post_data['salesforce_update_mapped_user'] ) && true === filter_var( $post_data['salesforce_update_mapped_user'], FILTER_VALIDATE_BOOLEAN ) ) {
-			$mapping_object                  = $this->mappings->get_object_maps(
+			$mapping_objects = $this->mappings->get_all_object_maps(
 				array(
 					'wordpress_id'     => $user_id,
 					'wordpress_object' => 'user',
 				)
 			);
-			$mapping_object['salesforce_id'] = $post_data['salesforce_id'];
-
-			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+			foreach ( $mapping_objects as $mapping_object ) {
+				$mapping_object['salesforce_id'] = $post_data['salesforce_id'];
+				$result                          = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+			}
 		} elseif ( isset( $post_data['salesforce_create_mapped_user'] ) && true === filter_var( $post_data['salesforce_create_mapped_user'], FILTER_VALIDATE_BOOLEAN ) ) {
 			// if a Salesforce ID was entered.
 			if ( isset( $post_data['salesforce_id'] ) && ! empty( $post_data['salesforce_id'] ) ) {
