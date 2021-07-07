@@ -1002,7 +1002,7 @@ class Object_Sync_Sf_Salesforce_Push {
 					'id' => $mapping_object_id,
 				)
 			);
-			if ( is_array( $mapping_objects[0] ) ) {
+			if ( isset( $mapping_objects[0] ) && is_array( $mapping_objects[0] ) ) {
 				$mapping_object = $mapping_objects[0];
 			}
 

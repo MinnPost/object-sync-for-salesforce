@@ -1616,7 +1616,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							'wordpress_object' => $salesforce_mapping['wordpress_object'],
 						)
 					);
-					if ( is_array( $mapping_objects[0] ) ) {
+					if ( isset( $mapping_objects[0] ) && is_array( $mapping_objects[0] ) ) {
 						$mapping_object = $mapping_objects[0];
 					}
 				} else {
@@ -1745,7 +1745,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						'id' => $mapping_object_id,
 					)
 				);
-				if ( is_array( $mapping_objects[0] ) ) {
+				if ( isset( $mapping_objects[0] ) && is_array( $mapping_objects[0] ) ) {
 					$mapping_object = $mapping_objects[0];
 				}
 				// now we can upsert the object in wp if we've gotten to this point
@@ -1763,7 +1763,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						'id' => $mapping_object_id,
 					)
 				);
-				if ( is_array( $mapping_objects[0] ) ) {
+				if ( isset( $mapping_objects[0] ) && is_array( $mapping_objects[0] ) ) {
 					$mapping_object = $mapping_objects[0];
 				}
 
