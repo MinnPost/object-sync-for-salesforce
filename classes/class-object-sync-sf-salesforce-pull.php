@@ -1604,24 +1604,30 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$wordpress_id = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['pull_to_drafts'], true );
 				}
 
+				// placeholder mapping object.
+				$mapping_object = array();
+
 				// find out if there is a mapping object for this WordPress object already
 				// don't do it if the WordPress id is 0.
 				if ( 0 !== $wordpress_id ) {
-					$mapping_object = $this->mappings->get_object_maps(
+					$mapping_objects = $this->mappings->get_all_object_maps(
 						array(
 							'wordpress_id'     => $wordpress_id,
 							'wordpress_object' => $salesforce_mapping['wordpress_object'],
 						)
 					);
+					if ( is_array( $mapping_objects[0] ) ) {
+						$mapping_object = $mapping_objects[0];
+					}
 				} else {
 					// if the wp object is 0, check to see if there are any object maps that have an id of 0. if there are any, log them.
-					$mapping_object_debug = $this->mappings->get_object_maps(
+					$mapping_object_debug = $this->mappings->get_all_object_maps(
 						array(
 							'wordpress_id' => $wordpress_id,
 						)
 					);
 
-					if ( array() !== $mapping_object_debug ) {
+					if ( ! empty( $mapping_object_debug ) ) {
 						// create log entry to warn about at least one id of 0.
 						$status = 'error';
 						$title  = sprintf(
@@ -1634,9 +1640,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$body = sprintf(
 								// translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the Salesforce object it was trying to map.
 								esc_html__( 'There is an object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of 0 and the Salesforce object with ID of %3$s', 'object-sync-for-salesforce' ),
-								absint( $mapping_object_debug['id'] ),
-								esc_attr( $salesforce_mapping['wordpress_object'] ),
-								esc_attr( $mapping_object_debug['salesforce_id'] )
+								absint( $mapping_object_debug[0]['id'] ),
+								esc_attr( $mapping_object_debug[0]['wordpress_object'] ),
+								esc_attr( $mapping_object_debug[0]['salesforce_id'] )
 							);
 						} else {
 							$body = sprintf( esc_html__( 'There are multiple object maps with WordPress ID of 0. Their IDs are: ', 'object-sync-for-salesforce' ) . '<ul>' );
@@ -1734,12 +1740,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
 				set_transient( 'salesforce_pulling_' . $object['Id'], 1, $seconds );
 				set_transient( 'salesforce_pulling_object_id', $object['Id'] );
-				$mapping_object = $this->mappings->get_object_maps(
+				$mapping_objects = $this->mappings->get_all_object_maps(
 					array(
 						'id' => $mapping_object_id,
 					)
 				);
-
+				if ( is_array( $mapping_objects[0] ) ) {
+					$mapping_object = $mapping_objects[0];
+				}
 				// now we can upsert the object in wp if we've gotten to this point
 				// this command will either create or update the object.
 				$result = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['pull_to_drafts'] );
@@ -1750,11 +1758,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
 				set_transient( 'salesforce_pulling_' . $mapping_object_id, 1, $seconds );
 				set_transient( 'salesforce_pulling_object_id', $mapping_object_id );
-				$mapping_object = $this->mappings->get_object_maps(
+				$mapping_objects = $this->mappings->get_all_object_maps(
 					array(
 						'id' => $mapping_object_id,
 					)
 				);
+				if ( is_array( $mapping_objects[0] ) ) {
+					$mapping_object = $mapping_objects[0];
+				}
 
 				$result = $this->wordpress->object_create( $salesforce_mapping['wordpress_object'], $params );
 			} // End if() statement.

@@ -10,6 +10,7 @@ Changelog
 		* `public static $instance;` is a legacy way of loading an instance of this plugin.
 		* `check_for_action_scheduler` is a method of the `Object_Sync_Sf_Activate` class to ensure that the plugin has successfully loaded the ActionScheduler library.
 		* bit flags from the `Object_Sync_Sf_Mapping` class have been converted to strings. The old bit flags are still there with `_v1` suffixed to their property names.
+		* `get_object_maps` from the `Object_Sync_Sf_Mapping` class was previously deprecated, but was still being called in various places. It no longer is.
 
 
 * 1.10.0 (2021-05-14)

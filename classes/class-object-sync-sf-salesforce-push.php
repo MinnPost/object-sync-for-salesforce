@@ -996,11 +996,15 @@ class Object_Sync_Sf_Salesforce_Push {
 			$mapping_object_id = $this->create_object_map( $object, $wordpress_id_field_name, $temporary_map_id, $mapping, true );
 			set_transient( 'salesforce_pushing_' . $temporary_map_id, 1, $seconds );
 			set_transient( 'salesforce_pushing_object_id', $temporary_map_id );
-			$mapping_object = $this->mappings->get_object_maps(
+			$mapping_object  = array();
+			$mapping_objects = $this->mappings->get_all_object_maps(
 				array(
 					'id' => $mapping_object_id,
 				)
 			);
+			if ( is_array( $mapping_objects[0] ) ) {
+				$mapping_object = $mapping_objects[0];
+			}
 
 			// setup SF record type. CampaignMember objects get their Campaign's type
 			// i am still a bit confused about this.

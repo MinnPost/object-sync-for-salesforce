@@ -709,10 +709,10 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Get one or more object map rows between WordPress and Salesforce objects
 	 *
-	 * @deprecated since 1.8.0
 	 * @param array $conditions Limitations on the SQL query for object mapping rows.
 	 * @param bool  $reset Unused parameter.
 	 * @return array $map or $mappings
+	 * @deprecated since 1.8.0
 	 */
 	public function get_object_maps( $conditions = array(), $reset = false ) {
 		$table = $this->object_map_table;
