@@ -418,9 +418,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$sf_sync_trigger = $this->mappings->sync_sf_update;
 					}
 
-					// Only queue when the record's trigger is configured for the mapping
-					// these are bit operators, so we leave out the strict.
-					if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event.
+					// Only queue when the record's trigger is configured for the mapping.
+					if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers, true ) ) { // wp or sf crud event.
 						$data = array(
 							'object_type'     => $type,
 							'object'          => $result,
@@ -675,9 +674,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 					} else {
 						$sf_sync_trigger = $this->mappings->sync_sf_update;
 					}
-					// Only queue when the record's trigger is configured for the mapping
-					// these are bit operators, so we leave out the strict.
-					if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers ) ) { // wp or sf crud event.
+					// Only queue when the record's trigger is configured for the mapping.
+					if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers, true ) ) { // wp or sf crud event.
 						$data = array(
 							'object_type'     => $type,
 							'object'          => $result,
@@ -803,8 +801,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				)
 			);
 
-			// these are bit operators, so we leave out the strict.
-			if ( in_array( $this->mappings->sync_sf_create, $salesforce_mapping['sync_triggers'] ) ) {
+			// check if this is a Salesforce create event.
+			if ( in_array( $this->mappings->sync_sf_create, $salesforce_mapping['sync_triggers'], true ) ) {
 				$soql->fields['CreatedDate'] = 'CreatedDate';
 			}
 
@@ -1144,7 +1142,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$pull_allowed = true;
 
 					// if the current fieldmap does not allow delete, set pull_allowed to false.
-					if ( isset( $map_sync_triggers ) && ! in_array( $this->mappings->sync_sf_delete, $map_sync_triggers ) ) {
+					if ( isset( $map_sync_triggers ) && ! in_array( $this->mappings->sync_sf_delete, $map_sync_triggers, true ) ) {
 						$pull_allowed = false;
 					}
 
@@ -1244,7 +1242,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$salesforce_id = $object;
 			// Load the Salesforce object data to save in WordPress. We need to make sure that this data does not get cached, which is consistent with other pull behavior as well as in other methods in this class.
 			// We should only do this if we're not trying to delete data in WordPress - otherwise, we'll get a 404 from Salesforce and the delete will fail.
-			if ( $sf_sync_trigger != $this->mappings->sync_sf_delete ) { // trigger is a bit operator.
+			if ( $sf_sync_trigger !== $this->mappings->sync_sf_delete ) {
 				$object = $sfapi->object_read(
 					$object_type,
 					$salesforce_id,
@@ -1420,7 +1418,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$wordpress_id_field_name = $structure['id_field'];
 
 			// don't do parameters if we are deleting.
-			if ( ( true === $is_new && $sf_sync_trigger == $this->mappings->sync_sf_create ) || $sf_sync_trigger == $this->mappings->sync_sf_update ) { // trigger is a bit operator
+			if ( ( true === $is_new && $sf_sync_trigger === $this->mappings->sync_sf_create ) || $sf_sync_trigger === $this->mappings->sync_sf_update ) { // trigger is a bit operator
 				// map the Salesforce values to WordPress fields.
 				$params = $this->mappings->map_params( $salesforce_mapping, $object, $sf_sync_trigger, false, $is_new, $wordpress_id_field_name );
 
@@ -1452,7 +1450,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				if ( empty( $params ) ) {
 					return;
 				}
-			} elseif ( $sf_sync_trigger == $this->mappings->sync_sf_delete ) {
+			} elseif ( $sf_sync_trigger === $this->mappings->sync_sf_delete ) {
 				$is_new = false;
 			} // end checking for create/update/delete.
 
@@ -2088,7 +2086,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$op      = '';
 
 		// deleting mapped objects.
-		if ( $sf_sync_trigger == $this->mappings->sync_sf_delete ) { // trigger is a bit operator.
+		if ( $sf_sync_trigger === $this->mappings->sync_sf_delete ) { // trigger is a bit operator.
 			if ( isset( $mapping_object['id'] ) ) {
 
 				$op = 'Delete';
@@ -2314,7 +2312,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$pull_allowed = true;
 
 		// if the current fieldmap does not allow create, we need to check if there is an object map for the Salesforce object Id. if not, set pull_allowed to false.
-		if ( ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers ) ) {
+		if ( ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers, true ) ) {
 			$object_map = $this->mappings->load_all_by_salesforce( $object['Id'] );
 			if ( empty( $object_map ) ) {
 				$pull_allowed = false;
