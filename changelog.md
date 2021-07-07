@@ -7,8 +7,10 @@ Changelog
 	* Maintenance: most files in this plugin have been renamed, and are now being autoloaded when the plugin needs them. This should help performance, future maintenance, and makes it possible to better comply with the WordPress Code Standards. This means if you are manually calling any plugin files, you may need to change your code.
 	* Maintenance: this release includes a lot of code improvements to better match the WordPress Code Standards and improve code readability. This includes converting a previous set of bit flags to strings. This is generally a backward-compatible change, as it updates the database when the upgrade is complete.
 	* Developers: some methods that were deprecated in previous versions were removed. Removed items in 2.0.0:
-		* `add_deprecated_actions` in  `Object_Sync_Sf_Admin`.
-		* `get_wp_sf_object_fields` in `Object_Sync_Sf_Admin`.
+		* `add_deprecated_actions` in  `Object_Sync_Sf_Admin`
+		* `get_wp_sf_object_fields` in `Object_Sync_Sf_Admin`
+		* `load_by_wordpress` in `Object_Sync_Sf_Mapping`
+		* `load_by_salesforce` in `Object_Sync_Sf_Mapping`
 	* Developers: this release deprecates some functionality from previous versions. It is always marked in the codebase as `@deprecated`. It may be removed in a future 3.x version and should be, if possible, moved away from. Deprecated items in 2.0.0:
 		* `public static $instance;` is a legacy way of loading an instance of this plugin.
 		* `check_for_action_scheduler` is a method of the `Object_Sync_Sf_Activate` class to ensure that the plugin has successfully loaded the ActionScheduler library.
