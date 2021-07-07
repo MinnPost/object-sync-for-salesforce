@@ -120,8 +120,8 @@ class Object_Sync_Salesforce {
 	public $wordpress;
 
 	/**
-	 * The salesforce_get_api() helper method result
-	 * This contains Salesforce API methods and flags.
+	 * Object_Sync_Sf_Salesforce class
+	 * This contains Salesforce API methods
 	 *
 	 * @var array
 	 */

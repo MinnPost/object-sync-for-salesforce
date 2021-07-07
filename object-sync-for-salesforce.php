@@ -51,7 +51,7 @@ require_once 'lib/autoloader.php';
 /**
  * Retrieve the instance of the main plugin class
  *
- * @since 0.2.0
+ * @since 2.0.0
  * @return Object_Sync_Salesforce
  */
 function object_sync_for_salesforce() {
