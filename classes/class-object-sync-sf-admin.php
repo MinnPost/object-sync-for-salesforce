@@ -245,8 +245,6 @@ class Object_Sync_Sf_Admin {
 		$this->default_updateable = true;
 
 		$this->add_actions();
-
-		$this->add_deprecated_actions();
 	}
 
 	/**
@@ -305,24 +303,6 @@ class Object_Sync_Sf_Admin {
 		add_action( 'admin_post_object_sync_for_salesforce_import', array( $this, 'import_json_file' ) );
 		add_action( 'admin_post_object_sync_for_salesforce_export', array( $this, 'export_json_file' ) );
 
-	}
-
-	/**
-	 * Deprecated action hooks for admin pages
-	 */
-	private function add_deprecated_actions() {
-		/**
-		 * Method: get_wordpress_object_description
-		 *
-		 * @deprecated since 1.9.0
-		 */
-		add_action( 'wp_ajax_get_wordpress_object_description', array( $this, 'get_wordpress_object_fields' ), 10, 1 );
-		/**
-		 * Method: get_wp_sf_object_fields
-		 *
-		 * @deprecated since 1.9.0
-		 */
-		add_action( 'wp_ajax_get_wp_sf_object_fields', array( $this, 'get_wp_sf_object_fields' ), 10, 2 );
 	}
 
 	/**
@@ -1404,6 +1384,12 @@ class Object_Sync_Sf_Admin {
 				'type'        => 'success',
 				'dismissible' => true,
 			),
+			'data_save_partial'       => array(
+				'condition'   => isset( $get_data['data_saved'] ) && 'partial' === $get_data['data_saved'],
+				'message'     => __( 'This data was partially successfully saved. This means some of the data was unable to save. If you have enabled logging in the plugin settings, there should be a log entry with further details.', 'object-sync-for-salesforce' ),
+				'type'        => 'error',
+				'dismissible' => true,
+			),
 			'data_save_error'         => array(
 				'condition'   => isset( $get_data['data_saved'] ) && 'false' === $get_data['data_saved'],
 				'message'     => __( 'This data was not successfully saved. Try again.', 'object-sync-for-salesforce' ),
@@ -1599,38 +1585,6 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-	 * Get WordPress and Salesforce object fields together for fieldmapping
-	 * This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $salesforce_object fields
-	 *
-	 * @deprecated since 1.9.0
-	 * @param string $wordpress_object is the name of the WordPress object.
-	 * @param string $salesforce_object is the name of the Salesforce object.
-	 * @return array $object_fields
-	 */
-	public function get_wp_sf_object_fields( $wordpress_object = '', $salesforce_object = '' ) {
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-		if ( empty( $wordpress_object ) ) {
-			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
-		}
-		if ( empty( $salesforce_object ) ) {
-			$salesforce_object = isset( $post_data['salesforce_object'] ) ? sanitize_text_field( wp_unslash( $post_data['salesforce_object'] ) ) : '';
-		}
-
-		$object_fields['wordpress']  = $this->get_wordpress_object_fields( $wordpress_object );
-		$object_fields['salesforce'] = $this->get_salesforce_object_fields(
-			array(
-				'salesforce_object' => $salesforce_object,
-			)
-		);
-
-		if ( ! empty( $post_data ) ) {
-			wp_send_json_success( $object_fields );
-		} else {
-			return $object_fields;
-		}
-	}
-
-	/**
 	 * Manually push the WordPress object to Salesforce
 	 * This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $wordpress_id fields
 	 *
@@ -1699,15 +1653,23 @@ class Object_Sync_Sf_Admin {
 		if ( empty( $mapping_id ) ) {
 			$mapping_id = isset( $post_data['mapping_id'] ) ? absint( $post_data['mapping_id'] ) : '';
 		}
-		$result = $this->mappings->get_object_maps(
+		$result = $this->mappings->get_all_object_maps(
 			array(
 				'id' => $mapping_id,
 			)
 		);
+
+		$object_map = array();
+
+		// result is an array of arrays, not just one array.
+		if ( 1 === count( $result ) ) {
+			$object_map = $result[0];
+		}
+
 		if ( ! empty( $post_data ) ) {
-			wp_send_json_success( $result );
+			wp_send_json_success( $object_map );
 		} else {
-			return $result;
+			return $object_map;
 		}
 	}
 
@@ -1919,13 +1881,6 @@ class Object_Sync_Sf_Admin {
 		// Retrieve the data from the file and convert the json object to an array.
 		$data = (array) json_decode( file_get_contents( $import_file ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
-		// if there is only one object map, fix the array.
-		if ( isset( $data['object_maps'] ) ) {
-			if ( count( $data['object_maps'] ) === count( $data['object_maps'], COUNT_RECURSIVE ) ) {
-				$data['object_maps'] = array( 0 => $data['object_maps'] );
-			}
-		}
-
 		$overwrite = isset( $_POST['overwrite'] ) ? esc_attr( $_POST['overwrite'] ) : '';
 		if ( true === filter_var( $overwrite, FILTER_VALIDATE_BOOLEAN ) ) {
 			if ( isset( $data['fieldmaps'] ) ) {
@@ -1936,13 +1891,7 @@ class Object_Sync_Sf_Admin {
 				}
 			}
 			if ( isset( $data['object_maps'] ) ) {
-				$object_maps = $this->mappings->get_object_maps();
-
-				// if there is only one existing object map, fix the array.
-				if ( count( $object_maps ) === count( $object_maps, COUNT_RECURSIVE ) ) {
-					$object_maps = array( 0 => $object_maps );
-				}
-
+				$object_maps = $this->mappings->get_all_object_maps();
 				foreach ( $object_maps as $object_map ) {
 					$id     = $object_map['id'];
 					$delete = $this->mappings->delete_object_map( $id );
@@ -1968,17 +1917,20 @@ class Object_Sync_Sf_Admin {
 		}
 
 		if ( isset( $data['object_maps'] ) ) {
+			$successful_object_maps = array();
+			$error_object_maps      = array();
 			foreach ( $data['object_maps'] as $object_map ) {
 				unset( $object_map['id'] );
-
-				if ( $object_map['object_type'] ) {
+				if ( isset( $object_map['object_type'] ) ) {
 					$sf_sync_trigger = $this->mappings->sync_sf_create;
 					$create          = $this->pull->salesforce_pull_process_records( $object_map['object_type'], $object_map['salesforce_id'], $sf_sync_trigger );
 				} else {
 					$create = $this->mappings->create_object_map( $object_map );
 				}
 				if ( false === $create ) {
-					$success = false;
+					$error_object_maps[] = $object_map;
+				} else {
+					$successful_object_maps[] = $create;
 				}
 			}
 		}
@@ -1989,9 +1941,42 @@ class Object_Sync_Sf_Admin {
 			}
 		}
 
-		if ( true === $success ) {
+		$status = 'error';
+		if ( isset( $this->logging ) ) {
+			$logging = $this->logging;
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+		}
+
+		$body = sprintf( esc_html__( 'These are the import items that were not able to save: ', 'object-sync-for-salesforce' ) . '<ul>' );
+		foreach ( $error_object_maps as $mapping_object ) {
+			$body .= sprintf(
+				// translators: placeholders are: 1) the mapping object row ID, 2) the ID of the Salesforce object, 3) the WordPress object type.
+				'<li>' . esc_html__( 'Mapping object id (if it exists): %1$s. Salesforce Id: %2$s. WordPress object type: %3$s', 'object-sync-for-salesforce' ) . '</li>',
+				isset( $mapping_object['id'] ) ? absint( $mapping_object['id'] ) : '',
+				esc_attr( $mapping_object['salesforce_id'] ),
+				esc_attr( $mapping_object['wordpress_object'] )
+			);
+		}
+		$body .= sprintf( '</ul>' );
+
+		$logging->setup(
+			sprintf(
+				// translators: %1$s is the log status.
+				esc_html__( '%1$s on import: some of the rows were unable to save. Read this post for details.', 'object-sync-for-salesforce' ),
+				ucfirst( esc_attr( $status ) )
+			),
+			$body,
+			0,
+			0,
+			$status
+		);
+
+		if ( empty( $error_object_maps ) && ! empty( $successful_object_maps ) ) {
 			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=import-export&data_saved=true' ) );
 			exit;
+		} elseif ( ! empty( $error_object_maps ) && ! empty( $successful_object_maps ) ) {
+			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=import-export&data_saved=partial' ) );
 		} else {
 			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=import-export&data_saved=false' ) );
 			exit;
@@ -2016,7 +2001,7 @@ class Object_Sync_Sf_Admin {
 			$export['fieldmaps'] = $this->mappings->get_fieldmaps();
 		}
 		if ( in_array( 'object_maps', $post_data['export'], true ) ) {
-			$export['object_maps'] = $this->mappings->get_object_maps();
+			$export['object_maps'] = $this->mappings->get_all_object_maps();
 		}
 		if ( in_array( 'plugin_settings', $post_data['export'], true ) ) {
 			$wpdb                      = $this->wpdb;
@@ -2452,15 +2437,16 @@ class Object_Sync_Sf_Admin {
 	public function save_salesforce_user_fields( $user_id ) {
 		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 		if ( isset( $post_data['salesforce_update_mapped_user'] ) && true === filter_var( $post_data['salesforce_update_mapped_user'], FILTER_VALIDATE_BOOLEAN ) ) {
-			$mapping_object                  = $this->mappings->get_object_maps(
+			$mapping_objects = $this->mappings->get_all_object_maps(
 				array(
 					'wordpress_id'     => $user_id,
 					'wordpress_object' => 'user',
 				)
 			);
-			$mapping_object['salesforce_id'] = $post_data['salesforce_id'];
-
-			$result = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+			foreach ( $mapping_objects as $mapping_object ) {
+				$mapping_object['salesforce_id'] = $post_data['salesforce_id'];
+				$result                          = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+			}
 		} elseif ( isset( $post_data['salesforce_create_mapped_user'] ) && true === filter_var( $post_data['salesforce_create_mapped_user'], FILTER_VALIDATE_BOOLEAN ) ) {
 			// if a Salesforce ID was entered.
 			if ( isset( $post_data['salesforce_id'] ) && ! empty( $post_data['salesforce_id'] ) ) {
