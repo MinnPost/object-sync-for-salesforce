@@ -3,8 +3,8 @@ Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations, harmoney
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 4.6
-Tested up to: 5.7
-Stable tag: 1.10.0
+Tested up to: 5.8
+Stable tag: 1.10.1
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -269,6 +269,11 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
+* 1.10.1 (2021-07-12)
+    * Bug fix: When using the hook `object_sync_for_salesforce_select_library` to disable the use of the Select2 library, the default browser `select` was not working correctly. Thanks to GitHub user @timnolte for the report.
+    * Maintenance: note 5.8 support.
+    * Note: a major upgrade to the back end of this plugin is coming soon, in the form of version 2.0.0. Very little will change visibly, but hopefully the plugin will perform better and be structured better for future upgrades. None of these large changes are included in version 1.10.1, but we want to give some advance notice.
+
 * 1.10.0 (2021-05-14)
     * Feature: Add support for Advanced Custom Fields forms that save posts on the front end. Thanks to WordPress user @grayzee for the request.
     * Bug fix: Fix the API Name settings so the value shows up correctly. Thanks to WordPress user @dcleslie777 for the report.
@@ -316,6 +321,11 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
     * Bug fix: When a Salesforce query has invalid fields, clear it from the plugin's storage. Thanks to WordPress users @nishithmistry, @zumajoe, @alexeympw, and @jesodoth.
     * Maintenance: Adding new fields to a fieldmap is faster and involves less code duplication.
     * Maintenance: For WordPress 5.3 compatibility, replace `current_time( 'timestamp' )` with `time()`.
-    * Maintenance: Update Salesforce app setup instructions for Lightning.* 1.9.0 (2020-03-20)
+    * Maintenance: Update Salesforce app setup instructions for Lightning.
 
 See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/changelog.md) on GitHub or in changelog.txt in the installed plugin.
+
+== Upgrade Notice ==
+
+= 1.10.1 =
+In the near future, we'll be releasing a 2.0.0 of this plugin. This release will include a major upgrade to ActionScheduler, the underlying queue technology that runs syncing for this plugin, as well as renaming of many plugin files. When version 2.0.0 is released, you may want to make a full site backup before upgrading, and if you have access to a staging environment you may want to run it there before you run it on your production website. None of these large changes are included in version 1.10.1, but we want to give some advance notice.

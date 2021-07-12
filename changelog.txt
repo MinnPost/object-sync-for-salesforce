@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 1.10.1 (2021-07-12)
+    * Bug fix: When using the hook `object_sync_for_salesforce_select_library` to disable the use of the Select2 library, the default browser `select` was not working correctly. Thanks to GitHub user @timnolte for the report.
+    * Maintenance: note 5.8 support.
+    * Note: a major upgrade to the back end of this plugin is coming soon, in the form of version 2.0.0. Very little will change visibly, but hopefully the plugin will perform better and be structured better for future upgrades. None of these large changes are included in version 1.10.1, but we want to give some advance notice.
+
 * 1.10.0 (2021-05-14)
     * Feature: Add support for Advanced Custom Fields forms that save posts on the front end. Thanks to WordPress user @grayzee for the request.
     * Bug fix: Fix the API Name settings so the value shows up correctly. Thanks to WordPress user @dcleslie777 for the report.
