@@ -7,7 +7,7 @@
 RELEASE_DIR=release;
 SVN_PATH=$RELEASE_DIR/svn;
 SVN_REPO="https://plugins.svn.wordpress.org/object-sync-for-salesforce/";
-BLACKLIST=(
+OMIT_LIST=(
 .\*
 assets/js/src/\*
 assets/sass/\*
@@ -18,9 +18,9 @@ Gulpfile.js
 node_modules/\*
 package-lock.json
 package.json
-phpdoc.dist.xml
-phpcs.xml
-phpunit.xml
+phpdoc.*
+phpcs.*
+phpunit*
 release.sh
 release/\*
 test/\*
@@ -134,7 +134,7 @@ function create_release_zip() {
   echo "Creating release/wp-release.zip";
 
   OUT=`rm -f release/wp-release.zip`;
-  OUT=`zip -x "${BLACKLIST[@]}" -q -r release/wp-release.zip .`;
+  OUT=`zip -x "${OMIT_LIST[@]}" -q -r release/wp-release.zip .`;
 
   if [[ $? -ne 0 ]]
   then

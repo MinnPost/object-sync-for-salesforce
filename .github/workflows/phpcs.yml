@@ -10,9 +10,10 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.sha }}
     - name: Run PHPCS inspection
-      uses: rtCamp/action-phpcs-code-review@v2.0.3
+      uses: rtCamp/action-phpcs-code-review@v2
       env:
         GH_BOT_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
         SKIP_FOLDERS: ".github,docs,node_modules,tests,vendor"
+        PHPCS_SNIFFS_EXCLUDE: "WordPress.Files.FileName"
       with:
-        args: "WordPress,WordPress-Core,WordPress-Docs,WordPress-Extra"
+        args: "WordPress,WordPress-Core,WordPress-Docs"

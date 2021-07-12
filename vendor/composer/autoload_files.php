@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    '712263cd6b22ec9ea795d59ae1ebda80' => $vendorDir . '/prospress/action-scheduler/action-scheduler.php',
+    '52ff0eda13f9332d23f053df62788b8e' => $vendorDir . '/woocommerce/action-scheduler/action-scheduler.php',
 );
