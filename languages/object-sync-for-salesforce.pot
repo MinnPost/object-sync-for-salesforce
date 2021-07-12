@@ -414,31 +414,31 @@ msgid "%1$s: on Salesforce API HTTP Request to URL: %2$s."
 msgstr ""
 
 #. translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request
-#: classes/salesforce.php:505, classes/salesforce.php:473, classes/salesforce.php:449
+#: classes/salesforce.php:497, classes/salesforce.php:465, classes/salesforce.php:441
 msgid "%1$s: %2$s: on Salesforce HTTP request"
 msgstr ""
 
-#: classes/salesforce.php:480
+#: classes/salesforce.php:472
 msgid "URL: %1$s"
 msgstr ""
 
-#: classes/salesforce.php:480, classes/salesforce_push.php:1149
+#: classes/salesforce.php:472, classes/salesforce_push.php:1149
 msgid "Message: %2$s"
 msgstr ""
 
-#: classes/salesforce.php:480
+#: classes/salesforce.php:472
 msgid "Code: %3$s"
 msgstr ""
 
-#: classes/salesforce.php:633
+#: classes/salesforce.php:625
 msgid "There is no refresh token."
 msgstr ""
 
-#: classes/salesforce.php:657
+#: classes/salesforce.php:649
 msgid "Unable to get a Salesforce access token. Salesforce returned the following errorCode: "
 msgstr ""
 
-#: classes/salesforce.php:691
+#: classes/salesforce.php:683
 msgid "Unable to access identity service."
 msgstr ""
 

@@ -1,3 +1,6 @@
+// modules
+@use "sass:math";
+
 // variables
 $box-shadow-less: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 $box-shadow-more: 0 1px 1px rgba(0, 0, 0, 0.04);
@@ -72,7 +75,7 @@ $active-color: #72aee6;
 			label {
 				display: inline-block;
 				font-weight: 700;
-				margin-bottom: $vertical-space / 2;
+				margin-bottom: math.div($vertical-space, 2);
 			}
 
 			input,
