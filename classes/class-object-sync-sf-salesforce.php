@@ -194,6 +194,7 @@ class Object_Sync_Sf_Salesforce {
 		$this->success_or_refresh_codes[] = $this->refresh_code;
 
 		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
+		$this->debug = filter_var( $this->debug, FILTER_VALIDATE_BOOLEAN );
 
 	}
 
@@ -392,7 +393,7 @@ class Object_Sync_Sf_Salesforce {
 		}
 
 		// it would be very unfortunate to ever have to do this in a production site.
-		if ( 1 === (int) $this->debug ) {
+		if ( true === $this->debug ) {
 			// create log entry for the api call if debug is true.
 			$status = 'debug';
 			if ( isset( $this->logging ) ) {
@@ -402,16 +403,64 @@ class Object_Sync_Sf_Salesforce {
 				$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
 			}
 
+			// try to get the SOQL query if there was one.
+			parse_str( $url, $salesforce_url_parts );
+			$query_key = array_key_first( $salesforce_url_parts );
+
+			$is_soql_query = false;
+			$query_end     = 'query?q';
+
+			// does this API call include a SOQL query?
+			// in PHP 8, there's a new str_ends_with function.
+			if ( function_exists( 'str_ends_with' ) ) {
+				if ( true === str_ends_with( $query_key, $query_end ) ) {
+					$is_soql_query = true;
+				}
+			} else {
+				$query_end_length = strlen( $query_end );
+				$is_soql_query    = $query_end_length > 0 ? substr( $query_key, -$query_end_length ) === $query_end : true;
+			}
+
 			$title = sprintf(
-				// translators: placeholders are: 1) the log status, 2) the URL of the Salesforce API request.
-				esc_html__( '%1$s: on Salesforce API HTTP Request to URL: %2$s.', 'object-sync-for-salesforce' ),
+				// translators: placeholders are: 1) the log status, 2) a sentence about whether there is an SOQL query included.
+				esc_html__( '%1$s Salesforce API call: read the full log entry for request and response details. %2$s', 'object-sync-for-salesforce' ),
 				ucfirst( esc_attr( $status ) ),
+				( false === $is_soql_query ) ? esc_html__( 'There is not an SOQL query included in this request.', 'object-sync-for-salesforce' ) : esc_html__( 'There is an SOQL query included in this request.', 'object-sync-for-salesforce' )
+			);
+
+			$body = '';
+
+			$body .= sprintf(
+				// translators: placeholder is: 1) the API call's HTTP method.
+				'<p><strong>' . esc_html__( 'HTTP method:', 'object-sync-for-salesforce' ) . '</strong> %1$s</p>',
+				esc_attr( $method )
+			);
+
+			$body .= sprintf(
+				// translators: placeholder is: 1) the API call's URL.
+				'<p><strong>' . esc_html__( 'URL of API call to Salesforce:', 'object-sync-for-salesforce' ) . '</strong> %1$s</p>',
 				esc_url( $url )
+			);
+
+			if ( true === $is_soql_query ) {
+				$query = $salesforce_url_parts[ $query_key ];
+				$soql  = urldecode( $query );
+				$body .= sprintf(
+					// translators: placeholder is: 1) the SOQL query that was run.
+					'<h3>' . esc_html__( 'SOQL query that was sent to Salesforce', 'object-sync-for-salesforce' ) . '</h3> <p>%1$s</p>',
+					'<code>' . esc_html( $soql ) . '</code>'
+				);
+			}
+
+			$body .= sprintf(
+				// translators: placeholder is: 1) the API call's result.
+				'<h3>' . esc_html__( 'API result from Salesforce', 'object-sync-for-salesforce' ) . '</h3> <div>%1$s</div>',
+				print_r( $result, true ) // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 			);
 
 			$logging->setup(
 				$title,
-				print_r( $result, true ), // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+				$body,
 				0,
 				0,
 				$status
