@@ -175,6 +175,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
 
 		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
+		$this->debug = filter_var( $this->debug, FILTER_VALIDATE_BOOLEAN );
 
 	}
 
@@ -337,31 +338,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 				}
 			}
 
-			if ( 1 === (int) $this->debug ) {
-				// create log entry for the attempted query.
-				$status = 'debug';
-				$title  = sprintf(
-					// translators: placeholders are: 1) the log status.
-					esc_html__( '%1$s: SOQL query to get updated records from Salesforce (it has not yet run)', 'object-sync-for-salesforce' ),
-					ucfirst( esc_attr( $status ) )
-				);
-
-				if ( isset( $this->logging ) ) {
-					$logging = $this->logging;
-				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-				}
-
-				$debug = array(
-					'title'   => $title,
-					'message' => esc_html( (string) $soql ),
-					'trigger' => 0,
-					'parent'  => '',
-					'status'  => $status,
-				);
-				$logging->setup( $debug );
-			}
-
 			// Execute query
 			// have to cast it to string to make sure it uses the magic method
 			// we don't want to cache this because timestamps.
@@ -381,7 +357,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				foreach ( $response['records'] as $key => $result ) {
 					// if we've already pulled, or tried to pull, the current ID, don't do it again.
 					if ( get_option( $this->option_prefix . 'last_pull_id', '' ) === $result['Id'] ) {
-						if ( 1 === (int) $this->debug ) {
+						if ( true === $this->debug ) {
 							// create log entry for failed pull.
 							$status = 'debug';
 							$title  = sprintf(
@@ -432,7 +408,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						if ( false === $pull_allowed ) {
 							// update the current state so we don't end up on the same record again if the loop fails.
 							update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
-							if ( 1 === (int) $this->debug ) {
+							if ( true === $this->debug ) {
 								// create log entry for failed pull.
 								$status = 'debug';
 								$title  = sprintf(
@@ -461,7 +437,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							continue;
 						}
 
-						if ( 1 === (int) $this->debug ) {
+						if ( true === $this->debug ) {
 							// create log entry for queue addition.
 							$status = 'debug';
 							$title  = sprintf(
@@ -510,7 +486,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						);
 						// update the current state so we don't end up on the same record again if the loop fails.
 						update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
-						if ( 1 === (int) $this->debug ) {
+						if ( true === $this->debug ) {
 							// create log entry for successful pull.
 							$status = 'debug';
 							$title  = sprintf(
@@ -1251,7 +1227,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					)
 				)['data'];
 			} else {
-				if ( 1 === (int) $this->debug ) {
+				if ( true === $this->debug ) {
 					// create log entry for failed pull.
 					$status = 'debug';
 					$title  = sprintf(
@@ -1384,7 +1360,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			if ( 1 === $salesforce_pushing ) {
 				$transients_to_delete[] = $mapping_object_id_transient;
-				if ( 1 === (int) $this->debug ) {
+				if ( true === $this->debug ) {
 					// create log entry for failed pull.
 					$status = 'debug';
 					$title  = sprintf(

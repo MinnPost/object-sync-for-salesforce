@@ -136,6 +136,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
 
 		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
+		$this->debug = filter_var( $this->debug, FILTER_VALIDATE_BOOLEAN );
 
 	}
 

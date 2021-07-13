@@ -119,6 +119,7 @@ class Object_Sync_Sf_WordPress {
 		$this->sfwp_transients = new Object_Sync_Sf_WordPress_Transient( 'sfwp_transients' );
 
 		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
+		$this->debug = filter_var( $this->debug, FILTER_VALIDATE_BOOLEAN );
 
 	}
 
