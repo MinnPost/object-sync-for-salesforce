@@ -529,6 +529,13 @@ class Object_Sync_Sf_Admin {
 						$error_url   = get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=fieldmaps&method=' . $method );
 						$success_url = get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=fieldmaps' );
 
+						$disable_mapped_fields = get_option( $this->option_prefix . 'disable_mapped_fields', false );
+						$disable_mapped_fields = filter_var( $disable_mapped_fields, FILTER_VALIDATE_BOOLEAN );
+						$fieldmap_class        = 'fieldmap';
+						if ( true === $disable_mapped_fields ) {
+							$fieldmap_class .= ' fieldmap-disable-mapped-fields';
+						}
+
 						if ( isset( $get_data['transient'] ) ) {
 							$transient = sanitize_key( $get_data['transient'] );
 							$posted    = $this->sfwp_transients->get( $transient );
@@ -841,6 +848,18 @@ class Object_Sync_Sf_Admin {
 							'value' => 'api_name',
 						),
 					),
+				),
+			),
+			'disable_mapped_fields'          => array(
+				'title'    => __( 'Prevent duplicate field mapping?', 'object-sync-for-salesforce' ),
+				'callback' => $callbacks['text'],
+				'page'     => $page,
+				'section'  => $section,
+				'args'     => array(
+					'type'     => 'checkbox',
+					'validate' => 'sanitize_text_field',
+					'desc'     => __( 'If checked, any WordPress or Salesforce field that has already been mapped, or that is selected while creating or editing a fieldmap, cannot be mapped again.', 'object-sync-for-salesforce' ),
+					'constant' => '',
 				),
 			),
 			'pull_query_limit'               => array(

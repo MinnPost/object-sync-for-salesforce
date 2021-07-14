@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="fieldmap">
+<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="<?php echo esc_html( $fieldmap_class ); ?>">
 	<input type="hidden" name="redirect_url_error" value="<?php echo esc_url( $error_url ); ?>" />
 	<input type="hidden" name="redirect_url_success" value="<?php echo esc_url( $success_url ); ?>" />
 	<?php if ( isset( $transient ) ) { ?>
@@ -241,7 +241,7 @@
 					foreach ( $fieldmap_fields as $key => $value ) {
 						$key = md5( $key . time() );
 						?>
-				<tr data-key="<?php echo esc_attr( $key ); ?>">
+				<tr data-key="<?php echo esc_attr( $key ); ?>" class="already-saved-fields">
 					<td class="column-wordpress_field">
 						<select name="wordpress_field[<?php echo esc_attr( $key ); ?>]" id="wordpress_field-<?php echo esc_attr( $key ); ?>">
 							<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
@@ -375,10 +375,27 @@
 							if ( isset( $wordpress_object ) ) {
 								$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
 								foreach ( $wordpress_fields as $wordpress_field ) {
+									$disabled = '';
+									$key      = null;
+									$needle   = $wordpress_field['key']; // the current WP field.
+									// check the already mapped fields for the current field.
+									array_walk(
+										$fieldmap_fields,
+										function( $v, $k ) use ( &$key, $needle ) {
+											if ( in_array( $needle, $v['wordpress_field'], true ) ) {
+												$key = $k;
+											}
+										}
+									);
+									// disable fields that are already mapped.
+									if ( null !== $key ) {
+										$disabled = ' disabled';
+									}
 									echo sprintf(
-										'<option value="%1$s">%2$s</option>',
+										'<option value="%1$s"%3$s>%2$s</option>',
 										esc_attr( $wordpress_field['key'] ),
-										esc_html( $wordpress_field['key'] )
+										esc_html( $wordpress_field['key'] ),
+										esc_attr( $disabled )
 									);
 								}
 							}
@@ -398,6 +415,23 @@
 								$display_value     = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
 								foreach ( $salesforce_fields as $salesforce_field ) {
 
+									$disabled = '';
+									$key      = null;
+									$needle   = $salesforce_field['name']; // the current Salesforce field.
+									// check the already mapped fields for the current field.
+									array_walk(
+										$fieldmap_fields,
+										function( $v, $k ) use ( &$key, $needle ) {
+											if ( in_array( $needle, $v['salesforce_field'], true ) ) {
+												$key = $k;
+											}
+										}
+									);
+									// disable fields that are already mapped.
+									if ( null !== $key ) {
+										$disabled = ' disabled';
+									}
+
 									if ( 'api_name' === $display_value ) {
 										$salesforce_field['label'] = $salesforce_field['name'];
 									}
@@ -413,10 +447,11 @@
 									}
 
 									echo sprintf(
-										'<option value="%1$s">%2$s%3$s</option>',
+										'<option value="%1$s"%2$s>%3$s%4$s</option>',
 										esc_attr( $salesforce_field['name'] ),
+										esc_attr( $disabled ),
 										esc_html( $salesforce_field['label'] ),
-										$locked
+										esc_attr( $locked )
 									);
 								}
 							}
@@ -444,13 +479,15 @@
 		</table>
 		<!--<div class="spinner"></div>-->
 		<?php
+		$add_button_label_more  = esc_html__( 'Add another field mapping', 'object-sync-for-salesforce' );
+		$add_button_label_first = esc_html__( 'Add field mapping', 'object-sync-for-salesforce' );
 		if ( isset( $fieldmap_fields ) && null !== $fieldmap_fields ) {
-			$add_button_label = esc_html__( 'Add another field mapping', 'object-sync-for-salesforce' );
+			$add_button_label = $add_button_label_more;
 		} else {
-			$add_button_label = esc_html__( 'Add field mapping', 'object-sync-for-salesforce' );
+			$add_button_label = $add_button_label_first;
 		}
 		?>
-		<p><button type="button" id="add-field-mapping" class="button button-secondary"><?php echo $add_button_label; ?></button></p>
+		<p><button type="button" id="add-field-mapping" class="button button-secondary" data-add-first="<?php echo $add_button_label_first; ?>" data-add-more="<?php echo $add_button_label_more; ?>" data-error-missing-object="<?php echo esc_html__( 'You have to pick a WordPress object and a Salesforce object to add field mapping.', 'object-sync-for-salesforce' ); ?>"><?php echo $add_button_label; ?></button></p>
 		<p class="description"><?php echo esc_html__( 'A checked Prematch (when saving data in either WordPress or Salesforce) or Salesforce Key (only when saving data from WordPress to Salesforce) field will cause the plugin to check for a match on that value before creating new records.', 'object-sync-for-salesforce' ); ?></p>
 	</fieldset>
 	<fieldset class="sync_triggers">
