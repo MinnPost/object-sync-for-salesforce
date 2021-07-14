@@ -63,7 +63,7 @@ $( document ).on( 'change', '.column-salesforce_field select', function() {
  */
 function disableAlreadyMappedFields( system ) {
 	// load the select statements for Salesforce or WordPress.
-	var select = $( '.column-' + system + '_field select' );
+	var select = $( '.fieldmap-disable-mapped-fields .column-' + system + '_field select' );
 	var allSelected = [];
 	// add each currently selected value to an array, then make it unique.
 	select.each( function( i, fieldChoice ) {

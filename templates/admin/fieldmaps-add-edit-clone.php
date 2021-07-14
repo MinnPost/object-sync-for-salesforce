@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="fieldmap">
+<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="<?php echo esc_html( $fieldmap_class ); ?>">
 	<input type="hidden" name="redirect_url_error" value="<?php echo esc_url( $error_url ); ?>" />
 	<input type="hidden" name="redirect_url_success" value="<?php echo esc_url( $success_url ); ?>" />
 	<?php if ( isset( $transient ) ) { ?>
