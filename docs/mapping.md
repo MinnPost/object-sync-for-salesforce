@@ -17,13 +17,13 @@ Use the Fieldmaps tab of the plugin settings, and click Add New to create a new 
 The settings for a WordPress fieldmap work like this:
 
 1. Label: you can use any text (up to 64 characters) for this. Make it unique.
-2. WordPress object: the plugin gets every object it is aware of from your WordPress installation. See [below](#more-on-wordpress-object) for more.
-3. Salesforce object: the plugin gets every Salesforce object it has access to. **Some objects add a dropdown field with a list of date fields to trigger "pull" actions.** See [below](#more-on-salesforce-object) for more.
+2. WordPress Object: the plugin gets every object it is aware of from your WordPress installation. See [below](#more-on-wordpress-object) for more.
+3. Salesforce Object: the plugin gets every Salesforce object it has access to. **Some objects add a dropdown field with a list of date fields to trigger "pull" actions.** See [below](#more-on-salesforce-object) for more.
 4. Fieldmap: choose which fields from the WordPress object map to fields from the Salesforce object, and how the plugin should treat changes. See [below](#more-on-field-mapping) for more.
-5. Action triggers: the plugin can sync data when a record is changed in WordPress and/or Salesforce.
-6. Process asynchronously: whether push data will be sent to Salesforce immediately, or when `wp_cron` runs.
-7. Push drafts: many WordPress objects create and save drafts while editing is happening. By default, this data is not sent to Salesforce. Checking the box causes it to be synced equally to live items.
-8. Weight: if the same object is mapped multiple times, the weight will determine what happens first. This is in ascending order, so objects with higher numerical values will be mapped after objects with lower numerical values.
+5. Action Triggers: the plugin can sync data when a record is changed in WordPress and/or Salesforce.
+6. Process Asynchronously: whether push data will be sent to Salesforce immediately, or when `wp_cron` runs.
+7. Push Drafts: many WordPress objects create and save drafts while editing is happening. By default, this data is not sent to Salesforce. Checking the box causes it to be synced equally to live items.
+8. Pull to Drafts: by default, WordPress will not check existing drafts of an object type for matches when pulling data from Salesforce. Checking this box will cause it to map Salesforce records to drafts, if they match.
 
 Several hooks exist for modifying these options, including whether a combo search/dropdown field library is used. See the [extending mapping options documentation](./extending-mapping-options.md).
 

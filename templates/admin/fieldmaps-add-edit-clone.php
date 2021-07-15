@@ -18,7 +18,7 @@
 			<label for="wordpress_object"><?php echo esc_html__( 'WordPress Object', 'object-sync-for-salesforce' ); ?>: </label>
 			<div class="spinner spinner-wordpress"></div>
 			<select id="wordpress_object" name="wordpress_object" required>
-				<option value="">- <?php echo esc_html__( 'Select object type', 'object-sync-for-salesforce' ); ?> -</option>
+				<option value="">- <?php echo esc_html__( 'Select Object Type', 'object-sync-for-salesforce' ); ?> -</option>
 				<?php
 				$wordpress_objects = $this->wordpress->wordpress_objects;
 				foreach ( $wordpress_objects as $object ) {
@@ -43,7 +43,7 @@
 			<label for="salesforce_object"><?php echo esc_html__( 'Salesforce Object', 'object-sync-for-salesforce' ); ?>: </label>
 			<div class="spinner spinner-salesforce"></div>
 			<select id="salesforce_object" name="salesforce_object" required>
-				<option value="">- <?php echo esc_html__( 'Select object type', 'object-sync-for-salesforce' ); ?> -</option>
+				<option value="">- <?php echo esc_html__( 'Select Object Type', 'object-sync-for-salesforce' ); ?> -</option>
 				<?php
 				$sfapi          = $this->salesforce['sfapi'];
 				$object_filters = maybe_unserialize( get_option( 'salesforce_api_object_filters' ), array() );
@@ -81,7 +81,7 @@
 				<p class="description">
 					<?php
 					echo sprintf(
-						// translators: 1) is the link to troubleshooting object maps in the plugin documentation
+						// translators: 1) is the link to troubleshooting object maps in the plugin documentation.
 						'<strong>' . esc_html__( 'The plugin is unable to access any Salesforce objects for object mapping.', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' This is most likely a permissions issue. See %1$s in the plugin documentation for more information and possible solutions.', 'object-sync-for-salesforce' ) . '</strong>',
 						'<a href="https://github.com/MinnPost/object-sync-for-salesforce/blob/271-object-map-permission-issues/docs/troubleshooting.md#object-map-issues">troubleshooting object maps</a>'
 					);
@@ -161,7 +161,7 @@
 		</div>
 		<div class="pull_trigger_field">
 			<?php if ( isset( $pull_trigger_field ) ) : ?>
-				<label for="pull_trigger_field"><?php echo esc_html__( 'Date field to trigger pull', 'object-sync-for-salesforce' ); ?>:</label>
+				<label for="pull_trigger_field"><?php echo esc_html__( 'Date Field to Trigger Pull', 'object-sync-for-salesforce' ); ?>:</label>
 				<?php
 				$object_fields = $this->get_salesforce_object_fields(
 					array(
@@ -213,7 +213,7 @@
 					<td colspan="6">
 						<p><small>
 							<?php
-							// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
+							// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
 							echo sprintf(
 								'<strong>' .
 								esc_html__( 'Note:', 'object-sync-for-salesforce' ) . '</strong>' . esc_html__( ' to map a custom meta field (such as wp_postmeta, wp_usermeta, wp_termmeta, etc.), WordPress must have at least one value for that field. If you add a new meta field and want to map it, make sure to add a value for it and ', 'object-sync-for-salesforce' ) . '<a href="%1$s" id="clear-sfwp-cache">%2$s</a>' . esc_html__( ' to see the field listed here.', 'object-sync-for-salesforce' ),
@@ -244,7 +244,7 @@
 				<tr data-key="<?php echo esc_attr( $key ); ?>" class="already-saved-fields">
 					<td class="column-wordpress_field">
 						<select name="wordpress_field[<?php echo esc_attr( $key ); ?>]" id="wordpress_field-<?php echo esc_attr( $key ); ?>">
-							<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
+							<option value="">- <?php echo esc_html__( 'Select WordPress Field', 'object-sync-for-salesforce' ); ?> -</option>
 							<?php
 							$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
 							foreach ( $wordpress_fields as $wordpress_field ) {
@@ -266,7 +266,7 @@
 					</td>
 					<td class="column-salesforce_field">
 						<select name="salesforce_field[<?php echo esc_attr( $key ); ?>]" id="salesforce_field-<?php echo esc_attr( $key ); ?>">
-							<option value="">- <?php echo esc_html__( 'Select Salesforce field', 'object-sync-for-salesforce' ); ?> -</option>
+							<option value="">- <?php echo esc_html__( 'Select Salesforce Field', 'object-sync-for-salesforce' ); ?> -</option>
 							<?php
 							$salesforce_fields = $this->get_salesforce_object_fields(
 								array(
@@ -304,7 +304,7 @@
 									esc_attr( $salesforce_field['name'] ),
 									esc_attr( $selected ),
 									esc_html( $salesforce_field['label'] ),
-									$locked
+									esc_attr( $locked )
 								);
 							}
 							?>
@@ -350,7 +350,7 @@
 						} else {
 							$checked_sf_wp = '';
 							$checked_wp_sf = '';
-							$checked_sync  = ' checked'; // by default, start with Sync checked
+							$checked_sync  = ' checked'; // by default, start with Sync checked.
 						}
 						?>
 						<div class="radios">
@@ -364,13 +364,13 @@
 					</td>
 				</tr>
 						<?php
-					} // End foreach().
-				} // End if().
+					} // End foreach() method.
+				} // End if() statement.
 				?>
 				<tr data-key="0" class="fieldmap-template">
 					<td class="column-wordpress_field">
 						<select name="wordpress_field[0]" id="wordpress_field-0">
-							<option value="">- <?php echo esc_html__( 'Select WordPress field', 'object-sync-for-salesforce' ); ?> -</option>
+							<option value="">- <?php echo esc_html__( 'Select WordPress Field', 'object-sync-for-salesforce' ); ?> -</option>
 							<?php
 							if ( isset( $wordpress_object ) ) {
 								$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
@@ -404,7 +404,7 @@
 					</td>
 					<td class="column-salesforce_field">
 						<select name="salesforce_field[0]" id="salesforce_field-0">
-							<option value="">- <?php echo esc_html__( 'Select Salesforce field', 'object-sync-for-salesforce' ); ?> -</option>
+							<option value="">- <?php echo esc_html__( 'Select Salesforce Field', 'object-sync-for-salesforce' ); ?> -</option>
 							<?php
 							if ( isset( $salesforce_object ) ) {
 								$salesforce_fields = $this->get_salesforce_object_fields(
@@ -491,7 +491,7 @@
 		<p class="description"><?php echo esc_html__( 'A checked Prematch (when saving data in either WordPress or Salesforce) or Salesforce Key (only when saving data from WordPress to Salesforce) field will cause the plugin to check for a match on that value before creating new records.', 'object-sync-for-salesforce' ); ?></p>
 	</fieldset>
 	<fieldset class="sync_triggers">
-		<legend><?php echo esc_html__( 'Action triggers', 'object-sync-for-salesforce' ); ?></legend>
+		<legend><?php echo esc_html__( 'Action Triggers', 'object-sync-for-salesforce' ); ?></legend>
 		<div class="checkboxes">
 			<?php
 			$wordpress_create_checked  = '';
@@ -525,34 +525,34 @@
 				}
 			}
 			?>
-			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_create ); ?>" name="sync_triggers[]" id="sync_triggers-wordpress-create" <?php echo esc_attr( $wordpress_create_checked ); ?>><?php echo esc_html__( 'WordPress create', 'object-sync-for-salesforce' ); ?></label>
-			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_update ); ?>" name="sync_triggers[]" id="sync_triggers-wordpress-update" <?php echo esc_attr( $wordpress_update_checked ); ?>><?php echo esc_html__( 'WordPress update', 'object-sync-for-salesforce' ); ?></label>
-			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_delete ); ?>" name="sync_triggers[]" id="sync_triggers-wordpress-delete" <?php echo esc_attr( $wordpress_delete_checked ); ?>><?php echo esc_html__( 'WordPress delete', 'object-sync-for-salesforce' ); ?></label>
-			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_create ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-create" <?php echo esc_attr( $salesforce_create_checked ); ?>><?php echo esc_html__( 'Salesforce create', 'object-sync-for-salesforce' ); ?></label>
-			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_update ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-update" <?php echo esc_attr( $salesforce_update_checked ); ?>><?php echo esc_html__( 'Salesforce update', 'object-sync-for-salesforce' ); ?></label>
-			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_delete ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-delete" <?php echo esc_attr( $salesforce_delete_checked ); ?>><?php echo esc_html__( 'Salesforce delete', 'object-sync-for-salesforce' ); ?></label>
+			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_create ); ?>" name="sync_triggers[]" id="sync_triggers-wordpress-create" <?php echo esc_attr( $wordpress_create_checked ); ?>><?php echo esc_html__( 'WordPress Create', 'object-sync-for-salesforce' ); ?></label>
+			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_update ); ?>" name="sync_triggers[]" id="sync_triggers-wordpress-update" <?php echo esc_attr( $wordpress_update_checked ); ?>><?php echo esc_html__( 'WordPress Update', 'object-sync-for-salesforce' ); ?></label>
+			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_wordpress_delete ); ?>" name="sync_triggers[]" id="sync_triggers-wordpress-delete" <?php echo esc_attr( $wordpress_delete_checked ); ?>><?php echo esc_html__( 'WordPress Delete', 'object-sync-for-salesforce' ); ?></label>
+			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_create ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-create" <?php echo esc_attr( $salesforce_create_checked ); ?>><?php echo esc_html__( 'Salesforce Create', 'object-sync-for-salesforce' ); ?></label>
+			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_update ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-update" <?php echo esc_attr( $salesforce_update_checked ); ?>><?php echo esc_html__( 'Salesforce Update', 'object-sync-for-salesforce' ); ?></label>
+			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_delete ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-delete" <?php echo esc_attr( $salesforce_delete_checked ); ?>><?php echo esc_html__( 'Salesforce Delete', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description">
 				<?php
-				// translators: placeholders are for the class names: salesforce_push and salesforce_pull
+				// translators: placeholders are for the class names: salesforce_push and salesforce_pull.
 				echo sprintf( esc_html__( 'Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. These settings are used by the %1$s and %2$s classes respectively.', 'object-sync-for-salesforce' ), '<code>salesforce_push</code>', '<code>salesforce_pull</code>' );
 				?>
 			</p>
 		</div>
 		<div class="checkboxes">
-			<label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo isset( $push_async ) && '1' === $push_async ? ' checked' : ''; ?>><?php echo esc_html__( 'Process asynchronously', 'object-sync-for-salesforce' ); ?></label>
+			<label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo isset( $push_async ) && '1' === $push_async ? ' checked' : ''; ?>><?php echo esc_html__( 'Process Asynchronously', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description">
 				<?php
-				// translators: placeholder is for WordPress cron method name
+				// translators: placeholder is for WordPress cron method name.
 				echo sprintf( esc_html__( 'If selected, push data will be queued for processing and synchronized when %s is run. This may increase site performance, but changes will not be reflected in real time.', 'object-sync-for-salesforce' ), '<code>wp_cron</code>' );
 				?>
 			</p>
 		</div>
 		<div class="checkboxes">
-			<label><input type="checkbox" name="push_drafts" id="push-drafts" value="1" <?php echo isset( $push_drafts ) && '1' === $push_drafts ? ' checked' : ''; ?>><?php echo esc_html__( 'Push drafts', 'object-sync-for-salesforce' ); ?></label>
+			<label><input type="checkbox" name="push_drafts" id="push-drafts" value="1" <?php echo isset( $push_drafts ) && '1' === $push_drafts ? ' checked' : ''; ?>><?php echo esc_html__( 'Push Drafts', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description"><?php echo esc_html__( 'If selected, WordPress will send drafts of this object type (if it creates drafts for it) to Salesforce.', 'object-sync-for-salesforce' ); ?></p>
 		</div>
 		<div class="checkboxes">
-			<label><input type="checkbox" name="pull_to_drafts" id="pull-to-drafts" value="1" <?php echo isset( $pull_to_drafts ) && '1' === $pull_to_drafts ? ' checked' : ''; ?>><?php echo esc_html__( 'Pull to drafts', 'object-sync-for-salesforce' ); ?></label>
+			<label><input type="checkbox" name="pull_to_drafts" id="pull-to-drafts" value="1" <?php echo isset( $pull_to_drafts ) && '1' === $pull_to_drafts ? ' checked' : ''; ?>><?php echo esc_html__( 'Pull to Drafts', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description"><?php echo esc_html__( 'If selected, WordPress will check for matches against existing drafts of this object type, and will also update existing drafts.', 'object-sync-for-salesforce' ); ?></p>
 		</div>
 	</fieldset>
