@@ -1018,7 +1018,7 @@ class Object_Sync_Sf_Admin {
 		$section           = 'batch';
 		$schedule_settings = array(
 			'action_scheduler_batch_size'         => array(
-				'title'    => __( 'Batch size', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Batch Size', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -1032,7 +1032,7 @@ class Object_Sync_Sf_Admin {
 
 			),
 			'action_scheduler_concurrent_batches' => array(
-				'title'    => __( 'Concurrent batches', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Concurrent Batches', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -1050,7 +1050,7 @@ class Object_Sync_Sf_Admin {
 			add_settings_section( $key, $value['label'], null, $page );
 			if ( isset( $value['initializer'] ) ) {
 				$schedule_settings[ $key . '_schedule_number' ] = array(
-					'title'    => __( 'Run schedule every', 'object-sync-for-salesforce' ),
+					'title'    => __( 'Run Schedule Every', 'object-sync-for-salesforce' ),
 					'callback' => $callbacks['text'],
 					'page'     => $page,
 					'section'  => $key,
@@ -1062,7 +1062,7 @@ class Object_Sync_Sf_Admin {
 					),
 				);
 				$schedule_settings[ $key . '_schedule_unit' ]   = array(
-					'title'    => __( 'Time unit', 'object-sync-for-salesforce' ),
+					'title'    => __( 'Time Unit', 'object-sync-for-salesforce' ),
 					'callback' => $callbacks['select'],
 					'page'     => $page,
 					'section'  => $key,
@@ -1089,7 +1089,7 @@ class Object_Sync_Sf_Admin {
 			}
 			$schedule_settings[ $key . '_clear_button' ] = array(
 				// translators: $this->get_schedule_count is an integer showing how many items are in the current queue.
-				'title'    => sprintf( 'This queue has ' . _n( '%s item', '%s items', $this->get_schedule_count( $key ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key ) ),
+				'title'    => sprintf( 'This Queue has ' . _n( '%s Item', '%s Items', $this->get_schedule_count( $key ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key ) ),
 				'callback' => $callbacks['link'],
 				'page'     => $page,
 				'section'  => $key,
@@ -1146,14 +1146,14 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'statuses_to_log'       => array(
-				'title'    => __( 'Statuses to log', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Statuses to Log', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['checkboxes'],
 				'page'     => $page,
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'checkboxes',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => __( 'these are the statuses to log', 'object-sync-for-salesforce' ),
+					'desc'     => __( 'These are the statuses to log', 'object-sync-for-salesforce' ),
 					'items'    => array(
 						'error'   => array(
 							'text' => __( 'Error', 'object-sync-for-salesforce' ),
@@ -1179,7 +1179,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'prune_logs'            => array(
-				'title'    => __( 'Automatically delete old log entries?', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Automatically Delete Old Log Entries?', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -1191,7 +1191,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'logs_how_old'          => array(
-				'title'    => __( 'Age to delete log entries', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Age to Delete Log Entries', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -1204,7 +1204,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'logs_how_often_number' => array(
-				'title'    => __( 'Check for old logs every', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Check For Old Logs Every', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -1217,7 +1217,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'logs_how_often_unit'   => array(
-				'title'    => __( 'Time unit', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Time Unit', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['select'],
 				'page'     => $page,
 				'section'  => $section,
@@ -1242,7 +1242,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'logs_how_many_number'  => array(
-				'title'    => __( 'Clear this many log entries', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Clear This Many Log Entries', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -1255,42 +1255,42 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'triggers_to_log'       => array(
-				'title'    => __( 'Triggers to log', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Triggers to Log', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['checkboxes'],
 				'page'     => $page,
 				'section'  => $section,
 				'args'     => array(
 					'type'     => 'checkboxes',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => __( 'these are the triggers to log', 'object-sync-for-salesforce' ),
+					'desc'     => __( 'These are the triggers to log', 'object-sync-for-salesforce' ),
 					'items'    => array(
 						$this->mappings->sync_wordpress_create => array(
-							'text' => __( 'WordPress create', 'object-sync-for-salesforce' ),
+							'text' => __( 'WordPress Create', 'object-sync-for-salesforce' ),
 							'id'   => 'wordpress_create',
 							'desc' => '',
 						),
 						$this->mappings->sync_wordpress_update => array(
-							'text' => __( 'WordPress update', 'object-sync-for-salesforce' ),
+							'text' => __( 'WordPress Update', 'object-sync-for-salesforce' ),
 							'id'   => 'wordpress_update',
 							'desc' => '',
 						),
 						$this->mappings->sync_wordpress_delete => array(
-							'text' => __( 'WordPress delete', 'object-sync-for-salesforce' ),
+							'text' => __( 'WordPress Delete', 'object-sync-for-salesforce' ),
 							'id'   => 'wordpress_delete',
 							'desc' => '',
 						),
 						$this->mappings->sync_sf_create => array(
-							'text' => __( 'Salesforce create', 'object-sync-for-salesforce' ),
+							'text' => __( 'Salesforce Create', 'object-sync-for-salesforce' ),
 							'id'   => 'sf_create',
 							'desc' => '',
 						),
 						$this->mappings->sync_sf_update => array(
-							'text' => __( 'Salesforce update', 'object-sync-for-salesforce' ),
+							'text' => __( 'Salesforce Update', 'object-sync-for-salesforce' ),
 							'id'   => 'sf_update',
 							'desc' => '',
 						),
 						$this->mappings->sync_sf_delete => array(
-							'text' => __( 'Salesforce delete', 'object-sync-for-salesforce' ),
+							'text' => __( 'Salesforce Delete', 'object-sync-for-salesforce' ),
 							'id'   => 'sf_delete',
 							'desc' => '',
 						),
