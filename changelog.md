@@ -3,9 +3,11 @@ Changelog
 
 * 2.0.0 (2021-)
 	* Feature: update the installation of the ActionScheduler library to version 3.2. This is a major upgrade for that library, and involves creating new database tables and runs a migration process, which can take some time. Read more about that at https://actionscheduler.org/version3-0/. This is not necessarily a backward-compatible change, although hopefully it will run smoothly for all users. You may want to make a full site backup before upgrading, and if you have access to a staging environment you may want to run it there before you run it on your production website.
+	* Feature: there is a new checkbox field on the plugin Settings screen: "Prevent duplicate field mapping?" that, when checked, prevents WordPress or Salesforce fields that have already been mapped from being mapped again. We hope this will be helpful on fieldmaps that map a large number of fields. Thanks to GitHub user @TornMarketing for this request.
 	* Bug fix: in some cases, calls to the Salesforce SOAP API, which runs to detect merged records, was not able to complete. This should now be more reliable functionality.
 	* Maintenance: most files in this plugin have been renamed, and are now being autoloaded when the plugin needs them. This should help performance, future maintenance, and makes it possible to better comply with the WordPress Code Standards. This means if you are manually calling any plugin files, you may need to change your code.
 	* Maintenance: this release includes a lot of code improvements to better match the WordPress Code Standards and improve code readability. This includes converting a previous set of bit flags to strings. This is generally a backward-compatible change, as it updates the database when the upgrade is complete.
+	* Maintenance: we've refined one of the log messages that is created for Salesforce API calls when the plugin is in debug mode. This message combines two debug messages that were created on some calls, and cleans up the message content in the combined message.
 	* Developers: some methods that were deprecated in previous versions were removed. Removed items in 2.0.0:
 		* `add_deprecated_actions` in  `Object_Sync_Sf_Admin`
 		* `get_wp_sf_object_fields` in `Object_Sync_Sf_Admin`

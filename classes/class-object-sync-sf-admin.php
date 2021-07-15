@@ -1961,36 +1961,38 @@ class Object_Sync_Sf_Admin {
 			}
 		}
 
-		$status = 'error';
-		if ( isset( $this->logging ) ) {
-			$logging = $this->logging;
-		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-		}
+		if ( ! empty( $data['object_maps'] ) && ! empty( $error_object_maps ) ) {
+			$status = 'error';
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+			}
 
-		$body = sprintf( esc_html__( 'These are the import items that were not able to save: ', 'object-sync-for-salesforce' ) . '<ul>' );
-		foreach ( $error_object_maps as $mapping_object ) {
-			$body .= sprintf(
-				// translators: placeholders are: 1) the mapping object row ID, 2) the ID of the Salesforce object, 3) the WordPress object type.
-				'<li>' . esc_html__( 'Mapping object id (if it exists): %1$s. Salesforce Id: %2$s. WordPress object type: %3$s', 'object-sync-for-salesforce' ) . '</li>',
-				isset( $mapping_object['id'] ) ? absint( $mapping_object['id'] ) : '',
-				esc_attr( $mapping_object['salesforce_id'] ),
-				esc_attr( $mapping_object['wordpress_object'] )
+			$body = sprintf( esc_html__( 'These are the import items that were not able to save: ', 'object-sync-for-salesforce' ) . '<ul>' );
+			foreach ( $error_object_maps as $mapping_object ) {
+				$body .= sprintf(
+					// translators: placeholders are: 1) the mapping object row ID, 2) the ID of the Salesforce object, 3) the WordPress object type.
+					'<li>' . esc_html__( 'Mapping object id (if it exists): %1$s. Salesforce Id: %2$s. WordPress object type: %3$s', 'object-sync-for-salesforce' ) . '</li>',
+					isset( $mapping_object['id'] ) ? absint( $mapping_object['id'] ) : '',
+					esc_attr( $mapping_object['salesforce_id'] ),
+					esc_attr( $mapping_object['wordpress_object'] )
+				);
+			}
+			$body .= sprintf( '</ul>' );
+
+			$logging->setup(
+				sprintf(
+					// translators: %1$s is the log status.
+					esc_html__( '%1$s on import: some of the rows were unable to save. Read this post for details.', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) )
+				),
+				$body,
+				0,
+				0,
+				$status
 			);
 		}
-		$body .= sprintf( '</ul>' );
-
-		$logging->setup(
-			sprintf(
-				// translators: %1$s is the log status.
-				esc_html__( '%1$s on import: some of the rows were unable to save. Read this post for details.', 'object-sync-for-salesforce' ),
-				ucfirst( esc_attr( $status ) )
-			),
-			$body,
-			0,
-			0,
-			$status
-		);
 
 		if ( empty( $error_object_maps ) && ! empty( $successful_object_maps ) ) {
 			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=import-export&data_saved=true' ) );

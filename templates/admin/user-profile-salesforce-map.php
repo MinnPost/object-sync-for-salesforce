@@ -1,3 +1,11 @@
+<?php
+/**
+ * The form to create a map between a Salesforce object and a given WordPress user
+ *
+ * @package Object_Sync_Salesforce
+ */
+
+?>
 <input type="hidden" name="salesforce_create_mapped_user" value="1" />
 <h2><?php echo esc_html__( 'Salesforce', 'object-sync-for-salesforce' ); ?></h2>
 <p><?php echo esc_html__( "This user is not mapped to an object in Salesforce. You can run a push to send this object to Salesforce, which will cause it to follow the plugin's normal mapping conventions, or you can create a manual link to a Salesforce object.", 'object-sync-for-salesforce' ); ?></p>

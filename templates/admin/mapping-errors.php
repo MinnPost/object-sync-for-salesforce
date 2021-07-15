@@ -1,9 +1,18 @@
+<?php
+/**
+ * The list of mapping errors, which are created when the plugin fails to connect a WordPress record to a Salesforce record.
+ *
+ * @package Object_Sync_Salesforce
+ */
+
+?>
+
 <h2><?php echo esc_html__( 'Mapping Errors', 'object-sync-for-salesforce' ); ?></h2>
 <p><?php echo esc_html__( 'When this tab is present, it means one or more mapping errors have occurred when the plugin has tried to save a new mapping object, either based on data pulled in from Salesforce or data that was sent to Salesforce. The plugin creates a temporary flag for WordPress (if it is a pull action) or for Salesforce (if it is a push action), and if it fails the temporary flag remains.', 'object-sync-for-salesforce' ); ?></p>
 <p><?php echo esc_html__( 'For any mapping object error, you can edit (if, for example, you know the ID of the item that should be in place) or delete each database row, or you can try to track down what the plugin was doing based on the other data displayed here.', 'object-sync-for-salesforce' ); ?></p>
 <p><?php echo esc_html__( 'If you edit one of these items, and it correctly maps data between the two systems, the sync for those items will behave as normal going forward, so any edits you do after that will sync as they should.', 'object-sync-for-salesforce' ); ?></p>
 
-<?php require_once( 'settings.php' ); ?>
+<?php require_once 'settings.php' ; ?>
 
 <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="error-rows">
 	<input type="hidden" name="redirect_url_error" value="<?php echo esc_url( $error_url ); ?>">
@@ -53,7 +62,7 @@
 					$output  = '<div class="tablenav-pages tablenav-pages-mappingerrors">';
 					$output .= '<span class="displaying-num">' . sprintf(
 						/* translators: %s: Number of items. */
-						_n( '%s item', '%s items', $mapping_errors['total'] ),
+						_n( '%s item', '%s items', $mapping_errors['total'], 'object-sync-for-salesforce' ),
 						number_format_i18n( $mapping_errors['total'] )
 					) . '</span>';
 					if ( $mapping_errors['pagination'] ) {
@@ -70,17 +79,17 @@
 				<?php foreach ( $mapping_errors['all_errors'] as $error ) { ?>
 			<tr>
 					<?php
-					if ( in_array( $error['id'], $ids ) ) {
+					if ( in_array( $error['id'], $ids, true ) ) {
 						$checked = ' checked';
 					} else {
 						$checked = '';
 					}
-					$type = '';
+					$trigger_type = '';
 					if ( isset( $error['salesforce_id'] ) || isset( $error['wordpress_id'] ) ) {
 						if ( strpos( $error['salesforce_id'], 'tmp_sf_' ) === 0 ) {
-							$type = esc_html__( 'Pull from Salesforce', 'object-sync-for-salesforce' );
+							$trigger_type = esc_html__( 'Pull From Salesforce', 'object-sync-for-salesforce' );
 						} elseif ( strpos( $error['wordpress_id'], 'tmp_wp_' ) === 0 ) {
-							$type = esc_html__( 'Push to Salesforce', 'object-sync-for-salesforce' );
+							$trigger_type = esc_html__( 'Push to Salesforce', 'object-sync-for-salesforce' );
 						}
 					}
 					?>
@@ -88,7 +97,7 @@
 					<label class="screen-reader-text" for="delete_<?php echo $error['id']; ?>"><?php echo esc_html__( 'Select Error', 'object-sync-for-salesforce' ); ?></label>
 					<input id="delete_<?php echo $error['id']; ?>" type="checkbox" name="delete[<?php echo $error['id']; ?>]"<?php echo $checked; ?>>
 				</th>
-				<td><?php echo $type; ?></td>
+				<td><?php echo $trigger_type; ?></td>
 				<td><?php echo $error['wordpress_id']; ?></td>
 				<td><?php echo $error['wordpress_object']; ?></td>
 				<td><?php echo $error['salesforce_id']; ?></td>

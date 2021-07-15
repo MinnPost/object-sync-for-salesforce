@@ -1,3 +1,12 @@
+<?php
+/**
+ * The form to edit a mapping error, connecting it to the correct record.
+ *
+ * @package Object_Sync_Salesforce
+ */
+
+?>
+
 <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="fieldmap">
 	<input type="hidden" name="redirect_url_error" value="<?php echo esc_url( $error_url ); ?>" />
 	<input type="hidden" name="redirect_url_success" value="<?php echo esc_url( $success_url ); ?>" />
@@ -19,7 +28,7 @@
 	</div>
 	<?php
 		submit_button(
-			// translators: the placeholder refers to the currently selected method (edit or delete)
+			// translators: the placeholder refers to the currently selected method (edit or delete).
 			sprintf( esc_html__( '%1$s object map', 'object-sync-for-salesforce' ), ucfirst( $method ) )
 		);
 	?>

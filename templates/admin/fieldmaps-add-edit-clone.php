@@ -1,3 +1,11 @@
+<?php
+/**
+ * The form to add and edit fieldmaps, which map a WordPress and Salesforce object type together.
+ *
+ * @package Object_Sync_Salesforce
+ */
+
+?>
 <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="<?php echo esc_html( $fieldmap_class ); ?>">
 	<input type="hidden" name="redirect_url_error" value="<?php echo esc_url( $error_url ); ?>" />
 	<input type="hidden" name="redirect_url_success" value="<?php echo esc_url( $success_url ); ?>" />
@@ -273,7 +281,7 @@
 									'salesforce_object' => $salesforce_object,
 								)
 							);
-							// allow for api name or field label to be the display value in the <select>
+							// allow for api name or field label to be the display value in the <select>.
 							$display_value = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
 							foreach ( $salesforce_fields as $salesforce_field ) {
 								if ( isset( $value['salesforce_field']['name'] ) && $value['salesforce_field']['name'] === $salesforce_field['name'] ) {
@@ -558,7 +566,7 @@
 	</fieldset>
 	<?php
 		submit_button(
-			// translators: the placeholder refers to the currently selected method (add, edit, or clone)
+			// translators: the placeholder refers to the currently selected method (add, edit, or clone).
 			sprintf( esc_html__( '%1$s fieldmap', 'object-sync-for-salesforce' ), ucfirst( $method ) )
 		);
 		?>
