@@ -851,7 +851,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'disable_mapped_fields'          => array(
-				'title'    => __( 'Prevent duplicate field mapping?', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Prevent Duplicate Field Mapping?', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -863,7 +863,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'pull_query_limit'               => array(
-				'title'    => __( 'Pull query record limit', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Pull Query Record Limit', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -876,7 +876,7 @@ class Object_Sync_Sf_Admin {
 				),
 			),
 			'pull_throttle'                  => array(
-				'title'    => __( 'Pull throttle (seconds)', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Pull Throttle (In Seconds)', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -906,7 +906,7 @@ class Object_Sync_Sf_Admin {
 				),
 			);
 			$salesforce_settings['soap_wsdl_path'] = array(
-				'title'    => __( 'Path to SOAP WSDL file', 'object-sync-for-salesforce' ),
+				'title'    => __( 'Path to SOAP WSDL File', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['text'],
 				'page'     => $page,
 				'section'  => $section,
@@ -921,7 +921,7 @@ class Object_Sync_Sf_Admin {
 		}
 
 		$salesforce_settings['debug_mode']               = array(
-			'title'    => __( 'Debug mode?', 'object-sync-for-salesforce' ),
+			'title'    => __( 'Debug Mode?', 'object-sync-for-salesforce' ),
 			'callback' => $callbacks['text'],
 			'page'     => $page,
 			'section'  => $section,
@@ -933,7 +933,7 @@ class Object_Sync_Sf_Admin {
 			),
 		);
 		$salesforce_settings['delete_data_on_uninstall'] = array(
-			'title'    => __( 'Delete plugin data on uninstall?', 'object-sync-for-salesforce' ),
+			'title'    => __( 'Delete Plugin Data on Uninstall?', 'object-sync-for-salesforce' ),
 			'callback' => $callbacks['text'],
 			'page'     => $page,
 			'section'  => $section,
@@ -945,6 +945,7 @@ class Object_Sync_Sf_Admin {
 			),
 		);
 
+		// if the user has authenticated with Salesforce, override the text field with a dropdown of available Salesforce API verisons.
 		if ( true === is_object( $this->salesforce['sfapi'] ) && true === $this->salesforce['sfapi']->is_authorized() ) {
 			$salesforce_settings['api_version'] = array(
 				'title'    => __( 'Salesforce API Version', 'object-sync-for-salesforce' ),
