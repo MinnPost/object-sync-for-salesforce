@@ -1927,11 +1927,18 @@ class Object_Sync_Sf_Admin {
 		$success = true;
 
 		if ( isset( $data['fieldmaps'] ) ) {
+			$successful_fieldmaps = array();
+			$error_fieldmaps      = array();
 			foreach ( $data['fieldmaps'] as $fieldmap ) {
 				unset( $fieldmap['id'] );
 				$create = $this->mappings->create_fieldmap( $fieldmap );
 				if ( false === $create ) {
 					$success = false;
+				}
+				if ( false === $create ) {
+					$error_fieldmaps[] = $object_map;
+				} else {
+					$successful_fieldmaps[] = $create;
 				}
 			}
 		}
@@ -1961,7 +1968,7 @@ class Object_Sync_Sf_Admin {
 			}
 		}
 
-		if ( ! empty( $data['object_maps'] ) && ! empty( $error_object_maps ) ) {
+		if ( ! empty( $error_fieldmaps ) && ! empty( $error_object_maps ) ) {
 			$status = 'error';
 			if ( isset( $this->logging ) ) {
 				$logging = $this->logging;
@@ -1970,6 +1977,15 @@ class Object_Sync_Sf_Admin {
 			}
 
 			$body = sprintf( esc_html__( 'These are the import items that were not able to save: ', 'object-sync-for-salesforce' ) . '<ul>' );
+			foreach ( $error_fieldmaps as $fieldmap ) {
+				$body .= sprintf(
+					// translators: placeholders are: 1) the fieldmap row ID, 2) the Salesforce object type, 3) the WordPress object type.
+					'<li>' . esc_html__( 'Fieldmap id (if it exists): %1$s. Salesforce object type: %2$s. WordPress object type: %3$s', 'object-sync-for-salesforce' ) . '</li>',
+					isset( $fieldmap['id'] ) ? absint( $fieldmap['id'] ) : '',
+					esc_attr( $fieldmap['salesforce_object'] ),
+					esc_attr( $fieldmap['wordpress_object'] )
+				);
+			}
 			foreach ( $error_object_maps as $mapping_object ) {
 				$body .= sprintf(
 					// translators: placeholders are: 1) the mapping object row ID, 2) the ID of the Salesforce object, 3) the WordPress object type.
@@ -1994,9 +2010,11 @@ class Object_Sync_Sf_Admin {
 			);
 		}
 
-		if ( empty( $error_object_maps ) && ! empty( $successful_object_maps ) ) {
+		if ( empty( $error_fieldmaps ) && empty( $error_object_maps ) && ( ! empty( $successful_fieldmaps ) || ! empty( $successful_object_maps ) ) ) {
 			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=import-export&data_saved=true' ) );
 			exit;
+		} elseif ( ! empty( $error_fieldmaps ) && ! empty( $successful_fieldmaps ) ) {
+			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=import-export&data_saved=partial' ) );
 		} elseif ( ! empty( $error_object_maps ) && ! empty( $successful_object_maps ) ) {
 			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=import-export&data_saved=partial' ) );
 		} else {
