@@ -547,7 +547,7 @@ class Object_Sync_Sf_Admin {
 							$map = $this->mappings->get_fieldmaps( isset( $get_data['id'] ) ? sanitize_key( $get_data['id'] ) : '' );
 						}
 
-						if ( isset( $map ) && is_array( $map ) ) {
+						if ( isset( $map ) && is_array( $map ) && isset( $map['id'] ) ) {
 							$label                           = $map['label'];
 							$salesforce_object               = $map['salesforce_object'];
 							$salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
@@ -560,12 +560,15 @@ class Object_Sync_Sf_Admin {
 							$push_drafts                     = $map['push_drafts'];
 							$pull_to_drafts                  = $map['pull_to_drafts'];
 							$weight                          = $map['weight'];
-						}
-
-						if ( 'add' === $method || 'edit' === $method || 'clone' === $method ) {
-							require_once plugin_dir_path( $this->file ) . '/templates/admin/fieldmaps-add-edit-clone.php';
-						} elseif ( 'delete' === $method ) {
-							require_once plugin_dir_path( $this->file ) . '/templates/admin/fieldmaps-delete.php';
+							if ( 'add' === $method || 'edit' === $method || 'clone' === $method ) {
+								require_once plugin_dir_path( $this->file ) . '/templates/admin/fieldmaps-add-edit-clone.php';
+							} elseif ( 'delete' === $method ) {
+								require_once plugin_dir_path( $this->file ) . '/templates/admin/fieldmaps-delete.php';
+							}
+						} else {
+							$no_fieldmap_url = get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=fieldmaps&missing_fieldmap=true' );
+							wp_safe_redirect( $no_fieldmap_url );
+							exit();
 						}
 					} else {
 						$fieldmaps = $this->mappings->get_fieldmaps();
@@ -1389,6 +1392,12 @@ class Object_Sync_Sf_Admin {
 			'fieldmap'                => array(
 				'condition'   => isset( $get_data['transient'] ),
 				'message'     => __( 'Errors kept this fieldmap from being saved.', 'object-sync-for-salesforce' ),
+				'type'        => 'error',
+				'dismissible' => true,
+			),
+			'fieldmap_missing'        => array(
+				'condition'   => isset( $get_data['missing_fieldmap'] ),
+				'message'     => __( 'There is no fieldmap with the supplied ID. Instead, the list of all available fieldmaps is displayed.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
