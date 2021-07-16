@@ -655,13 +655,7 @@ class Object_Sync_Sf_Admin {
 					}
 					break;
 			} // End switch statement.
-		} catch ( SalesforceApiException $ex ) {
-			echo sprintf(
-				'<p>Error <strong>%1$s</strong>: %2$s</p>',
-				absint( $ex->getCode() ),
-				esc_html( $ex->getMessage() )
-			);
-		} catch ( Exception $ex ) {
+		} catch ( Object_Sync_Sf_Exception $ex ) {
 			echo sprintf(
 				'<p>Error <strong>%1$s</strong>: %2$s</p>',
 				absint( $ex->getCode() ),
