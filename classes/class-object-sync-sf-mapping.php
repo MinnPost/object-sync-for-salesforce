@@ -1120,8 +1120,7 @@ class Object_Sync_Sf_Mapping {
 			}
 
 			// in v2 of this plugin, we replaced the bit flags with strings to make them more legible.
-			if ( version_compare( $this->version, '2.0.0', '>=' ) ) {
-
+			if ( version_compare( $this->version, '2.0.0', '>' ) ) {
 				$sync_triggers = $mappings[ $id ]['sync_triggers'];
 
 				// check if the triggers stored in the database are up to date. if not, update them.
