@@ -316,7 +316,7 @@ class Object_Sync_Sf_Mapping {
 	 */
 	public function create_fieldmap( $posted = array(), $wordpress_fields = array(), $salesforce_fields = array() ) {
 		$data = $this->setup_fieldmap_data( $posted, $wordpress_fields, $salesforce_fields );
-		if ( version_compare( $this->version, '1.2.5', '>=' ) ) {
+		if ( ! isset( $posted['version'] ) && version_compare( $this->version, '1.2.5', '>=' ) ) {
 			$data['version'] = $this->version;
 		}
 		$insert = $this->wpdb->insert( $this->fieldmap_table, $data );
@@ -487,6 +487,8 @@ class Object_Sync_Sf_Mapping {
 			'salesforce_object' => $posted['salesforce_object'],
 			'wordpress_object'  => $posted['wordpress_object'],
 		);
+		// when importing a fieldmap, there might already be a saved version. if there is, keep it.
+		$data['version'] = isset( $posted['version'] ) ? $posted['version'] : $this->version;
 		if ( isset( $posted['wordpress_field'] ) && is_array( $posted['wordpress_field'] ) && isset( $posted['salesforce_field'] ) && is_array( $posted['salesforce_field'] ) ) {
 			$setup['fields'] = array();
 			foreach ( $posted['wordpress_field'] as $key => $value ) {
@@ -570,6 +572,9 @@ class Object_Sync_Sf_Mapping {
 			foreach ( $posted['sync_triggers'] as $key => $value ) {
 				$setup['sync_triggers'][ $key ] = esc_html( $posted['sync_triggers'][ $key ] );
 			}
+			// format the sync triggers. if necessary, update the database.
+			$sync_triggers          = $this->maybe_upgrade_sync_triggers( $setup['sync_triggers'], $data['version'] );
+			$setup['sync_triggers'] = $sync_triggers;
 		} else {
 			$setup['sync_triggers'] = array();
 		}
@@ -1110,7 +1115,6 @@ class Object_Sync_Sf_Mapping {
 	 * @return array $mappings Associative array of field maps ready to use
 	 */
 	private function prepare_fieldmap_data( $mappings, $record_type = '' ) {
-
 		foreach ( $mappings as $id => $mapping ) {
 			$mappings[ $id ]['salesforce_record_types_allowed'] = isset( $mapping['salesforce_record_types_allowed'] ) ? maybe_unserialize( $mapping['salesforce_record_types_allowed'] ) : array();
 			$mappings[ $id ]['fields']                          = isset( $mapping['fields'] ) ? maybe_unserialize( $mapping['fields'] ) : array();
@@ -1118,64 +1122,77 @@ class Object_Sync_Sf_Mapping {
 			if ( '' !== $record_type && ! in_array( $record_type, $mappings[ $id ]['salesforce_record_types_allowed'], true ) ) {
 				unset( $mappings[ $id ] );
 			}
+			// format the sync triggers.
+			$sync_triggers                    = $this->maybe_upgrade_sync_triggers( $mappings[ $id ]['sync_triggers'], $mapping['version'], $mapping['id'] );
+			$mappings[ $id ]['sync_triggers'] = $sync_triggers;
+		}
+		return $mappings;
+	}
 
-			// in v2 of this plugin, we replaced the bit flags with strings to make them more legible.
-			if ( version_compare( $this->version, '2.0.0', '>' ) ) {
-				$sync_triggers = $mappings[ $id ]['sync_triggers'];
-
-				// check if the triggers stored in the database are up to date. if not, update them.
-				$intersect = array_intersect( $sync_triggers, array_merge( $this->wordpress_events, $this->salesforce_events ) );
-
-				if ( empty( $intersect ) ) {
-					$updated_sync_triggers = array();
-
-					foreach ( $sync_triggers as $key => $value ) {
-						if ( $value === (string) $this->sync_off_v1 ) {
-							$updated_sync_triggers[] = $this->sync_off;
-						}
-						if ( $value === (string) $this->sync_wordpress_create_v1 ) {
-							$updated_sync_triggers[] = $this->sync_wordpress_create;
-						}
-						if ( $value === (string) $this->sync_wordpress_update_v1 ) {
-							$updated_sync_triggers[] = $this->sync_wordpress_update;
-						}
-						if ( $value === (string) $this->sync_wordpress_delete_v1 ) {
-							$updated_sync_triggers[] = $this->sync_wordpress_delete;
-						}
-						if ( $value === (string) $this->sync_sf_create_v1 ) {
-							$updated_sync_triggers[] = $this->sync_sf_create;
-						}
-						if ( $value === (string) $this->sync_sf_update_v1 ) {
-							$updated_sync_triggers[] = $this->sync_sf_update;
-						}
-						if ( $value === (string) $this->sync_sf_delete_v1 ) {
-							$updated_sync_triggers[] = $this->sync_sf_delete;
-						}
+	/**
+	 * Format the sync trigger values for storage in the database.
+	 *
+	 * @param array  $sync_triggers Array of sync triggers.
+	 * @param string $mapping_version the database version when the fieldmmap was saved.
+	 * @param int    $mapping_id if the fieldmap already exists, this is the ID.
+	 *
+	 * @return array $sync_triggers possibly updated array of sync triggers.
+	 */
+	private function maybe_upgrade_sync_triggers( $sync_triggers = array(), $mapping_version, $mapping_id = '' ) {
+		// in v2 of this plugin, we replaced the bit flags with strings to make them more legible.
+		if ( version_compare( $mapping_version, '2.0.0', '<' ) ) {
+			// check if the triggers stored in the database are up to date. if not, update them.
+			$intersect = array_intersect( $sync_triggers, array_merge( $this->wordpress_events, $this->salesforce_events ) );
+			if ( empty( $intersect ) ) {
+				$updated_sync_triggers = array();
+				foreach ( $sync_triggers as $key => $value ) {
+					if ( $value === (string) $this->sync_off_v1 ) {
+						$updated_sync_triggers[] = $this->sync_off;
 					}
-					$mappings[ $id ]['sync_triggers'] = maybe_unserialize( $updated_sync_triggers );
+					if ( $value === (string) $this->sync_wordpress_create_v1 ) {
+						$updated_sync_triggers[] = $this->sync_wordpress_create;
+					}
+					if ( $value === (string) $this->sync_wordpress_update_v1 ) {
+						$updated_sync_triggers[] = $this->sync_wordpress_update;
+					}
+					if ( $value === (string) $this->sync_wordpress_delete_v1 ) {
+						$updated_sync_triggers[] = $this->sync_wordpress_delete;
+					}
+					if ( $value === (string) $this->sync_sf_create_v1 ) {
+						$updated_sync_triggers[] = $this->sync_sf_create;
+					}
+					if ( $value === (string) $this->sync_sf_update_v1 ) {
+						$updated_sync_triggers[] = $this->sync_sf_update;
+					}
+					if ( $value === (string) $this->sync_sf_delete_v1 ) {
+						$updated_sync_triggers[] = $this->sync_sf_delete;
+					}
+				}
 
+				if ( '' !== $mapping_id ) {
+					// format the fieldmap update query for the database.
 					$data = array();
-					if ( ! empty( $mappings[ $id ]['sync_triggers'] ) ) {
+					if ( ! empty( $updated_sync_triggers ) ) {
 						$data['sync_triggers'] = array();
-						foreach ( $mappings[ $id ]['sync_triggers'] as $key => $value ) {
-							$mappings[ $id ]['sync_triggers'][ $key ] = esc_html( $mappings[ $id ]['sync_triggers'][ $key ] );
+						foreach ( $updated_sync_triggers as $key => $value ) {
+							$updated_sync_triggers[ $key ] = esc_html( $updated_sync_triggers[ $key ] );
 						}
-						$data['sync_triggers'] = maybe_serialize( $mappings[ $id ]['sync_triggers'] );
-						// update the sync triggers field to use the new variable name.
+						$data['sync_triggers'] = maybe_serialize( $updated_sync_triggers );
+						$data['version']       = get_option( $this->option_prefix . 'db_version', $this->version );
+						// update the sync triggers and version fieldmap in the database.
 						$update = $this->wpdb->update(
 							$this->fieldmap_table,
 							$data,
 							array(
-								'id' => $mappings[ $id ]['id'],
+								'id' => $mapping_id,
 							)
 						);
 					}
 				}
 			}
 		}
-
-		return $mappings;
-
+		// whether it was updated or not, this is the array of sync triggers.
+		return $sync_triggers;
 	}
 
 	/**
