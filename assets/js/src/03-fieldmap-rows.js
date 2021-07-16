@@ -77,7 +77,7 @@ function disableAlreadyMappedFields( system ) {
 	$( 'option', select ).removeProp( 'disabled' );
 	$( 'option', select ).prop( 'disabled', false );
 	$.each( allSelected, function( key, value ) {
-		$( 'option[value=' + value + ']', select ).prop( 'disabled', true );
+		$( 'option[value=' + value + ']:not(:selected)', select ).prop( 'disabled', true );
 	} );
 	// reinitialize select2 if it's active.
 	if ( jQuery.fn.select2 ) {
