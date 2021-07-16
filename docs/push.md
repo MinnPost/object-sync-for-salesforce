@@ -8,7 +8,7 @@ When the data gets pushed depends on the [sync settings](./syncing-setup.md).
 
 ## How WordPress data is retrieved and configured for Salesforce
 
-The `wordpress` class of this plugin gets the `wpdb` object, and uses the methods it needs to read data in WordPress. When an item needs to be pulled into Salesforce, the class gets that data in a format the plugin can use. This plugin is then able to use the Salesforce API methods to work with the data in Salesforce.
+The `Object_Sync_Sf_WordPress` class of this plugin gets the `wpdb` object, and uses the methods it needs to read data in WordPress. When an item needs to be pulled into Salesforce, the class gets that data in a format the plugin can use. This plugin is then able to use the Salesforce API methods to work with the data in Salesforce.
 
 The plugin prepares the relationship between individual items - an individual WordPress user to an individual Salesforce Contact, for example - before saving data. This is the object map, and it the relationship between the object types, as well as the data that is being brought into Salesforce. The plugin includes a hook to modify this object map, and it is [documented](./extending-mapping-object.md#salesforce-push).
 
@@ -18,7 +18,7 @@ The plugin includes a hook to modify the array of parameters. This is [documente
 
 ## How WordPress data is saved in Salesforce
 
-The `salesforce` class of this plugin brings in the Salesforce REST API, and uses the methods it needs to create, update, and delete data in Salesforce. When an item in WordPress needs to be sent to Salesforce, it uses the appropriate API method.
+The `Object_Sync_Sf_Salesforce` class of this plugin brings in the Salesforce REST API, and uses the methods it needs to create, update, and delete data in Salesforce. When an item in WordPress needs to be sent to Salesforce, it uses the appropriate API method.
 
 The plugin contains a few hooks to perform actions right before, and right after, data is saved in Salesforce. These are [documented](./extending-before-and-after-saving.md#salesforce-push).
 

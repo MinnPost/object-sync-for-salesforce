@@ -1,95 +1,119 @@
-[
-    {
-        "name": "developerforce/force.com-toolkit-for-php",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/developerforce/Force.com-Toolkit-for-PHP.git",
-            "reference": "a131708a0fbc488da039668115f9a0bd7f779e55"
+{
+    "packages": [
+        {
+            "name": "developerforce/force.com-toolkit-for-php",
+            "version": "dev-master",
+            "version_normalized": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/developerforce/Force.com-Toolkit-for-PHP.git",
+                "reference": "a131708a0fbc488da039668115f9a0bd7f779e55"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/developerforce/Force.com-Toolkit-for-PHP/zipball/a131708a0fbc488da039668115f9a0bd7f779e55",
+                "reference": "a131708a0fbc488da039668115f9a0bd7f779e55",
+                "shasum": ""
+            },
+            "time": "2017-03-16T15:11:46+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "soapclient"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A wrapper for the Force.com Web Services SOAP API",
+            "install-path": "../developerforce/force.com-toolkit-for-php"
         },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/developerforce/Force.com-Toolkit-for-PHP/zipball/a131708a0fbc488da039668115f9a0bd7f779e55",
-            "reference": "a131708a0fbc488da039668115f9a0bd7f779e55",
-            "shasum": ""
+        {
+            "name": "pippinsplugins/wp-logging",
+            "version": "dev-master",
+            "version_normalized": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pippinsplugins/wp-logging.git",
+                "reference": "766d745886093fae88788107e190aff41b1db61b"
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "time": "2016-04-08T18:01:49+00:00",
+            "type": "library",
+            "installation-source": "source",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Pippin Williamson"
+                }
+            ],
+            "description": "A WordPress class that provides a general logging system.",
+            "homepage": "https://github.com/pippinsplugins/WP-Logging",
+            "keywords": [
+                "log",
+                "logger",
+                "logging",
+                "wordpress"
+            ],
+            "install-path": "../pippinsplugins/wp-logging"
         },
-        "time": "2017-03-16T15:11:46+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "soapclient"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "description": "A wrapper for the Force.com Web Services SOAP API"
-    },
-    {
-        "name": "pippinsplugins/wp-logging",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/pippinsplugins/wp-logging.git",
-            "reference": "766d745886093fae88788107e190aff41b1db61b"
-        },
-        "require": {
-            "php": ">=5.2.0"
-        },
-        "time": "2016-04-08T18:01:49+00:00",
-        "type": "library",
-        "installation-source": "source",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "Pippin Williamson"
-            }
-        ],
-        "description": "A WordPress class that provides a general logging system.",
-        "homepage": "https://github.com/pippinsplugins/WP-Logging",
-        "keywords": [
-            "log",
-            "logger",
-            "logging",
-            "wordpress"
-        ]
-    },
-    {
-        "name": "prospress/action-scheduler",
-        "version": "2.2.5",
-        "version_normalized": "2.2.5.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/woocommerce/action-scheduler.git",
-            "reference": "fd7c6b76a7af27d6403ffe39b0963dbd8ce50488"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/woocommerce/action-scheduler/zipball/fd7c6b76a7af27d6403ffe39b0963dbd8ce50488",
-            "reference": "fd7c6b76a7af27d6403ffe39b0963dbd8ce50488",
-            "shasum": ""
-        },
-        "require-dev": {
-            "wp-cli/wp-cli": "1.5.1"
-        },
-        "time": "2019-04-24T12:45:40+00:00",
-        "type": "wordpress-plugin",
-        "installation-source": "source",
-        "license": [
-            "GPL-3.0"
-        ],
-        "description": "Action Scheduler for WordPress and WooCommerce",
-        "abandoned": "woocommerce/action-scheduler"
-    }
-]
+        {
+            "name": "woocommerce/action-scheduler",
+            "version": "3.2.1",
+            "version_normalized": "3.2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/woocommerce/action-scheduler.git",
+                "reference": "3c24064f115cd55e972d73d5d48f14133ac60b0d"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5",
+                "woocommerce/woocommerce-sniffs": "0.1.0",
+                "wp-cli/wp-cli": "~2.5.0"
+            },
+            "time": "2021-06-21T20:21:35+00:00",
+            "type": "wordpress-plugin",
+            "extra": {
+                "scripts-description": {
+                    "test": "Run unit tests",
+                    "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
+                    "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
+                }
+            },
+            "installation-source": "source",
+            "scripts": {
+                "test": [
+                    "./vendor/bin/phpunit tests -c tests/phpunit.xml.dist"
+                ],
+                "phpcs": [
+                    "phpcs -s -p"
+                ],
+                "phpcs-pre-commit": [
+                    "phpcs -s -p -n"
+                ],
+                "phpcbf": [
+                    "phpcbf -p"
+                ]
+            },
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "description": "Action Scheduler for WordPress and WooCommerce",
+            "homepage": "https://actionscheduler.org/",
+            "install-path": "../woocommerce/action-scheduler"
+        }
+    ],
+    "dev": false,
+    "dev-package-names": []
+}

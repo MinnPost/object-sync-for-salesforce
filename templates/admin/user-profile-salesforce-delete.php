@@ -1,3 +1,12 @@
+<?php
+/**
+ * The functionality to delete a mapping between a Salesforce object and a given WordPress user
+ *
+ * @package Object_Sync_Salesforce
+ */
+
+?>
+
 <input type="hidden" name="salesforce_delete_mapped_user" value="1" />
 <input type="hidden" name="mapping_id" id="mapping_id_ajax" value="<?php echo absint( $mapping['id'] ); ?>" />
 <h2><?php echo esc_html__( 'Salesforce', 'object-sync-for-salesforce' ); ?></h2>
