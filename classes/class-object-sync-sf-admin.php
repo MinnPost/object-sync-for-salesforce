@@ -1088,7 +1088,7 @@ class Object_Sync_Sf_Admin {
 			}
 			$schedule_settings[ $key . '_clear_button' ] = array(
 				// translators: $this->get_schedule_count is an integer showing how many items are in the current queue.
-				'title'    => sprintf( 'This Queue has ' . _n( '%s Item', '%s Items', $this->get_schedule_count( $key ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key ) ),
+				'title'    => sprintf( 'This Queue Has ' . _n( '%s Item', '%s Items', $this->get_schedule_count( $key ), 'object-sync-for-salesforce' ), $this->get_schedule_count( $key ) ),
 				'callback' => $callbacks['link'],
 				'page'     => $page,
 				'section'  => $key,
