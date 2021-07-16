@@ -1170,7 +1170,6 @@ class Object_Sync_Sf_Mapping {
 							)
 						);
 					}
-					continue;
 				}
 			}
 		}
