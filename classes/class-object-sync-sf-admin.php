@@ -547,19 +547,21 @@ class Object_Sync_Sf_Admin {
 							$map = $this->mappings->get_fieldmaps( isset( $get_data['id'] ) ? sanitize_key( $get_data['id'] ) : '' );
 						}
 
-						if ( isset( $map ) && is_array( $map ) && isset( $map['id'] ) ) {
-							$label                           = $map['label'];
-							$salesforce_object               = $map['salesforce_object'];
-							$salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
-							$salesforce_record_type_default  = $map['salesforce_record_type_default'];
-							$wordpress_object                = $map['wordpress_object'];
-							$pull_trigger_field              = $map['pull_trigger_field'];
-							$fieldmap_fields                 = $map['fields'];
-							$sync_triggers                   = $map['sync_triggers'];
-							$push_async                      = $map['push_async'];
-							$push_drafts                     = $map['push_drafts'];
-							$pull_to_drafts                  = $map['pull_to_drafts'];
-							$weight                          = $map['weight'];
+						if ( 'add' === $method || ( isset( $map ) && is_array( $map ) && isset( $map['id'] ) ) ) {
+							if ( isset( $map ) && is_array( $map ) && isset( $map['id'] ) ) {
+								$label                           = $map['label'];
+								$salesforce_object               = $map['salesforce_object'];
+								$salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
+								$salesforce_record_type_default  = $map['salesforce_record_type_default'];
+								$wordpress_object                = $map['wordpress_object'];
+								$pull_trigger_field              = $map['pull_trigger_field'];
+								$fieldmap_fields                 = $map['fields'];
+								$sync_triggers                   = $map['sync_triggers'];
+								$push_async                      = $map['push_async'];
+								$push_drafts                     = $map['push_drafts'];
+								$pull_to_drafts                  = $map['pull_to_drafts'];
+								$weight                          = $map['weight'];
+							}
 							if ( 'add' === $method || 'edit' === $method || 'clone' === $method ) {
 								require_once plugin_dir_path( $this->file ) . '/templates/admin/fieldmaps-add-edit-clone.php';
 							} elseif ( 'delete' === $method ) {
