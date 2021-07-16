@@ -1112,9 +1112,9 @@ class Object_Sync_Sf_Mapping {
 	private function prepare_fieldmap_data( $mappings, $record_type = '' ) {
 
 		foreach ( $mappings as $id => $mapping ) {
-			$mappings[ $id ]['salesforce_record_types_allowed'] = maybe_unserialize( $mapping['salesforce_record_types_allowed'] );
-			$mappings[ $id ]['fields']                          = maybe_unserialize( $mapping['fields'] );
-			$mappings[ $id ]['sync_triggers']                   = maybe_unserialize( $mapping['sync_triggers'] );
+			$mappings[ $id ]['salesforce_record_types_allowed'] = isset( $mapping['salesforce_record_types_allowed'] ) ? maybe_unserialize( $mapping['salesforce_record_types_allowed'] ) : array();
+			$mappings[ $id ]['fields']                          = isset( $mapping['fields'] ) ? maybe_unserialize( $mapping['fields'] ) : array();
+			$mappings[ $id ]['sync_triggers']                   = isset( $mapping['sync_triggers'] ) ? maybe_unserialize( $mapping['sync_triggers'] ) : array();
 			if ( '' !== $record_type && ! in_array( $record_type, $mappings[ $id ]['salesforce_record_types_allowed'], true ) ) {
 				unset( $mappings[ $id ] );
 			}
