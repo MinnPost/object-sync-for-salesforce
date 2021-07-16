@@ -2014,11 +2014,14 @@ class Object_Sync_Sf_Admin {
 		}
 
 		if ( empty( $error_fieldmaps ) && empty( $error_object_maps ) && ( ! empty( $successful_fieldmaps ) || ! empty( $successful_object_maps ) ) ) {
+			$this->clear_cache( false );
 			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=import-export&data_saved=true' ) );
 			exit;
 		} elseif ( ! empty( $error_fieldmaps ) && ! empty( $successful_fieldmaps ) ) {
+			$this->clear_cache( false );
 			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=import-export&data_saved=partial' ) );
 		} elseif ( ! empty( $error_object_maps ) && ! empty( $successful_object_maps ) ) {
+			$this->clear_cache( false );
 			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=import-export&data_saved=partial' ) );
 		} else {
 			wp_safe_redirect( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=import-export&data_saved=false' ) );
