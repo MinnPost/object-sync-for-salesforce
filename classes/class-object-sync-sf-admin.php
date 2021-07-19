@@ -1385,7 +1385,7 @@ class Object_Sync_Sf_Admin {
 				'type'        => 'error',
 				'dismissible' => false,
 			),
-			'not_secure'             => array(
+			'not_secure'              => array(
 				'condition'   => ( false === $this->check_wordpress_ssl() && false === $this->check_wordpress_ssl_support() ),
 				'message'     => esc_html__( 'At least the admin area of your website must use HTTPS to connect with Salesforce. WordPress reports that your site environment does not, and cannot, use HTTPS. You may need to work with your hosting company to make the switch before you can use this plugin.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
@@ -2438,13 +2438,8 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-<<<<<<< HEAD:classes/admin.php
-	 * Check WordPress Admin permissions.
-	 * Check if the current user is allowed to access the Salesforce plugin options.
-=======
 	 * Check WordPress Admin permissions
 	 * Check if the current user is allowed to access the Salesforce plugin options
->>>>>>> master:classes/class-object-sync-sf-admin.php
 	 */
 	private function check_wordpress_admin_permissions() {
 
@@ -2465,7 +2460,6 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-<<<<<<< HEAD:classes/admin.php
 	 * Check WordPress SSL status.
 	 * HTTPS is required to connect to Salesforce.
 	 *
@@ -2501,7 +2495,7 @@ class Object_Sync_Sf_Admin {
 	/**
 	 * Check WordPress SSL support.
 	 * This allows us to show a different message if SSL is supported, but is not in use.
-	 * 
+	 *
 	 * @return bool $https_supported
 	 */
 	private function check_wordpress_ssl_support() {
@@ -2521,16 +2515,10 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-	* Show what we know about this user's relationship to a Salesforce object, if any
-	* @param object $user
-	*
-	*/
-=======
 	 * Show what we know about this user's relationship to a Salesforce object, if any
 	 *
 	 * @param object $user this is the user object from WordPress.
 	 */
->>>>>>> master:classes/class-object-sync-sf-admin.php
 	public function show_salesforce_user_fields( $user ) {
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
 		if ( true === $this->check_wordpress_admin_permissions() ) {
