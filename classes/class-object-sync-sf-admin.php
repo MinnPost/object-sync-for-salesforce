@@ -1395,7 +1395,7 @@ class Object_Sync_Sf_Admin {
 				'condition'   => ( false === $this->check_wordpress_ssl() && true === $this->check_wordpress_ssl_support() ),
 				'message'     => sprintf(
 					// translators: 1) is the site health URL, and 2) is the text for the site health page title.
-					__( 'Your website is not currently using HTTPS, but your environment does support it. Visit the <a href="%1$s">%2$s</a> for more information. If you have just migrated to HTTPS, WordPress may take some time to update this detection.', 'object-sync-for-salesforce' ),
+					__( 'Your website is not currently using HTTPS, but your environment does support it. Visit your website\'s <a href="%1$s">%2$s</a> for more information. If you have just migrated to HTTPS, WordPress may take some time to update this detection.', 'object-sync-for-salesforce' ),
 					esc_url( admin_url( '/wp-admin/site-health.php' ) ),
 					esc_html__( 'Site Health screen', 'object-sync-for-salesforce' )
 				),
