@@ -8,5 +8,10 @@
 ?>
 
 <div class="notice<?php echo esc_attr( $class ); ?><?php echo esc_attr( $dismissible ); ?>">
-	<p><?php echo esc_html( $message ); ?></p>
+	<p>
+	<?php
+	$allowed_html = wp_kses_allowed_html( 'data' );
+	echo wp_kses( $message, $allowed_html );
+	?>
+	</p>
 </div>
