@@ -1385,9 +1385,26 @@ class Object_Sync_Sf_Admin {
 				'type'        => 'error',
 				'dismissible' => false,
 			),
+			'not_secure'              => array(
+				'condition'   => ( false === $this->check_wordpress_ssl() && false === $this->check_wordpress_ssl_support() ),
+				'message'     => esc_html__( 'At least the admin area of your website must use HTTPS to connect with Salesforce. WordPress reports that your site environment does not, and cannot, use HTTPS. You may need to work with your hosting company to make the switch before you can use this plugin.', 'object-sync-for-salesforce' ),
+				'type'        => 'error',
+				'dismissible' => false,
+			),
+			'secure_supported'        => array(
+				'condition'   => ( false === $this->check_wordpress_ssl() && true === $this->check_wordpress_ssl_support() ),
+				'message'     => sprintf(
+					// translators: 1) is the site health URL, and 2) is the text for the site health page title.
+					__( 'Your website is not currently using HTTPS, but your environment does support it. Visit your website\'s <a href="%1$s">%2$s</a> for more information. If you have just migrated to HTTPS, WordPress may take some time to update this detection.', 'object-sync-for-salesforce' ),
+					esc_url( admin_url( 'site-health.php' ) ),
+					esc_html__( 'Site Health screen', 'object-sync-for-salesforce' )
+				),
+				'type'        => 'error',
+				'dismissible' => false,
+			),
 			'fieldmap'                => array(
 				'condition'   => isset( $get_data['transient'] ),
-				'message'     => __( 'Errors kept this fieldmap from being saved.', 'object-sync-for-salesforce' ),
+				'message'     => esc_html__( 'Errors kept this fieldmap from being saved.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
@@ -1399,13 +1416,13 @@ class Object_Sync_Sf_Admin {
 			),
 			'object_map'              => array(
 				'condition'   => isset( $get_data['map_transient'] ),
-				'message'     => __( 'Errors kept this object map from being saved.', 'object-sync-for-salesforce' ),
+				'message'     => esc_html__( 'Errors kept this object map from being saved.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
 			'data_saved'              => array(
 				'condition'   => isset( $get_data['data_saved'] ) && 'true' === $get_data['data_saved'],
-				'message'     => __( 'This data was successfully saved.', 'object-sync-for-salesforce' ),
+				'message'     => esc_html__( 'This data was successfully saved.', 'object-sync-for-salesforce' ),
 				'type'        => 'success',
 				'dismissible' => true,
 			),
@@ -1417,13 +1434,13 @@ class Object_Sync_Sf_Admin {
 			),
 			'data_save_error'         => array(
 				'condition'   => isset( $get_data['data_saved'] ) && 'false' === $get_data['data_saved'],
-				'message'     => __( 'This data was not successfully saved. Try again.', 'object-sync-for-salesforce' ),
+				'message'     => esc_html__( 'This data was not successfully saved. Try again.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
 			'mapping_error_transient' => array(
 				'condition'   => isset( $get_data['mapping_error_transient'] ),
-				'message'     => __( 'Errors kept these mapping errors from being deleted.', 'object-sync-for-salesforce' ),
+				'message'     => esc_html__( 'Errors kept these mapping errors from being deleted.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
@@ -2439,6 +2456,61 @@ class Object_Sync_Sf_Admin {
 		} else {
 			return true;
 		}
+
+	}
+
+	/**
+	 * Check WordPress SSL status.
+	 * HTTPS is required to connect to Salesforce.
+	 *
+	 * @return bool $secure_admin
+	 */
+	private function check_wordpress_ssl() {
+
+		// the wp_is_using_https() function was added in WordPress 5.7.
+		if ( ! function_exists( 'wp_is_using_https' ) ) {
+			return true;
+		}
+
+		// the whole site is already using SSL.
+		if ( true === wp_is_using_https() ) {
+			return true;
+		}
+
+		$secure_admin = false;
+
+		// the admin is already forced to use SSL.
+		if ( true === FORCE_SSL_ADMIN ) {
+			$secure_admin = true;
+		}
+
+		// the server reports that the current URL is using HTTPS.
+		if ( isset( $_SERVER['HTTPS'] ) && 'on' === $_SERVER['HTTPS'] ) {
+			$secure_admin = true;
+		}
+
+		return $secure_admin;
+	}
+
+	/**
+	 * Check WordPress SSL support.
+	 * This allows us to show a different message if SSL is supported, but is not in use.
+	 *
+	 * @return bool $https_supported
+	 */
+	private function check_wordpress_ssl_support() {
+
+		// the wp_is_https_supported() function was added in WordPress 5.7.
+		if ( ! function_exists( 'wp_is_https_supported' ) ) {
+			return true;
+		}
+
+		if ( true === wp_is_https_supported() ) {
+			return true;
+		}
+
+		$https_supported = false;
+		return $https_supported;
 
 	}
 
