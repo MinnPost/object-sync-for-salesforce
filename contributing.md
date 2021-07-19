@@ -26,7 +26,7 @@ Run `phpDocumentor.phar` (or however you call the file) in the plugin's root dir
 
 ## Standards
 
-- Use [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/) for CSS, HTML, JavaScript, and PHP, whenever possible. If you see places we've missed these, feel free to fix as long as nothing breaks. When pull requests are submitted, they'll be automatically checked against the current [Travis CI](https://travis-ci.org/MinnPost/object-sync-for-salesforce) and [Code Climate](https://codeclimate.com/github/MinnPost/object-sync-for-salesforce/) configurations, and you'll see those results after they finish running.
+- Use [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/) for CSS, HTML, JavaScript, and PHP, whenever possible. If you see places we've missed these, feel free to fix as long as nothing breaks. When pull requests are submitted, they'll be automatically reviewed by the [minncodebot](https://github.com/minncodebot), which runs the [PHPCS Code Review GitHub Action](https://github.com/rtCamp/action-phpcs-code-review). Pull requests are also checked against the repository's [Scrutinizr](https://scrutinizer-ci.com/g/MinnPost/object-sync-for-salesforce/) and [Code Climate](https://codeclimate.com/github/MinnPost/object-sync-for-salesforce/) configurations, and you'll see those results after they finish running.
 - Use [markdown syntax](http://daringfireball.net/projects/markdown/syntax) for all text documents.
 - We'd appreciate tests, either for new or existing functionality, but as we don't currently have any this is certainly not a requirement.
 
