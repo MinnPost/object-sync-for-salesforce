@@ -1,3 +1,12 @@
+<?php
+/**
+ * The markup to show what Salesforce object is mapped to a given WordPress user on the user edit screen
+ *
+ * @package Object_Sync_Salesforce
+ */
+
+?>
+
 <input type="hidden" name="mapping_id" id="mapping_id_ajax" value="<?php echo absint( $mapping['id'] ); ?>" />
 <input type="hidden" name="salesforce_id" id="salesforce_id_ajax" value="<?php echo esc_attr( $mapping['salesforce_id'] ); ?>" />
 <input type="hidden" name="wordpress_id" id="wordpress_id_ajax" value="<?php echo absint( $mapping['wordpress_id'] ); ?>" />

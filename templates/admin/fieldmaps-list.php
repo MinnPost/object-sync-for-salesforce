@@ -1,3 +1,12 @@
+<?php
+/**
+ * List of fieldmaps, which map a WordPress and Salesforce object type together.
+ *
+ * @package Object_Sync_Salesforce
+ */
+
+?>
+
 <h3><?php echo esc_html__( 'Fieldmaps', 'object-sync-for-salesforce' ); ?> <a class="page-title-action" href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=add' ) ); ?>"><?php echo esc_html__( 'Add New', 'object-sync-for-salesforce' ); ?></a></h3>
 <table class="widefat striped">
 	<thead>
@@ -13,11 +22,11 @@
 			<td colspan="6">
 				<p><small>
 					<?php
-					// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text
+					// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
 					echo sprintf(
 						esc_html__( 'Has your WordPress or Salesforce data structure changed? ', 'object-sync-for-salesforce' ) . '<a href="%1$s" id="clear-sfwp-cache">%2$s</a>' . esc_html__( ' to make sure you can map the most recent data structures.', 'object-sync-for-salesforce' ),
 						esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=clear_cache' ) ),
-						esc_html__( 'Clear the plugin cache' )
+						esc_html__( 'Clear the plugin cache', 'object-sync-for-salesforce' )
 					);
 					?>
 				</small></p>
@@ -47,11 +56,11 @@
 			<td colspan="4">
 				<p>
 				<?php
-					// translators: the placeholders refer to: 1) the fieldmap label, 2) the saleforce object name, and 3) the WordPress object name
+					// translators: the placeholders refer to: 1) the URL to add a fieldmap, 2) the link text for adding a fieldmap.
 					echo sprintf(
 						esc_html__( 'No fieldmaps exist yet. You can ', 'object-sync-for-salesforce' ) . '<a href="%1$s">%2$s</a>.',
 						esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=add' ) ),
-						esc_html__( 'add one' )
+						esc_html__( 'add one', 'object-sync-for-salesforce' )
 					);
 				?>
 				</p>

@@ -34,7 +34,13 @@ function loadFieldOptions( system, objectName ) {
 				if ( 'wordpress' === system ) {
 					fields += '<option value="' + value.key + '">' + value.key + '</option>';
 				} else if ( 'salesforce' === system ) {
-					fields += '<option value="' + value.name + '">' + value.label + '</option>';
+					var fieldLabel = '';
+					if ( 'undefined' !== typeof value.label ) {
+						fieldLabel = value.label;
+					} else {
+						fieldLabel = value.name;
+					}
+					fields += '<option value="' + value.name + '">' + fieldLabel + '</option>';
 				}
 			} );
 			$( selectField ).html( fields );

@@ -1,6 +1,38 @@
 Changelog
 =========
 
+* 2.0.0 (2021-)
+	* Feature: update the installation of the Action Scheduler library to version 3.2. This is a major upgrade for that library, and involves creating new database tables and runs a migration process, which can take some time. Read more about that at https://actionscheduler.org/version3-0/. This is not necessarily a backward-compatible change, although hopefully it will run smoothly for all users. You may want to make a full site backup before upgrading, and if you have access to a staging environment you may want to run it there before you run it on your production website.
+	* Feature: there is a new checkbox field on the plugin Settings screen: "Prevent duplicate field mapping?" that, when checked, prevents WordPress or Salesforce fields that have already been mapped from being mapped again. We hope this will be helpful on fieldmaps that map a large number of fields. Thanks to GitHub user @TornMarketing for this request.
+	* Bug fix: in some cases, calls to the Salesforce SOAP API, which runs to detect merged records, was not able to complete. This should now be more reliable functionality.
+	* Maintenance: most files in this plugin have been renamed, and are now being autoloaded when the plugin needs them. This should help performance, future maintenance, and makes it possible to better comply with the WordPress Code Standards. This means if you are manually calling any plugin files, you may need to change your code.
+	* Maintenance: this release includes a lot of code improvements to better match the WordPress Code Standards and improve code readability. This includes converting a previous set of bit flags to strings. This is generally a backward-compatible change, as it updates the database when the upgrade is complete.
+	* Maintenance: we've refined one of the log messages that is created for Salesforce API calls when the plugin is in debug mode. This message combines two debug messages that were created on some calls, and cleans up the message content in the combined message.
+	* Developers: some methods that were deprecated in previous versions were removed. Removed items in 2.0.0:
+		* `add_deprecated_actions` in  `Object_Sync_Sf_Admin`
+		* `get_wp_sf_object_fields` in `Object_Sync_Sf_Admin`
+		* `load_by_wordpress` in `Object_Sync_Sf_Mapping`
+		* `load_by_salesforce` in `Object_Sync_Sf_Mapping`
+	* Developers: this release deprecates some functionality from previous versions. It is always marked in the codebase as `@deprecated`. It may be removed in a future 3.x version and should be, if possible, moved away from. Deprecated items in 2.0.0:
+		* `public static $instance;` is a legacy way of loading an instance of this plugin.
+		* `check_for_action_scheduler` is a method of the `Object_Sync_Sf_Activate` class to ensure that the plugin has successfully loaded the Action Scheduler library.
+		* bit flags from the `Object_Sync_Sf_Mapping` class have been converted to strings. The old bit flags are still there with `_v1` suffixed to their property names.
+		* `get_object_maps` from the `Object_Sync_Sf_Mapping` class was previously deprecated, but was still being called in various places. It no longer is.
+
+* 1.10.1 (2021-07-12)
+    * Bug fix: When using the hook `object_sync_for_salesforce_select_library` to disable the use of the Select2 library, the default browser `select` was not working correctly. Thanks to GitHub user @timnolte for the report.
+    * Maintenance: note 5.8 support.
+    * Note: a major upgrade to the back end of this plugin is coming soon, in the form of version 2.0.0. Very little will change visibly, but hopefully the plugin will perform better and be structured better for future upgrades. None of these large changes are included in version 1.10.1, but we want to give some advance notice.
+
+* 1.10.0 (2021-05-14)
+    * Feature: Add support for Advanced Custom Fields forms that save posts on the front end. Thanks to WordPress user @grayzee for the request.
+    * Bug fix: Fix the API Name settings so the value shows up correctly. Thanks to WordPress user @dcleslie777 for the report.
+
+* 1.9.9 (2021-03-17)
+	* Bug fix: If a fieldmap has allowed record types, use them to constrain the SOQL sent to Salesforce. Thanks to WordPress user @esowers for the report.
+	* Maintenance: Standardize WP-Admin color usage to match WordPress 5.7.
+	* Start setup for using GitHub Actions instead of Travis
+
 * 1.9.8 (2021-02-11)
     * Bug fix: fix PHP composer error.
 
@@ -81,7 +113,7 @@ Changelog
 	* Maintenance: Centralize documentation of SQL table structure.
 	* Maintenance: Replace the various calls to create/update metadata with just one for easier management.
 	* Maintenance: Update supported WordPress version to 5.2 and PHP version to 5.6.20 to match the new minimum for WordPress. 
-	* Developers: Update ActionScheduler to 2.2.5.
+	* Developers: Update Action Scheduler to 2.2.5.
 
 * 1.8.5 (2019-03-30)
     * Bug fix: This fixes a possible issue in which the plugin would fail to realize that its database version was up to date.
@@ -108,12 +140,12 @@ Changelog
 	* New: there is better error checking on saving metadata for users, posts, and comments.
 	* Bug fix: 1.7.0 introduced an activation issue that this release fixes. There is also improved database versioning that occurs upon activation.
 	* Bug fix: a bug existed in fieldmaps that had a Salesforce field like a record ID, which cannot be pushed to Salesforce but can be pulled from Salesforce, but the sync was failing. Thanks to WordPress forum user @walexparadis for the report on this.
-	* Developers: we've updated our included version of ActionScheduler to 2.2.1.
+	* Developers: we've updated our included version of Action Scheduler to 2.2.1.
 	* Developers: the `load_by_wordpress` and `load_by_salesforce` methods on the `salesforce_mapping` class have been deprecated in favor of `load_all_by_wordpress` and `load_all_by_salesforce`, though the deprecated methods have not been removed.
 
 * 1.7.0 (2019-01-31)
     * New: improve handling of custom meta fields that are required by Salesforce. This plugin would fail to create objects if required fields were missing when a record was created. It should handle these situations much better.
-    * New: update to version 2.2.0 of the ActionScheduler library.
+    * New: update to version 2.2.0 of the Action Scheduler library.
 
 * 1.6.0 (2019-01-15)
 	* New: we have added some basic REST API endpoints to the plugin. They can be used to check for updated/deleted records in Salesforce, pull a specific record from Salesforce by ID, or push a specific record from WordPress by Id and type.
@@ -126,7 +158,7 @@ Changelog
 	* Developers: this release allows API calls that return data from Salesforce to return either json, the full PHP array (the default) or both, if the `$options` array is populated. Thanks to WordPress user @yanlep for the request.
 
 * 1.5.1 (2018-11-03)
-	* New: update to version 2.1.1 of the ActionScheduler library.
+	* New: update to version 2.1.1 of the Action Scheduler library.
 	* Bug fix: when processing more than 2000 records, the offset and limit combination fails due to Salesforce API restrictions. In this release, the plugin changes the date parameter on the API query to the value for the last processed record.
 
 * 1.5.0 (2018-10-26)
@@ -135,7 +167,7 @@ Changelog
 	* New: this plugin should be usable on WordPress VIP environments; it now checks for `user_attributes` instead of `user_meta` in those cases.
 	* Bug fix: this plugin can now be properly deployed on hosts like Pantheon. Thanks to WordPress user @joepahl and GitHub user @BrianBenninger for reporting this.
 	* Bug fix: when using meta fields for prematch, the plugin previously could fail to find a match even if the value existed. It now uses different matching for meta fields. **This requires that users resave their fieldmaps, and also that we end support for WordPress 4.5.**. Thanks to WordPress user @nodakjones for the bug report and testing assistance.
-	* Bug fix: when using the ActionScheduler library, the plugin fails to process multiple rounds of pull requests. Now it uses the limit setting to page through all possible updated records. Thanks to WordPress user @jonsayer for the report and WordPress user @harmoney for help testing.
+	* Bug fix: when using the Action Scheduler library, the plugin fails to process multiple rounds of pull requests. Now it uses the limit setting to page through all possible updated records. Thanks to WordPress user @jonsayer for the report and WordPress user @harmoney for help testing.
 	* Developers: this release adds a new developer hook, `object_sync_for_salesforce_pull_query_modify`, which can modify the Salesforce API SOQL query before it pulls data from Salesforce. Thanks to WordPress user @yanlep for the suggestion.
 
 * 1.4.2 (2018-08-29)

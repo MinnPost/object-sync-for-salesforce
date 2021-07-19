@@ -3,23 +3,22 @@
  * Duplicates the fields for a new row in the fieldmap options screen.
  * this appears not to work with data() instead of attr()
  */
- function addFieldMappingRow() {
-	$( '#add-field-mapping' ).click( function() {
-		var salesforceObject = $( '#salesforce_object' ).val();
-		var wordpressObject = $( '#wordpress_object' ).val();
-		var newKey = new Date().getUTCMilliseconds();
-		var lastRow = $( 'table.fields tbody tr' ).last();
-		var oldKey = lastRow.attr( 'data-key' );
-		oldKey = new RegExp( oldKey, 'g' );
-		$( this ).text( 'Add another field mapping' );
-		if ( '' !== wordpressObject && '' !== salesforceObject ) {
-			fieldmapFields( oldKey, newKey, lastRow );
-			$( this ).parent().find( '.missing-object' ).remove();
-		} else {
-			$( this ).parent().prepend( '<div class="error missing-object"><span>You have to pick a WordPress object and a Salesforce object to add field mapping.</span></div>' );
-		}
-		return false;
-	} );
+ function addFieldMappingRow( button ) {
+	var salesforceObject = $( '#salesforce_object' ).val();
+	var wordpressObject = $( '#wordpress_object' ).val();
+	var newKey = new Date().getUTCMilliseconds();
+	var lastRow = $( 'table.fields tbody tr' ).last();
+	var oldKey = lastRow.attr( 'data-key' );
+	oldKey = new RegExp( oldKey, 'g' );
+	if ( '' !== wordpressObject && '' !== salesforceObject ) {
+		fieldmapFields( oldKey, newKey, lastRow );
+		button.parent().find( '.missing-object' ).remove();
+		button.text( button.data( 'add-more' ) );
+	} else {
+		button.text( button.data( 'add-first' ) );
+		button.parent().prepend( '<div class="error missing-object"><span>' + button.data( 'error-missing-object' ) + '</span></div>' );
+	}
+	return false;
 }
 
 /**
@@ -34,7 +33,7 @@ function fieldmapFields( oldKey, newKey, lastRow ) {
 	if ( jQuery.fn.select2 ) {
 		nextRow = lastRow.find( 'select' ).select2( 'destroy' ).end().clone( true ).removeClass( 'fieldmap-template' );
 	} else {
-		nextRow = lastRow.clone( true );
+		nextRow = lastRow.find( 'select' ).end().clone( true ).removeClass( 'fieldmap-template' );
 	}
 	$( nextRow ).attr( 'data-key', newKey );
 	$( nextRow ).each( function() {
@@ -48,6 +47,51 @@ function fieldmapFields( oldKey, newKey, lastRow ) {
 		nextRow.find( 'select' ).select2();
 	}
 }
+
+// load available options if the WordPress object changes
+$( document ).on( 'change', '.column-wordpress_field select', function() {
+	disableAlreadyMappedFields( 'wordpress' );
+} );
+// load available options if the Salesforce object changes
+$( document ).on( 'change', '.column-salesforce_field select', function() {
+	disableAlreadyMappedFields( 'salesforce' );
+} );
+
+/**
+ * Disable fields that are already mapped from being mapped again.
+ * @param {string} system whether we want WordPress or Salesforce data
+ */
+function disableAlreadyMappedFields( system ) {
+	// load the select statements for Salesforce or WordPress.
+	var select = $( '.fieldmap-disable-mapped-fields .column-' + system + '_field select' );
+	var allSelected = [];
+	// add each currently selected value to an array, then make it unique.
+	select.each( function( i, fieldChoice ) {
+		var selectedValue = $( fieldChoice ).find( 'option:selected' ).val();
+		if ( null !== selectedValue && '' !== selectedValue ) {
+			allSelected.push( selectedValue );
+		}
+	});
+	allSelected = allSelected.filter((v, i, a) => a.indexOf(v) === i);
+	// disable the items that are selected in another select, enable them otherwise.
+	$( 'option', select ).removeProp( 'disabled' );
+	$( 'option', select ).prop( 'disabled', false );
+	$.each( allSelected, function( key, value ) {
+		$( 'option[value=' + value + ']:not(:selected)', select ).prop( 'disabled', true );
+	} );
+	// reinitialize select2 if it's active.
+	if ( jQuery.fn.select2 ) {
+		$( '.column-' + system + '_field select' ).select2();
+	}
+}
+
+/**
+ * Handle click event for the Add another field mapping button.
+ * It duplicates the fields for a new row in the fieldmap options screen.
+ */
+ $( document ).on( 'click', '#add-field-mapping', function() {
+	addFieldMappingRow( $( this ) );
+} );
 
 /**
  * As the Drupal plugin does, we only allow one field to be a prematch
@@ -65,13 +109,14 @@ $( document ).on( 'click', '.column-is_key input', function() {
 
 /**
  * When the plugin loads:
- * Add new fieldmap rows
+ * Disable fields that are already selected
  * Select2 on select fields
  */
 $( document ).ready( function() {
 
-	// Duplicate the fields for a new row in the fieldmap options screen.
-	addFieldMappingRow();
+	// disable the option values for fields that have already been mapped.
+	disableAlreadyMappedFields( 'salesforce' );
+	disableAlreadyMappedFields( 'wordpress' );
 
 	// setup the select2 fields if the library is present
 	if ( jQuery.fn.select2 ) {

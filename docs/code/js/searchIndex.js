@@ -1691,6 +1691,11 @@ Search.appendIndex(
             "summary": "Callback\u0020method\u0020for\u0020deleting\u0020a\u0020user",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#method_delete_user"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003Aacf_save\u0028\u0029",
+            "name": "acf_save",
+            "summary": "Callback\u0020method\u0020for\u0020saving\u0020a\u0020post\u0020with\u0020ACF.\u0020If\u0020it\u0027s\u0020a\u0020front\u0020end\u0020save,\u0020send\u0020the\u0020data\u0020to\u0020post_actions.",
+            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#method_acf_save"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003Apost_actions\u0028\u0029",
             "name": "post_actions",
             "summary": "Callback\u0020method\u0020for\u0020posts\u0020of\u0020any\u0020type\nThis\u0020can\u0020handle\u0020create,\u0020update,\u0020and\u0020delete\u0020actions",

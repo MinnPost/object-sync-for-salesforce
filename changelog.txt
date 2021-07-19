@@ -1,6 +1,36 @@
 Changelog
 =========
 
+* 2.0.0 (2021-)
+	* Feature: update the installation of the ActionScheduler library to version 3.2. This is a major upgrade for that library, and involves creating new database tables and runs a migration process, which can take some time. Read more about that at https://actionscheduler.org/version3-0/. This is not necessarily a backward-compatible change, although hopefully it will run smoothly for all users. You may want to make a full site backup before upgrading, and if you have access to a staging environment you may want to run it there before you run it on your production website.
+	* Bug fix: in some cases, calls to the Salesforce SOAP API, which runs to detect merged records, was not able to complete. This should now be more reliable functionality.
+	* Maintenance: most files in this plugin have been renamed, and are now being autoloaded when the plugin needs them. This should help performance, future maintenance, and makes it possible to better comply with the WordPress Code Standards. This means if you are manually calling any plugin files, you may need to change your code.
+	* Maintenance: this release includes a lot of code improvements to better match the WordPress Code Standards and improve code readability. This includes converting a previous set of bit flags to strings. This is generally a backward-compatible change, as it updates the database when the upgrade is complete.
+	* Developers: some methods that were deprecated in previous versions were removed. Removed items in 2.0.0:
+		* `add_deprecated_actions` in  `Object_Sync_Sf_Admin`
+		* `get_wp_sf_object_fields` in `Object_Sync_Sf_Admin`
+		* `load_by_wordpress` in `Object_Sync_Sf_Mapping`
+		* `load_by_salesforce` in `Object_Sync_Sf_Mapping`
+	* Developers: this release deprecates some functionality from previous versions. It is always marked in the codebase as `@deprecated`. It may be removed in a future 3.x version and should be, if possible, moved away from. Deprecated items in 2.0.0:
+		* `public static $instance;` is a legacy way of loading an instance of this plugin.
+		* `check_for_action_scheduler` is a method of the `Object_Sync_Sf_Activate` class to ensure that the plugin has successfully loaded the ActionScheduler library.
+		* bit flags from the `Object_Sync_Sf_Mapping` class have been converted to strings. The old bit flags are still there with `_v1` suffixed to their property names.
+		* `get_object_maps` from the `Object_Sync_Sf_Mapping` class was previously deprecated, but was still being called in various places. It no longer is.
+
+* 1.10.1 (2021-07-12)
+    * Bug fix: When using the hook `object_sync_for_salesforce_select_library` to disable the use of the Select2 library, the default browser `select` was not working correctly. Thanks to GitHub user @timnolte for the report.
+    * Maintenance: note 5.8 support.
+    * Note: a major upgrade to the back end of this plugin is coming soon, in the form of version 2.0.0. Very little will change visibly, but hopefully the plugin will perform better and be structured better for future upgrades. None of these large changes are included in version 1.10.1, but we want to give some advance notice.
+
+* 1.10.0 (2021-05-14)
+    * Feature: Add support for Advanced Custom Fields forms that save posts on the front end. Thanks to WordPress user @grayzee for the request.
+    * Bug fix: Fix the API Name settings so the value shows up correctly. Thanks to WordPress user @dcleslie777 for the report.
+
+* 1.9.9 (2021-03-17)
+	* Bug fix: If a fieldmap has allowed record types, use them to constrain the SOQL sent to Salesforce. Thanks to WordPress user @esowers for the report.
+	* Maintenance: Standardize WP-Admin color usage to match WordPress 5.7.
+	* Start setup for using GitHub Actions instead of Travis
+
 * 1.9.8 (2021-02-11)
     * Bug fix: fix PHP composer error.
 

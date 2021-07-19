@@ -8,7 +8,7 @@ When the data gets pulled depends on the [sync settings](./syncing-setup.md).
 
 ## How Salesforce data is retrieved and configured for WordPress
 
-The `salesforce` class of this plugin brings in the Salesforce REST API, and uses the methods it needs to read data in Salesforce. When an item needs to be pulled into WordPress, the API gets that data in a format the plugin can use. This plugin is then able to use WordPress methods to work with the data in WordPress.
+The `Object_Sync_Sf_Salesforce` class of this plugin brings in the Salesforce REST API, and uses the methods it needs to read data in Salesforce. When an item needs to be pulled into WordPress, the API gets that data in a format the plugin can use. This plugin is then able to use WordPress methods to work with the data in WordPress.
 
 The plugin prepares the relationship between individual items - an individual WordPress user to an individual Salesforce Contact, for example - before saving data. This is the object map, and it the relationship between the object types, as well as the data that is being brought into WordPress. The plugin includes a hook to modify this object map, and it is [documented](./extending-mapping-object.md#salesforce-pull).
 
@@ -18,7 +18,7 @@ The plugin includes a hook to modify the array of parameters. This is [documente
 
 ## How Salesforce data is saved in WordPress
 
-The plugin has methods for creating, updating, and deleting all of the supported WordPress object types in the `wordpress` class. These methods determine what the object's structure is, what the field's structure is, and what methods need to be called to work with it.
+The plugin has methods for creating, updating, and deleting all of the supported WordPress object types in the `Object_Sync_Sf_WordPress` class. These methods determine what the object's structure is, what the field's structure is, and what methods need to be called to work with it.
 
 This plugin also contains several hooks to do more with objects, including both default and custom objects, in WordPress. These are [documented](./extending-wordpress.md).
 
@@ -36,6 +36,6 @@ The Salesforce REST API includes many other methods, and we don't currently use 
 
 ## Using the Analytics API
 
-This plugin's `salesforce` class includes basic support for the distinct [Salesforce Analytics API](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/sforce_analytics_rest_api_intro.htm). This can be used to, for example, display the results of a Salesforce Report in a WordPress widget. Because this is dependent on what you have to analyze in your Salesforce install, and what you need to do with it in WordPress, this plugin does not include any syncing with this data by default.
+This plugin's `Object_Sync_Sf_Salesforce` class includes basic support for the distinct [Salesforce Analytics API](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/sforce_analytics_rest_api_intro.htm). This can be used to, for example, display the results of a Salesforce Report in a WordPress widget. Because this is dependent on what you have to analyze in your Salesforce install, and what you need to do with it in WordPress, this plugin does not include any syncing with this data by default.
 
 However, there is an [example plugin](https://github.com/minnpost/minnpost-donation-progress-widget) that shows a (very specific) use case. Additionally, there is some [documentation](./using-salesforce-analytics-api.md) about how this integration works, and what kind of code is required to use it.

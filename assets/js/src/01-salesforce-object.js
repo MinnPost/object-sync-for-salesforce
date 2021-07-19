@@ -55,7 +55,13 @@ function salesforceObjectFields() {
 					dateMarkup += '<label for="pull_trigger_field">Date field to trigger pull:</label>';
 					dateMarkup += '<select name="pull_trigger_field" id="pull_trigger_field"><option value="">- Select date field -</option>';
 					$.each( response.data.fields, function( index, value ) {
-						dateMarkup += '<option value="' + value.name + '">' + value.label + '</option>';
+						var fieldLabel = '';
+						if ( 'undefined' !== typeof value.label ) {
+							fieldLabel = value.label;
+						} else {
+							fieldLabel = value.name;
+						}
+						dateMarkup += '<option value="' + value.name + '">' + fieldLabel + '</option>';
 					} );
 					dateMarkup += '</select>';
 					dateMarkup += '<p class="description">These are date fields that can cause WordPress to pull an update from Salesforce, according to the <code>salesforce_pull</code> class.</p>';
