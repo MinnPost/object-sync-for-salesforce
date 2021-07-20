@@ -403,7 +403,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003Acheck_for_action_scheduler\u0028\u0029",
             "name": "check_for_action_scheduler",
-            "summary": "Check\u0020whether\u0020the\u0020user\u0020has\u0020action\u0020scheduler\u0020tasks\u0020when\u0020they\u0020upgrade",
+            "summary": "Check\u0020whether\u0020the\u0020user\u0020has\u0020ActionScheduler\u0020tasks\u0020when\u0020they\u0020upgrade",
             "url": "classes/Object-Sync-Sf-Activate.html#method_check_for_action_scheduler"
         },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024version",
@@ -535,6 +535,11 @@ Search.appendIndex(
             "name": "set_action_schedule",
             "summary": "Set\u0020up\u0020recurring\u0020tasks\u0020for\u0020ActionScheduler",
             "url": "classes/Object-Sync-Sf-Admin.html#method_set_action_schedule"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aresave_action_schedules\u0028\u0029",
+            "name": "resave_action_schedules",
+            "summary": "When\u0020it\u0020finishes\u0020its\u0020migration,\u0020resave\u0020the\u0020scheduled\u0020tasks\u0020for\u0020ActionScheduler.",
+            "url": "classes/Object-Sync-Sf-Admin.html#method_resave_action_schedules"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Acreate_admin_menu\u0028\u0029",
             "name": "create_admin_menu",
