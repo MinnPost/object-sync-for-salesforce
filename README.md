@@ -23,12 +23,20 @@ Object Sync for Salesforce maps and syncs data between Salesforce objects and Wo
 
 <!-- only:github/ -->
 ## Getting started
+<!-- /only:github -->
 
-For any supported WordPress content types (post, page, user, or custom content types), you can assign Salesforce objects that will be created / updated / deleted when the data in WordPress is saved, and the WordPress objects can be created / updated / deleted when the data in Salesforce is saved.
+<!-- only:wp>
+== Description ==
+</only:wp -->
+
+For any supported WordPress content types (e.g. post, page, user, or any supported custom content type in your installation), you can assign Salesforce objects that will be created / updated / deleted when the data in WordPress is saved, and the WordPress objects can be created / updated / deleted when the data in Salesforce is saved.
 
 For each such combination of object and content type, choose which fields should be mapped to one another, creating a fieldmap. The plugin acts on matching data after it is installed.
 
-To get started quicky, install Object Sync for Salesforce from the [WordPress plugin repository](https://wordpress.org/plugins/object-sync-for-salesforce/) and follow the [setup instructions](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md).
+This plugin also includes developer hooks that allow for additional plugins to modify what data the plugin is working with, or what happens upon specific events.
+
+<!-- only:github/ -->
+To get started, install Object Sync for Salesforce from the [WordPress plugin repository](https://wordpress.org/plugins/object-sync-for-salesforce/) and follow the [setup instructions](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md).
 
 ### Requirements
 
@@ -40,14 +48,6 @@ To get started quicky, install Object Sync for Salesforce from the [WordPress pl
 <!-- /only:github -->
 
 <!-- only:wp>
-== Description ==
-
-This plugin maps and syncs data between Salesforce objects and WordPress content types. For any supported WordPress content types (e.g. post, page, user, or any custom content type in your installation), you can assign Salesforce objects that will be created / updated / deleted when the data in WordPress is saved, and the WordPress objects can be created / updated / deleted when the data in Salesforce is saved.
-
-Both of these directions act upon any matching data that is created after the plugin is installed. For each such assignment, you choose which WordPress and Salesforce fields should be mapped to one another.
-
-This plugin also includes developer hooks that allow for additional plugins to modify what data the plugin is working with, or what happens upon specific events.
-
 == Installation ==
 
 The plugin documentation contains [initial setup instructions](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md). This is the fastest way to get the plugin running on your site.
