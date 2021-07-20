@@ -58,7 +58,7 @@ We maintain [extensive documentation](https://github.com/MinnPost/object-sync-fo
 <!-- only:wp>
 == Frequently Asked Questions ==
 
-=== Mapping custom fields ===
+### Mapping custom fields
 
 WordPress stores metadata as key/value pairs in its database. Many plugins and themes use this method to store custom field data. Object Sync for Salesforce supports mapping these fields (many other plugins use non-standard methods, and this plugin may or may not support them).
 
@@ -68,11 +68,11 @@ Object Sync for Salesforce, however, cannot see meta fields before the field has
 
 If you load Object Sync for Salesforce and then store data for a new meta field after this load, make sure you click the "Clear the plugin cache" link on the Fieldmaps tab.
 
-=== Syncing pre-existing data ===
+### Syncing pre-existing data
 
 This plugin was built to sync data that is created after it was installed. However, there are some techniques that can import pre-existing data. See the [Import & Export](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/import-export.md) section of the documentation for methods you can use for this.
 
-=== Using with ACF (Advanced Custom Fields) ===
+### Using with ACF (Advanced Custom Fields)
 
 Object Sync for Salesforce does not and will not "officially" support ACF because you don't have to use ACF to use WordPress or to use Salesforce. However, they are **generally** usable together.
 
@@ -83,7 +83,7 @@ Things to know:
 
 While we will not include code that only runs for ACF in this plugin, we would happily point to any add-on plugin that uses Object Sync for Salesforce hooks to build a more comprehensive integration with ACF for all users who install this plugin while they're running ACF.
 
-=== Using with WooCommerce ===
+### Using with WooCommerce
 
 Object Sync for Salesforce doesn't have, and will not have, intentional support for WooCommerce. It kind of supports it, to the extent that WooCommerce uses WordPress' default ways of creating objects and data. WooCommerce is very complicated, and on top of that it often deviates from those default WordPress methods, and it's certainly possible that this plugin won't support it when it does.
 
@@ -96,13 +96,13 @@ Object Sync for Salesforce does have abundant developer hooks, and WooCommerce h
 ## Troubleshooting
 <!-- /only:github -->
 <!-- only:wp>
-=== Troubleshooting ===
+### Troubleshooting
 </only:wp -->
 
 If you are having trouble setting up or configuring the plugin, we've provided answers to some common problems in our [troubleshooting](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting.md) document. Expanding this document is also a great way to [contribute](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md) to this plugin.
 
 <!-- only:wp>
-=== Plugin documentation ===
+### Plugin documentation
 
 There is extensive documentation of this plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md). This documentation also exists inside the `docs` folder when you download the plugin from the WordPress directory.
 </only:wp -->
@@ -111,7 +111,7 @@ There is extensive documentation of this plugin, including its developer hooks, 
 ## Getting support using this plugin
 <!-- /only:github -->
 <!-- only:wp>
-=== Getting support using this plugin ===
+### Getting support using this plugin
 </only:wp -->
 
 We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). If you have these requests, please put them in that forum only. Do not send them by email.
@@ -124,7 +124,7 @@ While MinnPost's nonprofit newsroom does welcome [donations](https://www.minnpos
 ## Extending this plugin
 <!-- /only:github -->
 <!-- only:wp>
-=== Extending this plugin ===
+### Extending this plugin
 </only:wp -->
 
 WordPress developers can use hooks in this plugin to extend its functionality. These are listed, with links to each hook's documentation, in the [developer hooks documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/all-developer-hooks.md), and are frequently mentioned throughout the plugin's [documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
@@ -135,7 +135,7 @@ We host [a document](https://github.com/MinnPost/object-sync-for-salesforce/blob
 ## Contribute to plugin development
 <!-- /only:github -->
 <!-- only:wp>
-=== Contribute to plugin development ===
+### Contribute to plugin development
 </only:wp -->
 
 If you'd like to suggest a feature, or if you think you've encountered a bug, you can [create an issue](https://github.com/minnpost/object-sync-for-salesforce/issues) on our GitHub repository. We actively add our own issues to the list, and comment on their progress.
@@ -146,7 +146,7 @@ We welcome contributions of code, documentation, or translations to this project
 ## Finding other sync options
 <!-- /only:github -->
 <!-- only:wp>
-=== Finding other sync options ===
+### Finding other sync options
 </only:wp -->
 
 This plugin can be relatively complicated, and sometimes other plugins can effectively integrate Salesforce and WordPress, especially if there are more limited, specific requirements. If one of these can meet those requirements, use it. We're happy to link to additional choices here, as well.
@@ -158,12 +158,7 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 - [Visualforce](https://developer.salesforce.com/page/An_Introduction_to_Visualforce) If you are or have a Salesforce developer, you can build MVC based applications that integrate with Salesforce. It would be possible to build a system that uses, for example, the [WordPress REST API](https://developer.wordpress.org/rest-api/) to send and receive data to and from WordPress. This could be, in many ways, the flip side of what our plugin here does, but the complexity would be the same if the scope was the same.
 - **Build other integrations in WordPress** this plugin focuses on the Salesforce REST API, as it covers the integration needs we have. It also provides some support for the SOAP API, primarily to detect merges of Salesforce records. Salesforce also has other developer options: the Bulk API, and the Metadata API, the Analytics API, and likely more functionality that is only in SOAP. Developers could extend this plugin to integrate with one of these. We would welcome any pull requests!
 
-<!-- only:github/ -->
 ## Changelog
-<!-- /only:github -->
-<!-- only:wp>
-== Changelog ==
-</only:wp -->
 
 See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/changelog.md) for information about all previous releases.
 

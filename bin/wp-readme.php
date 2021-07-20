@@ -71,19 +71,6 @@ function wp_readme_replace( $target_file ) {
 function wp_readme_convert_string( $string ) {
 	// Control visibility.
 	$string = wp_readme_visibility( $string );
-	// Replace headers.
-	$string = preg_replace_callback(
-		'/^(#+)\s+(.*)/mu',
-		function ( $match ) {
-			$length = strlen( $match[ 1 ] );
-			$sep    = '';
-			for ( $i = 1, $l = 3 - ( $length - 1 ); $i <= $l; $i ++ ) {
-				$sep .= '=';
-			}
-			return "{$sep} {$match[2]} {$sep}";
-		},
-		$string
-	);
 
 	// Format code.
 	$string = preg_replace( '/```([^\n`]*?)\n(.*?)\n```/us', '<pre>$2</pre>', $string );
