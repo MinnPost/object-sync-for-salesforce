@@ -158,7 +158,12 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 - [Visualforce](https://developer.salesforce.com/page/An_Introduction_to_Visualforce) If you are or have a Salesforce developer, you can build MVC based applications that integrate with Salesforce. It would be possible to build a system that uses, for example, the [WordPress REST API](https://developer.wordpress.org/rest-api/) to send and receive data to and from WordPress. This could be, in many ways, the flip side of what our plugin here does, but the complexity would be the same if the scope was the same.
 - **Build other integrations in WordPress** this plugin focuses on the Salesforce REST API, as it covers the integration needs we have. It also provides some support for the SOAP API, primarily to detect merges of Salesforce records. Salesforce also has other developer options: the Bulk API, and the Metadata API, the Analytics API, and likely more functionality that is only in SOAP. Developers could extend this plugin to integrate with one of these. We would welcome any pull requests!
 
+<!-- only:github/ -->
+## Changelog
+<!-- /only:github -->
+<!-- only:wp>
 == Changelog ==
+</only:wp -->
 
 See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/changelog.md) for information about all previous releases.
 
