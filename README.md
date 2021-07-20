@@ -28,7 +28,7 @@ For any supported WordPress content types (post, page, user, or custom content t
 
 For each such combination of object and content type, choose which fields should be mapped to one another, creating a fieldmap. The plugin acts on matching data after it is installed.
 
-To get started quicky, install Object Sync for Salesforce from the [WordPress plugin repository](https://wordpress.org/plugins/object-sync-for-salesforce/) and follow the [setup instructions](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md). We also host extensive additional [documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
+To get started quicky, install Object Sync for Salesforce from the [WordPress plugin repository](https://wordpress.org/plugins/object-sync-for-salesforce/) and follow the [setup instructions](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md).
 
 ### Requirements
 
@@ -47,16 +47,11 @@ This plugin maps and syncs data between Salesforce objects and WordPress content
 Both of these directions act upon any matching data that is created after the plugin is installed. For each such assignment, you choose which WordPress and Salesforce fields should be mapped to one another.
 
 This plugin also includes developer hooks that allow for additional plugins to modify what data the plugin is working with, or what happens upon specific events.
-</only:wp -->
 
-<!-- only:github/ -->
-### Installation and setup
-<!-- /only:github -->
-<!-- only:wp>
 == Installation ==
-</only:wp -->
 
 The plugin documentation contains [initial setup instructions](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md). This is the fastest way to get the plugin running on your site.
+</only:wp -->
 
 We maintain [extensive documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md) of the plugin beyond its installation process as well, including its developer hooks. This documentation also exists in the plugin's `docs` folder when it is downloaded.
 
