@@ -1,14 +1,369 @@
 Search.appendIndex(
     [
                 {
+            "fqsen": "\\Object_Sync_Sf_Queue",
+            "name": "Object_Sync_Sf_Queue",
+            "summary": "Object_Sync_Sf_Queue\u0020class.",
+            "url": "classes/Object-Sync-Sf-Queue.html"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor\u0020for\u0020queue\u0020class",
+            "url": "classes/Object-Sync-Sf-Queue.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aadd_actions\u0028\u0029",
+            "name": "add_actions",
+            "summary": "Add\u0020actions",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_add_actions"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aaction_scheduler_batch_size\u0028\u0029",
+            "name": "action_scheduler_batch_size",
+            "summary": "Set\u0020the\u0020batch\u0020size.",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_action_scheduler_batch_size"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aaction_scheduler_concurrent_batches\u0028\u0029",
+            "name": "action_scheduler_concurrent_batches",
+            "summary": "Set\u0020the\u0020number\u0020of\u0020concurrent\u0020batches\u0020that\u0020can\u0020run.",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_action_scheduler_concurrent_batches"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_frequencies\u0028\u0029",
+            "name": "get_frequencies",
+            "summary": "Get\u0020all\u0020the\u0020schedules\u0020with\u0020their\u0020frequencies,\u0020sorted",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_get_frequencies"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_frequency\u0028\u0029",
+            "name": "get_frequency",
+            "summary": "Get\u0020a\u0020single\u0020schedule\u0020item\u0027s\u0020frequency",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_get_frequency"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aadd\u0028\u0029",
+            "name": "add",
+            "summary": "Enqueue\u0020an\u0020action\u0020to\u0020run\u0020one\u0020time,\u0020as\u0020soon\u0020as\u0020possible",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_add"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_single\u0028\u0029",
+            "name": "schedule_single",
+            "summary": "Schedule\u0020an\u0020action\u0020to\u0020run\u0020once\u0020at\u0020some\u0020time\u0020in\u0020the\u0020future",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_single"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_recurring\u0028\u0029",
+            "name": "schedule_recurring",
+            "summary": "Schedule\u0020a\u0020recurring\u0020action",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_recurring"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_cron\u0028\u0029",
+            "name": "schedule_cron",
+            "summary": "Schedule\u0020an\u0020action\u0020that\u0020recurs\u0020on\u0020a\u0020cron\u002Dlike\u0020schedule.",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_cron"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Acancel\u0028\u0029",
+            "name": "cancel",
+            "summary": "Dequeue\u0020all\u0020actions\u0020with\u0020a\u0020matching\u0020hook\u0020\u0028and\u0020optionally\u0020matching\u0020args\u0020and\u0020group\u0029\u0020so\u0020they\u0020are\u0020not\u0020run.",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_cancel"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_next\u0028\u0029",
+            "name": "get_next",
+            "summary": "Get\u0020the\u0020date\u0020and\u0020time\u0020for\u0020the\u0020next\u0020scheduled\u0020occurence\u0020of\u0020an\u0020action\u0020with\u0020a\u0020given\u0020hook\n\u0028an\u0020optionally\u0020that\u0020matches\u0020certain\u0020args\u0020and\u0020group\u0029,\u0020if\u0020any.",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_get_next"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Asearch\u0028\u0029",
+            "name": "search",
+            "summary": "Find\u0020scheduled\u0020actions",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_search"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024version",
+            "name": "version",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_wpdb"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024slug",
+            "name": "slug",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_slug"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024schedulable_classes",
+            "name": "schedulable_classes",
+            "summary": "Array\u0020of\u0020what\u0020classes\u0020in\u0020the\u0020plugin\u0020can\u0020be\u0020scheduled\u0020to\u0020occur\u0020with\u0020\u0060wp_cron\u0060\u0020events",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_schedulable_classes"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest",
+            "name": "Object_Sync_Sf_Rest",
+            "summary": "Object_Sync_Sf_Rest\u0020class.",
+            "url": "classes/Object-Sync-Sf-Rest.html"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor\u0020for\u0020rest\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aadd_actions\u0028\u0029",
+            "name": "add_actions",
+            "summary": "Create\u0020the\u0020action\u0020hooks\u0020to\u0020create\u0020the\u0020reset\u0020methods",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_add_actions"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aregister_routes\u0028\u0029",
+            "name": "register_routes",
+            "summary": "Register\u0020REST\u0020API\u0020routes",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_register_routes"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acheck_class\u0028\u0029",
+            "name": "check_class",
+            "summary": "Check\u0020for\u0020a\u0020valid\u0020class\u0020from\u0020the\u0020parameter",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_check_class"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acheck_id\u0028\u0029",
+            "name": "check_id",
+            "summary": "Check\u0020for\u0020a\u0020valid\u0020ID\u0020from\u0020the\u0020parameter.\u0020This\u0020one\u0020is\u0020not\u0020in\u0020use\u0020yet.",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_check_id"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acan_process\u0028\u0029",
+            "name": "can_process",
+            "summary": "Check\u0020to\u0020see\u0020if\u0020the\u0020user\u0020has\u0020permission\u0020to\u0020do\u0020this",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_can_process"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aprocess\u0028\u0029",
+            "name": "process",
+            "summary": "Process\u0020the\u0020REST\u0020API\u0020request",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_process"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024version",
+            "name": "version",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_wpdb"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024slug",
+            "name": "slug",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_slug"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024mappings",
+            "name": "mappings",
+            "summary": "Object_Sync_Sf_Mapping\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_mappings"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024wordpress",
+            "name": "wordpress",
+            "summary": "Object_Sync_Sf_WordPress\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_wordpress"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024salesforce",
+            "name": "salesforce",
+            "summary": "Object_Sync_Sf_Salesforce\u0020class\nThis\u0020contains\u0020Salesforce\u0020API\u0020methods",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_salesforce"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024push",
+            "name": "push",
+            "summary": "Object_Sync_Sf_Salesforce_Push\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_push"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024pull",
+            "name": "pull",
+            "summary": "Object_Sync_Sf_Salesforce_Pull\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_pull"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024sfwp_transients",
+            "name": "sfwp_transients",
+            "summary": "Object_Sync_Sf_WordPress_Transient\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_sfwp_transients"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024namespace",
+            "name": "namespace",
+            "summary": "The\u0020namespace\u0020for\u0020the\u0020REST\u0020endpoints",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_namespace"
+        },                {
+            "fqsen": "\\object_sync_for_salesforce\u0028\u0029",
+            "name": "object_sync_for_salesforce",
+            "summary": "Retrieve\u0020the\u0020instance\u0020of\u0020the\u0020main\u0020plugin\u0020class",
+            "url": "namespaces/default.html#function_object_sync_for_salesforce"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce",
+            "name": "Object_Sync_Salesforce",
+            "summary": "Object_Sync_Salesforce\u0020class.",
+            "url": "classes/Object-Sync-Salesforce.html"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "This\u0020is\u0020our\u0020constructor",
+            "url": "classes/Object-Sync-Salesforce.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Aget_instance\u0028\u0029",
+            "name": "get_instance",
+            "summary": "Load\u0020the\u0020static\u0020\u0024instance\u0020property\u0020that\u0020holds\u0020the\u0020instance\u0020of\u0020the\u0020class.",
+            "url": "classes/Object-Sync-Salesforce.html#method_get_instance"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Ainit\u0028\u0029",
+            "name": "init",
+            "summary": "Initialize\u0020the\u0020plugin\u0020and\u0020start\u0020the\u0020action\u0020hooks.",
+            "url": "classes/Object-Sync-Salesforce.html#method_init"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Aadd_actions\u0028\u0029",
+            "name": "add_actions",
+            "summary": "Run\u0020non\u002Dactivation\u0020actions.",
+            "url": "classes/Object-Sync-Salesforce.html#method_add_actions"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Arun\u0028\u0029",
+            "name": "run",
+            "summary": "Run\u0020the\u0020plugin,\u0020independent\u0020of\u0020activation\u0020methods.",
+            "url": "classes/Object-Sync-Salesforce.html#method_run"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024composer_loaded",
+            "name": "composer_loaded",
+            "summary": "Tells\u0020us\u0020if\u0020composer\u0020has\u0020been\u0020autoloaded",
+            "url": "classes/Object-Sync-Salesforce.html#property_composer_loaded"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Aget_login_credentials\u0028\u0029",
+            "name": "get_login_credentials",
+            "summary": "Get\u0020the\u0020pre\u002Dlogin\u0020Salesforce\u0020credentials.",
+            "url": "classes/Object-Sync-Salesforce.html#method_get_login_credentials"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Asalesforce_get_api\u0028\u0029",
+            "name": "salesforce_get_api",
+            "summary": "Public\u0020helper\u0020to\u0020load\u0020the\u0020Salesforce\u0020API\u0020and\u0020see\u0020if\u0020it\u0020is\u0020authenticated.",
+            "url": "classes/Object-Sync-Salesforce.html#method_salesforce_get_api"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Atextdomain\u0028\u0029",
+            "name": "textdomain",
+            "summary": "Load\u0020textdomain",
+            "url": "classes/Object-Sync-Salesforce.html#method_textdomain"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Ais_soap_available\u0028\u0029",
+            "name": "is_soap_available",
+            "summary": "Check\u0020the\u0020server\u0020to\u0020see\u0020if\u0020Soap\u0020is\u0020available",
+            "url": "classes/Object-Sync-Salesforce.html#method_is_soap_available"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Ais_soap_loaded\u0028\u0029",
+            "name": "is_soap_loaded",
+            "summary": "Check\u0020the\u0020plugin\u0020to\u0020see\u0020if\u0020the\u0020Soap\u0020option\u0020has\u0020been\u0020enabled\u0020and\u0020the\u0020class\u0020has\u0020been\u0020loaded",
+            "url": "classes/Object-Sync-Salesforce.html#method_is_soap_loaded"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024version",
+            "name": "version",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
+            "url": "classes/Object-Sync-Salesforce.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Salesforce.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Salesforce.html#property_wpdb"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024slug",
+            "name": "slug",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
+            "url": "classes/Object-Sync-Salesforce.html#property_slug"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Salesforce.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024action_group_suffix",
+            "name": "action_group_suffix",
+            "summary": "Suffix\u0020for\u0020group\u0020name\u0020in\u0020ActionScheduler",
+            "url": "classes/Object-Sync-Salesforce.html#property_action_group_suffix"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024schedulable_classes",
+            "name": "schedulable_classes",
+            "summary": "Array\u0020of\u0020what\u0020classes\u0020in\u0020the\u0020plugin\u0020can\u0020be\u0020scheduled\u0020to\u0020occur\u0020with\u0020\u0060wp_cron\u0060\u0020events",
+            "url": "classes/Object-Sync-Salesforce.html#property_schedulable_classes"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024instance",
+            "name": "instance",
+            "summary": "Legacy\u0020property\u0020that\u0020holds\u0020an\u0020instance\u0020of\u0020the\u0020plugin\u0020class.",
+            "url": "classes/Object-Sync-Salesforce.html#property_instance"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024queue",
+            "name": "queue",
+            "summary": "Object_Sync_Sf_Queue\u0020class",
+            "url": "classes/Object-Sync-Salesforce.html#property_queue"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024activated",
+            "name": "activated",
+            "summary": "Object_Sync_Sf_Activate\u0020class",
+            "url": "classes/Object-Sync-Salesforce.html#property_activated"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024login_credentials",
+            "name": "login_credentials",
+            "summary": "Login\u0020credentials\u0020for\u0020the\u0020Salesforce\u0020API\u003B\u0020comes\u0020from\u0020wp\u002Dconfig\u0020or\u0020from\u0020the\u0020plugin\u0020settings",
+            "url": "classes/Object-Sync-Salesforce.html#property_login_credentials"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024logging",
+            "name": "logging",
+            "summary": "Object_Sync_Sf_Logging\u0020class",
+            "url": "classes/Object-Sync-Salesforce.html#property_logging"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024mappings",
+            "name": "mappings",
+            "summary": "Object_Sync_Sf_Mapping\u0020class",
+            "url": "classes/Object-Sync-Salesforce.html#property_mappings"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024wordpress",
+            "name": "wordpress",
+            "summary": "Object_Sync_Sf_WordPress\u0020class",
+            "url": "classes/Object-Sync-Salesforce.html#property_wordpress"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024salesforce",
+            "name": "salesforce",
+            "summary": "Object_Sync_Sf_Salesforce\u0020class\nThis\u0020contains\u0020Salesforce\u0020API\u0020methods",
+            "url": "classes/Object-Sync-Salesforce.html#property_salesforce"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024push",
+            "name": "push",
+            "summary": "Object_Sync_Sf_Salesforce_Push\u0020class",
+            "url": "classes/Object-Sync-Salesforce.html#property_push"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024pull",
+            "name": "pull",
+            "summary": "Object_Sync_Sf_Salesforce_Pull\u0020class",
+            "url": "classes/Object-Sync-Salesforce.html#property_pull"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024rest",
+            "name": "rest",
+            "summary": "Object_Sync_Sf_Rest\u0020class",
+            "url": "classes/Object-Sync-Salesforce.html#property_rest"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Activate",
             "name": "Object_Sync_Sf_Activate",
-            "summary": "What\u0020to\u0020do\u0020when\u0020the\u0020plugin\u0020is\u0020activated",
+            "summary": "Object_Sync_Sf_Activate\u0020class.",
             "url": "classes/Object-Sync-Sf-Activate.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructor\u0020which\u0020sets\u0020up\u0020activate\u0020hooks",
+            "summary": "Constructor\u0020for\u0020activate\u0020class",
             "url": "classes/Object-Sync-Sf-Activate.html#method___construct"
         },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003Aadd_actions\u0028\u0029",
@@ -20,6 +375,11 @@ Search.appendIndex(
             "name": "php_requirements",
             "summary": "Check\u0020for\u0020the\u0020minimum\u0020required\u0020version\u0020of\u0020php",
             "url": "classes/Object-Sync-Sf-Activate.html#method_php_requirements"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003Arequire_ssl\u0028\u0029",
+            "name": "require_ssl",
+            "summary": "Require\u0020SSL\u0020because\u0020otherwise\u0020the\u0020plugin\u0020will\u0020not\u0020authorize",
+            "url": "classes/Object-Sync-Sf-Activate.html#method_require_ssl"
         },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003Awordpress_salesforce_tables\u0028\u0029",
             "name": "wordpress_salesforce_tables",
@@ -36,59 +396,69 @@ Search.appendIndex(
             "summary": "Check\u0020for\u0020database\u0020version\nWhen\u0020the\u0020plugin\u0020is\u0020loaded\u0020in\u0020the\u0020admin,\u0020if\u0020the\u0020database\u0020version\u0020does\u0020not\u0020match\u0020the\u0020current\u0020version,\u0020perform\u0020these\u0020methods",
             "url": "classes/Object-Sync-Sf-Activate.html#method_wordpress_salesforce_update_db_check"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003Alog_trigger_settings\u0028\u0029",
+            "name": "log_trigger_settings",
+            "summary": "Check\u0020for\u0020log\u0020trigger\u0020settings\u0020based\u0020on\u0020plugin\u0020version\nWhen\u0020the\u0020plugin\u0020is\u0020loaded\u0020in\u0020the\u0020admin,\u0020if\u0020the\u0020previously\u0020installed\u0020version\u0020is\u0020below\u00202.0.0,\u0020update\u0020the\u0020values\u0020for\u0020the\u0020log\u0020trigger\u0020settings.",
+            "url": "classes/Object-Sync-Sf-Activate.html#method_log_trigger_settings"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003Acheck_for_action_scheduler\u0028\u0029",
             "name": "check_for_action_scheduler",
             "summary": "Check\u0020whether\u0020the\u0020user\u0020has\u0020action\u0020scheduler\u0020tasks\u0020when\u0020they\u0020upgrade",
             "url": "classes/Object-Sync-Sf-Activate.html#method_check_for_action_scheduler"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Activate.html#property_wpdb"
-        },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024version",
             "name": "version",
-            "summary": "",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
             "url": "classes/Object-Sync-Sf-Activate.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Activate.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-Activate.html#property_wpdb"
         },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024slug",
             "name": "slug",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
             "url": "classes/Object-Sync-Sf-Activate.html#property_slug"
         },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024option_prefix",
             "name": "option_prefix",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
             "url": "classes/Object-Sync-Sf-Activate.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024action_group_suffix",
+            "name": "action_group_suffix",
+            "summary": "Suffix\u0020for\u0020group\u0020name\u0020in\u0020ActionScheduler",
+            "url": "classes/Object-Sync-Sf-Activate.html#property_action_group_suffix"
         },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024schedulable_classes",
             "name": "schedulable_classes",
-            "summary": "",
+            "summary": "Array\u0020of\u0020what\u0020classes\u0020in\u0020the\u0020plugin\u0020can\u0020be\u0020scheduled\u0020to\u0020occur\u0020with\u0020\u0060wp_cron\u0060\u0020events",
             "url": "classes/Object-Sync-Sf-Activate.html#property_schedulable_classes"
         },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024queue",
             "name": "queue",
-            "summary": "",
+            "summary": "Object_Sync_Sf_Queue\u0020class",
             "url": "classes/Object-Sync-Sf-Activate.html#property_queue"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024action_group_suffix",
-            "name": "action_group_suffix",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Activate.html#property_action_group_suffix"
         },                {
             "fqsen": "\\Object_Sync_Sf_Activate\u003A\u003A\u0024user_installed_version",
             "name": "user_installed_version",
-            "summary": "",
+            "summary": "The\u0020version\u0020of\u0020this\u0020plugin\u0027s\u0020database\u0020setup",
             "url": "classes/Object-Sync-Sf-Activate.html#property_user_installed_version"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin_Notice",
             "name": "Object_Sync_Sf_Admin_Notice",
-            "summary": "Generate\u0020notices\u0020in\u0020the\u0020WordPress\u0020admin",
+            "summary": "Object_Sync_Sf_Admin_Notice\u0020class.",
             "url": "classes/Object-Sync-Sf-Admin-Notice.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin_Notice\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructor\u0020which\u0020sets\u0020up\u0020the\u0020admin_notices\u0020hook\u0020for\u0020rendering",
+            "summary": "Constructor\u0020for\u0020admin\u0020notice\u0020class",
             "url": "classes/Object-Sync-Sf-Admin-Notice.html#method___construct"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin_Notice\u003A\u003Arender\u0028\u0029",
@@ -96,79 +466,89 @@ Search.appendIndex(
             "summary": "Render\u0020an\u0020admin\u0020notice",
             "url": "classes/Object-Sync-Sf-Admin-Notice.html#method_render"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Admin_Notice\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Admin-Notice.html#property_file"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Admin_Notice\u003A\u003A\u0024condition",
             "name": "condition",
-            "summary": "",
+            "summary": "The\u0020condition\u0020the\u0020notice\u0020is\u0020checking",
             "url": "classes/Object-Sync-Sf-Admin-Notice.html#property_condition"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin_Notice\u003A\u003A\u0024message",
             "name": "message",
-            "summary": "",
+            "summary": "The\u0020message\u0020that\u0020is\u0020being\u0020displayed",
             "url": "classes/Object-Sync-Sf-Admin-Notice.html#property_message"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Admin_Notice\u003A\u003A\u0024dismissible",
-            "name": "dismissible",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Admin-Notice.html#property_dismissible"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin_Notice\u003A\u003A\u0024type",
             "name": "type",
-            "summary": "",
+            "summary": "What\u0020type\u0020of\u0020notice\u0020it\u0020is",
             "url": "classes/Object-Sync-Sf-Admin-Notice.html#property_type"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin_Notice\u003A\u003A\u0024dismissible",
+            "name": "dismissible",
+            "summary": "Whether\u0020the\u0020notice\u0020is\u0020dismisable\u0020or\u0020not",
+            "url": "classes/Object-Sync-Sf-Admin-Notice.html#property_dismissible"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin_Notice\u003A\u003A\u0024template",
             "name": "template",
-            "summary": "",
+            "summary": "Which\u0020template\u0020is\u0020used\u0020for\u0020display",
             "url": "classes/Object-Sync-Sf-Admin-Notice.html#property_template"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin",
             "name": "Object_Sync_Sf_Admin",
-            "summary": "Create\u0020default\u0020WordPress\u0020admin\u0020functionality\u0020to\u0020configure\u0020the\u0020plugin.",
+            "summary": "Object_Sync_Sf_Admin\u0020class.",
             "url": "classes/Object-Sync-Sf-Admin.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructor\u0020which\u0020sets\u0020up\u0020admin\u0020pages",
+            "summary": "Constructor\u0020for\u0020admin\u0020class",
             "url": "classes/Object-Sync-Sf-Admin.html#method___construct"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aadd_actions\u0028\u0029",
             "name": "add_actions",
-            "summary": "Create\u0020the\u0020action\u0020hooks\u0020to\u0020create\u0020the\u0020admin\u0020page\u0028s\u0029",
+            "summary": "Create\u0020the\u0020action\u0020hooks\u0020to\u0020create\u0020the\u0020admin\u0020pages.",
             "url": "classes/Object-Sync-Sf-Admin.html#method_add_actions"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aadd_deprecated_actions\u0028\u0029",
-            "name": "add_deprecated_actions",
-            "summary": "Deprecated\u0020action\u0020hooks\u0020for\u0020admin\u0020pages",
-            "url": "classes/Object-Sync-Sf-Admin.html#method_add_deprecated_actions"
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aplugin_action_links\u0028\u0029",
+            "name": "plugin_action_links",
+            "summary": "Display\u0020a\u0020Settings\u0020link\u0020on\u0020the\u0020main\u0020Plugins\u0020page",
+            "url": "classes/Object-Sync-Sf-Admin.html#method_plugin_action_links"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aadmin_scripts_and_styles\u0028\u0029",
+            "name": "admin_scripts_and_styles",
+            "summary": "Admin\u0020styles.\u0020Load\u0020the\u0020CSS\u0020and\u0020JavaScript\u0020for\u0020the\u0020plugin\u0027s\u0020settings",
+            "url": "classes/Object-Sync-Sf-Admin.html#method_admin_scripts_and_styles"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Ainitial_action_schedule\u0028\u0029",
             "name": "initial_action_schedule",
-            "summary": "Set\u0020up\u0020recurring\u0020tasks\u0020if\u0020there\u0020are\u0020none",
+            "summary": "Initial\u0020recurring\u0020tasks\u0020for\u0020ActionScheduler",
             "url": "classes/Object-Sync-Sf-Admin.html#method_initial_action_schedule"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Achange_action_schedule\u0028\u0029",
             "name": "change_action_schedule",
-            "summary": "Change\u0020recurring\u0020tasks\u0020if\u0020options\u0020change",
+            "summary": "Update\u0020recurring\u0020tasks\u0020for\u0020ActionScheduler\u0020if\u0020options\u0020change",
             "url": "classes/Object-Sync-Sf-Admin.html#method_change_action_schedule"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aset_action_schedule\u0028\u0029",
             "name": "set_action_schedule",
-            "summary": "Set\u0020up\u0020recurring\u0020tasks",
+            "summary": "Set\u0020up\u0020recurring\u0020tasks\u0020for\u0020ActionScheduler",
             "url": "classes/Object-Sync-Sf-Admin.html#method_set_action_schedule"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Acreate_admin_menu\u0028\u0029",
             "name": "create_admin_menu",
-            "summary": "Create\u0020WordPress\u0020admin\u0020options\u0020page",
+            "summary": "Create\u0020the\u0020WordPress\u0020admin\u0020options\u0020page",
             "url": "classes/Object-Sync-Sf-Admin.html#method_create_admin_menu"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Ashow_admin_page\u0028\u0029",
             "name": "show_admin_page",
-            "summary": "Render\u0020full\u0020admin\u0020pages\u0020in\u0020WordPress\nThis\u0020allows\u0020other\u0020plugins\u0020to\u0020add\u0020tabs\u0020to\u0020the\u0020Salesforce\u0020settings\u0020screen",
+            "summary": "Render\u0020the\u0020admin\u0020pages\u0020in\u0020WordPress.\u0020This\u0020also\u0020allows\u0020other\u0020plugins\u0020to\u0020add\u0020tabs\u0020to\u0020this\u0020plugin\u0027s\u0020settings\u0020screen",
             "url": "classes/Object-Sync-Sf-Admin.html#method_show_admin_page"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Asalesforce_settings_forms\u0028\u0029",
             "name": "salesforce_settings_forms",
-            "summary": "Create\u0020default\u0020WordPress\u0020admin\u0020settings\u0020form\u0020for\u0020salesforce\nThis\u0020is\u0020for\u0020the\u0020Settings\u0020page\/tab",
+            "summary": "Create\u0020default\u0020WordPress\u0020admin\u0020settings\u0020form.\u0020This\u0020runs\u0020the\u0020Settings\u0020page.",
             "url": "classes/Object-Sync-Sf-Admin.html#method_salesforce_settings_forms"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Afields_settings\u0028\u0029",
@@ -193,7 +573,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Afields_errors\u0028\u0029",
             "name": "fields_errors",
-            "summary": "Fields\u0020for\u0020the\u0020Mapping\u0020errors\u0020tab\nThis\u0020runs\u0020add_settings_section\u0020once",
+            "summary": "Fields\u0020for\u0020the\u0020Mapping\u0020Errors\u0020tab\nThis\u0020runs\u0020add_settings_section\u0020once,\u0020as\u0020well\u0020as\u0020add_settings_field\u0020and\u0020register_setting\u0020methods\u0020for\u0020each\u0020option",
             "url": "classes/Object-Sync-Sf-Admin.html#method_fields_errors"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Anotices\u0028\u0029",
@@ -208,18 +588,13 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aget_salesforce_object_fields\u0028\u0029",
             "name": "get_salesforce_object_fields",
-            "summary": "Get\u0020Salesforce\u0020object\u0020fields\u0020for\u0020fieldmapping\nThis\u0020takes\u0020either\u0020the\u0020\u0024_POST\u0020array\u0020via\u0020ajax,\u0020or\u0020can\u0020be\u0020directly\u0020called\u0020with\u0020a\u0020\u0024data\u0020array",
+            "summary": "Get\u0020all\u0020the\u0020Salesforce\u0020fields\u0020settings\u0020for\u0020fieldmapping\nThis\u0020takes\u0020either\u0020the\u0020\u0024_POST\u0020array\u0020via\u0020ajax,\u0020or\u0020can\u0020be\u0020directly\u0020called\u0020with\u0020a\u0020\u0024data\u0020array",
             "url": "classes/Object-Sync-Sf-Admin.html#method_get_salesforce_object_fields"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aget_wordpress_object_fields\u0028\u0029",
             "name": "get_wordpress_object_fields",
             "summary": "Get\u0020WordPress\u0020object\u0020fields\u0020for\u0020fieldmapping\nThis\u0020takes\u0020either\u0020the\u0020\u0024_POST\u0020array\u0020via\u0020ajax,\u0020or\u0020can\u0020be\u0020directly\u0020called\u0020with\u0020a\u0020\u0024wordpress_object\u0020field",
             "url": "classes/Object-Sync-Sf-Admin.html#method_get_wordpress_object_fields"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aget_wp_sf_object_fields\u0028\u0029",
-            "name": "get_wp_sf_object_fields",
-            "summary": "Get\u0020WordPress\u0020and\u0020Salesforce\u0020object\u0020fields\u0020together\u0020for\u0020fieldmapping\nThis\u0020takes\u0020either\u0020the\u0020\u0024_POST\u0020array\u0020via\u0020ajax,\u0020or\u0020can\u0020be\u0020directly\u0020called\u0020with\u0020\u0024wordpress_object\u0020and\u0020\u0024salesforce_object\u0020fields",
-            "url": "classes/Object-Sync-Sf-Admin.html#method_get_wp_sf_object_fields"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Apush_to_salesforce\u0028\u0029",
             "name": "push_to_salesforce",
@@ -321,6 +696,16 @@ Search.appendIndex(
             "summary": "Check\u0020WordPress\u0020Admin\u0020permissions\nCheck\u0020if\u0020the\u0020current\u0020user\u0020is\u0020allowed\u0020to\u0020access\u0020the\u0020Salesforce\u0020plugin\u0020options",
             "url": "classes/Object-Sync-Sf-Admin.html#method_check_wordpress_admin_permissions"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Acheck_wordpress_ssl\u0028\u0029",
+            "name": "check_wordpress_ssl",
+            "summary": "Check\u0020WordPress\u0020SSL\u0020status.",
+            "url": "classes/Object-Sync-Sf-Admin.html#method_check_wordpress_ssl"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Acheck_wordpress_ssl_support\u0028\u0029",
+            "name": "check_wordpress_ssl_support",
+            "summary": "Check\u0020WordPress\u0020SSL\u0020support.",
+            "url": "classes/Object-Sync-Sf-Admin.html#method_check_wordpress_ssl_support"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Ashow_salesforce_user_fields\u0028\u0029",
             "name": "show_salesforce_user_fields",
             "summary": "Show\u0020what\u0020we\u0020know\u0020about\u0020this\u0020user\u0027s\u0020relationship\u0020to\u0020a\u0020Salesforce\u0020object,\u0020if\u0020any",
@@ -351,329 +736,149 @@ Search.appendIndex(
             "summary": "Create\u0020an\u0020object\u0020map\u0020between\u0020a\u0020WordPress\u0020object\u0020and\u0020a\u0020Salesforce\u0020object",
             "url": "classes/Object-Sync-Sf-Admin.html#method_create_object_map"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Admin.html#property_wpdb"
-        },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024version",
             "name": "version",
-            "summary": "",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
             "url": "classes/Object-Sync-Sf-Admin.html#property_version"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024login_credentials",
-            "name": "login_credentials",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Admin.html#property_login_credentials"
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_wpdb"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024slug",
             "name": "slug",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
             "url": "classes/Object-Sync-Sf-Admin.html#property_slug"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024salesforce",
-            "name": "salesforce",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Admin.html#property_salesforce"
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_option_prefix"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024wordpress",
-            "name": "wordpress",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Admin.html#property_wordpress"
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024action_group_suffix",
+            "name": "action_group_suffix",
+            "summary": "Suffix\u0020for\u0020group\u0020name\u0020in\u0020ActionScheduler",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_action_group_suffix"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024mappings",
-            "name": "mappings",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Admin.html#property_mappings"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024push",
-            "name": "push",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Admin.html#property_push"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024pull",
-            "name": "pull",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Admin.html#property_pull"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024logging",
-            "name": "logging",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Admin.html#property_logging"
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024login_credentials",
+            "name": "login_credentials",
+            "summary": "Login\u0020credentials\u0020for\u0020the\u0020Salesforce\u0020API\u003B\u0020comes\u0020from\u0020wp\u002Dconfig\u0020or\u0020from\u0020the\u0020plugin\u0020settings",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_login_credentials"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024schedulable_classes",
             "name": "schedulable_classes",
-            "summary": "",
+            "summary": "Array\u0020of\u0020what\u0020classes\u0020in\u0020the\u0020plugin\u0020can\u0020be\u0020scheduled\u0020to\u0020occur\u0020with\u0020\u0060wp_cron\u0060\u0020events",
             "url": "classes/Object-Sync-Sf-Admin.html#property_schedulable_classes"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024queue",
             "name": "queue",
-            "summary": "",
+            "summary": "Object_Sync_Sf_Queue\u0020class",
             "url": "classes/Object-Sync-Sf-Admin.html#property_queue"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024option_prefix",
-            "name": "option_prefix",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Admin.html#property_option_prefix"
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024logging",
+            "name": "logging",
+            "summary": "Object_Sync_Sf_Logging\u0020class",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_logging"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024mappings",
+            "name": "mappings",
+            "summary": "Object_Sync_Sf_Mapping\u0020class",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_mappings"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024wordpress",
+            "name": "wordpress",
+            "summary": "Object_Sync_Sf_WordPress\u0020class",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_wordpress"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024salesforce",
+            "name": "salesforce",
+            "summary": "Object_Sync_Sf_Salesforce\u0020class\nThis\u0020contains\u0020Salesforce\u0020API\u0020methods",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_salesforce"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024push",
+            "name": "push",
+            "summary": "Object_Sync_Sf_Salesforce_Push\u0020class",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_push"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024pull",
+            "name": "pull",
+            "summary": "Object_Sync_Sf_Salesforce_Pull\u0020class",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_pull"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024sfwp_transients",
             "name": "sfwp_transients",
-            "summary": "",
+            "summary": "Object_Sync_Sf_WordPress_Transient\u0020class",
             "url": "classes/Object-Sync-Sf-Admin.html#property_sfwp_transients"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024admin_settings_url_param",
+            "name": "admin_settings_url_param",
+            "summary": "URL\u0020fragment\u0020for\u0020the\u0020plugin\u0027s\u0020settings\u0020page",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_admin_settings_url_param"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024access_token",
             "name": "access_token",
-            "summary": "",
+            "summary": "Salesforce\u0020access\u0020token",
             "url": "classes/Object-Sync-Sf-Admin.html#property_access_token"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024instance_url",
             "name": "instance_url",
-            "summary": "",
+            "summary": "Salesforce\u0020instance\u0020URL",
             "url": "classes/Object-Sync-Sf-Admin.html#property_instance_url"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024refresh_token",
             "name": "refresh_token",
-            "summary": "",
+            "summary": "Salesforce\u0020refresh\u0020token",
             "url": "classes/Object-Sync-Sf-Admin.html#property_refresh_token"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024default_authorize_url_path",
             "name": "default_authorize_url_path",
-            "summary": "",
+            "summary": "Default\u0020path\u0020for\u0020the\u0020Salesforce\u0020authorize\u0020URL",
             "url": "classes/Object-Sync-Sf-Admin.html#property_default_authorize_url_path"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024default_token_url_path",
             "name": "default_token_url_path",
-            "summary": "",
+            "summary": "Default\u0020path\u0020for\u0020the\u0020Salesforce\u0020token\u0020URL",
             "url": "classes/Object-Sync-Sf-Admin.html#property_default_token_url_path"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024default_api_version",
             "name": "default_api_version",
-            "summary": "",
+            "summary": "What\u0020version\u0020of\u0020the\u0020Salesforce\u0020API\u0020should\u0020be\u0020the\u0020default\u0020on\u0020the\u0020settings\u0020screen.",
             "url": "classes/Object-Sync-Sf-Admin.html#property_default_api_version"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024default_pull_limit",
             "name": "default_pull_limit",
-            "summary": "",
+            "summary": "Default\u0020max\u0020number\u0020of\u0020pull\u0020records.\u0020Users\u0020can\u0020edit\u0020this.",
             "url": "classes/Object-Sync-Sf-Admin.html#property_default_pull_limit"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024default_pull_throttle",
             "name": "default_pull_throttle",
-            "summary": "",
+            "summary": "Default\u0020throttle\u0020for\u0020how\u0020often\u0020to\u0020pull\u0020from\u0020Salesforce.\u0020Users\u0020can\u0020edit\u0020this.",
             "url": "classes/Object-Sync-Sf-Admin.html#property_default_pull_throttle"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024default_triggerable",
             "name": "default_triggerable",
-            "summary": "",
+            "summary": "Default\u0020for\u0020whether\u0020to\u0020limit\u0020to\u0020triggerable\u0020items.\u0020Users\u0020can\u0020edit\u0020this.",
             "url": "classes/Object-Sync-Sf-Admin.html#property_default_triggerable"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024default_updateable",
             "name": "default_updateable",
-            "summary": "",
+            "summary": "Default\u0020for\u0020whether\u0020to\u0020limit\u0020to\u0020items\u0020that\u0020can\u0020be\u0020updated.\u0020Users\u0020can\u0020edit\u0020this.",
             "url": "classes/Object-Sync-Sf-Admin.html#property_default_updateable"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024action_group_suffix",
-            "name": "action_group_suffix",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Admin.html#property_action_group_suffix"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue",
-            "name": "Object_Sync_Sf_Queue",
-            "summary": "Object_Sync_Sf_Queue",
-            "url": "classes/Object-Sync-Sf-Queue.html"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Queue.html#method___construct"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aadd_actions\u0028\u0029",
-            "name": "add_actions",
-            "summary": "Add\u0020actions",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_add_actions"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aaction_scheduler_batch_size\u0028\u0029",
-            "name": "action_scheduler_batch_size",
-            "summary": "Set\u0020the\u0020batch\u0020size.",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_action_scheduler_batch_size"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aaction_scheduler_concurrent_batches\u0028\u0029",
-            "name": "action_scheduler_concurrent_batches",
-            "summary": "Set\u0020the\u0020number\u0020of\u0020concurrent\u0020batches\u0020that\u0020can\u0020run.",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_action_scheduler_concurrent_batches"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_frequencies\u0028\u0029",
-            "name": "get_frequencies",
-            "summary": "Get\u0020all\u0020the\u0020schedules\u0020with\u0020their\u0020frequencies,\u0020sorted",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_get_frequencies"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_frequency\u0028\u0029",
-            "name": "get_frequency",
-            "summary": "Get\u0020a\u0020single\u0020schedule\u0020item\u0027s\u0020frequency",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_get_frequency"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aadd\u0028\u0029",
-            "name": "add",
-            "summary": "Enqueue\u0020an\u0020action\u0020to\u0020run\u0020one\u0020time,\u0020as\u0020soon\u0020as\u0020possible",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_add"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_single\u0028\u0029",
-            "name": "schedule_single",
-            "summary": "Schedule\u0020an\u0020action\u0020to\u0020run\u0020once\u0020at\u0020some\u0020time\u0020in\u0020the\u0020future",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_single"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_recurring\u0028\u0029",
-            "name": "schedule_recurring",
-            "summary": "Schedule\u0020a\u0020recurring\u0020action",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_recurring"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_cron\u0028\u0029",
-            "name": "schedule_cron",
-            "summary": "Schedule\u0020an\u0020action\u0020that\u0020recurs\u0020on\u0020a\u0020cron\u002Dlike\u0020schedule.",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_cron"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Acancel\u0028\u0029",
-            "name": "cancel",
-            "summary": "Dequeue\u0020all\u0020actions\u0020with\u0020a\u0020matching\u0020hook\u0020\u0028and\u0020optionally\u0020matching\u0020args\u0020and\u0020group\u0029\u0020so\u0020they\u0020are\u0020not\u0020run.",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_cancel"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_next\u0028\u0029",
-            "name": "get_next",
-            "summary": "Get\u0020the\u0020date\u0020and\u0020time\u0020for\u0020the\u0020next\u0020scheduled\u0020occurence\u0020of\u0020an\u0020action\u0020with\u0020a\u0020given\u0020hook\n\u0028an\u0020optionally\u0020that\u0020matches\u0020certain\u0020args\u0020and\u0020group\u0029,\u0020if\u0020any.",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_get_next"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Asearch\u0028\u0029",
-            "name": "search",
-            "summary": "Find\u0020scheduled\u0020actions",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_search"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Queue.html#property_wpdb"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024version",
-            "name": "version",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Queue.html#property_version"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024slug",
-            "name": "slug",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Queue.html#property_slug"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024option_prefix",
-            "name": "option_prefix",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Queue.html#property_option_prefix"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024schedulable_classes",
-            "name": "schedulable_classes",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Queue.html#property_schedulable_classes"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest",
-            "name": "Object_Sync_Sf_Rest",
-            "summary": "Create\u0020WordPress\u0020REST\u0020API\u0020functionality",
-            "url": "classes/Object-Sync-Sf-Rest.html"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "Constructor\u0020which\u0020sets\u0020up\u0020rest\u0020methods",
-            "url": "classes/Object-Sync-Sf-Rest.html#method___construct"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aadd_actions\u0028\u0029",
-            "name": "add_actions",
-            "summary": "Create\u0020the\u0020action\u0020hooks\u0020to\u0020create\u0020the\u0020reset\u0020methods",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_add_actions"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aregister_routes\u0028\u0029",
-            "name": "register_routes",
-            "summary": "Register\u0020REST\u0020API\u0020routes",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_register_routes"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acheck_class\u0028\u0029",
-            "name": "check_class",
-            "summary": "Check\u0020for\u0020a\u0020valid\u0020class\u0020from\u0020the\u0020parameter",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_check_class"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acheck_id\u0028\u0029",
-            "name": "check_id",
-            "summary": "Check\u0020for\u0020a\u0020valid\u0020ID\u0020from\u0020the\u0020parameter",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_check_id"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acan_process\u0028\u0029",
-            "name": "can_process",
-            "summary": "Check\u0020to\u0020see\u0020if\u0020the\u0020user\u0020has\u0020permission\u0020to\u0020do\u0020this",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_can_process"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aprocess\u0028\u0029",
-            "name": "process",
-            "summary": "Process\u0020the\u0020REST\u0020API\u0020request",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_process"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_wpdb"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024version",
-            "name": "version",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_version"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024slug",
-            "name": "slug",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_slug"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024option_prefix",
-            "name": "option_prefix",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_option_prefix"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024wordpress",
-            "name": "wordpress",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_wordpress"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024salesforce",
-            "name": "salesforce",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_salesforce"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024mappings",
-            "name": "mappings",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_mappings"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024push",
-            "name": "push",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_push"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024pull",
-            "name": "pull",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_pull"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024sfwp_transients",
-            "name": "sfwp_transients",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_sfwp_transients"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024namespace",
-            "name": "namespace",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_namespace"
         },                {
             "fqsen": "\\Object_Sync_Sf_Deactivate",
             "name": "Object_Sync_Sf_Deactivate",
-            "summary": "What\u0020to\u0020do\u0020when\u0020the\u0020plugin\u0020is\u0020deactivated",
+            "summary": "Object_Sync_Sf_Deactivate\u0020class.",
             "url": "classes/Object-Sync-Sf-Deactivate.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructor\u0020which\u0020sets\u0020up\u0020deactivate\u0020hooks",
+            "summary": "Constructor\u0020for\u0020deactivate\u0020class",
             "url": "classes/Object-Sync-Sf-Deactivate.html#method___construct"
         },                {
             "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003Awordpress_salesforce_drop_tables\u0028\u0029",
@@ -706,54 +911,64 @@ Search.appendIndex(
             "summary": "Clear\u0020the\u0020plugin\u0020options",
             "url": "classes/Object-Sync-Sf-Deactivate.html#method_delete_plugin_options"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Deactivate.html#property_wpdb"
-        },                {
             "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A\u0024version",
             "name": "version",
-            "summary": "",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
             "url": "classes/Object-Sync-Sf-Deactivate.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Deactivate.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-Deactivate.html#property_wpdb"
         },                {
             "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A\u0024slug",
             "name": "slug",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
             "url": "classes/Object-Sync-Sf-Deactivate.html#property_slug"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A\u0024schedulable_classes",
-            "name": "schedulable_classes",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Deactivate.html#property_schedulable_classes"
         },                {
             "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A\u0024option_prefix",
             "name": "option_prefix",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
             "url": "classes/Object-Sync-Sf-Deactivate.html#property_option_prefix"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A\u0024queue",
-            "name": "queue",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Deactivate.html#property_queue"
         },                {
             "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A\u0024action_group_suffix",
             "name": "action_group_suffix",
-            "summary": "",
+            "summary": "Suffix\u0020for\u0020group\u0020name\u0020in\u0020ActionScheduler",
             "url": "classes/Object-Sync-Sf-Deactivate.html#property_action_group_suffix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A\u0024schedulable_classes",
+            "name": "schedulable_classes",
+            "summary": "Array\u0020of\u0020what\u0020classes\u0020in\u0020the\u0020plugin\u0020can\u0020be\u0020scheduled\u0020to\u0020occur\u0020with\u0020\u0060wp_cron\u0060\u0020events",
+            "url": "classes/Object-Sync-Sf-Deactivate.html#property_schedulable_classes"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Deactivate\u003A\u003A\u0024queue",
+            "name": "queue",
+            "summary": "Object_Sync_Sf_Queue\u0020class",
+            "url": "classes/Object-Sync-Sf-Deactivate.html#property_queue"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Exception",
+            "name": "Object_Sync_Sf_Exception",
+            "summary": "Object_Sync_Sf_Exception\u0020class.",
+            "url": "classes/Object-Sync-Sf-Exception.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Logging",
             "name": "Object_Sync_Sf_Logging",
-            "summary": "Log\u0020events\u0020based\u0020on\u0020plugin\u0020settings",
+            "summary": "Object_Sync_Sf_Logging\u0020class.",
             "url": "classes/Object-Sync-Sf-Logging.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructor\u0020which\u0020sets\u0020content\u0020type\u0020and\u0020pruning\u0020for\u0020logs",
+            "summary": "Constructor\u0020for\u0020logging\u0020class",
             "url": "classes/Object-Sync-Sf-Logging.html#method___construct"
         },                {
             "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003Ainit\u0028\u0029",
             "name": "init",
-            "summary": "Start.\u0020This\u0020creates\u0020a\u0020schedule\u0020for\u0020pruning\u0020logs,\u0020and\u0020also\u0020the\u0020custom\u0020content\u0020type",
+            "summary": "Initialize.\u0020This\u0020creates\u0020a\u0020schedule\u0020for\u0020pruning\u0020logs,\u0020and\u0020also\u0020the\u0020custom\u0020content\u0020type",
             "url": "classes/Object-Sync-Sf-Logging.html#method_init"
         },                {
             "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003Aset_log_visibility\u0028\u0029",
@@ -856,329 +1071,54 @@ Search.appendIndex(
             "summary": "Retrieves\u0020number\u0020of\u0020log\u0020entries\u0020connected\u0020to\u0020particular\u0020object\u0020ID",
             "url": "classes/Object-Sync-Sf-Logging.html#method_get_log_count"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Logging.html#property_wpdb"
-        },                {
             "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A\u0024version",
             "name": "version",
-            "summary": "",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
             "url": "classes/Object-Sync-Sf-Logging.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Logging.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-Logging.html#property_wpdb"
         },                {
             "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A\u0024slug",
             "name": "slug",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
             "url": "classes/Object-Sync-Sf-Logging.html#property_slug"
         },                {
             "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A\u0024option_prefix",
             "name": "option_prefix",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
             "url": "classes/Object-Sync-Sf-Logging.html#property_option_prefix"
         },                {
             "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A\u0024enabled",
             "name": "enabled",
-            "summary": "",
+            "summary": "The\u0020setting\u0020value\u0020for\u0020whether\u0020logging\u0020is\u0020enabled",
             "url": "classes/Object-Sync-Sf-Logging.html#property_enabled"
         },                {
             "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A\u0024statuses_to_log",
             "name": "statuses_to_log",
-            "summary": "",
+            "summary": "Which\u0020statuses\u0020to\u0020log,\u0020from\u0020the\u0020settings\u0020value",
             "url": "classes/Object-Sync-Sf-Logging.html#property_statuses_to_log"
         },                {
             "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A\u0024schedule_name",
             "name": "schedule_name",
-            "summary": "",
+            "summary": "The\u0020name\u0020of\u0020the\u0020schedule\u0020to\u0020prune\u0020logs",
             "url": "classes/Object-Sync-Sf-Logging.html#property_schedule_name"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce",
-            "name": "Object_Sync_Sf_Salesforce",
-            "summary": "Ability\u0020to\u0020authorize\u0020and\u0020communicate\u0020with\u0020the\u0020Salesforce\u0020REST\u0020API.\u0020This\u0020class\u0020can\u0020make\u0020read\u0020and\u0020write\u0020calls\u0020to\u0020Salesforce,\u0020and\u0020also\u0020cache\u0020the\u0020responses\u0020in\u0020WordPress.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "Constructor\u0020which\u0020initializes\u0020the\u0020Salesforce\u0020APIs.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method___construct"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aconvert_id\u0028\u0029",
-            "name": "convert_id",
-            "summary": "Converts\u0020a\u002015\u002Dcharacter\u0020case\u002Dsensitive\u0020Salesforce\u0020ID\u0020to\u002018\u002Dcharacter\ncase\u002Dinsensitive\u0020ID.\u0020If\u0020input\u0020is\u0020not\u002015\u002Dcharacters,\u0020return\u0020input\u0020unaltered.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_convert_id"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_sobject_type\u0028\u0029",
-            "name": "get_sobject_type",
-            "summary": "Given\u0020a\u0020Salesforce\u0020ID,\u0020return\u0020the\u0020corresponding\u0020SObject\u0020name.\u0020\u0028Based\u0020on\n\u0020keyPrefix\u0020from\u0020object\u0020definition,\u0020\u0040see\n\u0020https\u003A\/\/developer.salesforce.com\/forums\/\u003Fid\u003D906F0000000901ZIAQ\u0020\u0029",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_sobject_type"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Ais_authorized\u0028\u0029",
-            "name": "is_authorized",
-            "summary": "Determine\u0020if\u0020this\u0020SF\u0020instance\u0020is\u0020fully\u0020configured.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_is_authorized"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_api_versions\u0028\u0029",
-            "name": "get_api_versions",
-            "summary": "Get\u0020REST\u0020API\u0020versions\u0020available\u0020on\u0020this\u0020Salesforce\u0020organization\nThis\u0020is\u0020not\u0020an\u0020authenticated\u0020call,\u0020so\u0020it\u0020would\u0020not\u0020be\u0020a\u0020helpful\u0020test",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_api_versions"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aapi_call\u0028\u0029",
-            "name": "api_call",
-            "summary": "Make\u0020a\u0020call\u0020to\u0020the\u0020Salesforce\u0020REST\u0020API.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_api_call"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aapi_http_request\u0028\u0029",
-            "name": "api_http_request",
-            "summary": "Private\u0020helper\u0020to\u0020issue\u0020an\u0020SF\u0020API\u0020request.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_api_http_request"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Ahttp_request\u0028\u0029",
-            "name": "http_request",
-            "summary": "Make\u0020the\u0020HTTP\u0020request.\u0020Wrapper\u0020around\u0020curl\u0028\u0029.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_http_request"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_api_endpoint\u0028\u0029",
-            "name": "get_api_endpoint",
-            "summary": "Get\u0020the\u0020API\u0020end\u0020point\u0020for\u0020a\u0020given\u0020type\u0020of\u0020the\u0020API.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_api_endpoint"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_instance_url\u0028\u0029",
-            "name": "get_instance_url",
-            "summary": "Get\u0020the\u0020SF\u0020instance\u0020URL.\u0020Useful\u0020for\u0020linking\u0020to\u0020objects.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_instance_url"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aset_instance_url\u0028\u0029",
-            "name": "set_instance_url",
-            "summary": "Set\u0020the\u0020SF\u0020instanc\u0020URL.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_set_instance_url"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_access_token\u0028\u0029",
-            "name": "get_access_token",
-            "summary": "Get\u0020the\u0020access\u0020token.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_access_token"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aset_access_token\u0028\u0029",
-            "name": "set_access_token",
-            "summary": "Set\u0020the\u0020access\u0020token.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_set_access_token"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_refresh_token\u0028\u0029",
-            "name": "get_refresh_token",
-            "summary": "Get\u0020refresh\u0020token.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_refresh_token"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aset_refresh_token\u0028\u0029",
-            "name": "set_refresh_token",
-            "summary": "Set\u0020refresh\u0020token.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_set_refresh_token"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Arefresh_token\u0028\u0029",
-            "name": "refresh_token",
-            "summary": "Refresh\u0020access\u0020token\u0020based\u0020on\u0020the\u0020refresh\u0020token.\u0020Updates\u0020session\u0020variable.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_refresh_token"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aset_identity\u0028\u0029",
-            "name": "set_identity",
-            "summary": "Retrieve\u0020and\u0020store\u0020the\u0020Salesforce\u0020identity\u0020given\u0020an\u0020ID\u0020url.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_set_identity"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_identity\u0028\u0029",
-            "name": "get_identity",
-            "summary": "Return\u0020the\u0020Salesforce\u0020identity,\u0020which\u0020is\u0020stored\u0020in\u0020a\u0020variable.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_identity"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_authorization_code\u0028\u0029",
-            "name": "get_authorization_code",
-            "summary": "OAuth\u0020step\u00201\u003A\u0020Redirect\u0020to\u0020Salesforce\u0020and\u0020request\u0020and\u0020authorization\u0020code.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_authorization_code"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Arequest_token\u0028\u0029",
-            "name": "request_token",
-            "summary": "OAuth\u0020step\u00202\u003A\u0020Exchange\u0020an\u0020authorization\u0020code\u0020for\u0020an\u0020access\u0020token.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_request_token"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobjects\u0028\u0029",
-            "name": "objects",
-            "summary": "Available\u0020objects\u0020and\u0020their\u0020metadata\u0020for\u0020your\u0020organization\u0027s\u0020data.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_objects"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aquery\u0028\u0029",
-            "name": "query",
-            "summary": "Use\u0020SOQL\u0020to\u0020get\u0020objects\u0020based\u0020on\u0020query\u0020string.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_query"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_describe\u0028\u0029",
-            "name": "object_describe",
-            "summary": "Retrieve\u0020all\u0020the\u0020metadata\u0020for\u0020an\u0020object.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_describe"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_create\u0028\u0029",
-            "name": "object_create",
-            "summary": "Create\u0020a\u0020new\u0020object\u0020of\u0020the\u0020given\u0020type.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_create"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_upsert\u0028\u0029",
-            "name": "object_upsert",
-            "summary": "Create\u0020new\u0020records\u0020or\u0020update\u0020existing\u0020records.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_upsert"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_update\u0028\u0029",
-            "name": "object_update",
-            "summary": "Update\u0020an\u0020existing\u0020object.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_update"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_read\u0028\u0029",
-            "name": "object_read",
-            "summary": "Return\u0020a\u0020full\u0020loaded\u0020Salesforce\u0020object.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_read"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aanalytics_api\u0028\u0029",
-            "name": "analytics_api",
-            "summary": "Make\u0020a\u0020call\u0020to\u0020the\u0020Analytics\u0020API",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_analytics_api"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Arun_analytics_report\u0028\u0029",
-            "name": "run_analytics_report",
-            "summary": "Run\u0020a\u0020specific\u0020Analytics\u0020report",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_run_analytics_report"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_readby_external_id\u0028\u0029",
-            "name": "object_readby_external_id",
-            "summary": "Return\u0020a\u0020full\u0020loaded\u0020Salesforce\u0020object\u0020from\u0020External\u0020ID.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_readby_external_id"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_delete\u0028\u0029",
-            "name": "object_delete",
-            "summary": "Delete\u0020a\u0020Salesforce\u0020object.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_delete"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_deleted\u0028\u0029",
-            "name": "get_deleted",
-            "summary": "Retrieves\u0020the\u0020list\u0020of\u0020individual\u0020objects\u0020that\u0020have\u0020been\u0020deleted\u0020within\u0020the\ngiven\u0020timespan\u0020for\u0020a\u0020specified\u0020object\u0020type.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_deleted"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Alist_resources\u0028\u0029",
-            "name": "list_resources",
-            "summary": "Return\u0020a\u0020list\u0020of\u0020available\u0020resources\u0020for\u0020the\u0020configured\u0020API\u0020version.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_list_resources"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_updated\u0028\u0029",
-            "name": "get_updated",
-            "summary": "Return\u0020a\u0020list\u0020of\u0020SFIDs\u0020for\u0020the\u0020given\u0020object,\u0020which\u0020have\u0020been\u0020created\u0020or\nupdated\u0020in\u0020the\u0020given\u0020timeframe.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_updated"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_record_type_id_by_developer_name\u0028\u0029",
-            "name": "get_record_type_id_by_developer_name",
-            "summary": "Given\u0020a\u0020DeveloperName\u0020and\u0020SObject\u0020Name,\u0020return\u0020the\u0020SFID\u0020of\u0020the\ncorresponding\u0020RecordType.\u0020DeveloperName\u0020doesn\u0027t\u0020change\u0020between\u0020Salesforce\nenvironments,\u0020so\u0020it\u0027s\u0020safer\u0020to\u0020rely\u0020on\u0020compared\u0020to\u0020SFID.",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_record_type_id_by_developer_name"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Acache_expiration\u0028\u0029",
-            "name": "cache_expiration",
-            "summary": "If\u0020there\u0020is\u0020a\u0020WordPress\u0020setting\u0020for\u0020how\u0020long\u0020to\u0020keep\u0020the\u0020cache,\u0020return\u0020it\u0020and\u0020set\u0020the\u0020object\u0020property\nOtherwise,\u0020return\u0020seconds\u0020in\u002024\u0020hours",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#method_cache_expiration"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024consumer_key",
-            "name": "consumer_key",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_consumer_key"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024consumer_secret",
-            "name": "consumer_secret",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_consumer_secret"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024login_url",
-            "name": "login_url",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_login_url"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024callback_url",
-            "name": "callback_url",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_callback_url"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024authorize_path",
-            "name": "authorize_path",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_authorize_path"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024token_path",
-            "name": "token_path",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_token_path"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024rest_api_version",
-            "name": "rest_api_version",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_rest_api_version"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024wordpress",
-            "name": "wordpress",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_wordpress"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024slug",
-            "name": "slug",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_slug"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024logging",
-            "name": "logging",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_logging"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024schedulable_classes",
-            "name": "schedulable_classes",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_schedulable_classes"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024option_prefix",
-            "name": "option_prefix",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_option_prefix"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024options",
-            "name": "options",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_options"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024success_codes",
-            "name": "success_codes",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_success_codes"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024refresh_code",
-            "name": "refresh_code",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_refresh_code"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024success_or_refresh_codes",
-            "name": "success_or_refresh_codes",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_success_or_refresh_codes"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024debug",
-            "name": "debug",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_debug"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024response",
-            "name": "response",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce.html#property_response"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Exception",
-            "name": "Object_Sync_Sf_Exception",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Exception.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping",
             "name": "Object_Sync_Sf_Mapping",
-            "summary": "Map\u0020objects\u0020and\u0020records\u0020between\u0020WordPress\u0020and\u0020Salesforce",
+            "summary": "Object_Sync_Sf_Mapping\u0020class.",
             "url": "classes/Object-Sync-Sf-Mapping.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructor\u0020which\u0020sets\u0020up\u0020links\u0020between\u0020the\u0020systems",
+            "summary": "Constructor\u0020for\u0020mapping\u0020class",
             "url": "classes/Object-Sync-Sf-Mapping.html#method___construct"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Acreate_fieldmap\u0028\u0029",
@@ -1256,20 +1196,10 @@ Search.appendIndex(
             "summary": "Returns\u0020Salesforce\u0020object\u0020mappings\u0020for\u0020a\u0020given\u0020WordPress\u0020object.",
             "url": "classes/Object-Sync-Sf-Mapping.html#method_load_all_by_wordpress"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Aload_by_wordpress\u0028\u0029",
-            "name": "load_by_wordpress",
-            "summary": "Returns\u0020one\u0020or\u0020more\u0020Salesforce\u0020object\u0020mappings\u0020for\u0020a\u0020given\u0020WordPress\u0020object.",
-            "url": "classes/Object-Sync-Sf-Mapping.html#method_load_by_wordpress"
-        },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Aload_all_by_salesforce\u0028\u0029",
             "name": "load_all_by_salesforce",
             "summary": "Returns\u0020Salesforce\u0020object\u0020mappings\u0020for\u0020a\u0020given\u0020Salesforce\u0020object.",
             "url": "classes/Object-Sync-Sf-Mapping.html#method_load_all_by_salesforce"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Aload_by_salesforce\u0028\u0029",
-            "name": "load_by_salesforce",
-            "summary": "Returns\u0020one\u0020or\u0020more\u0020Salesforce\u0020object\u0020mappings\u0020for\u0020a\u0020given\u0020Salesforce\u0020object.",
-            "url": "classes/Object-Sync-Sf-Mapping.html#method_load_by_salesforce"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Amap_params\u0028\u0029",
             "name": "map_params",
@@ -1281,6 +1211,11 @@ Search.appendIndex(
             "summary": "Prepare\u0020field\u0020map\u0020data\u0020for\u0020use",
             "url": "classes/Object-Sync-Sf-Mapping.html#method_prepare_fieldmap_data"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Amaybe_upgrade_sync_triggers\u0028\u0029",
+            "name": "maybe_upgrade_sync_triggers",
+            "summary": "Format\u0020the\u0020sync\u0020trigger\u0020values\u0020for\u0020storage\u0020in\u0020the\u0020database.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#method_maybe_upgrade_sync_triggers"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Aget_failed_object_maps\u0028\u0029",
             "name": "get_failed_object_maps",
             "summary": "Check\u0020object\u0020map\u0020table\u0020to\u0020see\u0020if\u0020there\u0020have\u0020been\u0020any\u0020failed\u0020object\u0020map\u0020create\u0020attempts",
@@ -1291,174 +1226,179 @@ Search.appendIndex(
             "summary": "Check\u0020object\u0020map\u0020table\u0020to\u0020see\u0020if\u0020there\u0020have\u0020been\u0020any\u0020failed\u0020object\u0020map\u0020create\u0020attempts",
             "url": "classes/Object-Sync-Sf-Mapping.html#method_get_failed_object_map"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Mapping.html#property_wpdb"
-        },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024version",
             "name": "version",
-            "summary": "",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_wpdb"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024slug",
             "name": "slug",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_slug"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024logging",
-            "name": "logging",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Mapping.html#property_logging"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024option_prefix",
             "name": "option_prefix",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024logging",
+            "name": "logging",
+            "summary": "Object_Sync_Sf_Logging\u0020class",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_logging"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024fieldmap_table",
             "name": "fieldmap_table",
-            "summary": "",
+            "summary": "The\u0020database\u0020table\u0020for\u0020fieldmaps",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_fieldmap_table"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024object_map_table",
             "name": "object_map_table",
-            "summary": "",
+            "summary": "The\u0020database\u0020table\u0020for\u0020object\u0020maps",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_object_map_table"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_off",
             "name": "sync_off",
-            "summary": "",
+            "summary": "Bitmap\u0020value\u0020for\u0020when\u0020sync\u0020is\u0020off",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_off"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_wordpress_create",
             "name": "sync_wordpress_create",
-            "summary": "",
+            "summary": "Bitmap\u0020value\u0020for\u0020when\u0020sync\u0020is\u0020is\u0020on\u0020for\u0020WordPress\u0020create\u0020events",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_wordpress_create"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_wordpress_update",
             "name": "sync_wordpress_update",
-            "summary": "",
+            "summary": "Bitmap\u0020value\u0020for\u0020when\u0020sync\u0020is\u0020is\u0020on\u0020for\u0020WordPress\u0020update\u0020events",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_wordpress_update"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_wordpress_delete",
             "name": "sync_wordpress_delete",
-            "summary": "",
+            "summary": "Bitmap\u0020value\u0020for\u0020when\u0020sync\u0020is\u0020is\u0020on\u0020for\u0020WordPress\u0020delete\u0020events",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_wordpress_delete"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_sf_create",
             "name": "sync_sf_create",
-            "summary": "",
+            "summary": "Bitmap\u0020value\u0020for\u0020when\u0020sync\u0020is\u0020is\u0020on\u0020for\u0020Salesforce\u0020create\u0020events",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_sf_create"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_sf_update",
             "name": "sync_sf_update",
-            "summary": "",
+            "summary": "Bitmap\u0020value\u0020for\u0020when\u0020sync\u0020is\u0020is\u0020on\u0020for\u0020Salesforce\u0020update\u0020events",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_sf_update"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_sf_delete",
             "name": "sync_sf_delete",
-            "summary": "",
+            "summary": "Bitmap\u0020value\u0020for\u0020when\u0020sync\u0020is\u0020is\u0020on\u0020for\u0020Salesforce\u0020delete\u0020events",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_sf_delete"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024wordpress_events",
             "name": "wordpress_events",
-            "summary": "",
+            "summary": "Which\u0020events\u0020are\u0020run\u0020by\u0020WordPress",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_wordpress_events"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024salesforce_events",
             "name": "salesforce_events",
-            "summary": "",
+            "summary": "Which\u0020events\u0020are\u0020run\u0020by\u0020Salesforce",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_salesforce_events"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024direction_wordpress_sf",
             "name": "direction_wordpress_sf",
-            "summary": "",
+            "summary": "The\u0020direction\u0020from\u0020WordPress\u0020to\u0020Salesforce",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_direction_wordpress_sf"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024direction_sf_wordpress",
             "name": "direction_sf_wordpress",
-            "summary": "",
+            "summary": "The\u0020direction\u0020from\u0020Salesforce\u0020to\u0020WordPress",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_direction_sf_wordpress"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024direction_sync",
             "name": "direction_sync",
-            "summary": "",
+            "summary": "The\u0020direction\u0020to\u0020sync\u0020both\u0020ways",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_direction_sync"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024direction_wordpress",
             "name": "direction_wordpress",
-            "summary": "",
+            "summary": "WordPress\u0020directions,\u0020including\u0020sync",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_direction_wordpress"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024direction_salesforce",
             "name": "direction_salesforce",
-            "summary": "",
+            "summary": "Salesforce\u0020directions,\u0020including\u0020sync",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_direction_salesforce"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024salesforce_default_record_type",
             "name": "salesforce_default_record_type",
-            "summary": "",
+            "summary": "Default\u0020record\u0020type\u0020when\u0020using\u0020a\u0020Salesforce\u0020object\u0020that\u0020has\u0020a\u0020default\u0020or\u0020Master\u0020record\u0020type",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_salesforce_default_record_type"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024array_delimiter",
             "name": "array_delimiter",
-            "summary": "",
+            "summary": "Delimiter\u0020for\u0020arrays\u0020coming\u0020from\u0020Salesforce",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_array_delimiter"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024array_types_from_salesforce",
             "name": "array_types_from_salesforce",
-            "summary": "",
+            "summary": "Data\u0020in\u0020Salesforce\u0020that\u0020is\u0020stored\u0020as\u0020an\u0020array",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_array_types_from_salesforce"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024date_types_from_salesforce",
             "name": "date_types_from_salesforce",
-            "summary": "",
+            "summary": "Data\u0020in\u0020Salesforce\u0020that\u0020is\u0020stored\u0020as\u0020a\u0020date",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_date_types_from_salesforce"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024int_types_from_salesforce",
             "name": "int_types_from_salesforce",
-            "summary": "",
+            "summary": "Data\u0020in\u0020Salesforce\u0020that\u0020is\u0020stored\u0020as\u0020an\u0020integer",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_int_types_from_salesforce"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024name_length",
             "name": "name_length",
-            "summary": "",
+            "summary": "How\u0020long\u0020can\u0020a\u0020mapping\u0020field\u0020be",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_name_length"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024status_success",
             "name": "status_success",
-            "summary": "",
+            "summary": "Status\u0020flag\u0020for\u0020success",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_status_success"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024status_error",
             "name": "status_error",
-            "summary": "",
+            "summary": "Status\u0020flag\u0020for\u0020error",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_status_error"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024debug",
             "name": "debug",
-            "summary": "",
+            "summary": "Option\u0020value\u0020for\u0020whether\u0020the\u0020plugin\u0020is\u0020in\u0020debug\u0020mode",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_debug"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull",
             "name": "Object_Sync_Sf_Salesforce_Pull",
-            "summary": "Pull\u0020data\u0020from\u0020Salesforce\u0020into\u0020WordPress",
+            "summary": "Object_Sync_Sf_Salesforce_Pull\u0020class.",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructor\u0020which\u0020sets\u0020up\u0020pull\u0020schedule",
+            "summary": "Constructor\u0020for\u0020pull\u0020class",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#method___construct"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024batch_soql_queries",
             "name": "batch_soql_queries",
-            "summary": "",
+            "summary": "Whether\u0020to\u0020batch\u0020SOQL\u0020queries",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_batch_soql_queries"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003Aadd_actions\u0028\u0029",
             "name": "add_actions",
-            "summary": "Create\u0020the\u0020action\u0020hooks\u0020based\u0020on\u0020what\u0020object\u0020maps\u0020exist\u0020from\u0020the\u0020admin\u0020settings\nroute\u0020is\u0020http\u003A\/\/example.com\/wp\u002Djson\/salesforce\u002Drest\u002Dapi\/pull\/\u0020plus\u0020params\u0020we\u0020decide\u0020to\u0020accept",
+            "summary": "Create\u0020the\u0020action\u0020hooks\u0020based\u0020on\u0020what\u0020object\u0020maps\u0020exist\u0020from\u0020the\u0020admin\u0020settings\nroute\u0020is\u0020http\u003A\/\/example.com\/wp\u002Djson\/salesforce\u002Drest\u002Dapi\/pull\/\u0020plus\u0020params\u0020we\u0020decide\u0020to\u0020accept.",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#method_add_actions"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003Asalesforce_pull_webhook\u0028\u0029",
@@ -1483,7 +1423,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003Aget_next_record_batch\u0028\u0029",
             "name": "get_next_record_batch",
-            "summary": "Pull\u0020the\u0020next\u0020batch\u0020of\u0020records\u0020from\u0020the\u0020Salesforce\u0020API,\u0020if\u0020applicable",
+            "summary": "Pull\u0020the\u0020next\u0020batch\u0020of\u0020records\u0020from\u0020the\u0020Salesforce\u0020API,\u0020if\u0020applicable\nExecutes\u0020a\u0020nextRecordsUrl\u0020SOQL\u0020query\u0020based\u0020on\u0020the\u0020previous\u0020result,\nand\u0020places\u0020each\u0020updated\u0020SF\u0020object\u0020into\u0020the\u0020queue\u0020for\u0020later\u0020processing.",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#method_get_next_record_batch"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003Acheck_offset_query\u0028\u0029",
@@ -1493,7 +1433,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003Aget_pull_query\u0028\u0029",
             "name": "get_pull_query",
-            "summary": "Given\u0020a\u0020SObject\u0020type\u0020name,\u0020build\u0020an\u0020SOQL\u0020query\u0020to\u0020include\u0020all\u0020fields\u0020for\u0020all\nSalesforceMappings\u0020mapped\u0020to\u0020that\u0020SObject.",
+            "summary": "Given\u0020a\u0020SObject\u0020type\u0020name,\u0020build\u0020an\u0020SOQL\u0020query\u0020to\u0020include\u0020all\u0020fields\u0020for\u0020all\nfieldmaps\u0020mapped\u0020to\u0020that\u0020SObject.",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#method_get_pull_query"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003Aget_pull_offset\u0028\u0029",
@@ -1571,94 +1511,99 @@ Search.appendIndex(
             "summary": "Find\u0020out\u0020if\u0020pull\u0020is\u0020allowed\u0020for\u0020this\u0020record",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#method_is_pull_allowed"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_wpdb"
-        },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024version",
             "name": "version",
-            "summary": "",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_version"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024login_credentials",
-            "name": "login_credentials",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_login_credentials"
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_wpdb"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024slug",
             "name": "slug",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_slug"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024wordpress",
-            "name": "wordpress",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_wordpress"
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_option_prefix"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024salesforce",
-            "name": "salesforce",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_salesforce"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024mappings",
-            "name": "mappings",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_mappings"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024logging",
-            "name": "logging",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_logging"
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024login_credentials",
+            "name": "login_credentials",
+            "summary": "Login\u0020credentials\u0020for\u0020the\u0020Salesforce\u0020API\u003B\u0020comes\u0020from\u0020wp\u002Dconfig\u0020or\u0020from\u0020the\u0020plugin\u0020settings",
+            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_login_credentials"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024schedulable_classes",
             "name": "schedulable_classes",
-            "summary": "",
+            "summary": "Array\u0020of\u0020what\u0020classes\u0020in\u0020the\u0020plugin\u0020can\u0020be\u0020scheduled\u0020to\u0020occur\u0020with\u0020\u0060wp_cron\u0060\u0020events",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_schedulable_classes"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024queue",
             "name": "queue",
-            "summary": "",
+            "summary": "Object_Sync_Sf_Queue\u0020class",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_queue"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024option_prefix",
-            "name": "option_prefix",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_option_prefix"
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024logging",
+            "name": "logging",
+            "summary": "Object_Sync_Sf_Logging\u0020class",
+            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_logging"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024mappings",
+            "name": "mappings",
+            "summary": "Object_Sync_Sf_Mapping\u0020class",
+            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_mappings"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024wordpress",
+            "name": "wordpress",
+            "summary": "Object_Sync_Sf_WordPress\u0020class",
+            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_wordpress"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024salesforce",
+            "name": "salesforce",
+            "summary": "Object_Sync_Sf_Salesforce\u0020class\nThis\u0020contains\u0020Salesforce\u0020API\u0020methods",
+            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_salesforce"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024min_soql_batch_size",
             "name": "min_soql_batch_size",
-            "summary": "",
+            "summary": "Minimum\u0020size\u0020of\u0020a\u0020SOQL\u0020batch",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_min_soql_batch_size"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024max_soql_size",
             "name": "max_soql_size",
-            "summary": "",
+            "summary": "Maximum\u0020size\u0020of\u0020a\u0020SOQL\u0020batch",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_max_soql_size"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024mergeable_record_types",
             "name": "mergeable_record_types",
-            "summary": "",
+            "summary": "Types\u0020of\u0020Salesforce\u0020records\u0020that\u0020can\u0020be\u0020merged",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_mergeable_record_types"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024debug",
             "name": "debug",
-            "summary": "",
+            "summary": "Whether\u0020the\u0020plugin\u0020is\u0020in\u0020debug\u0020mode",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_debug"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024schedule_name",
             "name": "schedule_name",
-            "summary": "",
+            "summary": "The\u0020name\u0020of\u0020the\u0020ActionScheduler\u0020queue",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_schedule_name"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push",
             "name": "Object_Sync_Sf_Salesforce_Push",
-            "summary": "Push\u0020data\u0020from\u0020WordPress\u0020into\u0020Salesforce",
+            "summary": "Object_Sync_Sf_Salesforce_Push\u0020class.",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructor\u0020which\u0020sets\u0020up\u0020push\u0020schedule",
+            "summary": "Constructor\u0020for\u0020push\u0020class",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#method___construct"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003Aadd_actions\u0028\u0029",
@@ -1713,7 +1658,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003Adelete_attachment\u0028\u0029",
             "name": "delete_attachment",
-            "summary": "Callback\u0020method\u0020for\u0020editing\u0020an\u0020attachment",
+            "summary": "Callback\u0020method\u0020for\u0020deleting\u0020an\u0020attachment",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#method_delete_attachment"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003Aadd_term\u0028\u0029",
@@ -1748,17 +1693,17 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003Aobject_insert\u0028\u0029",
             "name": "object_insert",
-            "summary": "Insert\u0020a\u0020new\u0020object\nThis\u0020calls\u0020the\u0020overall\u0020push\u0020crud\u0020method,\u0020which\u0020controls\u0020queuing\u0020and\u0020sending\u0020data\u0020to\u0020the\u0020Salesforce\u0020class",
+            "summary": "Insert\u0020a\u0020new\u0020object\nThis\u0020calls\u0020the\u0020overall\u0020push\u0020crud\u0020method,\u0020which\u0020controls\u0020queuing\u0020and\u0020sending\u0020data\u0020to\u0020the\u0020Salesforce\u0020class.",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#method_object_insert"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003Aobject_update\u0028\u0029",
             "name": "object_update",
-            "summary": "Update\u0020an\u0020existing\u0020object\nThis\u0020calls\u0020the\u0020overall\u0020push\u0020crud\u0020method,\u0020which\u0020controls\u0020queuing\u0020and\u0020sending\u0020data\u0020to\u0020the\u0020Salesforce\u0020class",
+            "summary": "Update\u0020an\u0020existing\u0020object\nThis\u0020calls\u0020the\u0020overall\u0020push\u0020crud\u0020method,\u0020which\u0020controls\u0020queuing\u0020and\u0020sending\u0020data\u0020to\u0020the\u0020Salesforce\u0020class.",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#method_object_update"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003Aobject_delete\u0028\u0029",
             "name": "object_delete",
-            "summary": "Delete\u0020an\u0020existing\u0020object\nThis\u0020calls\u0020the\u0020overall\u0020push\u0020crud\u0020method,\u0020which\u0020controls\u0020queuing\u0020and\u0020sending\u0020data\u0020to\u0020the\u0020Salesforce\u0020class",
+            "summary": "Delete\u0020an\u0020existing\u0020object\nThis\u0020calls\u0020the\u0020overall\u0020push\u0020crud\u0020method,\u0020which\u0020controls\u0020queuing\u0020and\u0020sending\u0020data\u0020to\u0020the\u0020Salesforce\u0020class.",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#method_object_delete"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003Asalesforce_push_object_crud\u0028\u0029",
@@ -1781,79 +1726,84 @@ Search.appendIndex(
             "summary": "Find\u0020out\u0020if\u0020push\u0020is\u0020allowed\u0020for\u0020this\u0020record",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#method_is_push_allowed"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_wpdb"
-        },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024version",
             "name": "version",
-            "summary": "",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_version"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024login_credentials",
-            "name": "login_credentials",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_login_credentials"
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_wpdb"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024slug",
             "name": "slug",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_slug"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024wordpress",
-            "name": "wordpress",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_wordpress"
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_option_prefix"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024salesforce",
-            "name": "salesforce",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_salesforce"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024mappings",
-            "name": "mappings",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_mappings"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024logging",
-            "name": "logging",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_logging"
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024login_credentials",
+            "name": "login_credentials",
+            "summary": "Login\u0020credentials\u0020for\u0020the\u0020Salesforce\u0020API\u003B\u0020comes\u0020from\u0020wp\u002Dconfig\u0020or\u0020from\u0020the\u0020plugin\u0020settings",
+            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_login_credentials"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024schedulable_classes",
             "name": "schedulable_classes",
-            "summary": "",
+            "summary": "Array\u0020of\u0020what\u0020classes\u0020in\u0020the\u0020plugin\u0020can\u0020be\u0020scheduled\u0020to\u0020occur\u0020with\u0020\u0060wp_cron\u0060\u0020events",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_schedulable_classes"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024queue",
             "name": "queue",
-            "summary": "",
+            "summary": "Object_Sync_Sf_Queue\u0020class",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_queue"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024option_prefix",
-            "name": "option_prefix",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_option_prefix"
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024logging",
+            "name": "logging",
+            "summary": "Object_Sync_Sf_Logging\u0020class",
+            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_logging"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024mappings",
+            "name": "mappings",
+            "summary": "Object_Sync_Sf_Mapping\u0020class",
+            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_mappings"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024wordpress",
+            "name": "wordpress",
+            "summary": "Object_Sync_Sf_WordPress\u0020class",
+            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_wordpress"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024salesforce",
+            "name": "salesforce",
+            "summary": "Object_Sync_Sf_Salesforce\u0020class\nThis\u0020contains\u0020Salesforce\u0020API\u0020methods",
+            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_salesforce"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024debug",
             "name": "debug",
-            "summary": "",
+            "summary": "Whether\u0020the\u0020plugin\u0020is\u0020in\u0020debug\u0020mode",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_debug"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024schedule_name",
             "name": "schedule_name",
-            "summary": "",
+            "summary": "The\u0020name\u0020of\u0020the\u0020ActionScheduler\u0020queue",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_schedule_name"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query",
             "name": "Object_Sync_Sf_Salesforce_Select_Query",
-            "summary": "Class\u0020representing\u0020a\u0020Salesforce\u0020SELECT\u0020SOQL\u0020query.",
+            "summary": "Object_Sync_Sf_Salesforce_Select_Query\u0020class.",
             "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructor\u0020which\u0020sets\u0020the\u0020query\u0020object\u0020type.",
+            "summary": "Constructor\u0020for\u0020mapping\u0020class",
             "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#method___construct"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003Aadd_condition\u0028\u0029",
@@ -1866,84 +1816,434 @@ Search.appendIndex(
             "summary": "Implements\u0020PHP\u0027s\u0020magic\u0020__toString\u0028\u0029.",
             "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#method___toString"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003A\u0024object_type",
+            "name": "object_type",
+            "summary": "Salesforce\u0020object\u0020type",
+            "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_object_type"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003A\u0024fields",
             "name": "fields",
-            "summary": "",
+            "summary": "Fields\u0020for\u0020the\u0020SOQL\u0020query",
             "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_fields"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003A\u0024order",
             "name": "order",
-            "summary": "",
+            "summary": "Order\u0020for\u0020the\u0020SOQL\u0020query",
             "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_order"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003A\u0024object_type",
-            "name": "object_type",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_object_type"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003A\u0024limit",
             "name": "limit",
-            "summary": "",
+            "summary": "Limit\u0020for\u0020the\u0020SOQL\u0020query",
             "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_limit"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003A\u0024offset",
             "name": "offset",
-            "summary": "",
+            "summary": "Offset\u0020for\u0020the\u0020SOQL\u0020query",
             "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_offset"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003A\u0024conditions",
             "name": "conditions",
-            "summary": "",
+            "summary": "Conditions\u0020for\u0020the\u0020SOQL\u0020query",
             "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_conditions"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Soap_Partner",
             "name": "Object_Sync_Sf_Salesforce_Soap_Partner",
-            "summary": "Expose\u0020the\u0020partner\u0020SOAP\u0020API\u0020by\u0020extending\u0020SforcePartnerClient\u0020and\u0020configuring\nit\u0020with\u0020the\u0020OAUTH\u0020credentials\u0020and\u0020endpoints\u0020from\u0020the\u0020Salesforce\u0020API\u0020class.",
+            "summary": "Object_Sync_Sf_Salesforce_Soap_Partner\u0020class.",
             "url": "classes/Object-Sync-Sf-Salesforce-Soap-Partner.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Soap_Partner\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructor\u0020which\u0020loads\u0020the\u0020SOAP\u0020client",
+            "summary": "Constructor\u0020for\u0020soap\u0020class",
             "url": "classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Soap_Partner\u003A\u003Ainit\u0028\u0029",
+            "name": "init",
+            "summary": "Initialize.",
+            "url": "classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_init"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Soap_Partner\u003A\u003Aset_authorized\u0028\u0029",
             "name": "set_authorized",
-            "summary": "",
+            "summary": "Set\u0020whether\u0020Salesforce\u0020is\u0020authorized",
             "url": "classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_set_authorized"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Soap_Partner\u003A\u003A\u0024is_authorized",
             "name": "is_authorized",
-            "summary": "",
+            "summary": "Whether\u0020Salesforce\u0020is\u0020authorized",
             "url": "classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_is_authorized"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Soap_Partner\u003A\u003Atry_soap\u0028\u0029",
             "name": "try_soap",
-            "summary": "",
+            "summary": "Try\u0020to\u0020use\u0020the\u0020SOAP\u0020API",
             "url": "classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_try_soap"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Soap_Partner\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Soap_Partner\u003A\u003A\u0024salesforce_get_api",
+            "name": "salesforce_get_api",
+            "summary": "The\u0020salesforce_get_api\u0028\u0029\u0020helper\u0020method\u0020from\u0020root\u0020class\nThis\u0020contains\u0020Salesforce\u0020API\u0020methods\u0020and\u0020flags.",
+            "url": "classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_salesforce_get_api"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Soap_Partner\u003A\u003A\u0024salesforce_api",
             "name": "salesforce_api",
-            "summary": "",
+            "summary": "Object_Sync_Sf_Salesforce\u0020class\nThis\u0020contains\u0020Salesforce\u0020API\u0020methods",
             "url": "classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_salesforce_api"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Soap_Partner\u003A\u003A\u0024refreshed",
             "name": "refreshed",
-            "summary": "",
+            "summary": "Whether\u0020Salesforce\u0020is\u0020refreshed",
             "url": "classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_refreshed"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Soap_Partner\u003A\u003A\u0024wsdl",
             "name": "wsdl",
-            "summary": "",
+            "summary": "The\u0020path\u0020to\u0020the\u0020WSDL\u0020file",
             "url": "classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_wsdl"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce",
+            "name": "Object_Sync_Sf_Salesforce",
+            "summary": "Object_Sync_Sf_Salesforce\u0020class.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor\u0020for\u0020Salesforce\u0020class",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aconvert_id\u0028\u0029",
+            "name": "convert_id",
+            "summary": "Converts\u0020a\u002015\u002Dcharacter\u0020case\u002Dsensitive\u0020Salesforce\u0020ID\u0020to\u002018\u002Dcharacter\ncase\u002Dinsensitive\u0020ID.\u0020If\u0020input\u0020is\u0020not\u002015\u002Dcharacters,\u0020return\u0020input\u0020unaltered.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_convert_id"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_sobject_type\u0028\u0029",
+            "name": "get_sobject_type",
+            "summary": "Given\u0020a\u0020Salesforce\u0020ID,\u0020return\u0020the\u0020corresponding\u0020SObject\u0020name.\u0020\u0028Based\u0020on\u0020keyPrefix\u0020from\u0020object\u0020definition,",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_sobject_type"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Ais_authorized\u0028\u0029",
+            "name": "is_authorized",
+            "summary": "Determine\u0020if\u0020this\u0020SF\u0020instance\u0020is\u0020fully\u0020configured.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_is_authorized"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_api_versions\u0028\u0029",
+            "name": "get_api_versions",
+            "summary": "Get\u0020REST\u0020API\u0020versions\u0020available\u0020on\u0020this\u0020Salesforce\u0020organization\nThis\u0020is\u0020not\u0020an\u0020authenticated\u0020call,\u0020so\u0020it\u0020would\u0020not\u0020be\u0020a\u0020helpful\u0020test",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_api_versions"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aapi_call\u0028\u0029",
+            "name": "api_call",
+            "summary": "Make\u0020a\u0020call\u0020to\u0020the\u0020Salesforce\u0020REST\u0020API.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_api_call"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aapi_http_request\u0028\u0029",
+            "name": "api_http_request",
+            "summary": "Private\u0020helper\u0020to\u0020issue\u0020an\u0020SF\u0020API\u0020request.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_api_http_request"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Ahttp_request\u0028\u0029",
+            "name": "http_request",
+            "summary": "Make\u0020the\u0020HTTP\u0020request.\u0020Wrapper\u0020around\u0020curl\u0028\u0029.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_http_request"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_api_endpoint\u0028\u0029",
+            "name": "get_api_endpoint",
+            "summary": "Get\u0020the\u0020API\u0020end\u0020point\u0020for\u0020a\u0020given\u0020type\u0020of\u0020the\u0020API.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_api_endpoint"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_instance_url\u0028\u0029",
+            "name": "get_instance_url",
+            "summary": "Get\u0020the\u0020SF\u0020instance\u0020URL.\u0020Useful\u0020for\u0020linking\u0020to\u0020objects.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_instance_url"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aset_instance_url\u0028\u0029",
+            "name": "set_instance_url",
+            "summary": "Set\u0020the\u0020SF\u0020instance\u0020URL.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_set_instance_url"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_access_token\u0028\u0029",
+            "name": "get_access_token",
+            "summary": "Get\u0020the\u0020access\u0020token.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_access_token"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aset_access_token\u0028\u0029",
+            "name": "set_access_token",
+            "summary": "Set\u0020the\u0020access\u0020token.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_set_access_token"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_refresh_token\u0028\u0029",
+            "name": "get_refresh_token",
+            "summary": "Get\u0020refresh\u0020token.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_refresh_token"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aset_refresh_token\u0028\u0029",
+            "name": "set_refresh_token",
+            "summary": "Set\u0020refresh\u0020token.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_set_refresh_token"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Arefresh_token\u0028\u0029",
+            "name": "refresh_token",
+            "summary": "Refresh\u0020access\u0020token\u0020based\u0020on\u0020the\u0020refresh\u0020token.\u0020Updates\u0020session\u0020variable.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_refresh_token"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aset_identity\u0028\u0029",
+            "name": "set_identity",
+            "summary": "Retrieve\u0020and\u0020store\u0020the\u0020Salesforce\u0020identity\u0020given\u0020an\u0020ID\u0020url.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_set_identity"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_identity\u0028\u0029",
+            "name": "get_identity",
+            "summary": "Return\u0020the\u0020Salesforce\u0020identity,\u0020which\u0020is\u0020stored\u0020in\u0020a\u0020variable.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_identity"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_authorization_code\u0028\u0029",
+            "name": "get_authorization_code",
+            "summary": "OAuth\u0020step\u00201\u003A\u0020Redirect\u0020to\u0020Salesforce\u0020and\u0020request\u0020and\u0020authorization\u0020code.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_authorization_code"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Arequest_token\u0028\u0029",
+            "name": "request_token",
+            "summary": "OAuth\u0020step\u00202\u003A\u0020Exchange\u0020an\u0020authorization\u0020code\u0020for\u0020an\u0020access\u0020token.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_request_token"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobjects\u0028\u0029",
+            "name": "objects",
+            "summary": "Available\u0020objects\u0020and\u0020their\u0020metadata\u0020for\u0020your\u0020organization\u0027s\u0020data.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_objects"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aquery\u0028\u0029",
+            "name": "query",
+            "summary": "Use\u0020SOQL\u0020to\u0020get\u0020objects\u0020based\u0020on\u0020query\u0020string.\u0020Part\u0020of\u0020core\u0020API\u0020calls.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_query"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_describe\u0028\u0029",
+            "name": "object_describe",
+            "summary": "Retrieve\u0020all\u0020the\u0020metadata\u0020for\u0020an\u0020object.\u0020Part\u0020of\u0020core\u0020API\u0020calls.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_describe"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_create\u0028\u0029",
+            "name": "object_create",
+            "summary": "Create\u0020a\u0020new\u0020object\u0020of\u0020the\u0020given\u0020type.\u0020Part\u0020of\u0020core\u0020API\u0020calls.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_create"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_upsert\u0028\u0029",
+            "name": "object_upsert",
+            "summary": "Create\u0020new\u0020records\u0020or\u0020update\u0020existing\u0020records.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_upsert"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_update\u0028\u0029",
+            "name": "object_update",
+            "summary": "Update\u0020an\u0020existing\u0020object.\u0020Part\u0020of\u0020core\u0020API\u0020calls.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_update"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_read\u0028\u0029",
+            "name": "object_read",
+            "summary": "Return\u0020a\u0020full\u0020loaded\u0020Salesforce\u0020object.\u0020Part\u0020of\u0020core\u0020API\u0020calls.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_read"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aanalytics_api\u0028\u0029",
+            "name": "analytics_api",
+            "summary": "Make\u0020a\u0020call\u0020to\u0020the\u0020Analytics\u0020API.\u0020Part\u0020of\u0020core\u0020API\u0020calls.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_analytics_api"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Arun_analytics_report\u0028\u0029",
+            "name": "run_analytics_report",
+            "summary": "Run\u0020a\u0020specific\u0020Analytics\u0020report.\u0020Part\u0020of\u0020core\u0020API\u0020calls.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_run_analytics_report"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_readby_external_id\u0028\u0029",
+            "name": "object_readby_external_id",
+            "summary": "Return\u0020a\u0020full\u0020loaded\u0020Salesforce\u0020object\u0020from\u0020External\u0020ID.\u0020Part\u0020of\u0020core\u0020API\u0020calls.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_readby_external_id"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aobject_delete\u0028\u0029",
+            "name": "object_delete",
+            "summary": "Delete\u0020a\u0020Salesforce\u0020object.\u0020Part\u0020of\u0020core\u0020API\u0020calls",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_object_delete"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_deleted\u0028\u0029",
+            "name": "get_deleted",
+            "summary": "Retrieves\u0020the\u0020list\u0020of\u0020individual\u0020objects\u0020that\u0020have\u0020been\u0020deleted\u0020within\u0020the\ngiven\u0020timespan\u0020for\u0020a\u0020specified\u0020object\u0020type.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_deleted"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Alist_resources\u0028\u0029",
+            "name": "list_resources",
+            "summary": "Return\u0020a\u0020list\u0020of\u0020available\u0020resources\u0020for\u0020the\u0020configured\u0020API\u0020version.\u0020Part\u0020of\u0020core\u0020API\u0020calls.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_list_resources"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_updated\u0028\u0029",
+            "name": "get_updated",
+            "summary": "Return\u0020a\u0020list\u0020of\u0020SFIDs\u0020for\u0020the\u0020given\u0020object,\u0020which\u0020have\u0020been\u0020created\u0020or\nupdated\u0020in\u0020the\u0020given\u0020timeframe.\u0020Part\u0020of\u0020core\u0020API\u0020calls.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_updated"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Aget_record_type_id_by_developer_name\u0028\u0029",
+            "name": "get_record_type_id_by_developer_name",
+            "summary": "Given\u0020a\u0020DeveloperName\u0020and\u0020SObject\u0020Name,\u0020return\u0020the\u0020SFID\u0020of\u0020the\ncorresponding\u0020RecordType.\u0020DeveloperName\u0020doesn\u0027t\u0020change\u0020between\u0020Salesforce\nenvironments,\u0020so\u0020it\u0027s\u0020safer\u0020to\u0020rely\u0020on\u0020compared\u0020to\u0020SFID.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_get_record_type_id_by_developer_name"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003Acache_expiration\u0028\u0029",
+            "name": "cache_expiration",
+            "summary": "If\u0020there\u0020is\u0020a\u0020WordPress\u0020setting\u0020for\u0020how\u0020long\u0020to\u0020keep\u0020the\u0020cache,\u0020return\u0020it\u0020and\u0020set\u0020the\u0020object\u0020property\nOtherwise,\u0020return\u0020seconds\u0020in\u002024\u0020hours.",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#method_cache_expiration"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024version",
+            "name": "version",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024slug",
+            "name": "slug",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_slug"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024login_credentials",
+            "name": "login_credentials",
+            "summary": "Login\u0020credentials\u0020for\u0020the\u0020Salesforce\u0020API\u003B\u0020comes\u0020from\u0020wp\u002Dconfig\u0020or\u0020from\u0020the\u0020plugin\u0020settings",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_login_credentials"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024schedulable_classes",
+            "name": "schedulable_classes",
+            "summary": "Array\u0020of\u0020what\u0020classes\u0020in\u0020the\u0020plugin\u0020can\u0020be\u0020scheduled\u0020to\u0020occur\u0020with\u0020\u0060wp_cron\u0060\u0020events",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_schedulable_classes"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024logging",
+            "name": "logging",
+            "summary": "Object_Sync_Sf_Logging\u0020class",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_logging"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024wordpress",
+            "name": "wordpress",
+            "summary": "Object_Sync_Sf_WordPress\u0020class",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_wordpress"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024authorize_path",
+            "name": "authorize_path",
+            "summary": "Path\u0020for\u0020the\u0020Salesforce\u0020authorize\u0020URL",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_authorize_path"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024token_path",
+            "name": "token_path",
+            "summary": "Path\u0020for\u0020the\u0020Salesforce\u0020token\u0020URL",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_token_path"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024callback_url",
+            "name": "callback_url",
+            "summary": "Callback\u0020URL\u0020for\u0020the\u0020Salesforce\u0020API",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_callback_url"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024login_url",
+            "name": "login_url",
+            "summary": "Login\u0020URL\u0020for\u0020the\u0020Salesforce\u0020API",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_login_url"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024rest_api_version",
+            "name": "rest_api_version",
+            "summary": "REST\u0020API\u0020version\u0020for\u0020Salesforce",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_rest_api_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024consumer_key",
+            "name": "consumer_key",
+            "summary": "Salesforce\u0020consumer\u0020key",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_consumer_key"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024consumer_secret",
+            "name": "consumer_secret",
+            "summary": "Salesforce\u0020consumer\u0020secret",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_consumer_secret"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024options",
+            "name": "options",
+            "summary": "API\u0020call\u0020options",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_options"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024success_codes",
+            "name": "success_codes",
+            "summary": "API\u0020success\u0020return\u0020codes",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_success_codes"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024refresh_code",
+            "name": "refresh_code",
+            "summary": "API\u0020refresh\u0020return\u0020code",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_refresh_code"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024success_or_refresh_codes",
+            "name": "success_or_refresh_codes",
+            "summary": "API\u0020success\u0020or\u0020refresh\u0020return\u0020codes",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_success_or_refresh_codes"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024debug",
+            "name": "debug",
+            "summary": "Whether\u0020the\u0020plugin\u0020is\u0020in\u0020debug\u0020mode",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_debug"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce\u003A\u003A\u0024response",
+            "name": "response",
+            "summary": "API\u0020response\u0020from\u0020Salesforce",
+            "url": "classes/Object-Sync-Sf-Salesforce.html#property_response"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress_Transient",
+            "name": "Object_Sync_Sf_WordPress_Transient",
+            "summary": "Object_Sync_Sf_WordPress_Transient\u0020class.",
+            "url": "classes/Object-Sync-Sf-WordPress-Transient.html"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor\u0020which\u0020sets\u0020cache\u0020options\u0020and\u0020the\u0020name\u0020of\u0020the\u0020field\u0020that\u0020lists\u0020this\u0020plugin\u0027s\u0020cache\u0020keys.",
+            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003Aall_keys\u0028\u0029",
+            "name": "all_keys",
+            "summary": "Get\u0020the\u0020transient\u0020that\u0020lists\u0020all\u0020the\u0020other\u0020transients\u0020for\u0020this\u0020plugin.",
+            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method_all_keys"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003Aset\u0028\u0029",
+            "name": "set",
+            "summary": "Set\u0020individual\u0020transient,\u0020and\u0020add\u0020its\u0020key\u0020to\u0020the\u0020list\u0020of\u0020this\u0020plugin\u0027s\u0020transients.",
+            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method_set"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003Aget\u0028\u0029",
+            "name": "get",
+            "summary": "Get\u0020the\u0020individual\u0020cache\u0020value",
+            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method_get"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003Adelete\u0028\u0029",
+            "name": "delete",
+            "summary": "Delete\u0020the\u0020individual\u0020cache\u0020value",
+            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method_delete"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003Aflush\u0028\u0029",
+            "name": "flush",
+            "summary": "Delete\u0020the\u0020entire\u0020cache\u0020for\u0020this\u0020plugin",
+            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method_flush"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003A\u0024name",
+            "name": "name",
+            "summary": "Name\u0020of\u0020the\u0020field\u0020that\u0020lists\u0020the\u0020cache\u0020keys",
+            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#property_name"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003A\u0024cache_prefix",
+            "name": "cache_prefix",
+            "summary": "Prefix\u0020for\u0020plugin\u0020cache\u0020keys",
+            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#property_cache_prefix"
         },                {
             "fqsen": "\\Object_Sync_Sf_WordPress",
             "name": "Object_Sync_Sf_WordPress",
-            "summary": "Work\u0020with\u0020the\u0020WordPress\u0020\u0024wpdb\u0020object.\u0020This\u0020class\u0020can\u0020make\u0020read\u0020and\u0020write\u0020calls\u0020to\u0020the\u0020WordPress\u0020database,\u0020and\u0020also\u0020cache\u0020the\u0020responses.",
+            "summary": "Object_Sync_Sf_WordPress\u0020class.",
             "url": "classes/Object-Sync-Sf-WordPress.html"
         },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Constructor\u0020which\u0020discovers\u0020objects\u0020in\u0020WordPress",
+            "summary": "Constructor\u0020for\u0020WordPress\u0020class",
             "url": "classes/Object-Sync-Sf-WordPress.html#method___construct"
         },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003Aget_object_types\u0028\u0029",
@@ -1998,7 +2298,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003Aobject_update\u0028\u0029",
             "name": "object_update",
-            "summary": "Update\u0020an\u0020existing\u0020object.",
+            "summary": "Update\u0020an\u0020existing\u0020object.\u0020Part\u0020of\u0020CRUD\u0020for\u0020WordPress\u0020objects",
             "url": "classes/Object-Sync-Sf-WordPress.html#method_object_update"
         },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003Aobject_delete\u0028\u0029",
@@ -2121,260 +2421,60 @@ Search.appendIndex(
             "summary": "Generate\u0020date\u0020formats\u0020for\u0020The\u0020Event\u0020Calendar\u0020plugin",
             "url": "classes/Object-Sync-Sf-WordPress.html#method_append_tec_event_dates"
         },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-WordPress.html#property_wpdb"
-        },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024version",
             "name": "version",
-            "summary": "",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
             "url": "classes/Object-Sync-Sf-WordPress.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-WordPress.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-WordPress.html#property_wpdb"
         },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024slug",
             "name": "slug",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
             "url": "classes/Object-Sync-Sf-WordPress.html#property_slug"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024mappings",
-            "name": "mappings",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-WordPress.html#property_mappings"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024logging",
-            "name": "logging",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-WordPress.html#property_logging"
         },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024option_prefix",
             "name": "option_prefix",
-            "summary": "",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
             "url": "classes/Object-Sync-Sf-WordPress.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024logging",
+            "name": "logging",
+            "summary": "Object_Sync_Sf_Logging\u0020class",
+            "url": "classes/Object-Sync-Sf-WordPress.html#property_logging"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024mappings",
+            "name": "mappings",
+            "summary": "Object_Sync_Sf_Mapping\u0020class",
+            "url": "classes/Object-Sync-Sf-WordPress.html#property_mappings"
         },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024wordpress_objects",
             "name": "wordpress_objects",
-            "summary": "",
+            "summary": "Supported\u0020WordPress\u0020objects",
             "url": "classes/Object-Sync-Sf-WordPress.html#property_wordpress_objects"
         },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024options",
             "name": "options",
-            "summary": "",
+            "summary": "Method\u0020call\u0020options",
             "url": "classes/Object-Sync-Sf-WordPress.html#property_options"
         },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024sfwp_transients",
             "name": "sfwp_transients",
-            "summary": "",
+            "summary": "Object_Sync_Sf_WordPress_Transient\u0020class",
             "url": "classes/Object-Sync-Sf-WordPress.html#property_sfwp_transients"
         },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024debug",
             "name": "debug",
-            "summary": "",
+            "summary": "Whether\u0020the\u0020plugin\u0020is\u0020in\u0020debug\u0020mode",
             "url": "classes/Object-Sync-Sf-WordPress.html#property_debug"
-        },                {
-            "fqsen": "\\WordpressException",
-            "name": "WordpressException",
-            "summary": "WordpressException\u0020is\u0020a\u0020placeholder\u0020class\u0020in\u0020the\u0020event\u0020that\u0020we\u0020want\u0020to\u0020modify\u0020Exception\u0020for\u0020our\u0020own\u0020purposes.",
-            "url": "classes/WordpressException.html"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress_Transient",
-            "name": "Object_Sync_Sf_WordPress_Transient",
-            "summary": "Class\u0020to\u0020store\u0020all\u0020theme\/plugin\u0020transients\u0020as\u0020an\u0020array\u0020in\u0020one\u0020WordPress\u0020transient",
-            "url": "classes/Object-Sync-Sf-WordPress-Transient.html"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "Constructor\u0020which\u0020sets\u0020cache\u0020options\u0020and\u0020the\u0020name\u0020of\u0020the\u0020field\u0020that\u0020lists\u0020this\u0020plugin\u0027s\u0020cache\u0020keys.",
-            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method___construct"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003Aall_keys\u0028\u0029",
-            "name": "all_keys",
-            "summary": "Get\u0020the\u0020transient\u0020that\u0020lists\u0020all\u0020the\u0020other\u0020transients\u0020for\u0020this\u0020plugin.",
-            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method_all_keys"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003Aset\u0028\u0029",
-            "name": "set",
-            "summary": "Set\u0020individual\u0020transient,\u0020and\u0020add\u0020its\u0020key\u0020to\u0020the\u0020list\u0020of\u0020this\u0020plugin\u0027s\u0020transients.",
-            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method_set"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003Aget\u0028\u0029",
-            "name": "get",
-            "summary": "Get\u0020the\u0020individual\u0020cache\u0020value",
-            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method_get"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003Adelete\u0028\u0029",
-            "name": "delete",
-            "summary": "Delete\u0020the\u0020individual\u0020cache\u0020value",
-            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method_delete"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003Aflush\u0028\u0029",
-            "name": "flush",
-            "summary": "Delete\u0020the\u0020entire\u0020cache\u0020for\u0020this\u0020plugin",
-            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#method_flush"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003A\u0024name",
-            "name": "name",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#property_name"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_WordPress_Transient\u003A\u003A\u0024cache_prefix",
-            "name": "cache_prefix",
-            "summary": "",
-            "url": "classes/Object-Sync-Sf-WordPress-Transient.html#property_cache_prefix"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce",
-            "name": "Object_Sync_Salesforce",
-            "summary": "Start\u0020up\u0020the\u0020Object\u0020Sync\u0020for\u0020Salesforce\u0020plugin\u003B\u0020initialize\u0020parameters\u0020and\u0020classes",
-            "url": "classes/Object-Sync-Salesforce.html"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Aget_instance\u0028\u0029",
-            "name": "get_instance",
-            "summary": "Load\u0020the\u0020static\u0020\u0024instance\u0020property\u0020that\u0020holds\u0020the\u0020instance\u0020of\u0020the\u0020class.",
-            "url": "classes/Object-Sync-Salesforce.html#method_get_instance"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "Constructor\u0020that\u0020sets\u0020up\u0020the\u0020parameters\u0020to\u0020pass\u0020to\u0020all\u0020the\u0020other\u0020classes,\u0020and\u0020the\u0020methods\u0020that\u0020call\u0020the\u0020other\u0020classes",
-            "url": "classes/Object-Sync-Salesforce.html#method___construct"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Arun\u0028\u0029",
-            "name": "run",
-            "summary": "run\u0020the\u0020plugin,\u0020independent\u0020of\u0020activation\u0020methods.",
-            "url": "classes/Object-Sync-Salesforce.html#method_run"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024load",
-            "name": "load",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_load"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024queue",
-            "name": "queue",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_queue"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024logging",
-            "name": "logging",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_logging"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024mappings",
-            "name": "mappings",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_mappings"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024wordpress",
-            "name": "wordpress",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_wordpress"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Asalesforce_get_api\u0028\u0029",
-            "name": "salesforce_get_api",
-            "summary": "Public\u0020helper\u0020to\u0020load\u0020the\u0020Salesforce\u0020API\u0020and\u0020see\u0020if\u0020it\u0020is\u0020authenticated.",
-            "url": "classes/Object-Sync-Salesforce.html#method_salesforce_get_api"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Aactivate\u0028\u0029",
-            "name": "activate",
-            "summary": "What\u0020to\u0020do\u0020upon\u0020activation\u0020of\u0020the\u0020plugin",
-            "url": "classes/Object-Sync-Salesforce.html#method_activate"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Adeactivate\u0028\u0029",
-            "name": "deactivate",
-            "summary": "What\u0020to\u0020do\u0020upon\u0020deactivation\u0020of\u0020the\u0020plugin",
-            "url": "classes/Object-Sync-Salesforce.html#method_deactivate"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024push",
-            "name": "push",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_push"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024pull",
-            "name": "pull",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_pull"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024rest",
-            "name": "rest",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_rest"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Aload_admin\u0028\u0029",
-            "name": "load_admin",
-            "summary": "Load\u0020the\u0020admin\u0020class.",
-            "url": "classes/Object-Sync-Salesforce.html#method_load_admin"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Aplugin_action_links\u0028\u0029",
-            "name": "plugin_action_links",
-            "summary": "Display\u0020a\u0020Settings\u0020link\u0020on\u0020the\u0020main\u0020Plugins\u0020page",
-            "url": "classes/Object-Sync-Salesforce.html#method_plugin_action_links"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Aadmin_scripts_and_styles\u0028\u0029",
-            "name": "admin_scripts_and_styles",
-            "summary": "Admin\u0020styles.\u0020Load\u0020the\u0020CSS\u0020and\u0020JavaScript\u0020for\u0020the\u0020plugin\u0027s\u0020settings",
-            "url": "classes/Object-Sync-Salesforce.html#method_admin_scripts_and_styles"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Atextdomain\u0028\u0029",
-            "name": "textdomain",
-            "summary": "Load\u0020textdomain",
-            "url": "classes/Object-Sync-Salesforce.html#method_textdomain"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Aget_login_credentials\u0028\u0029",
-            "name": "get_login_credentials",
-            "summary": "Get\u0020the\u0020pre\u002Dlogin\u0020Salesforce\u0020credentials.",
-            "url": "classes/Object-Sync-Salesforce.html#method_get_login_credentials"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Ais_soap_available\u0028\u0029",
-            "name": "is_soap_available",
-            "summary": "Check\u0020the\u0020server\u0020to\u0020see\u0020if\u0020Soap\u0020is\u0020available",
-            "url": "classes/Object-Sync-Salesforce.html#method_is_soap_available"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Ais_soap_loaded\u0028\u0029",
-            "name": "is_soap_loaded",
-            "summary": "Check\u0020the\u0020plugin\u0020to\u0020see\u0020if\u0020the\u0020Soap\u0020option\u0020has\u0020been\u0020enabled\u0020and\u0020the\u0020class\u0020has\u0020been\u0020loaded",
-            "url": "classes/Object-Sync-Salesforce.html#method_is_soap_loaded"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_wpdb"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024slug",
-            "name": "slug",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_slug"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024option_prefix",
-            "name": "option_prefix",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_option_prefix"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024login_credentials",
-            "name": "login_credentials",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_login_credentials"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024schedulable_classes",
-            "name": "schedulable_classes",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_schedulable_classes"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024version",
-            "name": "version",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_version"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024activated",
-            "name": "activated",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_activated"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024salesforce",
-            "name": "salesforce",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_salesforce"
-        },                {
-            "fqsen": "\\Object_Sync_Salesforce\u003A\u003A\u0024instance",
-            "name": "instance",
-            "summary": "",
-            "url": "classes/Object-Sync-Salesforce.html#property_instance"
         },                {
             "fqsen": "\\",
             "name": "\\",

@@ -70,7 +70,9 @@
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
                     <ul class="phpdocumentor-breadcrumbs">
-            <li class="phpdocumentor-breadcrumb"><a href="packages/Default.html">Default</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object.html">Object</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync.html">Sync</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync-Salesforce.html">Salesforce</a></li>
     </ul>
 
     <article class="phpdocumentor-element -class">
@@ -83,12 +85,12 @@
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_query.php"><a href="files/classes-salesforce-query.html"><abbr title="classes/salesforce_query.php">salesforce_query.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-select-query.php"><a href="files/classes-class-object-sync-sf-salesforce-select-query.html"><abbr title="classes/class-object-sync-sf-salesforce-select-query.php">class-object-sync-sf-salesforce-select-query.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">14</span>
 </aside>
 
-            <p class="phpdocumentor-summary">Class representing a Salesforce SELECT SOQL query.</p>
+            <p class="phpdocumentor-summary">Object_Sync_Sf_Salesforce_Select_Query class.</p>
 
     <section class="phpdocumentor-description"></section>
 
@@ -108,51 +110,51 @@
                 <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_conditions">$conditions</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>Conditions for the SOQL query</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_fields">$fields</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>Fields for the SOQL query</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_limit">$limit</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Limit for the SOQL query</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_object_type">$object_type</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Salesforce object type</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_offset">$offset</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Offset for the SOQL query</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_order">$order</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>Order for the SOQL query</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Select-Query.html#method___construct">__construct()</a>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Constructor which sets the query object type.</dd>
+<dd>Constructor for mapping class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Select-Query.html#method___toString">__toString()</a>
@@ -194,19 +196,21 @@
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_query.php"><a href="files/classes-salesforce-query.html"><abbr title="classes/salesforce_query.php">salesforce_query.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-select-query.php"><a href="files/classes-class-object-sync-sf-salesforce-select-query.html"><abbr title="classes/class-object-sync-sf-salesforce-select-query.php">class-object-sync-sf-salesforce-select-query.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">56</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Conditions for the SOQL query</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$conditions</span>
-     = <span class="phpdocumentor-signature__default-value">array()</span></code>
+    </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -224,19 +228,21 @@
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_query.php"><a href="files/classes-salesforce-query.html"><abbr title="classes/salesforce_query.php">salesforce_query.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-select-query.php"><a href="files/classes-class-object-sync-sf-salesforce-select-query.html"><abbr title="classes/class-object-sync-sf-salesforce-select-query.php">class-object-sync-sf-salesforce-select-query.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">28</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Fields for the SOQL query</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$fields</span>
-     = <span class="phpdocumentor-signature__default-value">array()</span></code>
+    </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -254,19 +260,21 @@
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_query.php"><a href="files/classes-salesforce-query.html"><abbr title="classes/salesforce_query.php">salesforce_query.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-select-query.php"><a href="files/classes-class-object-sync-sf-salesforce-select-query.html"><abbr title="classes/class-object-sync-sf-salesforce-select-query.php">class-object-sync-sf-salesforce-select-query.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">20</span>
+    <span class="phpdocumentor-element-found-in__line">42</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Limit for the SOQL query</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$limit</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -284,19 +292,21 @@
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_query.php"><a href="files/classes-salesforce-query.html"><abbr title="classes/salesforce_query.php">salesforce_query.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-select-query.php"><a href="files/classes-class-object-sync-sf-salesforce-select-query.html"><abbr title="classes/class-object-sync-sf-salesforce-select-query.php">class-object-sync-sf-salesforce-select-query.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">19</span>
+    <span class="phpdocumentor-element-found-in__line">21</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Salesforce object type</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$object_type</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -314,19 +324,21 @@
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_query.php"><a href="files/classes-salesforce-query.html"><abbr title="classes/salesforce_query.php">salesforce_query.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-select-query.php"><a href="files/classes-class-object-sync-sf-salesforce-select-query.html"><abbr title="classes/class-object-sync-sf-salesforce-select-query.php">class-object-sync-sf-salesforce-select-query.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">21</span>
+    <span class="phpdocumentor-element-found-in__line">49</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Offset for the SOQL query</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$offset</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -344,19 +356,21 @@
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_query.php"><a href="files/classes-salesforce-query.html"><abbr title="classes/salesforce_query.php">salesforce_query.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-select-query.php"><a href="files/classes-class-object-sync-sf-salesforce-select-query.html"><abbr title="classes/class-object-sync-sf-salesforce-select-query.php">class-object-sync-sf-salesforce-select-query.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">18</span>
+    <span class="phpdocumentor-element-found-in__line">35</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Order for the SOQL query</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$order</span>
-     = <span class="phpdocumentor-signature__default-value">array()</span></code>
+    </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -378,12 +392,12 @@
         <a href="classes/Object-Sync-Sf-Salesforce-Select-Query.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_query.php"><a href="files/classes-salesforce-query.html"><abbr title="classes/salesforce_query.php">salesforce_query.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-select-query.php"><a href="files/classes-class-object-sync-sf-salesforce-select-query.html"><abbr title="classes/class-object-sync-sf-salesforce-select-query.php">class-object-sync-sf-salesforce-select-query.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">30</span>
+    <span class="phpdocumentor-element-found-in__line">63</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Constructor which sets the query object type.</p>
+        <p class="phpdocumentor-summary">Constructor for mapping class</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -424,9 +438,9 @@
         <a href="classes/Object-Sync-Sf-Salesforce-Select-Query.html#method___toString" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_query.php"><a href="files/classes-salesforce-query.html"><abbr title="classes/salesforce_query.php">salesforce_query.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-select-query.php"><a href="files/classes-class-object-sync-sf-salesforce-select-query.html"><abbr title="classes/class-object-sync-sf-salesforce-select-query.php">class-object-sync-sf-salesforce-select-query.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">70</span>
+    <span class="phpdocumentor-element-found-in__line">101</span>
 </aside>
 
         <p class="phpdocumentor-summary">Implements PHP&#039;s magic __toString().</p>
@@ -460,9 +474,9 @@
         <a href="classes/Object-Sync-Sf-Salesforce-Select-Query.html#method_add_condition" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_query.php"><a href="files/classes-salesforce-query.html"><abbr title="classes/salesforce_query.php">salesforce_query.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-select-query.php"><a href="files/classes-class-object-sync-sf-salesforce-select-query.html"><abbr title="classes/class-object-sync-sf-salesforce-select-query.php">class-object-sync-sf-salesforce-select-query.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">46</span>
+    <span class="phpdocumentor-element-found-in__line">78</span>
 </aside>
 
         <p class="phpdocumentor-summary">Add a condition to the query.</p>
@@ -489,9 +503,7 @@
                 : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Condition value. If an array, it will be split into quote enclosed
-strings separated by commas inside of parenthesis. Note that the caller
-must enclose the value in quotes as needed by the SF API.</p>
+                    <section class="phpdocumentor-description"><p>Condition value. If an array, it will be split into quote enclosed strings separated by commas inside of parenthesis. Note that the caller must enclose the value in quotes as needed by the SF API.</p>
 </section>
 
             </dd>

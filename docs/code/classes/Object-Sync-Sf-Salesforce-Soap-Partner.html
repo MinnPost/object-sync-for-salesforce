@@ -70,7 +70,9 @@
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
                     <ul class="phpdocumentor-breadcrumbs">
-            <li class="phpdocumentor-breadcrumb"><a href="packages/Default.html">Default</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object.html">Object</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync.html">Sync</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync-Salesforce.html">Salesforce</a></li>
     </ul>
 
     <article class="phpdocumentor-element -class">
@@ -86,13 +88,12 @@
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_soap_partner.php"><a href="files/classes-salesforce-soap-partner.html"><abbr title="classes/salesforce_soap_partner.php">salesforce_soap_partner.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">16</span>
+    <span class="phpdocumentor-element-found-in__line">15</span>
 </aside>
 
-            <p class="phpdocumentor-summary">Expose the partner SOAP API by extending SforcePartnerClient and configuring
-it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
+            <p class="phpdocumentor-summary">Object_Sync_Sf_Salesforce_Soap_Partner class.</p>
 
     <section class="phpdocumentor-description"></section>
 
@@ -110,60 +111,83 @@ it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
 
 <dl class="phpdocumentor-table-of-contents">
                 <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_wsdl">$wsdl</a>
+    <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_file">$file</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>The main plugin file</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_is_authorized">$is_authorized</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: bool            </span>
 </dt>
-<dd></dd>
+<dd>Whether Salesforce is authorized</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_salesforce_api">$salesforce_api</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -private">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_refreshed">$refreshed</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: bool            </span>
 </dt>
-<dd></dd>
+<dd>Whether Salesforce is refreshed</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_salesforce_api">$salesforce_api</a>
+    <span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+</dt>
+<dd>Object_Sync_Sf_Salesforce class
+This contains Salesforce API methods</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_salesforce_get_api">$salesforce_get_api</a>
+    <span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+</dt>
+<dd>The salesforce_get_api() helper method from root class
+This contains Salesforce API methods and flags.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_wsdl">$wsdl</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The path to the WSDL file</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method___construct">__construct()</a>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Constructor which loads the SOAP client</dd>
+<dd>Constructor for soap class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_is_authorized">is_authorized()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                        &nbsp;: bool    </span>
 </dt>
-<dd></dd>
+<dd>Get whether Salesforce is authorized</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_try_soap">try_soap()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd></dd>
+<dd>Try to use the SOAP API</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_set_authorized">set_authorized()</a>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd></dd>
+<dd>Set whether Salesforce is authorized</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_init">init()</a>
+    <span>
+                        &nbsp;: mixed    </span>
+</dt>
+<dd>Initialize.</dd>
 
         </dl>
 
@@ -184,26 +208,28 @@ it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="property_wsdl">
-        $wsdl
-        <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_wsdl" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="property_file">
+        $file
+        <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_file" class="headerlink"><i class="fas fa-link"></i></a>
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_soap_partner.php"><a href="files/classes-salesforce-soap-partner.html"><abbr title="classes/salesforce_soap_partner.php">salesforce_soap_partner.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">22</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">The main plugin file</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$wsdl</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$file</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -211,7 +237,7 @@ it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_is_authorized">
@@ -221,19 +247,21 @@ it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_soap_partner.php"><a href="files/classes-salesforce-soap-partner.html"><abbr title="classes/salesforce_soap_partner.php">salesforce_soap_partner.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">19</span>
+    <span class="phpdocumentor-element-found-in__line">45</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Whether Salesforce is authorized</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">bool</span>
     <span class="phpdocumentor-signature__name">$is_authorized</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -241,37 +269,7 @@ it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
         class="
             phpdocumentor-element
             -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_salesforce_api">
-        $salesforce_api
-        <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_salesforce_api" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_soap_partner.php"><a href="files/classes-salesforce-soap-partner.html"><abbr title="classes/salesforce_soap_partner.php">salesforce_soap_partner.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">18</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$salesforce_api</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -private
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_refreshed">
@@ -281,19 +279,119 @@ it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_soap_partner.php"><a href="files/classes-salesforce-soap-partner.html"><abbr title="classes/salesforce_soap_partner.php">salesforce_soap_partner.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">20</span>
+    <span class="phpdocumentor-element-found-in__line">52</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Whether Salesforce is refreshed</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">bool</span>
     <span class="phpdocumentor-signature__name">$refreshed</span>
     </code>
 
+        <section class="phpdocumentor-description"></section>
+
     
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_salesforce_api">
+        $salesforce_api
+        <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_salesforce_api" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">38</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Salesforce class
+This contains Salesforce API methods</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__name">$salesforce_api</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_salesforce_get_api">
+        $salesforce_get_api
+        <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_salesforce_get_api" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">30</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The salesforce_get_api() helper method from root class
+This contains Salesforce API methods and flags.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__name">$salesforce_get_api</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_wsdl">
+        $wsdl
+        <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#property_wsdl" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">59</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The path to the WSDL file</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$wsdl</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -315,37 +413,20 @@ it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
         <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_soap_partner.php"><a href="files/classes-salesforce-soap-partner.html"><abbr title="classes/salesforce_soap_partner.php">salesforce_soap_partner.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">28</span>
+    <span class="phpdocumentor-element-found-in__line">64</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Constructor which loads the SOAP client</p>
+        <p class="phpdocumentor-summary">Constructor for soap class</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/Object-Sync-Sf-Salesforce.html"><abbr title="\Object_Sync_Sf_Salesforce">Object_Sync_Sf_Salesforce</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sfapi</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wsdl</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$sfapi</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/Object-Sync-Sf-Salesforce.html"><abbr title="\Object_Sync_Sf_Salesforce">Object_Sync_Sf_Salesforce</abbr></a></span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$wsdl</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
+    
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
@@ -366,24 +447,27 @@ it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
         <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_is_authorized" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_soap_partner.php"><a href="files/classes-salesforce-soap-partner.html"><abbr title="classes/salesforce_soap_partner.php">salesforce_soap_partner.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">61</span>
+    <span class="phpdocumentor-element-found-in__line">122</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Get whether Salesforce is authorized</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">is_authorized</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">is_authorized</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
+    <span class="phpdocumentor-signature__response_type">bool</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
+            <section class="phpdocumentor-description"><p>$is_authorized whether Salesforce is authorized.</p>
+</section>
 
     
 </article>
@@ -398,25 +482,92 @@ it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
         <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_try_soap" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_soap_partner.php"><a href="files/classes-salesforce-soap-partner.html"><abbr title="classes/salesforce_soap_partner.php">salesforce_soap_partner.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">65</span>
+    <span class="phpdocumentor-element-found-in__line">133</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Try to use the SOAP API</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">try_soap</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$function</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">try_soap</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$function</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$function</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>function we want to call.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><abbr title="\SoapFault">SoapFault</abbr></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>$e If there is an error from SOAP.</p>
+</section>
+
+                                    </dd>
+                        </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>$results</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_set_authorized">
+        set_authorized()
+        <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_set_authorized" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">113</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Set whether Salesforce is authorized</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                <span class="phpdocumentor-signature__name">set_authorized</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$is_authorized</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$is_authorized</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>whether Salesforce is authorized.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -432,36 +583,28 @@ it with the OAUTH credentials and endpoints from the Salesforce API class.</p>
                     <article
         class="phpdocumentor-element
             -method
-            -protected
+            -private
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_set_authorized">
-        set_authorized()
-        <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_set_authorized" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_init">
+        init()
+        <a href="classes/Object-Sync-Sf-Salesforce-Soap-Partner.html#method_init" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce_soap_partner.php"><a href="files/classes-salesforce-soap-partner.html"><abbr title="classes/salesforce_soap_partner.php">salesforce_soap_partner.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-soap-partner.php"><a href="files/classes-class-object-sync-sf-salesforce-soap-partner.html"><abbr title="classes/class-object-sync-sf-salesforce-soap-partner.php">class-object-sync-sf-salesforce-soap-partner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">57</span>
+    <span class="phpdocumentor-element-found-in__line">78</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Initialize.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-                <span class="phpdocumentor-signature__name">set_authorized</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$is_authorized</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+    <span class="phpdocumentor-signature__visibility">private</span>
+                <span class="phpdocumentor-signature__name">init</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+        <section class="phpdocumentor-description"></section>
 
     
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$is_authorized</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>

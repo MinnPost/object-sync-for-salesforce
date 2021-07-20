@@ -70,7 +70,9 @@
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
                     <ul class="phpdocumentor-breadcrumbs">
-            <li class="phpdocumentor-breadcrumb"><a href="packages/Default.html">Default</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object.html">Object</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync.html">Sync</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync-Salesforce.html">Salesforce</a></li>
     </ul>
 
     <article class="phpdocumentor-element -class">
@@ -85,13 +87,12 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">16</span>
+    <span class="phpdocumentor-element-found-in__line">14</span>
 </aside>
 
-            <p class="phpdocumentor-summary">Object_Sync_Sf_Queue</p>
+            <p class="phpdocumentor-summary">Object_Sync_Sf_Queue class.</p>
 
-    <section class="phpdocumentor-description"><p>Manage the queue</p>
-</section>
+    <section class="phpdocumentor-description"></section>
 
 
 
@@ -106,47 +107,54 @@
 </h3>
 
 <dl class="phpdocumentor-table-of-contents">
-                <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+                <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Queue.html#property_file">$file</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The main plugin file</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Queue.html#property_option_prefix">$option_prefix</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>The plugin&#039;s prefix when saving options to the database</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Queue.html#property_schedulable_classes">$schedulable_classes</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>Array of what classes in the plugin can be scheduled to occur with `wp_cron` events</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Queue.html#property_slug">$slug</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>The plugin&#039;s slug so we can include it when necessary</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Queue.html#property_version">$version</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Current version of the plugin</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Queue.html#property_wpdb">$wpdb</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Global object of `$wpdb`, the WordPress database</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Queue.html#method___construct">__construct()</a>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd></dd>
+<dd>Constructor for queue class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Queue.html#method_action_scheduler_batch_size">action_scheduler_batch_size()</a>
@@ -249,7 +257,39 @@
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_file">
+        $file
+        <a href="classes/Object-Sync-Sf-Queue.html#property_file" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">28</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The main plugin file</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$file</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_option_prefix">
@@ -261,17 +301,19 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">21</span>
+    <span class="phpdocumentor-element-found-in__line">49</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">The plugin&#039;s prefix when saving options to the database</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$option_prefix</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -279,7 +321,7 @@
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_schedulable_classes">
@@ -291,17 +333,19 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">56</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Array of what classes in the plugin can be scheduled to occur with `wp_cron` events</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$schedulable_classes</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -309,7 +353,7 @@
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_slug">
@@ -321,17 +365,19 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">20</span>
+    <span class="phpdocumentor-element-found-in__line">42</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">The plugin&#039;s slug so we can include it when necessary</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$slug</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -339,7 +385,7 @@
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_version">
@@ -351,17 +397,19 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">19</span>
+    <span class="phpdocumentor-element-found-in__line">21</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Current version of the plugin</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$version</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -369,7 +417,7 @@
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_wpdb">
@@ -381,17 +429,19 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">18</span>
+    <span class="phpdocumentor-element-found-in__line">35</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Global object of `$wpdb`, the WordPress database</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$wpdb</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -415,54 +465,18 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">61</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Constructor for queue class</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wpdb</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$slug</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$option_prefix</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$schedulable_classes</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+        <section class="phpdocumentor-description"></section>
 
     
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$wpdb</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$version</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$slug</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$option_prefix</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$schedulable_classes</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
@@ -485,7 +499,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">49</span>
+    <span class="phpdocumentor-element-found-in__line">87</span>
 </aside>
 
         <p class="phpdocumentor-summary">Set the batch size.</p>
@@ -503,7 +517,8 @@
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>how big the batch is.</p>
+</section>
 
             </dd>
             </dl>
@@ -531,7 +546,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">61</span>
+    <span class="phpdocumentor-element-found-in__line">99</span>
 </aside>
 
         <p class="phpdocumentor-summary">Set the number of concurrent batches that can run.</p>
@@ -549,7 +564,8 @@
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>how many batches can run at once.</p>
+</section>
 
             </dd>
             </dl>
@@ -577,7 +593,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">143</span>
+    <span class="phpdocumentor-element-found-in__line">187</span>
 </aside>
 
         <p class="phpdocumentor-summary">Enqueue an action to run one time, as soon as possible</p>
@@ -642,7 +658,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">211</span>
+    <span class="phpdocumentor-element-found-in__line">255</span>
 </aside>
 
         <p class="phpdocumentor-summary">Dequeue all actions with a matching hook (and optionally matching args and group) so they are not run.</p>
@@ -710,7 +726,7 @@ be cancelled/dequeued to stop the sequence.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">74</span>
+    <span class="phpdocumentor-element-found-in__line">112</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get all the schedules with their frequencies, sorted</p>
@@ -728,7 +744,7 @@ be cancelled/dequeued to stop the sequence.</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;seconds&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The unit of time</p>
+                    <section class="phpdocumentor-description"><p>The unit of time.</p>
 </section>
 
             </dd>
@@ -737,7 +753,7 @@ be cancelled/dequeued to stop the sequence.</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;asc&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Which direction to sort</p>
+                    <section class="phpdocumentor-description"><p>Which direction to sort.</p>
 </section>
 
             </dd>
@@ -766,7 +782,7 @@ be cancelled/dequeued to stop the sequence.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">108</span>
+    <span class="phpdocumentor-element-found-in__line">152</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get a single schedule item&#039;s frequency</p>
@@ -784,7 +800,7 @@ be cancelled/dequeued to stop the sequence.</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The name of the schedule</p>
+                    <section class="phpdocumentor-description"><p>The name of the schedule.</p>
 </section>
 
             </dd>
@@ -793,7 +809,7 @@ be cancelled/dequeued to stop the sequence.</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The unit of time</p>
+                    <section class="phpdocumentor-description"><p>The unit of time.</p>
 </section>
 
             </dd>
@@ -822,7 +838,7 @@ be cancelled/dequeued to stop the sequence.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">224</span>
+    <span class="phpdocumentor-element-found-in__line">268</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get the date and time for the next scheduled occurence of an action with a given hook
@@ -888,7 +904,7 @@ be cancelled/dequeued to stop the sequence.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">194</span>
+    <span class="phpdocumentor-element-found-in__line">238</span>
 </aside>
 
         <p class="phpdocumentor-summary">Schedule an action that recurs on a cron-like schedule.</p>
@@ -995,7 +1011,7 @@ be cancelled/dequeued to stop the sequence.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">170</span>
+    <span class="phpdocumentor-element-found-in__line">214</span>
 </aside>
 
         <p class="phpdocumentor-summary">Schedule a recurring action</p>
@@ -1078,7 +1094,7 @@ be cancelled/dequeued to stop the sequence.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">156</span>
+    <span class="phpdocumentor-element-found-in__line">200</span>
 </aside>
 
         <p class="phpdocumentor-summary">Schedule an action to run once at some time in the future</p>
@@ -1152,7 +1168,7 @@ be cancelled/dequeued to stop the sequence.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">256</span>
+    <span class="phpdocumentor-element-found-in__line">300</span>
 </aside>
 
         <p class="phpdocumentor-summary">Find scheduled actions</p>
@@ -1220,7 +1236,7 @@ be cancelled/dequeued to stop the sequence.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-queue.php"><a href="files/classes-class-object-sync-sf-queue.html"><abbr title="classes/class-object-sync-sf-queue.php">class-object-sync-sf-queue.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">38</span>
+    <span class="phpdocumentor-element-found-in__line">76</span>
 </aside>
 
         <p class="phpdocumentor-summary">Add actions</p>

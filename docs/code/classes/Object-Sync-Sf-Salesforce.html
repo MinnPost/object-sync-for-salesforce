@@ -70,7 +70,9 @@
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
                     <ul class="phpdocumentor-breadcrumbs">
-            <li class="phpdocumentor-breadcrumb"><a href="packages/Default.html">Default</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object.html">Object</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync.html">Sync</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync-Salesforce.html">Salesforce</a></li>
     </ul>
 
     <article class="phpdocumentor-element -class">
@@ -83,12 +85,12 @@
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">14</span>
 </aside>
 
-            <p class="phpdocumentor-summary">Ability to authorize and communicate with the Salesforce REST API. This class can make read and write calls to Salesforce, and also cache the responses in WordPress.</p>
+            <p class="phpdocumentor-summary">Object_Sync_Sf_Salesforce class.</p>
 
     <section class="phpdocumentor-description"></section>
 
@@ -106,144 +108,165 @@
 
 <dl class="phpdocumentor-table-of-contents">
                 <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_authorize_path">$authorize_path</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>Path for the Salesforce authorize URL</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_callback_url">$callback_url</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>Callback URL for the Salesforce API</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_consumer_key">$consumer_key</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>Salesforce consumer key</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_consumer_secret">$consumer_secret</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>Salesforce consumer secret</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#property_debug">$debug</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Whether the plugin is in debug mode</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_file">$file</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The main plugin file</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_logging">$logging</a>
+    <span>
+                &nbsp;: object            </span>
+</dt>
+<dd>Object_Sync_Sf_Logging class</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_login_credentials">$login_credentials</a>
+    <span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+</dt>
+<dd>Login credentials for the Salesforce API; comes from wp-config or from the plugin settings</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_login_url">$login_url</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>Login URL for the Salesforce API</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_option_prefix">$option_prefix</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The plugin&#039;s prefix when saving options to the database</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#property_options">$options</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>API call options</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#property_refresh_code">$refresh_code</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: int            </span>
 </dt>
-<dd></dd>
+<dd>API refresh return code</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#property_response">$response</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>API response from Salesforce</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_rest_api_version">$rest_api_version</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>REST API version for Salesforce</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_schedulable_classes">$schedulable_classes</a>
+    <span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+</dt>
+<dd>Array of what classes in the plugin can be scheduled to occur with `wp_cron` events</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_slug">$slug</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The plugin&#039;s slug so we can include it when necessary</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#property_success_codes">$success_codes</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>API success return codes</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#property_success_or_refresh_codes">$success_or_refresh_codes</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>API success or refresh return codes</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Salesforce.html#property_authorize_path">$authorize_path</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Salesforce.html#property_callback_url">$callback_url</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Salesforce.html#property_consumer_key">$consumer_key</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Salesforce.html#property_consumer_secret">$consumer_secret</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Salesforce.html#property_logging">$logging</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Salesforce.html#property_login_url">$login_url</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Salesforce.html#property_option_prefix">$option_prefix</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Salesforce.html#property_rest_api_version">$rest_api_version</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Salesforce.html#property_schedulable_classes">$schedulable_classes</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Salesforce.html#property_slug">$slug</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#property_token_path">$token_path</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Path for the Salesforce token URL</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce.html#property_version">$version</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>Current version of the plugin</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#property_wordpress">$wordpress</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Object_Sync_Sf_WordPress class</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method___construct">__construct()</a>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Constructor which initializes the Salesforce APIs.</dd>
+<dd>Constructor for Salesforce class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_analytics_api">analytics_api()</a>
     <span>
                         &nbsp;: object    </span>
 </dt>
-<dd>Make a call to the Analytics API</dd>
+<dd>Make a call to the Analytics API. Part of core API calls.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_api_call">api_call()</a>
@@ -325,9 +348,7 @@ environments, so it&#039;s safer to rely on compared to SFID.</dd>
     <span>
                         &nbsp;: string    </span>
 </dt>
-<dd>Given a Salesforce ID, return the corresponding SObject name. (Based on
- keyPrefix from object definition, @see
- https://developer.salesforce.com/forums/?id=906F0000000901ZIAQ )</dd>
+<dd>Given a Salesforce ID, return the corresponding SObject name. (Based on keyPrefix from object definition,</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_updated">get_updated()</a>
@@ -335,7 +356,7 @@ environments, so it&#039;s safer to rely on compared to SFID.</dd>
                         &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Return a list of SFIDs for the given object, which have been created or
-updated in the given timeframe.</dd>
+updated in the given timeframe. Part of core API calls.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_is_authorized">is_authorized()</a>
@@ -349,49 +370,49 @@ updated in the given timeframe.</dd>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Return a list of available resources for the configured API version.</dd>
+<dd>Return a list of available resources for the configured API version. Part of core API calls.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_create">object_create()</a>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Create a new object of the given type.</dd>
+<dd>Create a new object of the given type. Part of core API calls.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_delete">object_delete()</a>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Delete a Salesforce object.</dd>
+<dd>Delete a Salesforce object. Part of core API calls</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_describe">object_describe()</a>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Retrieve all the metadata for an object.</dd>
+<dd>Retrieve all the metadata for an object. Part of core API calls.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_read">object_read()</a>
     <span>
                         &nbsp;: object    </span>
 </dt>
-<dd>Return a full loaded Salesforce object.</dd>
+<dd>Return a full loaded Salesforce object. Part of core API calls.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_readby_external_id">object_readby_external_id()</a>
     <span>
                         &nbsp;: object    </span>
 </dt>
-<dd>Return a full loaded Salesforce object from External ID.</dd>
+<dd>Return a full loaded Salesforce object from External ID. Part of core API calls.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_update">object_update()</a>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Update an existing object.</dd>
+<dd>Update an existing object. Part of core API calls.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_upsert">object_upsert()</a>
@@ -412,7 +433,7 @@ updated in the given timeframe.</dd>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Use SOQL to get objects based on query string.</dd>
+<dd>Use SOQL to get objects based on query string. Part of core API calls.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_request_token">request_token()</a>
@@ -426,7 +447,7 @@ updated in the given timeframe.</dd>
     <span>
                         &nbsp;: object    </span>
 </dt>
-<dd>Run a specific Analytics report</dd>
+<dd>Run a specific Analytics report. Part of core API calls.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_api_http_request">api_http_request()</a>
@@ -475,7 +496,7 @@ updated in the given timeframe.</dd>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Set the SF instanc URL.</dd>
+<dd>Set the SF instance URL.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/Object-Sync-Sf-Salesforce.html#method_set_refresh_token">set_refresh_token()</a>
@@ -490,7 +511,7 @@ updated in the given timeframe.</dd>
                         &nbsp;: mixed    </span>
 </dt>
 <dd>If there is a WordPress setting for how long to keep the cache, return it and set the object property
-Otherwise, return seconds in 24 hours</dd>
+Otherwise, return seconds in 24 hours.</dd>
 
         </dl>
 
@@ -511,6 +532,134 @@ Otherwise, return seconds in 24 hours</dd>
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="property_authorize_path">
+        $authorize_path
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_authorize_path" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">77</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Path for the Salesforce authorize URL</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$authorize_path</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_callback_url">
+        $callback_url
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_callback_url" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">91</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Callback URL for the Salesforce API</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$callback_url</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_consumer_key">
+        $consumer_key
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_consumer_key" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">112</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Salesforce consumer key</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$consumer_key</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_consumer_secret">
+        $consumer_secret
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_consumer_secret" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">119</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Salesforce consumer secret</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$consumer_secret</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="property_debug">
         $debug
         <a href="classes/Object-Sync-Sf-Salesforce.html#property_debug" class="headerlink"><i class="fas fa-link"></i></a>
@@ -518,19 +667,181 @@ Otherwise, return seconds in 24 hours</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">35</span>
+    <span class="phpdocumentor-element-found-in__line">154</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Whether the plugin is in debug mode</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$debug</span>
     </code>
 
+        <section class="phpdocumentor-description"></section>
+
     
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_file">
+        $file
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_file" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">28</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The main plugin file</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$file</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_logging">
+        $logging
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_logging" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">63</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Logging class</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
+    <span class="phpdocumentor-signature__name">$logging</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_login_credentials">
+        $login_credentials
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_login_credentials" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">49</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Login credentials for the Salesforce API; comes from wp-config or from the plugin settings</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__name">$login_credentials</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_login_url">
+        $login_url
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_login_url" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">98</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Login URL for the Salesforce API</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$login_url</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_option_prefix">
+        $option_prefix
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_option_prefix" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">42</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The plugin&#039;s prefix when saving options to the database</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$option_prefix</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -548,19 +859,21 @@ Otherwise, return seconds in 24 hours</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">30</span>
+    <span class="phpdocumentor-element-found-in__line">126</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">API call options</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$options</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -578,19 +891,21 @@ Otherwise, return seconds in 24 hours</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">32</span>
+    <span class="phpdocumentor-element-found-in__line">140</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">API refresh return code</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">int</span>
     <span class="phpdocumentor-signature__name">$refresh_code</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -608,19 +923,117 @@ Otherwise, return seconds in 24 hours</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">37</span>
+    <span class="phpdocumentor-element-found-in__line">161</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">API response from Salesforce</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$response</span>
     </code>
 
+        <section class="phpdocumentor-description"></section>
+
     
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_rest_api_version">
+        $rest_api_version
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_rest_api_version" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">105</span>
+</aside>
+
+        <p class="phpdocumentor-summary">REST API version for Salesforce</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$rest_api_version</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_schedulable_classes">
+        $schedulable_classes
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_schedulable_classes" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">56</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Array of what classes in the plugin can be scheduled to occur with `wp_cron` events</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__name">$schedulable_classes</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_slug">
+        $slug
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_slug" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">35</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The plugin&#039;s slug so we can include it when necessary</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$slug</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -638,19 +1051,21 @@ Otherwise, return seconds in 24 hours</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">31</span>
+    <span class="phpdocumentor-element-found-in__line">133</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">API success return codes</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$success_codes</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -668,19 +1083,21 @@ Otherwise, return seconds in 24 hours</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">33</span>
+    <span class="phpdocumentor-element-found-in__line">147</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">API success or refresh return codes</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$success_or_refresh_codes</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -688,307 +1105,7 @@ Otherwise, return seconds in 24 hours</dd>
         class="
             phpdocumentor-element
             -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_authorize_path">
-        $authorize_path
-        <a href="classes/Object-Sync-Sf-Salesforce.html#property_authorize_path" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">21</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$authorize_path</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_callback_url">
-        $callback_url
-        <a href="classes/Object-Sync-Sf-Salesforce.html#property_callback_url" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">20</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$callback_url</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_consumer_key">
-        $consumer_key
-        <a href="classes/Object-Sync-Sf-Salesforce.html#property_consumer_key" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">17</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$consumer_key</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_consumer_secret">
-        $consumer_secret
-        <a href="classes/Object-Sync-Sf-Salesforce.html#property_consumer_secret" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">18</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$consumer_secret</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_logging">
-        $logging
-        <a href="classes/Object-Sync-Sf-Salesforce.html#property_logging" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">26</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$logging</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_login_url">
-        $login_url
-        <a href="classes/Object-Sync-Sf-Salesforce.html#property_login_url" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">19</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$login_url</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_option_prefix">
-        $option_prefix
-        <a href="classes/Object-Sync-Sf-Salesforce.html#property_option_prefix" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">28</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$option_prefix</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_rest_api_version">
-        $rest_api_version
-        <a href="classes/Object-Sync-Sf-Salesforce.html#property_rest_api_version" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">23</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$rest_api_version</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_schedulable_classes">
-        $schedulable_classes
-        <a href="classes/Object-Sync-Sf-Salesforce.html#property_schedulable_classes" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">27</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$schedulable_classes</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_slug">
-        $slug
-        <a href="classes/Object-Sync-Sf-Salesforce.html#property_slug" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">25</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$slug</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_token_path">
@@ -998,19 +1115,21 @@ Otherwise, return seconds in 24 hours</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">84</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Path for the Salesforce token URL</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$token_path</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1018,7 +1137,39 @@ Otherwise, return seconds in 24 hours</dd>
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_version">
+        $version
+        <a href="classes/Object-Sync-Sf-Salesforce.html#property_version" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">21</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Current version of the plugin</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$version</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_wordpress">
@@ -1028,19 +1179,21 @@ Otherwise, return seconds in 24 hours</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">70</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Object_Sync_Sf_WordPress class</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$wordpress</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1062,131 +1215,20 @@ Otherwise, return seconds in 24 hours</dd>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">67</span>
+    <span class="phpdocumentor-element-found-in__line">166</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Constructor which initializes the Salesforce APIs.</p>
+        <p class="phpdocumentor-summary">Constructor for Salesforce class</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$consumer_key</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$consumer_secret</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$login_url</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$callback_url</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$authorize_path</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$token_path</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$rest_api_version</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wordpress</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$slug</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$logging</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$schedulable_classes</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$option_prefix</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$consumer_key</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Salesforce key to connect to your Salesforce instance.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$consumer_secret</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Salesforce secret to connect to your Salesforce instance.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$login_url</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Login URL for Salesforce auth requests - differs for production and sandbox</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$callback_url</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>WordPress URL where Salesforce should send you after authentication</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$authorize_path</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Oauth path that Salesforce wants</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$token_path</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Path Salesforce uses to give you a token</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$rest_api_version</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>What version of the Salesforce REST API to use</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$wordpress</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Object for doing things to WordPress - retrieving data, cache, etc.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$slug</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Slug for this plugin. Can be used for file including, especially</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$logging</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Logging object for this plugin.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$schedulable_classes</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>array of classes that can have scheduled tasks specific to them</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$option_prefix</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Option prefix for this plugin. Used for getting and setting options, actions, etc.</p>
-</section>
-
-            </dd>
-            </dl>
-
+    
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
@@ -1207,12 +1249,12 @@ Otherwise, return seconds in 24 hours</dd>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_analytics_api" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1029</span>
+    <span class="phpdocumentor-element-found-in__line">1084</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Make a call to the Analytics API</p>
+        <p class="phpdocumentor-summary">Make a call to the Analytics API. Part of core API calls.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1227,7 +1269,7 @@ Otherwise, return seconds in 24 hours</dd>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Object type name, E.g., Report</p>
+                    <section class="phpdocumentor-description"><p>Object type name, E.g., Report.</p>
 </section>
 
             </dd>
@@ -1245,7 +1287,7 @@ Otherwise, return seconds in 24 hours</dd>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>What comes after the ID? E.g. instances, ?includeDetails=True</p>
+                    <section class="phpdocumentor-description"><p>What comes after the ID? E.g. instances, ?includeDetails=True.</p>
 </section>
 
             </dd>
@@ -1254,7 +1296,7 @@ Otherwise, return seconds in 24 hours</dd>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">array()</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Params to put with the request</p>
+                    <section class="phpdocumentor-description"><p>Params to put with the request.</p>
 </section>
 
             </dd>
@@ -1263,7 +1305,7 @@ Otherwise, return seconds in 24 hours</dd>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;GET&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>GET or POST</p>
+                    <section class="phpdocumentor-description"><p>GET or POST.</p>
 </section>
 
             </dd>
@@ -1275,7 +1317,6 @@ Otherwise, return seconds in 24 hours</dd>
     <span class="phpdocumentor-signature__response_type">object</span>
             &mdash;
             <section class="phpdocumentor-description"><p>Object of the requested Salesforce object.</p>
-<p>part of core API calls</p>
 </section>
 
     
@@ -1291,9 +1332,9 @@ Otherwise, return seconds in 24 hours</dd>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_api_call" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">191</span>
+    <span class="phpdocumentor-element-found-in__line">279</span>
 </aside>
 
         <p class="phpdocumentor-summary">Make a call to the Salesforce REST API.</p>
@@ -1338,8 +1379,7 @@ Otherwise, return seconds in 24 hours</dd>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">array()</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Any method can supply options for the API call, and they'll be preserved as far as the curl request
-They get merged with the class options</p>
+                    <section class="phpdocumentor-description"><p>Any method can supply options for the API call, and they'll be preserved as far as the curl request. They get merged with the class options.</p>
 </section>
 
             </dd>
@@ -1348,8 +1388,7 @@ They get merged with the class options</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;rest&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Type of call. Defaults to 'rest' - currently we don't support other types.
-Other exammple in Drupal is 'apexrest'</p>
+                    <section class="phpdocumentor-description"><p>Type of call. Defaults to 'rest' - currently we don't support other types. Other exammple in Drupal is 'apexrest'.</p>
 </section>
 
             </dd>
@@ -1367,7 +1406,8 @@ Other exammple in Drupal is 'apexrest'</p>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/Object-Sync-Sf-Exception.html"><abbr title="\Object_Sync_Sf_Exception">Object_Sync_Sf_Exception</abbr></a></span>
                                                             
-                                                 <section class="phpdocumentor-description"></section>
+                                                 <section class="phpdocumentor-description"><p>The plugin's exception class.</p>
+</section>
 
                                     </dd>
                         </dl>
@@ -1391,9 +1431,9 @@ Other exammple in Drupal is 'apexrest'</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_convert_id" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">105</span>
+    <span class="phpdocumentor-element-found-in__line">208</span>
 </aside>
 
         <p class="phpdocumentor-summary">Converts a 15-character case-sensitive Salesforce ID to 18-character
@@ -1412,7 +1452,7 @@ case-insensitive ID. If input is not 15-characters, return input unaltered.</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>15-character case-sensitive Salesforce ID</p>
+                    <section class="phpdocumentor-description"><p>15-character case-sensitive Salesforce ID.</p>
 </section>
 
             </dd>
@@ -1439,9 +1479,9 @@ case-insensitive ID. If input is not 15-characters, return input unaltered.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_access_token" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">580</span>
+    <span class="phpdocumentor-element-found-in__line">697</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get the access token.</p>
@@ -1473,9 +1513,9 @@ case-insensitive ID. If input is not 15-characters, return input unaltered.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_api_endpoint" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">546</span>
+    <span class="phpdocumentor-element-found-in__line">664</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get the API end point for a given type of the API.</p>
@@ -1520,9 +1560,9 @@ case-insensitive ID. If input is not 15-characters, return input unaltered.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_api_versions" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">162</span>
+    <span class="phpdocumentor-element-found-in__line">260</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get REST API versions available on this Salesforce organization
@@ -1555,9 +1595,9 @@ This is not an authenticated call, so it would not be a helpful test</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_authorization_code" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">702</span>
+    <span class="phpdocumentor-element-found-in__line">814</span>
 </aside>
 
         <p class="phpdocumentor-summary">OAuth step 1: Redirect to Salesforce and request and authorization code.</p>
@@ -1589,9 +1629,9 @@ This is not an authenticated call, so it would not be a helpful test</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_deleted" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1187</span>
+    <span class="phpdocumentor-element-found-in__line">1217</span>
 </aside>
 
         <p class="phpdocumentor-summary">Retrieves the list of individual objects that have been deleted within the
@@ -1599,7 +1639,7 @@ given timespan for a specified object type.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">get_deleted</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$start_date</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$end_date</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">get_deleted</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$start_date</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$end_date</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -1616,17 +1656,21 @@ given timespan for a specified object type.</p>
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$start_date</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>Start date to check for deleted objects (in ISO 8601 format).</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$end_date</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>End date to check for deleted objects (in ISO 8601 format).</p>
+</section>
+
             </dd>
             </dl>
 
@@ -1651,9 +1695,9 @@ given timespan for a specified object type.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_identity" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">695</span>
+    <span class="phpdocumentor-element-found-in__line">807</span>
 </aside>
 
         <p class="phpdocumentor-summary">Return the Salesforce identity, which is stored in a variable.</p>
@@ -1670,7 +1714,7 @@ given timespan for a specified object type.</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>Returns FALSE if no identity has been stored.</p>
+            <section class="phpdocumentor-description"><p>Returns false if no identity has been stored.</p>
 </section>
 
     
@@ -1686,9 +1730,9 @@ given timespan for a specified object type.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_instance_url" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">563</span>
+    <span class="phpdocumentor-element-found-in__line">681</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get the SF instance URL. Useful for linking to objects.</p>
@@ -1720,9 +1764,9 @@ given timespan for a specified object type.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_record_type_id_by_developer_name" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1269</span>
+    <span class="phpdocumentor-element-found-in__line">1281</span>
 </aside>
 
         <p class="phpdocumentor-summary">Given a DeveloperName and SObject Name, return the SFID of the
@@ -1731,7 +1775,7 @@ environments, so it&#039;s safer to rely on compared to SFID.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">get_record_type_id_by_developer_name</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$name</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$devname</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$reset</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+                <span class="phpdocumentor-signature__name">get_record_type_id_by_developer_name</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$name</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$devname</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$reset</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -1757,10 +1801,12 @@ environments, so it&#039;s safer to rely on compared to SFID.</p>
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$reset</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
                  = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>whether this is resetting the cache.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -1769,8 +1815,7 @@ environments, so it&#039;s safer to rely on compared to SFID.</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">string</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>SFID
-The Salesforce ID of the given Record Type, or null.</p>
+            <section class="phpdocumentor-description"><p>SFID The Salesforce ID of the given Record Type, or null.</p>
 </section>
 
     
@@ -1786,14 +1831,12 @@ The Salesforce ID of the given Record Type, or null.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_sobject_type" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">135</span>
+    <span class="phpdocumentor-element-found-in__line">234</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Given a Salesforce ID, return the corresponding SObject name. (Based on
- keyPrefix from object definition, @see
- https://developer.salesforce.com/forums/?id=906F0000000901ZIAQ )</p>
+        <p class="phpdocumentor-summary">Given a Salesforce ID, return the corresponding SObject name. (Based on keyPrefix from object definition,</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1808,7 +1851,7 @@ The Salesforce ID of the given Record Type, or null.</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>15- or 18-character Salesforce ID</p>
+                    <section class="phpdocumentor-description"><p>15- or 18-character Salesforce ID.</p>
 </section>
 
             </dd>
@@ -1821,12 +1864,13 @@ The Salesforce ID of the given Record Type, or null.</p>
     </h5>
     <dl class="phpdocumentor-tag-list">
                                     <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
+                    <span class="phpdocumentor-tag__name">see</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><a href="classes/Object-Sync-Sf-Exception.html"><abbr title="\Object_Sync_Sf_Exception">Object_Sync_Sf_Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"></section>
+                                                                                    <span class="phpdocumentor-tag-link"><a href="https://developer.salesforce.com/forums/?id=906F0000000901ZIAQ"><abbr title="https://developer.salesforce.com/forums/?id=906F0000000901ZIAQ">https://developer.salesforce.com/forums/?id=906F0000000901ZIAQ</abbr></a></span>
+                                        
+                                                 <section class="phpdocumentor-description"><p>)</p>
+</section>
 
                                     </dd>
                         </dl>
@@ -1834,8 +1878,7 @@ The Salesforce ID of the given Record Type, or null.</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">string</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>sObject name, e.g. &quot;Account&quot;, &quot;Contact&quot;, &quot;my__Custom_Object__c&quot; or FALSE
-if no match could be found.</p>
+            <section class="phpdocumentor-description"><p>sObject name, e.g. &quot;Account&quot;, &quot;Contact&quot;, &quot;my__Custom_Object__c&quot; or false if no match could be found.</p>
 </section>
 
     
@@ -1851,13 +1894,13 @@ if no match could be found.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_updated" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1237</span>
+    <span class="phpdocumentor-element-found-in__line">1254</span>
 </aside>
 
         <p class="phpdocumentor-summary">Return a list of SFIDs for the given object, which have been created or
-updated in the given timeframe.</p>
+updated in the given timeframe. Part of core API calls.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1881,8 +1924,7 @@ updated in the given timeframe.</p>
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
                  = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>unix timestamp for older timeframe for updates.
-Defaults to &quot;-29 days&quot; if empty.</p>
+                    <section class="phpdocumentor-description"><p>unix timestamp for older timeframe for updates. Defaults to &quot;-29 days&quot; if empty.</p>
 </section>
 
             </dd>
@@ -1891,8 +1933,7 @@ Defaults to &quot;-29 days&quot; if empty.</p>
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
                  = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>unix timestamp for end of timeframe for updates.
-Defaults to now if empty</p>
+                    <section class="phpdocumentor-description"><p>unix timestamp for end of timeframe for updates. Defaults to now if empty.</p>
 </section>
 
             </dd>
@@ -1910,8 +1951,7 @@ Defaults to now if empty</p>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                     <span class="phpdocumentor-tag-link"><a href="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_getupdated.htm"><abbr title="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_getupdated.htm">https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_getupdated.htm</abbr></a></span>
                                         
-                                                 <section class="phpdocumentor-description"><p>part of core API calls</p>
-</section>
+                                                 <section class="phpdocumentor-description"></section>
 
                                     </dd>
                         </dl>
@@ -1939,9 +1979,9 @@ covered in the request.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_is_authorized" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">154</span>
+    <span class="phpdocumentor-element-found-in__line">252</span>
 </aside>
 
         <p class="phpdocumentor-summary">Determine if this SF instance is fully configured.</p>
@@ -1973,12 +2013,12 @@ covered in the request.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_list_resources" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1203</span>
+    <span class="phpdocumentor-element-found-in__line">1230</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Return a list of available resources for the configured API version.</p>
+        <p class="phpdocumentor-summary">Return a list of available resources for the configured API version. Part of core API calls.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1993,7 +2033,6 @@ covered in the request.</p>
     <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             &mdash;
             <section class="phpdocumentor-description"><p>Associative array keyed by name with a URI value.</p>
-<p>part of core API calls</p>
 </section>
 
     
@@ -2009,12 +2048,12 @@ covered in the request.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_create" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">904</span>
+    <span class="phpdocumentor-element-found-in__line">989</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Create a new object of the given type.</p>
+        <p class="phpdocumentor-summary">Create a new object of the given type. Part of core API calls.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -2058,7 +2097,6 @@ data:
 from_cache:
 cached:
 is_redo:</p>
-<p>part of core API calls</p>
 </section>
 
     
@@ -2074,12 +2112,12 @@ is_redo:</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_delete" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1167</span>
+    <span class="phpdocumentor-element-found-in__line">1200</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Delete a Salesforce object.</p>
+        <p class="phpdocumentor-summary">Delete a Salesforce object. Part of core API calls</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -2114,8 +2152,7 @@ is_redo:</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>part of core API calls</p>
-</section>
+            <section class="phpdocumentor-description"></section>
 
     
 </article>
@@ -2130,12 +2167,12 @@ is_redo:</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_describe" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">857</span>
+    <span class="phpdocumentor-element-found-in__line">947</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Retrieve all the metadata for an object.</p>
+        <p class="phpdocumentor-summary">Retrieve all the metadata for an object. Part of core API calls.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -2170,9 +2207,7 @@ is_redo:</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>All the metadata for an object, including information about each field,
-URLs, and child relationships.</p>
-<p>part of core API calls</p>
+            <section class="phpdocumentor-description"><p>All the metadata for an object, including information about each field, URLs, and child relationships.</p>
 </section>
 
     
@@ -2188,12 +2223,12 @@ URLs, and child relationships.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_read" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1006</span>
+    <span class="phpdocumentor-element-found-in__line">1070</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Return a full loaded Salesforce object.</p>
+        <p class="phpdocumentor-summary">Return a full loaded Salesforce object. Part of core API calls.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -2226,7 +2261,7 @@ URLs, and child relationships.</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">array()</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Optional options to pass to the API call</p>
+                    <section class="phpdocumentor-description"><p>Optional options to pass to the API call.</p>
 </section>
 
             </dd>
@@ -2238,7 +2273,6 @@ URLs, and child relationships.</p>
     <span class="phpdocumentor-signature__response_type">object</span>
             &mdash;
             <section class="phpdocumentor-description"><p>Object of the requested Salesforce object.</p>
-<p>part of core API calls</p>
 </section>
 
     
@@ -2254,12 +2288,12 @@ URLs, and child relationships.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_readby_external_id" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1151</span>
+    <span class="phpdocumentor-element-found-in__line">1189</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Return a full loaded Salesforce object from External ID.</p>
+        <p class="phpdocumentor-summary">Return a full loaded Salesforce object from External ID. Part of core API calls.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -2301,7 +2335,7 @@ URLs, and child relationships.</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">array()</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Optional options to pass to the API call</p>
+                    <section class="phpdocumentor-description"><p>Optional options to pass to the API call.</p>
 </section>
 
             </dd>
@@ -2313,7 +2347,6 @@ URLs, and child relationships.</p>
     <span class="phpdocumentor-signature__response_type">object</span>
             &mdash;
             <section class="phpdocumentor-description"><p>Object of the requested Salesforce object.</p>
-<p>part of core API calls</p>
 </section>
 
     
@@ -2329,12 +2362,12 @@ URLs, and child relationships.</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_update" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">983</span>
+    <span class="phpdocumentor-element-found-in__line">1054</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Update an existing object.</p>
+        <p class="phpdocumentor-summary">Update an existing object. Part of core API calls.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -2368,7 +2401,6 @@ URLs, and child relationships.</p>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>Values of the fields to set for the object.</p>
-<p>part of core API calls</p>
 </section>
 
             </dd>
@@ -2402,9 +2434,9 @@ is_redo:</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_object_upsert" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">941</span>
+    <span class="phpdocumentor-element-found-in__line">1018</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create new records or update existing records.</p>
@@ -2414,8 +2446,8 @@ is_redo:</p>
                 <span class="phpdocumentor-signature__name">object_upsert</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$name</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$params</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
         <section class="phpdocumentor-description"><p>The new records or updated records are based on the value of the specified
-field.  If the value is not unique, REST API returns a 300 response with
-the list of matching records.</p>
+field. If the value is not unique, REST API returns a 300 response with
+the list of matching records. Part of core API calls.</p>
 </section>
 
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
@@ -2472,7 +2504,6 @@ data:
 from_cache:
 cached:
 is_redo:</p>
-<p>part of core API calls</p>
 </section>
 
     
@@ -2488,9 +2519,9 @@ is_redo:</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_objects" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">780</span>
+    <span class="phpdocumentor-element-found-in__line">885</span>
 </aside>
 
         <p class="phpdocumentor-summary">Available objects and their metadata for your organization&#039;s data.</p>
@@ -2499,7 +2530,10 @@ is_redo:</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                 <span class="phpdocumentor-signature__name">objects</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$conditions</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">array(&#039;updateable&#039; =&gt; true, &#039;triggerable&#039; =&gt; true)</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$reset</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
-        <section class="phpdocumentor-description"></section>
+        <section class="phpdocumentor-description"><p>part of core API calls. this call does require authentication, and the basic url it becomes is like this:
+https://instance.salesforce.com/services/data/v#.0/sobjects
+note: updateable is really how the api spells it</p>
+</section>
 
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -2508,8 +2542,7 @@ is_redo:</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">array(&#039;updateable&#039; =&gt; true, &#039;triggerable&#039; =&gt; true)</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Associative array of filters to apply to the returned objects. Filters
-are applied after the list is returned from Salesforce.</p>
+                    <section class="phpdocumentor-description"><p>Associative array of filters to apply to the returned objects. Filters are applied after the list is returned from Salesforce.</p>
 </section>
 
             </dd>
@@ -2530,9 +2563,6 @@ are applied after the list is returned from Salesforce.</p>
     <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             &mdash;
             <section class="phpdocumentor-description"><p>Available objects and metadata.</p>
-<p>part of core API calls. this call does require authentication, and the basic url it becomes is like this:
-https://instance.salesforce.com/services/data/v#.0/sobjects</p>
-<p>updateable is really how the api spells it</p>
 </section>
 
     
@@ -2548,12 +2578,12 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_query" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">825</span>
+    <span class="phpdocumentor-element-found-in__line">922</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Use SOQL to get objects based on query string.</p>
+        <p class="phpdocumentor-summary">Use SOQL to get objects based on query string. Part of core API calls.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -2586,7 +2616,7 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
                 : <span class="phpdocumentor-signature__argument__return-type">bool</span>
                  = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Whether this should get all results for the query</p>
+                    <section class="phpdocumentor-description"><p>Whether this should get all results for the query.</p>
 </section>
 
             </dd>
@@ -2595,7 +2625,7 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
                 : <span class="phpdocumentor-signature__argument__return-type">bool</span>
                  = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>If set, Salesforce will return feedback on the query performance</p>
+                    <section class="phpdocumentor-description"><p>If set, Salesforce will return feedback on the query performance.</p>
 </section>
 
             </dd>
@@ -2607,7 +2637,6 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
     <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             &mdash;
             <section class="phpdocumentor-description"><p>Array of Salesforce objects that match the query.</p>
-<p>part of core API calls</p>
 </section>
 
     
@@ -2623,9 +2652,9 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_request_token" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">720</span>
+    <span class="phpdocumentor-element-found-in__line">832</span>
 </aside>
 
         <p class="phpdocumentor-summary">OAuth step 2: Exchange an authorization code for an access token.</p>
@@ -2650,6 +2679,22 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
             </dl>
 
     
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><a href="classes/Object-Sync-Sf-Exception.html"><abbr title="\Object_Sync_Sf_Exception">Object_Sync_Sf_Exception</abbr></a></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>The plugin's exception class.</p>
+</section>
+
+                                    </dd>
+                        </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
@@ -2669,16 +2714,16 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_run_analytics_report" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1050</span>
+    <span class="phpdocumentor-element-found-in__line">1101</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Run a specific Analytics report</p>
+        <p class="phpdocumentor-summary">Run a specific Analytics report. Part of core API calls.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">run_analytics_report</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$id</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$async</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">true</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$clear_cache</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$params</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">array()</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$method</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;GET&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$report_cache_expiration</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cache_instance</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">true</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$instance_cache_expiration</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">object</span></code>
+                <span class="phpdocumentor-signature__name">run_analytics_report</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$id</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$async</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">true</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$clear_cache</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$params</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">array()</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$method</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;GET&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$report_cache_expiration</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cache_instance</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">true</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$instance_cache_expiration</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">object</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -2698,23 +2743,25 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
                 : <span class="phpdocumentor-signature__argument__return-type">bool</span>
                  = <span class="phpdocumentor-signature__argument__default-value">true</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Whether the report is asynchronous</p>
+                    <section class="phpdocumentor-description"><p>Whether the report is asynchronous.</p>
 </section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$clear_cache</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
                  = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>Whether the cache is being cleared.</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$params</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">array()</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Params to put with the request</p>
+                    <section class="phpdocumentor-description"><p>Params to put with the request.</p>
 </section>
 
             </dd>
@@ -2723,30 +2770,36 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;GET&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>GET or POST</p>
+                    <section class="phpdocumentor-description"><p>GET or POST.</p>
 </section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$report_cache_expiration</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>How long to keep the report's cache result around for.</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$cache_instance</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
                  = <span class="phpdocumentor-signature__argument__default-value">true</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>Whether to cache the instance results.</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$instance_cache_expiration</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>How long to keep the instance's cache result around for.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -2756,7 +2809,6 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
     <span class="phpdocumentor-signature__response_type">object</span>
             &mdash;
             <section class="phpdocumentor-description"><p>Object of the requested Salesforce object.</p>
-<p>part of core API calls</p>
 </section>
 
     
@@ -2772,9 +2824,9 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_api_http_request" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">260</span>
+    <span class="phpdocumentor-element-found-in__line">339</span>
 </aside>
 
         <p class="phpdocumentor-summary">Private helper to issue an SF API request.</p>
@@ -2811,7 +2863,7 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Method to initiate the call, such as GET or POST.  Defaults to GET.</p>
+                    <section class="phpdocumentor-description"><p>Method to initiate the call, such as GET or POST. Defaults to GET.</p>
 </section>
 
             </dd>
@@ -2820,8 +2872,7 @@ https://instance.salesforce.com/services/data/v#.0/sobjects</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">array()</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>This is the options array from the api_call method
-This is where it gets merged with $this-&gt;options</p>
+                    <section class="phpdocumentor-description"><p>This is the options array from the api_call method. This is where it gets merged with $this-&gt;options.</p>
 </section>
 
             </dd>
@@ -2830,8 +2881,7 @@ This is where it gets merged with $this-&gt;options</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;rest&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Type of call. Defaults to 'rest' - currently we don't support other types
-Other exammple in Drupal is 'apexrest'</p>
+                    <section class="phpdocumentor-description"><p>Type of call. Defaults to 'rest' - currently we don't support other types. Other exammple in Drupal is 'apexrest'.</p>
 </section>
 
             </dd>
@@ -2858,9 +2908,9 @@ Other exammple in Drupal is 'apexrest'</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_get_refresh_token" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">599</span>
+    <span class="phpdocumentor-element-found-in__line">714</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get refresh token.</p>
@@ -2892,9 +2942,9 @@ Other exammple in Drupal is 'apexrest'</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_http_request" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">362</span>
+    <span class="phpdocumentor-element-found-in__line">483</span>
 </aside>
 
         <p class="phpdocumentor-summary">Make the HTTP request. Wrapper around curl().</p>
@@ -2948,7 +2998,7 @@ Other exammple in Drupal is 'apexrest'</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">array()</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>This is the options array from the api_http_request method</p>
+                    <section class="phpdocumentor-description"><p>This is the options array from the api_http_request method.</p>
 </section>
 
             </dd>
@@ -2975,9 +3025,9 @@ Other exammple in Drupal is 'apexrest'</p>
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_refresh_token" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">622</span>
+    <span class="phpdocumentor-element-found-in__line">736</span>
 </aside>
 
         <p class="phpdocumentor-summary">Refresh access token based on the refresh token. Updates session variable.</p>
@@ -2986,8 +3036,8 @@ Other exammple in Drupal is 'apexrest'</p>
     <span class="phpdocumentor-signature__visibility">protected</span>
                 <span class="phpdocumentor-signature__name">refresh_token</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"><p>todo: figure out how to do this as part of the schedule class
-this is a scheduleable class and so we could add a method from this class to run every 24 hours, but it's unclear to me that we need it. salesforce seems to refresh itself as it needs to.
+        <section class="phpdocumentor-description"><p>Todo: figure out how to do this as part of the schedule class
+This is a scheduleable class and so we could add a method from this class to run every 24 hours, but it's unclear to me that we need it. salesforce seems to refresh itself as it needs to.
 but it could be a performance boost to do it at scheduleable intervals instead.</p>
 </section>
 
@@ -3004,7 +3054,8 @@ but it could be a performance boost to do it at scheduleable intervals instead.<
                 <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/Object-Sync-Sf-Exception.html"><abbr title="\Object_Sync_Sf_Exception">Object_Sync_Sf_Exception</abbr></a></span>
                                                             
-                                                 <section class="phpdocumentor-description"></section>
+                                                 <section class="phpdocumentor-description"><p>The plugin's exception class.</p>
+</section>
 
                                     </dd>
                         </dl>
@@ -3027,9 +3078,9 @@ but it could be a performance boost to do it at scheduleable intervals instead.<
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_set_access_token" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">592</span>
+    <span class="phpdocumentor-element-found-in__line">707</span>
 </aside>
 
         <p class="phpdocumentor-summary">Set the access token.</p>
@@ -3074,9 +3125,9 @@ but it could be a performance boost to do it at scheduleable intervals instead.<
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_set_identity" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">675</span>
+    <span class="phpdocumentor-element-found-in__line">788</span>
 </aside>
 
         <p class="phpdocumentor-summary">Retrieve and store the Salesforce identity given an ID url.</p>
@@ -3112,7 +3163,8 @@ but it could be a performance boost to do it at scheduleable intervals instead.<
                 <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/Object-Sync-Sf-Exception.html"><abbr title="\Object_Sync_Sf_Exception">Object_Sync_Sf_Exception</abbr></a></span>
                                                             
-                                                 <section class="phpdocumentor-description"></section>
+                                                 <section class="phpdocumentor-description"><p>The plugin's exception class.</p>
+</section>
 
                                     </dd>
                         </dl>
@@ -3135,12 +3187,12 @@ but it could be a performance boost to do it at scheduleable intervals instead.<
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_set_instance_url" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">573</span>
+    <span class="phpdocumentor-element-found-in__line">690</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Set the SF instanc URL.</p>
+        <p class="phpdocumentor-summary">Set the SF instance URL.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
@@ -3181,9 +3233,9 @@ but it could be a performance boost to do it at scheduleable intervals instead.<
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_set_refresh_token" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">609</span>
+    <span class="phpdocumentor-element-found-in__line">723</span>
 </aside>
 
         <p class="phpdocumentor-summary">Set refresh token.</p>
@@ -3227,13 +3279,13 @@ but it could be a performance boost to do it at scheduleable intervals instead.<
         <a href="classes/Object-Sync-Sf-Salesforce.html#method_cache_expiration" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/salesforce.php"><a href="files/classes-salesforce.html"><abbr title="classes/salesforce.php">salesforce.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce.php"><a href="files/classes-class-object-sync-sf-salesforce.html"><abbr title="classes/class-object-sync-sf-salesforce.php">class-object-sync-sf-salesforce.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1299</span>
+    <span class="phpdocumentor-element-found-in__line">1309</span>
 </aside>
 
         <p class="phpdocumentor-summary">If there is a WordPress setting for how long to keep the cache, return it and set the object property
-Otherwise, return seconds in 24 hours</p>
+Otherwise, return seconds in 24 hours.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>

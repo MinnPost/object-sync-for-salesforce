@@ -70,7 +70,9 @@
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
                     <ul class="phpdocumentor-breadcrumbs">
-            <li class="phpdocumentor-breadcrumb"><a href="packages/Default.html">Default</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object.html">Object</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync.html">Sync</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync-Salesforce.html">Salesforce</a></li>
     </ul>
 
     <article class="phpdocumentor-element -class">
@@ -83,12 +85,12 @@
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">14</span>
 </aside>
 
-            <p class="phpdocumentor-summary">Create default WordPress admin functionality to configure the plugin.</p>
+            <p class="phpdocumentor-summary">Object_Sync_Sf_Admin class.</p>
 
     <section class="phpdocumentor-description"></section>
 
@@ -110,196 +112,218 @@
     <span>
                 &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Suffix for group name in ActionScheduler</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_default_api_version">$default_api_version</a>
     <span>
                 &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>What version of the Salesforce API should be the default on the settings screen.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_default_authorize_url_path">$default_authorize_url_path</a>
     <span>
                 &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Default path for the Salesforce authorize URL</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_default_pull_limit">$default_pull_limit</a>
     <span>
                 &nbsp;: int            </span>
 </dt>
-<dd></dd>
+<dd>Default max number of pull records. Users can edit this.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_default_pull_throttle">$default_pull_throttle</a>
     <span>
                 &nbsp;: int            </span>
 </dt>
-<dd></dd>
+<dd>Default throttle for how often to pull from Salesforce. Users can edit this.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_default_token_url_path">$default_token_url_path</a>
     <span>
                 &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Default path for the Salesforce token URL</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_default_triggerable">$default_triggerable</a>
     <span>
                 &nbsp;: bool            </span>
 </dt>
-<dd></dd>
+<dd>Default for whether to limit to triggerable items. Users can edit this.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_default_updateable">$default_updateable</a>
     <span>
                 &nbsp;: bool            </span>
 </dt>
-<dd></dd>
+<dd>Default for whether to limit to items that can be updated. Users can edit this.</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Admin.html#property_file">$file</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The main plugin file</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_logging">$logging</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Object_Sync_Sf_Logging class</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_login_credentials">$login_credentials</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>Login credentials for the Salesforce API; comes from wp-config or from the plugin settings</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_mappings">$mappings</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Object_Sync_Sf_Mapping class</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_option_prefix">$option_prefix</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>The plugin&#039;s prefix when saving options to the database</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_pull">$pull</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Object_Sync_Sf_Salesforce_Pull class</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_push">$push</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Object_Sync_Sf_Salesforce_Push class</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_queue">$queue</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Object_Sync_Sf_Queue class</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_salesforce">$salesforce</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>Object_Sync_Sf_Salesforce class
+This contains Salesforce API methods</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_schedulable_classes">$schedulable_classes</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>Array of what classes in the plugin can be scheduled to occur with `wp_cron` events</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_slug">$slug</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>The plugin&#039;s slug so we can include it when necessary</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_version">$version</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Current version of the plugin</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_wordpress">$wordpress</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Object_Sync_Sf_WordPress class</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Admin.html#property_wpdb">$wpdb</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Global object of `$wpdb`, the WordPress database</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/Object-Sync-Sf-Admin.html#property_access_token">$access_token</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Salesforce access token</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a href="classes/Object-Sync-Sf-Admin.html#property_admin_settings_url_param">$admin_settings_url_param</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>URL fragment for the plugin&#039;s settings page</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/Object-Sync-Sf-Admin.html#property_instance_url">$instance_url</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Salesforce instance URL</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/Object-Sync-Sf-Admin.html#property_refresh_token">$refresh_token</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Salesforce refresh token</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/Object-Sync-Sf-Admin.html#property_sfwp_transients">$sfwp_transients</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Object_Sync_Sf_WordPress_Transient class</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Admin.html#method___construct">__construct()</a>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Constructor which sets up admin pages</dd>
+<dd>Constructor for admin class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Admin.html#method_add_actions">add_actions()</a>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Create the action hooks to create the admin page(s)</dd>
+<dd>Create the action hooks to create the admin pages.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Object-Sync-Sf-Admin.html#method_admin_scripts_and_styles">admin_scripts_and_styles()</a>
+    <span>
+                        &nbsp;: mixed    </span>
+</dt>
+<dd>Admin styles. Load the CSS and JavaScript for the plugin&#039;s settings</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Admin.html#method_change_action_schedule">change_action_schedule()</a>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Change recurring tasks if options change</dd>
+<dd>Update recurring tasks for ActionScheduler if options change</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Admin.html#method_clear_sfwp_cache">clear_sfwp_cache()</a>
@@ -313,7 +337,7 @@
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Create WordPress admin options page</dd>
+<dd>Create the WordPress admin options page</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Admin.html#method_delete_fieldmap">delete_fieldmap()</a>
@@ -384,7 +408,7 @@ This takes either the $_POST array via ajax, or can be directly called with a $d
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Get Salesforce object fields for fieldmapping
+<dd>Get all the Salesforce fields settings for fieldmapping
 This takes either the $_POST array via ajax, or can be directly called with a $data array</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
@@ -394,14 +418,6 @@ This takes either the $_POST array via ajax, or can be directly called with a $d
 </dt>
 <dd>Get WordPress object fields for fieldmapping
 This takes either the $_POST array via ajax, or can be directly called with a $wordpress_object field</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Object-Sync-Sf-Admin.html#method_get_wp_sf_object_fields">get_wp_sf_object_fields()</a>
-    <span>
-                        &nbsp;: array&lt;string|int, mixed&gt;    </span>
-</dt>
-<dd>Get WordPress and Salesforce object fields together for fieldmapping
-This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $salesforce_object fields</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Admin.html#method_import_json_file">import_json_file()</a>
@@ -415,7 +431,7 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
     <span>
                         &nbsp;: string    </span>
 </dt>
-<dd>Set up recurring tasks if there are none</dd>
+<dd>Initial recurring tasks for ActionScheduler</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Admin.html#method_notices">notices()</a>
@@ -423,6 +439,13 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
                         &nbsp;: mixed    </span>
 </dt>
 <dd>Create the notices, settings, and conditions by which admin notices should appear</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Object-Sync-Sf-Admin.html#method_plugin_action_links">plugin_action_links()</a>
+    <span>
+                        &nbsp;: array&lt;string|int, mixed&gt;    </span>
+</dt>
+<dd>Display a Settings link on the main Plugins page</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Admin.html#method_prepare_fieldmap_data">prepare_fieldmap_data()</a>
@@ -475,8 +498,7 @@ This takes an id for a mapping object row</dd>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Create default WordPress admin settings form for salesforce
-This is for the Settings page/tab</dd>
+<dd>Create default WordPress admin settings form. This runs the Settings page.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Admin.html#method_sanitize_validate_text">sanitize_validate_text()</a>
@@ -497,8 +519,7 @@ This is for the Settings page/tab</dd>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Render full admin pages in WordPress
-This allows other plugins to add tabs to the Salesforce settings screen</dd>
+<dd>Render the admin pages in WordPress. This also allows other plugins to add tabs to this plugin&#039;s settings screen</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Admin.html#method_show_salesforce_user_fields">show_salesforce_user_fields()</a>
@@ -506,13 +527,6 @@ This allows other plugins to add tabs to the Salesforce settings screen</dd>
                         &nbsp;: mixed    </span>
 </dt>
 <dd>Show what we know about this user&#039;s relationship to a Salesforce object, if any</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/Object-Sync-Sf-Admin.html#method_add_deprecated_actions">add_deprecated_actions()</a>
-    <span>
-                        &nbsp;: mixed    </span>
-</dt>
-<dd>Deprecated action hooks for admin pages</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Admin.html#method_check_wordpress_admin_permissions">check_wordpress_admin_permissions()</a>
@@ -523,9 +537,23 @@ This allows other plugins to add tabs to the Salesforce settings screen</dd>
 Check if the current user is allowed to access the Salesforce plugin options</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/Object-Sync-Sf-Admin.html#method_check_wordpress_ssl">check_wordpress_ssl()</a>
+    <span>
+                        &nbsp;: bool    </span>
+</dt>
+<dd>Check WordPress SSL status.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/Object-Sync-Sf-Admin.html#method_check_wordpress_ssl_support">check_wordpress_ssl_support()</a>
+    <span>
+                        &nbsp;: bool    </span>
+</dt>
+<dd>Check WordPress SSL support.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Admin.html#method_clear_cache">clear_cache()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Clear the plugin&#039;s cache.</dd>
 
@@ -549,8 +577,8 @@ This clears the schedule if the user clicks the button</dd>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Fields for the Mapping errors tab
-This runs add_settings_section once</dd>
+<dd>Fields for the Mapping Errors tab
+This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Admin.html#method_fields_fieldmaps">fields_fieldmaps()</a>
@@ -603,7 +631,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Set up recurring tasks</dd>
+<dd>Set up recurring tasks for ActionScheduler</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Admin.html#method_status">status()</a>
@@ -652,12 +680,13 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">89</span>
+    <span class="phpdocumentor-element-found-in__line">56</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Suffix for group name in ActionScheduler</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -683,19 +712,22 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">55</span>
+    <span class="phpdocumentor-element-found-in__line">178</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">What version of the Salesforce API should be the default on the settings screen.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$default_api_version</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
+        <section class="phpdocumentor-description"><p>Users can edit what version is used, but they won't see a correct list of all their available versions until WordPress has
+been authenticated with Salesforce.</p>
+</section>
 
     
 
@@ -714,12 +746,13 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">41</span>
+    <span class="phpdocumentor-element-found-in__line">162</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Default path for the Salesforce authorize URL</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -745,12 +778,13 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">62</span>
+    <span class="phpdocumentor-element-found-in__line">185</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Default max number of pull records. Users can edit this.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">int</span>
@@ -776,12 +810,13 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">69</span>
+    <span class="phpdocumentor-element-found-in__line">192</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Default throttle for how often to pull from Salesforce. Users can edit this.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">int</span>
@@ -807,12 +842,13 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">47</span>
+    <span class="phpdocumentor-element-found-in__line">169</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Default path for the Salesforce token URL</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">string</span>
@@ -838,12 +874,13 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">76</span>
+    <span class="phpdocumentor-element-found-in__line">199</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Default for whether to limit to triggerable items. Users can edit this.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">bool</span>
@@ -869,12 +906,13 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">83</span>
+    <span class="phpdocumentor-element-found-in__line">206</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Default for whether to limit to items that can be updated. Users can edit this.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">bool</span>
@@ -890,7 +928,39 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_file">
+        $file
+        <a href="classes/Object-Sync-Sf-Admin.html#property_file" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">28</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The main plugin file</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$file</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_logging">
@@ -900,19 +970,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">26</span>
+    <span class="phpdocumentor-element-found-in__line">84</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Logging class</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$logging</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -920,7 +992,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_login_credentials">
@@ -930,19 +1002,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">19</span>
+    <span class="phpdocumentor-element-found-in__line">63</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Login credentials for the Salesforce API; comes from wp-config or from the plugin settings</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$login_credentials</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -950,7 +1024,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_mappings">
@@ -960,19 +1034,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">23</span>
+    <span class="phpdocumentor-element-found-in__line">91</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Mapping class</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$mappings</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -980,7 +1056,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_option_prefix">
@@ -990,19 +1066,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">29</span>
+    <span class="phpdocumentor-element-found-in__line">49</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">The plugin&#039;s prefix when saving options to the database</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$option_prefix</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1010,7 +1088,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_pull">
@@ -1020,19 +1098,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">25</span>
+    <span class="phpdocumentor-element-found-in__line">120</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Salesforce_Pull class</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$pull</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1040,7 +1120,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_push">
@@ -1050,19 +1130,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">113</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Salesforce_Push class</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$push</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1070,7 +1152,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_queue">
@@ -1080,19 +1162,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">28</span>
+    <span class="phpdocumentor-element-found-in__line">77</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Queue class</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$queue</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1100,7 +1184,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_salesforce">
@@ -1110,19 +1194,22 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">21</span>
+    <span class="phpdocumentor-element-found-in__line">106</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Salesforce class
+This contains Salesforce API methods</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$salesforce</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1130,7 +1217,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_schedulable_classes">
@@ -1140,19 +1227,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">27</span>
+    <span class="phpdocumentor-element-found-in__line">70</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Array of what classes in the plugin can be scheduled to occur with `wp_cron` events</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$schedulable_classes</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1160,7 +1249,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_slug">
@@ -1170,19 +1259,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">20</span>
+    <span class="phpdocumentor-element-found-in__line">42</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">The plugin&#039;s slug so we can include it when necessary</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$slug</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1190,7 +1281,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_version">
@@ -1200,19 +1291,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">18</span>
+    <span class="phpdocumentor-element-found-in__line">21</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Current version of the plugin</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$version</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1220,7 +1313,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_wordpress">
@@ -1230,19 +1323,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">98</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Object_Sync_Sf_WordPress class</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$wordpress</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1250,7 +1345,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_wpdb">
@@ -1260,19 +1355,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">35</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Global object of `$wpdb`, the WordPress database</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$wpdb</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1290,19 +1387,53 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">33</span>
+    <span class="phpdocumentor-element-found-in__line">141</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Salesforce access token</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$access_token</span>
     </code>
 
+        <section class="phpdocumentor-description"></section>
+
     
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_admin_settings_url_param">
+        $admin_settings_url_param
+        <a href="classes/Object-Sync-Sf-Admin.html#property_admin_settings_url_param" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">134</span>
+</aside>
+
+        <p class="phpdocumentor-summary">URL fragment for the plugin&#039;s settings page</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$admin_settings_url_param</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1320,19 +1451,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">34</span>
+    <span class="phpdocumentor-element-found-in__line">148</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Salesforce instance URL</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$instance_url</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1350,19 +1483,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">35</span>
+    <span class="phpdocumentor-element-found-in__line">155</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Salesforce refresh token</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$refresh_token</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1380,19 +1515,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">31</span>
+    <span class="phpdocumentor-element-found-in__line">127</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Object_Sync_Sf_WordPress_Transient class</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$sfwp_transients</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -1414,142 +1551,21 @@ This runs add_settings_section once, as well as add_settings_field and register_
         <a href="classes/Object-Sync-Sf-Admin.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">108</span>
+    <span class="phpdocumentor-element-found-in__line">211</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Constructor which sets up admin pages</p>
+        <p class="phpdocumentor-summary">Constructor for admin class</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wpdb</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$login_credentials</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$slug</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wordpress</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$salesforce</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$mappings</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$push</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$pull</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$logging</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$schedulable_classes</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$queue</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$option_prefix</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$wpdb</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$version</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$login_credentials</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$slug</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$wordpress</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$salesforce</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$mappings</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$push</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$pull</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$logging</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$schedulable_classes</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$queue</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$option_prefix</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                                 <section class="phpdocumentor-description"></section>
-
-                                    </dd>
-                        </dl>
+    
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
@@ -1569,16 +1585,50 @@ This runs add_settings_section once, as well as add_settings_field and register_
         <a href="classes/Object-Sync-Sf-Admin.html#method_add_actions" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">151</span>
+    <span class="phpdocumentor-element-found-in__line">253</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Create the action hooks to create the admin page(s)</p>
+        <p class="phpdocumentor-summary">Create the action hooks to create the admin pages.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
                 <span class="phpdocumentor-signature__name">add_actions</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+            <section class="phpdocumentor-description"></section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_admin_scripts_and_styles">
+        admin_scripts_and_styles()
+        <a href="classes/Object-Sync-Sf-Admin.html#method_admin_scripts_and_styles" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">326</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Admin styles. Load the CSS and JavaScript for the plugin&#039;s settings</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">admin_scripts_and_styles</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -1603,12 +1653,12 @@ This runs add_settings_section once, as well as add_settings_field and register_
         <a href="classes/Object-Sync-Sf-Admin.html#method_change_action_schedule" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">259</span>
+    <span class="phpdocumentor-element-found-in__line">396</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Change recurring tasks if options change</p>
+        <p class="phpdocumentor-summary">Update recurring tasks for ActionScheduler if options change</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1623,7 +1673,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the old option value.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1631,7 +1682,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the new, unserialized option value.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1639,7 +1691,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>option name.</p>
+</section>
 
             </dd>
             </dl>
@@ -1664,9 +1717,9 @@ This runs add_settings_section once, as well as add_settings_field and register_
         <a href="classes/Object-Sync-Sf-Admin.html#method_clear_sfwp_cache" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2205</span>
+    <span class="phpdocumentor-element-found-in__line">2401</span>
 </aside>
 
         <p class="phpdocumentor-summary">Ajax call to clear the plugin cache.</p>
@@ -1698,12 +1751,12 @@ This runs add_settings_section once, as well as add_settings_field and register_
         <a href="classes/Object-Sync-Sf-Admin.html#method_create_admin_menu" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">306</span>
+    <span class="phpdocumentor-element-found-in__line">441</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Create WordPress admin options page</p>
+        <p class="phpdocumentor-summary">Create the WordPress admin options page</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1732,9 +1785,9 @@ This runs add_settings_section once, as well as add_settings_field and register_
         <a href="classes/Object-Sync-Sf-Admin.html#method_delete_fieldmap" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1641</span>
+    <span class="phpdocumentor-element-found-in__line">1784</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete fieldmap data and redirect after processing
@@ -1769,9 +1822,9 @@ It then calls the Object_Sync_Sf_Mapping class and the delete method</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_delete_object_map" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1710</span>
+    <span class="phpdocumentor-element-found-in__line">1851</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete object map data and redirect after processing
@@ -1806,9 +1859,9 @@ It then calls the Object_Sync_Sf_Mapping class and the delete method</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_display_checkboxes" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1961</span>
+    <span class="phpdocumentor-element-found-in__line">2148</span>
 </aside>
 
         <p class="phpdocumentor-summary">Display for multiple checkboxes
@@ -1827,7 +1880,8 @@ Above method can handle a single checkbox as it is</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the arguments to create the checkboxes.</p>
+</section>
 
             </dd>
             </dl>
@@ -1852,9 +1906,9 @@ Above method can handle a single checkbox as it is</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_display_input_field" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1902</span>
+    <span class="phpdocumentor-element-found-in__line">2089</span>
 </aside>
 
         <p class="phpdocumentor-summary">Default display for &lt;input&gt; fields</p>
@@ -1872,7 +1926,8 @@ Above method can handle a single checkbox as it is</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the arguments to create the field.</p>
+</section>
 
             </dd>
             </dl>
@@ -1897,9 +1952,9 @@ Above method can handle a single checkbox as it is</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_display_link" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2071</span>
+    <span class="phpdocumentor-element-found-in__line">2258</span>
 </aside>
 
         <p class="phpdocumentor-summary">Default display for &lt;a href&gt; links</p>
@@ -1917,7 +1972,8 @@ Above method can handle a single checkbox as it is</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the arguments to make the link.</p>
+</section>
 
             </dd>
             </dl>
@@ -1942,9 +1998,9 @@ Above method can handle a single checkbox as it is</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_display_select" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2000</span>
+    <span class="phpdocumentor-element-found-in__line">2187</span>
 </aside>
 
         <p class="phpdocumentor-summary">Display for a dropdown</p>
@@ -1962,7 +2018,8 @@ Above method can handle a single checkbox as it is</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the arguments needed to create the dropdown.</p>
+</section>
 
             </dd>
             </dl>
@@ -1987,9 +2044,9 @@ Above method can handle a single checkbox as it is</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_export_json_file" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1870</span>
+    <span class="phpdocumentor-element-found-in__line">2055</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a json file for exporting</p>
@@ -2021,9 +2078,9 @@ Above method can handle a single checkbox as it is</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_get_salesforce_object_description" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1313</span>
+    <span class="phpdocumentor-element-found-in__line">1484</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get all the Salesforce object settings for fieldmapping
@@ -2042,7 +2099,7 @@ This takes either the $_POST array via ajax, or can be directly called with a $d
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">array()</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>data must contain a salesforce_object, can optionally contain a type.</p>
+                    <section class="phpdocumentor-description"><p>must contain a Salesforce object, can optionally contain a type.</p>
 </section>
 
             </dd>
@@ -2069,12 +2126,12 @@ This takes either the $_POST array via ajax, or can be directly called with a $d
         <a href="classes/Object-Sync-Sf-Admin.html#method_get_salesforce_object_fields" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1381</span>
+    <span class="phpdocumentor-element-found-in__line">1550</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Get Salesforce object fields for fieldmapping
+        <p class="phpdocumentor-summary">Get all the Salesforce fields settings for fieldmapping
 This takes either the $_POST array via ajax, or can be directly called with a $data array</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
@@ -2090,8 +2147,7 @@ This takes either the $_POST array via ajax, or can be directly called with a $d
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">array()</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>data must contain a salesforce_object unless it is Ajax
-data can optionally contain a type for the field</p>
+                    <section class="phpdocumentor-description"><p>must contain a Salesforce object unless it is Ajax, can optionally contain a type.</p>
 </section>
 
             </dd>
@@ -2118,9 +2174,9 @@ data can optionally contain a type for the field</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_get_wordpress_object_fields" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1440</span>
+    <span class="phpdocumentor-element-found-in__line">1609</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get WordPress object fields for fieldmapping
@@ -2139,81 +2195,13 @@ This takes either the $_POST array via ajax, or can be directly called with a $w
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the name of the WordPress object.</p>
+</section>
 
             </dd>
             </dl>
 
     
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>$object_fields</p>
-</section>
-
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-            -deprecated                                            "
->
-    <h4 class="phpdocumentor-element__name" id="method_get_wp_sf_object_fields">
-        get_wp_sf_object_fields()
-        <a href="classes/Object-Sync-Sf-Admin.html#method_get_wp_sf_object_fields" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">1469</span>
-</aside>
-
-        <p class="phpdocumentor-summary">Get WordPress and Salesforce object fields together for fieldmapping
-This takes either the $_POST array via ajax, or can be directly called with $wordpress_object and $salesforce_object fields</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature -deprecated">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">get_wp_sf_object_fields</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wordpress_object</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$salesforce</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
-
-        <section class="phpdocumentor-description"></section>
-
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$wordpress_object</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$salesforce</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">deprecated</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>since 1.9.0</p>
-</section>
-
-                                    </dd>
-                        </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
@@ -2234,9 +2222,9 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
         <a href="classes/Object-Sync-Sf-Admin.html#method_import_json_file" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1764</span>
+    <span class="phpdocumentor-element-found-in__line">1904</span>
 </aside>
 
         <p class="phpdocumentor-summary">Import a json file and use it for plugin data</p>
@@ -2268,12 +2256,12 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
         <a href="classes/Object-Sync-Sf-Admin.html#method_initial_action_schedule" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">224</span>
+    <span class="phpdocumentor-element-found-in__line">362</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Set up recurring tasks if there are none</p>
+        <p class="phpdocumentor-summary">Initial recurring tasks for ActionScheduler</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -2288,7 +2276,8 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the new, unserialized option value.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -2296,7 +2285,8 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the old option value.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -2304,7 +2294,8 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>option name.</p>
+</section>
 
             </dd>
             </dl>
@@ -2330,9 +2321,9 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
         <a href="classes/Object-Sync-Sf-Admin.html#method_notices" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1229</span>
+    <span class="phpdocumentor-element-found-in__line">1372</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create the notices, settings, and conditions by which admin notices should appear</p>
@@ -2359,14 +2350,70 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_plugin_action_links">
+        plugin_action_links()
+        <a href="classes/Object-Sync-Sf-Admin.html#method_plugin_action_links" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">315</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Display a Settings link on the main Plugins page</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">plugin_action_links</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$links</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$file</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$links</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>the array of links for the main plugins page.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$file</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>the filename.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>$links the array of links for the main plugins page</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_prepare_fieldmap_data">
         prepare_fieldmap_data()
         <a href="classes/Object-Sync-Sf-Admin.html#method_prepare_fieldmap_data" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1581</span>
+    <span class="phpdocumentor-element-found-in__line">1725</span>
 </aside>
 
         <p class="phpdocumentor-summary">Prepare fieldmap data and redirect after processing
@@ -2402,9 +2449,9 @@ This method does include error handling, by loading the submission in a transien
         <a href="classes/Object-Sync-Sf-Admin.html#method_prepare_object_map_data" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1663</span>
+    <span class="phpdocumentor-element-found-in__line">1805</span>
 </aside>
 
         <p class="phpdocumentor-summary">Prepare object data and redirect after processing
@@ -2440,9 +2487,9 @@ This method does include error handling, by loading the submission in a transien
         <a href="classes/Object-Sync-Sf-Admin.html#method_pull_from_salesforce" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1535</span>
+    <span class="phpdocumentor-element-found-in__line">1672</span>
 </aside>
 
         <p class="phpdocumentor-summary">Manually pull the Salesforce object into WordPress
@@ -2461,7 +2508,8 @@ This takes either the $_POST array via ajax, or can be directly called with $sal
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the ID of the Salesforce record.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -2469,7 +2517,8 @@ This takes either the $_POST array via ajax, or can be directly called with $sal
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the name of the WordPress object.</p>
+</section>
 
             </dd>
             </dl>
@@ -2494,9 +2543,9 @@ This takes either the $_POST array via ajax, or can be directly called with $sal
         <a href="classes/Object-Sync-Sf-Admin.html#method_push_to_salesforce" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1500</span>
+    <span class="phpdocumentor-element-found-in__line">1637</span>
 </aside>
 
         <p class="phpdocumentor-summary">Manually push the WordPress object to Salesforce
@@ -2515,7 +2564,8 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the name of the WordPress object.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -2523,7 +2573,8 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the ID of the WordPress record.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -2557,9 +2608,9 @@ This takes either the $_POST array via ajax, or can be directly called with $wor
         <a href="classes/Object-Sync-Sf-Admin.html#method_refresh_mapped_data" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1556</span>
+    <span class="phpdocumentor-element-found-in__line">1693</span>
 </aside>
 
         <p class="phpdocumentor-summary">Manually pull the Salesforce object into WordPress
@@ -2578,7 +2629,8 @@ This takes an id for a mapping object row</p>
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the ID of the mapping object record.</p>
+</section>
 
             </dd>
             </dl>
@@ -2603,13 +2655,12 @@ This takes an id for a mapping object row</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_salesforce_settings_forms" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">538</span>
+    <span class="phpdocumentor-element-found-in__line">673</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Create default WordPress admin settings form for salesforce
-This is for the Settings page/tab</p>
+        <p class="phpdocumentor-summary">Create default WordPress admin settings form. This runs the Settings page.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -2638,9 +2689,9 @@ This is for the Settings page/tab</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_sanitize_validate_text" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2105</span>
+    <span class="phpdocumentor-element-found-in__line">2292</span>
 </aside>
 
         <p class="phpdocumentor-summary">Allow for a standard sanitize/validate method. We could use more specific ones if need be, but this one provides a baseline.</p>
@@ -2658,7 +2709,8 @@ This is for the Settings page/tab</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the option value.</p>
+</section>
 
             </dd>
             </dl>
@@ -2668,7 +2720,7 @@ This is for the Settings page/tab</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">string</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>$option</p>
+            <section class="phpdocumentor-description"><p>$option is the sanitized option value.</p>
 </section>
 
     
@@ -2684,9 +2736,9 @@ This is for the Settings page/tab</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_save_salesforce_user_fields" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2298</span>
+    <span class="phpdocumentor-element-found-in__line">2557</span>
 </aside>
 
         <p class="phpdocumentor-summary">If the user profile has been mapped to Salesforce, do it</p>
@@ -2704,7 +2756,8 @@ This is for the Settings page/tab</p>
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the ID of the WordPress user.</p>
+</section>
 
             </dd>
             </dl>
@@ -2729,20 +2782,18 @@ This is for the Settings page/tab</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_show_admin_page" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">318</span>
+    <span class="phpdocumentor-element-found-in__line">449</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Render full admin pages in WordPress
-This allows other plugins to add tabs to the Salesforce settings screen</p>
+        <p class="phpdocumentor-summary">Render the admin pages in WordPress. This also allows other plugins to add tabs to this plugin&#039;s settings screen</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
                 <span class="phpdocumentor-signature__name">show_admin_page</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"><p>todo: better front end: html, organization of html into templates, css, js</p>
-</section>
+        <section class="phpdocumentor-description"></section>
 
     
     
@@ -2765,9 +2816,9 @@ This allows other plugins to add tabs to the Salesforce settings screen</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_show_salesforce_user_fields" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2263</span>
+    <span class="phpdocumentor-element-found-in__line">2522</span>
 </aside>
 
         <p class="phpdocumentor-summary">Show what we know about this user&#039;s relationship to a Salesforce object, if any</p>
@@ -2785,45 +2836,12 @@ This allows other plugins to add tabs to the Salesforce settings screen</p>
                 : <span class="phpdocumentor-signature__argument__return-type">object</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>this is the user object from WordPress.</p>
+</section>
 
             </dd>
             </dl>
 
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-            <section class="phpdocumentor-description"></section>
-
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_add_deprecated_actions">
-        add_deprecated_actions()
-        <a href="classes/Object-Sync-Sf-Admin.html#method_add_deprecated_actions" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">202</span>
-</aside>
-
-        <p class="phpdocumentor-summary">Deprecated action hooks for admin pages</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">add_deprecated_actions</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-        <section class="phpdocumentor-description"></section>
-
-    
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
@@ -2844,9 +2862,9 @@ This allows other plugins to add tabs to the Salesforce settings screen</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_check_wordpress_admin_permissions" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2240</span>
+    <span class="phpdocumentor-element-found-in__line">2444</span>
 </aside>
 
         <p class="phpdocumentor-summary">Check WordPress Admin permissions
@@ -2874,21 +2892,93 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
             -private
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_check_wordpress_ssl">
+        check_wordpress_ssl()
+        <a href="classes/Object-Sync-Sf-Admin.html#method_check_wordpress_ssl" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">2468</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Check WordPress SSL status.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                <span class="phpdocumentor-signature__name">check_wordpress_ssl</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+        <section class="phpdocumentor-description"><p>HTTPS is required to connect to Salesforce.</p>
+</section>
+
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">bool</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>$secure_admin</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_check_wordpress_ssl_support">
+        check_wordpress_ssl_support()
+        <a href="classes/Object-Sync-Sf-Admin.html#method_check_wordpress_ssl_support" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">2501</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Check WordPress SSL support.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                <span class="phpdocumentor-signature__name">check_wordpress_ssl_support</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+        <section class="phpdocumentor-description"><p>This allows us to show a different message if SSL is supported, but is not in use.</p>
+</section>
+
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">bool</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>$https_supported</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_clear_cache">
         clear_cache()
         <a href="classes/Object-Sync-Sf-Admin.html#method_clear_cache" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2218</span>
+    <span class="phpdocumentor-element-found-in__line">2417</span>
 </aside>
 
         <p class="phpdocumentor-summary">Clear the plugin&#039;s cache.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">clear_cache</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$ajax</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">clear_cache</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$ajax</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
         <section class="phpdocumentor-description"><p>This uses the flush method contained in the WordPress cache to clear all of this plugin's cached data.</p>
 </section>
@@ -2897,17 +2987,19 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$ajax</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
                  = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>Whether this is an Ajax request or not.</p>
+</section>
+
             </dd>
             </dl>
 
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
+    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             &mdash;
             <section class="phpdocumentor-description"></section>
 
@@ -2924,9 +3016,9 @@ Check if the current user is allowed to access the Salesforce plugin options</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_clear_schedule" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2373</span>
+    <span class="phpdocumentor-element-found-in__line">2635</span>
 </aside>
 
         <p class="phpdocumentor-summary">Clear schedule
@@ -2945,7 +3037,8 @@ This clears the schedule if the user clicks the button</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the name of the schedule being cleared.</p>
+</section>
 
             </dd>
             </dl>
@@ -2970,9 +3063,9 @@ This clears the schedule if the user clicks the button</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_create_object_map" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2430</span>
+    <span class="phpdocumentor-element-found-in__line">2686</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create an object map between a WordPress object and a Salesforce object</p>
@@ -2990,7 +3083,7 @@ This clears the schedule if the user clicks the button</p>
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Unique identifier for the WordPress object</p>
+                    <section class="phpdocumentor-description"><p>Unique identifier for the WordPress object.</p>
 </section>
 
             </dd>
@@ -2999,7 +3092,7 @@ This clears the schedule if the user clicks the button</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>What kind of object is it?</p>
+                    <section class="phpdocumentor-description"><p>What kind of object is it.</p>
 </section>
 
             </dd>
@@ -3008,7 +3101,7 @@ This clears the schedule if the user clicks the button</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Unique identifier for the Salesforce object</p>
+                    <section class="phpdocumentor-description"><p>Unique identifier for the Salesforce object.</p>
 </section>
 
             </dd>
@@ -3017,7 +3110,7 @@ This clears the schedule if the user clicks the button</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Did we push or pull?</p>
+                    <section class="phpdocumentor-description"><p>Did we push or pull.</p>
 </section>
 
             </dd>
@@ -3028,8 +3121,7 @@ This clears the schedule if the user clicks the button</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">int</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>$wpdb-&gt;insert_id
-This is the database row for the map object</p>
+            <section class="phpdocumentor-description"><p>$wpdb-&gt;insert_id This is the database row for the map object</p>
 </section>
 
     
@@ -3045,17 +3137,17 @@ This is the database row for the map object</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_fields_errors" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1185</span>
+    <span class="phpdocumentor-element-found-in__line">1329</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Fields for the Mapping errors tab
-This runs add_settings_section once</p>
+        <p class="phpdocumentor-summary">Fields for the Mapping Errors tab
+This runs add_settings_section once, as well as add_settings_field and register_setting methods for each option</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">fields_errors</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$page</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$section</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$callbacks</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">fields_errors</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$page</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$section</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$callbacks</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -3066,7 +3158,8 @@ This runs add_settings_section once</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>what page we're on.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -3074,15 +3167,18 @@ This runs add_settings_section once</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>what section of the page.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$callbacks</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>method to call.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -3106,9 +3202,9 @@ This runs add_settings_section once</p>
         <a href="classes/Object-Sync-Sf-Admin.html#method_fields_fieldmaps" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">858</span>
+    <span class="phpdocumentor-element-found-in__line">1002</span>
 </aside>
 
         <p class="phpdocumentor-summary">Fields for the Fieldmaps tab
@@ -3127,7 +3223,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>what page we're on.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -3135,7 +3232,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>what section of the page.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -3143,7 +3241,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>method to call.</p>
+</section>
 
             </dd>
             </dl>
@@ -3168,9 +3267,9 @@ This runs add_settings_section once, as well as add_settings_field and register_
         <a href="classes/Object-Sync-Sf-Admin.html#method_fields_log_settings" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">988</span>
+    <span class="phpdocumentor-element-found-in__line">1132</span>
 </aside>
 
         <p class="phpdocumentor-summary">Fields for the Log Settings tab
@@ -3189,7 +3288,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>what page we're on.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -3197,7 +3297,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>what section of the page.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -3205,7 +3306,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>method to call.</p>
+</section>
 
             </dd>
             </dl>
@@ -3230,9 +3332,9 @@ This runs add_settings_section once, as well as add_settings_field and register_
         <a href="classes/Object-Sync-Sf-Admin.html#method_fields_scheduling" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">870</span>
+    <span class="phpdocumentor-element-found-in__line">1014</span>
 </aside>
 
         <p class="phpdocumentor-summary">Fields for the Scheduling tab
@@ -3240,7 +3342,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">fields_scheduling</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$page</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$section</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$callbacks</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">fields_scheduling</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$page</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$section</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$callbacks</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -3251,7 +3353,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>what page we're on.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -3259,15 +3362,18 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>what section of the page.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$callbacks</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>method to call.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -3291,9 +3397,9 @@ This runs add_settings_section once, as well as add_settings_field and register_
         <a href="classes/Object-Sync-Sf-Admin.html#method_fields_settings" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">570</span>
+    <span class="phpdocumentor-element-found-in__line">705</span>
 </aside>
 
         <p class="phpdocumentor-summary">Fields for the Settings tab
@@ -3301,7 +3407,7 @@ This runs add_settings_section once, as well as add_settings_field and register_
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">fields_settings</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$page</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$section</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$callbacks</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">fields_settings</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$page</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$section</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$callbacks</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -3312,7 +3418,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>what page we're on.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -3320,15 +3427,18 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>what section of the page.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$callbacks</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>method to call.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -3352,9 +3462,9 @@ This runs add_settings_section once, as well as add_settings_field and register_
         <a href="classes/Object-Sync-Sf-Admin.html#method_get_schedule_count" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2388</span>
+    <span class="phpdocumentor-element-found-in__line">2651</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get count of schedule items</p>
@@ -3372,7 +3482,8 @@ This runs add_settings_section once, as well as add_settings_field and register_
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the name of the schedule.</p>
+</section>
 
             </dd>
             </dl>
@@ -3398,9 +3509,9 @@ This runs add_settings_section once, as well as add_settings_field and register_
         <a href="classes/Object-Sync-Sf-Admin.html#method_logout" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2191</span>
+    <span class="phpdocumentor-element-found-in__line">2378</span>
 </aside>
 
         <p class="phpdocumentor-summary">Deauthorize WordPress from Salesforce.</p>
@@ -3434,12 +3545,12 @@ For this plugin at this time, that is the decision we are making: don't do any k
         <a href="classes/Object-Sync-Sf-Admin.html#method_set_action_schedule" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">279</span>
+    <span class="phpdocumentor-element-found-in__line">415</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Set up recurring tasks</p>
+        <p class="phpdocumentor-summary">Set up recurring tasks for ActionScheduler</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -3454,7 +3565,8 @@ For this plugin at this time, that is the decision we are making: don't do any k
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the name of the schedule.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -3462,7 +3574,8 @@ For this plugin at this time, that is the decision we are making: don't do any k
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the group's name.</p>
+</section>
 
             </dd>
             </dl>
@@ -3487,9 +3600,9 @@ For this plugin at this time, that is the decision we are making: don't do any k
         <a href="classes/Object-Sync-Sf-Admin.html#method_status" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2122</span>
+    <span class="phpdocumentor-element-found-in__line">2309</span>
 </aside>
 
         <p class="phpdocumentor-summary">Run a demo of Salesforce API call on the authenticate tab after WordPress has authenticated with it</p>
@@ -3507,7 +3620,8 @@ For this plugin at this time, that is the decision we are making: don't do any k
                 : <span class="phpdocumentor-signature__argument__return-type">object</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>this is the Salesforce API object.</p>
+</section>
 
             </dd>
             </dl>
@@ -3532,9 +3646,9 @@ For this plugin at this time, that is the decision we are making: don't do any k
         <a href="classes/Object-Sync-Sf-Admin.html#method_tabs" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2331</span>
+    <span class="phpdocumentor-element-found-in__line">2592</span>
 </aside>
 
         <p class="phpdocumentor-summary">Render tabs for settings pages in admin</p>
@@ -3552,7 +3666,8 @@ For this plugin at this time, that is the decision we are making: don't do any k
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is the tabs for the settings menu.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -3560,7 +3675,8 @@ For this plugin at this time, that is the decision we are making: don't do any k
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>is a single tab.</p>
+</section>
 
             </dd>
             </dl>
@@ -3585,9 +3701,9 @@ For this plugin at this time, that is the decision we are making: don't do any k
         <a href="classes/Object-Sync-Sf-Admin.html#method_version_options" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/admin.php"><a href="files/classes-admin.html"><abbr title="classes/admin.php">admin.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-admin.php"><a href="files/classes-class-object-sync-sf-admin.html"><abbr title="classes/class-object-sync-sf-admin.php">class-object-sync-sf-admin.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2051</span>
+    <span class="phpdocumentor-element-found-in__line">2238</span>
 </aside>
 
         <p class="phpdocumentor-summary">Dropdown formatted list of Salesforce API versions</p>
@@ -3604,7 +3720,7 @@ For this plugin at this time, that is the decision we are making: don't do any k
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>$args</p>
+            <section class="phpdocumentor-description"><p>$args is the array of API versions for the dropdown.</p>
 </section>
 
     

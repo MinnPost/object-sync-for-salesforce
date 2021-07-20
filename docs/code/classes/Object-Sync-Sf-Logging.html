@@ -70,7 +70,9 @@
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
                     <ul class="phpdocumentor-breadcrumbs">
-            <li class="phpdocumentor-breadcrumb"><a href="packages/Default.html">Default</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object.html">Object</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync.html">Sync</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync-Salesforce.html">Salesforce</a></li>
     </ul>
 
     <article class="phpdocumentor-element -class">
@@ -86,12 +88,12 @@
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">14</span>
 </aside>
 
-            <p class="phpdocumentor-summary">Log events based on plugin settings</p>
+            <p class="phpdocumentor-summary">Object_Sync_Sf_Logging class.</p>
 
     <section class="phpdocumentor-description"></section>
 
@@ -111,58 +113,65 @@
                 <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Logging.html#property_enabled">$enabled</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: bool            </span>
 </dt>
-<dd></dd>
+<dd>The setting value for whether logging is enabled</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Logging.html#property_file">$file</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The main plugin file</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Logging.html#property_option_prefix">$option_prefix</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The plugin&#039;s prefix when saving options to the database</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Logging.html#property_schedule_name">$schedule_name</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The name of the schedule to prune logs</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Logging.html#property_slug">$slug</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The plugin&#039;s slug so we can include it when necessary</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Logging.html#property_statuses_to_log">$statuses_to_log</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>Which statuses to log, from the settings value</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Logging.html#property_option_prefix">$option_prefix</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-Logging.html#property_slug">$slug</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Logging.html#property_version">$version</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Current version of the plugin</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Logging.html#property_wpdb">$wpdb</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/Object-Sync-Sf-Logging.html#property_schedule_name">$schedule_name</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
+<dd>Global object of `$wpdb`, the WordPress database</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Logging.html#method___construct">__construct()</a>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Constructor which sets content type and pruning for logs</dd>
+<dd>Constructor for logging class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Logging.html#method_add">add()</a>
@@ -217,7 +226,7 @@ interval must be in seconds for the class to use it</dd>
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Logging.html#method_posts_filter">posts_filter()</a>
     <span>
-                        &nbsp;: object    </span>
+                        &nbsp;: mixed    </span>
 </dt>
 <dd>Filter log posts by the taxonomy from the dropdown when a value is present</dd>
 
@@ -310,7 +319,7 @@ interval must be in seconds for the class to use it</dd>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Start. This creates a schedule for pruning logs, and also the custom content type</dd>
+<dd>Initialize. This creates a schedule for pruning logs, and also the custom content type</dd>
 
         </dl>
 
@@ -338,19 +347,149 @@ interval must be in seconds for the class to use it</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">56</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">The setting value for whether logging is enabled</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">bool</span>
     <span class="phpdocumentor-signature__name">$enabled</span>
     </code>
 
+        <section class="phpdocumentor-description"></section>
+
     
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_file">
+        $file
+        <a href="classes/Object-Sync-Sf-Logging.html#property_file" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">28</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The main plugin file</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$file</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_option_prefix">
+        $option_prefix
+        <a href="classes/Object-Sync-Sf-Logging.html#property_option_prefix" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">49</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The plugin&#039;s prefix when saving options to the database</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$option_prefix</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_schedule_name">
+        $schedule_name
+        <a href="classes/Object-Sync-Sf-Logging.html#property_schedule_name" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">70</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The name of the schedule to prune logs</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$schedule_name</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_slug">
+        $slug
+        <a href="classes/Object-Sync-Sf-Logging.html#property_slug" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">42</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The plugin&#039;s slug so we can include it when necessary</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$slug</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -368,19 +507,21 @@ interval must be in seconds for the class to use it</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">23</span>
+    <span class="phpdocumentor-element-found-in__line">63</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Which statuses to log, from the settings value</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$statuses_to_log</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -388,67 +529,7 @@ interval must be in seconds for the class to use it</dd>
         class="
             phpdocumentor-element
             -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_option_prefix">
-        $option_prefix
-        <a href="classes/Object-Sync-Sf-Logging.html#property_option_prefix" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">20</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$option_prefix</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_slug">
-        $slug
-        <a href="classes/Object-Sync-Sf-Logging.html#property_slug" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">19</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$slug</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_version">
@@ -458,19 +539,21 @@ interval must be in seconds for the class to use it</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">18</span>
+    <span class="phpdocumentor-element-found-in__line">21</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Current version of the plugin</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$version</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -478,7 +561,7 @@ interval must be in seconds for the class to use it</dd>
         class="
             phpdocumentor-element
             -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_wpdb">
@@ -488,49 +571,21 @@ interval must be in seconds for the class to use it</dd>
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">35</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Global object of `$wpdb`, the WordPress database</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$wpdb</span>
     </code>
 
-    
-    
+        <section class="phpdocumentor-description"></section>
 
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_schedule_name">
-        $schedule_name
-        <a href="classes/Object-Sync-Sf-Logging.html#property_schedule_name" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">25</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$schedule_name</span>
-    </code>
-
-    
     
 
 </article>
@@ -552,75 +607,21 @@ interval must be in seconds for the class to use it</dd>
         <a href="classes/Object-Sync-Sf-Logging.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">37</span>
+    <span class="phpdocumentor-element-found-in__line">75</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Constructor which sets content type and pruning for logs</p>
+        <p class="phpdocumentor-summary">Constructor for logging class</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wpdb</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$slug</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$option_prefix</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$wpdb</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>An instance of the wpdb class.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$version</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The version of this plugin.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$slug</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The plugin slug</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$option_prefix</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The plugin's option prefix</p>
-</section>
-
-            </dd>
-            </dl>
-
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                                 <section class="phpdocumentor-description"></section>
-
-                                    </dd>
-                        </dl>
+    
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
@@ -640,9 +641,9 @@ interval must be in seconds for the class to use it</dd>
         <a href="classes/Object-Sync-Sf-Logging.html#method_add" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">480</span>
+    <span class="phpdocumentor-element-found-in__line">517</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create new log entry</p>
@@ -749,9 +750,9 @@ if you need to store custom meta data</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_add_prune_interval" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">309</span>
+    <span class="phpdocumentor-element-found-in__line">345</span>
 </aside>
 
         <p class="phpdocumentor-summary">Add interval to wp schedules based on admin settings</p>
@@ -796,16 +797,16 @@ if you need to store custom meta data</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_check_log_schedule" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">257</span>
+    <span class="phpdocumentor-element-found-in__line">294</span>
 </aside>
 
         <p class="phpdocumentor-summary">When the cron settings change, clear the relevant schedule</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">check_log_schedule</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$old_value</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$new_value</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$option</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">check_log_schedule</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$old_value</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$new_value</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$option</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -813,19 +814,19 @@ if you need to store custom meta data</p>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$old_value</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Previous option value</p>
+                    <section class="phpdocumentor-description"><p>Previous option value.</p>
 </section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$new_value</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>New option value</p>
+                    <section class="phpdocumentor-description"><p>New option value.</p>
 </section>
 
             </dd>
@@ -834,7 +835,7 @@ if you need to store custom meta data</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Name of option</p>
+                    <section class="phpdocumentor-description"><p>Name of option.</p>
 </section>
 
             </dd>
@@ -860,9 +861,9 @@ if you need to store custom meta data</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_get_connected_logs" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">536</span>
+    <span class="phpdocumentor-element-found-in__line">573</span>
 </aside>
 
         <p class="phpdocumentor-summary">Retrieve all connected logs</p>
@@ -968,9 +969,9 @@ if you need to store custom meta data</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_get_log_count" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">588</span>
+    <span class="phpdocumentor-element-found-in__line">625</span>
 </aside>
 
         <p class="phpdocumentor-summary">Retrieves number of log entries connected to particular object ID</p>
@@ -1074,9 +1075,9 @@ if you need to store custom meta data</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_get_logs" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">508</span>
+    <span class="phpdocumentor-element-found-in__line">545</span>
 </aside>
 
         <p class="phpdocumentor-summary">Easily retrieves log items for a particular object ID</p>
@@ -1112,7 +1113,7 @@ if you need to store custom meta data</p>
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
                  = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Which page of results do we want?</p>
+                    <section class="phpdocumentor-description"><p>show which page of results we want.</p>
 </section>
 
             </dd>
@@ -1171,9 +1172,9 @@ if you need to store custom meta data</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_get_schedule_frequency" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">334</span>
+    <span class="phpdocumentor-element-found-in__line">370</span>
 </aside>
 
         <p class="phpdocumentor-summary">Convert the schedule frequency from the admin settings into an array
@@ -1181,7 +1182,7 @@ interval must be in seconds for the class to use it</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">get_schedule_frequency</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$unit</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><abbr title="\number">number</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$number</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+                <span class="phpdocumentor-signature__name">get_schedule_frequency</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$unit</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$number</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -1198,7 +1199,7 @@ interval must be in seconds for the class to use it</p>
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$number</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\number">number</abbr></span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>The number of those units.</p>
@@ -1227,16 +1228,16 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_posts_filter" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">190</span>
+    <span class="phpdocumentor-element-found-in__line">227</span>
 </aside>
 
         <p class="phpdocumentor-summary">Filter log posts by the taxonomy from the dropdown when a value is present</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">posts_filter</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$query</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">object</span></code>
+                <span class="phpdocumentor-signature__name">posts_filter</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$query</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -1247,7 +1248,8 @@ interval must be in seconds for the class to use it</p>
                 : <span class="phpdocumentor-signature__argument__return-type">object</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the current WP query for the list table.</p>
+</section>
 
             </dd>
             </dl>
@@ -1255,10 +1257,9 @@ interval must be in seconds for the class to use it</p>
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">object</span>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>$query</p>
-</section>
+            <section class="phpdocumentor-description"></section>
 
     
 </article>
@@ -1273,9 +1274,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_restrict_logs_by_type" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">215</span>
+    <span class="phpdocumentor-element-found-in__line">252</span>
 </aside>
 
         <p class="phpdocumentor-summary">Add a filter form for the log admin so we can filter by wp_log_type taxonomy values</p>
@@ -1293,7 +1294,8 @@ interval must be in seconds for the class to use it</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>what type of log we want to show.</p>
+</section>
 
             </dd>
             </dl>
@@ -1318,9 +1320,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_save_log_schedule" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">289</span>
+    <span class="phpdocumentor-element-found-in__line">325</span>
 </aside>
 
         <p class="phpdocumentor-summary">Save a cron schedule</p>
@@ -1352,9 +1354,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_set_log_slug" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">132</span>
+    <span class="phpdocumentor-element-found-in__line">170</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a (probably unique) post name for logs in a more performant manner than wp_unique_post_slug().</p>
@@ -1390,7 +1392,7 @@ interval must be in seconds for the class to use it</p>
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The post ID</p>
+                    <section class="phpdocumentor-description"><p>The post ID.</p>
 </section>
 
             </dd>
@@ -1399,7 +1401,7 @@ interval must be in seconds for the class to use it</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The post status</p>
+                    <section class="phpdocumentor-description"><p>The post status.</p>
 </section>
 
             </dd>
@@ -1408,7 +1410,7 @@ interval must be in seconds for the class to use it</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The post type</p>
+                    <section class="phpdocumentor-description"><p>The post type.</p>
 </section>
 
             </dd>
@@ -1434,9 +1436,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_set_log_types" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">365</span>
+    <span class="phpdocumentor-element-found-in__line">401</span>
 </aside>
 
         <p class="phpdocumentor-summary">Set terms for Salesforce logs</p>
@@ -1481,9 +1483,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_set_log_visibility" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">98</span>
+    <span class="phpdocumentor-element-found-in__line">136</span>
 </aside>
 
         <p class="phpdocumentor-summary">Set visibility for the post type</p>
@@ -1501,7 +1503,7 @@ interval must be in seconds for the class to use it</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The post arguments</p>
+                    <section class="phpdocumentor-description"><p>The post arguments.</p>
 </section>
 
             </dd>
@@ -1528,9 +1530,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_set_prune_age" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">388</span>
+    <span class="phpdocumentor-element-found-in__line">424</span>
 </aside>
 
         <p class="phpdocumentor-summary">Set how often to prune the Salesforce logs</p>
@@ -1575,9 +1577,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_set_prune_args" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">403</span>
+    <span class="phpdocumentor-element-found-in__line">439</span>
 </aside>
 
         <p class="phpdocumentor-summary">Set arguments for only getting the Salesforce logs</p>
@@ -1622,9 +1624,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_set_prune_option" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">376</span>
+    <span class="phpdocumentor-element-found-in__line">412</span>
 </aside>
 
         <p class="phpdocumentor-summary">Should logs be pruned at all?</p>
@@ -1669,9 +1671,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_setup" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">431</span>
+    <span class="phpdocumentor-element-found-in__line">467</span>
 </aside>
 
         <p class="phpdocumentor-summary">Setup new log entry</p>
@@ -1690,7 +1692,7 @@ interval must be in seconds for the class to use it</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string|array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>A log post title, or the full array of parameters</p>
+                    <section class="phpdocumentor-description"><p>A log post title, or the full array of parameters.</p>
 </section>
 
             </dd>
@@ -1793,9 +1795,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_sortable_columns" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">156</span>
+    <span class="phpdocumentor-element-found-in__line">194</span>
 </aside>
 
         <p class="phpdocumentor-summary">Make the Type column in the posts admin for this post type sortable</p>
@@ -1813,7 +1815,8 @@ interval must be in seconds for the class to use it</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the sortable columns for the post list table.</p>
+</section>
 
             </dd>
             </dl>
@@ -1839,9 +1842,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_type_column" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">145</span>
+    <span class="phpdocumentor-element-found-in__line">183</span>
 </aside>
 
         <p class="phpdocumentor-summary">Add a Type column to the posts admin for this post type</p>
@@ -1859,7 +1862,8 @@ interval must be in seconds for the class to use it</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the columns for the post list table.</p>
+</section>
 
             </dd>
             </dl>
@@ -1885,9 +1889,9 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_type_column_content" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">167</span>
+    <span class="phpdocumentor-element-found-in__line">205</span>
 </aside>
 
         <p class="phpdocumentor-summary">Add the content for the Type column in the posts admin for this post type</p>
@@ -1905,7 +1909,8 @@ interval must be in seconds for the class to use it</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the value for the type column on the list table.</p>
+</section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1913,7 +1918,8 @@ interval must be in seconds for the class to use it</p>
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>the ID of the currently listed post in the table.</p>
+</section>
 
             </dd>
             </dl>
@@ -1938,12 +1944,12 @@ interval must be in seconds for the class to use it</p>
         <a href="classes/Object-Sync-Sf-Logging.html#method_init" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/logging.php"><a href="files/classes-logging.html"><abbr title="classes/logging.php">logging.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-logging.php"><a href="files/classes-class-object-sync-sf-logging.html"><abbr title="classes/class-object-sync-sf-logging.php">class-object-sync-sf-logging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">59</span>
+    <span class="phpdocumentor-element-found-in__line">97</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Start. This creates a schedule for pruning logs, and also the custom content type</p>
+        <p class="phpdocumentor-summary">Initialize. This creates a schedule for pruning logs, and also the custom content type</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1953,21 +1959,6 @@ interval must be in seconds for the class to use it</p>
 
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                                 <section class="phpdocumentor-description"></section>
-
-                                    </dd>
-                        </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>

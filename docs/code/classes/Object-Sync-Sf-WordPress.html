@@ -70,7 +70,9 @@
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
                     <ul class="phpdocumentor-breadcrumbs">
-            <li class="phpdocumentor-breadcrumb"><a href="packages/Default.html">Default</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object.html">Object</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync.html">Sync</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync-Salesforce.html">Salesforce</a></li>
     </ul>
 
     <article class="phpdocumentor-element -class">
@@ -83,12 +85,12 @@
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">14</span>
 </aside>
 
-            <p class="phpdocumentor-summary">Work with the WordPress $wpdb object. This class can make read and write calls to the WordPress database, and also cache the responses.</p>
+            <p class="phpdocumentor-summary">Object_Sync_Sf_WordPress class.</p>
 
     <section class="phpdocumentor-description"></section>
 
@@ -108,79 +110,86 @@
                 <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-WordPress.html#property_debug">$debug</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: string            </span>
 </dt>
-<dd></dd>
+<dd>Whether the plugin is in debug mode</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-WordPress.html#property_file">$file</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The main plugin file</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-WordPress.html#property_logging">$logging</a>
+    <span>
+                &nbsp;: object            </span>
+</dt>
+<dd>Object_Sync_Sf_Logging class</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-WordPress.html#property_mappings">$mappings</a>
+    <span>
+                &nbsp;: object            </span>
+</dt>
+<dd>Object_Sync_Sf_Mapping class</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-WordPress.html#property_option_prefix">$option_prefix</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The plugin&#039;s prefix when saving options to the database</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-WordPress.html#property_options">$options</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>Method call options</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-WordPress.html#property_sfwp_transients">$sfwp_transients</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Object_Sync_Sf_WordPress_Transient class</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-WordPress.html#property_slug">$slug</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The plugin&#039;s slug so we can include it when necessary</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-WordPress.html#property_version">$version</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>Current version of the plugin</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-WordPress.html#property_wordpress_objects">$wordpress_objects</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
-<dd></dd>
+<dd>Supported WordPress objects</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-WordPress.html#property_logging">$logging</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-WordPress.html#property_mappings">$mappings</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-WordPress.html#property_option_prefix">$option_prefix</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-WordPress.html#property_slug">$slug</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/Object-Sync-Sf-WordPress.html#property_version">$version</a>
-    <span>
-                &nbsp;: mixed            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-WordPress.html#property_wpdb">$wpdb</a>
     <span>
-                &nbsp;: mixed            </span>
+                &nbsp;: object            </span>
 </dt>
-<dd></dd>
+<dd>Global object of `$wpdb`, the WordPress database</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-WordPress.html#method___construct">__construct()</a>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Constructor which discovers objects in WordPress</dd>
+<dd>Constructor for WordPress class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-WordPress.html#method_cache_expiration">cache_expiration()</a>
@@ -252,7 +261,7 @@ if it does, return the transient for that key</dd>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Update an existing object.</dd>
+<dd>Update an existing object. Part of CRUD for WordPress objects</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-WordPress.html#method_object_upsert">object_upsert()</a>
@@ -461,19 +470,149 @@ This works for users, posts, terms, and comments. It does not work for attachmen
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">91</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Whether the plugin is in debug mode</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$debug</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_file">
+        $file
+        <a href="classes/Object-Sync-Sf-WordPress.html#property_file" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">28</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">The main plugin file</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$debug</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$file</span>
     </code>
 
+        <section class="phpdocumentor-description"></section>
+
     
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_logging">
+        $logging
+        <a href="classes/Object-Sync-Sf-WordPress.html#property_logging" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">56</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Logging class</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
+    <span class="phpdocumentor-signature__name">$logging</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_mappings">
+        $mappings
+        <a href="classes/Object-Sync-Sf-WordPress.html#property_mappings" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">63</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Mapping class</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
+    <span class="phpdocumentor-signature__name">$mappings</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_option_prefix">
+        $option_prefix
+        <a href="classes/Object-Sync-Sf-WordPress.html#property_option_prefix" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">49</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The plugin&#039;s prefix when saving options to the database</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$option_prefix</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -491,19 +630,21 @@ This works for users, posts, terms, and comments. It does not work for attachmen
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">25</span>
+    <span class="phpdocumentor-element-found-in__line">77</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Method call options</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$options</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -521,19 +662,85 @@ This works for users, posts, terms, and comments. It does not work for attachmen
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">27</span>
+    <span class="phpdocumentor-element-found-in__line">84</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Object_Sync_Sf_WordPress_Transient class</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$sfwp_transients</span>
     </code>
 
+        <section class="phpdocumentor-description"></section>
+
     
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_slug">
+        $slug
+        <a href="classes/Object-Sync-Sf-WordPress.html#property_slug" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">42</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The plugin&#039;s slug so we can include it when necessary</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$slug</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_version">
+        $version
+        <a href="classes/Object-Sync-Sf-WordPress.html#property_version" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">21</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Current version of the plugin</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$version</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -551,19 +758,21 @@ This works for users, posts, terms, and comments. It does not work for attachmen
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">70</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Supported WordPress objects</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$wordpress_objects</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -571,157 +780,7 @@ This works for users, posts, terms, and comments. It does not work for attachmen
         class="
             phpdocumentor-element
             -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_logging">
-        $logging
-        <a href="classes/Object-Sync-Sf-WordPress.html#property_logging" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">21</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$logging</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_mappings">
-        $mappings
-        <a href="classes/Object-Sync-Sf-WordPress.html#property_mappings" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">20</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$mappings</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_option_prefix">
-        $option_prefix
-        <a href="classes/Object-Sync-Sf-WordPress.html#property_option_prefix" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">22</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$option_prefix</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_slug">
-        $slug
-        <a href="classes/Object-Sync-Sf-WordPress.html#property_slug" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">19</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$slug</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_version">
-        $version
-        <a href="classes/Object-Sync-Sf-WordPress.html#property_version" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">18</span>
-</aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$version</span>
-    </code>
-
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="property_wpdb">
@@ -731,19 +790,21 @@ This works for users, posts, terms, and comments. It does not work for attachmen
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">35</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Global object of `$wpdb`, the WordPress database</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
     <span class="phpdocumentor-signature__name">$wpdb</span>
     </code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
@@ -765,93 +826,21 @@ This works for users, posts, terms, and comments. It does not work for attachmen
         <a href="classes/Object-Sync-Sf-WordPress.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">41</span>
+    <span class="phpdocumentor-element-found-in__line">96</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Constructor which discovers objects in WordPress</p>
+        <p class="phpdocumentor-summary">Constructor for WordPress class</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wpdb</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$slug</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$mappings</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$logging</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$option_prefix</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$wpdb</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>A wpdb object.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$version</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The plugin version.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$slug</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The plugin slug.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$mappings</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Mapping objects.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$logging</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>a Object_Sync_Sf_Logging instance.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$option_prefix</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The plugin's option prefix</p>
-</section>
-
-            </dd>
-            </dl>
-
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                                 <section class="phpdocumentor-description"></section>
-
-                                    </dd>
-                        </dl>
+    
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
@@ -871,9 +860,9 @@ This works for users, posts, terms, and comments. It does not work for attachmen
         <a href="classes/Object-Sync-Sf-WordPress.html#method_cache_expiration" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">452</span>
+    <span class="phpdocumentor-element-found-in__line">513</span>
 </aside>
 
         <p class="phpdocumentor-summary">If there is a WordPress setting for how long to keep this specific cache, return it and set the object property
@@ -928,9 +917,9 @@ Otherwise, return seconds in 24 hours</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_cache_get" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">406</span>
+    <span class="phpdocumentor-element-found-in__line">467</span>
 </aside>
 
         <p class="phpdocumentor-summary">Check to see if this API call exists in the cache
@@ -984,9 +973,9 @@ if it does, return the transient for that key</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_cache_set" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">428</span>
+    <span class="phpdocumentor-element-found-in__line">489</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a cache entry for the current result, with the url and args as the key</p>
@@ -1071,9 +1060,9 @@ if it does, return the transient for that key</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_get_object_types" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">70</span>
+    <span class="phpdocumentor-element-found-in__line">131</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get WordPress object types</p>
@@ -1106,9 +1095,9 @@ if it does, return the transient for that key</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_get_wordpress_object_data" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">334</span>
+    <span class="phpdocumentor-element-found-in__line">395</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get WordPress data based on what object it is</p>
@@ -1144,7 +1133,7 @@ if it does, return the transient for that key</p>
                 : <span class="phpdocumentor-signature__argument__return-type">bool</span>
                  = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Whether the WordPress object has been deleted</p>
+                    <section class="phpdocumentor-description"><p>Whether the WordPress object has been deleted.</p>
 </section>
 
             </dd>
@@ -1171,9 +1160,9 @@ if it does, return the transient for that key</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_get_wordpress_object_fields" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">277</span>
+    <span class="phpdocumentor-element-found-in__line">338</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get WordPress fields for an object</p>
@@ -1227,9 +1216,9 @@ if it does, return the transient for that key</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_get_wordpress_table_structure" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">112</span>
+    <span class="phpdocumentor-element-found-in__line">173</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get WordPress table structure for an object</p>
@@ -1274,9 +1263,9 @@ if it does, return the transient for that key</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_object_create" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">553</span>
+    <span class="phpdocumentor-element-found-in__line">614</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a new object of a given type.</p>
@@ -1337,9 +1326,9 @@ is_redo:</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_object_delete" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">805</span>
+    <span class="phpdocumentor-element-found-in__line">869</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete a WordPress object.</p>
@@ -1396,12 +1385,12 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_object_update" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">713</span>
+    <span class="phpdocumentor-element-found-in__line">774</span>
 </aside>
 
-        <p class="phpdocumentor-summary">Update an existing object.</p>
+        <p class="phpdocumentor-summary">Update an existing object. Part of CRUD for WordPress objects</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1435,7 +1424,6 @@ success: 1
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>Values of the fields to set for the object.</p>
-<p>part of CRUD for WordPress objects</p>
 </section>
 
             </dd>
@@ -1467,9 +1455,9 @@ is_redo:</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_object_upsert" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">630</span>
+    <span class="phpdocumentor-element-found-in__line">692</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create new records or update existing records.</p>
@@ -1578,9 +1566,9 @@ is_redo:</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_append_tec_event_dates" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2596</span>
+    <span class="phpdocumentor-element-found-in__line">2661</span>
 </aside>
 
         <p class="phpdocumentor-summary">Generate date formats for The Event Calendar plugin</p>
@@ -1598,7 +1586,7 @@ is_redo:</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>the string value of the date from Salesforce</p>
+                    <section class="phpdocumentor-description"><p>the string value of the date from Salesforce.</p>
 </section>
 
             </dd>
@@ -1607,7 +1595,7 @@ is_redo:</p>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>this should be start or end</p>
+                    <section class="phpdocumentor-description"><p>this should be start or end.</p>
 </section>
 
             </dd>
@@ -1616,7 +1604,7 @@ is_redo:</p>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>the other mapped params</p>
+                    <section class="phpdocumentor-description"><p>the other mapped params.</p>
 </section>
 
             </dd>
@@ -1643,9 +1631,9 @@ is_redo:</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_attachment_create" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1515</span>
+    <span class="phpdocumentor-element-found-in__line">1580</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a new WordPress attachment.</p>
@@ -1702,9 +1690,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_attachment_delete" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1853</span>
+    <span class="phpdocumentor-element-found-in__line">1918</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete a WordPress attachment.</p>
@@ -1758,9 +1746,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_attachment_update" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1764</span>
+    <span class="phpdocumentor-element-found-in__line">1829</span>
 </aside>
 
         <p class="phpdocumentor-summary">Update a WordPress attachment.</p>
@@ -1828,9 +1816,9 @@ Developers should use hooks to change this, if it does not meet their needs.</p>
         <a href="classes/Object-Sync-Sf-WordPress.html#method_attachment_upsert" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1596</span>
+    <span class="phpdocumentor-element-found-in__line">1661</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a new WordPress attachment or update it if a match is found.</p>
@@ -1923,9 +1911,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_comment_create" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2161</span>
+    <span class="phpdocumentor-element-found-in__line">2226</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a new WordPress comment.</p>
@@ -1982,9 +1970,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_comment_delete" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2468</span>
+    <span class="phpdocumentor-element-found-in__line">2533</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete a WordPress comment.</p>
@@ -2038,9 +2026,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_comment_update" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2417</span>
+    <span class="phpdocumentor-element-found-in__line">2482</span>
 </aside>
 
         <p class="phpdocumentor-summary">Update a WordPress comment.</p>
@@ -2105,9 +2093,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_comment_upsert" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2239</span>
+    <span class="phpdocumentor-element-found-in__line">2304</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a new WordPress comment or update it if a match is found.</p>
@@ -2209,9 +2197,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_create_wp_meta" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2483</span>
+    <span class="phpdocumentor-element-found-in__line">2548</span>
 </aside>
 
         <p class="phpdocumentor-summary">Standard method for creating meta values
@@ -2275,9 +2263,9 @@ This works for users, posts, terms, and comments. It does not work for attachmen
         <a href="classes/Object-Sync-Sf-WordPress.html#method_object_fields" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">474</span>
+    <span class="phpdocumentor-element-found-in__line">535</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get all the fields for an object
@@ -2389,9 +2377,9 @@ we just need to make sure we get all applicable fields for the object itself, as
         <a href="classes/Object-Sync-Sf-WordPress.html#method_post_create" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1182</span>
+    <span class="phpdocumentor-element-found-in__line">1248</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a new WordPress post.</p>
@@ -2457,9 +2445,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_post_delete" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1498</span>
+    <span class="phpdocumentor-element-found-in__line">1563</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete a WordPress post.</p>
@@ -2513,9 +2501,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_post_update" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1448</span>
+    <span class="phpdocumentor-element-found-in__line">1513</span>
 </aside>
 
         <p class="phpdocumentor-summary">Update a WordPress post.</p>
@@ -2589,9 +2577,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_post_upsert" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1277</span>
+    <span class="phpdocumentor-element-found-in__line">1342</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a new WordPress post or update it if a match is found.</p>
@@ -2702,9 +2690,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_term_create" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1871</span>
+    <span class="phpdocumentor-element-found-in__line">1936</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a new WordPress term.</p>
@@ -2770,9 +2758,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_term_delete" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2141</span>
+    <span class="phpdocumentor-element-found-in__line">2206</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete a WordPress term.</p>
@@ -2826,9 +2814,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_term_update" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2088</span>
+    <span class="phpdocumentor-element-found-in__line">2153</span>
 </aside>
 
         <p class="phpdocumentor-summary">Update a WordPress term.</p>
@@ -2902,9 +2890,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_term_upsert" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1943</span>
+    <span class="phpdocumentor-element-found-in__line">2008</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a new WordPress term or update it if a match is found.</p>
@@ -3015,9 +3003,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_update_wp_meta" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2529</span>
+    <span class="phpdocumentor-element-found-in__line">2594</span>
 </aside>
 
         <p class="phpdocumentor-summary">Standard method for updating meta values
@@ -3081,9 +3069,9 @@ This works for users, posts, terms, and comments. It does not work for attachmen
         <a href="classes/Object-Sync-Sf-WordPress.html#method_user_create" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">871</span>
+    <span class="phpdocumentor-element-found-in__line">938</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a new WordPress user.</p>
@@ -3140,9 +3128,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_user_delete" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1162</span>
+    <span class="phpdocumentor-element-found-in__line">1228</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete a WordPress user.</p>
@@ -3196,9 +3184,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_user_update" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1108</span>
+    <span class="phpdocumentor-element-found-in__line">1174</span>
 </aside>
 
         <p class="phpdocumentor-summary">Update a WordPress user.</p>
@@ -3263,9 +3251,9 @@ success: 1
         <a href="classes/Object-Sync-Sf-WordPress.html#method_user_upsert" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="classes/wordpress.php"><a href="files/classes-wordpress.html"><abbr title="classes/wordpress.php">wordpress.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-wordpress.php"><a href="files/classes-class-object-sync-sf-wordpress.html"><abbr title="classes/class-object-sync-sf-wordpress.php">class-object-sync-sf-wordpress.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">966</span>
+    <span class="phpdocumentor-element-found-in__line">1032</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a new WordPress user or update it if a match is found.</p>
