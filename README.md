@@ -24,7 +24,6 @@ Object Sync for Salesforce maps and syncs data between Salesforce objects and Wo
 <!-- only:github/ -->
 ## Getting started
 <!-- /only:github -->
-
 <!-- only:wp>
 == Description ==
 </only:wp -->
