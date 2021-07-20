@@ -295,6 +295,9 @@ class Object_Sync_Sf_Admin {
 			add_filter( 'update_option_' . $this->option_prefix . $key . '_schedule_unit', array( $this, 'change_action_schedule' ), 10, 3 );
 		}
 
+		// when ActionScheduler runs its migration, resave the schedule options.
+		add_action( 'action_scheduler/migration_complete', array( $this, 'resave_action_schedules' ) );
+
 		// handle post requests for object maps.
 		add_action( 'admin_post_delete_object_map', array( $this, 'delete_object_map' ) );
 		add_action( 'admin_post_post_object_map', array( $this, 'prepare_object_map_data' ) );
@@ -432,6 +435,85 @@ class Object_Sync_Sf_Admin {
 			$this->schedulable_classes[ $schedule_name ]['initializer'],
 			array(),
 			$action_group_name
+		);
+	}
+
+	/**
+	 * When it finishes its migration, resave the scheduled tasks for ActionScheduler.
+	 */
+	public function resave_action_schedules() {
+		// for each schedulable action, go ahead and resave it.
+		$schedules_updated  = array();
+		$schedules_restored = array();
+		foreach ( $this->schedulable_classes as $key => $value ) {
+			// make sure it has an initializer property; this is used on recurring tasks.
+			if ( isset( $value['initializer'] ) ) {
+				// toggle the schedule number setting.
+				$schedule_option_name  = $this->option_prefix . $key . '_schedule_number';
+				$previous_option_value = get_option( $schedule_option_name, 0 );
+				$previous_option_value = filter_var( $previous_option_value, FILTER_SANITIZE_NUMBER_INT );
+				$new_option_value      = $previous_option_value + 1;
+				$schedule_updated      = update_option( $schedule_option_name, $new_option_value );
+				if ( true === $schedule_updated ) {
+					$schedules_updated[] = $key;
+					$schedule_restored   = update_option( $schedule_option_name, $previous_option_value );
+					if ( true === $schedule_restored ) {
+						$schedules_restored[] = $key;
+					}
+				}
+			}
+		}
+
+		// create a log entry from the updated scheduled tasks.
+		if ( ! empty( $schedules_updated ) || ! empty( $schedules_restored ) ) {
+			$status = 'success';
+		} else {
+			$status = 'error';
+		}
+
+		if ( isset( $this->logging ) ) {
+			$logging = $this->logging;
+		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+		}
+
+		$body = sprintf( esc_html__( 'These are the scheduled tasks that were updated: ', 'object-sync-for-salesforce' ) . '<ul>' );
+		foreach ( $schedules_updated as $schedule_updated ) {
+			$body .= sprintf(
+				// translators: placeholders are: 1) the schedule name.
+				'<li>' . esc_html__( 'Schedule name: %1$s.', 'object-sync-for-salesforce' ) . '</li>',
+				esc_attr( $schedule_updated )
+			);
+		}
+		$body .= '</ul>';
+
+		$body .= sprintf( esc_html__( 'These are the scheduled tasks that have the same frequency as they had pre-migration: ', 'object-sync-for-salesforce' ) . '<ul>' );
+		foreach ( $schedules_restored as $schedule_restored ) {
+			$body .= sprintf(
+				// translators: placeholders are: 1) the schedule name.
+				'<li>' . esc_html__( 'Schedule name: %1$s.', 'object-sync-for-salesforce' ) . '</li>',
+				esc_attr( $schedule_restored )
+			);
+		}
+		$body .= '</ul>';
+
+		$body .= sprintf( esc_html__( 'If any tasks were not updated, or were not able to keep the same frequency they had before, go to the Scheduling tab to update them.', 'object-sync-for-salesforce' ) );
+		$body .= sprintf(
+			// translators: %1$s is the schedule settings URL.
+			wp_kses_post( 'If any tasks were not updated, or were not able to keep the same frequency they had before, go to the <a href="' . admin_url( 'options-general.php?page=object-sync-salesforce-admin&tab=schedule' ) . '">%1$s</a> tab to update them.', 'object-sync-for-salesforce' ),
+			esc_html__( 'Scheduling', 'object-sync-for-salesforce' )
+		);
+
+		$logging->setup(
+			sprintf(
+				// translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of that object.
+				esc_html__( '%1$s ActionScheduler: the ActionScheduler library has completed its migration. See the log entry content for status on each recurring task.', 'object-sync-for-salesforce' ),
+				ucfirst( esc_attr( $status ) )
+			),
+			$body,
+			0,
+			0,
+			$status
 		);
 	}
 

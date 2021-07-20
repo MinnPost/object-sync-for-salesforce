@@ -302,7 +302,7 @@ class Object_Sync_Sf_Activate {
 	}
 
 	/**
-	 * Check whether the user has action scheduler tasks when they upgrade
+	 * Check whether the user has ActionScheduler tasks when they upgrade
 	 *
 	 * @param object $upgrader_object this is the WP_Upgrader object.
 	 * @param array  $hook_extra the array of bulk item update data.
