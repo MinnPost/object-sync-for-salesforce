@@ -9,7 +9,7 @@ Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Object Sync for Salesforce maps and syncs data between Salesforce objects and WordPress objects. It is based on the [Drupal Salesforce Suite](https://github.com/thinkshout/salesforce) (version 7.x-3.x-dev), but works in a very WordPress way.
+Object Sync for Salesforce maps and syncs data between Salesforce objects and WordPress objects.
 
 == Description ==
 
@@ -23,11 +23,11 @@ This plugin also includes developer hooks that allow for additional plugins to m
 
 The plugin documentation contains [initial setup instructions](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md). This is the fastest way to get the plugin running on your site.
 
-There is extensive documentation of the plugin beyond its installation process, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
+We maintain [extensive documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md) of the plugin beyond its installation process as well, including its developer hooks. This documentation also exists in the plugin's `docs` folder when it is downloaded.
 
 == Frequently Asked Questions ==
 
-### Mapping custom fields
+=== Mapping custom fields ===
 
 WordPress stores metadata as key/value pairs in its database. Many plugins and themes use this method to store custom field data. Object Sync for Salesforce supports mapping these fields (many other plugins use non-standard methods, and this plugin may or may not support them).
 
@@ -37,11 +37,11 @@ Object Sync for Salesforce, however, cannot see meta fields before the field has
 
 If you load Object Sync for Salesforce and then store data for a new meta field after this load, make sure you click the "Clear the plugin cache" link on the Fieldmaps tab.
 
-### Syncing pre-existing data
+=== Syncing pre-existing data ===
 
 This plugin was built to sync data that is created after it was installed. However, there are some techniques that can import pre-existing data. See the [Import & Export](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/import-export.md) section of the documentation for methods you can use for this.
 
-### Using with ACF (Advanced Custom Fields)
+=== Using with ACF (Advanced Custom Fields) ===
 
 Object Sync for Salesforce does not and will not "officially" support ACF because you don't have to use ACF to use WordPress or to use Salesforce. However, they are **generally** usable together.
 
@@ -52,7 +52,7 @@ Things to know:
 
 While we will not include code that only runs for ACF in this plugin, we would happily point to any add-on plugin that uses Object Sync for Salesforce hooks to build a more comprehensive integration with ACF for all users who install this plugin while they're running ACF.
 
-### Using with WooCommerce
+=== Using with WooCommerce ===
 
 Object Sync for Salesforce doesn't have, and will not have, intentional support for WooCommerce. It kind of supports it, to the extent that WooCommerce uses WordPress' default ways of creating objects and data. WooCommerce is very complicated, and on top of that it often deviates from those default WordPress methods, and it's certainly possible that this plugin won't support it when it does.
 
@@ -60,15 +60,15 @@ This doesn't mean you can't use them together, but it does mean this plugin is n
 
 Object Sync for Salesforce does have abundant developer hooks, and WooCommerce has its own API, and it would be possible to build an add-on plugin to provide full support by integrating these (we would happily point to it for all users who install this plugin while they're running WooCommerce).
 
-### Troubleshooting
+=== Troubleshooting ===
 
 If you are having trouble setting up or configuring the plugin, we've provided answers to some common problems in our [troubleshooting](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting.md) document. Expanding this document is also a great way to [contribute](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md) to this plugin.
 
-### Plugin documentation
+=== Plugin documentation ===
 
 There is extensive documentation of this plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md). This documentation also exists inside the `docs` folder when you download the plugin from the WordPress directory.
 
-### Getting support using this plugin
+=== Getting support using this plugin ===
 
 We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). If you have these requests, please put them in that forum only. Do not send them by email.
 
@@ -76,19 +76,19 @@ While MinnPost's nonprofit newsroom does welcome [donations](https://www.minnpos
 
 Use the plugin's GitHub repository for bugs, feature requests, and other additions and especially do that if you can help solve these things.
 
-### Extending this plugin
+=== Extending this plugin ===
 
 WordPress developers can use hooks in this plugin to extend its functionality. These are listed, with links to each hook's documentation, in the [developer hooks documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/all-developer-hooks.md), and are frequently mentioned throughout the plugin's [documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
 
 We host [a document](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/example-extending-plugins.md) intended to list plugins that use these hooks or otherwise extend this plugin, and we welcome additions.
 
-### Contribute to plugin development
+=== Contribute to plugin development ===
 
 If you'd like to suggest a feature, or if you think you've encountered a bug, you can [create an issue](https://github.com/minnpost/object-sync-for-salesforce/issues) on our GitHub repository. We actively add our own issues to the list, and comment on their progress.
 
 We welcome contributions of code, documentation, or translations to this project from other developers. See our [contributing guidelines](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md).
 
-### Finding other options to sync Salesforce and WordPress
+=== Finding other sync options ===
 
 This plugin can be relatively complicated, and sometimes other plugins can effectively integrate Salesforce and WordPress, especially if there are more limited, specific requirements. If one of these can meet those requirements, use it. We're happy to link to additional choices here, as well.
 

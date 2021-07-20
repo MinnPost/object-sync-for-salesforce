@@ -21,6 +21,7 @@ const gulpStylelint = require('gulp-stylelint');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const wpPot = require('gulp-wp-pot');
+const exec = require('child_process').exec;
 
 // Some config data for our tasks
 const config = {
@@ -149,6 +150,15 @@ function changelog() {
     .pipe( gulp.dest( config.changelog.dest ) );
 }
 
+// Generate readme.txt from readme.md
+function build_readme(cb) {
+  exec('php bin/wp-readme.php', function (err, stdout, stderr) {
+      console.log(stdout);
+      console.log(stderr);
+      cb(err);
+  });
+}
+
 // Injects changes into browser
 function browserSyncTask() {
   if (config.browserSync.active) {
@@ -186,5 +196,6 @@ exports.scripts   = scripts;
 exports.images    = images;
 exports.translate = translate;
 exports.changelog = changelog;
+exports.readme    = build_readme;
 exports.watch     = watch;
 exports.default   = build;
