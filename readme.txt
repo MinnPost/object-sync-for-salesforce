@@ -21,113 +21,9 @@ This plugin also includes developer hooks that allow for additional plugins to m
 
 == Installation ==
 
-### WordPress
+The plugin documentation contains [initial setup instructions](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md). This is the fastest way to get the plugin running on your site.
 
-#### Prerequisites
-
-To install the plugin in WordPress, your PHP environment needs the following:
-
-1. At least version 5.6.20.
-2. SSL support (this is required to connect to Salesforce).
-3. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
-
-#### Activate the plugin
-
-In the Plugins list in WordPress, activate the plugin and find the settings link (you can also find this plugin's settings in the main Settings list in WordPress, under the Salesforce menu item once it is activated).
-
-The plugin's settings URL is `https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin`.
-
-### Salesforce
-
-#### Prerequisites
-
-You'll need to have access to a Salesforce developer account. This should come with Enterprise Edition, Unlimited Edition, or Performance Edition. Developers can register for a free Developer Edition account at [https://developer.salesforce.com/signup](https://developer.salesforce.com/signup).
-
-We recommend using a Sandbox to set up this plugin first before running it in production.
-
-For purposes of this documentation, we'll assume that your name, as defined in Salesforce, is Your Name. This is what you see at the top right of the browser window, when you are logged in.
-
-#### Create an App
-
-1. In Salesforce, create a new Connected App. This differs between Lightning and Classic Salesforce.
-    - **Lightning:** Click on the cog icon at the top right of the browser window and click on `Setup`. Then on the left sidebar, under `App Setup`, click `Platform Tools > Apps > App Manager`. In the **Lightning Experience App Manager** section of this page, click `New Connected App` to create a new app.
-    - **Classic:** At the top right of the browser window, go to `Your Name > Setup`. Then on the left sidebar, under `App Setup`, click `Create > Apps`. In the **Connected Apps** section of this page, click New to create a new app.
-2. Enable OAuth Settings
-3. Set the callback URL to: `https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize` (must use HTTPS).
-4. Select at least "Perform requests on your behalf at any time" for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select "Access and manage your data (api)" as one of these scopes.
-
-#### Get the values for WordPress
-
-After you save these settings, click Continue and you'll see the values for your new app. For WordPress, you'll need these values:
-
-1. Consumer Key (in the screenshot, this value says "valuefromsalesforce")
-2. Consumer Secret (you'll have to click "Click to reveal" to get this value)
-
-### Connect the plugin to Salesforce
-
-#### Settings
-
-Go to the Settings tab for the plugin. It is the default URL that opens when you click Salesforce in the main Settings menu. Enter the values based on your Salesforce environment.
-
-1. Consumer Key: (your value from above)
-2. Consumer Secret: (your value from above)
-3. Callback URL: `https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize`
-4. Login Base URL: For most Salesforce environments, you can use `https://test.salesforce.com` for sandbox, and `https://login.salesforce.com` for production.
-5. Authorize URL Path: The plugin starts with a default of `/services/oauth2/authorize`. You should generally not have to change this.
-6. Token URL Path: The plugin starts with a default of `/services/oauth2/token`. You should generally not have to change this.
-7. Salesforce API Version: You should generally use the latest version your install has access to. This plugin starts with 42.0, but once it is authenticated the text field will be replaced with a dropdown of your available versions from which you can choose.
-8. Limit Salesforce Objects: These allow you to indicate whether Salesforce should relate to objects that can't be triggered or updated via the API. Generally it's a good idea to have these boxes checked to avoid errors.
-9. Salesforce Field Display Value: When mapping Salesforce fields, you can choose whether the plugin will display a field's Field Label (possibly a more user friendly value) or the API Name (which is always unique). Neither choice changes how the plugin functions on the back end, but making a choice can sometimes make the mapping choices easier to find.
-10. Pull Throttle (seconds): This plugin starts with 5 seconds, but you can change it based on your server's needs.
-11. Debug mode: This won't do anything until after the plugin has been authorized, but once it has you can use it to see more information about what the API is doing. **Don't check this in a production environment.**
-
-Save the settings. If the values required are set, you'll see a message that says "Salesforce needs to be authorized to connect to this website. Use the Authorize tab to connect." You can use that link for the next steps.
-
-##### Using constants for settings
-
-You can set several of the above values as constants in your `wp-config.php` file. The plugin will always use a constant ahead of a database setting.
-
-Supported constant names are:
-
-1. OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY
-2. OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET
-3. OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL
-4. OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL
-5. OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH
-6. OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH
-7. OBJECT_SYNC_SF_SALESFORCE_API_VERSION
-
-Set them in `wp-config.php` like this:
-
-`define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY', 'valuefromsalesforce');`
-`define('OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET', 'valuefromsalesforce');`
-`define('OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL', 'https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize');`
-`define('OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL', 'https://test.salesforce.com');`
-`define('OBJECT_SYNC_SF_SALESFORCE_API_VERSION', '40.0');`
-`define('OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH', '/services/oauth2/authorize');`
-`define('OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH', '/services/oauth2/token');`
-
-For any value that is already defined in `wp-config.php`, the Settings screen will display "Defined in wp-config.php" in place of the text field.
-
-#### Authorize
-
-Go to the Authorize tab in the plugin's settings. If it is not yet authorized, you'll see a message that says "Salesforce needs to be authorized to connect to this website. Use the Authorize tab to connect."
-
-The authorize tab will force you to be logged in using HTTPS, if you weren't already.
-
-Steps:
-
-1. Click the Connect to Salesforce button to authenticate WordPress with your Salesforce installation.
-2. You may have to log into Salesforce.
-3. Salesforce will ask you to allow access to the app (in these instructions, the name is WordPress Example), and will show you what permissions it needs.
-4. Click Allow.
-5. You'll be redirected back to WordPress. Don't do anything until you see a message that says "Salesforce is successfully authenticated."
-6. The tab will display a "Disconnect from Salesforce" button which you can click at any time, and will also show a bit of basic information about your Salesforce environment (the available API versions and a basic table of Contacts.)
-7. If you'd like to use a different Salesforce API version, go back to the Settings tab and pick your desired version from the dropdown.
-
-### More documentation
-
-There is extensive documentation of the plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md). You can find a detailed [initial setup instruction](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md) document there as well.
+There is extensive documentation of the plugin beyond its installation process, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
 
 == Frequently Asked Questions ==
 
@@ -164,96 +60,33 @@ This doesn't mean you can't use them together, but it does mean this plugin is n
 
 Object Sync for Salesforce does have abundant developer hooks, and WooCommerce has its own API, and it would be possible to build an add-on plugin to provide full support by integrating these (we would happily point to it for all users who install this plugin while they're running WooCommerce).
 
-### Troubleshooting connection and authorization issues
+### Troubleshooting
 
-If you are having trouble connecting the plugin to Salesforce, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in [the plugin documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
-
-**Missing Authorize tab**
-
-If you load the plugin's Settings screen and you do not see an Authorize tab, this means there are required fields missing from your Settings tab. You must have (at least) accurate values for Consumer Key, Consumer Secret, Callback URL, Login Base URL, Authorize URL Path, Token URL Path, and Salesforce API Version.
-
-**Error: invalid_client_id**
-
-It can take a few minutes for a new app to be fully set up in Salesforce. If you get a `error=invalid_client_id&error_description=client%20identifier%20invalid` URL when you try to authorize with WordPress during the installation, wait a few minutes and then try again.
-
-This error can also happen if the Salesforce Consumer Key is entered incorrectly in the plugin settings.
-
-**Error: redirect_uri_mismatch**
-
-This error usually means the Callback URL in the plugin settings does not match the Callback URL for the app in Salesforce. Typically, the URL is something like this: https://yoursite/wp-admin/options-general.php?page=object-sync-salesforce-admin&tab=authorize.
-
-**Error(0)**
-
-This error comes from Salesforce but the plugin is not able to detect it before the page loads. Usually it comes from one of these things:
-
-1. The connection is down
-2. The SSL is incorrect
-3. The login base URL is incorrect
-
-**Error: 400**
-
-Sometimes Salesforce returns an unhelpful 400 error (perhaps with a `grant type not supported` message). 400 errors from Salesforce mean that the request couldn't be understood. This can happen if the Login base URL setting is using your instance name (ex https://clientname.lightning.force.com) rather than the more generic https://test.salesforce.com for sandboxes and https://login.salesforce.com for production instances. Salesforce will handle redirecting the plugin to the proper instance; you should always be able to use the generic URLs.
-
-**Error: 401**
-
-Sometimes Salesforce returns a 401 error. This means the session ID or OAuth token has expired. This can mean that you've already tried to authorize, but it failed, or that too much time has passed. Try to disconnect and reconnect the plugin. Also, make sure your Salesforce app has the proper permissions: "Access and manage your data (api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)".
-
-**Plugin redirects after logging in, but does not finish activating**
-
-If the plugin allows you to authorize in Salesforce, but does not finish activating in WordPress, consider these possible issues:
-
-1. Insufficient app permissions in Salesforce. Make sure the app's permissions are at least "Perform requests on your behalf at any time" for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select "Access and manage your data (api)" as one of these scopes. If you change permissions, give Salesforce a few minutes before trying to connect again.
-2. The plugin may have been unable to create its required database tables. If you think this may be the case, refer to [this document](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting-unable-to-create-database-tables.md) for the necessary SQL.
-3. Mismatched settings between the plugin and the expected values in Salesforce.
-
-### Troubleshooting object maps
-
-If you are successfully authenticated with Salesforce, but you are unable to create object maps, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in the [troubleshooting](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting.md) section of the plugin's documentation.
-
-**There are no Salesforce objects in the dropdown**
-
-When there are no values in the list of Salesforce objects, this means the plugin can’t access any of the objects in your Salesforce. There are three likely causes for this:
-
-- You need to change the OAuth scope on the app you created in Salesforce. For most uses with this plugin, you’ll want to use "Perform requests on your behalf at any time" and "Access and manage your data (api)."" If you do change these, you’ll need to wait several minutes before trying again, as Salesforce is rather slow on this.
-- Your Salesforce objects might not be accessible to the Salesforce user who has authenticated with WordPress via this plugin.
-- The Salesforce objects might have other restrictive permissions.
-
-### Troubleshooting fieldmaps
-
-If you are successfully authenticated with Salesforce, but you have a fieldmap that is not passing data, there are several ways to troubleshoot. Always check your PHP error logs first. More information may be available in the [troubleshooting](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting.md) section of the plugin's documentation.
-
-**Plugin configuration**
-
-- Remember to clear the plugin cache on the Fieldmaps screen.
-- If you are not able to push data to Salesforce, try with asynchronous checked, and without. This will tell you if your issue is related to the plugin's cron jobs.
-- To inspect your cron jobs, use the [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/) plugin. Make sure the Salesforce push and/or pull jobs are running as you expect them to, and make sure to check the Schedule screen to make sure the jobs are scheduled as they should be.
-
-**Plugin logs**
-
-- Make sure to use the Log Settings screen to configure logs. Once enabled, they are added to a custom post type called Logs in the WordPress menu.
-- If the plugin tries to create or update data, but WordPress or Salesforce encounter errors, the plugin will always try to create a log entry. If you see entries, review the title and content of each.
-
-**Plugin mapping errors**
-
-- If the plugin fails in the middle of creating a map between two objects, a row may be created on the Mapping Errors screen. If it is a push error, it will tell you the WordPress object ID it was trying to map. If it is a pull error, it will tell you the Salesforce ID. **You should not leave these entries.**
-
-### Reporting bugs, feature suggestions, and other feedback
-
-If you'd like to suggest a feature, or if you think you've encountered a bug, you can [create an issue](https://github.com/minnpost/object-sync-for-salesforce/issues) on our GitHub repository. We actively add our own issues to the list, and comment on their progress.
-
-### Contributing to plugin development
-
-We welcome contributions to this project from other developers. See our [contributing guidelines](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md).
+If you are having trouble setting up or configuring the plugin, we've provided answers to some common problems in our [troubleshooting](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/troubleshooting.md) document. Expanding this document is also a great way to [contribute](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md) to this plugin.
 
 ### Plugin documentation
 
-There is extensive documentation of this plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
+There is extensive documentation of this plugin, including its developer hooks, [on GitHub](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md). This documentation also exists inside the `docs` folder when you download the plugin from the WordPress directory.
 
 ### Getting support using this plugin
 
-We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). Please do not send them by email.
+We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). If you have these requests, please put them in that forum only. Do not send them by email.
 
 While MinnPost's nonprofit newsroom does welcome [donations](https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY) to support our work, this plugin does not have a paid version.
+
+Use the plugin's GitHub repository for bugs, feature requests, and other additions and especially do that if you can help solve these things.
+
+### Extending this plugin
+
+WordPress developers can use hooks in this plugin to extend its functionality. These are listed, with links to each hook's documentation, in the [developer hooks documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/all-developer-hooks.md), and are frequently mentioned throughout the plugin's [documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/readme.md).
+
+We host [a document](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/example-extending-plugins.md) intended to list plugins that use these hooks or otherwise extend this plugin, and we welcome additions.
+
+### Contribute to plugin development
+
+If you'd like to suggest a feature, or if you think you've encountered a bug, you can [create an issue](https://github.com/minnpost/object-sync-for-salesforce/issues) on our GitHub repository. We actively add our own issues to the list, and comment on their progress.
+
+We welcome contributions of code, documentation, or translations to this project from other developers. See our [contributing guidelines](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md).
 
 ### Finding other options to sync Salesforce and WordPress
 
@@ -268,7 +101,7 @@ This plugin can be relatively complicated, and sometimes other plugins can effec
 
 == Changelog ==
 
-See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/changelog.md) on GitHub or in changelog.txt in the installed plugin.
+See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/changelog.md) for information about all previous releases.
 
 == Upgrade Notice ==
 
