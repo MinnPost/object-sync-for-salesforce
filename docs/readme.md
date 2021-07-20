@@ -10,6 +10,7 @@ This is the full documentation for this plugin, extending the information in [th
 
     For developers:
 
+    - [Additional setup instructions](./setup-for-developers.md)
     - [Adding settings](./adding-settings.md)
 
 2. [Permissions](./permissions.md)
