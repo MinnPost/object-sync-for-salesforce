@@ -41,7 +41,7 @@
 							</div>
 						</div>
 						<div class="inside">
-							<div class="submitpost">
+							<div class="submitbox">
 								<div id="minor-publishing">
 									<div class="misc-pub-section misc-pub-post-status"><?php echo esc_html__( 'Save or delete your fieldmap.', 'object-sync-for-salesforce' ); ?></div>
 								</div>
@@ -141,6 +141,7 @@
 								<div class="sfwp-m-fieldmap-subgroup-fields checkbox">
 									<input type="checkbox" name="push_immediately" id="sfwp-push-immediately" value="1" <?php echo isset( $push_immediately ) && '1' === $push_immediately ? ' checked' : ''; ?>>
 								</div>
+								<p class="description"><?php echo esc_html__( 'If you check this box, the plugin will try to save data to Salesforce immediately, rather than placing it into the queue system. Often this is not necessary.', 'object-sync-for-salesforce' ); ?></p>
 							</div>
 						</section>
 					</div>
@@ -474,7 +475,7 @@
 										</article>
 										<div class="postbox sfwp-o-fieldmap-form">
 											<p class="sfwp-m-fieldmap-subgroup-actions">
-												<button type="button" id="finish-field-mapping-<?php echo esc_attr( $key ); ?>" class="button button-secondary sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit"><?php echo esc_html__( 'Finish This Field Mapping', 'object-sync-for-salesforce' ); ?></button> <a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete"><?php echo esc_html__( 'Delete This Field Mapping', 'object-sync-for-salesforce' ); ?></a>
+												<button type="button" id="finish-field-mapping-<?php echo esc_attr( $key ); ?>" class="button button-secondary sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit"><?php echo esc_html__( 'Close This Field Mapping', 'object-sync-for-salesforce' ); ?></button> <a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete"><?php echo esc_html__( 'Delete This Field Mapping', 'object-sync-for-salesforce' ); ?></a>
 											</p>
 										</div>
 									</li>
