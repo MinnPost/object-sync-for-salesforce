@@ -2,6 +2,27 @@
 
 Developers can modify how data is modified in WordPress with several hooks.
 
+## Statuses
+
+WordPress objects can be stored with various statuses. Custom post types may especially have their own statuses that aren't included in Core, and may need to be supplied to this plugin, for example to determine if a record is a draft.
+
+### Hooks
+
+This plugin contains a hook you can use to define any status as a draft.
+
+#### Code examples
+
+```php
+add_filter( 'object_sync_for_salesforce_wordpress_object_statuses', 'modify_object_statuses', 10, 2 );
+function modify_object_statuses( $wordpress_statuses, $object_type ) {
+    // Add a new status choice to specific WordPress objects such as 'post', 'page', 'user', a Custom Post Type, etc.
+    if ($object_type === 'user') {
+        $wordpress_statuses['member'] = 'Member';
+    }
+    return $wordpress_statuses;
+}
+```
+
 ## Doing more with default objects
 
 While this plugin updates all of the supported objects in their default ways (and some of these can be extended with the [extended parameters hooks](./extending-parameters.md)), it also allows developers to write their own handlers to save data to these objects in any other necessary ways.

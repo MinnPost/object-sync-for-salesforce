@@ -76,6 +76,10 @@ This page lists all developer hooks available in this plugin, with links to wher
 	- description: modify the `select` library used for choosing WordPress and Salesforce fields on fieldmaps. By default, we add the selectWoo library.
 	- code: [object-sync-for-salesforce.php](../object-sync-for-salesforce.php)
 	- documentation: [extending mapping options](./extending-mapping-options.md#administration-interface)
+- `object_sync_for_salesforce_wordpress_draft_statuses`:
+    - description: change what statuses are considered to be drafts in WordPress.
+    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - documentation: [extending wordpress](./extending-wordpress.md#statuses)
 - `object_sync_for_salesforce_add_more_wordpress_types`:
     - description: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
     - code: [classes/wordpress.php](../classes/wordpress.php)

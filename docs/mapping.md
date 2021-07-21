@@ -17,13 +17,13 @@ Use the Fieldmaps tab of the plugin settings, and click Add New to create a new 
 The settings for a WordPress fieldmap work like this:
 
 1. Label: you can use any text (up to 64 characters) for this. Make it unique.
-2. WordPress object: the plugin gets every object it is aware of from your WordPress installation. See [below](#more-on-wordpress-object) for more.
-3. Salesforce object: the plugin gets every Salesforce object it has access to. **Some objects add a dropdown field with a list of date fields to trigger "pull" actions.** See [below](#more-on-salesforce-object) for more.
+2. WordPress Object: the plugin gets every object it is aware of from your WordPress installation. See [below](#more-on-wordpress-object) for more.
+3. Salesforce Object: the plugin gets every Salesforce object it has access to. **Some objects add a dropdown field with a list of date fields to trigger "pull" actions.** See [below](#more-on-salesforce-object) for more.
 4. Fieldmap: choose which fields from the WordPress object map to fields from the Salesforce object, and how the plugin should treat changes. See [below](#more-on-field-mapping) for more.
-5. Action triggers: the plugin can sync data when a record is changed in WordPress and/or Salesforce.
-6. Process asynchronously: whether push data will be sent to Salesforce immediately, or when `wp_cron` runs.
-7. Push drafts: many WordPress objects create and save drafts while editing is happening. By default, this data is not sent to Salesforce. Checking the box causes it to be synced equally to live items.
-8. Weight: if the same object is mapped multiple times, the weight will determine what happens first. This is in ascending order, so objects with higher numerical values will be mapped after objects with lower numerical values.
+5. Action Triggers: the plugin can sync data when a record is changed in WordPress and/or Salesforce.
+6. Process Asynchronously: whether push data will be sent to Salesforce immediately, or when `wp_cron` runs.
+7. Push Drafts: many WordPress objects create and save drafts while editing is happening. By default, this data is not sent to Salesforce. Checking the box causes it to be synced equally to live items.
+8. Pull to Drafts: by default, WordPress will not check existing drafts of an object type for matches when pulling data from Salesforce. Checking this box will cause it to map Salesforce records to drafts, if they match.
 
 Several hooks exist for modifying these options, including whether a combo search/dropdown field library is used. See the [extending mapping options documentation](./extending-mapping-options.md).
 
@@ -55,22 +55,29 @@ There's a [helpful spreadsheet](https://docs.google.com/spreadsheets/d/1mSqienVY
 
 If you load this plugin and then store data for a new meta field after this load, make sure you click the "Clear the plugin cache" link on the Fieldmaps tab.
 
+This plugin supports syncing (at least) the following WordPress field types. When the plugin needs to send a value from one of these fields to Salesforce, it tries to handle it in the following ways:
+
+- **Checkboxes (or other serialized arrays)**: this value is converted to an imploded string. Salesforce is then able to store it as a Multi-Picklist.
+- **Date**: this value is converted to a timestamp, and then to `'Y-m-d'`, the date format that the Salesforce API expects.
+- **Date/Time**: this value is converted to a timestamp, and then to `'c'`, the DateTime format that the Salesforce API expects.
+- **Boolean**: WordPress often stores boolean values as strings, so these values are converted to actual booleans.
+
 The plugin also has a hook to modify what fields are included for an object. You can read more about this in the [extending mapping options documentation](./extending-mapping-options.md#available-wordpress-fields).
 
 #### Salesforce fields
 
-Salesforce fields come from the `object_describe` API method. This plugin supports syncing (at least) the following Salesforce field types:
+Salesforce fields come from the `object_describe` API method. This plugin supports syncing (at least) the following Salesforce field types. When the plugin receives a value from one of these fields, it tries to handle it in the following ways:
 
-- Picklist
-- Picklist (Multi-Select)
-- Date
-- Date/Time
-- Text
-- URL
+- **Picklist**: this value should be capable of being synced to any WordPress field.
+- **Picklist (Multi-Select)**: this value is exploded into an array. The data assumption is that you'll then be storing it as a serialized array, for example as a list of checkboxes.
+- **Date**: this value is converted to the default date format in WordPress, which is set in General Options. If there is no value for the default format, the plugin uses the MySQL date format.
+- **Date/Time**: if the WordPress field where the Salesforce value is being saved has already been defined as a datetime field, OR if it is a field from The Events Calendar, the plugin will format the Salesforce value with this date format: `'Y-m-d H:i:s'`. If the Salesforce field is set as a datetime field instead of a date field, the Salesforce API will always return the value as a GMT value. The plugin then uses `get_date_from_gmt( $object[ $salesforce_field ], 'Y-m-d\TH:i:s\Z' )` to convert the date to the WordPress timezone.
+- **Text**: these values are converted to `string`.
+- **URL**: these values are run through the WordPress `esc_url_raw` function.
 
-**Note:** How well these fields sync may vary if your method of storing WordPress fields differs greatly from the default meta system.
+**Note:** How well these fields sync may vary if your method of storing WordPress fields differs greatly from the default meta system, or from the above defaults.
 
-If you determine that you need to sync a field that is not yet supported, you can consider [creating an issue](https://github.com/minnpost/object-sync-for-salesforce/issues), or use the developer hooks to [extend mapping parameters](./extending-parameters.md)
+If you determine that you need to sync a field that is not yet supported, or that you need to modify the default behavior for one of the supported field types, you can consider [creating an issue](https://github.com/minnpost/object-sync-for-salesforce/issues), or use the developer hooks to [extend mapping parameters](./extending-parameters.md)
 
 #### Restricted Picklist note
 

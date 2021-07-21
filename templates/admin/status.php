@@ -1,8 +1,17 @@
+<?php
+/**
+ * The screen to show the current status of the plugin's connection to Salesforce
+ *
+ * @package Object_Sync_Salesforce
+ */
+
+?>
+
 <h3><?php echo esc_html__( 'Salesforce Status', 'object-sync-for-salesforce' ); ?></h3>
 <p>
 <?php
 	echo sprintf(
-		// translators: placeholder is for the version number of the Salesforce REST API
+		// translators: placeholder is for the version number of the Salesforce REST API.
 		esc_html__( 'Currently, we are using version %1$s of the Salesforce REST API. Available versions are displayed below.', 'object-sync-for-salesforce' ),
 		esc_html( $this->login_credentials['rest_api_version'] )
 	);

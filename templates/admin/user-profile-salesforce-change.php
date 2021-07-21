@@ -1,3 +1,12 @@
+<?php
+/**
+ * The form to change what Salesforce object is mapped to a given WordPress user
+ *
+ * @package Object_Sync_Salesforce
+ */
+
+?>
+
 <input type="hidden" name="salesforce_update_mapped_user" value="1" />
 <h2><?php echo esc_html__( 'Salesforce', 'object-sync-for-salesforce' ); ?></h2>
 <p><?php echo esc_html__( 'You can change the Salesforce object that this WordPress user maps to by changing the ID and updating this user.', 'object-sync-for-salesforce' ); ?></p>

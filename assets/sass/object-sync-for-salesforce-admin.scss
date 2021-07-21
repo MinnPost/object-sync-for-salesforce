@@ -1,12 +1,14 @@
+// modules
+@use "sass:math";
+
 // variables
 $normal-font-weight: 400; // sasslint will fail if we don't use the number, for some reason
 $bold-font-weight: 700; // sasslint will fail if we don't use the number, for some reason
 $box-shadow-less: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 $box-shadow-more: 0 1px 1px rgba(0, 0, 0, 0.04);
-$border-color-darker: #e1e1e1;
-$border-color-lighter: #e5e5e5;
+$border-color: #dcdcde;
 $horizontal-space: 10px;
-$success-color: #46b450;
+$success-color: #00a32a;
 $vertical-space: 15px;
 
 $main-space: 12px;
@@ -64,84 +66,88 @@ $body-color: rgb(68, 68, 68);
 		}
 	}
 
-	.select2-dropdown--above {
-		box-shadow: 0 0 0 1px #007cba, 0 -2px 1px rgba(0, 0, 0, 0.1);
-
-		&::after {
-			bottom: -1px;
-		}
+	fieldset {
+		border: 1px solid $border-color;
+		margin-bottom: $vertical-space;
+		position: relative;
 	}
 
-	.select2-container {
+	&::after {
+		bottom: -1px;
+	}
+}
+
+.select2-container {
+
+	@media only screen and (max-width: 782px) {
+		font-size: 16px;
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	.select2-selection--single {
+		height: 30px;
+		border-color: #7e8993;
 
 		@media only screen and (max-width: 782px) {
-			font-size: 16px;
+			height: 40px;
 		}
 
 		&:focus {
 			outline: none;
 		}
 
-		.select2-selection--single {
-			height: 30px;
-			border-color: #7e8993;
+		.select2-selection__rendered {
+			line-height: 28px;
 
 			@media only screen and (max-width: 782px) {
-				height: 40px;
+				line-height: 38px;
 			}
 
-			&:focus {
-				outline: none;
-			}
-
-			.select2-selection__rendered {
-				line-height: 28px;
-
-				@media only screen and (max-width: 782px) {
-					line-height: 38px;
-				}
-
-				&:hover {
-					color: #007cba;
-				}
-			}
-
-			.select2-selection__arrow {
-				right: 1px;
-				height: 28px;
-				width: 28px;
-				background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E) no-repeat right 5px top 55%;
-				background-size: 16px 16px;
-
-				@media only screen and (max-width: 782px) {
-					height: 38px;
-				}
-
-				b {
-					display: none;
-				}
+			&:hover {
+				color: #007cba;
 			}
 		}
 
-		.select2-selection--multiple {
-			min-height: 30px;
-			border-color: #7e8993;
-			border-radius: 4px;
+		.select2-selection__arrow {
+			right: 1px;
+			height: 28px;
+			width: 28px;
+			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E) no-repeat right 5px top 55%;
+			background-size: 16px 16px;
+
+			@media only screen and (max-width: 782px) {
+				height: 38px;
+			}
+
+			b {
+				display: none;
+			}
 		}
 
-		&.select2-container--focus .select2-selection--single,
-		&.select2-container--open .select2-selection--single,
-		&.select2-container--open .select2-selection--multiple {
-			border-color: #007cba;
-			box-shadow: 0 0 0 1px #007cba;
-		}
-
-		.select2-search--inline .select2-search__field {
-			padding: 0 0 0 3px;
-			min-height: 28px;
-		}
 
 	}
+
+	.select2-selection--multiple {
+		min-height: 30px;
+		border-color: #7e8993;
+		border-radius: 4px;
+	}
+
+	&.select2-container--focus .select2-selection--single,
+	&.select2-container--open .select2-selection--single,
+	&.select2-container--open .select2-selection--multiple {
+		border-color: #007cba;
+		box-shadow: 0 0 0 1px #007cba;
+	}
+
+	.select2-search--inline .select2-search__field {
+		padding: 0 0 0 3px;
+		min-height: 28px;
+	}
+
 } // end .branch-5-3
 
 /**
@@ -149,7 +155,7 @@ $body-color: rgb(68, 68, 68);
   */
 .admin-color {
 	$wp_admin_colors: (
-		blue: #096484,
+		"blue": #096484,
 		coffee: #c7a589,
 		ectoplasm: #a3b745,
 		midnight: #e14d43,
@@ -232,12 +238,11 @@ $body-color: rgb(68, 68, 68);
 		.description {
 			display: block;
 			color: #999;
-			padding-top: 4px;
 		}
 	}
 
 	.select2-dropdown {
-		border-color: $select-border-color;
+		border-color: $border-color;
 	}
 
 	.select2-dropdown--below {
@@ -349,7 +354,7 @@ $body-color: rgb(68, 68, 68);
 	.sfwp-m-fieldmap-group > label,
 	.sfwp-o-fieldmap-form > header {
 		width: $label-width;
-		border-right: 1px solid $border-color-darker;
+		border-right: 1px solid $border-color;
 	}
 
 	.sfwp-m-fieldmap-subgroup header,
@@ -391,7 +396,7 @@ $body-color: rgb(68, 68, 68);
 
 	.sfwp-m-fieldmap-subgroup-fields {
 		width: $subfield-width;
-		padding: $main-space / 2 0;
+		padding: math.div($main-space, 2) 0;
 
 		> label {
 			padding-bottom: $main-space;
@@ -433,7 +438,7 @@ $body-color: rgb(68, 68, 68);
 		}
 
 		&.sfwp-m-single-checkboxes {
-			padding: 0 0 $main-space / 2 0;
+			padding: 0 0 math.div($main-space, 2) 0;
 
 			label {
 				width: 100%;
@@ -447,7 +452,8 @@ $body-color: rgb(68, 68, 68);
 
 			.sfwp-a-single-checkbox {
 				width: 100%;
-				padding: $main-space + ( $main-space / 2 ) 0 0 0 0;
+				padding: $main-space + math.div($main-space, 2) 0 0 0;
+
 			}
 		}
 	}
@@ -468,7 +474,7 @@ $body-color: rgb(68, 68, 68);
 		flex-wrap: wrap;
 		width: 100%;
 		justify-content: space-between;
-		border-bottom: 1px solid $border-color-darker;
+		border-bottom: 1px solid $border-color;
 		margin: 0;
 
 		li {
@@ -566,13 +572,13 @@ $body-color: rgb(68, 68, 68);
 		}
 
 		> header {
-			width: ( $sublabel-width + $label-width ) / 2;
+			width: math.div(( $sublabel-width + $label-width ), 2);
 			margin-right: $vertical-space;
 			padding: $main-space 0 $vertical-space 0;
 		}
 
 		> .sfwp-m-fieldmap-subgroup-fields {
-			width: ( $field-width + $subfield-width ) / 2;
+			width: math.div(( $field-width + $subfield-width ), 2);
 			padding: $main-space 0 $vertical-space 0;
 
 			.sfwp-field-dependent-fields {
@@ -581,13 +587,13 @@ $body-color: rgb(68, 68, 68);
 				width: 100%;
 
 				label {
-					width: ( $sublabel-width + $label-width ) / 2;
+					width: math.div(( $sublabel-width + $label-width ), 2);
 					margin-right: $vertical-space;
 					padding: $main-space 0 $vertical-space 0;
 				}
 
 				.sfwp-m-field-dependent-field {
-					width: ( $field-width + $subfield-width ) / 2;
+					width: math.div(( $field-width + $subfield-width ), 2);
 					padding: $main-space 0 0 0;
 				}
 
@@ -661,7 +667,7 @@ $body-color: rgb(68, 68, 68);
 	width: auto;
 
 	caption {
-		border: 1px solid $border-color-darker;
+		border: 1px solid $border-color;
 		border-bottom: 0;
 		box-shadow: $box-shadow-more;
 		color: #555;
@@ -673,7 +679,7 @@ $body-color: rgb(68, 68, 68);
 	}
 
 	tr th {
-		border-right: 1px solid $border-color-lighter;
+		border-right: 1px solid $border-color;
 		font-size: 13px;
 		width: 140px;
 	}

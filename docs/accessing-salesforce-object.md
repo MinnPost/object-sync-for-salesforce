@@ -10,11 +10,12 @@ if ( ! function_exists( 'is_plugin_active' ) ) {
 }
 if ( is_plugin_active('object-sync-for-salesforce/object-sync-for-salesforce.php') ) {
     require_once plugin_dir_path( __FILE__ ) . '../object-sync-for-salesforce/object-sync-for-salesforce.php';
-    $salesforce = Object_Sync_Salesforce::get_instance();
-    $salesforce_api = $salesforce->salesforce['sfapi'];
-    $mail = $wordpress_object['user_email'];
-    $query = "SELECT Primary_Contact__c FROM Email__c WHERE Email_Address__c = '$mail'";
-    $result = $salesforce_api->query( $query );
+    if ( function_exists( 'object_sync_for_salesforce' ) ) {
+        $salesforce = object_sync_for_salesforce();
+        $salesforce_api = $salesforce->salesforce['sfapi'];
+        $mail = $wordpress_object['user_email'];
+        $query = "SELECT Primary_Contact__c FROM Email__c WHERE Email_Address__c = '$mail'";
+        $result = $salesforce_api->query( $query );
+    }
 }
 ```
-

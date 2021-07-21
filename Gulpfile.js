@@ -14,13 +14,14 @@ const mqpacker = require( 'css-mqpacker' );
 const plumber = require('gulp-plumber');
 const postcss = require('gulp-postcss');
 const rename = require('gulp-rename');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const sassGlob = require('gulp-sass-glob');
 const sort = require( 'gulp-sort' );
 const gulpStylelint = require('gulp-stylelint');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const wpPot = require('gulp-wp-pot');
+const exec = require('child_process').exec;
 
 // Some config data for our tasks
 const config = {
@@ -149,6 +150,15 @@ function changelog() {
     .pipe( gulp.dest( config.changelog.dest ) );
 }
 
+// Generate readme.txt from readme.md
+function build_readme(cb) {
+  exec('php bin/wp-readme.php', function (err, stdout, stderr) {
+      console.log(stdout);
+      console.log(stderr);
+      cb(err);
+  });
+}
+
 // Injects changes into browser
 function browserSyncTask() {
   if (config.browserSync.active) {
@@ -178,7 +188,7 @@ function watch() {
 // define complex gulp tasks
 const styles  = gulp.series(sasslint, adminstyles);
 const scripts = gulp.series(adminscripts, uglifyscripts);
-const build   = gulp.series(gulp.parallel(styles, scripts, images, translate, changelog));
+const build   = gulp.series(gulp.parallel(styles, scripts, images, translate, changelog, build_readme));
 
 // export tasks
 exports.styles    = styles;
@@ -186,5 +196,6 @@ exports.scripts   = scripts;
 exports.images    = images;
 exports.translate = translate;
 exports.changelog = changelog;
+exports.readme    = build_readme;
 exports.watch     = watch;
 exports.default   = build;

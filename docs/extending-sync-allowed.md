@@ -14,8 +14,8 @@ The `object_sync_for_salesforce_push_object_allowed` filter allows you to stop a
 
 This hook has access to the following variables:
 
-- `$object_type`: what kind of Salesforce object it is
-- `$object` - the object's data as it comes from Salesforce
+- `$object_type`: what kind of WordPress object it is
+- `$object` - the object's data as it comes from WordPress
 - `$sf_sync_trigger` - what action has occurred (a Salesforce create, update, or delete)
 - `$salesforce_mapping` - the fieldmap between the WordPress and Salesforce object types
 
@@ -55,8 +55,8 @@ The `object_sync_for_salesforce_pull_object_allowed` filter allows you to stop a
 
 This hook has access to the following variables:
 
-- `$object_type`: what kind of WordPress object it is
-- `$object` - the object's data as it is in WordPress
+- `$object_type`: what kind of Salesforce object it is
+- `$object` - the object's data as it is in Salesforce
 - `$sf_sync_trigger` - what action has occurred (a WordPress create, update, or delete)
 - `$salesforce_mapping` - the fieldmap between the WordPress and Salesforce object types
 
