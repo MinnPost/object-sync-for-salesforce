@@ -135,6 +135,8 @@ $( document ).on( 'click', '.sfwp-a-fieldmap-field-action-delete', function( eve
  * Select2 on select fields
  */
 $( document ).ready( function() {
+	// add the postbox JavaScript from Core.
+	postboxes.add_postbox_toggles(pagenow);
 
 	// disable the option values for fields that have already been mapped.
 	disableAlreadyMappedFields( 'salesforce' );

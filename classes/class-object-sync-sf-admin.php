@@ -342,7 +342,7 @@ class Object_Sync_Sf_Admin {
 		 * }
 		*/
 
-		$javascript_dependencies = array( 'jquery' );
+		$javascript_dependencies = array( 'jquery', 'postbox' );
 		$css_dependencies        = array();
 		if ( '' !== $select_library ) {
 			wp_enqueue_script( $select_library . 'js', plugins_url( 'assets/js/vendor/' . $select_library . '.min.js', $this->file ), array( 'jquery' ), filemtime( plugin_dir_path( $this->file ) . 'assets/js/vendor/' . $select_library . '.min.js' ), true );
