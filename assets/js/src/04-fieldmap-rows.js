@@ -4,10 +4,10 @@
  * this appears not to work with data() instead of attr()
  */
  function addFieldMappingRow( button ) {
-	var salesforceObject = $( '#salesforce_object' ).val();
-	var wordpressObject = $( '#wordpress_object' ).val();
+	var salesforceObject = $( '#sfwp-salesforce-object' ).val();
+	var wordpressObject = $( '#sfwp-salesforce-wordpress' ).val();
 	var newKey = new Date().getUTCMilliseconds();
-	var lastRow = $( 'table.fields tbody tr' ).last();
+	var lastRow = $( '.sfwp-a-fieldmap-values' ).last();
 	var oldKey = lastRow.attr( 'data-key' );
 	oldKey = new RegExp( oldKey, 'g' );
 	if ( '' !== wordpressObject && '' !== salesforceObject ) {
@@ -31,9 +31,9 @@
 function fieldmapFields( oldKey, newKey, lastRow ) {
 	var nextRow = '';
 	if ( jQuery.fn.select2 ) {
-		nextRow = lastRow.find( 'select' ).select2( 'destroy' ).end().clone( true ).removeClass( 'fieldmap-template' );
+		nextRow = lastRow.find( 'select' ).select2( 'destroy' ).end().clone( true ).removeClass( 'sfwp-a-fieldmap-values-template' );
 	} else {
-		nextRow = lastRow.find( 'select' ).end().clone( true ).removeClass( 'fieldmap-template' );
+		nextRow = lastRow.find( 'select' ).end().clone( true ).removeClass( 'sfwp-a-fieldmap-values-template' );
 	}
 	console.log('nextRow is ' + nextRow);
 	$( nextRow ).attr( 'data-key', newKey );
@@ -42,7 +42,7 @@ function fieldmapFields( oldKey, newKey, lastRow ) {
 			return h.replace( oldKey, newKey );
 		} );
 	} );
-	$( 'table.fields tbody' ).append( nextRow );
+	$( '.sfwp-m-fieldmap-fields' ).append( nextRow );
 	if ( jQuery.fn.select2 ) {
 		lastRow.find( 'select' ).select2();
 		nextRow.find( 'select' ).select2();
@@ -50,11 +50,11 @@ function fieldmapFields( oldKey, newKey, lastRow ) {
 }
 
 // load available options if the WordPress object changes
-$( document ).on( 'change', '.column-wordpress_field select', function() {
+$( document ).on( 'change', '.sfwp-fieldmap-wordpress-field select', function() {
 	disableAlreadyMappedFields( 'wordpress' );
 } );
 // load available options if the Salesforce object changes
-$( document ).on( 'change', '.column-salesforce_field select', function() {
+$( document ).on( 'change', '.sfwp-fieldmap-salesforce-field select', function() {
 	disableAlreadyMappedFields( 'salesforce' );
 } );
 
@@ -64,7 +64,7 @@ $( document ).on( 'change', '.column-salesforce_field select', function() {
  */
 function disableAlreadyMappedFields( system ) {
 	// load the select statements for Salesforce or WordPress.
-	var select = $( '.fieldmap-disable-mapped-fields .column-' + system + '_field select' );
+	var select = $( '.fieldmap-disable-mapped-fields .sfwp-fieldmap-' + system + '-field select' );
 	var allSelected = [];
 	// add each currently selected value to an array, then make it unique.
 	select.each( function( i, fieldChoice ) {
@@ -82,7 +82,7 @@ function disableAlreadyMappedFields( system ) {
 	} );
 	// reinitialize select2 if it's active.
 	if ( jQuery.fn.select2 ) {
-		$( '.column-' + system + '_field select' ).select2();
+		$( '.sfwp-fieldmap-' + system + '-field select' ).select2();
 	}
 }
 
