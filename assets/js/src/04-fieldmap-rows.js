@@ -35,7 +35,7 @@ function fieldmapFields( oldKey, newKey, lastRow ) {
 	} else {
 		nextRow = lastRow.find( 'select' ).end().clone( true ).removeClass( 'sfwp-a-fieldmap-values-template' );
 	}
-	console.log('nextRow is ' + nextRow);
+	console.log('nextRow key is ' + newKey);
 	$( nextRow ).attr( 'data-key', newKey );
 	$( nextRow ).each( function() {
 		$( this ).html( function( i, h ) {
@@ -44,8 +44,8 @@ function fieldmapFields( oldKey, newKey, lastRow ) {
 	} );
 	$( '.sfwp-m-fieldmap-fields' ).append( nextRow );
 	if ( jQuery.fn.select2 ) {
-		lastRow.find( 'select' ).select2();
-		nextRow.find( 'select' ).select2();
+		lastRow.find( 'select' ).select2({ width: '100%' });
+		nextRow.find( 'select' ).select2({ width: '100%' });
 	}
 }
 
@@ -82,7 +82,7 @@ function disableAlreadyMappedFields( system ) {
 	} );
 	// reinitialize select2 if it's active.
 	if ( jQuery.fn.select2 ) {
-		$( '.sfwp-fieldmap-' + system + '-field select' ).select2();
+		$( '.sfwp-fieldmap-' + system + '-field select' ).select2({ width: '100%' });
 	}
 }
 
@@ -120,6 +120,10 @@ $( document ).on( 'click', '.sfwp-a-fieldmap-field-action', function( event ) {
  */
 $( document ).on( 'click', '.sfwp-a-fieldmap-field-action-edit', function( event ) {
 	$( this ).closest( '.sfwp-a-fieldmap-values' ).toggleClass( 'sfwp-a-fieldmap-values-expanded' );
+	var expandedRow = $( '.sfwp-a-fieldmap-values-expanded ');
+	if ( jQuery.fn.select2 ) {
+		expandedRow.find( 'select' ).select2({ width: '100%' });
+	}
 } );
 
 /**

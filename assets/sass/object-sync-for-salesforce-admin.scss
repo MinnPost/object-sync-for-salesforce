@@ -375,6 +375,7 @@ $body-color: rgb(68, 68, 68);
 	.sfwp-m-fieldmap-fields,
 	.sfwp-m-fieldmap-group-fields,
 	.sfwp-m-fieldmap-subgroup-fields {
+		max-width: max-content;
 		//margin: 0 0 0 $main-space;
 
 		input[type="text"],
@@ -491,6 +492,10 @@ $body-color: rgb(68, 68, 68);
 		// heading titles
 		&.sfwp-a-fieldmap-headings {
 			font-weight: $bold-font-weight;
+		}
+
+		&.sfwp-a-fieldmap-values-template {
+			display: none;
 		}
 
 		// not headings
