@@ -167,11 +167,11 @@ class Object_Sync_Salesforce {
 		global $wpdb;
 
 		$this->version                = $version;
-		$this->user_installed_version = get_option( $this->option_prefix . 'db_version', $this->version );
 		$this->file                   = $file;
 		$this->wpdb                   = $wpdb;
 		$this->slug                   = 'object-sync-for-salesforce';
 		$this->option_prefix          = 'object_sync_for_salesforce_';
+		$this->user_installed_version = get_option( $this->option_prefix . 'db_version', $this->version );
 		$this->action_group_suffix    = '_check_records';
 
 		$this->schedulable_classes = array(
