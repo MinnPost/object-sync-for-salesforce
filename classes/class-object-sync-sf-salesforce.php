@@ -405,7 +405,12 @@ class Object_Sync_Sf_Salesforce {
 
 			// try to get the SOQL query if there was one.
 			parse_str( $url, $salesforce_url_parts );
-			$query_key = array_key_first( $salesforce_url_parts );
+
+			if ( function_exists( 'array_key_first' ) ) {
+				$query_key = array_key_first( $salesforce_url_parts );
+			} else {
+				$query_key = array_keys( $salesforce_url_parts )[0];
+			}
 
 			$is_soql_query = false;
 			$query_end     = 'query?q';
