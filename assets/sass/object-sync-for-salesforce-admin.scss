@@ -470,95 +470,129 @@ $body-color: rgb(68, 68, 68);
 		}
 	}
 
-	.sfwp-o-fields ul {
-		display: flex;
-		flex-wrap: wrap;
-		width: 100%;
-		justify-content: space-between;
-		border-bottom: 1px solid $border-color;
-		margin: 0;
+	.sfwp-o-fields {
+		flex-direction: column;
 
-		li {
+		header {
+			width: 100%;
+			margin-right: 0;
+			border-right: none;
+			padding-bottom: $horizontal-space;
+			border-bottom: 1px solid $border-color;
+
+			h2 {
+				font-size: initial; // default from wp
+			}
+		}
+
+		.sfwp-m-fieldmap-fields {
+			width: 100%;
+		}
+
+		ul {
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+			justify-content: space-between;
+			border-bottom: 1px solid $border-color;
 			margin: 0;
-			padding: 0;
 
-			h4 {
-				margin: 0;
-				padding: 0;
-				font-weight: $normal-font-weight;
-			}
-		}
-
-		// heading titles
-		&.sfwp-a-fieldmap-headings {
-			font-weight: $bold-font-weight;
-		}
-
-		&.sfwp-a-fieldmap-values-template {
-			display: none;
-		}
-
-		// not headings
-		&.sfwp-a-fieldmap-values li {
-			padding: $main-space;
-		}
-
-		li.sfwp-fieldmap-wordpress-object,
-		.sfwp-fieldmap-salesforce-object {
-			width: 25%;
-			overflow-x: scroll;
-		}
-
-		li.sfwp-fieldmap-direction {
-			width: 15%;
-			overflow-x: scroll;
-		}
-
-		li.sfwp-fieldmap-actions {
-			width: 25%;
-			overflow-x: scroll;
-
-			a {
-				display: inline-block;
-
-				&:first-child {
-					padding-right: $horizontal-space;
-					border-right: 1px solid $select-border-color;
-					margin-right: $horizontal-space;
-				}
-			}
-		}
-
-		li.sfwp-fieldmap-form-container {
-			display: none;
-			width: $group-width;
-			padding: 0;
-		}
-
-		&.sfwp-a-fieldmap-values-expanded {
-			background: $link-color;
-			color: $bg-color;
 
 			li {
+				margin: 0;
+				padding: $main-space 0;
 
-				&.sfwp-fieldmap-actions {
+				h3,
+				h4 {
+					margin: 0;
+					padding: 0;
+				}
 
-					a {
-						display: none;
+				h4 {
+					font-weight: $normal-font-weight;
+				}
+			}
+
+			// heading titles
+			&.sfwp-a-fieldmap-headings {
+				font-weight: $bold-font-weight;
+			}
+
+			&.sfwp-a-fieldmap-values-template {
+				display: none;
+			}
+
+			// headings and not headings
+			&.sfwp-a-fieldmap-headings li,
+			&.sfwp-a-fieldmap-values li {
+				padding: $main-space;
+			}
+
+			li.sfwp-fieldmap-wordpress-field,
+			li.sfwp-fieldmap-salesforce-field,
+			li.sfwp-fieldmap-wordpress-object,
+			li.sfwp-fieldmap-salesforce-object {
+				width: 30%;
+				overflow-x: scroll;
+			}
+
+			li.sfwp-fieldmap-direction {
+				width: 15%;
+				overflow-x: scroll;
+			}
+
+			li.sfwp-fieldmap-actions {
+				width: 25%;
+				overflow-x: scroll;
+
+				a {
+					display: inline-block;
+				}
+
+				&.row-actions {
+					left: unset;
+
+					span {
+
+						&:first-child {
+							padding-right: $horizontal-space;
+							border-right: 1px solid $select-border-color;
+							margin-right: $horizontal-space;
+						}
 					}
 				}
 			}
 
-			.sfwp-fieldmap-form-container {
-				display: flex;
-				flex-wrap: wrap;
+			li.sfwp-fieldmap-form-container {
+				display: none;
+				width: $group-width;
+				padding: 0;
 			}
 
-			#finish-field-mapping {
-				margin-right: $horizontal-space;
+			&.sfwp-a-fieldmap-values-expanded {
+				background: $link-color;
+				color: $bg-color;
+
+				li {
+
+					&.sfwp-fieldmap-actions {
+
+						a {
+							display: none;
+						}
+					}
+				}
+
+				.sfwp-fieldmap-form-container {
+					display: flex;
+					flex-wrap: wrap;
+				}
+
+				#finish-field-mapping {
+					margin-right: $horizontal-space;
+				}
 			}
 		}
-
 	}
 
 	.sfwp-o-fieldmap-form {

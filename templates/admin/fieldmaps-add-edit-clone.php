@@ -364,8 +364,13 @@
 									<li class="sfwp-fieldmap-direction">
 										<h4><?php echo esc_html( $direction_label ); ?></h4>
 									</li>
-									<li class="sfwp-fieldmap-actions">
-										<a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit"><?php echo esc_html__( 'Expand to Edit', 'object-sync-for-salesforce' ); ?></a><a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
+									<li class="sfwp-fieldmap-actions row-actions">
+										<span class="edit">
+											<a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-edit edit"><?php echo esc_html__( 'Expand to Edit', 'object-sync-for-salesforce' ); ?></a>
+										</span>
+										<span class="delete">
+											<a href="#" class="sfwp-a-fieldmap-field-action sfwp-a-fieldmap-field-action-delete delete"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
+										</span>
 									</li>
 									<li class="sfwp-fieldmap-form-container">
 										<article class="postbox sfwp-o-fieldmap-form sfwp-fieldmap-wordpress-field">
