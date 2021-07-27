@@ -777,7 +777,7 @@ msgstr ""
 msgid "Object: %1$s"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce-push.php:1225, classes/class-object-sync-sf-salesforce.php:593
+#: classes/class-object-sync-sf-salesforce-push.php:1225, classes/class-object-sync-sf-salesforce.php:598
 msgid "Message: %2$s"
 msgstr ""
 
@@ -799,60 +799,60 @@ msgid "Mapping object %1$s via function: "
 msgstr ""
 
 #. translators: placeholders are: 1) the log status, 2) a sentence about whether there is an SOQL query included.
-#: classes/class-object-sync-sf-salesforce.php:426
+#: classes/class-object-sync-sf-salesforce.php:431
 msgid "%1$s Salesforce API call: read the full log entry for request and response details. %2$s"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:428
+#: classes/class-object-sync-sf-salesforce.php:433
 msgid "There is not an SOQL query included in this request."
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:428
+#: classes/class-object-sync-sf-salesforce.php:433
 msgid "There is an SOQL query included in this request."
 msgstr ""
 
 #. translators: placeholder is: 1) the API call's HTTP method.
-#: classes/class-object-sync-sf-salesforce.php:435
+#: classes/class-object-sync-sf-salesforce.php:440
 msgid "HTTP method:"
 msgstr ""
 
 #. translators: placeholder is: 1) the API call's URL.
-#: classes/class-object-sync-sf-salesforce.php:441
+#: classes/class-object-sync-sf-salesforce.php:446
 msgid "URL of API call to Salesforce:"
 msgstr ""
 
 #. translators: placeholder is: 1) the SOQL query that was run.
-#: classes/class-object-sync-sf-salesforce.php:450
+#: classes/class-object-sync-sf-salesforce.php:455
 msgid "SOQL query that was sent to Salesforce"
 msgstr ""
 
 #. translators: placeholder is: 1) the API call's result.
-#: classes/class-object-sync-sf-salesforce.php:457
+#: classes/class-object-sync-sf-salesforce.php:462
 msgid "API result from Salesforce"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
-#: classes/class-object-sync-sf-salesforce.php:618, classes/class-object-sync-sf-salesforce.php:586, classes/class-object-sync-sf-salesforce.php:562
+#: classes/class-object-sync-sf-salesforce.php:623, classes/class-object-sync-sf-salesforce.php:591, classes/class-object-sync-sf-salesforce.php:567
 msgid "%1$s: %2$s: on Salesforce HTTP request"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:593
+#: classes/class-object-sync-sf-salesforce.php:598
 msgid "URL: %1$s"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:593
+#: classes/class-object-sync-sf-salesforce.php:598
 msgid "Code: %3$s"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:739
+#: classes/class-object-sync-sf-salesforce.php:744
 msgid "There is no refresh token."
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:763
+#: classes/class-object-sync-sf-salesforce.php:768
 msgid "Unable to get a Salesforce access token. Salesforce returned the following errorCode: "
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:796
+#: classes/class-object-sync-sf-salesforce.php:801
 msgid "Unable to access identity service."
 msgstr ""
 
