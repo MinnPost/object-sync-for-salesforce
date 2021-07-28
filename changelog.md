@@ -1,7 +1,7 @@
 Changelog
 =========
 
-* 2.0.1 (2021-07-27)
+* 2.0.1 (2021-07-28)
 	* Bug fix: for PHP versions below 7.3, we were calling a nonexistent function. This adds a fallback for those versions to preserve support for them. Thanks to GitHub user @nattyg93 for the report.
 
 * 2.0.0 (2021-07-20)
