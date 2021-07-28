@@ -2547,7 +2547,7 @@ class Object_Sync_Sf_Admin {
 		}
 		echo sprintf(
 			'<p>You have been logged out. You can use the <a href="%1$s">%2$s</a> tab to log in again.</p>',
-			esc_url( get_admin_url( null, 'options-general.php?page' . $this->admin_settings_url_param . '&tab=authorize' ) ),
+			esc_url( get_admin_url( null, 'options-general.php?page=' . $this->admin_settings_url_param . '&tab=authorize' ) ),
 			esc_html__( 'Authorize', 'object-sync-for-salesforce' )
 		);
 	}
