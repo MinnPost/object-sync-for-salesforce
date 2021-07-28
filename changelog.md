@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 2.0.1 (2021-07-27)
+	* Bug fix: for PHP versions below 7.3, we were calling a nonexistent function. This adds a fallback for those versions to preserve support for them. Thanks to GitHub user @nattyg93 for the report.
+
 * 2.0.0 (2021-07-20)
 	* Feature: update the installation of the Action Scheduler library to version 3.2. This is a major upgrade for that library, and involves creating new database tables and runs a migration process, which can take some time. Read more about that at https://actionscheduler.org/version3-0/. This is not necessarily a backward-compatible change, although hopefully it will run smoothly for all users. You may want to make a full site backup before upgrading, and if you have access to a staging environment you may want to run it there before you run it on your production website.
 	* Feature: there is a new checkbox field on the plugin Settings screen: "Prevent duplicate field mapping?" that, when checked, prevents WordPress or Salesforce fields that have already been mapped from being mapped again. We hope this will be helpful on fieldmaps that map a large number of fields. Thanks to GitHub user @TornMarketing for this request.

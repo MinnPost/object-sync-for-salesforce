@@ -5,7 +5,7 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'a89d1019ec71221988a8651a82cc100ce68bbc16',
+        'reference' => '33d3d8879747b2fca33860bee534c0b8b5d73901',
         'name' => 'minnpost/object-sync-for-salesforce',
         'dev' => false,
     ),
@@ -27,7 +27,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'a89d1019ec71221988a8651a82cc100ce68bbc16',
+            'reference' => '33d3d8879747b2fca33860bee534c0b8b5d73901',
             'dev_requirement' => false,
         ),
         'pippinsplugins/wp-logging' => array(
