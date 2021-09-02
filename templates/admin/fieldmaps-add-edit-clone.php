@@ -387,8 +387,8 @@
 									$disable_mapped_fields = get_option( $this->option_prefix . 'disable_mapped_fields', false );
 									$disable_mapped_fields = filter_var( $disable_mapped_fields, FILTER_VALIDATE_BOOLEAN );
 									if ( true === $disable_mapped_fields ) {
-										$key      = null;
-										$needle   = $wordpress_field['key']; // the current WP field.
+										$key    = null;
+										$needle = $wordpress_field['key']; // the current WP field.
 										// check the already mapped fields for the current field.
 										array_walk(
 											$fieldmap_fields,
@@ -431,8 +431,8 @@
 									$disable_mapped_fields = get_option( $this->option_prefix . 'disable_mapped_fields', false );
 									$disable_mapped_fields = filter_var( $disable_mapped_fields, FILTER_VALIDATE_BOOLEAN );
 									if ( true === $disable_mapped_fields ) {
-										$key      = null;
-										$needle   = $salesforce_field['name']; // the current Salesforce field.
+										$key    = null;
+										$needle = $salesforce_field['name']; // the current Salesforce field.
 										// check the already mapped fields for the current field.
 										array_walk(
 											$fieldmap_fields,
