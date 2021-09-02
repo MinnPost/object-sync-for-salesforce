@@ -383,21 +383,25 @@
 							if ( isset( $wordpress_object ) ) {
 								$wordpress_fields = $this->get_wordpress_object_fields( $wordpress_object );
 								foreach ( $wordpress_fields as $wordpress_field ) {
-									$disabled = '';
-									$key      = null;
-									$needle   = $wordpress_field['key']; // the current WP field.
-									// check the already mapped fields for the current field.
-									array_walk(
-										$fieldmap_fields,
-										function( $v, $k ) use ( &$key, $needle ) {
-											if ( in_array( $needle, $v['wordpress_field'], true ) ) {
-												$key = $k;
+									$disabled              = '';
+									$disable_mapped_fields = get_option( $this->option_prefix . 'disable_mapped_fields', false );
+									$disable_mapped_fields = filter_var( $disable_mapped_fields, FILTER_VALIDATE_BOOLEAN );
+									if ( true === $disable_mapped_fields ) {
+										$key      = null;
+										$needle   = $wordpress_field['key']; // the current WP field.
+										// check the already mapped fields for the current field.
+										array_walk(
+											$fieldmap_fields,
+											function( $v, $k ) use ( &$key, $needle ) {
+												if ( in_array( $needle, $v['wordpress_field'], true ) ) {
+													$key = $k;
+												}
 											}
+										);
+										// disable fields that are already mapped.
+										if ( null !== $key ) {
+											$disabled = ' disabled';
 										}
-									);
-									// disable fields that are already mapped.
-									if ( null !== $key ) {
-										$disabled = ' disabled';
 									}
 									echo sprintf(
 										'<option value="%1$s"%3$s>%2$s</option>',
@@ -423,21 +427,25 @@
 								$display_value     = get_option( $this->option_prefix . 'salesforce_field_display_value', 'field_label' );
 								foreach ( $salesforce_fields as $salesforce_field ) {
 
-									$disabled = '';
-									$key      = null;
-									$needle   = $salesforce_field['name']; // the current Salesforce field.
-									// check the already mapped fields for the current field.
-									array_walk(
-										$fieldmap_fields,
-										function( $v, $k ) use ( &$key, $needle ) {
-											if ( in_array( $needle, $v['salesforce_field'], true ) ) {
-												$key = $k;
+									$disabled              = '';
+									$disable_mapped_fields = get_option( $this->option_prefix . 'disable_mapped_fields', false );
+									$disable_mapped_fields = filter_var( $disable_mapped_fields, FILTER_VALIDATE_BOOLEAN );
+									if ( true === $disable_mapped_fields ) {
+										$key      = null;
+										$needle   = $salesforce_field['name']; // the current Salesforce field.
+										// check the already mapped fields for the current field.
+										array_walk(
+											$fieldmap_fields,
+											function( $v, $k ) use ( &$key, $needle ) {
+												if ( in_array( $needle, $v['salesforce_field'], true ) ) {
+													$key = $k;
+												}
 											}
+										);
+										// disable fields that are already mapped.
+										if ( null !== $key ) {
+											$disabled = ' disabled';
 										}
-									);
-									// disable fields that are already mapped.
-									if ( null !== $key ) {
-										$disabled = ' disabled';
 									}
 
 									if ( 'api_name' === $display_value ) {
