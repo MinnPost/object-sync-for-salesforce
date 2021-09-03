@@ -1948,7 +1948,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		try {
 
 			$op     = 'Update';
-			$result = $this->wordpress->object_update( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'], $params );
+			$result = $this->wordpress->object_update( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'], $params, $mapping_object );
 
 			$mapping_object['last_sync_status']  = $this->mappings->status_success;
 			$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
