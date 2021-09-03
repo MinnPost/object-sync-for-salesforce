@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 2.0.2 (2021-09-03)
+	* Bug fix: Duplicate mapping of fields was prevented when it shouldn't be. Thanks to GitHub user @timnolte for the report.
+	* Maintenance: Improve the log message when an update to a WordPress record fails.
+
 * 2.0.1 (2021-07-28)
 	* Bug fix: for PHP versions below 7.3, we were calling a nonexistent function. This adds a fallback for those versions to preserve support for them. Thanks to GitHub user @nattyg93 for the report.
 
