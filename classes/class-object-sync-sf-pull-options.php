@@ -138,7 +138,7 @@ class Object_Sync_Sf_Pull_Options {
 		 */
 
 		// if the new option does not exist, try to load the old one and save it as a new value.
-		if ( false === $value ) {
+		if ( $default === $value ) {
 			error_log( 'load the legacy value' );
 			$legacy_value = $this->legacy_get( $key, $operation, $object_type, $fieldmap_id );
 			if ( false !== $legacy_value ) {
