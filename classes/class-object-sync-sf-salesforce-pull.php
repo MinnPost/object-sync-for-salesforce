@@ -99,6 +99,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 	public $salesforce;
 
 	/**
+	 * The name of the ActionScheduler queue
+	 *
+	 * @var string
+	 */
+	public $schedule_name;
+
+	/**
 	 * Whether to batch SOQL queries
 	 *
 	 * @var bool
@@ -132,13 +139,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 * @var string
 	 */
 	public $debug;
-
-	/**
-	 * The name of the ActionScheduler queue
-	 *
-	 * @var string
-	 */
-	public $schedule_name;
 
 	/**
 	 * Constructor for pull class
