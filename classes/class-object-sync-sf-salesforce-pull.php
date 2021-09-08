@@ -581,7 +581,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				} // end if
 			} elseif ( ! isset( $response['errorCode'] ) && 0 === count( $response['records'] ) && false === $this->batch_soql_queries ) {
 				// only update/clear these option values if we are currently still processing a query.
-				$current_query = $this->pull_options->get( 'current_query', $type, '', '' );
+				$current_query = $this->pull_options->get( 'current_query', $type, $salesforce_mapping['id'], '' );
 				if ( '' !== $current_query ) {
 					$this->clear_current_type_query( $type, $salesforce_mapping['id'] );
 				}
@@ -599,7 +599,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$log_body = '<p>' . esc_html__( 'A field may have been deleted from Salesforce, or it has otherwise become invalid. You may need to check and resave your fieldmap.', 'object-sync-for-salesforce' ) . '</p>';
 
 				// if it's an invalid field, try to clear the cached query so it can try again next time.
-				$current_query = $this->pull_options->get( 'current_query', $type, '', '' );
+				$current_query = $this->pull_options->get( 'current_query', $type, $salesforce_mapping['id'], '' );
 				if ( '' !== $current_query ) {
 					$this->clear_current_type_query( $type, $salesforce_mapping['id'] );
 					$log_title .= esc_html__( ' The stored query has been cleared.', 'object-sync-for-salesforce' );
@@ -765,7 +765,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	private function get_pull_query( $type, $salesforce_mapping = array() ) {
 		// we need to determine what to do with saved queries. this is what we currently do but it doesn't work.
 		// check if we have a stored next query to run for this type. if so, unserialize it so we have an object.
-		$pull_query_running = $this->pull_options->get( 'current_query', $type, '', '' );
+		$pull_query_running = $this->pull_options->get( 'current_query', $type, $salesforce_mapping['id'], '' );
 		if ( '' !== $pull_query_running ) {
 			$saved_query = maybe_unserialize( $pull_query_running );
 		}
@@ -2276,13 +2276,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 * @param string $type e.g. "Contact", "Account", etc.
 	 * @param int    $fieldmap_id is the fieldmap ID that goes with this query.
 	 */
-	public function clear_current_type_query( $type, $fieldmap_id ) {
+	public function clear_current_type_query( $type, $fieldmap_id = '' ) {
 		// update the last sync timestamp for this content type.
 		$this->increment_current_type_datetime( $type, $fieldmap_id );
 		// delete the option value for the currently pulling query for this type.
-		delete_option( $this->option_prefix . 'currently_pulling_query_' . $type );
+		$this->pull_options->delete( 'current_query', $type, $fieldmap_id );
 		// delete the option value for the last pull record id.
-		delete_option( $this->option_prefix . 'last_pull_id' );
+		$this->pull_options->delete( 'last_id', '', '' );
 	}
 
 	/**
