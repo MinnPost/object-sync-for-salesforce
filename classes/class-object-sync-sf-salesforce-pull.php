@@ -237,12 +237,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 * @return mixed $value the value of the item. False if it's empty.
 	 */
 	public function deprecated_pull_option_names( $key, $params ) {
-		error_log( 'key is ' . $key );
 		if ( $this->option_prefix . 'pull_last_id' === $key ) {
 			$key = $this->option_prefix . 'last_pull_id';
 		}
-		if ( $this->option_prefix . 'pull_current_query_' . $object_type === $key ) {
-			$key = $this->option_prefix . 'currently_pulling_query_' . $params['object_type'];
+		if ( isset( $params['object_type'] ) ) {
+			if ( $this->option_prefix . 'pull_current_query_' . $params['object_type'] === $key ) {
+				$key = $this->option_prefix . 'currently_pulling_query_' . $params['object_type'];
+			}
 		}
 		return $key;
 	}
@@ -390,7 +391,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$version_path = wp_parse_url( $sfapi->get_api_endpoint(), PHP_URL_PATH );
 
 			$sf_last_sync = $this->pull_options->get( 'last_sync', $type, '', null );
-			error_log( 'last sync is ' . $sf_last_sync );
 			$last_sync    = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
 
 			if ( ! isset( $response['errorCode'] ) && 0 < count( $response['records'] ) ) {
