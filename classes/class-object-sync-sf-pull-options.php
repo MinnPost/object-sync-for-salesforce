@@ -278,7 +278,6 @@ class Object_Sync_Sf_Pull_Options {
 		if ( false !== $array_key ) {
 			unset( $keys[ $array_key ] );
 		}
-		error_log( 'now the keys: ' . print_r( $keys, true ) );
 		$result = update_option( $this->option_prefix . 'upgradeable_keys', $keys );
 		if ( true === $result ) {
 			$this->upgradeable_keys = $keys;
