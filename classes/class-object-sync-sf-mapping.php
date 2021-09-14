@@ -1102,6 +1102,61 @@ class Object_Sync_Sf_Mapping {
 			return array();
 		}
 
+		// if the parameters array is empty at this point, we should create a log entry to that effect.
+		// I think it should be a debug message, unless we learn from users that it should be raised to an error.
+		if ( empty( $params ) ) {
+			$status = 'debug';
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+			}
+
+			$title = sprintf(
+				// translators: %1$s is the log status.
+				esc_html__( '%1$s Mapping: according to the current plugin settings, there are no parameters in this object map that can be synced.', 'object-sync-for-salesforce' ),
+				ucfirst( esc_attr( $status ) )
+			);
+
+			$body = '';
+
+			// whether it's a new mapping object or not.
+			if ( false === $is_new ) {
+				// this one is not new.
+				$body .= sprintf(
+					// translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the WordPress object, 4) the ID of the Salesforce object it was trying to map.
+					esc_html__( 'There is an object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of %3$s and the Salesforce object with ID of %4$s', 'object-sync-for-salesforce' ),
+					absint( $mapping['id'] ),
+					esc_attr( $mapping['wordpress_object'] ),
+					esc_attr( $mapping['wordpress_id'] ),
+					esc_attr( $mapping['salesforce_id'] )
+				);
+			} else {
+				// this one is new.
+				$body .= sprintf(
+					// translators: placeholders are: 1) the name of the WordPress object, 2) the ID of the WordPress object, 3) the ID of the Salesforce object it was trying to map.
+					esc_html__( 'The plugin was trying to create a new object map between the WordPress %1$s with ID of %2$s and the Salesforce object with ID of %3$s', 'object-sync-for-salesforce' ),
+					esc_attr( $mapping['wordpress_object'] ),
+					esc_attr( $mapping['wordpress_id'] ),
+					esc_attr( $mapping['salesforce_id'] )
+				);
+			}
+
+			$body = sprintf(
+				// translators: placeholders are 1) the object's data that was attempted.
+				'<p>' . esc_html__( 'The object data that was attempted: %1$s', 'object-sync-for-salesforce' ) . '</p>',
+				print_r( $object, true ) // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+			);
+
+			$logging->setup(
+				$title,
+				$body,
+				$trigger,
+				0,
+				$status
+			);
+		}
+
 		return $params;
 
 	}
