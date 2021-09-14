@@ -215,7 +215,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		if ( isset( $trigger ) ) {
 			$results = $this->salesforce_push_object_crud( $object_type, $object, $trigger, true );
 			foreach ( $results as $result ) {
-				if ( 'success' === $result['status'] ) {
+				if ( isset( $result['status'] ) && 'success' === $result['status'] ) {
 					if ( 'POST' === $http_method || 'PUT' === $http_method ) {
 						$code = '201';
 					} elseif ( 'DELETE' === $http_method ) {
@@ -993,7 +993,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				// this one is not new.
 				$body .= sprintf(
 					// translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the WordPress object, 4) the ID of the Salesforce object it was trying to map.
-					esc_html__( 'There is an existing object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of %3$s and the Salesforce object with ID of %4$s.', 'object-sync-for-salesforce' ),
+					'<p>' . esc_html__( 'There is an existing object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of %3$s and the Salesforce object with ID of %4$s.', 'object-sync-for-salesforce' ) . '</p>',
 					absint( $mapping_object['id'] ),
 					esc_attr( $mapping_object['wordpress_object'] ),
 					esc_attr( $mapping_object['wordpress_id'] ),
@@ -1003,7 +1003,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				// this one is new.
 				$body .= sprintf(
 					// translators: placeholders are: 1) the name of the WordPress object, 2) the ID of the WordPress object, 3) the Salesforce object type.
-					esc_html__( 'The plugin was trying to create a new object map between the WordPress %1$s with ID of %2$s and the Salesforce %3$s object type.', 'object-sync-for-salesforce' ),
+					'<p>' . esc_html__( 'The plugin was trying to push the WordPress %1$s with ID of %2$s to the Salesforce %3$s object type.', 'object-sync-for-salesforce' ) . '</p>',
 					esc_attr( $mapping['wordpress_object'] ),
 					esc_attr( $object[ $wordpress_id_field_name ] ),
 					esc_attr( $mapping['salesforce_object'] )
@@ -1012,7 +1012,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 			$body .= sprintf(
 				// translators: placeholders are 1) the object's data that was attempted.
-				'<p>' . esc_html__( 'The object data that was attempted: %1$s', 'object-sync-for-salesforce' ) . '</p>',
+				'<p>' . esc_html__( 'The WordPress object data that was attempted: %1$s', 'object-sync-for-salesforce' ) . '</p>',
 				print_r( $object, true ) // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 			);
 
@@ -1025,7 +1025,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			);
 
 			return;
-		}
+		} // end if params are empty.
 
 		// if there is a prematch WordPress field - ie email - on the fieldmap object.
 		if ( isset( $params['prematch'] ) && is_array( $params['prematch'] ) ) {
