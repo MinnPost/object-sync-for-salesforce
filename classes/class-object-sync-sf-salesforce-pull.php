@@ -390,7 +390,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$response     = $results['data'];
 			$version_path = wp_parse_url( $sfapi->get_api_endpoint(), PHP_URL_PATH );
 
-			$sf_last_sync = $this->pull_options->get( 'last_sync', $type, '', null );
+			$sf_last_sync = $this->pull_options->get( 'last_sync', $type, $salesforce_mapping['id'], null );
 			$last_sync    = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
 
 			if ( ! isset( $response['errorCode'] ) && 0 < count( $response['records'] ) ) {
@@ -843,7 +843,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		}
 
 		// Get the value for the pull trigger field. Often this will LastModifiedDate. It needs to change when the query gets regenerated after the max offset has been reached.
-		$pull_trigger_field_value = $this->get_pull_date_value( $type, $soql );
+		$pull_trigger_field_value = $this->get_pull_date_value( $type, $soql, $salesforce_mapping['id'] );
 
 		// we check to see if the stored date is the same as the new one. if it is not, we will want to reset the offset.
 		$reset_offset = false;
@@ -919,15 +919,16 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 *
 	 * @param string $type e.g. "Contact", "Account", etc.
 	 * @param object $soql the SOQL object.
+	 * @param int    $fieldmap_id is the fieldmap ID that goes with this query.
 	 * @return timestamp $pull_trigger_field_value
 	 */
-	private function get_pull_date_value( $type, $soql ) {
+	private function get_pull_date_value( $type, $soql, $fieldmap_id = '' ) {
 		// If no lastupdate, get all records, else get records since last pull.
 		// this should be what keeps it from getting all the records, whether or not they've ever been updated
 		// we also use the option for when the plugin was installed, and don't go back further than that by default.
 
 		$sf_activate_time = get_option( $this->option_prefix . 'activate_time', '' );
-		$sf_last_sync     = $this->pull_options->get( 'last_sync', $type, '', null );
+		$sf_last_sync     = $this->pull_options->get( 'last_sync', $type, $fieldmap_id, null );
 		if ( $sf_last_sync ) {
 			$pull_trigger_field_value = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
 		} else {
