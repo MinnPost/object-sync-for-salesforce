@@ -126,7 +126,11 @@ class Object_Sync_Sf_Pull_Options {
 		$result = update_option( $key, $value, $autoload );
 
 		if ( true === $result ) {
-			$this->legacy_option_upgrade( $operation, $object_type, $fieldmap_id );
+			$legacy_key = $this->generate_option_key( $params, true );
+			// if the legacy key exists and the keys are not the same, we might need to upgrade.
+			if ( get_option( $legacy_key ) && $key !== $legacy_key ) {
+				$this->legacy_option_upgrade( $operation, $object_type, $fieldmap_id );
+			}
 		}
 		return $result;
 	}
@@ -188,9 +192,13 @@ class Object_Sync_Sf_Pull_Options {
 		 * object_sync_for_salesforce_pull_delete_last_Contact_1
 		 */
 
-		// if the new option value does not exist, try to upgrade the old one.
-		if ( $default === $value ) {
-			$this->legacy_option_upgrade( $operation, $object_type, $fieldmap_id, $value );
+		// if the new option value does exist but it has a default value, try to upgrade the old one.
+		if ( get_option( $key ) && $default === $value ) {
+			$legacy_key = $this->generate_option_key( $params, true );
+			// if the keys are not the same, we might need to upgrade.
+			if ( $key !== $legacy_key ) {
+				$this->legacy_option_upgrade( $operation, $object_type, $fieldmap_id, $value );
+			}
 		}
 		return $value;
 	}
@@ -259,6 +267,7 @@ class Object_Sync_Sf_Pull_Options {
 	private function add_upgradeable_key( $key ) {
 		$keys   = $this->get_upgradeable_keys();
 		$keys[] = $key;
+		$keys   = array_unique( $keys );
 		$result = update_option( $this->option_prefix . 'upgradeable_keys', $keys );
 		if ( true === $result ) {
 			$this->upgradeable_keys = $keys;
