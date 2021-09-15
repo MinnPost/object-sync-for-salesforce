@@ -1427,65 +1427,67 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					// if the parameters array is empty at this point, we should create a log entry to that effect.
 					// I think it should be a debug message, unless we learn from users that it should be raised to an error.
-					$status = 'debug';
-					if ( isset( $this->logging ) ) {
-						$logging = $this->logging;
-					} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-						$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-					}
+					if ( true === $this->debug ) {
+						$status = 'debug';
+						if ( isset( $this->logging ) ) {
+							$logging = $this->logging;
+						} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+							$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+						}
 
-					$title = sprintf(
-						// translators: %1$s is the log status.
-						esc_html__( '%1$s Mapping: according to the current plugin settings, there are no parameters in the current dataset that can be pulled from Salesforce.', 'object-sync-for-salesforce' ),
-						ucfirst( esc_attr( $status ) )
-					);
+						$title = sprintf(
+							// translators: %1$s is the log status.
+							esc_html__( '%1$s Mapping: according to the current plugin settings, there are no parameters in the current dataset that can be pulled from Salesforce.', 'object-sync-for-salesforce' ),
+							ucfirst( esc_attr( $status ) )
+						);
 
-					$body = '';
+						$body = '';
 
-					$body .= sprintf(
-						// translators: placeholders are: 1) the fieldmap row ID, 2) the name of the WordPress object, 3) the name of the Salesforce object.
-						'<p>' . esc_html__( 'There is a fieldmap with ID of %1$s and it maps the WordPress %2$s object to the Salesforce %3$s object.', 'object-sync-for-salesforce' ) . '</p>',
-						absint( $salesforce_mapping['id'] ),
-						esc_attr( $salesforce_mapping['wordpress_object'] ),
-						esc_attr( $salesforce_mapping['salesforce_object'] )
-					);
+						$body .= sprintf(
+							// translators: placeholders are: 1) the fieldmap row ID, 2) the name of the WordPress object, 3) the name of the Salesforce object.
+							'<p>' . esc_html__( 'There is a fieldmap with ID of %1$s and it maps the WordPress %2$s object to the Salesforce %3$s object.', 'object-sync-for-salesforce' ) . '</p>',
+							absint( $salesforce_mapping['id'] ),
+							esc_attr( $salesforce_mapping['wordpress_object'] ),
+							esc_attr( $salesforce_mapping['salesforce_object'] )
+						);
 
-					// whether it's a new mapping object or not.
-					if ( false === $is_new ) {
-						// this one is not new.
-						foreach ( $mapping_objects as $mapping_object ) {
+						// whether it's a new mapping object or not.
+						if ( false === $is_new ) {
+							// this one is not new.
+							foreach ( $mapping_objects as $mapping_object ) {
+								$body .= sprintf(
+									// translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the WordPress object, 4) the ID of the Salesforce object it was trying to map.
+									'<p>' . esc_html__( 'There is an existing object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of %3$s and the Salesforce object with ID of %4$s.', 'object-sync-for-salesforce' ) . '</p>',
+									absint( $mapping_object['id'] ),
+									esc_attr( $mapping_object['wordpress_object'] ),
+									esc_attr( $mapping_object['wordpress_id'] ),
+									esc_attr( $mapping_object['salesforce_id'] )
+								);
+							}
+						} else {
+							// this one is new.
 							$body .= sprintf(
-								// translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the WordPress object, 4) the ID of the Salesforce object it was trying to map.
-								'<p>' . esc_html__( 'There is an existing object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of %3$s and the Salesforce object with ID of %4$s.', 'object-sync-for-salesforce' ) . '</p>',
-								absint( $mapping_object['id'] ),
-								esc_attr( $mapping_object['wordpress_object'] ),
-								esc_attr( $mapping_object['wordpress_id'] ),
-								esc_attr( $mapping_object['salesforce_id'] )
+								// translators: placeholders are: 1) the ID of the Salesforce object, 2) the WordPress object type.
+								'<p>' . esc_html__( 'The plugin was trying to pull the Salesforce object with ID of %1$s to the WordPress %2$s object type.', 'object-sync-for-salesforce' ) . '</p>',
+								esc_attr( $object['Id'] ),
+								esc_attr( $salesforce_mapping['wordpress_object'] )
 							);
 						}
-					} else {
-						// this one is new.
+
 						$body .= sprintf(
-							// translators: placeholders are: 1) the ID of the Salesforce object, 2) the WordPress object type.
-							'<p>' . esc_html__( 'The plugin was trying to pull the Salesforce object with ID of %1$s to the WordPress %2$s object type.', 'object-sync-for-salesforce' ) . '</p>',
-							esc_attr( $object['Id'] ),
-							esc_attr( $salesforce_mapping['wordpress_object'] )
+							// translators: placeholders are 1) the object's data that was attempted.
+							'<p>' . esc_html__( 'The Salesforce object data that was attempted: %1$s', 'object-sync-for-salesforce' ) . '</p>',
+							print_r( $object, true ) // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 						);
-					}
 
-					$body .= sprintf(
-						// translators: placeholders are 1) the object's data that was attempted.
-						'<p>' . esc_html__( 'The Salesforce object data that was attempted: %1$s', 'object-sync-for-salesforce' ) . '</p>',
-						print_r( $object, true ) // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
-					);
-
-					$logging->setup(
-						$title,
-						$body,
-						$sf_sync_trigger,
-						0,
-						$status
-					);
+						$logging->setup(
+							$title,
+							$body,
+							$sf_sync_trigger,
+							0,
+							$status
+						);
+					} // end debug mode check.
 
 					continue;
 				} // end if params are empty.
