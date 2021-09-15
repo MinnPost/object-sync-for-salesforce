@@ -1488,7 +1488,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					);
 
 					continue;
-				}
+				} // end if params are empty.
 			} elseif ( $sf_sync_trigger === $this->mappings->sync_sf_delete ) {
 				// this is a deletion. don't deal with parameters.
 				$is_new = false;
