@@ -1230,7 +1230,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$code = '201';
 		foreach ( $results as $result ) {
-			if ( 'success' !== $result['status'] ) {
+			if ( ! isset( $result['status'] ) || 'success' !== $result['status'] ) {
 				$code = '403';
 			}
 		}
@@ -1438,7 +1438,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$structure               = $this->wordpress->get_wordpress_table_structure( $salesforce_mapping['wordpress_object'] );
 			$wordpress_id_field_name = $structure['id_field'];
 
-			// don't do parameters if we are deleting.
+			// only deal with parameters if we are not deleting.
 			if ( ( true === $is_new && $sf_sync_trigger === $this->mappings->sync_sf_create ) || $sf_sync_trigger === $this->mappings->sync_sf_update ) { // trigger is a bit operator
 				// map the Salesforce values to WordPress fields.
 				$params = $this->mappings->map_params( $salesforce_mapping, $object, $sf_sync_trigger, false, $is_new, $wordpress_id_field_name );
@@ -1469,9 +1469,75 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				// if we don't get any params, there are no fields that should be sent to WordPress.
 				if ( empty( $params ) ) {
-					return;
-				}
+
+					// if the parameters array is empty at this point, we should create a log entry to that effect.
+					// I think it should be a debug message, unless we learn from users that it should be raised to an error.
+					if ( true === $this->debug ) {
+						$status = 'debug';
+						if ( isset( $this->logging ) ) {
+							$logging = $this->logging;
+						} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+							$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+						}
+
+						$title = sprintf(
+							// translators: %1$s is the log status.
+							esc_html__( '%1$s Mapping: according to the current plugin settings, there are no parameters in the current dataset that can be pulled from Salesforce.', 'object-sync-for-salesforce' ),
+							ucfirst( esc_attr( $status ) )
+						);
+
+						$body = '';
+
+						$body .= sprintf(
+							// translators: placeholders are: 1) the fieldmap row ID, 2) the name of the WordPress object, 3) the name of the Salesforce object.
+							'<p>' . esc_html__( 'There is a fieldmap with ID of %1$s and it maps the WordPress %2$s object to the Salesforce %3$s object.', 'object-sync-for-salesforce' ) . '</p>',
+							absint( $salesforce_mapping['id'] ),
+							esc_attr( $salesforce_mapping['wordpress_object'] ),
+							esc_attr( $salesforce_mapping['salesforce_object'] )
+						);
+
+						// whether it's a new mapping object or not.
+						if ( false === $is_new ) {
+							// this one is not new.
+							foreach ( $mapping_objects as $mapping_object ) {
+								$body .= sprintf(
+									// translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the WordPress object, 4) the ID of the Salesforce object it was trying to map.
+									'<p>' . esc_html__( 'There is an existing object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of %3$s and the Salesforce object with ID of %4$s.', 'object-sync-for-salesforce' ) . '</p>',
+									absint( $mapping_object['id'] ),
+									esc_attr( $mapping_object['wordpress_object'] ),
+									esc_attr( $mapping_object['wordpress_id'] ),
+									esc_attr( $mapping_object['salesforce_id'] )
+								);
+							}
+						} else {
+							// this one is new.
+							$body .= sprintf(
+								// translators: placeholders are: 1) the ID of the Salesforce object, 2) the WordPress object type.
+								'<p>' . esc_html__( 'The plugin was trying to pull the Salesforce object with ID of %1$s to the WordPress %2$s object type.', 'object-sync-for-salesforce' ) . '</p>',
+								esc_attr( $object['Id'] ),
+								esc_attr( $salesforce_mapping['wordpress_object'] )
+							);
+						}
+
+						$body .= sprintf(
+							// translators: placeholders are 1) the object's data that was attempted.
+							'<p>' . esc_html__( 'The Salesforce object data that was attempted: %1$s', 'object-sync-for-salesforce' ) . '</p>',
+							print_r( $object, true ) // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+						);
+
+						$logging->setup(
+							$title,
+							$body,
+							$sf_sync_trigger,
+							0,
+							$status
+						);
+					} // end debug mode check.
+
+					continue;
+				} // end if params are empty.
 			} elseif ( $sf_sync_trigger === $this->mappings->sync_sf_delete ) {
+				// this is a deletion. don't deal with parameters.
 				$is_new = false;
 			} // end checking for create/update/delete.
 

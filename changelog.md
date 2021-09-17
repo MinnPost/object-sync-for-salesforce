@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 2.0.3 (2021-09-10)
+	* Bug fix: Fix missing Record Type when pulled from Salesforce. Thanks to GitHub user @timnolte for the report.
+
 * 2.0.2 (2021-09-03)
 	* Bug fix: Duplicate mapping of fields was prevented when it shouldn't be. Thanks to GitHub user @timnolte for the report.
 	* Maintenance: Improve the log message when an update to a WordPress record fails.
