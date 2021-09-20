@@ -22,6 +22,8 @@ Once the plugin is installed, you will have an `object-sync-for-salesforce` fold
 
 By default, the plugin's settings URL is `https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin`.
 
+If you intend to contribute code for this plugin, or if you have installed it from GitHub, read our [contributing guidelines](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md) and follow these [additional developer guidelines for setup](./setup-for-developers.md).
+
 ## Salesforce
 
 ### Prerequisites
