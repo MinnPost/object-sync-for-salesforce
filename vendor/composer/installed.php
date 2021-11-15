@@ -5,7 +5,7 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '8ca74b0f5ea50f01c6fbfdc44d339434270221c7',
+        'reference' => 'cea16908d70d8998babd35d55ac27f2372efea4b',
         'name' => 'minnpost/object-sync-for-salesforce',
         'dev' => false,
     ),
@@ -18,7 +18,7 @@
             'aliases' => array(
                 0 => '1.0.x-dev',
             ),
-            'reference' => 'a131708a0fbc488da039668115f9a0bd7f779e55',
+            'reference' => 'a058b6bc3cedd74ada2595aac01df024bd8e3942',
             'dev_requirement' => false,
         ),
         'minnpost/object-sync-for-salesforce' => array(
@@ -27,7 +27,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '8ca74b0f5ea50f01c6fbfdc44d339434270221c7',
+            'reference' => 'cea16908d70d8998babd35d55ac27f2372efea4b',
             'dev_requirement' => false,
         ),
         'pippinsplugins/wp-logging' => array(
@@ -42,12 +42,12 @@
             'dev_requirement' => false,
         ),
         'woocommerce/action-scheduler' => array(
-            'pretty_version' => '3.3.0',
-            'version' => '3.3.0.0',
+            'pretty_version' => '3.4.0',
+            'version' => '3.4.0.0',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../woocommerce/action-scheduler',
             'aliases' => array(),
-            'reference' => '5588a831cd2453ecf7d4803f3a81063e13cde93d',
+            'reference' => '3218a33ff14b968f8cb05de9656c2efa1eeb1330',
             'dev_requirement' => false,
         ),
     ),
