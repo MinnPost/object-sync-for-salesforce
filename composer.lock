@@ -4,21 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "302358cf3afd6aa6b379ceed769c163c",
+    "content-hash": "f83810f6091ecc953a2b9c83d42facc8",
     "packages": [
         {
-            "name": "developerforce/force.com-toolkit-for-php",
+            "name": "messageagency/force.com-toolkit-for-php",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/developerforce/Force.com-Toolkit-for-PHP.git",
-                "reference": "a131708a0fbc488da039668115f9a0bd7f779e55"
+                "url": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP.git",
+                "reference": "5ce6687d38c312c4af34ee30ec90535a02c49947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/developerforce/Force.com-Toolkit-for-PHP/zipball/a131708a0fbc488da039668115f9a0bd7f779e55",
-                "reference": "a131708a0fbc488da039668115f9a0bd7f779e55",
+                "url": "https://api.github.com/repos/messageagency/Forcecom-Toolkit-for-PHP/zipball/5ce6687d38c312c4af34ee30ec90535a02c49947",
+                "reference": "5ce6687d38c312c4af34ee30ec90535a02c49947",
                 "shasum": ""
+            },
+            "require": {
+                "ext-soap": "^7.1"
             },
             "default-branch": true,
             "type": "library",
@@ -38,10 +41,10 @@
             ],
             "description": "A wrapper for the Force.com Web Services SOAP API",
             "support": {
-                "issues": "https://github.com/developerforce/Force.com-Toolkit-for-PHP/issues",
-                "source": "https://github.com/developerforce/Force.com-Toolkit-for-PHP/tree/master"
+                "issues": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP/issues",
+                "source": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP/tree/v1.0.1"
             },
-            "time": "2017-03-16T15:11:46+00:00"
+            "time": "2020-03-27T15:38:33+00:00"
         },
         {
             "name": "pippinsplugins/wp-logging",
@@ -76,16 +79,17 @@
         },
         {
             "name": "woocommerce/action-scheduler",
-            "version": "3.2.1",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/action-scheduler.git",
-                "reference": "3c24064f115cd55e972d73d5d48f14133ac60b0d"
+                "reference": "3218a33ff14b968f8cb05de9656c2efa1eeb1330"
             },
             "require-dev": {
                 "phpunit/phpunit": "^7.5",
                 "woocommerce/woocommerce-sniffs": "0.1.0",
-                "wp-cli/wp-cli": "~2.5.0"
+                "wp-cli/wp-cli": "~2.5.0",
+                "yoast/phpunit-polyfills": "^1.0"
             },
             "type": "wordpress-plugin",
             "extra": {
@@ -114,7 +118,7 @@
             ],
             "description": "Action Scheduler for WordPress and WooCommerce",
             "homepage": "https://actionscheduler.org/",
-            "time": "2021-06-21T20:21:35+00:00"
+            "time": "2021-10-28T17:09:12+00:00"
         }
     ],
     "packages-dev": [
@@ -469,12 +473,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "44e31d19a6e81eb6ede34ef40c5687247d6eaaf3"
+                "reference": "622548b623e81ca6d78b721c5e029f4ce664f170"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/44e31d19a6e81eb6ede34ef40c5687247d6eaaf3",
-                "reference": "44e31d19a6e81eb6ede34ef40c5687247d6eaaf3",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/622548b623e81ca6d78b721c5e029f4ce664f170",
+                "reference": "622548b623e81ca6d78b721c5e029f4ce664f170",
                 "shasum": ""
             },
             "require": {
@@ -517,9 +521,9 @@
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
             "support": {
                 "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
-                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/master"
+                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.3.0"
             },
-            "time": "2021-09-05T10:40:50+00:00"
+            "time": "2021-10-19T17:43:47+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -527,12 +531,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "7b2df704cbe99a7b0522c7d5d7b7c5ea61b196bb"
+                "reference": "2a7ec2a310e8dff274c8af3bf3005288f0b1b7f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/7b2df704cbe99a7b0522c7d5d7b7c5ea61b196bb",
-                "reference": "7b2df704cbe99a7b0522c7d5d7b7c5ea61b196bb",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/2a7ec2a310e8dff274c8af3bf3005288f0b1b7f6",
+                "reference": "2a7ec2a310e8dff274c8af3bf3005288f0b1b7f6",
                 "shasum": ""
             },
             "require": {
@@ -570,7 +574,7 @@
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
                 "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.x"
             },
-            "time": "2021-08-20T10:47:25+00:00"
+            "time": "2021-11-09T20:01:14+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -1283,12 +1287,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "6b853149eab67d4da22291d36f5b0631c0fd856e"
+                "reference": "0c32ea2e40dbf59de29f3b49bf375176ce7dd8db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/6b853149eab67d4da22291d36f5b0631c0fd856e",
-                "reference": "6b853149eab67d4da22291d36f5b0631c0fd856e",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/0c32ea2e40dbf59de29f3b49bf375176ce7dd8db",
+                "reference": "0c32ea2e40dbf59de29f3b49bf375176ce7dd8db",
                 "shasum": ""
             },
             "require": {
@@ -1297,7 +1301,7 @@
             },
             "require-dev": {
                 "ext-mbstring": "*",
-                "phpunit/phpunit": "^6.0"
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "extra": {
@@ -1352,7 +1356,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-11-30T07:47:53+00:00"
+            "time": "2021-11-11T13:51:24+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -1634,7 +1638,6 @@
                     "type": "github"
                 }
             ],
-            "abandoned": true,
             "time": "2020-11-30T07:30:19+00:00"
         },
         {
@@ -1690,16 +1693,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "46cd95797e9df938fdd2b03693b5fca5e64b01ce"
+                "reference": "30885182c981ab175d4d034db0f6f469898070ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/46cd95797e9df938fdd2b03693b5fca5e64b01ce",
-                "reference": "46cd95797e9df938fdd2b03693b5fca5e64b01ce",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/30885182c981ab175d4d034db0f6f469898070ab",
+                "reference": "30885182c981ab175d4d034db0f6f469898070ab",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
+            },
+            "provide": {
+                "ext-ctype": "*"
             },
             "suggest": {
                 "ext-ctype": "For best performance"
@@ -1746,7 +1752,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.23.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/main"
             },
             "funding": [
                 {
@@ -1762,7 +1768,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-19T12:13:01+00:00"
+            "time": "2021-10-20T20:35:02+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -1877,8 +1883,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "pippinsplugins/wp-logging": 20,
-        "developerforce/force.com-toolkit-for-php": 20
+        "pippinsplugins/wp-logging": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -8,19 +8,22 @@ To install the plugin in WordPress, your PHP environment needs the following:
 
 #### To run the plugin on a website
 
-1. At least version 5.6.20.
-2. SSL support (this is required to connect to Salesforce). Contact your web host if you aren't sure if your website meets this requirement.
-3. If you'll be using the SOAP API, PHP needs to be compiled with SOAP web services and
+1. At least version 5.6.20 of PHP.
+2. At least version 5.2 of WordPress.
+3. SSL support (this is required to connect to Salesforce). Contact your web host if you aren't sure if your website meets this requirement.
+4. If you'll be using the SOAP API, PHP needs to be compiled with SOAP web services and
   OpenSSL support, as per:
   - [http://php.net/soap](http://php.net/soap)
   - [http://php.net/openssl](http://php.net/openssl)
-4. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
+5. A domain where WordPress is successfully running. For purposes of this documentation, we'll assume that you are using `https://<your site>`. You would use `https://www.example.com` instead, if your site was `www.example.com`.
 
 ### Activate the plugin
 
 Once the plugin is installed, you will have an `object-sync-for-salesforce` folder in your `/wp-content/plugins` directory. In the Plugins list in WordPress, you can activate it and find the settings link (you can also find this plugin's settings in the main Settings list in WordPress, under the Salesforce menu item).
 
 By default, the plugin's settings URL is `https://<your site>/wp-admin/options-general.php?page=object-sync-salesforce-admin`.
+
+If you intend to contribute code for this plugin, or if you have installed it from GitHub, read our [contributing guidelines](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/contributing.md) and follow these [additional developer guidelines for setup](./setup-for-developers.md).
 
 ## Salesforce
 

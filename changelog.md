@@ -1,6 +1,12 @@
 Changelog
 =========
 
+* 2.1.0 ()
+	* Maintenance: Install the Message Agency fork of the Force.com toolkit. This is how the plugin (optionally) detects merged records.
+	* Maintenance: Update Action Scheduler to version 3.4.0
+	* Maintenance: Update URLs in the documentation that point to plugin PHP files to match their v2.0.0 filenames.
+	* Maintenance: Create a log entry if the plugin tries to sync a record but no parameters are eligible. Thanks to WordPress user @OfficeBureau for the request.
+
 * 2.0.3 (2021-09-10)
 	* Bug fix: Fix missing Record Type when pulled from Salesforce. Thanks to GitHub user @timnolte for the report.
 
