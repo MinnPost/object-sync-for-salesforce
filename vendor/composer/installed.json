@@ -1,21 +1,25 @@
 {
     "packages": [
         {
-            "name": "developerforce/force.com-toolkit-for-php",
+            "name": "messageagency/force.com-toolkit-for-php",
             "version": "dev-master",
             "version_normalized": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/developerforce/Force.com-Toolkit-for-PHP.git",
-                "reference": "a131708a0fbc488da039668115f9a0bd7f779e55"
+                "url": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP.git",
+                "reference": "5ce6687d38c312c4af34ee30ec90535a02c49947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/developerforce/Force.com-Toolkit-for-PHP/zipball/a131708a0fbc488da039668115f9a0bd7f779e55",
-                "reference": "a131708a0fbc488da039668115f9a0bd7f779e55",
+                "url": "https://api.github.com/repos/messageagency/Forcecom-Toolkit-for-PHP/zipball/5ce6687d38c312c4af34ee30ec90535a02c49947",
+                "reference": "5ce6687d38c312c4af34ee30ec90535a02c49947",
                 "shasum": ""
             },
-            "time": "2017-03-16T15:11:46+00:00",
+            "require": {
+                "ext-soap": "^7.1"
+            },
+            "time": "2020-03-27T15:38:33+00:00",
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -33,7 +37,11 @@
                 "BSD-3-Clause"
             ],
             "description": "A wrapper for the Force.com Web Services SOAP API",
-            "install-path": "../developerforce/force.com-toolkit-for-php"
+            "support": {
+                "issues": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP/issues",
+                "source": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP/tree/v1.0.1"
+            },
+            "install-path": "../messageagency/force.com-toolkit-for-php"
         },
         {
             "name": "pippinsplugins/wp-logging",
