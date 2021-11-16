@@ -64,7 +64,7 @@ class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 	public function __construct() {
 
 		$this->file = object_sync_for_salesforce()->file;
-		$this->wsdl = get_option( 'object_sync_for_salesforce_soap_wsdl_path', plugin_dir_path( $this->file ) . 'vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml' );
+		$this->wsdl = get_option( 'object_sync_for_salesforce_soap_wsdl_path', plugin_dir_path( $this->file ) . 'vendor/messageagency/force.com-toolkit-for-php/soapclient/partner.wsdl.xml' );
 
 		$this->salesforce_get_api = object_sync_for_salesforce()->salesforce;
 		parent::__construct();
@@ -80,11 +80,11 @@ class Object_Sync_Sf_Salesforce_Soap_Partner extends SforcePartnerClient {
 			return;
 		}
 		if ( ! class_exists( 'SforceBaseClient' ) && file_exists( plugin_dir_path( $this->file ) . 'vendor/autoload.php' ) ) {
-			require_once plugin_dir_path( $this->file ) . 'vendor/developerforce/force.com-toolkit-for-php/soapclient/SforcePartnerClient.php';
+			require_once plugin_dir_path( $this->file ) . 'vendor/messageagency/force.com-toolkit-for-php/soapclient/SforcePartnerClient.php';
 		}
 
 		if ( empty( $wsdl ) ) {
-			$this->wsdl = plugin_dir_path( $this->file ) . 'vendor/developerforce/force.com-toolkit-for-php/soapclient/partner.wsdl.xml';
+			$this->wsdl = plugin_dir_path( $this->file ) . 'vendor/messageagency/force.com-toolkit-for-php/soapclient/partner.wsdl.xml';
 		}
 
 		$this->set_authorized( false );
