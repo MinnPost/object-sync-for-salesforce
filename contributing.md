@@ -4,7 +4,7 @@ We welcome contributions and suggestions to help us improve this project. You ca
 
 ## Setup
 
-In our [initial setup documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md), we detail how to install the plugin and the developer tools it requires for various tasks. Follow these developer instructions. If you are familiar with the command line already, here are the various requirements:
+In our [initial setup documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/initial-setup.md) and in [subsequent instructions for developers](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/setup-for-developers.md), we detail how to install the plugin and the developer tools it requires for various tasks. Follow these developer instructions. If you are familiar with the command line already, here are the various requirements:
 
 ### For general PHP development
 

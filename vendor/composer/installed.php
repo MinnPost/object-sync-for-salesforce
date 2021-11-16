@@ -5,20 +5,20 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'cea16908d70d8998babd35d55ac27f2372efea4b',
+        'reference' => '65af86f5cc46ab5f0437ac8a5a2b3c2f6d4ed1e8',
         'name' => 'minnpost/object-sync-for-salesforce',
         'dev' => false,
     ),
     'versions' => array(
-        'developerforce/force.com-toolkit-for-php' => array(
+        'messageagency/force.com-toolkit-for-php' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
             'type' => 'library',
-            'install_path' => __DIR__ . '/../developerforce/force.com-toolkit-for-php',
+            'install_path' => __DIR__ . '/../messageagency/force.com-toolkit-for-php',
             'aliases' => array(
                 0 => '1.0.x-dev',
             ),
-            'reference' => 'a058b6bc3cedd74ada2595aac01df024bd8e3942',
+            'reference' => '5ce6687d38c312c4af34ee30ec90535a02c49947',
             'dev_requirement' => false,
         ),
         'minnpost/object-sync-for-salesforce' => array(
@@ -27,7 +27,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'cea16908d70d8998babd35d55ac27f2372efea4b',
+            'reference' => '65af86f5cc46ab5f0437ac8a5a2b3c2f6d4ed1e8',
             'dev_requirement' => false,
         ),
         'pippinsplugins/wp-logging' => array(

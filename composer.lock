@@ -4,21 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ede3d5e1cb9f09f81fd4e9059a2b2e4",
+    "content-hash": "f83810f6091ecc953a2b9c83d42facc8",
     "packages": [
         {
-            "name": "developerforce/force.com-toolkit-for-php",
+            "name": "messageagency/force.com-toolkit-for-php",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/developerforce/Force.com-Toolkit-for-PHP.git",
-                "reference": "a058b6bc3cedd74ada2595aac01df024bd8e3942"
+                "url": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP.git",
+                "reference": "5ce6687d38c312c4af34ee30ec90535a02c49947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/developerforce/Force.com-Toolkit-for-PHP/zipball/a058b6bc3cedd74ada2595aac01df024bd8e3942",
-                "reference": "a058b6bc3cedd74ada2595aac01df024bd8e3942",
+                "url": "https://api.github.com/repos/messageagency/Forcecom-Toolkit-for-PHP/zipball/5ce6687d38c312c4af34ee30ec90535a02c49947",
+                "reference": "5ce6687d38c312c4af34ee30ec90535a02c49947",
                 "shasum": ""
+            },
+            "require": {
+                "ext-soap": "^7.1"
             },
             "default-branch": true,
             "type": "library",
@@ -38,10 +41,10 @@
             ],
             "description": "A wrapper for the Force.com Web Services SOAP API",
             "support": {
-                "issues": "https://github.com/developerforce/Force.com-Toolkit-for-PHP/issues",
-                "source": "https://github.com/developerforce/Force.com-Toolkit-for-PHP/tree/master"
+                "issues": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP/issues",
+                "source": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP/tree/v1.0.1"
             },
-            "time": "2021-10-25T20:28:55+00:00"
+            "time": "2020-03-27T15:38:33+00:00"
         },
         {
             "name": "pippinsplugins/wp-logging",
@@ -1880,8 +1883,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "pippinsplugins/wp-logging": 20,
-        "developerforce/force.com-toolkit-for-php": 20
+        "pippinsplugins/wp-logging": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

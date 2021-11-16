@@ -1,21 +1,24 @@
 {
     "packages": [
         {
-            "name": "developerforce/force.com-toolkit-for-php",
+            "name": "messageagency/force.com-toolkit-for-php",
             "version": "dev-master",
             "version_normalized": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/developerforce/Force.com-Toolkit-for-PHP.git",
-                "reference": "a058b6bc3cedd74ada2595aac01df024bd8e3942"
+                "url": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP.git",
+                "reference": "5ce6687d38c312c4af34ee30ec90535a02c49947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/developerforce/Force.com-Toolkit-for-PHP/zipball/a058b6bc3cedd74ada2595aac01df024bd8e3942",
-                "reference": "a058b6bc3cedd74ada2595aac01df024bd8e3942",
+                "url": "https://api.github.com/repos/messageagency/Forcecom-Toolkit-for-PHP/zipball/5ce6687d38c312c4af34ee30ec90535a02c49947",
+                "reference": "5ce6687d38c312c4af34ee30ec90535a02c49947",
                 "shasum": ""
             },
-            "time": "2021-10-25T20:28:55+00:00",
+            "require": {
+                "ext-soap": "^7.1"
+            },
+            "time": "2020-03-27T15:38:33+00:00",
             "default-branch": true,
             "type": "library",
             "extra": {
@@ -35,10 +38,10 @@
             ],
             "description": "A wrapper for the Force.com Web Services SOAP API",
             "support": {
-                "issues": "https://github.com/developerforce/Force.com-Toolkit-for-PHP/issues",
-                "source": "https://github.com/developerforce/Force.com-Toolkit-for-PHP/tree/master"
+                "issues": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP/issues",
+                "source": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP/tree/v1.0.1"
             },
-            "install-path": "../developerforce/force.com-toolkit-for-php"
+            "install-path": "../messageagency/force.com-toolkit-for-php"
         },
         {
             "name": "pippinsplugins/wp-logging",
