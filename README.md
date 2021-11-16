@@ -11,7 +11,7 @@ Object Sync for Salesforce is a WordPress plugin that maps and syncs data betwee
 Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations, harmoney
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
-Requires at least: 4.6
+Requires at least: 5.2
 Tested up to: 5.8
 Stable tag: 2.0.3
 Requires PHP: 5.6.20
@@ -40,7 +40,7 @@ To get started, install Object Sync for Salesforce from the [WordPress plugin re
 ### Requirements
 
 1. A PHP installation of at least version 5.6.20.
-2. A WordPress installation of at least version 4.6.
+2. A WordPress installation of at least version 5.2.
 3. SSL support.
 4. A Salesforce account. Developers can register for a free Developer Edition account at [https://developer.salesforce.com/signup](https://developer.salesforce.com/signup)
 5. A remote application/connected Salesforce app for authorization.

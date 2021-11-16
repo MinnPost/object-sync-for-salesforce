@@ -2,7 +2,7 @@
 Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations, harmoney
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
-Requires at least: 4.6
+Requires at least: 5.2
 Tested up to: 5.8
 Stable tag: 2.0.3
 Requires PHP: 5.6.20
