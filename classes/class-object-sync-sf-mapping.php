@@ -259,7 +259,11 @@ class Object_Sync_Sf_Mapping {
 		$this->fieldmap_table   = $this->wpdb->prefix . 'object_sync_sf_field_map';
 		$this->object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 
-		$this->fieldmap_statuses          = array( 'active', 'inactive', 'any' );
+		$this->fieldmap_statuses          = array(
+			'active'   => esc_html__( 'Active', 'object-sync-for-salesforce' ),
+			'inactive' => esc_html__( 'Inactive', 'object-sync-for-salesforce' ),
+			'any'      => '',
+		);
 		$this->active_fieldmap_conditions = array(
 			'fieldmap_status' => 'active',
 		);

@@ -632,6 +632,7 @@ class Object_Sync_Sf_Admin {
 						if ( 'add' === $method || ( isset( $map ) && is_array( $map ) && isset( $map['id'] ) ) ) {
 							if ( isset( $map ) && is_array( $map ) && isset( $map['id'] ) ) {
 								$label                           = $map['label'];
+								$fieldmap_status                 = $map['fieldmap_status'];
 								$salesforce_object               = $map['salesforce_object'];
 								$salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
 								$salesforce_record_type_default  = $map['salesforce_record_type_default'];

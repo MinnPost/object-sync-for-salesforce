@@ -571,6 +571,25 @@
 			<label><input type="checkbox" name="pull_to_drafts" id="pull-to-drafts" value="1" <?php echo isset( $pull_to_drafts ) && '1' === $pull_to_drafts ? ' checked' : ''; ?>><?php echo esc_html__( 'Pull to Drafts', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description"><?php echo esc_html__( 'If selected, WordPress will check for matches against existing drafts of this object type, and will also update existing drafts.', 'object-sync-for-salesforce' ); ?></p>
 		</div>
+		<div class="select fieldmap_status">
+			<label for="fieldmap_status"><?php echo esc_html__( 'Fieldmap Status', 'object-sync-for-salesforce' ); ?>: </label>
+			<select id="fieldmap_status" name="fieldmap_status" class="select-small" required>
+				<?php
+				$fieldmap_statuses = $this->mappings->fieldmap_statuses;
+				foreach ( $fieldmap_statuses as $key => $value ) :
+					if ( '' !== $value ) :
+						$selected = '';
+						if ( $fieldmap_status === $key ) {
+							$selected = ' selected';
+						}
+					?>
+						<option value="<?php echo esc_attr( $key ); ?>"<?php echo esc_html( $selected ); ?>><?php echo esc_html( $value ); ?></option>
+					<?php
+					endif;
+				endforeach; ?>
+			</select>
+			<p class="description"><?php echo esc_html__( 'By default, fieldmaps are saved as "Active." If you would like to work with a fieldmap without it being used for sync operations, save it as "Inactive."', 'object-sync-for-salesforce' ); ?></p>
+		</div>
 	</fieldset>
 	<?php
 		submit_button(
