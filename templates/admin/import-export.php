@@ -19,6 +19,10 @@
 		<input type="checkbox" value="1" name="overwrite" id="object-sync-for-salesforce-import-overwrite">
 		<label for="object-sync-for-salesforce-import-overwrite"><?php echo esc_html__( 'Overwrite Existing Data', 'object-sync-for-salesforce' ); ?></label>
 	</p>
+	<p>
+		<input type="checkbox" value="1" name="import_fieldmaps_inactive" id="object-sync-for-salesforce-import-fieldmaps-inactive">
+		<label for="object-sync-for-salesforce-import-fieldmaps-inactive"><?php echo esc_html__( 'Set Imported Fieldmaps to Inactive', 'object-sync-for-salesforce' ); ?></label>
+	</p>
 	<input type="submit" class="button button-primary" value="<?php echo esc_html__( 'Import', 'object-sync-for-salesforce' ); ?>" />
 </form>
 

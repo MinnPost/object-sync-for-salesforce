@@ -616,10 +616,11 @@ class Object_Sync_Sf_Mapping {
 		if ( isset( $posted['pull_trigger_field'] ) ) {
 			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
 		}
-		$data['push_async']     = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
-		$data['push_drafts']    = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
-		$data['pull_to_drafts'] = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
-		$data['weight']         = isset( $posted['weight'] ) ? $posted['weight'] : '';
+		$data['fieldmap_status'] = isset( $posted['fieldmap_status'] ) ? $posted['fieldmap_status'] : 'active';
+		$data['push_async']      = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
+		$data['push_drafts']     = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
+		$data['pull_to_drafts']  = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
+		$data['weight']          = isset( $posted['weight'] ) ? $posted['weight'] : '';
 		return $data;
 	}
 

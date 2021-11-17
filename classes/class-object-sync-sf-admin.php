@@ -2028,6 +2028,16 @@ class Object_Sync_Sf_Admin {
 			}
 		}
 
+		// if the option says to, set all the imported fieldmaps to inactive.
+		$import_fieldmaps_inactive = isset( $_POST['import_fieldmaps_inactive'] ) ? esc_attr( $_POST['import_fieldmaps_inactive'] ) : '';
+		if ( true === filter_var( $import_fieldmaps_inactive, FILTER_VALIDATE_BOOLEAN ) ) {
+			if ( isset( $data['fieldmaps'] ) ) {
+				foreach ( $data['fieldmaps'] as $key => $fieldmap ) {
+					$data['fieldmaps'][ $key ]['fieldmap_status'] = 'inactive';
+				}
+			}
+		}
+
 		$success = true;
 
 		if ( isset( $data['fieldmaps'] ) ) {
@@ -2040,7 +2050,7 @@ class Object_Sync_Sf_Admin {
 					$success = false;
 				}
 				if ( false === $create ) {
-					$error_fieldmaps[] = $object_map;
+					$error_fieldmaps[] = $fieldmap;
 				} else {
 					$successful_fieldmaps[] = $create;
 				}
