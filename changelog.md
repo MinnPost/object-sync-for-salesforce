@@ -2,6 +2,7 @@ Changelog
 =========
 
 * 2.1.0 ()
+	* Feature: Add the ability for fieldmaps to be active or inactive. Thanks to GitHub user @TornMarketing for the request.
 	* Maintenance: Install the Message Agency fork of the Force.com toolkit. This is how the plugin (optionally) detects merged records.
 	* Maintenance: Update Action Scheduler to version 3.4.0
 	* Maintenance: Update URLs in the documentation that point to plugin PHP files to match their v2.0.0 filenames.
