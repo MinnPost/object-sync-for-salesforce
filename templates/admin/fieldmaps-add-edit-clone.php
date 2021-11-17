@@ -582,11 +582,12 @@
 						if ( $fieldmap_status === $key ) {
 							$selected = ' selected';
 						}
-					?>
+						?>
 						<option value="<?php echo esc_attr( $key ); ?>"<?php echo esc_html( $selected ); ?>><?php echo esc_html( $value ); ?></option>
-					<?php
+						<?php
 					endif;
-				endforeach; ?>
+				endforeach;
+				?>
 			</select>
 			<p class="description"><?php echo esc_html__( 'By default, fieldmaps are saved as "Active." If you would like to work with a fieldmap without it being used for sync operations, save it as "Inactive."', 'object-sync-for-salesforce' ); ?></p>
 		</div>
