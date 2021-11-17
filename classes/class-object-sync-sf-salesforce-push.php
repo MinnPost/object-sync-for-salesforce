@@ -147,7 +147,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	public function add_actions() {
 		$db_version = get_option( $this->option_prefix . 'db_version', false );
 		if ( $db_version === $this->version ) {
-			foreach ( $this->mappings->get_fieldmaps() as $mapping ) {
+			foreach ( $this->mappings->get_fieldmaps( null, $this->mappings->active_fieldmap_conditions ) as $mapping ) {
 				$object_type = $mapping['wordpress_object'];
 				if ( 'user' === $object_type ) {
 					if ( defined( 'ultimatemember_plugin_name' ) ) {
@@ -562,9 +562,12 @@ class Object_Sync_Sf_Salesforce_Push {
 		// in this case, it's all mappings that correspond to the posted WordPress object.
 		$sf_mappings = $this->mappings->get_fieldmaps(
 			null, // id field must be null for multiples.
-			array(
-				'wordpress_object' => $object_type,
-			)
+			array_merge(
+				$this->mappings->active_fieldmap_conditions,
+				array(
+					'wordpress_object' => $object_type,
+				)
+			),
 		);
 
 		$results = array();
