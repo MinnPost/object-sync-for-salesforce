@@ -172,6 +172,10 @@ All versions of this plugin are listed in the [releases](https://github.com/Minn
 
 = 2.0.0 =
 2.0.0 includes a major upgrade to Action Scheduler, the underlying queue technology that runs syncing for this plugin, as well as renaming of many plugin files. You may want to make a full site backup before upgrading, and if you have access to a staging environment you may want to run it there before you run it on your production website.
+
+= 2.1.0 =
+2.1.0 includes an upgrade to Action Scheduler (version 3.4.0), the underlying queue technology that runs syncing for this plugin. The noteworthy piece is that this raises the minimum supported version of WordPress to 5.2. If you are running an older version of WordPress than 5.2, you shouldn't upgrade this plugin.
+
 </only:wp -->
 
 <!-- only:github/ -->

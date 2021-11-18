@@ -632,6 +632,7 @@ class Object_Sync_Sf_Admin {
 						if ( 'add' === $method || ( isset( $map ) && is_array( $map ) && isset( $map['id'] ) ) ) {
 							if ( isset( $map ) && is_array( $map ) && isset( $map['id'] ) ) {
 								$label                           = $map['label'];
+								$fieldmap_status                 = $map['fieldmap_status'];
 								$salesforce_object               = $map['salesforce_object'];
 								$salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
 								$salesforce_record_type_default  = $map['salesforce_record_type_default'];
@@ -2028,6 +2029,16 @@ class Object_Sync_Sf_Admin {
 			}
 		}
 
+		// if the option says to, set all the imported fieldmaps to inactive.
+		$import_fieldmaps_inactive = isset( $_POST['import_fieldmaps_inactive'] ) ? esc_attr( $_POST['import_fieldmaps_inactive'] ) : '';
+		if ( true === filter_var( $import_fieldmaps_inactive, FILTER_VALIDATE_BOOLEAN ) ) {
+			if ( isset( $data['fieldmaps'] ) ) {
+				foreach ( $data['fieldmaps'] as $key => $fieldmap ) {
+					$data['fieldmaps'][ $key ]['fieldmap_status'] = 'inactive';
+				}
+			}
+		}
+
 		$success = true;
 
 		if ( isset( $data['fieldmaps'] ) ) {
@@ -2040,7 +2051,7 @@ class Object_Sync_Sf_Admin {
 					$success = false;
 				}
 				if ( false === $create ) {
-					$error_fieldmaps[] = $object_map;
+					$error_fieldmaps[] = $fieldmap;
 				} else {
 					$successful_fieldmaps[] = $create;
 				}

@@ -337,7 +337,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 */
 	private function get_updated_records() {
 		$sfapi = $this->salesforce['sfapi'];
-		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
+		foreach ( $this->mappings->get_fieldmaps( null, $this->mappings->active_fieldmap_conditions ) as $salesforce_mapping ) {
 			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping.
 			$type              = $salesforce_mapping['salesforce_object']; // this sets the Salesforce object type for the SOQL query.
 
@@ -379,11 +379,28 @@ class Object_Sync_Sf_Salesforce_Pull {
 				}
 			}
 
+			// run the __toString method to convert the SOQL query object to a string.
+			$soql_string = (string) $soql;
+
+			// add a filter here to modify the query once it's a string.
+			// Hook to allow other plugins to modify the SOQL query before it is sent to Salesforce.
+			$soql_string = apply_filters( $this->option_prefix . 'pull_query_string_modify', $soql_string, $soql, $type, $salesforce_mapping );
+
+			// quick example to change the order to descending once the query is already a string.
+			/* // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+			add_filter( 'object_sync_for_salesforce_pull_query_string_modify', 'change_pull_query', 10, 4 );
+			// can always reduce this number if all the arguments are not necessary
+			function change_pull_query_string( $soql_string, $soql, $type, $salesforce_mapping ) {
+				$soql_string = str_replace( 'ASC', 'DESC', $soql_string);
+				return $soql_string;
+			}
+			*/
+
 			// Execute query
 			// have to cast it to string to make sure it uses the magic method
 			// we don't want to cache this because timestamps.
 			$results = $sfapi->query(
-				(string) $soql,
+				$soql_string,
 				$query_options
 			);
 
@@ -775,9 +792,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$mappings = $this->mappings->get_fieldmaps(
 			null,
-			array(
-				'salesforce_object' => $type,
-			)
+			array_merge(
+				$this->mappings->active_fieldmap_conditions,
+				array(
+					'salesforce_object' => $type,
+				)
+			),
 		);
 
 		// Iterate over each field mapping to determine our query parameters.
@@ -959,9 +979,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 		foreach ( $this->mergeable_record_types as $type ) {
 			$mappings = $this->mappings->get_fieldmaps(
 				null,
-				array(
-					'salesforce_object' => $type,
-				)
+				array_merge(
+					$this->mappings->active_fieldmap_conditions,
+					array(
+						'salesforce_object' => $type,
+					)
+				),
 			);
 
 			// Iterate over each field mapping to determine our query parameters.
@@ -1092,16 +1115,19 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// See GitHub issue 197 to track this status. https://github.com/MinnPost/object-sync-for-salesforce/issues/197.
 
 		// Load all unique SF record types that we have mappings for. This results in a double loop.
-		foreach ( $this->mappings->get_fieldmaps() as $salesforce_mapping ) {
+		foreach ( $this->mappings->get_fieldmaps( null, $this->mappings->active_fieldmap_conditions ) as $salesforce_mapping ) {
 
 			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping.
 			$type              = $salesforce_mapping['salesforce_object']; // this sets the Salesforce object type for the SOQL query.
 
 			$mappings = $this->mappings->get_fieldmaps(
 				null,
-				array(
-					'salesforce_object' => $type,
-				)
+				array_merge(
+					$this->mappings->active_fieldmap_conditions,
+					array(
+						'salesforce_object' => $type,
+					)
+				),
 			);
 
 			// Iterate over each field mapping to determine our query parameters.
@@ -1314,7 +1340,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$mapping_conditions['salesforce_record_type'] = $object['RecordTypeId'];
 		}
 
-		$salesforce_mappings = $this->mappings->get_fieldmaps( null, $mapping_conditions );
+		$salesforce_mappings = $this->mappings->get_fieldmaps(
+			null,
+			array_merge(
+				$this->mappings->active_fieldmap_conditions,
+				$mapping_conditions,
+			),
+		);
 
 		// from drupal: if there is more than one mapping, don't throw exceptions.
 		$hold_exceptions = count( $salesforce_mappings ) > 1;

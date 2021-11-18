@@ -2,10 +2,15 @@ Changelog
 =========
 
 * 2.1.0 ()
+	* Feature: Update the fieldmap list screen for better usability and device support.
+	* Feature: Add more links to clear the plugin cache.
+	* Feature: Add the ability for fieldmaps to be active or inactive. Thanks to GitHub user @TornMarketing for the request.
 	* Maintenance: Install the Message Agency fork of the Force.com toolkit. This is how the plugin (optionally) detects merged records.
-	* Maintenance: Update Action Scheduler to version 3.4.0
+	* Maintenance: Update Action Scheduler to version 3.4.0. Note: this raises the minimum supported WordPress version to 5.2.
+	* Maintenance: Change the default Salesforce REST API version to 53.0.
 	* Maintenance: Update URLs in the documentation that point to plugin PHP files to match their v2.0.0 filenames.
 	* Maintenance: Create a log entry if the plugin tries to sync a record but no parameters are eligible. Thanks to WordPress user @OfficeBureau for the request.
+	* Developers: Add a filter to allow developers to edit the whole SOQL string before it is sent to Salesforce. Thanks to WordPress user @JellyPixel for the request.
 
 * 2.0.3 (2021-09-10)
 	* Bug fix: Fix missing Record Type when pulled from Salesforce. Thanks to GitHub user @timnolte for the report.
