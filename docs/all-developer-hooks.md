@@ -17,9 +17,13 @@ This page lists all developer hooks available in this plugin, with links to wher
     - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extending sync allowed](extending-sync-allowed.md#push)
 - `object_sync_for_salesforce_pull_query_modify`:
-    - description: modify the Salesforce query (SOQL) before it is sent to Salesforce to pull records.
+    - description: modify the Salesforce query (SOQL) **object** before it is sent to Salesforce to pull records.
     - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
-    - documentation: [extending pull](extending-pull.md)
+    - documentation: [extending pull](extending-pull.md#soql-object)
+- `object_sync_for_salesforce_pull_query_string_modify`:
+    - description: modify the Salesforce query (SOQL) **string** before it is sent to Salesforce to pull records.
+    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
+    - documentation: [extending pull](extending-pull.md#soql-string)
 - `object_sync_for_salesforce_pull_object_allowed`:
     - description: prevent a pull per-mapping.
     - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
