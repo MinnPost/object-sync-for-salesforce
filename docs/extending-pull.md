@@ -53,14 +53,12 @@ The result of this filter is not processed by the plugin before it is sent to th
 *   Salesforce object type
 * @param array $salesforce_mapping
 *   The map between the WordPress and Salesforce object types
-* @param array $mapped_fields
-*   The fields that are mapped between these objects
 * @return string $soql_string
 *   The SOQL query string
 */
-add_filter( 'object_sync_for_salesforce_pull_query_string_modify', 'change_pull_query_string', 10, 5 );
+add_filter( 'object_sync_for_salesforce_pull_query_string_modify', 'change_pull_query_string', 10, 4 );
 // can always reduce this number if all the arguments are not necessary
-function change_pull_query_string( $soql_string, $soql, $type, $salesforce_mapping, $mapped_fields ) {
+function change_pull_query_string( $soql_string, $soql, $type, $salesforce_mapping ) {
 	$soql_string = str_replace( 'ASC', 'DESC', $soql_string);
 	return $soql_string;
 }
