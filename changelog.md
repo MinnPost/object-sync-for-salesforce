@@ -2,6 +2,7 @@ Changelog
 =========
 
 * 2.1.0 ()
+	* Bug fix: Make the stored data about pull operations fieldmap-specific, preventing problems when multiple fieldmaps are connected to the same Salesforce object. Thanks to WordPress user @fortafy for the report.
 	* Feature: Update the fieldmap list screen for better usability and device support.
 	* Feature: Add more links to clear the plugin cache.
 	* Feature: Add the ability for fieldmaps to be active or inactive. Thanks to GitHub user @TornMarketing for the request.
