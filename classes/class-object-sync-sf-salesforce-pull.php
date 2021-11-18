@@ -338,11 +338,28 @@ class Object_Sync_Sf_Salesforce_Pull {
 				}
 			}
 
+			// run the __toString method to convert the SOQL query object to a string.
+			$soql_string = (string) $soql;
+
+			// add a filter here to modify the query once it's a string.
+			// Hook to allow other plugins to modify the SOQL query before it is sent to Salesforce.
+			$soql_string = apply_filters( $this->option_prefix . 'pull_query_string_modify', $soql_string, $soql, $type, $salesforce_mapping, $mapped_fields );
+
+			// quick example to change the order to descending once the query is already a string.
+			/* // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+			add_filter( 'object_sync_for_salesforce_pull_query_string_modify', 'change_pull_query', 10, 5 );
+			// can always reduce this number if all the arguments are not necessary
+			function change_pull_query_string( $soql_string, $soql, $type, $salesforce_mapping, $mapped_fields ) {
+				$soql_string = str_replace( 'ASC', 'DESC', $soql_string);
+				return $soql_string;
+			}
+			*/
+
 			// Execute query
 			// have to cast it to string to make sure it uses the magic method
 			// we don't want to cache this because timestamps.
 			$results = $sfapi->query(
-				(string) $soql,
+				$soql_string,
 				$query_options
 			);
 
