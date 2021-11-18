@@ -83,6 +83,13 @@ $active-color: #72aee6;
 				display: block;
 			}
 
+			&.fieldmap_status {
+
+				select {
+					display: inline-block;
+				}
+			}
+
 		}
 
 		.radios label,

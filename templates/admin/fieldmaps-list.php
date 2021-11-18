@@ -37,7 +37,14 @@
 		<?php if ( count( $fieldmaps ) > 0 ) : ?>
 			<?php foreach ( $fieldmaps as $record ) { ?>
 		<tr>
-			<td><?php echo esc_html( $record['label'] ); ?></td>
+			<td>
+				<strong>
+					<?php echo esc_html( $record['label'] ); ?>
+					<?php if ( 'active' !== $record['fieldmap_status'] ) : ?>
+						&mdash; <?php echo esc_html( $record['fieldmap_status'] ); ?>
+					<?php endif; ?>
+				</strong>	
+			</td>
 			<td><?php echo esc_html( $record['wordpress_object'] ); ?></td>
 			<td><?php echo esc_html( $record['salesforce_object'] ); ?></td>
 			<td>

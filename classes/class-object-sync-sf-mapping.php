@@ -70,6 +70,20 @@ class Object_Sync_Sf_Mapping {
 	public $object_map_table;
 
 	/**
+	 * Possible status values for fieldmaps
+	 *
+	 * @var array
+	 */
+	public $fieldmap_statuses;
+
+	/**
+	 * The active status values for fieldmaps
+	 *
+	 * @var string
+	 */
+	public $active_fieldmap_conditions;
+
+	/**
 	 * Bitmap value for when sync is off
 	 *
 	 * @var string
@@ -245,6 +259,15 @@ class Object_Sync_Sf_Mapping {
 		$this->fieldmap_table   = $this->wpdb->prefix . 'object_sync_sf_field_map';
 		$this->object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 
+		$this->fieldmap_statuses          = array(
+			'active'   => esc_html__( 'Active', 'object-sync-for-salesforce' ),
+			'inactive' => esc_html__( 'Inactive', 'object-sync-for-salesforce' ),
+			'any'      => '',
+		);
+		$this->active_fieldmap_conditions = array(
+			'fieldmap_status' => 'active',
+		);
+
 		/*
 		 * These parameters are how we define when syncing should occur on each field map.
 		 * They get used in the admin settings, as well as the push/pull methods to see if something should happen.
@@ -350,9 +373,13 @@ class Object_Sync_Sf_Mapping {
 
 			// Assemble the SQL.
 			if ( ! empty( $conditions ) ) {
-				$where = ' WHERE ';
+				$where = '';
 				$i     = 0;
 				foreach ( $conditions as $key => $value ) {
+					// if 'any' is the value for fieldmap status, we keep it off the WHERE statement.
+					if ( 'fieldmap_status' === $key && 'any' === $value ) {
+						continue;
+					}
 					if ( 'salesforce_record_type' === $key ) {
 						$record_type = sanitize_text_field( $value );
 					} else {
@@ -363,11 +390,14 @@ class Object_Sync_Sf_Mapping {
 						$where .= '`' . $key . '` = "' . $value . '"';
 					}
 				}
+				if ( '' !== $where ) {
+					$where = ' WHERE ' . $where;
+				}
 			} else {
 				$where = '';
 			}
 
-			$mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . ' ORDER BY `weight`', ARRAY_A );
+			$mappings = $this->wpdb->get_results( 'SELECT * FROM ' . $table . $where . ' ORDER BY `fieldmap_status`, `weight`', ARRAY_A );
 
 			if ( ! empty( $mappings ) ) {
 				$mappings = $this->prepare_fieldmap_data( $mappings, $record_type );
@@ -377,14 +407,22 @@ class Object_Sync_Sf_Mapping {
 
 		} else { // get all of the mappings. ALL THE MAPPINGS.
 
-			// if the version is greater than or equal to 1.5.0, the fieldmap table has a pull_to_drafts column.
-			if ( version_compare( $this->version, '1.5.0', '>=' ) ) {
-				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table", ARRAY_A );
-			} elseif ( version_compare( $this->version, '1.2.5', '>=' ) ) {
-				// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column.
-				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight`, `version` FROM $table", ARRAY_A );
-			} else {
-				$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table", ARRAY_A );
+			// This is the default query for loading fieldmaps.
+			$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `fieldmap_status`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table ORDER BY `fieldmap_status`", ARRAY_A );
+
+			// lower than 2.0.0 versions.
+			// @deprecated
+			// will be removed in version 3.0.0.
+			if ( version_compare( $this->version, '2.0.0', '<' ) ) {
+				// if the version is greater than or equal to 1.5.0, the fieldmap table has a pull_to_drafts column.
+				if ( version_compare( $this->version, '1.5.0', '>=' ) ) {
+					$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table", ARRAY_A );
+				} elseif ( version_compare( $this->version, '1.2.5', '>=' ) ) {
+					// if the version is greater than or equal to 1.2.5, the fieldmap table has a version column.
+					$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight`, `version` FROM $table", ARRAY_A );
+				} else {
+					$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `weight` FROM $table", ARRAY_A );
+				}
 			}
 
 			if ( ! empty( $mappings ) ) {
@@ -582,10 +620,11 @@ class Object_Sync_Sf_Mapping {
 		if ( isset( $posted['pull_trigger_field'] ) ) {
 			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
 		}
-		$data['push_async']     = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
-		$data['push_drafts']    = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
-		$data['pull_to_drafts'] = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
-		$data['weight']         = isset( $posted['weight'] ) ? $posted['weight'] : '';
+		$data['fieldmap_status'] = isset( $posted['fieldmap_status'] ) ? $posted['fieldmap_status'] : 'active';
+		$data['push_async']      = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
+		$data['push_drafts']     = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
+		$data['pull_to_drafts']  = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
+		$data['weight']          = isset( $posted['weight'] ) ? $posted['weight'] : '';
 		return $data;
 	}
 
