@@ -99,6 +99,20 @@ class Object_Sync_Sf_Salesforce_Pull {
 	public $salesforce;
 
 	/**
+	 * Object_Sync_Sf_Pull_Options class
+	 *
+	 * @var object
+	 */
+	public $pull_options;
+
+	/**
+	 * The name of the ActionScheduler queue
+	 *
+	 * @var string
+	 */
+	public $schedule_name;
+
+	/**
 	 * Whether to batch SOQL queries
 	 *
 	 * @var bool
@@ -134,13 +148,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 	public $debug;
 
 	/**
-	 * The name of the ActionScheduler queue
-	 *
-	 * @var string
-	 */
-	public $schedule_name;
-
-	/**
 	 * Constructor for pull class
 	 */
 	public function __construct() {
@@ -158,6 +165,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$this->wordpress  = object_sync_for_salesforce()->wordpress;
 		$this->salesforce = object_sync_for_salesforce()->salesforce;
 
+		$this->pull_options = new Object_Sync_Sf_Pull_Options();
+
 		$this->schedule_name = 'salesforce_pull';
 
 		// To be clear: we should only ever set this to true if Salesforce actually starts to reliably support it instead of generally ignoring it.
@@ -173,6 +182,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// Create action hooks for WordPress objects. We run this after plugins are loaded in case something depends on another plugin.
 		add_action( 'plugins_loaded', array( $this, 'add_actions' ) );
+
+		// deprecated actions.
+		$this->deprecated_actions();
 
 		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
 		$this->debug = filter_var( $this->debug, FILTER_VALIDATE_BOOLEAN );
@@ -207,6 +219,33 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// action-scheduler needs two hooks: one to check for records, and one to process them.
 		add_action( $this->option_prefix . 'pull_check_records', array( $this, 'salesforce_pull' ), 10 );
 		add_action( $this->option_prefix . 'pull_process_records', array( $this, 'salesforce_pull_process_records' ), 10, 3 );
+	}
+
+	/**
+	 * Deprecated actions
+	 */
+	public function deprecated_actions() {
+		// previous option names.
+		add_filter( 'object_sync_for_salesforce_pull_option_legacy_key', array( $this, 'deprecated_pull_option_names' ), 10, 2 );
+	}
+
+	/**
+	 * Modify legacy named individual option records for sync operations
+	 *
+	 * @param string $key the plugin's suggested key name.
+	 * @param array  $params the array of parameters to make the key.
+	 * @return mixed $value the value of the item. False if it's empty.
+	 */
+	public function deprecated_pull_option_names( $key, $params ) {
+		if ( $this->option_prefix . 'pull_last_id' === $key ) {
+			$key = $this->option_prefix . 'last_pull_id';
+		}
+		if ( isset( $params['object_type'] ) ) {
+			if ( $this->option_prefix . 'pull_current_query_' . $params['object_type'] === $key ) {
+				$key = $this->option_prefix . 'currently_pulling_query_' . $params['object_type'];
+			}
+		}
+		return $key;
 	}
 
 	/**
@@ -263,7 +302,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$this->get_deleted_records();
 
 			// Store this request time for the throttle check.
-			update_option( $this->option_prefix . 'pull_last_sync', time() );
+			$this->pull_options->set( 'last_sync', '', '', time() );
 			return true;
 
 		} else {
@@ -279,8 +318,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 * @return bool Returns false if the time elapsed between recent pulls is too short.
 	 */
 	private function check_throttle() {
-		$pull_throttle = get_option( $this->option_prefix . 'pull_throttle', 5 );
-		$last_sync     = get_option( $this->option_prefix . 'pull_last_sync', 0 );
+		$pull_throttle = $this->pull_options->get( 'throttle', '', '', 5 );
+		$last_sync     = $this->pull_options->get( 'last_sync', '', '', 0 );
 
 		if ( time() > ( $last_sync + $pull_throttle ) ) {
 			return true;
@@ -316,11 +355,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// if we are batching soql queries, let's do it.
 			if ( true === $this->batch_soql_queries ) {
 				// pull query batch size option name.
-				if ( '' !== get_option( $this->option_prefix . 'pull_query_batch_size', '' ) ) {
-					$batch_size = filter_var( get_option( $this->option_prefix . 'pull_query_batch_size', $this->min_soql_batch_size ), FILTER_VALIDATE_INT );
+				$pull_query_batch_size = $this->pull_options->get( 'query_batch_size', '', '', '' );
+				if ( '' !== $pull_query_batch_size ) {
+					$batch_size = filter_var( $this->pull_options->get( 'query_batch_size', '', '', $this->min_soql_batch_size ), FILTER_VALIDATE_INT );
 				} else {
 					// old limit value.
-					$batch_size = filter_var( get_option( $this->option_prefix . 'pull_query_limit', $this->min_soql_batch_size ), FILTER_VALIDATE_INT );
+					// Deprecated in 2.0.3.
+					$batch_size = filter_var( $this->pull_options->get( 'query_limit', '', '', $this->min_soql_batch_size ), FILTER_VALIDATE_INT );
 				}
 				$batch_size = filter_var(
 					$batch_size,
@@ -366,14 +407,15 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$response     = $results['data'];
 			$version_path = wp_parse_url( $sfapi->get_api_endpoint(), PHP_URL_PATH );
 
-			$sf_last_sync = get_option( $this->option_prefix . 'pull_last_sync_' . $type, null );
+			$sf_last_sync = $this->pull_options->get( 'last_sync', $type, $salesforce_mapping['id'], null );
 			$last_sync    = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
 
 			if ( ! isset( $response['errorCode'] ) && 0 < count( $response['records'] ) ) {
 				// Write items to the queue.
 				foreach ( $response['records'] as $key => $result ) {
 					// if we've already pulled, or tried to pull, the current ID, don't do it again.
-					if ( get_option( $this->option_prefix . 'last_pull_id', '' ) === $result['Id'] ) {
+					$last_id = $this->pull_options->get( 'last_id', '', '', '' );
+					if ( $last_id === $result['Id'] ) {
 						if ( true === $this->debug ) {
 							// create log entry for failed pull.
 							$status = 'debug';
@@ -424,7 +466,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 						if ( false === $pull_allowed ) {
 							// update the current state so we don't end up on the same record again if the loop fails.
-							update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
+							$this->pull_options->set( 'last_id', '', '', $result['Id'] );
 							if ( true === $this->debug ) {
 								// create log entry for failed pull.
 								$status = 'debug';
@@ -502,7 +544,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$this->schedule_name
 						);
 						// update the current state so we don't end up on the same record again if the loop fails.
-						update_option( $this->option_prefix . 'last_pull_id', $result['Id'] );
+						$this->pull_options->set( 'last_id', '', '', $result['Id'] );
 						if ( true === $this->debug ) {
 							// create log entry for successful pull.
 							$status = 'debug';
@@ -533,7 +575,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				// we're done with the foreach. store the LastModifiedDate of the last item processed, or the current time if it isn't there.
 				$last_date_for_query = isset( $result['LastModifiedDate'] ) ? $result['LastModifiedDate'] : '';
-				$this->increment_current_type_datetime( $type, $last_date_for_query );
+				$this->increment_current_type_datetime( $type, $last_date_for_query, $salesforce_mapping['id'] );
 
 				if ( true === $this->batch_soql_queries ) {
 					// if applicable, process the next batch of records.
@@ -551,13 +593,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$soql = $this->get_pull_query( $type, $salesforce_mapping );
 					} elseif ( $last_record_key === $key ) {
 						// clear the stored query. we don't need to offset and we've finished the loop.
-						$this->clear_current_type_query( $type );
+						$this->clear_current_type_query( $type, $salesforce_mapping['id'] );
 					}
 				} // end if
 			} elseif ( ! isset( $response['errorCode'] ) && 0 === count( $response['records'] ) && false === $this->batch_soql_queries ) {
 				// only update/clear these option values if we are currently still processing a query.
-				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
-					$this->clear_current_type_query( $type );
+				$current_query = $this->pull_options->get( 'current_query', $type, $salesforce_mapping['id'], '' );
+				if ( '' !== $current_query ) {
+					$this->clear_current_type_query( $type, $salesforce_mapping['id'] );
 				}
 				// try to check for specific error codes from Salesforce.
 			} elseif ( isset( $response['errorCode'] ) && 'INVALID_FIELD' === $response['errorCode'] ) {
@@ -573,8 +616,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$log_body = '<p>' . esc_html__( 'A field may have been deleted from Salesforce, or it has otherwise become invalid. You may need to check and resave your fieldmap.', 'object-sync-for-salesforce' ) . '</p>';
 
 				// if it's an invalid field, try to clear the cached query so it can try again next time.
-				if ( '' !== get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' ) ) {
-					$this->clear_current_type_query( $type );
+				$current_query = $this->pull_options->get( 'current_query', $type, $salesforce_mapping['id'], '' );
+				if ( '' !== $current_query ) {
+					$this->clear_current_type_query( $type, $salesforce_mapping['id'] );
 					$log_title .= esc_html__( ' The stored query has been cleared.', 'object-sync-for-salesforce' );
 					$log_body  .= '<p>' . esc_html__( 'The currently stored query for this object type has been deleted.', 'object-sync-for-salesforce' ) . '</p>';
 				}
@@ -738,7 +782,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	private function get_pull_query( $type, $salesforce_mapping = array() ) {
 		// we need to determine what to do with saved queries. this is what we currently do but it doesn't work.
 		// check if we have a stored next query to run for this type. if so, unserialize it so we have an object.
-		$pull_query_running = get_option( $this->option_prefix . 'currently_pulling_query_' . $type, '' );
+		$pull_query_running = $this->pull_options->get( 'current_query', $type, $salesforce_mapping['id'], '' );
 		if ( '' !== $pull_query_running ) {
 			$saved_query = maybe_unserialize( $pull_query_running );
 		}
@@ -808,7 +852,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			);
 
 			// Set a limit on the number of records that can be retrieved from the API at one time.
-			$soql->limit = filter_var( get_option( $this->option_prefix . 'pull_query_limit', 25 ), FILTER_VALIDATE_INT );
+			$soql->limit = filter_var( $this->pull_options->get( 'query_limit', '', '', 25 ), FILTER_VALIDATE_INT );
 
 			// if there are record types on this fieldmap, use them as a conditional.
 			if ( ! empty( $mapped_record_types ) ) {
@@ -819,7 +863,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		}
 
 		// Get the value for the pull trigger field. Often this will LastModifiedDate. It needs to change when the query gets regenerated after the max offset has been reached.
-		$pull_trigger_field_value = $this->get_pull_date_value( $type, $soql );
+		$pull_trigger_field_value = $this->get_pull_date_value( $type, $soql, $salesforce_mapping['id'] );
 
 		// we check to see if the stored date is the same as the new one. if it is not, we will want to reset the offset.
 		$reset_offset = false;
@@ -869,7 +913,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// serialize the currently running SOQL query and store it for this type.
 		$serialized_current_query = maybe_serialize( $soql );
-		update_option( $this->option_prefix . 'currently_pulling_query_' . $type, $serialized_current_query, false );
+		$this->pull_options->set( 'current_query', $type, $salesforce_mapping['id'], $serialized_current_query, false );
 		return $soql;
 	}
 
@@ -895,15 +939,16 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 *
 	 * @param string $type e.g. "Contact", "Account", etc.
 	 * @param object $soql the SOQL object.
+	 * @param int    $fieldmap_id is the fieldmap ID that goes with this query.
 	 * @return timestamp $pull_trigger_field_value
 	 */
-	private function get_pull_date_value( $type, $soql ) {
+	private function get_pull_date_value( $type, $soql, $fieldmap_id = '' ) {
 		// If no lastupdate, get all records, else get records since last pull.
 		// this should be what keeps it from getting all the records, whether or not they've ever been updated
 		// we also use the option for when the plugin was installed, and don't go back further than that by default.
 
 		$sf_activate_time = get_option( $this->option_prefix . 'activate_time', '' );
-		$sf_last_sync     = get_option( $this->option_prefix . 'pull_last_sync_' . $type, null );
+		$sf_last_sync     = $this->pull_options->get( 'last_sync', $type, $fieldmap_id, null );
 		if ( $sf_last_sync ) {
 			$pull_trigger_field_value = gmdate( 'Y-m-d\TH:i:s\Z', $sf_last_sync );
 		} else {
@@ -944,9 +989,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// Iterate over each field mapping to determine our query parameters.
 			foreach ( $mappings as $salesforce_mapping ) {
-				$last_merge_sync = get_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], time() );
+				$last_merge_sync = $this->pull_options->get( 'merge_last', $salesforce_mapping['salesforce_object'], '', time() );
 				$now             = time();
-				update_option( $this->option_prefix . 'pull_merge_last_' . $salesforce_mapping['salesforce_object'], $now );
+				$this->pull_options->set( 'merge_last', $salesforce_mapping['salesforce_object'], $salesforce_mapping['id'], $now );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
 				// (using an incompatible date may lead to exceptions).
@@ -1088,9 +1133,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// Iterate over each field mapping to determine our query parameters.
 			foreach ( $mappings as $salesforce_mapping ) {
 
-				$last_delete_sync = get_option( $this->option_prefix . 'pull_delete_last_' . $type, time() );
+				$last_delete_sync = $this->pull_options->get( 'delete_last', $type, '', time() );
 				$now              = time();
-				update_option( $this->option_prefix . 'pull_delete_last_' . $type, $now );
+				$this->pull_options->set( 'delete_last', $type, $salesforce_mapping['id'], $now );
 
 				// get_deleted() constraint: startDate cannot be more than 30 days ago
 				// (using an incompatible date may lead to exceptions).
@@ -1184,9 +1229,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$this->schedule_name
 					);
 
-				}
+				} // end foreach.
 
-				update_option( $this->option_prefix . 'pull_delete_last_' . $type, time() );
+				$this->pull_options->set( 'delete_last', $type, $salesforce_mapping['id'], time() );
 
 			} // End foreach() loop.
 		} // End foreach() loop.
@@ -2328,14 +2373,15 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 * Clear the currently stored query for the specified content type
 	 *
 	 * @param string $type e.g. "Contact", "Account", etc.
+	 * @param int    $fieldmap_id is the fieldmap ID that goes with this query.
 	 */
-	public function clear_current_type_query( $type ) {
+	public function clear_current_type_query( $type, $fieldmap_id = '' ) {
 		// update the last sync timestamp for this content type.
-		$this->increment_current_type_datetime( $type );
+		$this->increment_current_type_datetime( $type, $fieldmap_id );
 		// delete the option value for the currently pulling query for this type.
-		delete_option( $this->option_prefix . 'currently_pulling_query_' . $type );
+		$this->pull_options->delete( 'current_query', $type, $fieldmap_id );
 		// delete the option value for the last pull record id.
-		delete_option( $this->option_prefix . 'last_pull_id' );
+		$this->pull_options->delete( 'last_id', '', '' );
 	}
 
 	/**
@@ -2343,15 +2389,16 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 *
 	 * @param string    $type e.g. "Contact", "Account", etc.
 	 * @param timestamp $next_query_modified_date the last record's modified datetime, or the current time if there isn't one.
+	 * @param int       $fieldmap_id is the fieldmap ID that goes with this query.
 	 */
-	private function increment_current_type_datetime( $type, $next_query_modified_date = '' ) {
+	private function increment_current_type_datetime( $type, $next_query_modified_date = '', $fieldmap_id = '' ) {
 		// update the last sync timestamp for this content type.
 		if ( '' === $next_query_modified_date ) {
 			$next_query_modified_date = time();
 		} else {
 			$next_query_modified_date = strtotime( $next_query_modified_date );
 		}
-		update_option( $this->option_prefix . 'pull_last_sync_' . $type, $next_query_modified_date );
+		$this->pull_options->set( 'last_sync', $type, $fieldmap_id, $next_query_modified_date );
 	}
 
 	/**
