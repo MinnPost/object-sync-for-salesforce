@@ -348,6 +348,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				continue;
 			}
 
+			// we don't want to cache this because timestamps.
 			$query_options = array(
 				'cache' => false,
 			);
@@ -396,9 +397,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			}
 			*/
 
-			// Execute query
-			// have to cast it to string to make sure it uses the magic method
-			// we don't want to cache this because timestamps.
+			// Execute query.
 			$results = $sfapi->query(
 				$soql_string,
 				$query_options
