@@ -108,6 +108,13 @@
 
 <dl class="phpdocumentor-table-of-contents">
                 <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Mapping.html#property_active_fieldmap_conditions">$active_fieldmap_conditions</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>The active status values for fieldmaps</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Mapping.html#property_array_delimiter">$array_delimiter</a>
     <span>
                 &nbsp;: string            </span>
@@ -169,6 +176,13 @@
                 &nbsp;: string            </span>
 </dt>
 <dd>The direction from WordPress to Salesforce</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Mapping.html#property_fieldmap_statuses">$fieldmap_statuses</a>
+    <span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+</dt>
+<dd>Possible status values for fieldmaps</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Mapping.html#property_fieldmap_table">$fieldmap_table</a>
@@ -498,6 +512,38 @@ Sets up the database entry for mapping the object types between Salesforce and W
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="property_active_fieldmap_conditions">
+        $active_fieldmap_conditions
+        <a href="classes/Object-Sync-Sf-Mapping.html#property_active_fieldmap_conditions" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">84</span>
+</aside>
+
+        <p class="phpdocumentor-summary">The active status values for fieldmaps</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$active_fieldmap_conditions</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="property_array_delimiter">
         $array_delimiter
         <a href="classes/Object-Sync-Sf-Mapping.html#property_array_delimiter" class="headerlink"><i class="fas fa-link"></i></a>
@@ -507,7 +553,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">182</span>
+    <span class="phpdocumentor-element-found-in__line">196</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delimiter for arrays coming from Salesforce</p>
@@ -539,7 +585,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">189</span>
+    <span class="phpdocumentor-element-found-in__line">203</span>
 </aside>
 
         <p class="phpdocumentor-summary">Data in Salesforce that is stored as an array</p>
@@ -571,7 +617,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">196</span>
+    <span class="phpdocumentor-element-found-in__line">210</span>
 </aside>
 
         <p class="phpdocumentor-summary">Data in Salesforce that is stored as a date</p>
@@ -603,7 +649,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">231</span>
+    <span class="phpdocumentor-element-found-in__line">245</span>
 </aside>
 
         <p class="phpdocumentor-summary">Option value for whether the plugin is in debug mode</p>
@@ -635,7 +681,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">168</span>
+    <span class="phpdocumentor-element-found-in__line">182</span>
 </aside>
 
         <p class="phpdocumentor-summary">Salesforce directions, including sync</p>
@@ -667,7 +713,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">147</span>
+    <span class="phpdocumentor-element-found-in__line">161</span>
 </aside>
 
         <p class="phpdocumentor-summary">The direction from Salesforce to WordPress</p>
@@ -699,7 +745,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">154</span>
+    <span class="phpdocumentor-element-found-in__line">168</span>
 </aside>
 
         <p class="phpdocumentor-summary">The direction to sync both ways</p>
@@ -731,7 +777,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">161</span>
+    <span class="phpdocumentor-element-found-in__line">175</span>
 </aside>
 
         <p class="phpdocumentor-summary">WordPress directions, including sync</p>
@@ -763,7 +809,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">140</span>
+    <span class="phpdocumentor-element-found-in__line">154</span>
 </aside>
 
         <p class="phpdocumentor-summary">The direction from WordPress to Salesforce</p>
@@ -772,6 +818,38 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$direction_wordpress_sf</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_fieldmap_statuses">
+        $fieldmap_statuses
+        <a href="classes/Object-Sync-Sf-Mapping.html#property_fieldmap_statuses" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">77</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Possible status values for fieldmaps</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__name">$fieldmap_statuses</span>
     </code>
 
         <section class="phpdocumentor-description"></section>
@@ -859,7 +937,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">203</span>
+    <span class="phpdocumentor-element-found-in__line">217</span>
 </aside>
 
         <p class="phpdocumentor-summary">Data in Salesforce that is stored as an integer</p>
@@ -923,7 +1001,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">210</span>
+    <span class="phpdocumentor-element-found-in__line">224</span>
 </aside>
 
         <p class="phpdocumentor-summary">How long can a mapping field be</p>
@@ -1019,7 +1097,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">175</span>
+    <span class="phpdocumentor-element-found-in__line">189</span>
 </aside>
 
         <p class="phpdocumentor-summary">Default record type when using a Salesforce object that has a default or Master record type</p>
@@ -1051,7 +1129,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">133</span>
+    <span class="phpdocumentor-element-found-in__line">147</span>
 </aside>
 
         <p class="phpdocumentor-summary">Which events are run by Salesforce</p>
@@ -1115,7 +1193,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">224</span>
+    <span class="phpdocumentor-element-found-in__line">238</span>
 </aside>
 
         <p class="phpdocumentor-summary">Status flag for error</p>
@@ -1147,7 +1225,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">217</span>
+    <span class="phpdocumentor-element-found-in__line">231</span>
 </aside>
 
         <p class="phpdocumentor-summary">Status flag for success</p>
@@ -1179,7 +1257,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">77</span>
+    <span class="phpdocumentor-element-found-in__line">91</span>
 </aside>
 
         <p class="phpdocumentor-summary">Bitmap value for when sync is off</p>
@@ -1211,7 +1289,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">105</span>
+    <span class="phpdocumentor-element-found-in__line">119</span>
 </aside>
 
         <p class="phpdocumentor-summary">Bitmap value for when sync is is on for Salesforce create events</p>
@@ -1243,7 +1321,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">119</span>
+    <span class="phpdocumentor-element-found-in__line">133</span>
 </aside>
 
         <p class="phpdocumentor-summary">Bitmap value for when sync is is on for Salesforce delete events</p>
@@ -1275,7 +1353,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">112</span>
+    <span class="phpdocumentor-element-found-in__line">126</span>
 </aside>
 
         <p class="phpdocumentor-summary">Bitmap value for when sync is is on for Salesforce update events</p>
@@ -1307,7 +1385,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">84</span>
+    <span class="phpdocumentor-element-found-in__line">98</span>
 </aside>
 
         <p class="phpdocumentor-summary">Bitmap value for when sync is is on for WordPress create events</p>
@@ -1339,7 +1417,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">98</span>
+    <span class="phpdocumentor-element-found-in__line">112</span>
 </aside>
 
         <p class="phpdocumentor-summary">Bitmap value for when sync is is on for WordPress delete events</p>
@@ -1371,7 +1449,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">91</span>
+    <span class="phpdocumentor-element-found-in__line">105</span>
 </aside>
 
         <p class="phpdocumentor-summary">Bitmap value for when sync is is on for WordPress update events</p>
@@ -1435,7 +1513,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">126</span>
+    <span class="phpdocumentor-element-found-in__line">140</span>
 </aside>
 
         <p class="phpdocumentor-summary">Which events are run by WordPress</p>
@@ -1503,7 +1581,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">236</span>
+    <span class="phpdocumentor-element-found-in__line">250</span>
 </aside>
 
         <p class="phpdocumentor-summary">Constructor for mapping class</p>
@@ -1537,7 +1615,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">317</span>
+    <span class="phpdocumentor-element-found-in__line">340</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create a fieldmap row between a WordPress and Salesforce object</p>
@@ -1602,7 +1680,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">616</span>
+    <span class="phpdocumentor-element-found-in__line">655</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create an object map row between a WordPress and Salesforce object</p>
@@ -1649,7 +1727,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">598</span>
+    <span class="phpdocumentor-element-found-in__line">637</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete a fieldmap row between a WordPress and Salesforce object</p>
@@ -1696,7 +1774,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">804</span>
+    <span class="phpdocumentor-element-found-in__line">843</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete an object map row between a WordPress and Salesforce object</p>
@@ -1743,7 +1821,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">832</span>
+    <span class="phpdocumentor-element-found-in__line">871</span>
 </aside>
 
         <p class="phpdocumentor-summary">Generate a temporary ID to store while waiting for a push or pull to complete, before the record has been assigned a new ID</p>
@@ -1790,7 +1868,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">686</span>
+    <span class="phpdocumentor-element-found-in__line">725</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get all object map rows between WordPress and Salesforce objects.</p>
@@ -1846,7 +1924,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1234</span>
+    <span class="phpdocumentor-element-found-in__line">1273</span>
 </aside>
 
         <p class="phpdocumentor-summary">Check object map table to see if there have been any failed object map create attempts</p>
@@ -1893,7 +1971,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1203</span>
+    <span class="phpdocumentor-element-found-in__line">1242</span>
 </aside>
 
         <p class="phpdocumentor-summary">Check object map table to see if there have been any failed object map create attempts</p>
@@ -1928,7 +2006,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">338</span>
+    <span class="phpdocumentor-element-found-in__line">361</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get one or more fieldmap rows between a WordPress and Salesforce object</p>
@@ -1993,7 +2071,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">406</span>
+    <span class="phpdocumentor-element-found-in__line">444</span>
 </aside>
 
         <p class="phpdocumentor-summary">For a mapping, get the fieldmaps associated with it.</p>
@@ -2064,7 +2142,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">442</span>
+    <span class="phpdocumentor-element-found-in__line">480</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get the mapped record types for a given mapping.</p>
@@ -2111,7 +2189,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">723</span>
+    <span class="phpdocumentor-element-found-in__line">762</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get one or more object map rows between WordPress and Salesforce objects</p>
@@ -2182,7 +2260,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">867</span>
+    <span class="phpdocumentor-element-found-in__line">906</span>
 </aside>
 
         <p class="phpdocumentor-summary">Returns Salesforce object mappings for a given Salesforce object.</p>
@@ -2238,7 +2316,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">851</span>
+    <span class="phpdocumentor-element-found-in__line">890</span>
 </aside>
 
         <p class="phpdocumentor-summary">Returns Salesforce object mappings for a given WordPress object.</p>
@@ -2303,7 +2381,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">888</span>
+    <span class="phpdocumentor-element-found-in__line">927</span>
 </aside>
 
         <p class="phpdocumentor-summary">Map values between WordPress and Salesforce objects.</p>
@@ -2395,7 +2473,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">455</span>
+    <span class="phpdocumentor-element-found-in__line">493</span>
 </aside>
 
         <p class="phpdocumentor-summary">Update a fieldmap row between a WordPress and Salesforce object</p>
@@ -2469,7 +2547,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">765</span>
+    <span class="phpdocumentor-element-found-in__line">804</span>
 </aside>
 
         <p class="phpdocumentor-summary">Update an object map row between a WordPress and Salesforce object</p>
@@ -2525,7 +2603,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1141</span>
+    <span class="phpdocumentor-element-found-in__line">1180</span>
 </aside>
 
         <p class="phpdocumentor-summary">Format the sync trigger values for storage in the database.</p>
@@ -2590,7 +2668,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1117</span>
+    <span class="phpdocumentor-element-found-in__line">1156</span>
 </aside>
 
         <p class="phpdocumentor-summary">Prepare field map data for use</p>
@@ -2646,7 +2724,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">483</span>
+    <span class="phpdocumentor-element-found-in__line">521</span>
 </aside>
 
         <p class="phpdocumentor-summary">Setup fieldmap data
@@ -2712,7 +2790,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">790</span>
+    <span class="phpdocumentor-element-found-in__line">829</span>
 </aside>
 
         <p class="phpdocumentor-summary">Setup the data for the object map</p>

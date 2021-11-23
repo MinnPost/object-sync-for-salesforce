@@ -157,6 +157,13 @@
 <dd>The plugin&#039;s prefix when saving options to the database</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce-Pull.html#property_pull_options">$pull_options</a>
+    <span>
+                &nbsp;: object            </span>
+</dt>
+<dd>Object_Sync_Sf_Pull_Options class</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Pull.html#property_queue">$queue</a>
     <span>
                 &nbsp;: object            </span>
@@ -255,6 +262,20 @@ route is http://example.com/wp-json/salesforce-rest-api/pull/ plus params we dec
                         &nbsp;: mixed    </span>
 </dt>
 <dd>Clear the currently stored query for the specified content type</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Object-Sync-Sf-Salesforce-Pull.html#method_deprecated_actions">deprecated_actions()</a>
+    <span>
+                        &nbsp;: mixed    </span>
+</dt>
+<dd>Deprecated actions</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Object-Sync-Sf-Salesforce-Pull.html#method_deprecated_pull_option_names">deprecated_pull_option_names()</a>
+    <span>
+                        &nbsp;: mixed    </span>
+</dt>
+<dd>Modify legacy named individual option records for sync operations</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Pull.html#method_manual_pull">manual_pull()</a>
@@ -444,7 +465,7 @@ This means we update the mapping object to contain the new Salesforce Id, and pu
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">134</span>
+    <span class="phpdocumentor-element-found-in__line">148</span>
 </aside>
 
         <p class="phpdocumentor-summary">Whether the plugin is in debug mode</p>
@@ -604,7 +625,7 @@ This means we update the mapping object to contain the new Salesforce Id, and pu
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">127</span>
+    <span class="phpdocumentor-element-found-in__line">141</span>
 </aside>
 
         <p class="phpdocumentor-summary">Types of Salesforce records that can be merged</p>
@@ -645,6 +666,38 @@ This means we update the mapping object to contain the new Salesforce Id, and pu
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$option_prefix</span>
+    </code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_pull_options">
+        $pull_options
+        <a href="classes/Object-Sync-Sf-Salesforce-Pull.html#property_pull_options" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">106</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Pull_Options class</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
+    <span class="phpdocumentor-signature__name">$pull_options</span>
     </code>
 
         <section class="phpdocumentor-description"></section>
@@ -765,7 +818,7 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">141</span>
+    <span class="phpdocumentor-element-found-in__line">113</span>
 </aside>
 
         <p class="phpdocumentor-summary">The name of the ActionScheduler queue</p>
@@ -925,7 +978,7 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">106</span>
+    <span class="phpdocumentor-element-found-in__line">120</span>
 </aside>
 
         <p class="phpdocumentor-summary">Whether to batch SOQL queries</p>
@@ -957,7 +1010,7 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">120</span>
+    <span class="phpdocumentor-element-found-in__line">134</span>
 </aside>
 
         <p class="phpdocumentor-summary">Maximum size of a SOQL batch</p>
@@ -989,7 +1042,7 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">113</span>
+    <span class="phpdocumentor-element-found-in__line">127</span>
 </aside>
 
         <p class="phpdocumentor-summary">Minimum size of a SOQL batch</p>
@@ -1025,7 +1078,7 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">146</span>
+    <span class="phpdocumentor-element-found-in__line">153</span>
 </aside>
 
         <p class="phpdocumentor-summary">Constructor for pull class</p>
@@ -1059,7 +1112,7 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">202</span>
+    <span class="phpdocumentor-element-found-in__line">214</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create the action hooks based on what object maps exist from the admin settings
@@ -1094,14 +1147,14 @@ route is http://example.com/wp-json/salesforce-rest-api/pull/ plus params we dec
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2234</span>
+    <span class="phpdocumentor-element-found-in__line">2377</span>
 </aside>
 
         <p class="phpdocumentor-summary">Clear the currently stored query for the specified content type</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">clear_current_type_query</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">clear_current_type_query</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$fieldmap_id</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -1113,6 +1166,15 @@ route is http://example.com/wp-json/salesforce-rest-api/pull/ plus params we dec
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>e.g. &quot;Contact&quot;, &quot;Account&quot;, etc.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$fieldmap_id</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>is the fieldmap ID that goes with this query.</p>
 </section>
 
             </dd>
@@ -1133,6 +1195,96 @@ route is http://example.com/wp-json/salesforce-rest-api/pull/ plus params we dec
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_deprecated_actions">
+        deprecated_actions()
+        <a href="classes/Object-Sync-Sf-Salesforce-Pull.html#method_deprecated_actions" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">227</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Deprecated actions</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">deprecated_actions</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+            <section class="phpdocumentor-description"></section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_deprecated_pull_option_names">
+        deprecated_pull_option_names()
+        <a href="classes/Object-Sync-Sf-Salesforce-Pull.html#method_deprecated_pull_option_names" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">239</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Modify legacy named individual option records for sync operations</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">deprecated_pull_option_names</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$params</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$key</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>the plugin's suggested key name.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$params</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>the array of parameters to make the key.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>$value the value of the item. False if it's empty.</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_manual_pull">
         manual_pull()
         <a href="classes/Object-Sync-Sf-Salesforce-Pull.html#method_manual_pull" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1140,7 +1292,7 @@ route is http://example.com/wp-json/salesforce-rest-api/pull/ plus params we dec
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1176</span>
+    <span class="phpdocumentor-element-found-in__line">1246</span>
 </aside>
 
         <p class="phpdocumentor-summary">Method for ajax hooks to call for pulling manually</p>
@@ -1196,7 +1348,7 @@ route is http://example.com/wp-json/salesforce-rest-api/pull/ plus params we dec
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">256</span>
+    <span class="phpdocumentor-element-found-in__line">295</span>
 </aside>
 
         <p class="phpdocumentor-summary">Callback for the standard pull process used by webhooks and cron.</p>
@@ -1230,7 +1382,7 @@ route is http://example.com/wp-json/salesforce-rest-api/pull/ plus params we dec
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1213</span>
+    <span class="phpdocumentor-element-found-in__line">1283</span>
 </aside>
 
         <p class="phpdocumentor-summary">Sync WordPress objects and Salesforce objects from the queue using the REST API.</p>
@@ -1311,7 +1463,7 @@ route is http://example.com/wp-json/salesforce-rest-api/pull/ plus params we dec
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">223</span>
+    <span class="phpdocumentor-element-found-in__line">262</span>
 </aside>
 
         <p class="phpdocumentor-summary">REST API callback for salesforce pull. Returns status of 200 for successful
@@ -1362,7 +1514,7 @@ success : true</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">188</span>
+    <span class="phpdocumentor-element-found-in__line">200</span>
 </aside>
 
         <p class="phpdocumentor-summary">Whether to use the batchSize parameter on SOQL queries</p>
@@ -1409,7 +1561,7 @@ success : true</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">689</span>
+    <span class="phpdocumentor-element-found-in__line">749</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get the next offset query. If check is true, only see if that query would have results. Otherwise, return the SOQL object.</p>
@@ -1475,7 +1627,7 @@ success : true</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">281</span>
+    <span class="phpdocumentor-element-found-in__line">320</span>
 </aside>
 
         <p class="phpdocumentor-summary">Determines if the Salesforce pull should be allowed, or throttled.</p>
@@ -1511,7 +1663,7 @@ success : true</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1521</span>
+    <span class="phpdocumentor-element-found-in__line">1663</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create records in WordPress from a Salesforce pull</p>
@@ -1619,7 +1771,7 @@ success : true</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2267</span>
+    <span class="phpdocumentor-element-found-in__line">2411</span>
 </aside>
 
         <p class="phpdocumentor-summary">Create an object map between a Salesforce object and a WordPress object</p>
@@ -1684,7 +1836,7 @@ success : true</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2066</span>
+    <span class="phpdocumentor-element-found-in__line">2208</span>
 </aside>
 
         <p class="phpdocumentor-summary">Delete records in WordPress from a Salesforce pull</p>
@@ -1783,7 +1935,7 @@ success : true</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1041</span>
+    <span class="phpdocumentor-element-found-in__line">1108</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get deleted records from salesforce.</p>
@@ -1818,7 +1970,7 @@ success : true</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">903</span>
+    <span class="phpdocumentor-element-found-in__line">967</span>
 </aside>
 
         <p class="phpdocumentor-summary">Get merged records from Salesforce.</p>
@@ -1853,7 +2005,7 @@ success : true</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">632</span>
+    <span class="phpdocumentor-element-found-in__line">692</span>
 </aside>
 
         <p class="phpdocumentor-summary">Pull the next batch of records from the Salesforce API, if applicable
@@ -1955,14 +2107,14 @@ and places each updated SF object into the queue for later processing.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">880</span>
+    <span class="phpdocumentor-element-found-in__line">944</span>
 </aside>
 
         <p class="phpdocumentor-summary">Given a SObject type name, determine the datetime value the SOQL object should use to filter results. Often this will be LastModifiedDate.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">get_pull_date_value</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$soql</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\timestamp">timestamp</abbr></span></code>
+                <span class="phpdocumentor-signature__name">get_pull_date_value</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$soql</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$fieldmap_id</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\timestamp">timestamp</abbr></span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -1983,6 +2135,15 @@ and places each updated SF object into the queue for later processing.</p>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>the SOQL object.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$fieldmap_id</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>is the fieldmap ID that goes with this query.</p>
 </section>
 
             </dd>
@@ -2011,7 +2172,7 @@ and places each updated SF object into the queue for later processing.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">864</span>
+    <span class="phpdocumentor-element-found-in__line">927</span>
 </aside>
 
         <p class="phpdocumentor-summary">Determine the offset for the SOQL query to run</p>
@@ -2075,7 +2236,7 @@ and places each updated SF object into the queue for later processing.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">721</span>
+    <span class="phpdocumentor-element-found-in__line">781</span>
 </aside>
 
         <p class="phpdocumentor-summary">Given a SObject type name, build an SOQL query to include all fields for all
@@ -2156,7 +2317,7 @@ fieldmaps mapped to that SObject.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1493</span>
+    <span class="phpdocumentor-element-found-in__line">1635</span>
 </aside>
 
         <p class="phpdocumentor-summary">Generate the synced_object array</p>
@@ -2221,7 +2382,7 @@ fieldmaps mapped to that SObject.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">299</span>
+    <span class="phpdocumentor-element-found-in__line">338</span>
 </aside>
 
         <p class="phpdocumentor-summary">Pull updated records from Salesforce and place them in the queue.</p>
@@ -2259,14 +2420,14 @@ If we return something here, it's because there is an error.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2249</span>
+    <span class="phpdocumentor-element-found-in__line">2393</span>
 </aside>
 
         <p class="phpdocumentor-summary">Increment the currently running query&#039;s datetime</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">increment_current_type_datetime</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type"><abbr title="\timestamp">timestamp</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$next_query_modified_date</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">increment_current_type_datetime</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type"><abbr title="\timestamp">timestamp</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$next_query_modified_date</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$fieldmap_id</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -2287,6 +2448,15 @@ If we return something here, it's because there is an error.</p>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>the last record's modified datetime, or the current time if there isn't one.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$fieldmap_id</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>is the fieldmap ID that goes with this query.</p>
 </section>
 
             </dd>
@@ -2314,7 +2484,7 @@ If we return something here, it's because there is an error.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">2296</span>
+    <span class="phpdocumentor-element-found-in__line">2440</span>
 </aside>
 
         <p class="phpdocumentor-summary">Find out if pull is allowed for this record</p>
@@ -2397,7 +2567,7 @@ If we return something here, it's because there is an error.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">988</span>
+    <span class="phpdocumentor-element-found-in__line">1055</span>
 </aside>
 
         <p class="phpdocumentor-summary">Respond to Salesforce merge events
@@ -2453,7 +2623,7 @@ This means we update the mapping object to contain the new Salesforce Id, and pu
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-pull.php"><a href="files/classes-class-object-sync-sf-salesforce-pull.html"><abbr title="classes/class-object-sync-sf-salesforce-pull.php">class-object-sync-sf-salesforce-pull.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1926</span>
+    <span class="phpdocumentor-element-found-in__line">2068</span>
 </aside>
 
         <p class="phpdocumentor-summary">Update records in WordPress from a Salesforce pull</p>
