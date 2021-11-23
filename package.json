@@ -16,7 +16,7 @@
   "homepage": "https://github.com/MinnPost/object-sync-for-salesforce#readme",
   "devDependencies": {
     "@babel/core": "^7.16.0",
-    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
     "autoprefixer": "^10.4.0",
     "browser-sync": "^2.27.7",
     "css-mqpacker": "^7.0.0",
