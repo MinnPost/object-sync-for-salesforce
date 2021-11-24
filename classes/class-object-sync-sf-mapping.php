@@ -899,7 +899,7 @@ class Object_Sync_Sf_Mapping {
 	 * Returns Salesforce object mappings for a given Salesforce object.
 	 *
 	 * @param string $salesforce_id Type of object to load.
-	 * @param array $fieldmap the fieldmap this object map works with.
+	 * @param array  $fieldmap the fieldmap this object map works with.
 	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
 	 *
 	 * @return array $maps all the object maps that match the Salesforce Id
