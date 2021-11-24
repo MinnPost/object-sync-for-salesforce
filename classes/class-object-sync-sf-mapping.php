@@ -926,7 +926,7 @@ class Object_Sync_Sf_Mapping {
 	 * @deprecated since 2.1.0. Will be removed in 3.0.0.
 	 */
 	public function load_all_by_salesforce( $salesforce_id, $reset = false ) {
-		$maps = $this->load_object_maps_by_salesforce( $salesforce_id, array(), $reset );
+		$maps = $this->load_object_maps_by_salesforce_id( $salesforce_id, array(), $reset );
 		return $maps;
 	}
 
