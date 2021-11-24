@@ -1057,7 +1057,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		if ( isset( $merged_record['Id'] ) && true === filter_var( $merged_record['sf:IsDeleted'], FILTER_VALIDATE_BOOLEAN ) && '' !== $merged_record['sf:MasterRecordId'] ) {
 			$previous_sf_id  = $merged_record['Id'];
 			$new_sf_id       = $merged_record['sf:MasterRecordId'];
-			$mapping_objects = $this->mappings->load_all_by_salesforce( $previous_sf_id );
+			$mapping_objects = $this->mappings->load_object_maps_by_salesforce_id( $previous_sf_id );
 			foreach ( $mapping_objects as $mapping_object ) {
 				$wordpress_type                  = $mapping_object['wordpress_object'];
 				$wordpress_id                    = $mapping_object['wordpress_id'];
@@ -1362,7 +1362,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// this returns the row that maps an individual Salesforce row to an individual WordPress row.
 			if ( isset( $object['Id'] ) ) {
-				$mapping_objects = $this->mappings->load_all_by_salesforce( $object['Id'] );
+				$mapping_objects = $this->mappings->load_object_maps_by_salesforce_id( $object['Id'], $salesforce_mapping );
 			} else {
 				// if we don't have a Salesforce object id, we've got no business doing stuff in WordPress.
 				$status = 'error';
@@ -2444,7 +2444,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// if the current fieldmap does not allow create, we need to check if there is an object map for the Salesforce object Id. if not, set pull_allowed to false.
 		if ( ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers, true ) ) {
-			$object_map = $this->mappings->load_all_by_salesforce( $object['Id'] );
+			$object_map = $this->mappings->load_object_maps_by_salesforce_id( $object['Id'], $salesforce_mapping );
 			if ( empty( $object_map ) ) {
 				$pull_allowed = false;
 			}

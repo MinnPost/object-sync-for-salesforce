@@ -807,7 +807,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			if ( isset( $mapping_object['id'] ) ) {
 				$op = 'Delete';
 
-				$mapping_objects = $this->mappings->load_all_by_salesforce( $mapping_object['salesforce_id'] );
+				$mapping_objects = $this->mappings->load_object_maps_by_salesforce_id( $mapping_object['salesforce_id'], $mapping );
 
 				// only delete if there are no additional mapping objects for this record.
 				if ( 1 === count( $mapping_objects ) ) {

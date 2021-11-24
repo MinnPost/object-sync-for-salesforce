@@ -686,7 +686,7 @@ class Object_Sync_Sf_Mapping {
 			return $this->wpdb->insert_id;
 		} elseif ( false !== strpos( $this->wpdb->last_error, 'Duplicate entry' ) ) {
 			// this error should never happen now, I think. But let's watch and see.
-			$mapping = $this->load_all_by_salesforce( $data['salesforce_id'] )[0];
+			$mapping = $this->load_object_maps_by_salesforce_id( $data['salesforce_id'] )[0];
 			$id      = $mapping['id'];
 			$status  = 'error';
 			if ( isset( $this->logging ) ) {
@@ -899,17 +899,34 @@ class Object_Sync_Sf_Mapping {
 	 * Returns Salesforce object mappings for a given Salesforce object.
 	 *
 	 * @param string $salesforce_id Type of object to load.
+	 * @param array  $fieldmap the fieldmap this object map works with.
 	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
 	 *
 	 * @return array $maps all the object maps that match the Salesforce Id
 	 */
-	public function load_all_by_salesforce( $salesforce_id, $reset = false ) {
+	public function load_object_maps_by_salesforce_id( $salesforce_id, $fieldmap = array(), $reset = false ) {
 		$conditions = array(
 			'salesforce_id' => $salesforce_id,
 		);
-
+		if ( is_array( $fieldmap ) && ! empty( $fieldmap ) ) {
+			$conditions['wordpress_object'] = $fieldmap['wordpress_object'];
+		}
 		$maps = $this->get_all_object_maps( $conditions, $reset );
 
+		return $maps;
+	}
+
+	/**
+	 * Returns Salesforce object mappings for a given Salesforce object.
+	 *
+	 * @param string $salesforce_id Type of object to load.
+	 * @param bool   $reset Whether or not the cache should be cleared and fetch from current data.
+	 *
+	 * @return array $maps all the object maps that match the Salesforce Id
+	 * @deprecated since 2.1.0. Will be removed in 3.0.0.
+	 */
+	public function load_all_by_salesforce( $salesforce_id, $reset = false ) {
+		$maps = $this->load_object_maps_by_salesforce( $salesforce_id, array(), $reset );
 		return $maps;
 	}
 
