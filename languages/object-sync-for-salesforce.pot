@@ -547,11 +547,11 @@ msgstr ""
 msgid "%1$s: Mapping: there is already a WordPress object mapped to the Salesforce object %2$s and the mapping object ID is %3$s"
 msgstr ""
 
-#: classes/class-object-sync-sf-mapping.php:1256
+#: classes/class-object-sync-sf-mapping.php:1273
 msgid "&laquo;"
 msgstr ""
 
-#: classes/class-object-sync-sf-mapping.php:1257
+#: classes/class-object-sync-sf-mapping.php:1274
 msgid "&raquo;"
 msgstr ""
 
