@@ -1201,6 +1201,11 @@ Search.appendIndex(
             "summary": "Returns\u0020Salesforce\u0020object\u0020mappings\u0020for\u0020a\u0020given\u0020WordPress\u0020object.",
             "url": "classes/Object-Sync-Sf-Mapping.html#method_load_all_by_wordpress"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Aload_object_maps_by_salesforce_id\u0028\u0029",
+            "name": "load_object_maps_by_salesforce_id",
+            "summary": "Returns\u0020Salesforce\u0020object\u0020mappings\u0020for\u0020a\u0020given\u0020Salesforce\u0020object.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#method_load_object_maps_by_salesforce_id"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Aload_all_by_salesforce\u0028\u0029",
             "name": "load_all_by_salesforce",
             "summary": "Returns\u0020Salesforce\u0020object\u0020mappings\u0020for\u0020a\u0020given\u0020Salesforce\u0020object.",

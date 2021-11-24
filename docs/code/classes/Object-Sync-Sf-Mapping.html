@@ -444,6 +444,13 @@
 <dd>Returns Salesforce object mappings for a given WordPress object.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Object-Sync-Sf-Mapping.html#method_load_object_maps_by_salesforce_id">load_object_maps_by_salesforce_id()</a>
+    <span>
+                        &nbsp;: array&lt;string|int, mixed&gt;    </span>
+</dt>
+<dd>Returns Salesforce object mappings for a given Salesforce object.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Mapping.html#method_map_params">map_params()</a>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;    </span>
@@ -1924,7 +1931,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1273</span>
+    <span class="phpdocumentor-element-found-in__line">1290</span>
 </aside>
 
         <p class="phpdocumentor-summary">Check object map table to see if there have been any failed object map create attempts</p>
@@ -1971,7 +1978,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1242</span>
+    <span class="phpdocumentor-element-found-in__line">1259</span>
 </aside>
 
         <p class="phpdocumentor-summary">Check object map table to see if there have been any failed object map create attempts</p>
@@ -2251,7 +2258,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
         class="phpdocumentor-element
             -method
             -public
-                                                        "
+            -deprecated                                            "
 >
     <h4 class="phpdocumentor-element__name" id="method_load_all_by_salesforce">
         load_all_by_salesforce()
@@ -2260,12 +2267,12 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">906</span>
+    <span class="phpdocumentor-element-found-in__line">928</span>
 </aside>
 
         <p class="phpdocumentor-summary">Returns Salesforce object mappings for a given Salesforce object.</p>
 
-    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <code class="phpdocumentor-code phpdocumentor-signature -deprecated">
     <span class="phpdocumentor-signature__visibility">public</span>
                 <span class="phpdocumentor-signature__name">load_all_by_salesforce</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$salesforce_id</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$reset</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
@@ -2294,6 +2301,21 @@ Sets up the database entry for mapping the object types between Salesforce and W
             </dl>
 
     
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">deprecated</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>since 2.1.0. Will be removed in 3.0.0.</p>
+</section>
+
+                                    </dd>
+                        </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
@@ -2374,6 +2396,71 @@ Sets up the database entry for mapping the object types between Salesforce and W
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_load_object_maps_by_salesforce_id">
+        load_object_maps_by_salesforce_id()
+        <a href="classes/Object-Sync-Sf-Mapping.html#method_load_object_maps_by_salesforce_id" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">907</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Returns Salesforce object mappings for a given Salesforce object.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">load_object_maps_by_salesforce_id</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$salesforce_id</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$fieldmap</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">array()</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$reset</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$salesforce_id</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>Type of object to load.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$fieldmap</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">array()</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>the fieldmap this object map works with.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$reset</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>Whether or not the cache should be cleared and fetch from current data.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>$maps all the object maps that match the Salesforce Id</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_map_params">
         map_params()
         <a href="classes/Object-Sync-Sf-Mapping.html#method_map_params" class="headerlink"><i class="fas fa-link"></i></a>
@@ -2381,7 +2468,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">927</span>
+    <span class="phpdocumentor-element-found-in__line">944</span>
 </aside>
 
         <p class="phpdocumentor-summary">Map values between WordPress and Salesforce objects.</p>
@@ -2603,7 +2690,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1180</span>
+    <span class="phpdocumentor-element-found-in__line">1197</span>
 </aside>
 
         <p class="phpdocumentor-summary">Format the sync trigger values for storage in the database.</p>
@@ -2668,7 +2755,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-mapping.php"><a href="files/classes-class-object-sync-sf-mapping.html"><abbr title="classes/class-object-sync-sf-mapping.php">class-object-sync-sf-mapping.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1156</span>
+    <span class="phpdocumentor-element-found-in__line">1173</span>
 </aside>
 
         <p class="phpdocumentor-summary">Prepare field map data for use</p>
