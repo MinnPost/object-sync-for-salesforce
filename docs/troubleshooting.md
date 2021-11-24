@@ -49,13 +49,13 @@ Sometimes Salesforce returns an unhelpful 400 error (perhaps with a `grant type 
 
 ### Error: 401
 
-Sometimes Salesforce returns a 401 error. This means the session ID or OAuth token has expired. This can mean that you've already tried to authorize, but it failed, or that too much time has passed. Try to disconnect and reconnect the plugin. Also, make sure your Salesforce app has the proper permissions: "Access and manage your data (api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)".
+Sometimes Salesforce returns a 401 error. This means the session ID or OAuth token has expired. This can mean that you've already tried to authorize, but it failed, or that too much time has passed. Try to disconnect and reconnect the plugin. Also, make sure your Salesforce app has the proper permissions: "Manage user data via APIs (api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)".
 
 ### Plugin redirects after logging in, but does not finish activating
 
 If the plugin allows you to authorize in Salesforce, but does not finish activating in WordPress, consider these possible issues:
 
-1. Insufficient app permissions in Salesforce. Make sure the app's permissions are at least "Perform requests on your behalf at any time" for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select "Access and manage your data (api)" as one of these scopes. If you change permissions, give Salesforce a few minutes before trying to connect again.
+1. Insufficient app permissions in Salesforce. Make sure the app's permissions are at least "Perform requests on your behalf at any time" for OAuth Scope as well as the appropriate other scopes for your application. Many setups will also need to select "Manage user data via APIs (api)" as one of these scopes. If you change permissions, give Salesforce a few minutes before trying to connect again.
 2. The plugin may have been unable to create its required database tables. If you think this may be the case, refer to [this document](./troubleshooting-unable-to-create-database-tables.md) for the necessary SQL.
 3. Mismatched settings between the plugin and the expected values in Salesforce.
 
@@ -67,7 +67,7 @@ If you are successfully authenticated with Salesforce, but you are unable to cre
 
 When there are no values in the list of Salesforce objects, this means the plugin can’t access any of the objects in your Salesforce. There are three likely causes for this:
 
-1. You need to change the OAuth scope on the app you created in Salesforce. For most uses with this plugin, you’ll want to use "Perform requests on your behalf at any time" and "Access and manage your data (api)."" If you do change these, you’ll need to wait several minutes before trying again, as Salesforce is rather slow on this.
+1. You need to change the OAuth scope on the app you created in Salesforce. For most uses with this plugin, you’ll want to use "Perform requests on your behalf at any time" and "Manage user data via APIs (api)" If you do change these, you’ll need to wait several minutes before trying again, as Salesforce is rather slow on this.
 2. Your Salesforce objects might not be accessible to the Salesforce user who has authenticated with WordPress via this plugin.
 3. The Salesforce objects might have other restrictive permissions.
 
