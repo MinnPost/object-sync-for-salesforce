@@ -7,8 +7,9 @@ Changelog
 	* Feature: Add the ability for fieldmaps to be active or inactive. Thanks to GitHub user @TornMarketing for the request.
 	* Bug fix: Make the stored data about pull operations fieldmap-specific, preventing problems when multiple fieldmaps are connected to the same Salesforce object. Thanks to WordPress user @fortafy for the report.
 	* Bug fix: As part of the work to support multiple fieldmaps on the same Salesforce object type, object maps need to be loaded with information about the fieldmap.
-	* Maintenance: Install the Message Agency fork of the Force.com toolkit. This is how the plugin (optionally) detects merged records.
+	* Bug fix: When adding a user via the Ultimate Member plugin, prevent an incorrect error message log by adding the user ID value to the passed data.
 	* Maintenance: Update Action Scheduler to version 3.4.0. Note: this raises the minimum supported WordPress version to 5.2.
+	* Maintenance: Install the [Message Agency fork of the Force.com toolkit](https://github.com/messageagency/Forcecom-Toolkit-for-PHP). This is how the plugin (optionally) detects merged records.
 	* Maintenance: Change the default Salesforce REST API version to 53.0.
 	* Maintenance: Update URLs in the documentation that point to plugin PHP files to match their v2.0.0 filenames.
 	* Maintenance: Create a log entry if the plugin tries to sync a record but no parameters are eligible. Thanks to WordPress user @OfficeBureau for the request.
