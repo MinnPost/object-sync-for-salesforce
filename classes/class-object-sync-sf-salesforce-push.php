@@ -253,6 +253,13 @@ class Object_Sync_Sf_Salesforce_Push {
 	 * @param array  $form_data the data that was sent to create the user.
 	 */
 	public function um_add_user( $user_id, $form_data = array() ) {
+		// in at least some cases, the form data array does not have the ID field, and this can cause errors.
+		// if we don't have the ID field value in the form data, add it so it acts like the others.
+		$structure               = $this->wordpress->get_wordpress_table_structure( 'user' );
+		$wordpress_id_field_name = $structure['id_field'];
+		if ( ! isset( $form_data[ $wordpress_id_field_name ] ) ) {
+			$form_data[ $wordpress_id_field_name ] = $user_id;
+		}
 		$this->object_insert( $form_data, 'user' );
 	}
 
