@@ -555,23 +555,49 @@ class Object_Sync_Sf_WordPress {
 		$meta_fields = $this->wpdb->get_results( $select_meta );
 		$all_fields  = array();
 
+		// by default, WordPress fields are editable except for an object ID field.
+		// use the filter below to change this for any given field.
+		// if a field is not editable, it will show in the fieldmap screen with a lock, and will be removed when saving data into WordPress.
+
+		/* // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+		add_filter( 'object_sync_for_salesforce_wordpress_field_is_editable', 'wordpress_field_is_editable', 10, 2 );
+		function wordpress_field_is_editable( $editable, $field_name ) {
+			if ( $field_name === 'ID' ) {
+				$editable = true;
+			}
+			return $editable;
+		}
+		*/
+
 		foreach ( $data_fields as $key => $value ) {
 			if ( ! in_array( $value, $ignore_keys, true ) ) {
+				$editable = true;
+				if ( $value === $id_field ) {
+					$editable = false;
+				}
+				$editable     = apply_filters( $this->option_prefix . 'wordpress_field_is_editable', $editable );
 				$all_fields[] = array(
-					'key'     => $value,
-					'table'   => $content_table,
-					'methods' => serialize( $content_methods ),
-					'type'    => $data_field_types[ $key ],
+					'key'      => $value,
+					'table'    => $content_table,
+					'methods'  => serialize( $content_methods ),
+					'type'     => $data_field_types[ $key ],
+					'editable' => $editable,
 				);
 			}
 		}
 
 		foreach ( $meta_fields as $key => $value ) {
 			if ( ! in_array( $value->meta_key, $ignore_keys, true ) ) {
+				$editable = true;
+				if ( $value === $id_field ) {
+					$editable = false;
+				}
+				$editable     = apply_filters( $this->option_prefix . 'wordpress_field_is_editable', $editable );
 				$all_fields[] = array(
-					'key'     => $value->meta_key,
-					'table'   => $meta_table,
-					'methods' => serialize( $meta_methods ),
+					'key'      => $value->meta_key,
+					'table'    => $meta_table,
+					'methods'  => serialize( $meta_methods ),
+					'editable' => $editable,
 				);
 			}
 		}
@@ -581,10 +607,16 @@ class Object_Sync_Sf_WordPress {
 			foreach ( $taxonomy as $key => $value ) {
 				$exists = array_search( $value, array_column( $all_fields, 'key' ), true );
 				if ( 0 !== $exists ) {
+					$editable = true;
+					if ( $value === $id_field ) {
+						$editable = false;
+					}
+					$editable     = apply_filters( $this->option_prefix . 'wordpress_field_is_editable', $editable );
 					$all_fields[] = array(
-						'key'     => $value,
-						'table'   => $tax_table,
-						'methods' => serialize( $content_methods ),
+						'key'      => $value,
+						'table'    => $tax_table,
+						'methods'  => serialize( $content_methods ),
+						'editable' => $editable,
 					);
 				}
 			}
@@ -1246,7 +1278,7 @@ class Object_Sync_Sf_WordPress {
 	 * @return boolean true if successful
 	 */
 	private function user_delete( $id, $reassign = null ) {
-		// According to https://codex.wordpress.org/Function_Reference/wp_delete_user we have to include user.php first; otherwise it throws undefined error.
+		// According to https://developer.wordpress.org/reference/functions/wp_delete_user/ we have to include user.php first; otherwise it throws undefined error.
 		require_once ABSPATH . 'wp-admin/includes/user.php';
 		$result = wp_delete_user( $id, $reassign );
 		return $result;

@@ -47,7 +47,8 @@ $object_fields = array(
                 'read' => 'get_user_by',
                 'update' => 'wp_update_user',
                 'delete' => 'wp_delete_user'
-            )
+            ),
+            'editable' => false,
         ),
         array (
             'key' => 'user_login',
@@ -57,7 +58,8 @@ $object_fields = array(
                 'read' => 'get_user_by',
                 'update' => 'wp_update_user',
                 'delete' => 'wp_delete_user'
-            )
+            ),
+            'editable' => true,
         ),
         array (
             'key' => 'user_email',
@@ -67,7 +69,8 @@ $object_fields = array(
                 'read' => 'get_user_by',
                 'update' => 'wp_update_user',
                 'delete' => 'wp_delete_user'
-            )
+            ),
+            'editable' => true,
         ),
         array (
             'key' => 'wp_capabilities',
@@ -77,7 +80,8 @@ $object_fields = array(
                 'read' => 'get_user_meta',
                 'update' => 'update_user_meta',
                 'delete' => 'delete_user_meta'
-            )
+            ),
+            'editable' => true,
         ),
         array (
             'key' => 'wp_user_level',
@@ -87,7 +91,8 @@ $object_fields = array(
                 'read' => 'get_user_meta',
                 'update' => 'update_user_meta',
                 'delete' => 'delete_user_meta'
-            )
+            ),
+            'editable' => true,
         ),
         array (
             'key' => 'first_name',
@@ -97,7 +102,8 @@ $object_fields = array(
                 'read' => 'get_user_meta',
                 'update' => 'update_user_meta',
                 'delete' => 'delete_user_meta'
-            )
+            ),
+            'editable' => true,
         ),
         array (
             'key' => 'last_name',
@@ -107,7 +113,8 @@ $object_fields = array(
                 'read' => 'get_user_meta',
                 'update' => 'update_user_meta',
                 'delete' => 'delete_user_meta'
-            )
+            ),
+            'editable' => true,
         ),
     ),
     'from_cache' => 1, // whether this data is retrieved from the wordpress cache
@@ -130,9 +137,26 @@ function add_field( $object_fields, $wordpress_object ) {
             'read' => 'foo_plugin_read',
             'update' => 'foo_plugin_update',
             'delete' => 'foo_plugin_delete'
-        )
+        ),
+        'editable' => true,
     );
     return $object_fields;
+}
+```
+
+WordPress fields are assumed to be writeable by this plugin because WordPress does not provide a way to identify whether a field is read-only. But in reality, the ID field of a WordPress record should generally not be modified, so we've made the decision that the plugin will default to prevent this field from being modified.
+
+Any field that cannot be modified will be shown with the 🔒 emoji, as the Salesforce field list does for its own read-only fields. We've added a filter that allows developers, if necessary, to change these default behaviors by modifying the `editable` attribute for any field.
+
+Code example:
+
+```php
+add_filter( 'object_sync_for_salesforce_wordpress_field_is_editable', 'wordpress_field_is_editable', 10, 2 );
+function wordpress_field_is_editable( $editable, $field_name ) {
+    if ( $field_name === 'ID' ) {
+        $editable = true;
+    }
+    return $editable;
 }
 ```
 
