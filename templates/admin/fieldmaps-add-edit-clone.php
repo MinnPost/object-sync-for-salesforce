@@ -403,11 +403,19 @@
 											$disabled = ' disabled';
 										}
 									}
+
+									if ( isset( $wordpress_field['editable'] ) && false === $wordpress_field['editable'] ) {
+										$locked = ' 🔒';
+									} else {
+										$locked = '';
+									}
+
 									echo sprintf(
-										'<option value="%1$s"%3$s>%2$s</option>',
+										'<option value="%1$s"%3$s>%2$s%4$s</option>',
 										esc_attr( $wordpress_field['key'] ),
 										esc_html( $wordpress_field['key'] ),
-										esc_attr( $disabled )
+										esc_attr( $disabled ),
+										esc_attr( $locked )
 									);
 								}
 							}
@@ -550,7 +558,7 @@
 			<p class="description">
 				<?php
 				// translators: placeholders are for the class names: salesforce_push and salesforce_pull.
-				echo sprintf( esc_html__( 'Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. These settings are used by the %1$s and %2$s classes respectively.', 'object-sync-for-salesforce' ), '<code>salesforce_push</code>', '<code>salesforce_pull</code>' );
+				echo sprintf( esc_html__( 'Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. The WordPress Create, WordPress Update, and WordPress Delete actions push data from WordPress to Salesforce. The Salesforce Create, Salesforce Update, and Salesforce Delete actions pull data from Salesforce to WordPress.', 'object-sync-for-salesforce' ), '<code>salesforce_push</code>', '<code>salesforce_pull</code>' );
 				?>
 			</p>
 		</div>
