@@ -751,12 +751,19 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$soql                          = $this->get_pull_query( $type, $salesforce_mapping );
 		$does_next_offset_have_results = false;
 
+		// run the __toString method to convert the SOQL query object to a string.
+		$soql_string = (string) $soql;
+
+		// add a filter here to modify the query once it's a string.
+		// Hook to allow other plugins to modify the SOQL query before it is sent to Salesforce.
+		$soql_string = apply_filters( $this->option_prefix . 'pull_query_string_modify', $soql_string, $soql, $type, $salesforce_mapping );
+
 		$sfapi = $this->salesforce['sfapi'];
 		// Execute query
 		// have to cast it to string to make sure it uses the magic method
 		// we don't want to cache this because timestamps.
 		$results = $sfapi->query(
-			(string) $soql,
+			$soql_string,
 			$query_options
 		);
 
