@@ -1134,6 +1134,13 @@ class Object_Sync_Sf_Mapping {
 					continue;
 				}
 
+				// Skip fields that aren't editable by the plugin when mapping params.
+				// By default this is only the WordPress object's ID field.
+				// @see $wordpress->object_fields() method and object_sync_for_salesforce_wordpress_field_is_editable filter.
+				if ( true !== (bool) $fieldmap['wordpress_field']['editable'] ) {
+					unset( $params[ $wordpress_field ] );
+				}
+
 				switch ( $trigger ) {
 					case $this->sync_sf_create:
 						$params[ $wordpress_field ]['method_modify'] = $fieldmap['wordpress_field']['methods']['create'];
