@@ -2376,7 +2376,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 */
 	public function clear_current_type_query( $type, $fieldmap_id = '' ) {
 		// update the last sync timestamp for this content type.
-		$this->increment_current_type_datetime( $type, $fieldmap_id );
+		$this->increment_current_type_datetime( $type, '', $fieldmap_id );
 		// delete the option value for the currently pulling query for this type.
 		$this->pull_options->delete( 'current_query', $type, $fieldmap_id );
 		// delete the option value for the last pull record id.
