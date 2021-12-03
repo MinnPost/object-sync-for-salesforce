@@ -35,7 +35,7 @@ function change_pull_query( $soql, $type, $salesforce_mapping, $mapped_fields ) 
 
 Before the plugin makes a call to the Salesforce API, it converts the SOQL query to a string. Developers can modify this query string, giving them full control of the query before it runs.
 
-The result of this filter is not processed by the plugin before it is sent to the Salesforce API, so make sure the query has no errors before using it.
+The result of this filter is not processed in any way by the plugin before it is sent to the Salesforce API, so if you filter the query once it is a string, make sure the query has no errors before using it.
 
 ### Hook
 
@@ -45,21 +45,12 @@ The result of this filter is not processed by the plugin before it is sent to th
 /**
 // Example to change the order to descending
 *
-* @param string $soql_string
-*   The SOQL query string
-* @param object $soql
-*   The SOQL query object
-* @param string $object_type
-*   Salesforce object type
-* @param array $salesforce_mapping
-*   The map between the WordPress and Salesforce object types
-* @return string $soql_string
-*   The SOQL query string
+* @param string $query The SOQL query string
+* @param array $query_parameters array of parameters about the query. Includes Salesforce object type (a string), fields (an array of Salesforce fields), the order (an array), the query limit (an integer), the query offset (an integer), and the conditions applied to the query (an array). 
 */
-add_filter( 'object_sync_for_salesforce_pull_query_string_modify', 'change_pull_query_string', 10, 4 );
-// can always reduce this number if all the arguments are not necessary
-function change_pull_query_string( $soql_string, $soql, $type, $salesforce_mapping ) {
-	$soql_string = str_replace( 'ASC', 'DESC', $soql_string);
-	return $soql_string;
+add_filter( 'object_sync_for_salesforce_pull_query_string_modify', 'change_pull_query', 10, 2 );
+function change_pull_query_string( $query, $query_parameters ) {
+	$query = str_replace( 'ASC', 'DESC', $query);
+	return $query;
 }
 ```

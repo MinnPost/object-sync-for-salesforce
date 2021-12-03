@@ -14,6 +14,20 @@ defined( 'ABSPATH' ) || exit;
 class Object_Sync_Sf_Salesforce_Select_Query {
 
 	/**
+	 * Current version of the plugin
+	 *
+	 * @var string
+	 */
+	public $version;
+
+	/**
+	 * The plugin's prefix when saving options to the database
+	 *
+	 * @var string
+	 */
+	public $option_prefix;
+
+	/**
 	 * Salesforce object type
 	 *
 	 * @var string
@@ -61,11 +75,14 @@ class Object_Sync_Sf_Salesforce_Select_Query {
 	 * @param string $object_type Salesforce object type to query.
 	 */
 	public function __construct( $object_type = '' ) {
-		$this->object_type = $object_type;
 
-		$this->fields     = array();
-		$this->order      = array();
-		$this->conditions = array();
+		$this->version       = object_sync_for_salesforce()->version;
+		$this->option_prefix = object_sync_for_salesforce()->option_prefix;
+
+		$this->object_type = $object_type;
+		$this->fields      = array();
+		$this->order       = array();
+		$this->conditions  = array();
 	}
 
 	/**
@@ -95,8 +112,7 @@ class Object_Sync_Sf_Salesforce_Select_Query {
 	 * Implements PHP's magic __toString().
 	 * Function to convert the query to a string to pass to the SF API.
 	 *
-	 * @return string
-	 *   SOQL query ready to be executed the SF API.
+	 * @return string $query SOQL query ready to be executed the SF API.
 	 */
 	public function __toString() {
 
@@ -128,6 +144,28 @@ class Object_Sync_Sf_Salesforce_Select_Query {
 		if ( $this->offset ) {
 			$query .= ' OFFSET ' . (int) $this->offset;
 		}
+
+		$query_parameters = array(
+			'object_type' => $this->object_type,
+			'fields'      => $this->fields,
+			'order'       => $this->order,
+			'limit'       => $this->limit,
+			'offset'      => $this->offset,
+			'conditions'  => $this->conditions,
+		);
+
+		// add a filter here to modify the query once it's a string.
+		// Hook to allow other plugins to modify the SOQL query before it is sent to Salesforce.
+		$query = apply_filters( $this->option_prefix . 'pull_query_string_modify', $query, $query_parameters );
+
+		// quick example to change the order to descending once the query is already a string.
+		/* // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+		add_filter( 'object_sync_for_salesforce_pull_query_string_modify', 'change_pull_query', 10, 2 );
+		function change_pull_query_string( $query, $query_parameters ) {
+			$query = str_replace( 'ASC', 'DESC', $query);
+			return $query;
+		}
+		*/
 
 		return $query;
 	}

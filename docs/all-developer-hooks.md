@@ -22,7 +22,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - documentation: [extending pull](extending-pull.md#soql-object)
 - `object_sync_for_salesforce_pull_query_string_modify`:
     - description: modify the Salesforce query (SOQL) **string** before it is sent to Salesforce to pull records.
-    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
+    - code: [classes/class-object-sync-sf-salesforce-select-query.php](../classes/class-object-sync-sf-salesforce-select-query.php)
     - documentation: [extending pull](extending-pull.md#soql-string)
 - `object_sync_for_salesforce_pull_object_allowed`:
     - description: prevent a pull per-mapping.
