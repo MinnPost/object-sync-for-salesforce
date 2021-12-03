@@ -557,14 +557,24 @@ class Object_Sync_Sf_Salesforce_Push {
 				} else {
 					// there is not a mapping object for this WordPress object id yet
 					// check for that transient with the currently pulling id.
+					// this value is a Salesforce record Id.
 					$mapping_object_id_transient = $this->sync_transients->get( 'salesforce_pulling_object_id', '', $mapping['id'] );
 				}
 
+				// if there's a transient created for pulling that specific Salesforce ID, the value will still be there.
 				$salesforce_pulling = (int) $this->sync_transients->get( 'salesforce_pulling_' . $mapping_object_id_transient, '', $mapping['id'] );
-				if ( 1 === $salesforce_pulling ) {
+
+				if ( 1 !== $salesforce_pulling ) {
+					// check if there is already a mapping object that contains the transient's Salesforce Id value.
+					if ( ! isset( $mapping_object['salesforce_id'] ) || $mapping_object_id_transient !== $mapping_object['salesforce_id'] ) {
+						$salesforce_pulling = 0;
+					} else {
+						$salesforce_pulling = 1;
+					}
+				} else {
+					// otherwise, make sure the transient gets deleted.
 					$transients_to_delete[ $fieldmap_key ]['transients'][] = $mapping_object_id_transient;
-					$pulling_id = $this->sync_transients->get( 'salesforce_pulling_object_id', '', $mapping['id'] );
-					return false;
+					continue;
 				}
 			} else {
 				// if we don't have a WordPress object id, we've got no business doing stuff in Salesforce.
