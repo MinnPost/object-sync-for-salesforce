@@ -560,9 +560,10 @@ class Object_Sync_Sf_Mapping {
 
 					$setup['fields'][ $key ] = array(
 						'wordpress_field'  => array(
-							'label'   => sanitize_text_field( $posted['wordpress_field'][ $key ] ),
-							'methods' => maybe_unserialize( $wordpress_fields[ $method_key ]['methods'] ),
-							'type'    => isset( $wordpress_fields[ $method_key ]['type'] ) ? sanitize_text_field( $wordpress_fields[ $method_key ]['type'] ) : 'text',
+							'label'    => sanitize_text_field( $posted['wordpress_field'][ $key ] ),
+							'methods'  => maybe_unserialize( $wordpress_fields[ $method_key ]['methods'] ),
+							'type'     => isset( $wordpress_fields[ $method_key ]['type'] ) ? sanitize_text_field( $wordpress_fields[ $method_key ]['type'] ) : 'text',
+							'editable' => isset( $wordpress_fields[ $method_key ]['editable'] ) ? (bool) $wordpress_fields[ $method_key ]['editable'] : true,
 						),
 						'salesforce_field' => $salesforce_field_attributes,
 						'is_prematch'      => sanitize_text_field( $posted['is_prematch'][ $key ] ),
@@ -1131,6 +1132,14 @@ class Object_Sync_Sf_Mapping {
 					// The trigger is a Salesforce trigger, but the fieldmap direction is not a Salesforce direction.
 					unset( $params[ $wordpress_field ] );
 					// we also need to continue here, so it doesn't create an empty array below for fields that are WordPress -> Salesforce only.
+					continue;
+				}
+
+				// Skip fields that aren't editable by the plugin when mapping params.
+				// By default this is only the WordPress object's ID field.
+				// @see $wordpress->object_fields() method and object_sync_for_salesforce_wordpress_field_is_editable filter.
+				if ( isset( $fieldmap['wordpress_field']['editable'] ) && true !== (bool) $fieldmap['wordpress_field']['editable'] ) {
+					unset( $params[ $wordpress_field ] );
 					continue;
 				}
 

@@ -62,7 +62,7 @@ This plugin supports syncing (at least) the following WordPress field types. Whe
 - **Date/Time**: this value is converted to a timestamp, and then to `'c'`, the DateTime format that the Salesforce API expects.
 - **Boolean**: WordPress often stores boolean values as strings, so these values are converted to actual booleans.
 
-The plugin also has a hook to modify what fields are included for an object. You can read more about this in the [extending mapping options documentation](./extending-mapping-options.md#available-wordpress-fields).
+The plugin also has a hook to modify what fields are included for an object and how they behave, including which fields are editable by the plugin. You can read more about this in the [extending mapping options documentation](./extending-mapping-options.md#available-wordpress-fields).
 
 #### Salesforce fields
 
