@@ -38,6 +38,7 @@ class Object_Sync_Sf_Pull_Options {
 	 * Option keys that can be upgraded
 	 *
 	 * @var string
+	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
 	 */
 	private $upgradeable_keys;
 
@@ -72,22 +73,6 @@ class Object_Sync_Sf_Pull_Options {
 
 		// make the key a string.
 		$key = implode( '_', $params );
-
-		// allow developers to filter the key.
-		$key = apply_filters( $this->option_prefix . 'pull_option_key', $key, $params );
-
-		/* // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-		add_filter( 'object_sync_for_salesforce_pull_option_key', 'change_pull_option_key', 10, 2 );
-		function change_pull_query( $key, $params ) {
-			$key = 'my_key_name';
-			return $key;
-		}
-		*/
-
-		if ( true === $legacy ) {
-			// allow developers to filter the legacy key.
-			$key = apply_filters( $this->option_prefix . 'pull_option_legacy_key', $key, $params );
-		}
 
 		// note: the WordPress codex indicates that option names do not need to be escaped.
 		// see: https://developer.wordpress.org/reference/functions/update_option/.
@@ -212,6 +197,7 @@ class Object_Sync_Sf_Pull_Options {
 	 * @param int    $fieldmap_id the ID of the specific fieldmap that is running.
 	 * @param mixed  $default the default value for the option.
 	 * @return mixed $value the value of the item. False if it's empty.
+	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
 	 */
 	public function legacy_get( $operation, $object_type = '', $fieldmap_id, $default = false ) {
 		// generate the option key parameters.
@@ -250,6 +236,7 @@ class Object_Sync_Sf_Pull_Options {
 	 *
 	 * @param string $key the legacy key to delete.
 	 * @return bool  $result True if successful, false otherwise.
+	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
 	 */
 	public function legacy_delete( $key ) {
 		$result = delete_option( $key );
@@ -264,6 +251,7 @@ class Object_Sync_Sf_Pull_Options {
 	 *
 	 * @param string $key the key to add to the array.
 	 * @return array $this->upgradeable_keys the array of keys.
+	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
 	 */
 	private function add_upgradeable_key( $key ) {
 		$keys   = $this->get_upgradeable_keys();
@@ -281,6 +269,7 @@ class Object_Sync_Sf_Pull_Options {
 	 *
 	 * @param string $key the key to remove from the array.
 	 * @return array $this->upgradeable_keys the array of keys.
+	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
 	 */
 	private function remove_upgradeable_key( $key ) {
 		$keys      = $this->get_upgradeable_keys();
@@ -302,6 +291,7 @@ class Object_Sync_Sf_Pull_Options {
 	 * Get the array of upgradeable keys.
 	 *
 	 * @return array $this->upgradeable_keys the array of keys.
+	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
 	 */
 	private function get_upgradeable_keys() {
 		$keys                   = get_option( $this->option_prefix . 'upgradeable_keys', array() );

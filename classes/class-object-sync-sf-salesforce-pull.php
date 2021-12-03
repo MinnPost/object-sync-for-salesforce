@@ -243,6 +243,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 * @param string $key the plugin's suggested key name.
 	 * @param array  $params the array of parameters to make the key.
 	 * @return mixed $value the value of the item. False if it's empty.
+	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
 	 */
 	public function deprecated_pull_option_names( $key, $params ) {
 		if ( $this->option_prefix . 'pull_last_id' === $key ) {
