@@ -261,11 +261,17 @@
 								} else {
 									$selected = '';
 								}
+								if ( isset( $wordpress_field['editable'] ) && false === $wordpress_field['editable'] ) {
+									$locked = ' 🔒';
+								} else {
+									$locked = '';
+								}
 								echo sprintf(
-									'<option value="%1$s"%2$s>%3$s</option>',
+									'<option value="%1$s"%2$s>%3$s%4$s</option>',
 									esc_attr( $wordpress_field['key'] ),
 									esc_attr( $selected ),
-									esc_html( $wordpress_field['key'] )
+									esc_html( $wordpress_field['key'] ),
+									esc_attr( $locked )
 								);
 							}
 							?>
