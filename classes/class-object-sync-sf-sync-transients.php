@@ -1,17 +1,17 @@
 <?php
 /**
- * Handles getting and setting the pull options.
+ * Handles getting and setting the transients.
  *
- * @class   Object_Sync_Sf_Pull_Options
+ * @class   Object_Sync_Sf_Sync_Transients
  * @package Object_Sync_Salesforce
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Object_Sync_Sf_Pull_Options class.
+ * Object_Sync_Sf_Sync_Transients class.
  */
-class Object_Sync_Sf_Pull_Options {
+class Object_Sync_Sf_Sync_Transients {
 
 	/**
 	 * Current version of the plugin
@@ -28,14 +28,7 @@ class Object_Sync_Sf_Pull_Options {
 	public $option_prefix;
 
 	/**
-	 * Direction of the operation
-	 *
-	 * @var string
-	 */
-	public $direction;
-
-	/**
-	 * Option keys that can be upgraded
+	 * Transient keys that can be upgraded
 	 *
 	 * @var string
 	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
@@ -43,27 +36,24 @@ class Object_Sync_Sf_Pull_Options {
 	private $upgradeable_keys;
 
 	/**
-	 * Constructor for option records class
+	 * Constructor for transient records class
 	 */
 	public function __construct() {
-		$this->version       = object_sync_for_salesforce()->version;
-		$this->option_prefix = object_sync_for_salesforce()->option_prefix;
-
-		$this->direction = 'pull';
-
+		$this->version          = object_sync_for_salesforce()->version;
+		$this->option_prefix    = object_sync_for_salesforce()->option_prefix;
 		$this->upgradeable_keys = $this->get_upgradeable_keys();
 
 	}
 
 	/**
-	 * Generate an option key
+	 * Generate a transient key
 	 *
 	 * @param array $params the pieces to put together.
 	 * @param bool  $legacy whether this is a legacy key. This is for deprecated keys and will be removed in a future version.
-	 * @return string $key the full option key.
+	 * @return string $key the full transient key.
 	 */
-	private function generate_option_key( $params, $legacy = false ) {
-		array_unshift( $params, substr( $this->option_prefix, 0, -1 ), $this->direction ); // add the prefixes.
+	private function generate_transient_key( $params, $legacy = false ) {
+		array_unshift( $params, substr( $this->option_prefix, 0, -1 ) ); // add the prefixes.
 		$params = array_filter( $params, fn( $value ) => ! is_null( $value ) && '' !== $value ); // remove null and empty values.
 
 		// legacy keys don't have a fieldmap.
@@ -81,23 +71,23 @@ class Object_Sync_Sf_Pull_Options {
 	}
 
 	/**
-	 * Set individual option records for sync operations
+	 * Set individual transient records for sync operations
 	 *
-	 * @param string $operation what is the option related to? last pull, current pull, merge, delete, etc.
+	 * @param string $operation what is the transient related to? last pull, current pull, merge, delete, etc.
 	 * @param string $object_type the Salesforce object type.
 	 * @param int    $fieldmap_id the ID of the specific fieldmap that is running.
 	 * @param mixed  $value the value to be saved in the option.
-	 * @param bool   $autoload whether to autoload the option value.
+	 * @param int    $expiration whether to expire the transient.
 	 * @return bool  $result value of the save operation.
 	 */
-	public function set( $operation, $object_type = '', $fieldmap_id = '', $value = '', $autoload = true ) {
+	public function set( $operation, $object_type = '', $fieldmap_id = '', $value = '', $expiration = 0 ) {
 		// generate the option key parameters.
 		$params = array(
 			'operation'   => $operation,
 			'object_type' => $object_type,
 			'fieldmap_id' => $fieldmap_id,
 		);
-		$key    = $this->generate_option_key( $params );
+		$key    = $this->generate_transient_key( $params );
 		$value  = isset( $value ) ? $value : '';
 
 		/*
@@ -108,30 +98,30 @@ class Object_Sync_Sf_Pull_Options {
 		 * object_sync_for_salesforce_pull_delete_last_Contact_1
 		 */
 
-		$result = update_option( $key, $value, $autoload );
+		$result = set_transient( $key, $value, $expiration );
 
 		if ( true === $result ) {
-			$legacy_key = $this->generate_option_key( $params, true );
+			$legacy_key = $this->generate_transient_key( $params, true );
 			// if the legacy key exists and the keys are not the same, we might need to upgrade.
-			if ( get_option( $legacy_key ) && $key !== $legacy_key ) {
-				$this->legacy_option_upgrade( $operation, $object_type, $fieldmap_id );
+			if ( get_transient( $legacy_key ) && $key !== $legacy_key ) {
+				$this->legacy_transient_upgrade( $operation, $object_type, $fieldmap_id );
 			}
 		}
 		return $result;
 	}
 
 	/**
-	 * Set individual option records for sync operations
+	 * Set individual transient records for sync operations
 	 *
 	 * @param string $operation what is the option related to? last pull, current pull, merge, delete, etc.
 	 * @param string $object_type the Salesforce object type.
 	 * @param int    $fieldmap_id the ID of the specific fieldmap that is running.
 	 * @param mixed  $value the value to be saved in the option.
-	 * @param bool   $autoload whether to autoload the option value.
+	 * @param int    $expiration whether to expire the transient.
 	 * @return bool  $result value of the save operation.
-	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
+	 * @deprecated   this was added in 2.1.0 to upgrade old transient keys, but will be removed in a future version.
 	 */
-	private function legacy_option_upgrade( $operation, $object_type = '', $fieldmap_id = '', $value = '', $autoload = true ) {
+	private function legacy_transient_upgrade( $operation, $object_type = '', $fieldmap_id = '', $value = '', $expiration = 0 ) {
 		$result       = false;
 		$legacy_value = $this->legacy_get( $operation, $object_type, $fieldmap_id );
 		if ( false !== $legacy_value ) {
@@ -141,7 +131,7 @@ class Object_Sync_Sf_Pull_Options {
 				'object_type' => $object_type,
 				'fieldmap_id' => $fieldmap_id,
 			);
-			$key    = $this->generate_option_key( $params, true );
+			$key    = $this->generate_transient_key( $params, true );
 			$this->add_upgradeable_key( $key );
 			$result = $this->set( $operation, $object_type, $fieldmap_id, $legacy_value );
 			if ( true === $result ) {
@@ -152,23 +142,23 @@ class Object_Sync_Sf_Pull_Options {
 	}
 
 	/**
-	 * Get individual option records for sync operations
+	 * Get individual transient records for sync operations
 	 *
 	 * @param string $operation what is the option related to? last pull, current pull, merge, delete, etc.
-	 * @param string $object_type the Salesforce object type.
+	 * @param string $object_type the WordPress or Salesforce object type.
 	 * @param int    $fieldmap_id the ID of the specific fieldmap that is running.
-	 * @param mixed  $default the default value for the option.
+	 * @param mixed  $default the default value for the transient.
 	 * @return mixed $value the value of the item. False if it's empty.
 	 */
 	public function get( $operation, $object_type = '', $fieldmap_id = '', $default = false ) {
-		// generate the option key parameters.
+		// generate the transient key parameters.
 		$params = array(
 			'operation'   => $operation,
 			'object_type' => $object_type,
 			'fieldmap_id' => $fieldmap_id,
 		);
-		$key    = $this->generate_option_key( $params );
-		$value  = get_option( $key, $default );
+		$key    = $this->generate_transient_key( $params );
+		$value  = get_transient( $key );
 
 		/*
 		 * examples
@@ -178,68 +168,67 @@ class Object_Sync_Sf_Pull_Options {
 		 * object_sync_for_salesforce_pull_delete_last_Contact_1
 		 */
 
-		// if the new option value does exist but it has a default value, try to upgrade the old one.
-		if ( get_option( $key ) && $default === $value ) {
-			$legacy_key = $this->generate_option_key( $params, true );
+		// if the new transient value does exist but it has a default value, try to upgrade the old one.
+		if ( get_transient( $key ) && $default === $value ) {
+			$legacy_key = $this->generate_transient_key( $params, true );
 			// if the keys are not the same, we might need to upgrade.
 			if ( $key !== $legacy_key ) {
-				$this->legacy_option_upgrade( $operation, $object_type, $fieldmap_id, $value );
+				$this->legacy_transient_upgrade( $operation, $object_type, $fieldmap_id, $value );
 			}
 		}
 		return $value;
 	}
 
 	/**
-	 * Get legacy named individual option records for sync operations
+	 * Get legacy named individual transiuent records for sync operations
 	 *
-	 * @param string $operation what is the option related to? last pull, current pull, merge, delete, etc.
-	 * @param string $object_type the Salesforce object type.
+	 * @param string $operation what is the transient related to? last pull, current pull, merge, delete, etc.
+	 * @param string $object_type the WordPress or Salesforce object type.
 	 * @param int    $fieldmap_id the ID of the specific fieldmap that is running.
-	 * @param mixed  $default the default value for the option.
 	 * @return mixed $value the value of the item. False if it's empty.
 	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
 	 */
-	public function legacy_get( $operation, $object_type = '', $fieldmap_id, $default = false ) {
-		// generate the option key parameters.
+	public function legacy_get( $operation, $object_type = '', $fieldmap_id ) {
+		// generate the transient key parameters.
 		$params = array(
 			'operation'   => $operation,
 			'object_type' => $object_type,
 			'fieldmap_id' => $fieldmap_id,
 		);
-		$key    = $this->generate_option_key( $params, true );
-		$value  = get_option( $key, $default );
+		$key    = $this->generate_transient_key( $params, true );
+		$value  = get_transient( $key );
 		return $value;
 	}
 
 	/**
-	 * Delete the individual option records for sync operation
+	 * Delete the individual transient records for sync operation
 	 *
-	 * @param string $operation what is the option related to? last pull, current pull, merge, delete, etc.
-	 * @param string $object_type the Salesforce object type.
+	 * @param string $operation what is the transient related to? last pull, current pull, merge, delete, etc.
+	 * @param string $object_type the WordPress or Salesforce object type.
 	 * @param int    $fieldmap_id the ID of the specific fieldmap that is running.
 	 * @return bool  $result True if successful, false otherwise.
 	 */
 	public function delete( $operation, $object_type = '', $fieldmap_id = '' ) {
-		// generate the option key parameters.
+		// generate the transient key parameters.
 		$params = array(
 			'operation'   => $operation,
 			'object_type' => $object_type,
 			'fieldmap_id' => $fieldmap_id,
 		);
-		$key    = $this->generate_option_key( $params );
-		$result = delete_option( $key );
+		$key    = $this->generate_transient_key( $params );
+		$result = delete_transient( $key );
 		return $result;
 	}
 
 	/**
-	 * Delete the legacy individual option records for sync operation
+	 * Delete the legacy individual transient records for sync operation
 	 *
 	 * @param string $key the legacy key to delete.
 	 * @return bool  $result True if successful, false otherwise.
-	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
+	 * @deprecated   this was added in 2.1.0 to upgrade old transient keys, but will be removed in a future version.
 	 */
 	public function legacy_delete( $key ) {
-		$result = delete_option( $key );
+		$result = delete_transient( $key );
 		if ( true === $result ) {
 			$this->remove_upgradeable_key( $key );
 		}
@@ -247,11 +236,11 @@ class Object_Sync_Sf_Pull_Options {
 	}
 
 	/**
-	 * Add an option key to the array of upgradeable keys.
+	 * Add an transient key to the array of upgradeable keys.
 	 *
 	 * @param string $key the key to add to the array.
 	 * @return array $this->upgradeable_keys the array of keys.
-	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
+	 * @deprecated   this was added in 2.1.0 to upgrade old transient keys, but will be removed in a future version.
 	 */
 	private function add_upgradeable_key( $key ) {
 		$keys   = $this->get_upgradeable_keys();
@@ -265,11 +254,11 @@ class Object_Sync_Sf_Pull_Options {
 	}
 
 	/**
-	 * Remove an option key from the array of upgradeable keys.
+	 * Remove a transient key from the array of upgradeable keys.
 	 *
 	 * @param string $key the key to remove from the array.
 	 * @return array $this->upgradeable_keys the array of keys.
-	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
+	 * @deprecated   this was added in 2.1.0 to upgrade old transient keys, but will be removed in a future version.
 	 */
 	private function remove_upgradeable_key( $key ) {
 		$keys      = $this->get_upgradeable_keys();
@@ -291,7 +280,7 @@ class Object_Sync_Sf_Pull_Options {
 	 * Get the array of upgradeable keys.
 	 *
 	 * @return array $this->upgradeable_keys the array of keys.
-	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
+	 * @deprecated   this was added in 2.1.0 to upgrade old transient keys, but will be removed in a future version.
 	 */
 	private function get_upgradeable_keys() {
 		$keys                   = get_option( $this->option_prefix . 'upgradeable_keys', array() );
