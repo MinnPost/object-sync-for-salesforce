@@ -48,7 +48,7 @@ class Object_Sync_Sf_Sync_Transients {
 	 * Generate a transient key
 	 *
 	 * @param array $params the pieces to put together.
-	 * @param bool  $legacy whether this is a legacy key.
+	 * @param bool  $legacy whether this is a legacy key. This is for deprecated keys and will be removed in a future version.
 	 * @return string $key the full transient key.
 	 */
 	private function generate_transient_key( $params, $legacy = false ) {
@@ -134,6 +134,7 @@ class Object_Sync_Sf_Sync_Transients {
 	 * @param mixed  $value the value to be saved in the option.
 	 * @param int    $expiration whether to expire the transient.
 	 * @return bool  $result value of the save operation.
+	 * @deprecated   this was added in 2.1.0 to upgrade old transient keys, but will be removed in a future version.
 	 */
 	private function legacy_transient_upgrade( $operation, $object_type = '', $fieldmap_id = '', $value = '', $expiration = 0 ) {
 		$result       = false;

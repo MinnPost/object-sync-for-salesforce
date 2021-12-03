@@ -58,7 +58,7 @@ class Object_Sync_Sf_Pull_Options {
 	 * Generate an option key
 	 *
 	 * @param array $params the pieces to put together.
-	 * @param bool  $legacy whether this is a legacy key.
+	 * @param bool  $legacy whether this is a legacy key. This is for deprecated keys and will be removed in a future version.
 	 * @return string $key the full option key.
 	 */
 	private function generate_option_key( $params, $legacy = false ) {
@@ -144,6 +144,7 @@ class Object_Sync_Sf_Pull_Options {
 	 * @param mixed  $value the value to be saved in the option.
 	 * @param bool   $autoload whether to autoload the option value.
 	 * @return bool  $result value of the save operation.
+	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
 	 */
 	private function legacy_option_upgrade( $operation, $object_type = '', $fieldmap_id = '', $value = '', $autoload = true ) {
 		$result       = false;
