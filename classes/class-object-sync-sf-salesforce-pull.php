@@ -106,11 +106,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 	public $pull_options;
 
 	/**
-	 * Object_Sync_Sf_Transients class
+	 * Object_Sync_Sf_Sync_Transients class
 	 *
 	 * @var object
 	 */
-	public $transients;
+	public $sync_transients;
 
 	/**
 	 * The name of the ActionScheduler queue
@@ -172,8 +172,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$this->wordpress  = object_sync_for_salesforce()->wordpress;
 		$this->salesforce = object_sync_for_salesforce()->salesforce;
 
-		$this->pull_options = new Object_Sync_Sf_Pull_Options();
-		$this->transients   = new Object_Sync_Sf_Transients();
+		$this->pull_options    = new Object_Sync_Sf_Pull_Options();
+		$this->sync_transients = new Object_Sync_Sf_Sync_Transients();
 
 		$this->schedule_name = 'salesforce_pull';
 
@@ -1039,7 +1039,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					} // End foreach on merged
 				} // End if on soap
 				if ( ! empty( $merged_records ) ) {
-					$this->transients->set( 'salesforce_merged', $type, $salesforce_mapping['id'], $merged_records, $seconds );
+					$this->sync_transients->set( 'salesforce_merged', $type, $salesforce_mapping['id'], $merged_records, $seconds );
 				}
 			} // End foreach on mappings
 		} // end foreach on types
@@ -1151,7 +1151,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				// Salesforce call.
 				$deleted = $sfapi->get_deleted( $type, $last_delete_sync_sf, $now_sf );
-				$merged  = $this->transients->get( 'salesforce_merged', $type, $salesforce_mapping['id'] );
+				$merged  = $this->sync_transients->get( 'salesforce_merged', $type, $salesforce_mapping['id'] );
 				if ( false !== $merged && isset( $deleted['data']['deletedRecords'] ) ) {
 					foreach ( $merged as $key ) {
 						$deleted['data']['deletedRecords'] = array_filter(
@@ -1406,7 +1406,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// by default, we're not doing a merge.
 			$is_merge = false;
-			$merged   = $this->transients->get( 'salesforce_merged', $object_type, $salesforce_mapping['id'] );
+			$merged   = $this->sync_transients->get( 'salesforce_merged', $object_type, $salesforce_mapping['id'] );
 			if ( false !== $merged ) {
 				$key = array_search( $object['Id'], array_column( $merged, 'Id' ), true );
 				if ( false !== $key ) {
@@ -1415,7 +1415,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				}
 			}
 
-			$mapping_object_id_transient = $this->transients->get( 'salesforce_pushing_object_id', '', $salesforce_mapping['id'] );
+			$mapping_object_id_transient = $this->sync_transients->get( 'salesforce_pushing_object_id', '', $salesforce_mapping['id'] );
 			if ( false === $mapping_object_id_transient ) {
 				$mapping_object_id_transient = $object['Id'];
 			}
@@ -1423,7 +1423,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// 1. A record gets pushed to Salesforce by this plugin.
 			// 2. We save the LastModifiedDate from the Salesforce result as a timestamp in the transient.
 			// 3. Below, in addition to checking the Salesforce Id, we check against $object's LastModifiedDate and if it's not later than the transient value, we skip it because it's still pushing from our activity.
-			$salesforce_pushing = (int) $this->transients->get( 'salesforce_pushing_' . $mapping_object_id_transient, '', $salesforce_mapping['id'] );
+			$salesforce_pushing = (int) $this->sync_transients->get( 'salesforce_pushing_' . $mapping_object_id_transient, '', $salesforce_mapping['id'] );
 
 			if ( 1 !== $salesforce_pushing ) {
 				// the format to compare is like this: gmdate( 'Y-m-d\TH:i:s\Z', $salesforce_pushing ).
@@ -1589,8 +1589,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 			} elseif ( false === $is_new && false === $is_merge ) {
 				// unless we're on a delete, there is already at least one mapping_object['id'] associated with this Salesforce Id
 				// right here we should set the pulling transient.
-				$this->transients->set( 'salesforce_pulling_' . $object['Id'], '', $salesforce_mapping['id'], 1, $seconds );
-				$this->transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $object['Id'] );
+				$this->sync_transients->set( 'salesforce_pulling_' . $object['Id'], '', $salesforce_mapping['id'], 1, $seconds );
+				$this->sync_transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $object['Id'] );
 
 				foreach ( $mapping_objects as $mapping_object ) {
 					$synced_object = $this->get_synced_object( $object, $mapping_object, $salesforce_mapping );
@@ -1605,8 +1605,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				}
 			} elseif ( false === $is_new ) {
 				// on merge, we should still update the transient.
-				$this->transients->set( 'salesforce_pulling_' . $object['Id'], '', $salesforce_mapping['id'], 1, $seconds );
-				$this->transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $object['Id'] );
+				$this->sync_transients->set( 'salesforce_pulling_' . $object['Id'], '', $salesforce_mapping['id'], 1, $seconds );
+				$this->sync_transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $object['Id'] );
 			}
 		} // End foreach() on $salesforce_mappings.
 
@@ -1615,11 +1615,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$fieldmap_id = $value['fieldmap']['id'];
 			$transients  = $value['transients'];
 			foreach ( $transients as $transient_end ) {
-				$this->transients->delete( 'salesforce_pushing_' . $transient_end, '', $fieldmap_id );
+				$this->sync_transients->delete( 'salesforce_pushing_' . $transient_end, '', $fieldmap_id );
 			}
-			$pushing_id = $this->transients->get( 'salesforce_pushing_object_id', '', $fieldmap_id );
+			$pushing_id = $this->sync_transients->get( 'salesforce_pushing_object_id', '', $fieldmap_id );
 			if ( in_array( $pushing_id, $transients, true ) ) {
-				$this->transients->delete( 'salesforce_pushing_object_id', '', $fieldmap_id );
+				$this->sync_transients->delete( 'salesforce_pushing_object_id', '', $fieldmap_id );
 			}
 		}
 
@@ -1807,8 +1807,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				// there is already a mapping object. don't change the WordPress data to match this new Salesforce record, but log it.
 				if ( isset( $mapping_object['id'] ) ) {
 					// set the transients so that salesforce_push doesn't start doing stuff, then return out of here.
-					$this->transients->set( 'salesforce_pulling_' . $mapping_object['salesforce_id'], '', $salesforce_mapping['id'], 1, $seconds );
-					$this->transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $mapping_object['salesforce_id'] );
+					$this->sync_transients->set( 'salesforce_pulling_' . $mapping_object['salesforce_id'], '', $salesforce_mapping['id'], 1, $seconds );
+					$this->sync_transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $mapping_object['salesforce_id'] );
 					// create log entry to indicate that nothing happened.
 					$status = 'notice';
 					$title  = sprintf(
@@ -1863,8 +1863,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				// this means we have to create the mapping object here as well, and update it with the correct IDs after successful response
 				// create the mapping object between the rows.
 				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
-				$this->transients->set( 'salesforce_pulling_' . $object['Id'], '', $salesforce_mapping['id'], 1, $seconds );
-				$this->transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $object['Id'] );
+				$this->sync_transients->set( 'salesforce_pulling_' . $object['Id'], '', $salesforce_mapping['id'], 1, $seconds );
+				$this->sync_transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $object['Id'] );
 				$mapping_objects = $this->mappings->get_all_object_maps(
 					array(
 						'id' => $mapping_object_id,
@@ -1881,8 +1881,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				// No key or prematch field exists on this field map object, create a new object in WordPress.
 				$op                = 'Create';
 				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
-				$this->transients->set( 'salesforce_pulling_' . $mapping_object_id, '', $salesforce_mapping['id'], 1, $seconds );
-				$this->transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $mapping_object_id );
+				$this->sync_transients->set( 'salesforce_pulling_' . $mapping_object_id, '', $salesforce_mapping['id'], 1, $seconds );
+				$this->sync_transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $mapping_object_id );
 				$mapping_objects = $this->mappings->get_all_object_maps(
 					array(
 						'id' => $mapping_object_id,
@@ -2230,8 +2230,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				// only delete if there are no additional mapping objects for this record.
 				if ( 1 === count( $mapping_objects ) ) {
 
-					$this->transients->set( 'salesforce_pulling_' . $mapping_object['salesforce_id'], '', $salesforce_mapping['id'], 1, $seconds );
-					$this->transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $mapping_object['salesforce_id'] );
+					$this->sync_transients->set( 'salesforce_pulling_' . $mapping_object['salesforce_id'], '', $salesforce_mapping['id'], 1, $seconds );
+					$this->sync_transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $mapping_object['salesforce_id'] );
 
 					try {
 						$result = $this->wordpress->object_delete( $salesforce_mapping['wordpress_object'], $mapping_object['wordpress_id'] );

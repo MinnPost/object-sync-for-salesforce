@@ -99,11 +99,11 @@ class Object_Sync_Sf_Salesforce_Push {
 	public $salesforce;
 
 	/**
-	 * Object_Sync_Sf_Transients class
+	 * Object_Sync_Sf_Sync_Transients class
 	 *
 	 * @var object
 	 */
-	public $transients;
+	public $sync_transients;
 
 	/**
 	 * Whether the plugin is in debug mode
@@ -137,7 +137,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		$this->wordpress  = object_sync_for_salesforce()->wordpress;
 		$this->salesforce = object_sync_for_salesforce()->salesforce;
 
-		$this->transients = new Object_Sync_Sf_Transients();
+		$this->sync_transients = new Object_Sync_Sf_Sync_Transients();
 
 		$this->schedule_name = 'salesforce_push';
 
@@ -543,7 +543,6 @@ class Object_Sync_Sf_Salesforce_Push {
 				'transients' => array(),
 			);
 
-
 			// there is a WordPress object to push.
 			if ( isset( $object[ $wordpress_id_field_name ] ) ) {
 				// todo: we might want to loop through these?
@@ -558,13 +557,13 @@ class Object_Sync_Sf_Salesforce_Push {
 				} else {
 					// there is not a mapping object for this WordPress object id yet
 					// check for that transient with the currently pulling id.
-					$mapping_object_id_transient = $this->transients->get( 'salesforce_pulling_object_id', '', $mapping['id'] );
+					$mapping_object_id_transient = $this->sync_transients->get( 'salesforce_pulling_object_id', '', $mapping['id'] );
 				}
 
-				$salesforce_pulling = (int) $this->transients->get( 'salesforce_pulling_' . $mapping_object_id_transient, '', $mapping['id'] );
+				$salesforce_pulling = (int) $this->sync_transients->get( 'salesforce_pulling_' . $mapping_object_id_transient, '', $mapping['id'] );
 				if ( 1 === $salesforce_pulling ) {
 					$transients_to_delete[ $fieldmap_key ]['transients'][] = $mapping_object_id_transient;
-					$pulling_id = $this->transients->get( 'salesforce_pulling_object_id', '', $mapping['id'] );
+					$pulling_id = $this->sync_transients->get( 'salesforce_pulling_object_id', '', $mapping['id'] );
 					return false;
 				}
 			} else {
@@ -594,8 +593,6 @@ class Object_Sync_Sf_Salesforce_Push {
 				$logging->setup( $result );
 				return $result;
 			} // End if() statement.
-
-
 
 			$map_sync_triggers = $mapping['sync_triggers'];
 
@@ -740,11 +737,11 @@ class Object_Sync_Sf_Salesforce_Push {
 			$fieldmap_id = $value['fieldmap']['id'];
 			$transients  = $value['transients'];
 			foreach ( $transients as $transient_end ) {
-				$this->transients->delete( 'salesforce_pulling_' . $transient_end, '', $fieldmap_id );
+				$this->sync_transients->delete( 'salesforce_pulling_' . $transient_end, '', $fieldmap_id );
 			}
-			$pulling_id = $this->transients->get( 'salesforce_pulling_object_id', '', $fieldmap_id );
+			$pulling_id = $this->sync_transients->get( 'salesforce_pulling_object_id', '', $fieldmap_id );
 			if ( in_array( $pulling_id, $transients, true ) ) {
-				$this->transients->delete( 'salesforce_pulling_object_id', '', $fieldmap_id );
+				$this->sync_transients->delete( 'salesforce_pulling_object_id', '', $fieldmap_id );
 			}
 		}
 
@@ -854,8 +851,8 @@ class Object_Sync_Sf_Salesforce_Push {
 					$seconds     = reset( $frequencies )['frequency'] + 60;
 
 					// right here we should set the pushing transient.
-					$this->transients->set( 'salesforce_pushing_' . $mapping_object['salesforce_id'], '', $mapping['id'], 1, $seconds );
-					$this->transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $mapping_object['salesforce_id'] );
+					$this->sync_transients->set( 'salesforce_pushing_' . $mapping_object['salesforce_id'], '', $mapping['id'], 1, $seconds );
+					$this->sync_transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $mapping_object['salesforce_id'] );
 
 					try {
 						$api_result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
@@ -973,8 +970,8 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// right here we should change the pushing_object_id transient to the Salesforce Id value.
 				if ( isset( $api_result['code'] ) && (int) 204 === $api_result['code'] ) {
-					$this->transients->set( 'salesforce_pushing_' . $mapping_object['salesforce_id'], '', $mapping['id'], 1 );
-					$this->transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $mapping_object['salesforce_id'] );
+					$this->sync_transients->set( 'salesforce_pushing_' . $mapping_object['salesforce_id'], '', $mapping['id'], 1 );
+					$this->sync_transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $mapping_object['salesforce_id'] );
 				}
 
 				// delete the map row from WordPress after the Salesforce row has been deleted
@@ -1100,8 +1097,8 @@ class Object_Sync_Sf_Salesforce_Push {
 			// create the mapping object between the rows.
 			$temporary_map_id  = $this->mappings->generate_temporary_id( 'push' );
 			$mapping_object_id = $this->create_object_map( $object, $wordpress_id_field_name, $temporary_map_id, $mapping, true );
-			$this->transients->set( 'salesforce_pushing_' . $temporary_map_id, '', $mapping['id'], 1, $seconds );
-			$this->transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $temporary_map_id );
+			$this->sync_transients->set( 'salesforce_pushing_' . $temporary_map_id, '', $mapping['id'], 1, $seconds );
+			$this->sync_transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $temporary_map_id );
 			$mapping_object  = array();
 			$mapping_objects = $this->mappings->get_all_object_maps(
 				array(
@@ -1289,8 +1286,8 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// right here we should change the pushing transient to the LastModifiedDate for the Salesforce object.
 				if ( isset( $salesforce_data['LastModifiedDate'] ) ) {
-					$this->transients->set( 'salesforce_pushing_' . $salesforce_id, '', $mapping['id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
-					$this->transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $salesforce_id );
+					$this->sync_transients->set( 'salesforce_pushing_' . $salesforce_id, '', $mapping['id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
+					$this->sync_transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $salesforce_id );
 				}
 
 				// update that mapping object.
@@ -1361,8 +1358,8 @@ class Object_Sync_Sf_Salesforce_Push {
 			// $is_new is false here; we are updating an already mapped object
 
 			// right here we should set the pushing transient.
-			$this->transients->set( 'salesforce_pushing_' . $mapping_object['salesforce_id'], '', $mapping['id'], 1, $seconds );
-			$this->transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $mapping_object['salesforce_id'] );
+			$this->sync_transients->set( 'salesforce_pushing_' . $mapping_object['salesforce_id'], '', $mapping['id'], 1, $seconds );
+			$this->sync_transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $mapping_object['salesforce_id'] );
 
 			// there is an existing object link
 			// if the last sync is greater than the last time this object was updated, skip it
@@ -1509,8 +1506,8 @@ class Object_Sync_Sf_Salesforce_Push {
 
 			// right here we should change the pushing transient to the LastModifiedDate for the Salesforce object.
 			if ( isset( $salesforce_data['LastModifiedDate'] ) ) {
-				$this->transients->set( 'salesforce_pushing_' . $mapping_object['salesforce_id'], '', $mapping['id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
-				$this->transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $mapping_object['salesforce_id'] );
+				$this->sync_transients->set( 'salesforce_pushing_' . $mapping_object['salesforce_id'], '', $mapping['id'], strtotime( $salesforce_data['LastModifiedDate'] ) );
+				$this->sync_transients->set( 'salesforce_pushing_object_id', '', $mapping['id'], $mapping_object['salesforce_id'] );
 			}
 
 			// tell the mapping object - whether it is new or already existed - how we just used it.
