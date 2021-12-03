@@ -132,7 +132,7 @@ class Object_Sync_Sf_Sync_Transients {
 	 * @param string $object_type the Salesforce object type.
 	 * @param int    $fieldmap_id the ID of the specific fieldmap that is running.
 	 * @param mixed  $value the value to be saved in the option.
-	 * @param int    $expiration whether to expire the transient
+	 * @param int    $expiration whether to expire the transient.
 	 * @return bool  $result value of the save operation.
 	 */
 	private function legacy_transient_upgrade( $operation, $object_type = '', $fieldmap_id = '', $value = '', $expiration = 0 ) {
