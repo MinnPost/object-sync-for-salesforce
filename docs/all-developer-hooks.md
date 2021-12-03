@@ -22,7 +22,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - documentation: [extending pull](extending-pull.md#soql-object)
 - `object_sync_for_salesforce_pull_query_string_modify`:
     - description: modify the Salesforce query (SOQL) **string** before it is sent to Salesforce to pull records.
-    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
+    - code: [classes/class-object-sync-sf-salesforce-select-query.php](../classes/class-object-sync-sf-salesforce-select-query.php)
     - documentation: [extending pull](extending-pull.md#soql-string)
 - `object_sync_for_salesforce_pull_object_allowed`:
     - description: prevent a pull per-mapping.
@@ -37,7 +37,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
     - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-pull)
 - `object_sync_for_salesforce_find_wp_object_match`:
-    - description: modify the $wordpress_id string here
+    - description: modify the `$wordpress_id` string here
     - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
     - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
 - `object_sync_for_salesforce_push_params_modify`:
@@ -53,7 +53,7 @@ This page lists all developer hooks available in this plugin, with links to wher
     - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-push)
 - `object_sync_for_salesforce_find_sf_object_match`:
-    - description: modify the $salesforce_id string here
+    - description: modify the `$salesforce_id` string here
     - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
 - `object_sync_for_salesforce_settings_tabs`:
