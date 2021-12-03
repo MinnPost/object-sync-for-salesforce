@@ -1359,7 +1359,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$results = array();
 
-
 		foreach ( $salesforce_mappings as $fieldmap_key => $salesforce_mapping ) {
 			$transients_to_delete[ $fieldmap_key ] = array(
 				'fieldmap'   => $salesforce_mapping,
@@ -1613,7 +1612,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// delete transients that we've already processed for this Salesforce object.
 		foreach ( $transients_to_delete as $key => $value ) {
-			$fieldmap_id = $value['fieldmap'];
+			$fieldmap_id = $value['fieldmap']['id'];
 			$transients  = $value['transients'];
 			foreach ( $transients as $transient_end ) {
 				$this->transients->delete( 'salesforce_pushing_' . $transient_end, '', $fieldmap_id );
@@ -1881,8 +1880,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			} else {
 				// No key or prematch field exists on this field map object, create a new object in WordPress.
 				$op                = 'Create';
-				$mapping_object    = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
-				$mapping_object_id = isset( $mapping_object['id'] ) ? (int) $mapping_object['id'] : 0;
+				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
 				$this->transients->set( 'salesforce_pulling_' . $mapping_object_id, '', $salesforce_mapping['id'], 1, $seconds );
 				$this->transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $mapping_object_id );
 				$mapping_objects = $this->mappings->get_all_object_maps(

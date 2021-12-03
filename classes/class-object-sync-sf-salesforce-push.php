@@ -737,7 +737,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 		// delete transients that we've already processed for this WordPress object.
 		foreach ( $transients_to_delete as $key => $value ) {
-			$fieldmap_id = $value['fieldmap'];
+			$fieldmap_id = $value['fieldmap']['id'];
 			$transients  = $value['transients'];
 			foreach ( $transients as $transient_end ) {
 				$this->transients->delete( 'salesforce_pulling_' . $transient_end, '', $fieldmap_id );
