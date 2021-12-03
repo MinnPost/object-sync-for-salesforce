@@ -562,7 +562,7 @@ class Object_Sync_Sf_WordPress {
 		/* // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 		add_filter( 'object_sync_for_salesforce_wordpress_field_is_editable', 'wordpress_field_is_editable', 10, 2 );
 		function wordpress_field_is_editable( $editable, $field_name ) {
-			if ( $field_name === 'ID' ) {
+			if ( 'ID' === $field_name ) {
 				$editable = true;
 			}
 			return $editable;
@@ -575,7 +575,7 @@ class Object_Sync_Sf_WordPress {
 				if ( $value === $id_field ) {
 					$editable = false;
 				}
-				$editable     = apply_filters( $this->option_prefix . 'wordpress_field_is_editable', $editable );
+				$editable     = apply_filters( $this->option_prefix . 'wordpress_field_is_editable', $editable, $value );
 				$all_fields[] = array(
 					'key'      => $value,
 					'table'    => $content_table,
@@ -592,7 +592,7 @@ class Object_Sync_Sf_WordPress {
 				if ( $value === $id_field ) {
 					$editable = false;
 				}
-				$editable     = apply_filters( $this->option_prefix . 'wordpress_field_is_editable', $editable );
+				$editable     = apply_filters( $this->option_prefix . 'wordpress_field_is_editable', $editable, $value->meta_key );
 				$all_fields[] = array(
 					'key'      => $value->meta_key,
 					'table'    => $meta_table,
@@ -611,7 +611,7 @@ class Object_Sync_Sf_WordPress {
 					if ( $value === $id_field ) {
 						$editable = false;
 					}
-					$editable     = apply_filters( $this->option_prefix . 'wordpress_field_is_editable', $editable );
+					$editable     = apply_filters( $this->option_prefix . 'wordpress_field_is_editable', $editable, $value );
 					$all_fields[] = array(
 						'key'      => $value,
 						'table'    => $tax_table,
