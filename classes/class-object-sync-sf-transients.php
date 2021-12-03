@@ -48,12 +48,11 @@ class Object_Sync_Sf_Transients {
 	 * Generate a transient key
 	 *
 	 * @param array $params the pieces to put together.
-	 * @param string $operation whether this is a push, pull, merge, etc
 	 * @param bool  $legacy whether this is a legacy key.
 	 * @return string $key the full transient key.
 	 */
-	private function generate_transient_key( $params, $operation, $legacy = false ) {
-		array_unshift( $params, substr( $this->option_prefix, 0, -1 ), $operation ); // add the prefixes.
+	private function generate_transient_key( $params, $legacy = false ) {
+		array_unshift( $params, substr( $this->option_prefix, 0, -1 ) ); // add the prefixes.
 		$params = array_filter( $params, fn( $value ) => ! is_null( $value ) && '' !== $value ); // remove null and empty values.
 
 		// legacy keys don't have a fieldmap.

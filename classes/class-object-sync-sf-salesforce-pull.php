@@ -1881,7 +1881,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 			} else {
 				// No key or prematch field exists on this field map object, create a new object in WordPress.
 				$op                = 'Create';
-				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
+				$mapping_object    = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
+				$mapping_object_id = isset( $mapping_object['id'] ) ? (int) $mapping_object['id'] : 0;
 				$this->transients->set( 'salesforce_pulling_' . $mapping_object_id, '', $salesforce_mapping['id'], 1, $seconds );
 				$this->transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $mapping_object_id );
 				$mapping_objects = $this->mappings->get_all_object_maps(
