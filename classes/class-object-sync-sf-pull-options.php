@@ -87,10 +87,10 @@ class Object_Sync_Sf_Pull_Options {
 	 * @param string $object_type the Salesforce object type.
 	 * @param int    $fieldmap_id the ID of the specific fieldmap that is running.
 	 * @param mixed  $value the value to be saved in the option.
-	 * @param bool   $autoload whether to autoload the option value.
+	 * @param bool   $autoload whether to autoload the option value. Default to false to avoid the cache.
 	 * @return bool  $result value of the save operation.
 	 */
-	public function set( $operation, $object_type = '', $fieldmap_id = '', $value = '', $autoload = true ) {
+	public function set( $operation, $object_type = '', $fieldmap_id = '', $value = '', $autoload = false ) {
 		// generate the option key parameters.
 		$params = array(
 			'operation'   => $operation,
