@@ -571,9 +571,39 @@ class Object_Sync_Sf_Salesforce_Push {
 					} else {
 						$salesforce_pulling = 1;
 					}
-				} else {
-					// otherwise, make sure the transient gets deleted.
+				}
+
+				if ( 1 === $salesforce_pulling ) {
+					// if it is pulling, delete the transient and continue on through the loop.
+					// we need to either do this for every individual mapping object, or only do it when all the mapping objects are done.
 					$transients_to_delete[ $fieldmap_key ]['transients'][] = $mapping_object_id_transient;
+					if ( true === $this->debug ) {
+						// create log entry for failed pull.
+						$status = 'debug';
+						$title  = sprintf(
+							// translators: placeholders are: 1) the log status, 2) the mapping object ID transient.
+							esc_html__( '%1$s: mapping object transient ID %2$s is currently pulling, so we do not push it.', 'object-sync-for-salesforce' ),
+							ucfirst( esc_attr( $status ) ),
+							$mapping_object_id_transient
+						);
+
+						if ( isset( $this->logging ) ) {
+							$logging = $this->logging;
+						} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+							$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+						}
+
+						$debug = array(
+							'title'   => $title,
+							'message' => '',
+							'trigger' => $sf_sync_trigger,
+							'parent'  => '',
+							'status'  => $status,
+						);
+
+						$logging->setup( $debug );
+					}
+
 					continue;
 				}
 			} else {
