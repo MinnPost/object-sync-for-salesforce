@@ -938,7 +938,22 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$pull_trigger_field_value = gmdate( 'Y-m-d\TH:i:s\Z', $sf_activate_time );
 		}
 
-		// todo: put a hook in here to let devs go retroactive if they want, and sync data from before plugin was activated.
+		// Hook to allow other plugins to set the "last pull date" to whenever they want, including a datetime from before the plugin was activated.
+		$pull_trigger_field_value = apply_filters( $this->option_prefix . 'change_pull_date_value', $pull_trigger_field_value, $type, $soql, $fieldmap_id );
+
+		// example to use another datetime value.
+		// the value needs to be a gmdate, formatted for Salesforce: 'Y-m-d\TH:i:s\Z'.
+		/* // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+		add_filter( 'object_sync_for_salesforce_change_pull_date_value', 'change_pull_date_value', 10, 5 );
+		// can always reduce this number if all the arguments are not necessary
+		function change_pull_date_value( $pull_trigger_field_value, $object_type, $soql, $fieldmap_id ) {
+			if ( $object_type === 'Contact' ) {
+				// example: go back to 2006-01-01T23:01:01+01:00, which is 1136152861.
+				$pull_trigger_value = gmdate( 'Y-m-d\TH:i:s\Z', 1136152861 );
+			}
+			return $pull_trigger_field_value;
+		}
+		*/
 
 		return $pull_trigger_field_value;
 
