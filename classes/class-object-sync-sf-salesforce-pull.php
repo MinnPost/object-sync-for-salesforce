@@ -1001,10 +1001,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 				// need to be using gmdate for Salesforce call.
 				$last_merge_sync_sf = gmdate( 'Y-m-d\TH:i:s\Z', $last_merge_sync );
-
-				// todo: we want to add something like this eventually, to the query: AND SystemModstamp > 2006-01-01T23:01:01+01:00.
-
-				$merged = array();
+				$merged             = array();
 				// there doesn't appear to be a way to do this in the rest api; for now we'll do soap.
 				if ( true === $use_soap ) {
 					$type   = $salesforce_mapping['salesforce_object'];
