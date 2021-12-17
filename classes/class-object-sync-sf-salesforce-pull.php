@@ -954,7 +954,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 			return $pull_trigger_field_value;
 		}
 		*/
-		error_log( 'the pull date value is ' . $pull_trigger_field_value );
 
 		return $pull_trigger_field_value;
 
