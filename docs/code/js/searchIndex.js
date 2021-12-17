@@ -1606,6 +1606,11 @@ Search.appendIndex(
             "summary": "Object_Sync_Sf_Pull_Options\u0020class",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_pull_options"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024sync_transients",
+            "name": "sync_transients",
+            "summary": "Object_Sync_Sf_Sync_Transients\u0020class",
+            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#property_sync_transients"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003A\u0024schedule_name",
             "name": "schedule_name",
             "summary": "The\u0020name\u0020of\u0020the\u0020ActionScheduler\u0020queue",
@@ -1821,6 +1826,11 @@ Search.appendIndex(
             "summary": "Object_Sync_Sf_Salesforce\u0020class\nThis\u0020contains\u0020Salesforce\u0020API\u0020methods",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_salesforce"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024sync_transients",
+            "name": "sync_transients",
+            "summary": "Object_Sync_Sf_Sync_Transients\u0020class",
+            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#property_sync_transients"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003A\u0024debug",
             "name": "debug",
             "summary": "Whether\u0020the\u0020plugin\u0020is\u0020in\u0020debug\u0020mode",
@@ -1850,6 +1860,16 @@ Search.appendIndex(
             "name": "__toString",
             "summary": "Implements\u0020PHP\u0027s\u0020magic\u0020__toString\u0028\u0029.",
             "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#method___toString"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003A\u0024version",
+            "name": "version",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
+            "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Salesforce-Select-Query.html#property_option_prefix"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Select_Query\u003A\u003A\u0024object_type",
             "name": "object_type",
@@ -2595,6 +2615,81 @@ Search.appendIndex(
             "name": "upgradeable_keys",
             "summary": "Option\u0020keys\u0020that\u0020can\u0020be\u0020upgraded",
             "url": "classes/Object-Sync-Sf-Pull-Options.html#property_upgradeable_keys"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients",
+            "name": "Object_Sync_Sf_Sync_Transients",
+            "summary": "Object_Sync_Sf_Sync_Transients\u0020class.",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor\u0020for\u0020transient\u0020records\u0020class",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Agenerate_transient_key\u0028\u0029",
+            "name": "generate_transient_key",
+            "summary": "Generate\u0020a\u0020transient\u0020key",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_generate_transient_key"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aset\u0028\u0029",
+            "name": "set",
+            "summary": "Set\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_set"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Alegacy_transient_upgrade\u0028\u0029",
+            "name": "legacy_transient_upgrade",
+            "summary": "Set\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_legacy_transient_upgrade"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aget\u0028\u0029",
+            "name": "get",
+            "summary": "Get\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_get"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Alegacy_get\u0028\u0029",
+            "name": "legacy_get",
+            "summary": "Get\u0020legacy\u0020named\u0020individual\u0020transiuent\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_legacy_get"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Adelete\u0028\u0029",
+            "name": "delete",
+            "summary": "Delete\u0020the\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operation",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_delete"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Alegacy_delete\u0028\u0029",
+            "name": "legacy_delete",
+            "summary": "Delete\u0020the\u0020legacy\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operation",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_legacy_delete"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aadd_upgradeable_key\u0028\u0029",
+            "name": "add_upgradeable_key",
+            "summary": "Add\u0020an\u0020transient\u0020key\u0020to\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_add_upgradeable_key"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aremove_upgradeable_key\u0028\u0029",
+            "name": "remove_upgradeable_key",
+            "summary": "Remove\u0020a\u0020transient\u0020key\u0020from\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_remove_upgradeable_key"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aget_upgradeable_keys\u0028\u0029",
+            "name": "get_upgradeable_keys",
+            "summary": "Get\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_get_upgradeable_keys"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A\u0024version",
+            "name": "version",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A\u0024upgradeable_keys",
+            "name": "upgradeable_keys",
+            "summary": "Transient\u0020keys\u0020that\u0020can\u0020be\u0020upgraded",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#property_upgradeable_keys"
         },                {
             "fqsen": "\\",
             "name": "\\",

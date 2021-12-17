@@ -203,7 +203,7 @@ add_filter( 'object_sync_for_salesforce_wordpress_object_data', 'add_data', 10, 
 function add_data( $wordpress_object, $object_type ) {
     $wordpress_object['field_a'] = 'i am a field value that salesforce wants to store but WordPress does not care about';
     // Add field values to specific WordPress objects such as 'post', 'page', 'user', a Custom Post Type, etc.
-    if ($object_type === 'user') {
+    if ( 'user' === $object_type ) {
         $wordpress_object['field_b'] = 'i am a field value that salesforce wants to store but WordPress does not care about';
     }
     return $wordpress_object;

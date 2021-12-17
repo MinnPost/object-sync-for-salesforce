@@ -947,13 +947,14 @@ class Object_Sync_Sf_Salesforce_Pull {
 		add_filter( 'object_sync_for_salesforce_change_pull_date_value', 'change_pull_date_value', 10, 5 );
 		// can always reduce this number if all the arguments are not necessary
 		function change_pull_date_value( $pull_trigger_field_value, $object_type, $soql, $fieldmap_id ) {
-			if ( $object_type === 'Contact' ) {
+			if ( 'Contact' === $object_type  ) {
 				// example: go back to 2006-01-01T23:01:01+01:00, which is 1136152861.
-				$pull_trigger_value = gmdate( 'Y-m-d\TH:i:s\Z', 1136152861 );
+				$pull_trigger_field_value = gmdate( 'Y-m-d\TH:i:s\Z', 1136152861 );
 			}
 			return $pull_trigger_field_value;
 		}
 		*/
+		error_log( 'the pull date value is ' . $pull_trigger_field_value );
 
 		return $pull_trigger_field_value;
 
@@ -1200,7 +1201,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
 					// can always reduce this number if all the arguments are not necessary
 					function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
-						if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
+						if ( 'Contact' === $object_type && 'abcdef' === $object['Id'] ) {
 							return false;
 						}
 					}
@@ -2464,7 +2465,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
 		// can always reduce this number if all the arguments are not necessary
 		function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
-			if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
+			if ( 'Contact' === $object_type && 'abcdef' === $object['Id'] ) {
 				$pull_allowed = false;
 			}
 			return $pull_allowed;

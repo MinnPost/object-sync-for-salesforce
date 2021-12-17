@@ -69,9 +69,9 @@ When passing a value with this hook, it needs to be in the format `Y-m-d\TH:i:s\
 add_filter( 'object_sync_for_salesforce_change_pull_date_value', 'change_pull_date_value', 10, 5 );
 // can always reduce this number if all the arguments are not necessary
 function change_pull_date_value( $pull_trigger_field_value, $object_type, $soql, $fieldmap_id ) {
-	if ( $object_type === 'Contact' ) {
+	if ( 'Contact' === $object_type  ) {
 		// example: go back to 2006-01-01T23:01:01+01:00, which is 1136152861.
-		$pull_trigger_value = gmdate( 'Y-m-d\TH:i:s\Z', 1136152861 );
+		$pull_trigger_field_value = gmdate( 'Y-m-d\TH:i:s\Z', 1136152861 );
 	}
 	return $pull_trigger_field_value;
 }
