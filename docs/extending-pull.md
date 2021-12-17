@@ -63,6 +63,11 @@ When the plugin makes a pull request to Salesforce, it uses the last time it ran
 
 When passing a value with this hook, it needs to be in the format `Y-m-d\TH:i:s\Z`. The plugin converts its own value to a GMT date, so you may want to keep up with this precedent for consistency.
 
+Note: if you change this value using the hook, the plugin will store it when it saves queries. This means that if you use the filter and then decide you don't want to use the filter, you'll need to reset this date. You can do this in one of two ways:
+
+1. Resave your fieldmap.
+2. Run the filter without a date parameter. For example, if you use `$pull_trigger_field_value = gmdate( 'Y-m-d\TH:i:s\Z' );`, the value will be reset to the value of `now()`, and once that value is saved, you can stop using the filter.
+
 ```php
 // example to use another datetime value.
 // the value needs to be a gmdate, formatted for Salesforce: 'Y-m-d\TH:i:s\Z'.
