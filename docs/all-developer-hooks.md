@@ -24,6 +24,10 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: modify the Salesforce query (SOQL) **string** before it is sent to Salesforce to pull records.
     - code: [classes/class-object-sync-sf-salesforce-select-query.php](../classes/class-object-sync-sf-salesforce-select-query.php)
     - documentation: [extending pull](extending-pull.md#soql-string)
+- `object_sync_for_salesforce_change_pull_date_value`:
+    - description: modify the value for the "last pull date" to any datetime value, including a datetime from before the plugin was activated.
+    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
+    - documentation: [extending pull](extending-pull.md#pull-date)
 - `object_sync_for_salesforce_pull_object_allowed`:
     - description: prevent a pull per-mapping.
     - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)

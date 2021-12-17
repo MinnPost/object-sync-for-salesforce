@@ -14,6 +14,7 @@ Changelog
 	* Maintenance: Update URLs in the documentation that point to plugin PHP files to match their v2.0.0 filenames.
 	* Maintenance: Create a log entry if the plugin tries to sync a record but no parameters are eligible. Thanks to WordPress user @OfficeBureau for the request.
 	* Developers: Add a `object_sync_for_salesforce_pull_query_string_modify` filter to allow developers to edit the whole SOQL string before it is sent to Salesforce. See [the documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/extending-pull.md#soql-string) for how to use it. Thanks to WordPress user @JellyPixel for this request.
+	* Developers: Add a `object_sync_for_salesforce_change_pull_date_value` filter to allow developers to modify the datetime value that the SOQL query uses for pulling records from Salesforce. See [the documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/extending-pull.md#pull-date) for how to use it.
 	* Developers: the `load_all_by_salesforce` method has been deprecated in favor of `load_object_maps_by_salesforce_id`, which can receive new (optional) data. `load_all_by_salesforce` will likely be removed in a future 3.0.0 version.
 
 * 2.0.3 (2021-09-10)
