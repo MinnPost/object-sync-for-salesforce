@@ -61,6 +61,8 @@ When the plugin makes a pull request to Salesforce, it uses the last time it ran
 
 ### Hook
 
+When passing a value with this hook, it needs to be in the format `Y-m-d\TH:i:s\Z`. The plugin converts its own value to a GMT date, so you may want to keep up with this precedent for consistency.
+
 ```php
 // example to use another datetime value.
 // the value needs to be a gmdate, formatted for Salesforce: 'Y-m-d\TH:i:s\Z'.
