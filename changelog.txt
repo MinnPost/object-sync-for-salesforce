@@ -1,7 +1,7 @@
 Changelog
 =========
 
-* 2.1.0 ()
+* 2.1.0 (2021-12-22)
 	* Feature: Update the fieldmap list screen for better usability and device support.
 	* Feature: Add more links to clear the plugin cache.
 	* Feature: Add the ability for fieldmaps to be active or inactive. Thanks to GitHub user @TornMarketing for the request.
