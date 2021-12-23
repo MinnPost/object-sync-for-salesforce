@@ -2,7 +2,7 @@ Changelog
 =========
 
 * 2.1.1 (2021-12-23)
-	* Bug fix: in 2.1.10, a syntax error for PHP versions older than 7.4 was incorrectly added. This adds a catch for those versions.
+	* Bug fix: in 2.1.10, a syntax error for PHP versions older than 7.4 was incorrectly added. This adds a catch for those versions. Thanks to WordPress user @ofrayechiel for reporting this.
 
 * 2.1.0 (2021-12-22)
 	* Feature: Update the fieldmap list screen for better usability and device support.
