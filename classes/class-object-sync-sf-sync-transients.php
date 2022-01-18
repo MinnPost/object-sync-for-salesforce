@@ -54,17 +54,13 @@ class Object_Sync_Sf_Sync_Transients {
 	 */
 	private function generate_transient_key( $params, $legacy = false ) {
 		array_unshift( $params, substr( $this->option_prefix, 0, -1 ) ); // add the prefixes.
-		// remove null and empty values. different method for php 7.4 and higher.
-		if ( version_compare( PHP_VERSION, '7.4.0', '>=' ) ) {
-			$params = array_filter( $params, fn( $value ) => ! is_null( $value ) && '' !== $value );
-		} else {
-			$params = array_filter(
-				$params,
-				function( $value ) {
-					return ! is_null( $value ) && '' !== $value;
-				}
-			);
-		}
+		// remove null and empty values.
+		$params = array_filter(
+			$params,
+			function( $value ) {
+				return ! is_null( $value ) && '' !== $value;
+			}
+		);
 
 		// legacy keys don't have a fieldmap.
 		if ( true === $legacy && isset( $params['fieldmap_id'] ) ) {
