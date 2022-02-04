@@ -553,24 +553,21 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// there is already a mapping object for this WordPress object.
 				if ( isset( $mapping_object['id'] ) ) {
+					// if there's already a transient for pulling this Salesforce record, its ID will be stored in the transient.
 					$mapping_object_id_transient = $mapping_object['salesforce_id'];
+					$transient_is_pulling        = (int) $this->sync_transients->get( 'salesforce_pulling_' . $mapping_object_id_transient, '', $mapping['id'] );
 				} else {
 					// there is not a mapping object for this WordPress object id yet
-					// check for that transient with the currently pulling id.
-					// this value is a Salesforce record Id.
+					// check for an existing transient for pulling this Salesforce record. If it exists, the Salesforce ID will be stored in the transient.
 					$mapping_object_id_transient = $this->sync_transients->get( 'salesforce_pulling_object_id', '', $mapping['id'] );
+					$transient_is_pulling        = (int) $this->sync_transients->get( 'salesforce_pulling_' . $mapping_object_id_transient, '', $mapping['id'] );
 				}
 
-				// if there's a transient created for pulling that specific Salesforce ID, the value will still be there.
-				$salesforce_pulling = (int) $this->sync_transients->get( 'salesforce_pulling_' . $mapping_object_id_transient, '', $mapping['id'] );
-
-				if ( 1 !== $salesforce_pulling ) {
-					// check if there is already a mapping object that contains the transient's Salesforce Id value.
-					if ( ! isset( $mapping_object['salesforce_id'] ) || $mapping_object_id_transient !== $mapping_object['salesforce_id'] ) {
-						$salesforce_pulling = 0;
-					} else {
-						$salesforce_pulling = 1;
-					}
+				// if there is a valid transient value, we're currently pulling this record and not pushing it.
+				if ( 1 === $transient_is_pulling ) {
+					$salesforce_pulling = 1;
+				} else {
+					$salesforce_pulling = 0;
 				}
 
 				if ( 1 === $salesforce_pulling ) {
