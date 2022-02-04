@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 2.1.2 (2022-02-04)
+	* Bug fix: Remove arrow functions that are only supported in PHP 7.4 and cannot be backfilled. Thanks to WordPress users @ofrayechiel and @trohrer for the report.
+	* Bug fix: Resolve a (widely reported) problem in 2.1.x versions, where pushing an update from a Salesforce record can cause the plugin to incorrectly detect the record as pulling, preventing the record from pushing.
+
 * 2.1.1 (2021-12-23)
 	* Bug fix: in 2.1.10, a syntax error for PHP versions older than 7.4 was incorrectly added. This adds a catch for those versions. Thanks to WordPress user @ofrayechiel for reporting this.
 
