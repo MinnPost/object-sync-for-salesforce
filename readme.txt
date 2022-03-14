@@ -114,4 +114,4 @@ See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/
 2.1.0 includes an upgrade to Action Scheduler (version 3.4.0), the underlying queue technology that runs syncing for this plugin. The noteworthy piece is that this raises the minimum supported version of WordPress to 5.2. If you are running an older version of WordPress than 5.2, you shouldn't upgrade this plugin.
 
 = 2.1.2 =
-Apologies for the buggy release of version 2.1.0 and 2.1.1. I'm hopeful that these issues are resolved in 2.1.1.
+Apologies for the buggy release of version 2.1.0 and 2.1.1. I'm hopeful that these issues are resolved in 2.1.2.
