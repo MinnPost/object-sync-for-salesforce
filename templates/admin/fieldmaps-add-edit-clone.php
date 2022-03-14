@@ -593,6 +593,9 @@
 				foreach ( $fieldmap_statuses as $key => $value ) :
 					if ( '' !== $value ) :
 						$selected = '';
+						if ( ! isset( $fieldmap_status ) ) {
+							$fieldmap_status = 'active';
+						}
 						if ( $fieldmap_status === $key ) {
 							$selected = ' selected';
 						}
