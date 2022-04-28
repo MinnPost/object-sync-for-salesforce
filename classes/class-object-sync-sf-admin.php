@@ -1468,6 +1468,12 @@ class Object_Sync_Sf_Admin {
 				'type'        => 'error',
 				'dismissible' => false,
 			),
+			'refresh_token_error'     => array(
+				'condition'   => ( true === $this->check_refresh_token_error() ),
+				'message'     => 'error!',
+				'type'        => 'error',
+				'dismissible' => false,
+			),
 			'not_secure'              => array(
 				'condition'   => ( false === $this->check_wordpress_ssl() && false === $this->check_wordpress_ssl_support() ),
 				'message'     => esc_html__( 'At least the admin area of your website must use HTTPS to connect with Salesforce. WordPress reports that your site environment does not, and cannot, use HTTPS. You may need to work with your hosting company to make the switch before you can use this plugin.', 'object-sync-for-salesforce' ),
@@ -2605,6 +2611,12 @@ class Object_Sync_Sf_Admin {
 		$https_supported = false;
 		return $https_supported;
 
+	}
+
+	private function check_refresh_token_error() {
+		$refresh_token_error = get_option( $this->option_prefix . 'refresh_token_error', false );
+		$refresh_token_error = filter_var( $refresh_token_error, FILTER_VALIDATE_BOOLEAN );
+		return $refresh_token_error;
 	}
 
 	/**

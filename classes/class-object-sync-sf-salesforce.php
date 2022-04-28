@@ -727,6 +727,7 @@ class Object_Sync_Sf_Salesforce {
 	 */
 	protected function set_refresh_token( $token ) {
 		update_option( $this->option_prefix . 'refresh_token', $token );
+		delete_option( $this->option_prefix . 'refresh_token_error' );
 	}
 
 	/**
@@ -762,21 +763,59 @@ class Object_Sync_Sf_Salesforce {
 		$response = $this->http_request( $url, $data, $headers, 'POST' );
 
 		if ( 200 !== $response['code'] ) {
-			throw new Object_Sync_Sf_Exception(
-				esc_html(
-					sprintf(
-						__( 'Unable to get a Salesforce access token. Salesforce returned the following errorCode: ', 'object-sync-for-salesforce' ) . $response['code']
-					)
-				),
-				$response['code']
+
+			// create log entry for failed access token.
+			$status = 'error';
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				global $wpdb;
+				$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
+			}
+
+			$title = sprintf(
+				// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
+				esc_html__( 'The plugin authorization has expired and needs to be renewed.', 'object-sync-for-salesforce' ),
+				ucfirst( esc_attr( $status ) ),
+				esc_attr( $response['code'] )
 			);
+
+			$body = sprintf(
+				// translators: placeholders are: 1) the HTTP status code, 2) the short error type, 3) the error description message, all returned by the Salesforce API request.
+				'<p>' . esc_html__( 'Unable to get a Salesforce access token. Salesforce returned the following information: ', 'object-sync-for-salesforce' ) . '</p><ul><li>Error code: %1$s</li><li>Error type: %2$s</li><li>Error description: %3$s</li></ul>',
+				esc_attr( $response['code'] ),
+				esc_attr( $response['data']['error'] ),
+				esc_html( $response['data']['error_description'] )
+			);
+
+			$logging->setup(
+				$title,
+				$body,
+				0,
+				0,
+				$status
+			);
+
+			$delete_access_token = delete_option( $this->option_prefix . 'access_token' );
+			if ( true === $delete_access_token ) {
+				$this->access_token = '';
+			}
+			$delete_instance_url = delete_option( $this->option_prefix . 'instance_url' );
+			if ( true === $delete_instance_url ) {
+				$this->instance_url = '';
+			}
+			$delete_refresh_token = delete_option( $this->option_prefix . 'refresh_token' );
+			if ( true === $delete_refresh_token ) {
+				$this->refresh_token = '';
+			}
+			$refresh_token_error = update_option( $this->option_prefix . 'refresh_token_error', true );
+
+			// make it a notice so users are more likely to see it.
+			new Object_Sync_Sf_Admin_Notice( true, $title, false, 'error', '' );
+
 		}
 
 		$data = $response['data'];
-
-		if ( is_array( $data ) && isset( $data['error'] ) ) {
-			throw new Object_Sync_Sf_Exception( $data['error_description'], $data['error'] );
-		}
 
 		$this->set_access_token( $data['access_token'] );
 		$this->set_identity( $data['id'] );
