@@ -841,7 +841,7 @@ class Object_Sync_Sf_Salesforce {
 		$this->refresh_token = delete_option( $this->option_prefix . 'refresh_token' );
 
 		// make it a notice so users are more likely to see it.
-		new Object_Sync_Sf_Admin_Notice( true, $title, false, 'error', '' );
+		new Object_Sync_Sf_Admin_Notice( true, $title, true, 'error', '' );
 	}
 
 	/**
