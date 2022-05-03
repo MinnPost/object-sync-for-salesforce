@@ -253,12 +253,10 @@ class Object_Sync_Sf_Salesforce {
 		$installed_site_root = $this->get_installed_site_root();
 		$options_site_root   = get_option( 'siteurl', '' );
 		if ( $installed_site_root !== $options_site_root ) {
-			if ( '' === $installed_site_root ) {
-				$this->set_installed_site_root( $options_site_root );
-				$this->access_token  = delete_option( $this->option_prefix . 'access_token' );
-				$this->instance_url  = delete_option( $this->option_prefix . 'instance_url' );
-				$this->refresh_token = delete_option( $this->option_prefix . 'refresh_token' );
-			}
+			$this->set_installed_site_root( $options_site_root );
+			$this->access_token  = delete_option( $this->option_prefix . 'access_token' );
+			$this->instance_url  = delete_option( $this->option_prefix . 'instance_url' );
+			$this->refresh_token = delete_option( $this->option_prefix . 'refresh_token' );
 			return false;
 		}
 		return ! empty( $this->consumer_key ) && ! empty( $this->consumer_secret ) && $this->get_refresh_token();
