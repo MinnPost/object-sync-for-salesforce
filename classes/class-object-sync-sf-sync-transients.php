@@ -194,7 +194,7 @@ class Object_Sync_Sf_Sync_Transients {
 	 * @return mixed $value the value of the item. False if it's empty.
 	 * @deprecated   this was added in 2.1.0 to upgrade old option keys, but will be removed in a future version.
 	 */
-	public function legacy_get( $operation, $object_type = '', $fieldmap_id ) {
+	public function legacy_get( $operation, $object_type, $fieldmap_id ) {
 		// generate the transient key parameters.
 		$params = array(
 			'operation'   => $operation,

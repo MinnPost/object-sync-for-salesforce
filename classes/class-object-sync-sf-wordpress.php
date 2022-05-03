@@ -1081,10 +1081,10 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function user_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $pull_to_drafts = false, $check_only = false ) {
+	private function user_upsert( $key, $value, $methods, $params, $id_field = 'ID', $pull_to_drafts = false, $check_only = false ) {
 
 		// If the key is user_email, we need to make it just email because that is how the WordPress method reads it.
-		$method = $methods['method_match'];
+		$method = isset( $methods['method_match'] ) ? $methods['method_match'] : '';
 		if ( '' !== $method ) {
 			// These methods should give us the user object if we are matching for one.
 			// if we are trying to match to a meta field, the method is an object.
@@ -1391,10 +1391,9 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function post_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $pull_to_drafts = false, $post_type = 'post', $check_only = false ) {
+	private function post_upsert( $key, $value, $methods, $params, $id_field = 'ID', $pull_to_drafts = false, $post_type = 'post', $check_only = false ) {
 
-		$method = $methods['method_match'];
-
+		$method = isset( $methods['method_match'] ) ? $methods['method_match'] : '';
 		if ( '' !== $method ) {
 			// By default, posts use get_posts as the method. args can be like this.
 			// The args don't really make sense, and are inconsistently documented.
@@ -1710,10 +1709,9 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function attachment_upsert( $key, $value, $methods = array(), $params, $id_field = 'ID', $check_only = false ) {
+	private function attachment_upsert( $key, $value, $methods, $params, $id_field = 'ID', $check_only = false ) {
 
-		$method = $methods['method_match'];
-
+		$method = isset( $methods['method_match'] ) ? $methods['method_match'] : '';
 		if ( '' !== $method ) {
 			// Get_posts is more helpful here, so that is the method attachment uses for 'read'.
 			// By default, posts use get_posts as the method. args can be like this.
@@ -2057,11 +2055,11 @@ class Object_Sync_Sf_WordPress {
 	 *     success: 1
 	 *   "errors" : [ ],
 	 */
-	private function term_upsert( $key, $value, $methods = array(), $params, $taxonomy, $id_field = 'ID', $pull_to_drafts = false, $check_only = false ) {
+	private function term_upsert( $key, $value, $methods, $params, $taxonomy, $id_field = 'ID', $pull_to_drafts = false, $check_only = false ) {
 		if ( 'tag' === $taxonomy ) {
 			$taxonomy = 'post_tag';
 		}
-		$method = $methods['method_match'];
+		$method = isset( $methods['method_match'] ) ? $methods['method_match'] : '';
 		if ( '' !== $method ) {
 			// These methods should give us the term object if we are matching for one.
 			// If we are trying to match to a meta field, the method is an object.
@@ -2354,7 +2352,7 @@ class Object_Sync_Sf_WordPress {
 	 *   "errors" : [ ],
 	 */
 	private function comment_upsert( $key, $value, $methods, $params, $id_field = 'comment_ID', $pull_to_drafts = false, $check_only = false ) {
-		$method = $methods['method_match'];
+		$method = isset( $methods['method_match'] ) ? $methods['method_match'] : '';
 		if ( 'get_comment' === $method ) {
 			$method = 'get_comments';
 		}
