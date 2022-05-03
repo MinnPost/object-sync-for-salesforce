@@ -1203,7 +1203,7 @@ class Object_Sync_Sf_Mapping {
 	 *
 	 * @return array $sync_triggers possibly updated array of sync triggers.
 	 */
-	private function maybe_upgrade_sync_triggers( $sync_triggers = array(), $mapping_version, $mapping_id = '' ) {
+	private function maybe_upgrade_sync_triggers( $sync_triggers, $mapping_version, $mapping_id = '' ) {
 		// in v2 of this plugin, we replaced the bit flags with strings to make them more legible.
 		if ( version_compare( $mapping_version, '2.0.0', '<' ) ) {
 			// check if the triggers stored in the database are up to date. if not, update them.
