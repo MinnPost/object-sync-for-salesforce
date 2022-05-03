@@ -7,7 +7,7 @@
 
 ?>
 
-<div class="notice<?php echo esc_attr( $class ); ?><?php echo esc_attr( $dismissible ); ?>">
+<div class="notice is-dismissible<?php echo esc_attr( $class ); ?>">
 	<p>
 	<?php
 	$allowed_html = wp_kses_allowed_html( 'data' );
