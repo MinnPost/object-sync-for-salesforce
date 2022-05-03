@@ -16,7 +16,7 @@
     },
     "config": {
         "platform": {
-          "php": "7.3"
+          "php": "8.0"
         }
       },
     "repositories": [

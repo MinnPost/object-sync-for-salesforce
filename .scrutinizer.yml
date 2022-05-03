@@ -35,8 +35,8 @@ tools:
             standard: WordPress
 build:
     environment:
-      node: 'v11.11.0'
-      php: '7.3.3'
+      node: 'v18.11.0'
+      php: '8.0'
       mysql: true
       apache2:
         modules:
