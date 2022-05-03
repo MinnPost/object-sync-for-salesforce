@@ -721,7 +721,7 @@ class Object_Sync_Sf_WordPress {
 	 *
 	 * part of CRUD for WordPress objects
 	 */
-	public function object_upsert( $name, $key, $value, $methods = array(), $params, $pull_to_drafts = false, $check_only = false ) {
+	public function object_upsert( $name, $key, $value, $methods, $params, $pull_to_drafts = false, $check_only = false ) {
 
 		$structure = $this->get_wordpress_table_structure( $name );
 		$id_field  = $structure['id_field'];
