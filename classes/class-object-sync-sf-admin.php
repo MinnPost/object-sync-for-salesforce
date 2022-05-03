@@ -1470,7 +1470,7 @@ class Object_Sync_Sf_Admin {
 			),
 			'refresh_token_error'     => array(
 				'condition'   => ( true === $this->check_refresh_token_error() ),
-				'message'     => 'error!',
+				'message'     => __( 'Object Sync for Salesforce was unable to refresh its authorization token. You may need to manually authorize its connection to Salesforce.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => false,
 			),
