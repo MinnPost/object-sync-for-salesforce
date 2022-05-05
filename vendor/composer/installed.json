@@ -7,18 +7,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP.git",
-                "reference": "5ce6687d38c312c4af34ee30ec90535a02c49947"
+                "reference": "ee971ea3ff1c1477c86ae0547f405c032bb58110"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/messageagency/Forcecom-Toolkit-for-PHP/zipball/5ce6687d38c312c4af34ee30ec90535a02c49947",
-                "reference": "5ce6687d38c312c4af34ee30ec90535a02c49947",
+                "url": "https://api.github.com/repos/messageagency/Forcecom-Toolkit-for-PHP/zipball/ee971ea3ff1c1477c86ae0547f405c032bb58110",
+                "reference": "ee971ea3ff1c1477c86ae0547f405c032bb58110",
                 "shasum": ""
             },
             "require": {
-                "ext-soap": "^7.1"
+                "ext-soap": "^7.1 || ^8"
             },
-            "time": "2020-03-27T15:38:33+00:00",
+            "time": "2022-05-05T15:39:51+00:00",
             "default-branch": true,
             "type": "library",
             "extra": {
@@ -39,7 +39,7 @@
             "description": "A wrapper for the Force.com Web Services SOAP API",
             "support": {
                 "issues": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP/issues",
-                "source": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP/tree/v1.0.1"
+                "source": "https://github.com/messageagency/Forcecom-Toolkit-for-PHP/tree/master"
             },
             "install-path": "../messageagency/force.com-toolkit-for-php"
         },
