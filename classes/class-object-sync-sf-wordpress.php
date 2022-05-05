@@ -788,12 +788,6 @@ class Object_Sync_Sf_WordPress {
 		if ( 'missing_id' === $result['errors'] ) {
 			$type = $result['data']['type'];
 			// Create log entry for lack of an object id to upsert.
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-			}
-
 			$status = 'error';
 			$title  = sprintf(
 				// translators: placeholders are: 1) the log status, 2) uppercase object type, 3) the object type.
@@ -802,8 +796,7 @@ class Object_Sync_Sf_WordPress {
 				ucfirst( esc_attr( $type ) ),
 				esc_attr( $type )
 			);
-
-			$logging->setup(
+			$this->logging->setup(
 				$title,
 				'',
 				0,
@@ -904,12 +897,6 @@ class Object_Sync_Sf_WordPress {
 				);
 			}
 
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-			}
-
 			$body  = '';
 			$body .= '<h2>' . esc_html__( 'Errors from WordPress result:', 'object-sync-for-salesforce' ) . '</h2>';
 			$body .= esc_html( print_r( $result['errors'], true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
@@ -925,7 +912,7 @@ class Object_Sync_Sf_WordPress {
 				'parent'  => '',
 				'status'  => $status,
 			);
-			$logging->setup( $error_log );
+			$this->logging->setup( $error_log );
 		}
 
 		return $result;
@@ -2372,12 +2359,7 @@ class Object_Sync_Sf_WordPress {
 			} elseif ( count( $comments ) > 1 ) {
 				$status = 'error';
 				// Create log entry for multiple matches.
-				if ( isset( $this->logging ) ) {
-					$logging = $this->logging;
-				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-				}
-				$logging->setup(
+				$this->logging->setup(
 					sprintf(
 						// translators: %1$s is the log status. %2$s is a number. %3$s is a key. %4$s is the value of that key. %5$s is a var_export'd array of comments.
 						esc_html__( '%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s', 'object-sync-for-salesforce' ),

@@ -662,12 +662,7 @@ class Object_Sync_Sf_Mapping {
 			$insert = $this->wpdb->insert( $this->object_map_table, $data );
 		} else {
 			$status = 'error';
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-			}
-			$logging->setup(
+			$this->logging->setup(
 				sprintf(
 					// translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of that object.
 					esc_html__( '%1$s Mapping: error caused by trying to map the WordPress %2$s with ID of %3$s to Salesforce ID starting with "tmp_sf_", which is invalid.', 'object-sync-for-salesforce' ),
@@ -689,12 +684,7 @@ class Object_Sync_Sf_Mapping {
 			$mapping = $this->load_object_maps_by_salesforce_id( $data['salesforce_id'] )[0];
 			$id      = $mapping['id'];
 			$status  = 'error';
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-			}
-			$logging->setup(
+			$this->logging->setup(
 				sprintf(
 					// translators: %1$s is the status word "Error". %2$s is the Id of a Salesforce object. %3$s is the ID of a mapping object.
 					esc_html__( '%1$s: Mapping: there is already a WordPress object mapped to the Salesforce object %2$s and the mapping object ID is %3$s', 'object-sync-for-salesforce' ),
