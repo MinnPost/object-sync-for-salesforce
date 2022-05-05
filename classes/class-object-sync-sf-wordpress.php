@@ -786,6 +786,33 @@ class Object_Sync_Sf_WordPress {
 				break;
 		} // End switch() method.
 
+		if ( 'missing_id' === $result['errors'] ) {
+			$type = $result['data']['type'];
+			// Create log entry for lack of an object id to upsert.
+			if ( isset( $this->logging ) ) {
+				$logging = $this->logging;
+			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+			}
+
+			$status = 'error';
+			$title  = sprintf(
+				// translators: placeholders are: 1) the log status, 2) uppercase object type, 3) the object type.
+				esc_html__( '%1$s: %2$s: Tried to run %3$s_upsert, and ended up without the %3$s id', 'object-sync-for-salesforce' ),
+				ucfirst( esc_attr( $status ) ),
+				ucfirst( esc_attr( $type ) ),
+				esc_attr( $type )
+			);
+
+			$logging->setup(
+				$title,
+				'',
+				0,
+				0,
+				$status
+			);
+		}
+
 		return $result;
 	}
 
@@ -1183,32 +1210,15 @@ class Object_Sync_Sf_WordPress {
 				$params[ $key ]['method_modify'] = $methods['method_update'];
 			}
 			$result = $this->user_update( $user_id, $params );
-			return $result;
+		} else {
+			$result = array(
+				'errors' => 'missing_id',
+				'data'   => array(
+					'type' => 'user',
+				),
+			);
 		}
-
-		// Create log entry for lack of a user id.
-		if ( isset( $this->logging ) ) {
-			$logging = $this->logging;
-		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-		}
-
-		$status = 'error';
-		$title  = sprintf(
-			// translators: placeholders are: 1) the log status.
-			esc_html__( '%1$s: Users: Tried to run user_upsert, and ended up without a user id', 'object-sync-for-salesforce' ),
-			ucfirst( esc_attr( $status ) )
-		);
-
-		$logging->setup(
-			// todo: can we get any more specific about this?
-			$title,
-			'',
-			0,
-			0,
-			$status
-		);
-
+		return $result;
 	}
 
 	/**
@@ -1521,31 +1531,15 @@ class Object_Sync_Sf_WordPress {
 				$params[ $key ]['method_modify'] = $methods['method_update'];
 			}
 			$result = $this->post_update( $post_id, $params, $id_field, $post_type );
-			return $result;
+		} else {
+			$result = array(
+				'errors' => 'missing_id',
+				'data'   => array(
+					'type' => 'post',
+				),
+			);
 		}
-		// Create log entry for lack of a post id.
-		if ( isset( $this->logging ) ) {
-			$logging = $this->logging;
-		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-		}
-
-		$status = 'error';
-		$title  = sprintf(
-			// translators: placeholders are: 1) the log status.
-			esc_html__( '%1$s: Posts: Tried to run post_upsert, and ended up without a post id', 'object-sync-for-salesforce' ),
-			ucfirst( esc_attr( $status ) )
-		);
-
-		$logging->setup(
-			// todo: can we be more explicit here about what post upsert failed?
-			$title,
-			'',
-			0,
-			0,
-			$status
-		);
-
+		return $result;
 	}
 
 	/**
@@ -1834,30 +1828,15 @@ class Object_Sync_Sf_WordPress {
 				$params[ $key ]['method_modify'] = $methods['method_update'];
 			}
 			$result = $this->attachment_update( $attachment_id, $params );
-			return $result;
+		} else {
+			$result = array(
+				'errors' => 'missing_id',
+				'data'   => array(
+					'type' => 'attachment',
+				),
+			);
 		}
-
-		// Create log entry for lack of an attachment id.
-		if ( isset( $this->logging ) ) {
-			$logging = $this->logging;
-		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-		}
-
-		$status = 'error';
-		$title  = sprintf(
-			// translators: placeholders are: 1) the log status.
-			esc_html__( '%1$s: Attachments: Tried to run attachment_upsert, and ended up without an attachment id', 'object-sync-for-salesforce' ),
-			ucfirst( esc_attr( $status ) )
-		);
-
-		$logging->setup(
-			$title,
-			'',
-			0,
-			0,
-			$status
-		);
+		return $result;
 	}
 
 	/**
@@ -2161,30 +2140,15 @@ class Object_Sync_Sf_WordPress {
 				$params[ $key ]['method_modify'] = $methods['method_update'];
 			}
 			$result = $this->term_update( $term_id, $params, $taxonomy, $id_field );
-			return $result;
+		} else {
+			$result = array(
+				'errors' => 'missing_id',
+				'data'   => array(
+					'type' => 'term',
+				),
+			);
 		}
-		// Create log entry for lack of a term id.
-		if ( isset( $this->logging ) ) {
-			$logging = $this->logging;
-		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-		}
-
-		$status = 'error';
-		$title  = sprintf(
-			// translators: placeholders are: 1) the log status.
-			esc_html__( '%1$s: Terms: Tried to run term_upsert, and ended up without a term id', 'object-sync-for-salesforce' ),
-			ucfirst( esc_attr( $status ) )
-		);
-
-		$logging->setup(
-			$title,
-			'',
-			0,
-			0,
-			$status
-		);
-
+		return $result;
 	}
 
 	/**
@@ -2490,31 +2454,15 @@ class Object_Sync_Sf_WordPress {
 				$params[ $key ]['method_modify'] = $methods['method_update'];
 			}
 			$result = $this->comment_update( $comment_id, $params, $id_field );
-			return $result;
+		} else {
+			$result = array(
+				'errors' => 'missing_id',
+				'data'   => array(
+					'type' => 'comment',
+				),
+			);
 		}
-
-		// Create log entry for lack of a comment id.
-		if ( isset( $this->logging ) ) {
-			$logging = $this->logging;
-		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-		}
-
-		$status = 'error';
-		$title  = sprintf(
-			// translators: placeholders are: 1) the log status.
-			esc_html__( '%1$s: Comments: Tried to run comment_upsert, and ended up without a comment id', 'object-sync-for-salesforce' ),
-			ucfirst( esc_attr( $status ) )
-		);
-
-		$logging->setup(
-			$title,
-			'',
-			0,
-			0,
-			$status
-		);
-
+		return $result;
 	}
 
 	/**
