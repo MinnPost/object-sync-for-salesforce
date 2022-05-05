@@ -968,6 +968,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$use_soap = $this->salesforce['soap_loaded'];
 		if ( true === $use_soap ) {
 			$soap = new Object_Sync_Sf_Salesforce_Soap_Partner();
+		} else {
+			return; // if the REST API ever supports merging, we can do something else in this case.
 		}
 		$seconds = 60;
 
@@ -1003,6 +1005,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$last_merge_sync_sf = gmdate( 'Y-m-d\TH:i:s\Z', $last_merge_sync );
 				$merged             = array();
 				// there doesn't appear to be a way to do this in the rest api; for now we'll do soap.
+				// the soap query only works immediately following a merge and shortly after.
 				if ( true === $use_soap ) {
 					$type   = $salesforce_mapping['salesforce_object'];
 					$query  = "SELECT Id, isDeleted, masterRecordId FROM $type WHERE masterRecordId != '' AND SystemModStamp > $last_merge_sync_sf";
