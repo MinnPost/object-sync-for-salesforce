@@ -150,7 +150,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	/**
 	 * Whether the plugin is in debug mode
 	 *
-	 * @var string
+	 * @var bool
 	 */
 	public $debug;
 
@@ -194,8 +194,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// deprecated actions.
 		$this->deprecated_actions();
 
-		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
-		$this->debug = filter_var( $this->debug, FILTER_VALIDATE_BOOLEAN );
+		$this->debug = filter_var( get_option( $this->option_prefix . 'debug_mode', false ), FILTER_VALIDATE_BOOLEAN );
 
 	}
 

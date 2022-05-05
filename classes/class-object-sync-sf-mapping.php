@@ -240,7 +240,7 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Option value for whether the plugin is in debug mode
 	 *
-	 * @var string
+	 * @var bool
 	 */
 	public $debug;
 
@@ -324,8 +324,7 @@ class Object_Sync_Sf_Mapping {
 		$this->status_success = 1;
 		$this->status_error   = 0;
 
-		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
-		$this->debug = filter_var( $this->debug, FILTER_VALIDATE_BOOLEAN );
+		$this->debug = filter_var( get_option( $this->option_prefix . 'debug_mode', false ), FILTER_VALIDATE_BOOLEAN );
 
 	}
 
