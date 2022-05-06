@@ -664,9 +664,9 @@ class Object_Sync_Sf_Salesforce_Push {
 						break;
 				}
 
-				if ( '' !== $op ) {
+				if ( '' !== $op && true === $this->debug ) {
 					// this log entry is in this class because it only happens if the push is not allowed.
-					$log_status = 'notice';
+					$log_status = 'debug';
 					$title      = sprintf(
 						// translators: placeholders are: 1) the log status, capitalized, 2) the name of the current operation, 3) the name of the WordPress object type, 4) the name of the WordPress ID field, 5) the value of the object's ID in WordPress, 6) the name of the Salesforce object.
 						esc_html__( '%1$s: %2$s Salesforce %3$s with WordPress %4$s with %5$s of %6$s was not allowed by this fieldmap.', 'object-sync-for-salesforce' ),
@@ -722,24 +722,32 @@ class Object_Sync_Sf_Salesforce_Push {
 					$this->schedule_name
 				);
 
-				$log_status = 'success';
-				$title      = sprintf(
-					// translators: placeholders are: 1) the log status, 2) the name of the WordPress object type, 3) the name of the WordPress ID field, 4) the value of the object's ID in WordPress, 5) the name of the Salesforce object.
-					esc_html__( '%1$s: Add to queue: Push WordPress %2$s with %3$s of %4$s to Salesforce %5$s.', 'object-sync-for-salesforce' ),
-					ucfirst( esc_attr( $log_status ) ),
-					esc_attr( $mapping['wordpress_object'] ),
-					esc_attr( $wordpress_id_field_name ),
-					esc_attr( $object[ $wordpress_id_field_name ] ),
-					esc_attr( $mapping['salesforce_object'] )
-				);
-
-				$result    = array(
+				if ( true === $this->debug ) {
+					$log_status = 'success';
+					$title      = sprintf(
+						// translators: placeholders are: 1) the log status, 2) the name of the WordPress object type, 3) the name of the WordPress ID field, 4) the value of the object's ID in WordPress, 5) the name of the Salesforce object.
+						esc_html__( '%1$s: Add to queue: Push WordPress %2$s with %3$s of %4$s to Salesforce %5$s.', 'object-sync-for-salesforce' ),
+						ucfirst( esc_attr( $log_status ) ),
+						esc_attr( $mapping['wordpress_object'] ),
+						esc_attr( $wordpress_id_field_name ),
+						esc_attr( $object[ $wordpress_id_field_name ] ),
+						esc_attr( $mapping['salesforce_object'] )
+					);
+				}
+				$result = array(
 					'title'   => $title,
 					'message' => '',
 					'trigger' => $sf_sync_trigger,
 					'parent'  => esc_attr( $object[ $wordpress_id_field_name ] ),
 					'status'  => $log_status,
 				);
+				if ( true === $this->debug ) {
+					// create log entry for queue addition.
+					// this log entry is in this class because it only happens when a record is added to the queue.
+					$debug           = $result;
+					$debug['status'] = 'debug';
+					$this->logging->setup( $debug );
+				}
 				$results[] = $result;
 			} else {
 				// this one is not async. do it immediately.
@@ -1323,32 +1331,34 @@ class Object_Sync_Sf_Salesforce_Push {
 			// this keeps us from doing redundant syncs.
 			$mapping_object['object_updated'] = current_time( 'mysql' );
 			if ( $mapping_object['last_sync'] > $mapping_object['object_updated'] ) {
-				// the current pattern is to run a debug log entry when a transient operation prevents an object from pushing or pulling.
-				$status = 'debug';
-				$title  = sprintf(
-					// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the Salesforce Id value.
-					esc_html__( '%1$s: %2$s: Did not sync WordPress %3$s with %4$s of %5$s with Salesforce Id %6$s because the last sync timestamp was greater than the object updated timestamp.', 'object-sync-for-salesforce' ),
-					ucfirst( esc_attr( $status ) ),
-					esc_attr( $op ),
-					esc_attr( $mapping['wordpress_object'] ),
-					esc_attr( $wordpress_id_field_name ),
-					esc_attr( $object[ "$wordpress_id_field_name" ] ),
-					esc_attr( $mapping_object['salesforce_id'] )
-				);
-				$body = sprintf(
-					// translators: placeholders are 1) when a sync on this mapping last occured, 2) when the object was last updated.
-					'<p>' . esc_html__( 'Last sync time: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Object updated time: %2$s', 'object-sync-for-salesforce' ) . '</p>',
-					esc_attr( $mapping_object['last_sync'] ),
-					esc_html( $mapping_object['object_updated'] )
-				);
-				$result = array(
-					'title'   => $title,
-					'message' => $body,
-					'trigger' => $sf_sync_trigger,
-					'parent'  => 0, // parent id goes here but we don't have one, so make it 0.
-					'status'  => $status,
-				);
-				$this->logging->setup( $result );
+				if ( true === $this->debug ) {
+					// the current pattern is to run a debug log entry when a transient operation prevents an object from pushing or pulling.
+					$status = 'debug';
+					$title  = sprintf(
+						// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the Salesforce Id value.
+						esc_html__( '%1$s: %2$s: Did not sync WordPress %3$s with %4$s of %5$s with Salesforce Id %6$s because the last sync timestamp was greater than the object updated timestamp.', 'object-sync-for-salesforce' ),
+						ucfirst( esc_attr( $status ) ),
+						esc_attr( $op ),
+						esc_attr( $mapping['wordpress_object'] ),
+						esc_attr( $wordpress_id_field_name ),
+						esc_attr( $object[ "$wordpress_id_field_name" ] ),
+						esc_attr( $mapping_object['salesforce_id'] )
+					);
+					$body = sprintf(
+						// translators: placeholders are 1) when a sync on this mapping last occured, 2) when the object was last updated.
+						'<p>' . esc_html__( 'Last sync time: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Object updated time: %2$s', 'object-sync-for-salesforce' ) . '</p>',
+						esc_attr( $mapping_object['last_sync'] ),
+						esc_html( $mapping_object['object_updated'] )
+					);
+					$result = array(
+						'title'   => $title,
+						'message' => $body,
+						'trigger' => $sf_sync_trigger,
+						'parent'  => 0, // parent id goes here but we don't have one, so make it 0.
+						'status'  => $status,
+					);
+					$this->logging->setup( $result );
+				}
 				return $result;
 			}
 
