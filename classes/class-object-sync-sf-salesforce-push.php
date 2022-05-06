@@ -572,6 +572,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				if ( 1 === $salesforce_pulling ) {
 					// if it is pulling, delete the transient and continue on through the loop.
 					// we need to either do this for every individual mapping object, or only do it when all the mapping objects are done.
+					// this log entry is in this class because it is related to the transient operation that detects what is currently happening.
 					$transients_to_delete[ $fieldmap_key ]['transients'][] = $mapping_object_id_transient;
 					if ( true === $this->debug ) {
 						// create log entry for failed pull.
@@ -596,6 +597,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				}
 			} else {
 				// if we don't have a WordPress object id, we've got no business doing stuff in Salesforce.
+				// this log entry is in this class because it runs only if the current WordPress object does not have an id value.
 				$status = 'error';
 				$title  = sprintf(
 					// translators: placeholders are: 1) the log status, 2) the name of the WordPress id field.
@@ -662,25 +664,26 @@ class Object_Sync_Sf_Salesforce_Push {
 						break;
 				}
 
-				$log_status = 'notice';
-				$title      = sprintf(
-					// translators: placeholders are: 1) the log status, capitalized, 2) the name of the current operation, 3) the name of the WordPress object type, 4) the name of the WordPress ID field, 5) the value of the object's ID in WordPress, 6) the name of the Salesforce object.
-					esc_html__( '%1$s: %2$s Salesforce %3$s with WordPress %4$s with %5$s of %6$s was not allowed by this fieldmap.', 'object-sync-for-salesforce' ),
-					ucfirst( esc_attr( $log_status ) ),
-					esc_attr( $op ),
-					esc_attr( $mapping['wordpress_object'] ),
-					esc_attr( $wordpress_id_field_name ),
-					esc_attr( $object[ $wordpress_id_field_name ] ),
-					esc_attr( $mapping['salesforce_object'] )
-				);
-				$result = array(
-					'title'   => $title,
-					'message' => '',
-					'trigger' => $sf_sync_trigger,
-					'parent'  => esc_attr( $object[ $wordpress_id_field_name ] ),
-					'status'  => $log_status,
-				);
 				if ( '' !== $op ) {
+					// this log entry is in this class because it only happens if the push is not allowed.
+					$log_status = 'notice';
+					$title      = sprintf(
+						// translators: placeholders are: 1) the log status, capitalized, 2) the name of the current operation, 3) the name of the WordPress object type, 4) the name of the WordPress ID field, 5) the value of the object's ID in WordPress, 6) the name of the Salesforce object.
+						esc_html__( '%1$s: %2$s Salesforce %3$s with WordPress %4$s with %5$s of %6$s was not allowed by this fieldmap.', 'object-sync-for-salesforce' ),
+						ucfirst( esc_attr( $log_status ) ),
+						esc_attr( $op ),
+						esc_attr( $mapping['wordpress_object'] ),
+						esc_attr( $wordpress_id_field_name ),
+						esc_attr( $object[ $wordpress_id_field_name ] ),
+						esc_attr( $mapping['salesforce_object'] )
+					);
+					$result = array(
+						'title'   => $title,
+						'message' => '',
+						'trigger' => $sf_sync_trigger,
+						'parent'  => esc_attr( $object[ $wordpress_id_field_name ] ),
+						'status'  => $log_status,
+					);
 					$this->logging->setup( $result );
 				}
 				$results[] = $result;
@@ -804,6 +807,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		// check to make sure we have a value for the WordPress ID.
 		if ( ! isset( $object[ $wordpress_id_field_name ] ) ) {
 			// create log entry for missing WordPress ID.
+			// this log entry is in this class because it only happens if there is no WordPress ID.
 			$status = 'error';
 			$title  = sprintf(
 				// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the name of the WordPress object type, 5) the WordPress id field name.
@@ -865,6 +869,8 @@ class Object_Sync_Sf_Salesforce_Push {
 					try {
 						$api_result = $sfapi->object_delete( $mapping['salesforce_object'], $mapping_object['salesforce_id'] );
 					} catch ( Object_Sync_Sf_Exception $e ) {
+						// this log entry runs when an API exception happens.
+						// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 						$status = 'error';
 						// create log entry for failed delete.
 						$title = sprintf(
@@ -894,6 +900,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 					if ( ! isset( $e ) ) {
 						// create log entry for successful delete if the result had no errors.
+						// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 						$status = 'success';
 						$title  = sprintf(
 							// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value.
@@ -919,6 +926,7 @@ class Object_Sync_Sf_Salesforce_Push {
 						do_action( $this->option_prefix . 'push_success', $op, $sfapi->response, $synced_object, $mapping_object['salesforce_id'], $wordpress_id_field_name );
 					}
 				} else {
+					// this log entry runs in this class because there are multiple mapping objects we're looping through.
 					$more_ids = '<p>' . esc_html__( 'The Salesforce record was not deleted because there are multiple WordPress IDs that match this Salesforce ID. They are:', 'object-sync-for-salesforce' ) . '</p>';
 
 					$more_ids .= '<ul>';
@@ -987,6 +995,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 			// if the parameters array is empty at this point, we should create a log entry to that effect.
 			// I think it should be a debug message, unless we learn from users that it should be raised to an error.
+			// this log entry runs in this class because it has detected that there are no parameters.
 			if ( true === $this->debug ) {
 				$status = 'debug';
 				$title  = sprintf(
@@ -1172,6 +1181,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				} // End if() statement.
 			} catch ( Object_Sync_Sf_Exception $e ) {
 				// create log entry for failed create or upsert.
+				// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 				$status = 'error';
 				$title  = sprintf(
 					// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value if there is one, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value.
@@ -1217,10 +1227,11 @@ class Object_Sync_Sf_Salesforce_Push {
 					$salesforce_data = $sf_object['data'];
 				}
 
+				// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 				$salesforce_id = $salesforce_data['Id'];
 				$status        = 'success';
 				$title         = sprintf(
-					// translators: placeholders are: 1) the log status ,2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value.
+					// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value.
 					esc_html__( '%1$s: %2$s Salesforce %3$s %4$s (WordPress %5$s with %6$s of %7$s)', 'object-sync-for-salesforce' ),
 					ucfirst( esc_attr( $status ) ),
 					esc_attr( $op ),
@@ -1260,6 +1271,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				// create log entry for failed create or upsert
 				// this is part of the drupal module but I am failing to understand when it would ever fire, since the catch should catch the errors
 				// if we see this in the log entries, we can understand what it does, but probably not until then.
+				// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 				$status = 'error';
 				$title  = sprintf(
 					// translators: placeholders are: 1) error code the Salesforce API returned, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value.
@@ -1309,6 +1321,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			// there is an existing object link
 			// if the last sync is greater than the last time this object was updated, skip it
 			// this keeps us from doing redundant syncs.
+			// this log entry is in this class because this class uses the transients to see what is happening.
 			$mapping_object['object_updated'] = current_time( 'mysql' );
 			if ( $mapping_object['last_sync'] > $mapping_object['object_updated'] ) {
 				$status = 'notice';
@@ -1357,6 +1370,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				$mapping_object['last_sync_status']  = $this->mappings->status_success;
 				$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
 
+				// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 				$status = 'success';
 				$title  = sprintf(
 					// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value.
@@ -1383,6 +1397,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 			} catch ( Object_Sync_Sf_Exception $e ) {
 				// create log entry for failed update.
+				// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 				$status = 'error';
 				$title  = sprintf(
 					// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the Salesforce Id value, 5) the name of the WordPress object type, 6) the WordPress id field name, 7) the WordPress object id value.
