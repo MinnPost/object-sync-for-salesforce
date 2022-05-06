@@ -572,7 +572,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				if ( 1 === $salesforce_pulling ) {
 					// if it is pulling, delete the transient and continue on through the loop.
 					// we need to either do this for every individual mapping object, or only do it when all the mapping objects are done.
-					// this log entry is in this class because it is related to the transient operation that detects what is currently happening.
+					// the current pattern is to run a debug log entry when a transient operation prevents an object from pushing or pulling.
 					$transients_to_delete[ $fieldmap_key ]['transients'][] = $mapping_object_id_transient;
 					if ( true === $this->debug ) {
 						// create log entry for failed pull.
@@ -1321,10 +1321,10 @@ class Object_Sync_Sf_Salesforce_Push {
 			// there is an existing object link
 			// if the last sync is greater than the last time this object was updated, skip it
 			// this keeps us from doing redundant syncs.
-			// this log entry is in this class because this class uses the transients to see what is happening.
 			$mapping_object['object_updated'] = current_time( 'mysql' );
 			if ( $mapping_object['last_sync'] > $mapping_object['object_updated'] ) {
-				$status = 'notice';
+				// the current pattern is to run a debug log entry when a transient operation prevents an object from pushing or pulling.
+				$status = 'debug';
 				$title  = sprintf(
 					// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the Salesforce Id value.
 					esc_html__( '%1$s: %2$s: Did not sync WordPress %3$s with %4$s of %5$s with Salesforce Id %6$s because the last sync timestamp was greater than the object updated timestamp.', 'object-sync-for-salesforce' ),
