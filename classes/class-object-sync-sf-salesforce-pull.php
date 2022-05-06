@@ -411,6 +411,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					if ( $last_id === $result['Id'] ) {
 						if ( true === $this->debug ) {
 							// create log entry for failed pull.
+							// this log entry is in this class because it depends on the transient value containing a matching Salesforce record ID.
 							$status = 'debug';
 							$title  = sprintf(
 								// translators: placeholders are: 1) the log status, 2) the Salesforce ID.
@@ -454,6 +455,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$this->pull_options->set( 'last_id', '', $salesforce_mapping['id'], $result['Id'] );
 							if ( true === $this->debug ) {
 								// create log entry for failed pull.
+								// this log entry is in this class because it only happens if the pull is not allowed.
 								$status = 'debug';
 								$title  = sprintf(
 									// translators: placeholders are: 1) the log status, 2) the Salesforce ID.
@@ -475,6 +477,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 						if ( true === $this->debug ) {
 							// create log entry for queue addition.
+							// this log entry is in this class because it only happens before a record is added to the queue.
 							$status = 'debug';
 							$title  = sprintf(
 								// translators: placeholders are: 1) the log status, 2) the Salesforce ID.
@@ -515,6 +518,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$this->pull_options->set( 'last_id', '', $salesforce_mapping['id'], $result['Id'] );
 						if ( true === $this->debug ) {
 							// create log entry for successful pull.
+							// this log entry is in this class because it only happens after a record is added to the queue.
 							$status = 'debug';
 							$title  = sprintf(
 								// translators: placeholders are: 1) the log status, 2) the Salesforce ID.
@@ -566,6 +570,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				// try to check for specific error codes from Salesforce.
 			} elseif ( isset( $response['errorCode'] ) && 'INVALID_FIELD' === $response['errorCode'] ) {
 				// set up log entry.
+				// this log entry is in this class because it happens when there is an invalid field in the fieldmap that is pulling it.
+				// todo: it's possibly redundant to an error log in the salesforce class.
 				$status    = 'error';
 				$log_title = sprintf(
 					// translators: placeholders are: 1) the log status, 2) the server error code, and 3) the name of the Salesforce object.
@@ -598,6 +604,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$this->logging->setup( $result );
 			} elseif ( isset( $response['errorCode'] ) ) {
 				// create log entry for failed pull from the Salesforce API.
+				// this log entry is in this class because it happens based on pulling a certain object type's data.
+				// todo: it's possibly redundant to an error log in the salesforce class.
 				$status = 'error';
 				$title  = sprintf(
 					// translators: placeholders are: 1) the log status, 2) the server error code, and 3) the name of the Salesforce object.
@@ -983,7 +991,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							}
 						}
 						$merged_records[] = $record;
-						$this->respond_to_salesforce_merge( $type, $record );
+						$this->respond_to_salesforce_merge( $type, $record, $salesforce_mapping );
 					} // End foreach on merged
 				} // End if on soap
 				if ( ! empty( $merged_records ) ) {
@@ -1000,8 +1008,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 *
 	 * @param string $object_type what type of Salesforce object it is.
 	 * @param array  $merged_record the record that was merged.
+	 * @param array  $salesforce_mapping the fieldmap that maps the two object types.
 	 */
-	private function respond_to_salesforce_merge( $object_type, $merged_record ) {
+	private function respond_to_salesforce_merge( $object_type, $merged_record, $salesforce_mapping ) {
 		$op = 'Merge';
 		if ( isset( $merged_record['Id'] ) && true === filter_var( $merged_record['sf:IsDeleted'], FILTER_VALIDATE_BOOLEAN ) && '' !== $merged_record['sf:MasterRecordId'] ) {
 			$previous_sf_id  = $merged_record['Id'];
@@ -1013,6 +1022,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$mapping_object['salesforce_id'] = $new_sf_id;
 				$mapping_object                  = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
+				// create log entry for successful merge.
+				// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 				$status = 'success';
 				$title  = sprintf(
 					// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object type, 4) the previous Salesforce Id value, 5) the new Salesforce Id value, 6) the name of the WordPress object, 7) the WordPress id value.
@@ -1033,6 +1044,10 @@ class Object_Sync_Sf_Salesforce_Pull {
 					'status'  => $status,
 				);
 				$this->logging->setup( $result );
+
+				// hook for pull success.
+				$synced_object = $this->get_synced_object( $merged_record, $mapping_object, $salesforce_mapping );
+				do_action( $this->option_prefix . 'pull_success', $op, $result, $synced_object );
 
 				// after it has been merged, pull it.
 				$result = $this->manual_pull( $object_type, $new_sf_id );
@@ -1239,15 +1254,21 @@ class Object_Sync_Sf_Salesforce_Pull {
 			} else {
 				if ( true === $this->debug ) {
 					// create log entry for failed pull.
+					// this log entry is in this class because it depends on a specific field being out of the Salesforce record that was pulled.
 					$status = 'debug';
 					$title  = sprintf(
 						// translators: placeholders are: 1) the log status.
-						esc_html__( '%1$s: we are missing a deletedDate attribute here, but are expected to delete an item.', 'object-sync-for-salesforce' ),
+						esc_html__( '%1$s: there is no deletedDate attribute in this Salesforce record data, but the plugin is expected to delete it.', 'object-sync-for-salesforce' ),
 						ucfirst( esc_attr( $status ) )
+					);
+					$body = sprintf(
+						// translators: placeholders are 1) the object's data that was attempted.
+						'<p>' . esc_html__( 'The Salesforce object data that was supposed to be deleted: %1$s', 'object-sync-for-salesforce' ) . '</p>',
+						print_r( $object, true ) // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 					);
 					$debug = array(
 						'title'   => $title,
-						'message' => '',
+						'message' => $body,
 						'trigger' => $sf_sync_trigger,
 						'parent'  => '',
 						'status'  => $status,
@@ -1300,6 +1321,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$mapping_objects = $this->mappings->load_object_maps_by_salesforce_id( $object['Id'], $salesforce_mapping );
 			} else {
 				// if we don't have a Salesforce object id, we've got no business doing stuff in WordPress.
+				// this log entry is in this class because it runs if a pulled Salesforce record has no ID.
+				// the Salesforce class won't have this data because generally it's running a SOQL call.
 				$status = 'error';
 				$title  = sprintf(
 					// translators: placeholders are: 1) the log status.
@@ -1365,7 +1388,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			if ( 1 === $salesforce_pushing ) {
 				$transients_to_delete[ $fieldmap_key ]['transients'][] = $mapping_object_id_transient;
 				if ( true === $this->debug ) {
-					// create log entry for failed pull.
+					// the current pattern is to run a debug log entry when a transient operation prevents an object from pushing or pulling.
 					$status = 'debug';
 					$title  = sprintf(
 						// translators: placeholders are: 1) the log status, 2) the mapping object ID transient.
@@ -1424,6 +1447,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// if the parameters array is empty at this point, we should create a log entry to that effect.
 					// I think it should be a debug message, unless we learn from users that it should be raised to an error.
 					if ( true === $this->debug ) {
+						// this log entry is in this class because this is where we know the most about the object with no parameters.
 						$status = 'debug';
 						$title  = sprintf(
 							// translators: %1$s is the log status.
@@ -1659,6 +1683,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					if ( ! empty( $mapping_object_debug ) ) {
 						// create log entry to warn about at least one id of 0.
+						// this log entry is in this class because we know about its fieldmap.
 						$status = 'error';
 						$title  = sprintf(
 							// translators: placeholders are: 1) the log status.
@@ -1707,6 +1732,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					$this->sync_transients->set( 'salesforce_pulling_' . $mapping_object['salesforce_id'], '', $salesforce_mapping['id'], 1, $seconds );
 					$this->sync_transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $mapping_object['salesforce_id'] );
 					// create log entry to indicate that nothing happened.
+					// this log entry is in this class because it depends on the object map.
 					$status = 'notice';
 					$title  = sprintf(
 						// translators: placeholders are: 1) log status, 2) mapping object row id, 3) WordPress object tyoe, 4) individual WordPress item ID, 5) individual Salesforce item ID.
@@ -1783,6 +1809,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			} // End if() statement.
 		} catch ( Object_Sync_Sf_Exception $e ) {
 			// create log entry for failed create or upsert.
+			// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 			$status = 'error';
 			$title  = sprintf(
 				// translators: placeholders are: 1) the log status, 2) what operation is happening, and 3) the name of the WordPress object.
@@ -1845,6 +1872,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// this is not redundant because this is where it creates the object mapping rows in WordPress if the object does not already have one (we are still inside $is_new === TRUE here).
 
 		if ( empty( $result['errors'] ) ) {
+			// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 			$status = 'success';
 			$title  = sprintf(
 				// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value.
@@ -1879,6 +1907,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// create log entry for failed create or upsert
 			// this is part of the drupal module but i am failing to understand when it would ever fire, since the catch should catch the errors
 			// if we see this in the log entries, we can understand what it does, but probably not until then.
+			// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 			$status = 'error';
 			if ( is_object( $wordpress_id ) ) {
 				// print this array because if this happens, something weird has happened and we want to log whatever we have.
@@ -1959,6 +1988,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$mapping_object['last_sync_status']  = $this->mappings->status_success;
 			$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
 
+			// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 			$status = 'success';
 			$title  = sprintf(
 				// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value.
@@ -1987,6 +2017,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		} catch ( Object_Sync_Sf_Exception $e ) {
 			// create log entry for failed update.
+			// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 			$status = 'error';
 			$title .= sprintf(
 				// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value.
@@ -2079,6 +2110,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					} catch ( Object_Sync_Sf_Exception $e ) {
 						$status = 'error';
 						// create log entry for failed delete.
+						// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 						$title = sprintf(
 							// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value.
 							esc_html__( '%1$s: %2$s WordPress %3$s with %4$s of %5$s (%6$s %7$s)', 'object-sync-for-salesforce' ),
@@ -2118,6 +2150,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 					if ( ! isset( $e ) ) {
 						// create log entry for successful delete if the result had no errors.
+						// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 						$status = 'success';
 						$title  = sprintf(
 							// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value.
@@ -2146,6 +2179,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					} // End if() statement if it was successful.
 				} else {
 					// create log entry for additional mapped items.
+					// this log entry is in this class because it depends on the number of mapping objects for this record.
 					$more_ids = sprintf(
 						// translators: parameter is the name of the WordPress id field name.
 						'<p>' . esc_html__( 'The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress %1$s.) They are:', 'object-sync-for-salesforce' ) . '</p>',
