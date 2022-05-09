@@ -691,6 +691,34 @@ class Object_Sync_Sf_WordPress {
 				break;
 		} // End switch() method.
 
+		if ( isset( $result['errors'] ) && ! empty( $result['errors'] ) ) {
+			// create log entry for failed WordPress create.
+			// this log entry is in this class because it is essentially just a debugger for core WordPress data operations.
+			$status = 'error';
+			$title  = sprintf(
+				// translators: 1) is log status, 2) is WordPress object type.
+				esc_html__( '%1$s: WordPress create for %2$s was unsuccessful with these errors:', 'object-sync-for-salesforce' ),
+				ucfirst( esc_attr( $status ) ),
+				esc_attr( $name ),
+				esc_attr( $id )
+			);
+			$body  = '';
+			$body .= '<h2>' . esc_html__( 'Errors from WordPress result:', 'object-sync-for-salesforce' ) . '</h2>';
+			$body .= esc_html( print_r( $result['errors'], true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+			if ( is_array( $params ) && ! empty( $params ) ) {
+				$body .= '<h2>' . esc_html__( 'Parameters sent to WordPress:', 'object-sync-for-salesforce' ) . '</h2>';
+				$body .= esc_html( print_r( $params, true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+			}
+			$error_log = array(
+				'title'   => $title,
+				'message' => $body,
+				'trigger' => 0,
+				'parent'  => '',
+				'status'  => $status,
+			);
+			$this->logging->setup( $error_log );
+		}
+
 		return $result;
 	}
 
@@ -785,24 +813,52 @@ class Object_Sync_Sf_WordPress {
 				break;
 		} // End switch() method.
 
-		if ( 'missing_id' === $result['errors'] ) {
-			$type = $result['data']['type'];
-			// Create log entry for lack of an object id to upsert.
+		if ( isset( $result['errors'] ) && ! empty( $result['errors'] ) ) {
+			// create log entry for failed WordPress upsert.
+			// this log entry is in this class because it is essentially just a debugger for core WordPress data operations.
 			$status = 'error';
-			$title  = sprintf(
-				// translators: placeholders are: 1) the log status, 2) uppercase object type, 3) the object type.
-				esc_html__( '%1$s: %2$s: Tried to run %3$s_upsert, and ended up without the %3$s id', 'object-sync-for-salesforce' ),
-				ucfirst( esc_attr( $status ) ),
-				ucfirst( esc_attr( $type ) ),
-				esc_attr( $type )
+			if ( 'missing_id' === $result['errors'] ) {
+				$type = $result['data']['type'];
+				// Create log entry for lack of an object id to upsert.
+				// this log entry is in this class because it's specific enough as an upsert.
+				$title = sprintf(
+					// translators: placeholders are: 1) the log status, 2) uppercase object type, 3) the object type.
+					esc_html__( '%1$s: %2$s: Tried to run %3$s_upsert, and ended up without the %3$s id', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
+					ucfirst( esc_attr( $type ) ),
+					esc_attr( $type )
+				);
+				$body = '';
+			} else {
+				$title = sprintf(
+					// translators: 1) is log status, 2) is WordPress object type.
+					esc_html__( '%1$s: WordPress upsert for %2$s was unsuccessful with these errors:', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
+					esc_attr( $name ),
+					esc_attr( $id )
+				);
+				$body  = '';
+				$body .= sprintf(
+					// translators: 1) is the WordPress object type, 2) is the method that should be used to save the value.
+					'<p>' . esc_html__( 'The upsert match ran on key: %1$s and value: %2$s.', 'object-sync-for-salesforce' ) . '</p>',
+					esc_attr( $key ),
+					esc_html( $value )
+				);
+				$body .= '<h2>' . esc_html__( 'Errors from WordPress result:', 'object-sync-for-salesforce' ) . '</h2>';
+				$body .= esc_html( print_r( $result['errors'], true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+				if ( is_array( $params ) && ! empty( $params ) ) {
+					$body .= '<h2>' . esc_html__( 'Parameters sent to WordPress:', 'object-sync-for-salesforce' ) . '</h2>';
+					$body .= esc_html( print_r( $params, true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+				}
+			}
+			$error_log = array(
+				'title'   => $title,
+				'message' => $body,
+				'trigger' => 0,
+				'parent'  => '',
+				'status'  => $status,
 			);
-			$this->logging->setup(
-				$title,
-				'',
-				0,
-				0,
-				$status
-			);
+			$this->logging->setup( $error_log );
 		}
 
 		return $result;
@@ -877,6 +933,8 @@ class Object_Sync_Sf_WordPress {
 		} // End switch() method.
 
 		if ( isset( $result['errors'] ) && ! empty( $result['errors'] ) ) {
+			// create log entry for failed WordPress update.
+			// this log entry is in this class because it is essentially just a debugger for core WordPress data operations.
 			$status = 'error';
 			if ( ! isset( $mapping_object['salesforce_id'] ) ) {
 				$title = sprintf(
