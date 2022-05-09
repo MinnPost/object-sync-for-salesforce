@@ -302,6 +302,47 @@ class Object_Sync_Salesforce {
 	}
 
 	/**
+	 * Set the Salesforce API version.
+	 * As of version 2.2.0, this is set by the plugin and is not configurable in the interface, though it can be overridden by developer hook.
+	 * Until version 3.0, this value will be overridden by pre-existing settings.
+	 *
+	 * @return string $sf_api_version the active Salesforce version.
+	 */
+	public function get_salesforce_api_version() {
+		$sf_api_version = OBJECT_SYNC_SF_DEFAULT_API_VERSION;
+		$sf_api_version = $this->check_deprecated_salesforce_api_version( $sf_api_version );
+		// developers can modify the active API version. if supplied, this takes priority.
+		$sf_api_version = apply_filters( $this->option_prefix . 'modify_salesforce_api_version', $sf_api_version );
+
+		/* // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+		 * example to modify the array of classes by adding one and removing one
+		 * add_filter( 'object_sync_for_salesforce_modify_salesforce_api_version', 'modify_salesforce_api_version', 10, 1 );
+		 * function modify_salesforce_api_version( $sf_api_version ) {
+		 * 	$sf_api_version = '52.0';
+		 * 	return $sf_api_version;
+		 * }
+		*/
+		return $sf_api_version;
+	}
+
+	/**
+	 * Check deprecated methods for a Salesforce API version. If one is set, trigger a notice.
+	 *
+	 * @param string $sf_api_version the active Salesforce version.
+	 * @return string $sf_api_version the active Salesforce version.
+	 */
+	private function check_deprecated_salesforce_api_version( $sf_api_version ) {
+		$deprecated_api_version = defined( 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION' ) ? OBJECT_SYNC_SF_SALESFORCE_API_VERSION : get_option( $this->option_prefix . 'api_version', '' );
+		if ( '' !== $deprecated_api_version && $sf_api_version !== $deprecated_api_version ) {
+			// trigger a notice here.
+			$sf_api_version = $deprecated_api_version;
+		} else {
+			delete_option( $this->option_prefix . 'api_version' );
+		}
+		return $sf_api_version;
+	}
+
+	/**
 	 * Get the pre-login Salesforce credentials.
 	 * These depend on the plugin's settings or constants defined in wp-config.php.
 	 *
@@ -315,7 +356,7 @@ class Object_Sync_Salesforce {
 		$login_base_url     = defined( 'OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL' ) ? OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL : get_option( $this->option_prefix . 'login_base_url', '' );
 		$authorize_url_path = defined( 'OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH' ) ? OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH : get_option( $this->option_prefix . 'authorize_url_path', '' );
 		$token_url_path     = defined( 'OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH' ) ? OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH : get_option( $this->option_prefix . 'token_url_path', '' );
-		$api_version        = defined( 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION' ) ? OBJECT_SYNC_SF_SALESFORCE_API_VERSION : get_option( $this->option_prefix . 'api_version', '' );
+		$api_version        = $this->get_salesforce_api_version();
 
 		$login_credentials = array(
 			'consumer_key'     => $consumer_key,
