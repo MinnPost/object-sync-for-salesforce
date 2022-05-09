@@ -229,8 +229,8 @@ class Object_Sync_Sf_Admin {
 
 		// set the Salesforce API version.
 		// as of version 2.2.0, this is set by the plugin and is not configurable in the interface.
-		// until version 3.0, this value will use a pre-existing setting if one exists.
-		$this->default_api_version = object_sync_for_salesforce()->get_salesforce_api_version();
+		// this class variable will be removed in 3.0.0.
+		$this->default_api_version = $this->login_credentials['rest_api_version'];
 
 		$this->sfwp_transients          = object_sync_for_salesforce()->wordpress->sfwp_transients;
 		$this->admin_settings_url_param = 'object-sync-salesforce-admin';
