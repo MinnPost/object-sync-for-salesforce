@@ -38,12 +38,12 @@ define( 'OBJECT_SYNC_SF_FILE', __FILE__ );
 define( 'OBJECT_SYNC_SF_VERSION', '2.1.2' );
 
 /**
- * The default Salesforce API version for new installs
+ * The default Salesforce API version, unless it has been overridden by pre-existing option or by developers
  *
  * @since 2.0.0
  * @var string
  */
-define( 'OBJECT_SYNC_SF_DEFAULT_API_VERSION', '53.0' );
+define( 'OBJECT_SYNC_SF_DEFAULT_API_VERSION', '55.0' );
 
 // Load the autoloader.
 require_once 'lib/autoloader.php';

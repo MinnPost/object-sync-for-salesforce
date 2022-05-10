@@ -302,6 +302,73 @@ class Object_Sync_Salesforce {
 	}
 
 	/**
+	 * Set the Salesforce API version.
+	 * As of version 2.2.0, this is set by the plugin and is not configurable in the interface, though it can be overridden by developer hook.
+	 * Until version 3.0, this value will be overridden by pre-existing settings.
+	 *
+	 * @return array $sf_api_version_data what we know about the API version that is in use.
+	 */
+	public function get_salesforce_api_version() {
+		$sf_api_version      = OBJECT_SYNC_SF_DEFAULT_API_VERSION;
+		$sf_api_version_data = array(
+			'rest_api_version'        => $sf_api_version,
+			'using_deprecated_option' => false,
+			'using_developer_filter'  => false,
+		);
+
+		// check for a deprecated version. if provided, use it.
+		$deprecated_api_version = $this->check_deprecated_salesforce_api_version( $sf_api_version );
+		if ( '' !== $deprecated_api_version ) {
+			$sf_api_version_data['rest_api_version']        = $deprecated_api_version;
+			$sf_api_version_data['using_deprecated_option'] = true;
+		}
+
+		// developers can modify the active API version. if provided, this takes priority.
+		$developer_api_version = apply_filters( $this->option_prefix . 'modify_salesforce_api_version', $sf_api_version );
+		if ( $developer_api_version !== $sf_api_version ) {
+			$sf_api_version_data['rest_api_version']       = $developer_api_version;
+			$sf_api_version_data['using_developer_filter'] = true;
+		}
+		/* // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+		 * example to change the REST API version by filter
+		 * add_filter( 'object_sync_for_salesforce_modify_salesforce_api_version', 'modify_salesforce_api_version', 10, 1 );
+		 * function modify_salesforce_api_version( $sf_api_version ) {
+		 * 	$sf_api_version = '52.0';
+		 * 	return $sf_api_version;
+		 * }
+		*/
+
+		// return array that includes: 1) what version, 2) if it is a deprecated version, 3) if it is developer overridden.
+		return $sf_api_version_data;
+	}
+
+	/**
+	 * Check deprecated methods for a Salesforce API version.
+	 *
+	 * @param string $sf_api_version the active Salesforce version.
+	 * @return string $deprecated_api_version the deprecated Salesforce version, if it exists.
+	 * @deprecated and will be removed in version 3.0.
+	 */
+	private function check_deprecated_salesforce_api_version( $sf_api_version ) {
+		$deprecated_api_version = defined( 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION' ) ? OBJECT_SYNC_SF_SALESFORCE_API_VERSION : '';
+		// if the constant exists.
+		if ( '' === $deprecated_api_version ) {
+			$deprecated_option_key = $this->option_prefix . 'api_version';
+			$deprecated_api_option = get_option( $deprecated_option_key, 'not-exists' );
+			// if the option exists (the value in the database is not not-exists).
+			if ( 'not-exists' !== $deprecated_api_option ) {
+				$deprecated_api_version = $deprecated_api_option;
+				// if it exists, and is set to "" or exists and is is the same as the default version, just delete it.
+				if ( '' === $deprecated_api_version || $deprecated_api_version === $sf_api_version ) {
+					$deprecated_api_version = '';
+					delete_option( $deprecated_option_key );
+				}
+			}
+		}
+		return $deprecated_api_version;
+	}
+
+	/**
 	 * Get the pre-login Salesforce credentials.
 	 * These depend on the plugin's settings or constants defined in wp-config.php.
 	 *
@@ -309,26 +376,24 @@ class Object_Sync_Salesforce {
 	 */
 	private function get_login_credentials() {
 
-		$consumer_key       = defined( 'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY' ) ? OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY : get_option( $this->option_prefix . 'consumer_key', '' );
-		$consumer_secret    = defined( 'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET' ) ? OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET : get_option( $this->option_prefix . 'consumer_secret', '' );
-		$callback_url       = defined( 'OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL' ) ? OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL : get_option( $this->option_prefix . 'callback_url', '' );
-		$login_base_url     = defined( 'OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL' ) ? OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL : get_option( $this->option_prefix . 'login_base_url', '' );
-		$authorize_url_path = defined( 'OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH' ) ? OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH : get_option( $this->option_prefix . 'authorize_url_path', '' );
-		$token_url_path     = defined( 'OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH' ) ? OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH : get_option( $this->option_prefix . 'token_url_path', '' );
-		$api_version        = defined( 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION' ) ? OBJECT_SYNC_SF_SALESFORCE_API_VERSION : get_option( $this->option_prefix . 'api_version', '' );
+		$consumer_key        = defined( 'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY' ) ? OBJECT_SYNC_SF_SALESFORCE_CONSUMER_KEY : get_option( $this->option_prefix . 'consumer_key', '' );
+		$consumer_secret     = defined( 'OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET' ) ? OBJECT_SYNC_SF_SALESFORCE_CONSUMER_SECRET : get_option( $this->option_prefix . 'consumer_secret', '' );
+		$callback_url        = defined( 'OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL' ) ? OBJECT_SYNC_SF_SALESFORCE_CALLBACK_URL : get_option( $this->option_prefix . 'callback_url', '' );
+		$login_base_url      = defined( 'OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL' ) ? OBJECT_SYNC_SF_SALESFORCE_LOGIN_BASE_URL : get_option( $this->option_prefix . 'login_base_url', '' );
+		$authorize_url_path  = defined( 'OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH' ) ? OBJECT_SYNC_SF_SALESFORCE_AUTHORIZE_URL_PATH : get_option( $this->option_prefix . 'authorize_url_path', '' );
+		$token_url_path      = defined( 'OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH' ) ? OBJECT_SYNC_SF_SALESFORCE_TOKEN_URL_PATH : get_option( $this->option_prefix . 'token_url_path', '' );
+		$sf_api_version_data = $this->get_salesforce_api_version();
 
 		$login_credentials = array(
-			'consumer_key'     => $consumer_key,
-			'consumer_secret'  => $consumer_secret,
-			'callback_url'     => $callback_url,
-			'login_url'        => $login_base_url,
-			'authorize_path'   => $authorize_url_path,
-			'token_path'       => $token_url_path,
-			'rest_api_version' => $api_version,
+			'consumer_key'    => $consumer_key,
+			'consumer_secret' => $consumer_secret,
+			'callback_url'    => $callback_url,
+			'login_url'       => $login_base_url,
+			'authorize_path'  => $authorize_url_path,
+			'token_path'      => $token_url_path,
 		);
-
+		$login_credentials = array_merge( $login_credentials, $sf_api_version_data );
 		return $login_credentials;
-
 	}
 
 	/**
