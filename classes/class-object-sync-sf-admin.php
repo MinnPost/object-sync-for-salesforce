@@ -134,6 +134,13 @@ class Object_Sync_Sf_Admin {
 	private $admin_settings_url_param;
 
 	/**
+	 * Data for admin notices
+	 *
+	 * @var array
+	 */
+	public $notices_data;
+
+	/**
 	 * Salesforce access token
 	 *
 	 * @var string
@@ -234,6 +241,7 @@ class Object_Sync_Sf_Admin {
 
 		$this->sfwp_transients          = object_sync_for_salesforce()->wordpress->sfwp_transients;
 		$this->admin_settings_url_param = 'object-sync-salesforce-admin';
+		$this->notices_data             = $this->notices_data();
 
 		// default authorize url path.
 		$this->default_authorize_url_path = '/services/oauth2/authorize';
@@ -265,7 +273,7 @@ class Object_Sync_Sf_Admin {
 		// Settings API forms and notices.
 		add_action( 'admin_menu', array( $this, 'create_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'salesforce_settings_forms' ) );
-		add_action( 'admin_init', array( $this, 'notices' ) );
+		add_action( 'admin_init', array( $this, 'display_notices' ) );
 		add_action( 'admin_post_post_fieldmap', array( $this, 'prepare_fieldmap_data' ) );
 		add_action( 'admin_post_delete_fieldmap', array( $this, 'delete_fieldmap' ) );
 
@@ -1424,17 +1432,11 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-	 * Create the notices, settings, and conditions by which admin notices should appear
+	 * Create and return the data for notices.
+	 *
+	 * @return array $notices is the array of notices.
 	 */
-	public function notices() {
-
-		// before a notice is displayed, we should make sure we are on a page related to this plugin.
-		if ( ! isset( $_GET['page'] ) || $this->admin_settings_url_param !== $_GET['page'] ) {
-			return;
-		}
-
-		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
-
+	public function notices_data() {
 		$notices = array(
 			'permission'              => array(
 				'condition'   => ( false === $this->check_wordpress_admin_permissions() ),
@@ -1515,6 +1517,21 @@ class Object_Sync_Sf_Admin {
 				'dismissible' => true,
 			),
 		);
+		return $notices;
+	}
+
+	/**
+	 * Create the notices, settings, and conditions by which admin notices should appear
+	 */
+	public function display_notices() {
+
+		// before a notice is displayed, we should make sure we are on a page related to this plugin.
+		if ( ! isset( $_GET['page'] ) || $this->admin_settings_url_param !== $_GET['page'] ) {
+			return;
+		}
+
+		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
+		$notices  = $this->notices_data();
 
 		foreach ( $notices as $key => $value ) {
 

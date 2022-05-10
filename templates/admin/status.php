@@ -19,16 +19,7 @@
 			);
 		?>
 	<?php elseif ( true === $this->login_credentials['using_deprecated_option'] ) : ?>
-		<?php
-			echo sprintf(
-				// translators: 1) is the version number of the Salesforce REST API, 2) is the option key for where the deprecated version is stored, and 3) is the prefixed options table name.
-				esc_html__( 'Object Sync for Salesforce is using version %1$s of the Salesforce REST API, which is configured from a previous version. This value is no longer configurable in the plugin settings, and in version 3.0.0, previously saved values will be removed. You can delete the %2$s field from the %3$s table on your own, set it to %4$s so the plugin can delete it, or wait until that release.', 'object-sync-for-salesforce' ),
-				esc_attr( $this->login_credentials['rest_api_version'] ),
-				'<code>' . esc_attr( $this->option_prefix . 'api_version' ) . '</code>',
-				'<code>' . esc_attr( $this->wpdb->prefix . 'options' ) . '</code>',
-				'<code>' . esc_attr( OBJECT_SYNC_SF_DEFAULT_API_VERSION ) . '</code>'
-			);
-		?>
+		<?php echo wp_kses_post( $this->notices_data['deprecated_api_version']['message'] ); ?>
 	<?php else : ?>
 		<?php
 			echo sprintf(
@@ -45,7 +36,7 @@
 	<table class="widefat striped">
 		<thead>
 			<summary>
-				<h4><?php echo $contacts_apicall_summary; ?></h4>
+				<p><?php echo wp_kses_post( $contacts_apicall_summary ); ?></p>
 			</summary>
 			<tr>
 				<th><?php echo esc_html__( 'Contact ID', 'object-sync-for-salesforce' ); ?></th>
