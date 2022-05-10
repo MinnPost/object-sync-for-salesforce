@@ -134,6 +134,13 @@ class Object_Sync_Sf_Admin {
 	private $admin_settings_url_param;
 
 	/**
+	 * Data for admin notices
+	 *
+	 * @var array
+	 */
+	public $notices_data;
+
+	/**
 	 * Salesforce access token
 	 *
 	 * @var string
@@ -174,6 +181,7 @@ class Object_Sync_Sf_Admin {
 	 * been authenticated with Salesforce.
 	 *
 	 * @var string
+	 * @deprecated as of 2.2.0; will be removed in version 3.0. This property will stay until 3.0.0 because it is a public value and it could be accessed by other code.
 	 */
 	public $default_api_version;
 
@@ -226,15 +234,19 @@ class Object_Sync_Sf_Admin {
 		$this->schedulable_classes = object_sync_for_salesforce()->schedulable_classes;
 		$this->queue               = object_sync_for_salesforce()->queue;
 
+		// set the Salesforce API version.
+		// as of version 2.2.0, this is set by the plugin and is not configurable in the interface.
+		// this class variable will be removed in 3.0.0.
+		$this->default_api_version = $this->login_credentials['rest_api_version'];
+
 		$this->sfwp_transients          = object_sync_for_salesforce()->wordpress->sfwp_transients;
 		$this->admin_settings_url_param = 'object-sync-salesforce-admin';
+		$this->notices_data             = $this->notices_data();
 
 		// default authorize url path.
 		$this->default_authorize_url_path = '/services/oauth2/authorize';
 		// default token url path.
 		$this->default_token_url_path = '/services/oauth2/token';
-		// what Salesforce API version to start the settings with. This is only used in the settings form.
-		$this->default_api_version = defined( 'OBJECT_SYNC_SF_DEFAULT_API_VERSION' ) ? OBJECT_SYNC_SF_DEFAULT_API_VERSION : '52.0';
 		// default pull record limit.
 		$this->default_pull_limit = 25;
 		// default pull throttle for avoiding going over api limits.
@@ -261,7 +273,7 @@ class Object_Sync_Sf_Admin {
 		// Settings API forms and notices.
 		add_action( 'admin_menu', array( $this, 'create_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'salesforce_settings_forms' ) );
-		add_action( 'admin_init', array( $this, 'notices' ) );
+		add_action( 'admin_init', array( $this, 'display_notices' ) );
 		add_action( 'admin_post_post_fieldmap', array( $this, 'prepare_fieldmap_data' ) );
 		add_action( 'admin_post_delete_fieldmap', array( $this, 'delete_fieldmap' ) );
 
@@ -862,19 +874,6 @@ class Object_Sync_Sf_Admin {
 					'default'  => $this->default_token_url_path,
 				),
 			),
-			'api_version'                    => array(
-				'title'    => __( 'Salesforce API Version', 'object-sync-for-salesforce' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'text',
-					'validate' => 'sanitize_validate_text',
-					'desc'     => '',
-					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION',
-					'default'  => $this->default_api_version,
-				),
-			),
 			'object_filters'                 => array(
 				'title'    => __( 'Limit Salesforce Objects', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['checkboxes'],
@@ -1016,23 +1015,6 @@ class Object_Sync_Sf_Admin {
 				'constant' => '',
 			),
 		);
-
-		// if the user has authenticated with Salesforce, override the text field with a dropdown of available Salesforce API verisons.
-		if ( true === is_object( $this->salesforce['sfapi'] ) && true === $this->salesforce['sfapi']->is_authorized() ) {
-			$salesforce_settings['api_version'] = array(
-				'title'    => __( 'Salesforce API Version', 'object-sync-for-salesforce' ),
-				'callback' => $callbacks['select'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'select',
-					'validate' => 'sanitize_text_field',
-					'desc'     => '',
-					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION',
-					'items'    => $this->version_options(),
-				),
-			);
-		}
 
 		foreach ( $salesforce_settings as $key => $attributes ) {
 			$id       = $this->option_prefix . $key;
@@ -1440,17 +1422,11 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-	 * Create the notices, settings, and conditions by which admin notices should appear
+	 * Create and return the data for notices.
+	 *
+	 * @return array $notices is the array of notices.
 	 */
-	public function notices() {
-
-		// before a notice is displayed, we should make sure we are on a page related to this plugin.
-		if ( ! isset( $_GET['page'] ) || $this->admin_settings_url_param !== $_GET['page'] ) {
-			return;
-		}
-
-		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
-
+	public function notices_data() {
 		$notices = array(
 			'permission'              => array(
 				'condition'   => ( false === $this->check_wordpress_admin_permissions() ),
@@ -1474,6 +1450,19 @@ class Object_Sync_Sf_Admin {
 				),
 				'type'        => 'error',
 				'dismissible' => false,
+			),
+			'deprecated_api_version'  => array(
+				'condition'   => ( isset( $this->login_credentials['using_deprecated_option'] ) && true === $this->login_credentials['using_deprecated_option'] ),
+				'message'     => sprintf(
+					// translators: 1) is the version number of the Salesforce REST API, 2) is the option key for where the deprecated version is stored, and 3) is the prefixed options table name.
+					esc_html__( 'Object Sync for Salesforce is using version %1$s of the Salesforce REST API, which is configured from a previous version. This value is no longer configurable in the plugin settings, and in version 3.0.0, previously saved values will be removed. You can delete the %2$s field from the %3$s table on your own, set it to %4$s so the plugin can delete it, or wait until that release.', 'object-sync-for-salesforce' ),
+					esc_attr( $this->login_credentials['rest_api_version'] ),
+					'<code>' . esc_attr( $this->option_prefix . 'api_version' ) . '</code>',
+					'<code>' . esc_attr( $this->wpdb->prefix . 'options' ) . '</code>',
+					'<code>' . esc_attr( OBJECT_SYNC_SF_DEFAULT_API_VERSION ) . '</code>'
+				),
+				'type'        => 'error',
+				'dismissible' => true,
 			),
 			'fieldmap'                => array(
 				'condition'   => isset( $get_data['transient'] ),
@@ -1518,6 +1507,21 @@ class Object_Sync_Sf_Admin {
 				'dismissible' => true,
 			),
 		);
+		return $notices;
+	}
+
+	/**
+	 * Create the notices, settings, and conditions by which admin notices should appear
+	 */
+	public function display_notices() {
+
+		// before a notice is displayed, we should make sure we are on a page related to this plugin.
+		if ( ! isset( $_GET['page'] ) || $this->admin_settings_url_param !== $_GET['page'] ) {
+			return;
+		}
+
+		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
+		$notices  = $this->notices_data();
 
 		foreach ( $notices as $key => $value ) {
 
@@ -2307,26 +2311,6 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-	 * Dropdown formatted list of Salesforce API versions
-	 *
-	 * @return array $args is the array of API versions for the dropdown.
-	 */
-	private function version_options() {
-		$args = array();
-		if ( defined( 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION' ) || ! isset( $_GET['page'] ) || sanitize_key( $_GET['page'] ) !== $this->admin_settings_url_param ) {
-			return $args;
-		}
-		$versions = $this->salesforce['sfapi']->get_api_versions();
-		foreach ( $versions['data'] as $key => $value ) {
-			$args[] = array(
-				'value' => $value['version'],
-				'text'  => $value['label'] . ' (' . $value['version'] . ')',
-			);
-		}
-		return $args;
-	}
-
-	/**
 	 * Default display for <a href> links
 	 *
 	 * @param array $args is the arguments to make the link.
@@ -2383,28 +2367,6 @@ class Object_Sync_Sf_Admin {
 	 * @param object $sfapi this is the Salesforce API object.
 	 */
 	private function status( $sfapi ) {
-
-		$versions = $sfapi->get_api_versions();
-
-		// format this array into text so users can see the versions.
-		if ( true === $versions['cached'] ) {
-			$versions_is_cached = esc_html__( 'This list is cached, and', 'object-sync-for-salesforce' );
-		} else {
-			$versions_is_cached = esc_html__( 'This list is not cached, but', 'object-sync-for-salesforce' );
-		}
-
-		if ( true === $versions['from_cache'] ) {
-			$versions_from_cache = esc_html__( 'items were loaded from the cache', 'object-sync-for-salesforce' );
-		} else {
-			$versions_from_cache = esc_html__( 'items were not loaded from the cache', 'object-sync-for-salesforce' );
-		}
-
-		$versions_apicall_summary = sprintf(
-			// translators: 1) $versions_is_cached is the "This list is/is not cached, and/but" line, 2) $versions_from_cache is the "items were/were not loaded from the cache" line.
-			esc_html__( 'Available Salesforce API versions. %1$s %2$s. This is not an authenticated request, so it does not touch the Salesforce token.', 'object-sync-for-salesforce' ),
-			$versions_is_cached,
-			$versions_from_cache
-		);
 
 		$contacts = $sfapi->query( 'SELECT Name, Id from Contact LIMIT 100' );
 

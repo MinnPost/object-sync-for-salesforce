@@ -115,3 +115,6 @@ See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/
 
 = 2.1.2 =
 Apologies for the buggy release of version 2.1.0 and 2.1.1. I'm hopeful that these issues are resolved in 2.1.2.
+
+= 2.2.0 =
+In version 2.2.0, the Salesforce REST API version is no longer configured in the plugin settings. For backward-compatibility, the plugin will continue to use stored values until version 3.0.0 unless they are the same as the plugin's default value. In 2.2.0, this is version 55.0.

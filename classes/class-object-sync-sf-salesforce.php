@@ -255,6 +255,8 @@ class Object_Sync_Sf_Salesforce {
 	/**
 	 * Get REST API versions available on this Salesforce organization
 	 * This is not an authenticated call, so it would not be a helpful test
+	 *
+	 * @deprecated since version 2.2.0; will be removed in 3.0.0.
 	 */
 	public function get_api_versions() {
 		$options = array(

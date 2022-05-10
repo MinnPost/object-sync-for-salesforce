@@ -1,5 +1,5 @@
-name-template: Version $NEXT_PATCH_VERSION 🌈
-tag-template: v$NEXT_PATCH_VERSION
+name-template: Version $RESOLVED_VERSION 🌈
+tag-template: v$RESOLVED_VERSION
 categories:
   - title: 🚀 Features
     label: feature
@@ -12,3 +12,14 @@ categories:
 change-template: '- $TITLE (#$NUMBER)'
 template: |
   $CHANGES
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
