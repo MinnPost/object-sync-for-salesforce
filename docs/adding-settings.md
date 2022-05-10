@@ -1,6 +1,6 @@
 # Adding settings
 
-Developers can extend the settings interface for this plugin in a couple of ways. This allows you to, for example, add another tab in addition to the defaults: Settings, Authorize, Fieldmaps, Scheduling, and Log Settings.
+Developers can extend the settings interface for this plugin in a couple of ways. This allows you to, for example, add another tab in addition to the defaults: Settings, Authorize, Fieldmaps, Scheduling, and Log Settings. Developers can also override the REST API version that the plugin uses to send requests to Salesforce.
 
 ## Add a settings tab
 
@@ -116,5 +116,25 @@ function add_content( $content_after = null, $tab ) {
         $content_after = '<p>this is an outro.</p>';
     }
     return $content_after;
+}
+```
+
+## Changing settings with code
+
+### Change the REST API version for Salesforce requests
+
+As of version 2.2.0, the requirement to set the REST API version that the plugin uses to send requests to Salesforce has been removed from the plugin interface. For most users this is an improvement; it removes the potential for old API versions to cause problems with new functionality, and removes the potential for users to unintentionally use API versions that are no longer active.
+
+For developers who many rely on version-specific API functionality from Salesforce and are able to deal with potential consequences, the plugin does include a filter with the ability to override the REST API version for all plugin API requests. You might do this if you use custom functionality that depends on an older or newer version of the API than is supported by the plugin.
+
+#### Code example
+
+To override the REST API version, you can use this code:
+
+```php
+add_filter( 'object_sync_for_salesforce_modify_salesforce_api_version', 'modify_salesforce_api_version', 10, 1 );
+function modify_salesforce_api_version( $sf_api_version ) {
+    $sf_api_version = '52.0';
+    return $sf_api_version;
 }
 ```

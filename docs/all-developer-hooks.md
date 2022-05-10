@@ -76,6 +76,10 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form.
     - code: [classes/class-object-sync-sf-admin.php](../classes/class-object-sync-sf-admin.php)
     - documentation: [adding settings](./adding-settings.md#add-content-to-a-tab)
+- `object_sync_for_salesforce_modify_salesforce_api_version`:
+    - description: allow other plugins to change the Salesforce REST API version for API calls that are sent to Salesforce.
+    - code: [classes/class-object-sync-salesforce.php](../classes/class-object-sync-salesforce.php)
+    - documentation: [adding settings](./adding-settings.md#api-version)
 - `object_sync_for_salesforce_modify_schedulable_classes`:
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
     - code: [classes/class-object-sync-salesforce.php](../classes/class-object-sync-salesforce.php)
