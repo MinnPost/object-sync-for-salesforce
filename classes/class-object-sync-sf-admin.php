@@ -174,7 +174,7 @@ class Object_Sync_Sf_Admin {
 	 * been authenticated with Salesforce.
 	 *
 	 * @var string
-	 * @deprecated as of 2.2.0; will be removed in version 3.0.
+	 * @deprecated as of 2.2.0; will be removed in version 3.0. This property will stay until 3.0.0 because it is a public value and it could be accessed by other code.
 	 */
 	public $default_api_version;
 
