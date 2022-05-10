@@ -79,7 +79,7 @@ This page lists all developer hooks available in this plugin, with links to wher
 - `object_sync_for_salesforce_modify_salesforce_api_version`:
     - description: allow other plugins to change the Salesforce REST API version for API calls that are sent to Salesforce.
     - code: [classes/class-object-sync-salesforce.php](../classes/class-object-sync-salesforce.php)
-    - documentation: [adding settings](./adding-settings.md#api-version)
+    - documentation: [adding settings](./adding-settings.md##change-the-rest-api-version-for-salesforce-requests)
 - `object_sync_for_salesforce_modify_schedulable_classes`:
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
     - code: [classes/class-object-sync-salesforce.php](../classes/class-object-sync-salesforce.php)
