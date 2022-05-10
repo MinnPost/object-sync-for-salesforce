@@ -8,15 +8,20 @@
 ?>
 
 <h3><?php echo esc_html__( 'Salesforce Status', 'object-sync-for-salesforce' ); ?></h3>
-<p>
-<?php
-	echo sprintf(
-		// translators: placeholder is for the version number of the Salesforce REST API.
-		esc_html__( 'The plugin is using version %1$s of the Salesforce REST API. If the plugin settings are not overriding the default value, the plugin changes to support new API versions regularly.', 'object-sync-for-salesforce' ),
-		esc_html( $this->login_credentials['rest_api_version'] )
-	);
+
+<?php if ( false === $this->login_credentials['using_deprecated_option'] && false === $this->login_credentials['using_developer_filter'] ) : ?>
+	<p>
+	<?php
+		echo sprintf(
+			// translators: placeholder is for the version number of the Salesforce REST API.
+			esc_html__( 'The plugin is using version %1$s of the Salesforce REST API. This is the recommended configuration.', 'object-sync-for-salesforce' ),
+			esc_html( $this->login_credentials['rest_api_version'] )
+		);
 	?>
-</p>
+	</p>
+<?php else : ?>
+	<?php echo esc_html( $this->login_credentials['rest_api_version'] ); ?>
+<?php endif; ?>
 
 <h3><?php echo esc_html__( 'Test Salesforce API Call', 'object-sync-for-salesforce' ); ?></h3>
 <?php if ( '' !== $contacts_apicall_summary ) : ?>
