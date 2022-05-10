@@ -10,21 +10,32 @@
 <h3><?php echo esc_html__( 'Salesforce API Connection Status', 'object-sync-for-salesforce' ); ?></h3>
 
 <p>
-	<?php
-	echo sprintf(
-		// translators: placeholder is for the version number of the Salesforce REST API.
-		esc_html__( 'Object Sync for Salesforce is making calls to the Salesforce REST API using version %1$s. ', 'object-sync-for-salesforce' ),
-		esc_html( $this->login_credentials['rest_api_version'] )
-	);
-	?>
 	<?php if ( false === $this->login_credentials['using_deprecated_option'] && false === $this->login_credentials['using_developer_filter'] ) : ?>
 		<?php
-			echo esc_html__( 'This plugin works to keep up to date with the release cycle of API versions from Salesforce. When a new version is released, the plugin will upgrade to that version as soon as possible. If you upgrade the plugin when new releases come out, you will always be on the highest supported version of the Salesforce REST API. Object Sync for Salesforce will not include plugin functionality that depends on a version it does not support, and will ensure that all releases follow this pattern.', 'object-sync-for-salesforce' );
+			echo sprintf(
+				// translators: 1) is the version number of the Salesforce REST API.
+				esc_html__( 'Object Sync for Salesforce is using version %1$s of the Salesforce REST API. This plugin works to keep up to date with the release cycle of API versions from Salesforce. When a new version is released, the plugin will upgrade to that version as soon as possible. If you upgrade the plugin when new releases come out, you will always be on the highest supported version of the Salesforce REST API. Object Sync for Salesforce will not include plugin functionality that depends on a version it does not support.', 'object-sync-for-salesforce' ),
+				esc_attr( $this->login_credentials['rest_api_version'] )
+			);
 		?>
 	<?php elseif ( true === $this->login_credentials['using_deprecated_option'] ) : ?>
-		<?php echo esc_html__( 'This API version is set from a previous version of the plugin, and the plugin functionality of choosing the API version in the interface has been deprecated. In a future release (likely version 3.0.0), the ability to use the REST API version set by the interface will be removed.', 'object-sync-for-salesforce' ); ?>
+		<?php
+			echo sprintf(
+				// translators: 1) is the version number of the Salesforce REST API, 2) is the option key for where the deprecated version is stored, and 3) is the prefixed options table name.
+				esc_html__( 'Object Sync for Salesforce is using version %1$s of the Salesforce REST API, which is configured from a previous version. This value is no longer configurable in the plugin settings, and in version 3.0.0, previously saved values will be removed. You can delete the %2$s field from the %3$s table on your own, or wait until that release.', 'object-sync-for-salesforce' ),
+				esc_attr( $this->login_credentials['rest_api_version'] ),
+				'<code>' . esc_attr( $this->option_prefix . 'api_version' ) . '</code>',
+				'<code>' . esc_attr( $this->wpdb->prefix . 'options' ) . '</code>'
+			);
+		?>
 	<?php else : ?>
-		<?php echo esc_html__( 'This API version is set with the use of a developer hook.', 'object-sync-for-salesforce' ); ?>
+		<?php
+			echo sprintf(
+				// translators: 1) is the version number of the Salesforce REST API.
+				esc_html__( 'Object Sync for Salesforce is using version %1$s of the Salesforce REST API, which is configured by developer hook. This value is no longer configurable in the plugin settings, but will continue to support this developer hook. However, use this at your own risk, as it is possible that the Salesforce REST API, or this plugin, will depend on different functionality than other versions.', 'object-sync-for-salesforce' ),
+				esc_attr( $this->login_credentials['rest_api_version'] )
+			);
+		?>
 	<?php endif; ?>
 </p>
 

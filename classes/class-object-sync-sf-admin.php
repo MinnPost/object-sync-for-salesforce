@@ -1459,6 +1459,18 @@ class Object_Sync_Sf_Admin {
 				'type'        => 'error',
 				'dismissible' => false,
 			),
+			'deprecated_api_version'  => array(
+				'condition'   => ( isset( $this->login_credentials['using_deprecated_option'] ) && true === $this->login_credentials['using_deprecated_option'] ),
+				'message'     => sprintf(
+					// translators: 1) is the version number of the Salesforce REST API, 2) is the option key for where the deprecated version is stored, and 3) is the prefixed options table name.
+					esc_html__( 'Object Sync for Salesforce is using version %1$s of the Salesforce REST API, which is configured from a previous version. This value is no longer configurable in the plugin settings, and in version 3.0.0, previously saved values will be removed. You can delete the %2$s field from the %3$s table on your own, or wait until that release.', 'object-sync-for-salesforce' ),
+					esc_attr( $this->login_credentials['rest_api_version'] ),
+					'<code>' . esc_attr( $this->option_prefix . 'api_version' ) . '</code>',
+					'<code>' . esc_attr( $this->wpdb->prefix . 'options' ) . '</code>'
+				),
+				'type'        => 'error',
+				'dismissible' => true,
+			),
 			'fieldmap'                => array(
 				'condition'   => isset( $get_data['transient'] ),
 				'message'     => esc_html__( 'Errors kept this fieldmap from being saved.', 'object-sync-for-salesforce' ),
