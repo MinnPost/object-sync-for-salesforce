@@ -722,18 +722,16 @@ class Object_Sync_Sf_Salesforce_Push {
 					$this->schedule_name
 				);
 
-				if ( true === $this->debug ) {
-					$log_status = 'success';
-					$title      = sprintf(
-						// translators: placeholders are: 1) the log status, 2) the name of the WordPress object type, 3) the name of the WordPress ID field, 4) the value of the object's ID in WordPress, 5) the name of the Salesforce object.
-						esc_html__( '%1$s: Add to queue: Push WordPress %2$s with %3$s of %4$s to Salesforce %5$s.', 'object-sync-for-salesforce' ),
-						ucfirst( esc_attr( $log_status ) ),
-						esc_attr( $mapping['wordpress_object'] ),
-						esc_attr( $wordpress_id_field_name ),
-						esc_attr( $object[ $wordpress_id_field_name ] ),
-						esc_attr( $mapping['salesforce_object'] )
-					);
-				}
+				$log_status = 'success';
+				$title      = sprintf(
+					// translators: placeholders are: 1) the log status, 2) the name of the WordPress object type, 3) the name of the WordPress ID field, 4) the value of the object's ID in WordPress, 5) the name of the Salesforce object.
+					esc_html__( '%1$s: Add to queue: Push WordPress %2$s with %3$s of %4$s to Salesforce %5$s.', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $log_status ) ),
+					esc_attr( $mapping['wordpress_object'] ),
+					esc_attr( $wordpress_id_field_name ),
+					esc_attr( $object[ $wordpress_id_field_name ] ),
+					esc_attr( $mapping['salesforce_object'] )
+				);
 				$result = array(
 					'title'   => $title,
 					'message' => '',
