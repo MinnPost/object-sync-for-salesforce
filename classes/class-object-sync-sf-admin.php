@@ -483,12 +483,6 @@ class Object_Sync_Sf_Admin {
 			$status = 'error';
 		}
 
-		if ( isset( $this->logging ) ) {
-			$logging = $this->logging;
-		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-		}
-
 		$body = sprintf( esc_html__( 'These are the scheduled tasks that were updated: ', 'object-sync-for-salesforce' ) . '<ul>' );
 		foreach ( $schedules_updated as $schedule_updated ) {
 			$body .= sprintf(
@@ -516,7 +510,7 @@ class Object_Sync_Sf_Admin {
 			esc_html__( 'Scheduling', 'object-sync-for-salesforce' )
 		);
 
-		$logging->setup(
+		$this->logging->setup(
 			sprintf(
 				// translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of that object.
 				esc_html__( '%1$s ActionScheduler: the ActionScheduler library has completed its migration. See the log entry content for status on each recurring task.', 'object-sync-for-salesforce' ),
@@ -2089,13 +2083,7 @@ class Object_Sync_Sf_Admin {
 
 		if ( ! empty( $error_fieldmaps ) && ! empty( $error_object_maps ) ) {
 			$status = 'error';
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-			}
-
-			$body = sprintf( esc_html__( 'These are the import items that were not able to save: ', 'object-sync-for-salesforce' ) . '<ul>' );
+			$body   = sprintf( esc_html__( 'These are the import items that were not able to save: ', 'object-sync-for-salesforce' ) . '<ul>' );
 			foreach ( $error_fieldmaps as $fieldmap ) {
 				$body .= sprintf(
 					// translators: placeholders are: 1) the fieldmap row ID, 2) the Salesforce object type, 3) the WordPress object type.
@@ -2116,7 +2104,7 @@ class Object_Sync_Sf_Admin {
 			}
 			$body .= sprintf( '</ul>' );
 
-			$logging->setup(
+			$this->logging->setup(
 				sprintf(
 					// translators: %1$s is the log status.
 					esc_html__( '%1$s on import: some of the rows were unable to save. Read this post for details.', 'object-sync-for-salesforce' ),
