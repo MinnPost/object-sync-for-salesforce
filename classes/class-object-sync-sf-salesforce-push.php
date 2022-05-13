@@ -314,7 +314,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	 * This can handle create, update, and delete actions
 	 *
 	 * @param string        $post_id the WordPress post ID.
-	 * @param WP_Post|array $post the WordPress post object.
+	 * @param WP_Post|array $post the WordPress post object. For our purposes, it's never an array.
 	 */
 	public function post_actions( $post_id, $post ) {
 
