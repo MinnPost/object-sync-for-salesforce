@@ -313,8 +313,8 @@ class Object_Sync_Sf_Salesforce_Push {
 	 * Callback method for posts of any type
 	 * This can handle create, update, and delete actions
 	 *
-	 * @param string  $post_id the WordPress post ID.
-	 * @param WP_Post $post the WordPress post object.
+	 * @param string        $post_id the WordPress post ID.
+	 * @param WP_Post|array $post the WordPress post object.
 	 */
 	public function post_actions( $post_id, $post ) {
 
