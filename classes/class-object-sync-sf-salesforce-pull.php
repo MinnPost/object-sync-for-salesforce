@@ -194,6 +194,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// deprecated actions.
 		$this->deprecated_actions();
 
+		// use the option value for whether we're in debug mode.
 		$this->debug = filter_var( get_option( $this->option_prefix . 'debug_mode', false ), FILTER_VALIDATE_BOOLEAN );
 
 	}
@@ -622,7 +623,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 					'status'  => $status,
 				);
 				$this->logging->setup( $result );
-
 				return $result;
 
 			} // End if() statement.
@@ -1454,8 +1454,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 							esc_html__( '%1$s Mapping: according to the current plugin settings, there are no parameters in the current dataset that can be pulled from Salesforce.', 'object-sync-for-salesforce' ),
 							ucfirst( esc_attr( $status ) )
 						);
-						$body  = '';
-						$body .= sprintf(
+						$body = sprintf(
 							// translators: placeholders are: 1) the fieldmap row ID, 2) the name of the WordPress object, 3) the name of the Salesforce object.
 							'<p>' . esc_html__( 'There is a fieldmap with ID of %1$s and it maps the WordPress %2$s object to the Salesforce %3$s object.', 'object-sync-for-salesforce' ) . '</p>',
 							absint( $salesforce_mapping['id'] ),
@@ -1690,7 +1689,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 							esc_html__( '%1$s: There is at least one object map with a WordPress ID of 0.', 'object-sync-for-salesforce' ),
 							ucfirst( esc_attr( $status ) )
 						);
-
 						if ( 1 === count( $mapping_object_debug ) ) {
 							$body = sprintf(
 								// translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the Salesforce object it was trying to map.
@@ -1843,7 +1841,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$this->logging->setup( $result );
 
 			$results[] = $result;
-
 			if ( false === $hold_exceptions ) {
 				throw $e;
 			}
@@ -2019,7 +2016,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// create log entry for failed update.
 			// the current pattern is to run a log entry right before a push_fail, push_success, pull_fail, or pull_success action.
 			$status = 'error';
-			$title .= sprintf(
+			$title  = sprintf(
 				// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value.
 				esc_html__( '%1$s: %2$s WordPress %3$s with %4$s of %5$s (Salesforce %6$s with Id of %7$s)', 'object-sync-for-salesforce' ),
 				ucfirst( esc_attr( $status ) ),

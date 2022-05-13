@@ -118,6 +118,7 @@ class Object_Sync_Sf_WordPress {
 
 		$this->sfwp_transients = new Object_Sync_Sf_WordPress_Transient( 'sfwp_transients' );
 
+		// use the option value for whether we're in debug mode.
 		$this->debug = filter_var( get_option( $this->option_prefix . 'debug_mode', false ), FILTER_VALIDATE_BOOLEAN );
 
 	}
@@ -954,15 +955,12 @@ class Object_Sync_Sf_WordPress {
 					esc_attr( $mapping_object['salesforce_id'] )
 				);
 			}
-
-			$body  = '';
-			$body .= '<h2>' . esc_html__( 'Errors from WordPress result:', 'object-sync-for-salesforce' ) . '</h2>';
+			$body  = '<h2>' . esc_html__( 'Errors from WordPress result:', 'object-sync-for-salesforce' ) . '</h2>';
 			$body .= esc_html( print_r( $result['errors'], true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 			if ( is_array( $params ) && ! empty( $params ) ) {
 				$body .= '<h2>' . esc_html__( 'Parameters sent to WordPress:', 'object-sync-for-salesforce' ) . '</h2>';
 				$body .= esc_html( print_r( $params, true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 			}
-
 			$error_log = array(
 				'title'   => $title,
 				'message' => $body,

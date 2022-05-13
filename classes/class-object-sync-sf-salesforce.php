@@ -193,6 +193,7 @@ class Object_Sync_Sf_Salesforce {
 		$this->success_or_refresh_codes   = $this->success_codes;
 		$this->success_or_refresh_codes[] = $this->refresh_code;
 
+		// use the option value for whether we're in debug mode.
 		$this->debug = filter_var( get_option( $this->option_prefix . 'debug_mode', false ), FILTER_VALIDATE_BOOLEAN );
 
 	}
@@ -428,9 +429,7 @@ class Object_Sync_Sf_Salesforce {
 				ucfirst( esc_attr( $status ) ),
 				( false === $is_soql_query ) ? esc_html__( 'There is not an SOQL query included in this request.', 'object-sync-for-salesforce' ) : esc_html__( 'There is an SOQL query included in this request.', 'object-sync-for-salesforce' )
 			);
-
-			$body  = '';
-			$body .= sprintf(
+			$body = sprintf(
 				// translators: placeholder is: 1) the API call's HTTP method.
 				'<p><strong>' . esc_html__( 'HTTP method:', 'object-sync-for-salesforce' ) . '</strong> %1$s</p>',
 				esc_attr( $method )
@@ -564,6 +563,30 @@ class Object_Sync_Sf_Salesforce {
 				$body = $curl_error;
 			} elseif ( isset( $data[0]['errorCode'] ) && '' !== $data[0]['errorCode'] ) { // salesforce uses this structure to return errors
 				// use the error message as the body.
+				// create log entry for failed curl.
+				$status = 'error';
+				$title  = sprintf(
+					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
+					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
+					absint( $code )
+				);
+				$this->logging->setup(
+					$title,
+					$curl_error,
+					0,
+					0,
+					$status
+				);
+			} elseif ( isset( $data[0]['errorCode'] ) && '' !== $data[0]['errorCode'] ) { // salesforce uses this structure to return errors
+				// create log entry for failed curl.
+				$status = 'error';
+				$title  = sprintf(
+					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
+					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
+					ucfirst( esc_attr( $status ) ),
+					absint( $code )
+				);
 				$body = sprintf(
 					// translators: placeholders are: 1) the URL requested, 2) the message returned by the error, 3) the server code returned.
 					'<p>' . esc_html__( 'URL: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: %2$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Code: %3$s', 'object-sync-for-salesforce' ),
