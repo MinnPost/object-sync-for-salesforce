@@ -287,6 +287,7 @@ class Object_Sync_Sf_Admin {
 		add_action( 'wp_ajax_pull_from_salesforce', array( $this, 'pull_from_salesforce' ), 10, 2 );
 		add_action( 'wp_ajax_refresh_mapped_data', array( $this, 'refresh_mapped_data' ), 10, 1 );
 		add_action( 'wp_ajax_clear_sfwp_cache', array( $this, 'clear_sfwp_cache' ) );
+		add_action( 'wp_ajax_delete_salesforce_api_version', array( $this, 'delete_salesforce_api_version' ) );
 
 		// we add a Salesforce box on user profiles.
 		add_action( 'edit_user_profile', array( $this, 'show_salesforce_user_fields' ), 10, 1 );
@@ -1458,12 +1459,14 @@ class Object_Sync_Sf_Admin {
 			'deprecated_api_version'  => array(
 				'condition'   => ( isset( $this->login_credentials['using_deprecated_option'] ) && true === $this->login_credentials['using_deprecated_option'] ),
 				'message'     => sprintf(
-					// translators: 1) is the version number of the Salesforce REST API, 2) is the option key for where the deprecated version is stored, and 3) is the prefixed options table name.
-					esc_html__( 'Object Sync for Salesforce is using version %1$s of the Salesforce REST API, which is configured from a previous version. This value is no longer configurable in the plugin settings, and in version 3.0.0, previously saved values will be removed. You can delete the %2$s field from the %3$s table on your own, set it to %4$s so the plugin can delete it, or wait until that release.', 'object-sync-for-salesforce' ),
+					// translators: 1) is the version number of the Salesforce REST API, 2) is the option key for where the deprecated version is stored, 3) is the prefixed options table name, 4) is the link to delete the option, 5) is the default API version to use, and 6) is the name of the wp-config value.
+					esc_html__( 'Object Sync for Salesforce is using version %1$s of the Salesforce REST API, which is configured from a previous version. This value is no longer configurable in the plugin settings, and in version 3.0.0, previously saved values will be removed. You can delete the %2$s field from the %3$s table on your own, use %4$s, set it to %5$s so the plugin can delete it, or wait until that release. If the %6$s value is in your wp-config.php file instead, you should delete it from there as well.', 'object-sync-for-salesforce' ),
 					esc_attr( $this->login_credentials['rest_api_version'] ),
 					'<code>' . esc_attr( $this->option_prefix . 'api_version' ) . '</code>',
 					'<code>' . esc_attr( $this->wpdb->prefix . 'options' ) . '</code>',
-					'<code>' . esc_attr( OBJECT_SYNC_SF_DEFAULT_API_VERSION ) . '</code>'
+					'<a href="#" id="salesforce-delete-rest-api-version">this link that will attempt to delete it</a>',
+					'<code>' . esc_attr( OBJECT_SYNC_SF_DEFAULT_API_VERSION ) . '</code>',
+					'<code>' . esc_attr( 'OBJECT_SYNC_SF_DEFAULT_API_VERSION' ) . '</code>'
 				),
 				'type'        => 'error',
 				'dismissible' => true,
@@ -2446,6 +2449,33 @@ class Object_Sync_Sf_Admin {
 		$response = array(
 			'message' => $result['message'],
 			'success' => $result['success'],
+		);
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Ajax call to delete the object_sync_for_salesforce_api_version value from wp_options
+	 * @deprecated and will be removed in 3.0.0.
+	 */
+	public function delete_salesforce_api_version() {
+		$deprecated_option_key = $this->option_prefix . 'api_version';
+		$result                = delete_option( $deprecated_option_key );
+		if ( true === $result ) {
+			$message = sprintf(
+				// translators: the parameter is the option key where the API version was stored.
+				esc_html__( 'The %1$s value was successfully deleted.', 'object-sync-for-salesforce' ),
+				'<code>' . $deprecated_option_key . '</code>'
+			);
+		} else {
+			$message = sprintf(
+				// translators: the parameter is the option key where the API version was stored.
+				esc_html__( 'There was an error in deleting the %1$s value. This may mean you have stored the value in a wp-config.php file instaed of in the options table. If this is not the case, you may want to reload the page and try again.', 'object-sync-for-salesforce' ),
+				'<code>' . $deprecated_option_key . '</code>'
+			);
+		}
+		$response = array(
+			'message' => $message,
+			'success' => $result,
 		);
 		wp_send_json_success( $response );
 	}

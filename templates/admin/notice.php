@@ -10,7 +10,7 @@
 <div class="notice<?php echo esc_attr( $class ); ?><?php echo esc_attr( $dismissible ); ?>">
 	<p>
 	<?php
-	$allowed_html = wp_kses_allowed_html( 'data' );
+	$allowed_html = wp_kses_allowed_html( 'post' );
 	echo wp_kses( $message, $allowed_html );
 	?>
 	</p>
