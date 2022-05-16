@@ -2460,6 +2460,7 @@ class Object_Sync_Sf_Admin {
 
 	/**
 	 * Ajax call to delete the object_sync_for_salesforce_api_version value from wp_options
+	 *
 	 * @deprecated and will be removed in 3.0.0.
 	 */
 	public function delete_salesforce_api_version() {

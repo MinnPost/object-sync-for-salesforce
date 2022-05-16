@@ -240,7 +240,7 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Option value for whether the plugin is in debug mode
 	 *
-	 * @var string
+	 * @var bool
 	 */
 	public $debug;
 

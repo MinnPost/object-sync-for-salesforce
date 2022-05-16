@@ -108,7 +108,7 @@ class Object_Sync_Sf_Salesforce_Push {
 	/**
 	 * Whether the plugin is in debug mode
 	 *
-	 * @var string
+	 * @var bool
 	 */
 	public $debug;
 
