@@ -32,7 +32,7 @@
 </p>
 
 <h3><?php echo esc_html__( 'Test Salesforce API Call', 'object-sync-for-salesforce' ); ?></h3>
-<?php if ( '' !== $contacts_apicall_summary ) : ?>
+<?php if ( '' !== $contacts_apicall_summary && isset( $contacts['data']['records'] ) ) : ?>
 	<table class="widefat striped">
 		<thead>
 			<summary>
@@ -52,6 +52,8 @@
 			<?php } ?>
 		</tbody>
 	</table>
+<?php elseif ( '' !== $contacts_apicall_summary ) : ?>
+	<p><?php echo wp_kses_post( $contacts_apicall_summary ); ?></p>
 <?php endif; ?>
 
 <p><small>

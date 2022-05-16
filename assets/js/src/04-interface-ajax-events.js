@@ -91,6 +91,26 @@ function clearSfwpCacheLink() {
 }
 
 /**
+ * Delete the deprecated value for Salesforce REST API version from the options table.
+ */
+function deleteRestApiVersionOption() {
+	$( '#salesforce-delete-rest-api-version' ).click( function() {
+		var data = {
+			'action': 'delete_salesforce_api_version'
+		};
+		var that = $( this );
+		$.post( ajaxurl, data, function( response ) {
+			if ( true === response.success && true === response.data.success ) {
+				that.parent().html( response.data.message ).fadeIn();
+			} else {
+				that.parent().html( response.data.message ).fadeIn();
+			}
+		} );
+		return false;
+	} );
+}
+
+/**
  * When the plugin loads:
  * Clear plugin cache button
  * Manual push and pull
@@ -99,6 +119,9 @@ $( document ).ready( function() {
 
 	// Clear the plugin cache via Ajax request.
 	clearSfwpCacheLink();
+
+	// delete legacy option value.
+	deleteRestApiVersionOption();
 
 	// Handle manual push and pull of objects
 	pushObjects();
