@@ -125,7 +125,7 @@ function add_content( $content_after = null, $tab ) {
 
 As of version 2.2.0, the requirement to set the REST API version that the plugin uses to send requests to Salesforce has been removed from the plugin interface. For most users this is an improvement; it removes the potential for old API versions to cause problems with new functionality, and removes the potential for users to unintentionally use API versions that are no longer active.
 
-For developers who many rely on version-specific API functionality from Salesforce and are able to deal with potential consequences, the plugin does include a filter with the ability to override the REST API version for all plugin API requests. You might do this if you use custom functionality that depends on an older or newer version of the API than is supported by the plugin.
+For developers who may rely on version-specific API functionality from Salesforce and are able to deal with potential consequences, the plugin does include a filter with the ability to override the REST API version for all plugin API requests. You might do this if you use custom functionality that depends on an older or newer version of the API than is supported by the plugin.
 
 #### Code example
 

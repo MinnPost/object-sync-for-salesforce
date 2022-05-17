@@ -70,6 +70,13 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public $schedule_name;
 
 	/**
+	 * Whether the plugin is in debug mode
+	 *
+	 * @var bool
+	 */
+	public $debug;
+
+	/**
 	 * Constructor for logging class
 	 */
 	public function __construct() {
@@ -79,22 +86,25 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		$this->slug          = object_sync_for_salesforce()->slug;
 		$this->option_prefix = object_sync_for_salesforce()->option_prefix;
 
-		$this->enabled         = get_option( $this->option_prefix . 'enable_logging', false );
-		$this->enabled         = filter_var( $this->enabled, FILTER_VALIDATE_BOOLEAN );
-		$this->statuses_to_log = get_option( $this->option_prefix . 'statuses_to_log', array() );
+		$this->enabled         = filter_var( get_option( $this->option_prefix . 'enable_logging', false ), FILTER_VALIDATE_BOOLEAN );
+		$this->statuses_to_log = maybe_unserialize( get_option( $this->option_prefix . 'statuses_to_log', array() ) );
 
 		$this->schedule_name = 'wp_logging_prune_routine';
 
 		$this->capability = 'configure_salesforce';
 
-		$this->init();
+		// use the option value for whether we're in debug mode.
+		$this->debug = filter_var( get_option( $this->option_prefix . 'debug_mode', false ), FILTER_VALIDATE_BOOLEAN );
+
+		add_action( 'plugins_loaded', array( $this, 'init' ) );
 
 	}
 
 	/**
 	 * Initialize. This creates a schedule for pruning logs, and also the custom content type
 	 */
-	private function init() {
+	public function init() {
+		$this->configure_debugging();
 		if ( true === $this->enabled ) {
 			add_filter( 'cron_schedules', array( $this, 'add_prune_interval' ) );
 			add_filter( 'wp_log_types', array( $this, 'set_log_types' ), 10, 1 );
@@ -124,6 +134,28 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_number', array( $this, 'check_log_schedule' ), 10, 3 );
 
 			$this->save_log_schedule();
+		}
+	}
+
+	/**
+	 * Configure log settings based on debug status.
+	 */
+	private function configure_debugging() {
+		// set debug log status based on the plugin's debug mode setting.
+		if ( true === $this->debug ) {
+			$this->statuses_to_log[] = 'debug';
+			$this->enabled           = true;
+		} else {
+			if ( in_array( 'debug', $this->statuses_to_log, true ) ) {
+				$delete_value          = 'debug';
+				$this->statuses_to_log = array_filter(
+					$this->statuses_to_log,
+					function( $e ) use ( $delete_value ) {
+						return ( $e !== $delete_value );
+					}
+				);
+				update_option( $this->option_prefix . 'statuses_to_log', $this->statuses_to_log );
+			}
 		}
 	}
 
@@ -460,7 +492,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * @param       string       $status The log status.
 	 *
 	 * @uses        self::add()
-	 * @see         Object_Sync_Sf_Mapping::__construct()    the location of the bitmasks that define the logging triggers.
+	 * @see         Object_Sync_Sf_Mapping::__construct()    the location of the parameters that define the logging triggers.
 	 *
 	 * @return      void
 	 */
@@ -476,21 +508,14 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			$title = $title_or_params;
 		}
 
-		if ( ! is_array( maybe_unserialize( $this->statuses_to_log ) ) ) {
-			if ( $status === $this->statuses_to_log ) {
+		if ( true === $this->enabled && in_array( $status, $this->statuses_to_log, true ) ) {
+			$triggers_to_log = maybe_unserialize( get_option( $this->option_prefix . 'triggers_to_log', array() ) );
+			if ( in_array( $trigger, $triggers_to_log, true ) || 0 === $trigger ) {
 				$this->add( $title, $message, $parent );
-			} else {
-				return;
-			}
-		}
-
-		if ( true === $this->enabled && in_array( $status, maybe_unserialize( $this->statuses_to_log ), true ) ) {
-			$triggers_to_log = get_option( $this->option_prefix . 'triggers_to_log', array() );
-			// if we force strict on this in_array, it fails because the mapping triggers are bit operators, as indicated in Object_Sync_Sf_Mapping class's method __construct().
-			// todo: make this not use bit operators so we can use a strict in_array.
-			if ( in_array( $trigger, maybe_unserialize( $triggers_to_log ), true ) || 0 === $trigger ) {
+			} elseif ( is_array( $trigger ) && array_intersect( $trigger, $triggers_to_log ) ) {
 				$this->add( $title, $message, $parent );
-			} elseif ( is_array( $trigger ) && array_intersect( $trigger, maybe_unserialize( $triggers_to_log ) ) ) {
+			} elseif ( true === $this->debug ) {
+				// if the plugin is in debug mode, treat all triggers as triggers to log.
 				$this->add( $title, $message, $parent );
 			}
 		}

@@ -23,7 +23,6 @@ If you load the plugin's Settings screen and you do not see an Authorize tab, th
 - Login Base URL
 - Authorize URL Path
 - Token URL Path
-- Salesforce API Version
 
 ### Error: invalid_client_id
 
