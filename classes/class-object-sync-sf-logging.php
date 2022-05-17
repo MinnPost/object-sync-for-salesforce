@@ -104,25 +104,8 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	 * Initialize. This creates a schedule for pruning logs, and also the custom content type
 	 */
 	public function init() {
+		$this->configure_debugging();
 		if ( true === $this->enabled ) {
-
-			// set debug log status based on the plugin's debug mode setting.
-			if ( true === $this->debug ) {
-				$this->statuses_to_log[] = 'debug';
-				$this->enabled           = true;
-			} else {
-				if ( in_array( 'debug', $this->statuses_to_log, true ) ) {
-					$delete_value          = 'debug';
-					$this->statuses_to_log = array_filter(
-						$this->statuses_to_log,
-						function( $e ) use ( $delete_value ) {
-							return ( $e !== $delete_value );
-						}
-					);
-					update_option( $this->option_prefix . 'statuses_to_log', $this->statuses_to_log );
-				}
-			}
-
 			add_filter( 'cron_schedules', array( $this, 'add_prune_interval' ) );
 			add_filter( 'wp_log_types', array( $this, 'set_log_types' ), 10, 1 );
 			add_filter( 'wp_logging_should_we_prune', array( $this, 'set_prune_option' ), 10, 1 );
@@ -151,6 +134,28 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			add_action( 'update_option_' . $this->option_prefix . 'logs_how_often_number', array( $this, 'check_log_schedule' ), 10, 3 );
 
 			$this->save_log_schedule();
+		}
+	}
+
+	/**
+	 * Configure log settings based on debug status.
+	 */
+	private function configure_debugging() {
+		// set debug log status based on the plugin's debug mode setting.
+		if ( true === $this->debug ) {
+			$this->statuses_to_log[] = 'debug';
+			$this->enabled           = true;
+		} else {
+			if ( in_array( 'debug', $this->statuses_to_log, true ) ) {
+				$delete_value          = 'debug';
+				$this->statuses_to_log = array_filter(
+					$this->statuses_to_log,
+					function( $e ) use ( $delete_value ) {
+						return ( $e !== $delete_value );
+					}
+				);
+				update_option( $this->option_prefix . 'statuses_to_log', $this->statuses_to_log );
+			}
 		}
 	}
 
