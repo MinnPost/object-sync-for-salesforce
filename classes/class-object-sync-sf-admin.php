@@ -1004,7 +1004,7 @@ class Object_Sync_Sf_Admin {
 			'args'     => array(
 				'type'     => 'checkbox',
 				'validate' => 'sanitize_text_field',
-				'desc'     => __( 'If logging is enabled, debug mode activates logging for plugin events like Salesforce API requests and WordPress data operations. This can create a lot of log entries; it is not recommended to use it long-term in a production environment.', 'object-sync-for-salesforce' ),
+				'desc'     => __( 'Debug mode activates logging for plugin events like Salesforce API requests and WordPress data operations. This can create a lot of log entries; it is not recommended to use it long-term in a production environment.', 'object-sync-for-salesforce' ),
 				'constant' => '',
 			),
 		);
@@ -1200,7 +1200,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'checkbox',
 					'validate' => 'absint',
-					'desc'     => '',
+					'desc'     => __( 'This determines whether to create plugin log events in standard operation. If Debug Mode is enabled in the plugin settings, logging will occur regardless of this setting.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
 			),
@@ -1316,7 +1316,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'checkboxes',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => __( 'These are the triggers to log. When the plugin is in debug mode (see the settings tag), all triggers will be considered to be triggers to log, even if they are not checked here.', 'object-sync-for-salesforce' ),
+					'desc'     => __( 'These are the triggers to log. When the plugin is in debug mode (see the settings tab), all triggers will be considered to be triggers to log, even if they are not checked here.', 'object-sync-for-salesforce' ),
 					'items'    => array(
 						$this->mappings->sync_wordpress_create => array(
 							'text' => __( 'WordPress Create', 'object-sync-for-salesforce' ),
@@ -1492,7 +1492,7 @@ class Object_Sync_Sf_Admin {
 			),
 			'data_save_partial'       => array(
 				'condition'   => isset( $get_data['data_saved'] ) && 'partial' === $get_data['data_saved'],
-				'message'     => __( 'This data was partially successfully saved. This means some of the data was unable to save. If you have enabled logging in the plugin settings, there should be a log entry with further details.', 'object-sync-for-salesforce' ),
+				'message'     => __( 'This data was partially successfully saved. This means some of the data was unable to save. If you have enabled logging or debug mode in the plugin settings, there should be a log entry with further details.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
