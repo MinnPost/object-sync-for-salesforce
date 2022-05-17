@@ -508,14 +508,6 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			$title = $title_or_params;
 		}
 
-		if ( ! is_array( $this->statuses_to_log ) ) {
-			if ( $status === $this->statuses_to_log ) {
-				$this->add( $title, $message, $parent );
-			} else {
-				return;
-			}
-		}
-
 		if ( true === $this->enabled && in_array( $status, $this->statuses_to_log, true ) ) {
 			$triggers_to_log = maybe_unserialize( get_option( $this->option_prefix . 'triggers_to_log', array() ) );
 			if ( in_array( $trigger, $triggers_to_log, true ) || 0 === $trigger ) {
