@@ -1004,7 +1004,7 @@ class Object_Sync_Sf_Admin {
 			'args'     => array(
 				'type'     => 'checkbox',
 				'validate' => 'sanitize_text_field',
-				'desc'     => __( 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment.', 'object-sync-for-salesforce' ),
+				'desc'     => __( 'If logging is enabled, debug mode activates logging for plugin events like Salesforce API requests and WordPress data operations. This can create a lot of log entries; it is not recommended to use it long-term in a production environment.', 'object-sync-for-salesforce' ),
 				'constant' => '',
 			),
 		);
@@ -1212,7 +1212,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'checkboxes',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => __( 'These are the statuses to log', 'object-sync-for-salesforce' ),
+					'desc'     => '',
 					'items'    => array(
 						'error'   => array(
 							'text' => __( 'Error', 'object-sync-for-salesforce' ),
@@ -1227,11 +1227,6 @@ class Object_Sync_Sf_Admin {
 						'notice'  => array(
 							'text' => __( 'Notice', 'object-sync-for-salesforce' ),
 							'id'   => 'notice',
-							'desc' => '',
-						),
-						'debug'   => array(
-							'text' => __( 'Debug', 'object-sync-for-salesforce' ),
-							'id'   => 'debug',
 							'desc' => '',
 						),
 					),
@@ -1321,7 +1316,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'checkboxes',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => __( 'These are the triggers to log', 'object-sync-for-salesforce' ),
+					'desc'     => __( 'These are the triggers to log. When the plugin is in debug mode (see the settings tag), all triggers will be considered to be triggers to log, even if they are not checked here.', 'object-sync-for-salesforce' ),
 					'items'    => array(
 						$this->mappings->sync_wordpress_create => array(
 							'text' => __( 'WordPress Create', 'object-sync-for-salesforce' ),
@@ -2234,9 +2229,10 @@ class Object_Sync_Sf_Admin {
 	 * @param array $args is the arguments to create the checkboxes.
 	 */
 	public function display_checkboxes( $args ) {
-		$type    = 'checkbox';
-		$name    = $args['name'];
-		$options = get_option( $name, array() );
+		$type       = 'checkbox';
+		$name       = $args['name'];
+		$options    = get_option( $name, array() );
+		$group_desc = $args['desc'];
 		foreach ( $args['items'] as $key => $value ) {
 			$text    = $value['text'];
 			$id      = $value['id'];
@@ -2264,6 +2260,12 @@ class Object_Sync_Sf_Admin {
 					esc_html( $desc )
 				);
 			}
+		}
+		if ( '' !== $group_desc ) {
+			echo sprintf(
+				'<p class="description">%1$s</p>',
+				esc_html( $group_desc )
+			);
 		}
 	}
 
