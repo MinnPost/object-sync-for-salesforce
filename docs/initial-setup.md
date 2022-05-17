@@ -81,7 +81,7 @@ Go to the Settings tab for the plugin. It is the default URL that opens when you
 10. Pull Query Record Limit: Limit the number of records that can be pulled from Salesforce in a single query.
 11. Pull Throttle (In Seconds): This plugin starts with 5 seconds, but you can change it based on your server's needs.
 12. Enable the Salesforce SOAP API?: In addition to its REST API, Salesforce maintains a SOAP-based API. Some functionality, namely record merges, can only be accessed through this API. If you need to detect these kind of events, enable the SOAP API with this field. If you do, you will see an optional Path to SOAP WSDL File field where you can override the default WSDL file.
-13. Debug Mode: If logging is enabled, debug mode activates logging for plugin events like Salesforce API requests and WordPress data operations. This can create a lot of log entries; it is not recommended to use it long-term in a production environment.
+13. Debug Mode: Debug mode activates logging for plugin events like Salesforce API requests and WordPress data operations. This can create a lot of log entries; it is not recommended to use it long-term in a production environment.
 14. Delete Plugin Data on Uninstall?: When the plugin is uninstalled, by default it does not remove any data. If you want it to remove its custom tables, scheduling tasks, log post type, capability, and option values, check this box before you uninstall it.
 
 Save the settings. If the values required are set, you'll see a message that says "Salesforce needs to be authorized to connect to this website. Use the Authorize tab to connect." You can use that link for the next steps.
