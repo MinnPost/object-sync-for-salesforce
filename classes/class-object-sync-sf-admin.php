@@ -1004,7 +1004,7 @@ class Object_Sync_Sf_Admin {
 			'args'     => array(
 				'type'     => 'checkbox',
 				'validate' => 'sanitize_text_field',
-				'desc'     => __( 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment.', 'object-sync-for-salesforce' ),
+				'desc'     => __( 'Debug mode activates logging for plugin events like Salesforce API requests and WordPress data operations. This can create a lot of log entries; it is not recommended to use it long-term in a production environment.', 'object-sync-for-salesforce' ),
 				'constant' => '',
 			),
 		);
@@ -1200,7 +1200,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'checkbox',
 					'validate' => 'absint',
-					'desc'     => '',
+					'desc'     => __( 'This determines whether to create plugin log events in standard operation. If Debug Mode is enabled in the plugin settings, logging will occur regardless of this setting.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
 			),
@@ -1212,7 +1212,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'checkboxes',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => __( 'These are the statuses to log', 'object-sync-for-salesforce' ),
+					'desc'     => '',
 					'items'    => array(
 						'error'   => array(
 							'text' => __( 'Error', 'object-sync-for-salesforce' ),
@@ -1227,11 +1227,6 @@ class Object_Sync_Sf_Admin {
 						'notice'  => array(
 							'text' => __( 'Notice', 'object-sync-for-salesforce' ),
 							'id'   => 'notice',
-							'desc' => '',
-						),
-						'debug'   => array(
-							'text' => __( 'Debug', 'object-sync-for-salesforce' ),
-							'id'   => 'debug',
 							'desc' => '',
 						),
 					),
@@ -1321,7 +1316,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'checkboxes',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => __( 'These are the triggers to log', 'object-sync-for-salesforce' ),
+					'desc'     => __( 'These are the triggers to log. When the plugin is in debug mode (see the settings tab), all triggers will be considered to be triggers to log, even if they are not checked here.', 'object-sync-for-salesforce' ),
 					'items'    => array(
 						$this->mappings->sync_wordpress_create => array(
 							'text' => __( 'WordPress Create', 'object-sync-for-salesforce' ),
@@ -1497,7 +1492,7 @@ class Object_Sync_Sf_Admin {
 			),
 			'data_save_partial'       => array(
 				'condition'   => isset( $get_data['data_saved'] ) && 'partial' === $get_data['data_saved'],
-				'message'     => __( 'This data was partially successfully saved. This means some of the data was unable to save. If you have enabled logging in the plugin settings, there should be a log entry with further details.', 'object-sync-for-salesforce' ),
+				'message'     => __( 'This data was partially successfully saved. This means some of the data was unable to save. If you have enabled logging or debug mode in the plugin settings, there should be a log entry with further details.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
@@ -2234,9 +2229,10 @@ class Object_Sync_Sf_Admin {
 	 * @param array $args is the arguments to create the checkboxes.
 	 */
 	public function display_checkboxes( $args ) {
-		$type    = 'checkbox';
-		$name    = $args['name'];
-		$options = get_option( $name, array() );
+		$type       = 'checkbox';
+		$name       = $args['name'];
+		$options    = get_option( $name, array() );
+		$group_desc = $args['desc'];
 		foreach ( $args['items'] as $key => $value ) {
 			$text    = $value['text'];
 			$id      = $value['id'];
@@ -2264,6 +2260,12 @@ class Object_Sync_Sf_Admin {
 					esc_html( $desc )
 				);
 			}
+		}
+		if ( '' !== $group_desc ) {
+			echo sprintf(
+				'<p class="description">%1$s</p>',
+				esc_html( $group_desc )
+			);
 		}
 	}
 
