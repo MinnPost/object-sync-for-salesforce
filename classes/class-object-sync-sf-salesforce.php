@@ -196,6 +196,9 @@ class Object_Sync_Sf_Salesforce {
 		// use the option value for whether we're in debug mode.
 		$this->debug = filter_var( get_option( $this->option_prefix . 'debug_mode', false ), FILTER_VALIDATE_BOOLEAN );
 
+		// temporary setting for whether to use curl or the wp methods.
+		$this->curl = false;
+
 	}
 
 	/**
@@ -364,6 +367,11 @@ class Object_Sync_Sf_Salesforce {
 		// if this request should be cached, see if it already exists
 		// if it is already cached, load it. if not, load it and then cache it if it should be cached
 		// add parameters to the array so we can tell if it was cached or not.
+
+		if ( false === $this->curl ) {
+			$options['cache'] = false; // todo: this is for development on WP HTTP methods
+		}
+
 		if ( true === $options['cache'] && 'write' !== $options['type'] ) {
 			$cached = $this->wordpress->cache_get( $url, $params );
 			// some api calls can send a reset option, in which case we should redo the request anyway.
@@ -465,7 +473,7 @@ class Object_Sync_Sf_Salesforce {
 	}
 
 	/**
-	 * Make the HTTP request. Wrapper around curl().
+	 * Make the HTTP request.
 	 *
 	 * @param string $url Path to make request from.
 	 * @param array  $data The request body.
@@ -480,27 +488,57 @@ class Object_Sync_Sf_Salesforce {
 		/*
 		 * Note: curl is used because wp_remote_get, wp_remote_post, wp_remote_request don't work. Salesforce returns various errors.
 		 * todo: There is a GitHub branch attempting with the goal of addressing this: https://github.com/MinnPost/object-sync-for-salesforce/issues/94
+		 * https://salesforce.stackexchange.com/questions/208547/wp-remote-post-getting-a-404-error-code
 		*/
 
-		$curl = curl_init();
-		curl_setopt( $curl, CURLOPT_URL, $url );
-		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, true );
-		if ( false !== $headers ) {
-			curl_setopt( $curl, CURLOPT_HTTPHEADER, $headers );
-		} else {
-			curl_setopt( $curl, CURLOPT_HEADER, false );
-		}
+		// todo: figure out why it breaks when the session is expired.
+		error_log( 'url is ' . $url );
 
-		if ( 'POST' === $method ) {
-			curl_setopt( $curl, CURLOPT_POST, true );
-			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
-		} elseif ( 'PATCH' === $method || 'DELETE' === $method ) {
-			curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, $method );
-			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
+		if ( false === $this->curl ) {
+
+			$body = array();
+			if ( 'POST' === $method ) {
+				$body = $data;
+			} elseif ( 'PATCH' === $method || 'DELETE' === $method ) {
+				$body = $data;
+			}
+
+			$args = array(
+				'body'                => $body,
+				'timeout'             => 45,
+				'redirection'         => 5,
+				'httpversion'         => '1.1',
+				'blocking'            => true,
+				'headers'             => $headers,
+				'cookies'             => array(),
+				'limit_response_size' => null,
+			);
+
+			$response      = wp_remote_request( $url, $args );
+			$json_response = $response['body'];
+			$code          = wp_remote_retrieve_response_code( $response );
+		} else {
+
+			$curl = curl_init();
+			curl_setopt( $curl, CURLOPT_URL, $url );
+			curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+			curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, true );
+			if ( false !== $headers ) {
+				curl_setopt( $curl, CURLOPT_HTTPHEADER, $headers );
+			} else {
+				curl_setopt( $curl, CURLOPT_HEADER, false );
+			}
+
+			if ( 'POST' === $method ) {
+				curl_setopt( $curl, CURLOPT_POST, true );
+				curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
+			} elseif ( 'PATCH' === $method || 'DELETE' === $method ) {
+				curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, $method );
+				curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
+			}
+			$json_response = curl_exec( $curl ); // this is possibly gzipped json data.
+			$code          = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
 		}
-		$json_response = curl_exec( $curl ); // this is possibly gzipped json data.
-		$code          = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
 
 		if ( ( 'PATCH' === $method || 'DELETE' === $method ) && '' === $json_response && 204 === $code ) {
 			// delete and patch requests return a 204 with an empty body upon success for whatever reason.
@@ -508,7 +546,9 @@ class Object_Sync_Sf_Salesforce {
 				'success' => true,
 				'body'    => '',
 			);
-			curl_close( $curl );
+			if ( true === $this->curl ) {
+				curl_close( $curl );
+			}
 
 			$result = array(
 				'code' => $code,
@@ -537,27 +577,50 @@ class Object_Sync_Sf_Salesforce {
 			$json_response = gzinflate( substr( $json_response, 10 ) );
 		}
 		$data = json_decode( $json_response, true ); // decode it into an array.
+		// todo: figure out why it breaks when the session is expired.
+		error_log( 'data is ' . print_r( $data, true ) );
 
 		// don't use the exception if the status is a success one, or if it just needs a refresh token (salesforce uses 401 for this).
 		if ( ! in_array( $code, $this->success_or_refresh_codes, true ) ) {
-			$curl_error = curl_error( $curl );
-			if ( '' !== $curl_error ) {
-				// create log entry for failed curl.
-				$status = 'error';
-				$title  = sprintf(
-					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
-					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
-					ucfirst( esc_attr( $status ) ),
-					absint( $code )
-				);
-				$this->logging->setup(
-					$title,
-					$curl_error,
-					0,
-					0,
-					$status
-				);
-			} elseif ( isset( $data[0]['errorCode'] ) && '' !== $data[0]['errorCode'] ) { // salesforce uses this structure to return errors
+			if ( false === $this->curl ) {
+				if ( is_wp_error( $response ) ) {
+					// create log entry for failed wp request.
+					$status = 'error';
+					$title  = sprintf(
+						// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
+						esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
+						ucfirst( esc_attr( $status ) ),
+						absint( $code )
+					);
+					$this->logging->setup(
+						$title,
+						$response->get_error_message(),
+						0,
+						0,
+						$status
+					);
+				}
+			} else {
+				$curl_error = curl_error( $curl );
+				if ( '' !== $curl_error ) {
+					// create log entry for failed curl.
+					$status = 'error';
+					$title  = sprintf(
+						// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
+						esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
+						ucfirst( esc_attr( $status ) ),
+						absint( $code )
+					);
+					$this->logging->setup(
+						$title,
+						$curl_error,
+						0,
+						0,
+						$status
+					);
+				}
+			}
+			if ( isset( $data[0]['errorCode'] ) && '' !== $data[0]['errorCode'] ) { // salesforce uses this structure to return errors
 				// create log entry for failed curl.
 				$status = 'error';
 				$title  = sprintf(
@@ -599,7 +662,9 @@ class Object_Sync_Sf_Salesforce {
 			} // End if() statement.
 		} // End if() statement.
 
-		curl_close( $curl );
+		if ( true === $this->curl ) {
+			curl_close( $curl );
+		}
 
 		$result = array(
 			'code' => $code,
