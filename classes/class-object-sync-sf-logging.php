@@ -86,8 +86,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		$this->slug          = object_sync_for_salesforce()->slug;
 		$this->option_prefix = object_sync_for_salesforce()->option_prefix;
 
-		$this->enabled         = get_option( $this->option_prefix . 'enable_logging', false );
-		$this->enabled         = filter_var( $this->enabled, FILTER_VALIDATE_BOOLEAN );
+		$this->enabled         = filter_var( get_option( $this->option_prefix . 'enable_logging', false ), FILTER_VALIDATE_BOOLEAN );
 		$this->statuses_to_log = maybe_unserialize( get_option( $this->option_prefix . 'statuses_to_log', array() ) );
 
 		$this->schedule_name = 'wp_logging_prune_routine';
@@ -108,10 +107,20 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		if ( true === $this->enabled ) {
 
 			// set debug log status based on the plugin's debug mode setting.
-			if ( true === $this->debug && ! in_array( 'debug', $this->statuses_to_log, true ) ) {
+			if ( true === $this->debug ) {
 				$this->statuses_to_log[] = 'debug';
+				$this->enabled           = true;
 			} else {
-				unset( $this->statuses_to_log['debug'] );
+				if ( in_array( 'debug', $this->statuses_to_log, true ) ) {
+					$delete_value          = 'debug';
+					$this->statuses_to_log = array_filter(
+						$this->statuses_to_log,
+						function( $e ) use ( $delete_value ) {
+							return ( $e !== $delete_value );
+						}
+					);
+					update_option( $this->option_prefix . 'statuses_to_log', $this->statuses_to_log );
+				}
 			}
 
 			add_filter( 'cron_schedules', array( $this, 'add_prune_interval' ) );
