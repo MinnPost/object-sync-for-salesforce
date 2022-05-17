@@ -503,6 +503,26 @@ class Object_Sync_Sf_Salesforce {
 				$body = $data;
 			}
 
+			/* previous attempt:
+				$args = array(
+					'method' => $method,
+					'timeout' => ini_get( 'max_execution_time' ),
+					'redirection' => 5,
+					'httpversion' => '1.1',
+					'reject_unsafe_urls' => false,
+					'blocking' => true,
+					'headers' => $headers,
+					'cookies' => array(),
+					'body' => $data,
+					'compress' => true,
+					'decompress' => true,
+					'sslverify' => false, // maybe on debug only
+					'stream' => false,
+					'filename' => null,
+					'limit_response_size' => null,
+				);
+			*/
+
 			$args = array(
 				'body'                => $body,
 				'timeout'             => 45,
