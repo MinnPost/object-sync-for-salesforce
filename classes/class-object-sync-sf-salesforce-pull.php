@@ -1837,6 +1837,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$exception = new $my_class( $e->getMessage(), $e->getCode(), $exception );
 			}
 
+			// update that mapping object.
+			$mapping_object['wordpress_id']      = $wordpress_id;
+			$mapping_object['last_sync_status']  = $this->mappings->status_error;
+			$mapping_object['last_sync_message'] = $e->getMessage();
+			$mapping_object['last_sync']         = current_time( 'mysql' );
+			$mapping_object                      = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+
 			// hook for pull fail.
 			do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
 
@@ -1853,6 +1860,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// WordPress crud call was successful
 		// this means the object has already been created/updated in WordPress
 		// this is not redundant because this is where it creates the object mapping rows in WordPress if the object does not already have one (we are still inside $is_new === TRUE here).
+		// this is also where it runs the pull_success and pull_fail actions hooks.
 
 		if ( empty( $result['errors'] ) ) {
 			$status = 'success';
@@ -1918,6 +1926,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 			);
 			$this->logging->setup( $result );
 			$results[] = $result;
+
+			// update that mapping object.
+			$mapping_object['wordpress_id']      = $wordpress_id;
+			$mapping_object['last_sync_status']  = $this->mappings->status_error;
+			$mapping_object['last_sync_message'] = esc_html__( 'An error occurred pulling this data from Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+			$mapping_object['last_sync']         = current_time( 'mysql' );
+			$mapping_object                      = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 			// hook for pull fail.
 			do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
@@ -2035,14 +2050,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		} // End try() method.
 
-		// need to move these into the success check.
-
-		// maybe can check to see if we actually updated anything in WordPress
 		// tell the mapping object - whether it is new or already existed - how we just used it.
 		$mapping_object['last_sync_action'] = 'pull';
 		$mapping_object['last_sync']        = current_time( 'mysql' );
 
 		// update that mapping object. the Salesforce data version will be set here as well because we set it earlier.
+		// this update happens regardless of whether the action was successful, which is good.
 		$update_object_map = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 		return $results;
