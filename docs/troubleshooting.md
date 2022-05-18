@@ -1,6 +1,6 @@
 # Troubleshooting
 
-With any troubleshooting, the first two things to try are:
+With any troubleshooting, the first three things to try are:
 
 1. Check the plugin's Log entries. If the normal operations of the plugin are not creating informative log entries, you can temporarily turn on Debug mode (this can create a lot of entries).
 2. Check the plugin's Mapping Errors tab. There is [some documentation about this tab](./mapping-errors.md).
@@ -78,14 +78,12 @@ When there are no values in the list of Salesforce objects, this means the plugi
 
 ## Object map issues
 
-If you are successfully authenticated with Salesforce, but you are unable to create or update an object map between two records, there are several ways to troubleshoot. Always check the plugin logs, the [mapping errors tab](./mapping-errors.md), and/or your server's PHP error logs first.
+If you are successfully authenticated with Salesforce, but you are unable to create or update an object map between two records, there are several ways to troubleshoot.
 
-### Plugin mapping errors
+Remember to check the plugin logs, the [mapping errors tab](./mapping-errors.md), and/or your server's PHP error logs first.
 
-- If the plugin fails in the middle of creating or updating a map between two objects, a row should be created on the Mapping Errors screen. If it is a push error, it will tell you the WordPress object ID it was trying to map. If it is a pull error, it will tell you the Salesforce ID. **You should not leave these entries.**
+### Sync error troubleshooting
 
-### Sync errors
-
-- Remember to clear the plugin cache on the Fieldmaps screen.
+- Clear the plugin cache on the Fieldmaps screen.
 - If you are not able to push data to Salesforce, try with asynchronous checked, and again without. This will tell you if your issue is related to the plugin's cron jobs.
 - To inspect your cron jobs, use the [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/) plugin. Make sure the Salesforce push and/or pull jobs are running as you expect them to, and make sure to check the Schedule screen to make sure the jobs are scheduled as they should be.
