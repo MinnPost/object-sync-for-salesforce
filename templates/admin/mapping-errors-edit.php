@@ -69,7 +69,7 @@
 			echo sprintf(
 				// translators: placeholder is the object map's creation date.
 				wp_kses_post( __( '<span class="label">Created Date:</span> %1$s', 'object-sync-for-salesforce' ) ),
-				esc_attr( $map_row['created'] )
+				esc_attr( wp_date( 'Y-m-d g:i:sa', strtotime( $map_row['created'] ) ) )
 			);
 			?>
 		</li>
@@ -79,7 +79,7 @@
 			echo sprintf(
 				// translators: placeholder is the object map's last updated date.
 				wp_kses_post( __( '<span class="label">Last Updated Date:</span> %1$s', 'object-sync-for-salesforce' ) ),
-				esc_attr( $map_row['object_updated'] )
+				esc_attr( wp_date( 'Y-m-d g:i:sa', strtotime( $map_row['object_updated'] ) ) )
 			);
 			?>
 		</li>
@@ -89,7 +89,7 @@
 			echo sprintf(
 				// translators: placeholder is the object map's last sync date.
 				wp_kses_post( __( '<span class="label">Last Sync Date:</span> %1$s', 'object-sync-for-salesforce' ) ),
-				esc_attr( $map_row['last_sync'] )
+				esc_attr( wp_date( 'Y-m-d g:i:sa', strtotime( $map_row['last_sync'] ) ) )
 			);
 			?>
 		</li>

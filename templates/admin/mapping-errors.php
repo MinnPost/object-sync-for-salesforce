@@ -21,43 +21,41 @@
 	<?php if ( isset( $mapping_error_transient ) ) { ?>
 	<input type="hidden" name="mapping_error_transient" value="<?php echo esc_html( $mapping_error_transient ); ?>">
 	<?php } ?>
-	<table class="widefat striped">
+	<table class="wp-list-table widefat striped table-view-list">
 		<thead>
 			<tr>
 				<td id="cb" class="manage-column column-cb check-column">
 					<label class="screen-reader-text" for="cb-select-all-1"><?php echo esc_html__( 'Select All', 'object-sync-for-salesforce' ); ?></label>
 					<input id="cb-select-all-1" type="checkbox">
 				</td>
-				<th id="mapping-error-type" class="manage-column"><?php echo esc_html__( 'Type', 'object-sync-for-salesforce' ); ?></th>
-				<th id="mapping-error-wordpress-id" class="manage-column"><?php echo esc_html__( 'WordPress ID', 'object-sync-for-salesforce' ); ?></th>
-				<th id="mapping-error-wordpress-type" class="manage-column"><?php echo esc_html__( 'WordPress Object Type', 'object-sync-for-salesforce' ); ?></th>
-				<th id="mapping-error-salesforce-id" class="manage-column"><?php echo esc_html__( 'Salesforce ID', 'object-sync-for-salesforce' ); ?></th>
-				<th id="mapping-error-created" class="manage-column"><?php echo esc_html__( 'Created Date/Time', 'object-sync-for-salesforce' ); ?></th>
-				<th id="mapping-error-actions" class="manage-column" colspan="2"><?php echo esc_html__( 'Actions', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-label" class="manage-column"><?php echo esc_html__( 'Label', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-last-action" class="manage-column"><?php echo esc_html__( 'Last Action', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-created" class="manage-column"><?php echo esc_html__( 'Last Sync', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-created" class="manage-column"><?php echo esc_html__( 'Object Map Created', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-created" class="manage-column"><?php echo esc_html__( 'Last Data Update', 'object-sync-for-salesforce' ); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td class="manage-column column-cb check-column">
-					<label class="screen-reader-text" for="cb-select-all-2"><?php echo esc_html__( 'Select All', 'object-sync-for-salesforce' ); ?></label>
-					<input id="cb-select-all-2" type="checkbox">
+				<td id="cb" class="manage-column column-cb check-column">
+					<label class="screen-reader-text" for="cb-select-all-1"><?php echo esc_html__( 'Select All', 'object-sync-for-salesforce' ); ?></label>
+					<input id="cb-select-all-1" type="checkbox">
 				</td>
-				<th class="manage-column"><?php echo esc_html__( 'Type', 'object-sync-for-salesforce' ); ?></th>
-				<th class="manage-column"><?php echo esc_html__( 'WordPress ID', 'object-sync-for-salesforce' ); ?></th>
-				<th class="manage-column"><?php echo esc_html__( 'WordPress Object Type', 'object-sync-for-salesforce' ); ?></th>
-				<th class="manage-column"><?php echo esc_html__( 'Salesforce ID', 'object-sync-for-salesforce' ); ?></th>
-				<th class="manage-column"><?php echo esc_html__( 'Created Date/Time', 'object-sync-for-salesforce' ); ?></th>
-				<th class="manage-column" colspan="2"><?php echo esc_html__( 'Actions', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-label" class="manage-column"><?php echo esc_html__( 'Label', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-last-action" class="manage-column"><?php echo esc_html__( 'Last Action', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-created" class="manage-column"><?php echo esc_html__( 'Last Sync', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-created" class="manage-column"><?php echo esc_html__( 'Object Map Created', 'object-sync-for-salesforce' ); ?></th>
+				<th id="mapping-error-created" class="manage-column"><?php echo esc_html__( 'Last Data Update', 'object-sync-for-salesforce' ); ?></th>
 			</tr>
 			<tr>
-				<td colspan="4">
+				<td colspan="3">
 					<?php
 						submit_button(
 							esc_html__( 'Delete selected rows', 'object-sync-for-salesforce' )
 						);
 						?>
 				</td>
-				<td colspan="4">
+				<td colspan="3">
 					<?php
 					$output  = '<div class="tablenav-pages tablenav-pages-mappingerrors">';
 					$output .= '<span class="displaying-num">' . sprintf(
@@ -69,51 +67,75 @@
 						$output .= $mapping_errors['pagination'];
 					}
 					$output .= '</div>';
-					echo $output;
+					echo wp_kses_post( $output );
 					?>
 				</td>
 			</tr>
 		</tfoot>
 		<tbody>
 			<?php if ( ! empty( $mapping_errors['all_errors'] ) ) : ?>
-				<?php foreach ( $mapping_errors['all_errors'] as $error ) { ?>
+				<?php foreach ( $mapping_errors['all_errors'] as $mapping_error ) { ?>
 			<tr>
 					<?php
-					if ( in_array( $error['id'], $ids, true ) ) {
+					if ( in_array( $mapping_error['id'], $ids, true ) ) {
 						$checked = ' checked';
 					} else {
 						$checked = '';
 					}
 					$trigger_type = '';
-					if ( isset( $error['salesforce_id'] ) || isset( $error['wordpress_id'] ) ) {
-						if ( strpos( $error['salesforce_id'], 'tmp_sf_' ) === 0 ) {
+					if ( isset( $mapping_error['salesforce_id'] ) || isset( $mapping_error['wordpress_id'] ) ) {
+						if ( strpos( $mapping_error['salesforce_id'], 'tmp_sf_' ) === 0 ) {
 							$trigger_type = esc_html__( 'Pull From Salesforce', 'object-sync-for-salesforce' );
-						} elseif ( strpos( $error['wordpress_id'], 'tmp_wp_' ) === 0 ) {
+						} elseif ( strpos( $mapping_error['wordpress_id'], 'tmp_wp_' ) === 0 ) {
 							$trigger_type = esc_html__( 'Push to Salesforce', 'object-sync-for-salesforce' );
-						} elseif ( '0' === $error['last_sync_status'] ) {
-							if ( 'push' === $error['last_sync_action'] ) {
+						} elseif ( '0' === $mapping_error['last_sync_status'] ) {
+							if ( 'push' === $mapping_error['last_sync_action'] ) {
 								$trigger_type = esc_html__( 'Push to Salesforce', 'object-sync-for-salesforce' );
-							} elseif ( 'pull' === $error['last_sync_action'] ) {
+							} elseif ( 'pull' === $mapping_error['last_sync_action'] ) {
 								$trigger_type = esc_html__( 'Pull From Salesforce', 'object-sync-for-salesforce' );
 							}
 						}
 					}
 					?>
 				<th scope="row" class="check-column">
-					<label class="screen-reader-text" for="delete_<?php echo $error['id']; ?>"><?php echo esc_html__( 'Select Error', 'object-sync-for-salesforce' ); ?></label>
-					<input id="delete_<?php echo $error['id']; ?>" type="checkbox" name="delete[<?php echo $error['id']; ?>]"<?php echo $checked; ?>>
+					<label class="screen-reader-text" for="delete_<?php echo esc_attr( $mapping_error['id'] ); ?>"><?php echo esc_html__( 'Select Error', 'object-sync-for-salesforce' ); ?></label>
+					<input id="delete_<?php echo esc_attr( $mapping_error['id'] ); ?>" type="checkbox" name="delete[<?php echo esc_attr( $mapping_error['id'] ); ?>]"<?php echo esc_html( $checked ); ?>>
 				</th>
+				<td>
+					<strong>
+						<?php
+						echo sprintf(
+							// translators: placeholders are 1) the WordPress object type, 2) the WordPress object ID, 3) the Salesforce object Id.
+							esc_html__( 'WordPress %1$s ID %2$s to Salesforce Id %3$s', 'object-sync-for-salesforce' ),
+							esc_attr( $mapping_error['wordpress_object'] ),
+							esc_attr( $mapping_error['wordpress_id'] ),
+							esc_attr( $mapping_error['salesforce_id'] )
+						);
+						?>
+					</strong>
+					<div>
+						<?php
+						echo sprintf(
+							// translators: placeholder is the last sync message.
+							esc_html__( 'Last Sync Message: %1$s', 'object-sync-for-salesforce' ),
+							esc_attr( $mapping_error['last_sync_message'] )
+						);
+						?>
+					</div>
+					<div class="row-actions visible">
+						<span class="edit">
+						<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=edit&id=' . $mapping_error['id'] ) ); ?>"><?php echo esc_html__( 'Edit', 'object-sync-for-salesforce' ); ?></a> | 
+						</span>
+						<span class="delete">
+						<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=delete&id=' . $mapping_error['id'] ) ); ?>"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
+						</span>
+					</div>
+					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+				</td>
 				<td><?php echo esc_attr( $trigger_type ); ?></td>
-				<td><?php echo esc_attr( $error['wordpress_id'] ); ?></td>
-				<td><?php echo esc_attr( $error['wordpress_object'] ); ?></td>
-				<td><?php echo esc_attr( $error['salesforce_id'] ); ?></td>
-				<td><?php echo wp_date( 'Y-m-d g:i:sa', strtotime( $error['created'] ) ); ?></td>
-				<td>
-					<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=edit&id=' . $error['id'] ) ); ?>"><?php echo esc_html__( 'Edit', 'object-sync-for-salesforce' ); ?></a>
-				</td>
-				<td>
-					<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=delete&id=' . $error['id'] ) ); ?>"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
-				</td>
+				<td><?php echo esc_attr( wp_date( 'Y-m-d g:i:sa', strtotime( $mapping_error['last_sync'] ) ) ); ?></td>
+				<td><?php echo esc_attr( wp_date( 'Y-m-d g:i:sa', strtotime( $mapping_error['created'] ) ) ); ?></td>
+				<td><?php echo esc_attr( wp_date( 'Y-m-d g:i:sa', strtotime( $mapping_error['object_updated'] ) ) ); ?></td>
 			</tr>
 				<?php } ?>
 			<?php endif; ?>
