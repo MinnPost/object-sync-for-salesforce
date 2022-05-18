@@ -13,6 +13,7 @@
 	?>
 </form>
 
+<?php if ( 'mapping_errors' !== $tab ) : ?>
 <p><small>
 	<?php
 	// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
@@ -23,3 +24,4 @@
 	);
 	?>
 </small></p>
+<?php endif; ?>
