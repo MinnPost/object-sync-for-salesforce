@@ -1261,6 +1261,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 					'deletedDate' => gmdate( 'Y-m-d\TH:i:s\Z' ), // this should hopefully never happen.
 				);
 			} // deleted records should always come through with their own deletedDate value.
+		} elseif ( is_object( $object ) ) {
+			$salesforce_id = $object['Id'];
 		}
 
 		$mapping_conditions = array(
@@ -1296,10 +1298,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 				'fieldmap'   => $salesforce_mapping,
 				'transients' => array(),
 			);
-			// this returns the row that maps an individual Salesforce row to an individual WordPress row.
+			// this returns the row or rows that map an individual Salesforce row to an individual WordPress row.
 			if ( isset( $object['Id'] ) ) {
 				$mapping_objects = $this->mappings->load_object_maps_by_salesforce_id( $object['Id'], $salesforce_mapping );
 			} else {
+				$mapping_objects = $this->mappings->load_object_maps_by_salesforce_id( $salesforce_id, $salesforce_mapping );
 				// if we don't have a Salesforce object id, we've got no business doing stuff in WordPress.
 				$status = 'error';
 				$title  = sprintf(
@@ -1316,6 +1319,17 @@ class Object_Sync_Sf_Salesforce_Pull {
 				);
 				$this->logging->setup( $result );
 				$results[] = $result;
+
+				// update the mapping objects.
+				foreach ( $mapping_objects as $mapping_object ) {
+					if ( isset( $mapping_object['id'] ) ) {
+						$mapping_object['last_sync_status']  = $this->mappings->status_error;
+						$mapping_object['last_sync_message'] = isset( $object['message'] ) ? esc_html( $object['message'] ) : esc_html__( 'unable to process queue item because it has no Salesforce Id.', 'object-sync-for-salesforce' );
+						$mapping_object['last_sync']         = current_time( 'mysql' );
+						$mapping_object                      = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+					}
+				}
+
 				continue;
 			}
 
