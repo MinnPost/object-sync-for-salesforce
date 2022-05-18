@@ -627,9 +627,9 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// this returns the WordPress rows that map to the individual Salesfoce row
 				// we don't need to loop through these because we're just generating an error log for push not allowed.
-				$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
-				if ( ! empty( $mapping_object ) ) {
-					$mapping_object = $mapping_object[0];
+				$mapping_objects = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
+				if ( ! empty( $mapping_objects ) ) {
+					$mapping_object = $mapping_objects[0];
 				}
 
 				// hook to allow other plugins to define or alter the mapping object.
@@ -684,6 +684,16 @@ class Object_Sync_Sf_Salesforce_Push {
 					$this->logging->setup( $result );
 				}
 				$results[] = $result;
+
+				if ( isset( $mapping['always_delete_object_maps_on_delete'] ) && ( '1' === $mapping['always_delete_object_maps_on_delete'] ) ) {
+					if ( $sf_sync_trigger === $this->mappings->sync_wordpress_delete ) {
+						foreach ( $mapping_objects as $mapping_object ) {
+							if ( isset( $mapping_object['id'] ) ) {
+								$this->mappings->delete_object_map( $mapping_object['id'] );
+							}
+						}
+					}
+				}
 				continue;
 			}
 

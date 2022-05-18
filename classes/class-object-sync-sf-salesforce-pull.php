@@ -1149,6 +1149,15 @@ class Object_Sync_Sf_Salesforce_Pull {
 					*/
 
 					if ( false === $pull_allowed ) {
+						if ( isset( $salesforce_mapping['always_delete_object_maps_on_delete'] ) && ( '1' === $salesforce_mapping['always_delete_object_maps_on_delete'] ) ) {
+							$mapping_objects = $this->mappings->load_object_maps_by_salesforce_id( $result['Id'], $salesforce_mapping );
+							foreach ( $mapping_objects as $mapping_object ) {
+								if ( isset( $mapping_object['id'] ) ) {
+									error_log( 'delete object map ' . $mapping_object['id'] );
+									$this->mappings->delete_object_map( $mapping_object['id'] );
+								}
+							}
+						}
 						continue;
 					}
 

@@ -408,7 +408,7 @@ class Object_Sync_Sf_Mapping {
 		} else { // get all of the mappings. ALL THE MAPPINGS.
 
 			// This is the default query for loading fieldmaps.
-			$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `fieldmap_status`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table ORDER BY `fieldmap_status`", ARRAY_A );
+			$mappings = $this->wpdb->get_results( "SELECT * FROM $table ORDER BY `fieldmap_status`", ARRAY_A );
 
 			// lower than 2.0.0 versions.
 			// @deprecated
@@ -621,11 +621,12 @@ class Object_Sync_Sf_Mapping {
 		if ( isset( $posted['pull_trigger_field'] ) ) {
 			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
 		}
-		$data['fieldmap_status'] = isset( $posted['fieldmap_status'] ) ? $posted['fieldmap_status'] : 'active';
-		$data['push_async']      = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
-		$data['push_drafts']     = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
-		$data['pull_to_drafts']  = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
-		$data['weight']          = isset( $posted['weight'] ) ? $posted['weight'] : '';
+		$data['fieldmap_status']                     = isset( $posted['fieldmap_status'] ) ? $posted['fieldmap_status'] : 'active';
+		$data['push_async']                          = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
+		$data['push_drafts']                         = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
+		$data['pull_to_drafts']                      = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
+		$data['weight']                              = isset( $posted['weight'] ) ? $posted['weight'] : '';
+		$data['always_delete_object_maps_on_delete'] = isset( $posted['always_delete_object_maps_on_delete'] ) ? $posted['always_delete_object_maps_on_delete'] : '';
 		return $data;
 	}
 
