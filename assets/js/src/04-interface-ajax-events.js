@@ -67,6 +67,8 @@ function updateSalesforceUserSummary() {
 			$( 'td.last_sync' ).text( response.data.last_sync );
 			if ( '1' === response.data.last_sync_status ) {
 				$( 'td.last_sync_status' ).text( 'success' );
+			} else {
+				$( 'td.last_sync_status' ).text( 'error' );
 			}
 		}
 	} );
