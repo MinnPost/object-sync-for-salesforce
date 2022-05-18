@@ -1192,6 +1192,14 @@ class Object_Sync_Sf_Salesforce_Push {
 				);
 				$this->logging->setup( $result );
 
+				// update the mapping object to reflect the error status.
+				$mapping_object['last_sync_message'] = $e->getMessage();
+				$mapping_object['last_sync']         = current_time( 'mysql' );
+				$mapping_object_updated              = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+
+				// save the mapping object to the synced object.
+				$synced_object['mapping_object'] = $mapping_object;
+
 				// hook for push fail.
 				do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object );
 
@@ -1246,6 +1254,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// update that mapping object.
 				$mapping_object['salesforce_id']     = $salesforce_id;
+				$mapping_object['last_sync']         = current_time( 'mysql' );
 				$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
 				$mapping_object_updated              = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
@@ -1292,6 +1301,14 @@ class Object_Sync_Sf_Salesforce_Push {
 					'status'  => $status,
 				);
 				$this->logging->setup( $result );
+
+				// update the mapping object to reflect the error status.
+				$mapping_object['last_sync_message'] = isset( $api_result['data']['message'] ) ? esc_html( $api_result['data']['message'] ) : esc_html__( 'An error occurred pushing this data to Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+				$mapping_object['last_sync']         = current_time( 'mysql' );
+				$mapping_object_updated              = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+
+				// save the mapping object to the synced object.
+				$synced_object['mapping_object'] = $mapping_object;
 
 				// hook for push fail.
 				do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object );
