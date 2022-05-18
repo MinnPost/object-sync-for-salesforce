@@ -797,6 +797,9 @@ class Object_Sync_Sf_Mapping {
 		if ( ! isset( $data['object_updated'] ) ) {
 			$data['object_updated'] = current_time( 'mysql' );
 		}
+		if ( isset( $data['action'] ) ) {
+			unset( $data['action'] );
+		}
 		$update = $this->wpdb->update(
 			$this->object_map_table,
 			$data,
@@ -1261,8 +1264,8 @@ class Object_Sync_Sf_Mapping {
 		$items_per_page        = (int) get_option( $this->option_prefix . 'errors_per_page', 50 );
 		$current_error_page    = isset( $_GET['error_page'] ) ? (int) $_GET['error_page'] : 1;
 		$offset                = ( $current_error_page * $items_per_page ) - $items_per_page;
-		$all_errors            = $this->wpdb->get_results( "SELECT * FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%' LIMIT ${offset}, ${items_per_page}", ARRAY_A );
-		$errors_total          = $this->wpdb->get_var( "SELECT COUNT(`id`) FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%'" );
+		$all_errors            = $this->wpdb->get_results( "SELECT * FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%' OR last_sync_status = 0 LIMIT ${offset}, ${items_per_page}", ARRAY_A );
+		$errors_total          = $this->wpdb->get_var( "SELECT COUNT(`id`) FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%' OR last_sync_status = 0" );
 		$errors['total_pages'] = ceil( $errors_total / $items_per_page );
 		$errors['pagination']  = paginate_links(
 			array(

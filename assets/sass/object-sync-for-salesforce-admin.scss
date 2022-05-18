@@ -132,6 +132,31 @@ $active-color: #72aee6;
 		}
 	}
 
+	// fieldmap form
+	.object_map {
+
+		.object_map_field {
+
+			label {
+				display: block;
+			}
+		}
+	}
+
+	// object map data
+	.object_map_data {
+
+		li {
+			margin-bottom: 8px;
+		}
+
+		span.label {
+			min-width: 150px;
+			display: inline-block;
+			margin-right: 5px;
+			color: #646970;
+		}
+	}
 
 	/**
 	 * Select2 elements.

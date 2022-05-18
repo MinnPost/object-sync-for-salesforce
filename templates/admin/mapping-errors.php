@@ -12,7 +12,7 @@
 <p><?php echo esc_html__( 'For any mapping object error, you can edit (if, for example, you know the ID of the item that should be in place) or delete each database row, or you can try to track down what the plugin was doing based on the other data displayed here.', 'object-sync-for-salesforce' ); ?></p>
 <p><?php echo esc_html__( 'If you edit one of these items, and it correctly maps data between the two systems, the sync for those items will behave as normal going forward, so any edits you do after that will sync as they should.', 'object-sync-for-salesforce' ); ?></p>
 
-<?php require_once 'settings.php' ; ?>
+<?php require_once 'settings.php'; ?>
 
 <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="error-rows">
 	<input type="hidden" name="redirect_url_error" value="<?php echo esc_url( $error_url ); ?>">
@@ -90,6 +90,12 @@
 							$trigger_type = esc_html__( 'Pull From Salesforce', 'object-sync-for-salesforce' );
 						} elseif ( strpos( $error['wordpress_id'], 'tmp_wp_' ) === 0 ) {
 							$trigger_type = esc_html__( 'Push to Salesforce', 'object-sync-for-salesforce' );
+						} elseif ( '0' === $error['last_sync_status'] ) {
+							if ( 'push' === $error['last_sync_action'] ) {
+								$trigger_type = esc_html__( 'Push to Salesforce', 'object-sync-for-salesforce' );
+							} elseif ( 'pull' === $error['last_sync_action'] ) {
+								$trigger_type = esc_html__( 'Pull From Salesforce', 'object-sync-for-salesforce' );
+							}
 						}
 					}
 					?>
@@ -97,11 +103,11 @@
 					<label class="screen-reader-text" for="delete_<?php echo $error['id']; ?>"><?php echo esc_html__( 'Select Error', 'object-sync-for-salesforce' ); ?></label>
 					<input id="delete_<?php echo $error['id']; ?>" type="checkbox" name="delete[<?php echo $error['id']; ?>]"<?php echo $checked; ?>>
 				</th>
-				<td><?php echo $trigger_type; ?></td>
-				<td><?php echo $error['wordpress_id']; ?></td>
-				<td><?php echo $error['wordpress_object']; ?></td>
-				<td><?php echo $error['salesforce_id']; ?></td>
-				<td><?php echo date_i18n( 'Y-m-d g:i:sa', strtotime( $error['created'] ) ); ?></td>
+				<td><?php echo esc_attr( $trigger_type ); ?></td>
+				<td><?php echo esc_attr( $error['wordpress_id'] ); ?></td>
+				<td><?php echo esc_attr( $error['wordpress_object'] ); ?></td>
+				<td><?php echo esc_attr( $error['salesforce_id'] ); ?></td>
+				<td><?php echo wp_date( 'Y-m-d g:i:sa', strtotime( $error['created'] ) ); ?></td>
 				<td>
 					<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=edit&id=' . $error['id'] ) ); ?>"><?php echo esc_html__( 'Edit', 'object-sync-for-salesforce' ); ?></a>
 				</td>

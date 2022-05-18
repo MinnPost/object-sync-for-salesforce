@@ -701,8 +701,9 @@ class Object_Sync_Sf_Admin {
 						}
 
 						if ( isset( $map_row ) && is_array( $map_row ) ) {
-							$salesforce_id = $map_row['salesforce_id'];
-							$wordpress_id  = $map_row['wordpress_id'];
+							$salesforce_id    = $map_row['salesforce_id'];
+							$wordpress_id     = $map_row['wordpress_id'];
+							$wordpress_object = $map_row['wordpress_object'];
 						}
 
 						if ( 'edit' === $method ) {
