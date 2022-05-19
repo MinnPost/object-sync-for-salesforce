@@ -1073,7 +1073,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			// Iterate over each field mapping to determine our query parameters.
 			foreach ( $mappings as $salesforce_mapping ) {
 
-				$last_delete_sync = $this->pull_options->get( 'delete_last', $type, '', time() );
+				$last_delete_sync = $this->pull_options->get( 'delete_last', $type, $salesforce_mapping['id'], time() );
 				$now              = time();
 				$this->pull_options->set( 'delete_last', $type, $salesforce_mapping['id'], $now );
 
