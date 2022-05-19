@@ -1860,12 +1860,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$parent = 0;
 			}
 
-			// try to get an error message for the log entry.
-			if ( is_string( $result['errors'] ) ) {
-				$message = $result['errors'];
-			} else {
-				$message = print_r( $result['errors'], true ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
-			}
+			// set up error message.
+			$default_message = esc_html__( 'An error occurred pulling this data from Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+			$message         = $this->parse_error_message( $result, $default_message );
 
 			$result = array(
 				'title'   => $title,
@@ -1877,7 +1874,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// set up the mapping object for an error.
 			$mapping_object['last_sync_status']  = $this->mappings->status_error;
-			$mapping_object['last_sync_message'] = is_string( $message ) ? esc_html( $message ) : esc_html__( 'An error occurred pulling this data from Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+			$mapping_object['last_sync_message'] = substr( $message, 0, 255 );
 
 			// hook for pull fail.
 			do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
@@ -1960,10 +1957,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// this is also where it runs pull_success and pull_fail actions hooks.
 
 		if ( ! isset( $result['errors'] ) ) {
-			// set up the mapping object for successful update.
-			$mapping_object['last_sync_status']  = $this->mappings->status_success;
-			$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
-
 			// set up the log entry for successful update.
 			$status = 'success';
 			$title  = sprintf(
@@ -1985,12 +1978,13 @@ class Object_Sync_Sf_Salesforce_Pull {
 				'status'  => $status,
 			);
 
+			// set up the mapping object for successful update.
+			$mapping_object['last_sync_status']  = $this->mappings->status_success;
+			$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
+
 			// hook for pull success.
 			do_action( $this->option_prefix . 'pull_success', $op, $result, $synced_object );
 		} else {
-			// set up the mapping object for a failed update.
-			$mapping_object['last_sync_status']  = $this->mappings->status_error;
-			$mapping_object['last_sync_message'] = esc_html__( 'An error occurred pulling this data from Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
 
 			// set up the log entry for a failed update.
 			$status = 'error';
@@ -2006,12 +2000,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 				esc_attr( $object['Id'] )
 			);
 
-			// try to get an error message for the log entry.
-			if ( is_string( $result['errors'] ) ) {
-				$message = $result['errors'];
-			} else {
-				$message = print_r( $result['errors'], true ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
-			}
+			// set up error message.
+			$default_message = esc_html__( 'An error occurred pulling this data from Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+			$message         = $this->parse_error_message( $result, $default_message );
 
 			$result = array(
 				'title'   => $title,
@@ -2023,7 +2014,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// set up the mapping object for an error.
 			$mapping_object['last_sync_status']  = $this->mappings->status_error;
-			$mapping_object['last_sync_message'] = is_string( $message ) ? esc_html( $message ) : esc_html__( 'An error occurred pulling this data from Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+			$mapping_object['last_sync_message'] = substr( $message, 0, 255 );
 
 			// hook for pull fail.
 			do_action( $this->option_prefix . 'pull_fail', $op, $result, $synced_object );
@@ -2119,12 +2110,9 @@ class Object_Sync_Sf_Salesforce_Pull {
 							esc_attr( $mapping_object['salesforce_id'] )
 						);
 
-						// try to get an error message for the log entry.
-						if ( is_string( $result['errors'] ) ) {
-							$message = $result['errors'];
-						} else {
-							$message = print_r( $result['errors'], true ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
-						}
+						// set up error message.
+						$default_message = esc_html__( 'An error occurred pulling this data from Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+						$message         = $this->parse_error_message( $result, $default_message );
 
 						$result = array(
 							'title'   => $title,
@@ -2187,6 +2175,30 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		return $results;
 
+	}
+
+	/**
+	 * Format the error message
+	 *
+	 * @param array  $result from the WordPress class.
+	 * @param string $default_message if there is one.
+	 * @return string $message what is getting stored.
+	 */
+	private function parse_error_message( $result, $default_message = '' ) {
+		$message = $default_message;
+		$errors  = $result['errors'];
+		// try to retrieve a usable error message to save.
+		if ( is_string( $errors ) ) {
+			$message = $errors;
+		} else {
+			if ( is_wp_error( $errors ) ) {
+				$message = $errors->get_error_message();
+			} else {
+				$message = print_r( $errors, true ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+			}
+		}
+		$message = wp_kses_post( $message );
+		return $message;
 	}
 
 	/**
