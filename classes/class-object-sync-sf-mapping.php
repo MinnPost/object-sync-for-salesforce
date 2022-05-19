@@ -626,7 +626,7 @@ class Object_Sync_Sf_Mapping {
 		$data['push_drafts']                         = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
 		$data['pull_to_drafts']                      = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
 		$data['weight']                              = isset( $posted['weight'] ) ? $posted['weight'] : '';
-		$data['always_delete_object_maps_on_delete'] = isset( $posted['always_delete_object_maps_on_delete'] ) ? $posted['always_delete_object_maps_on_delete'] : '';
+		$data['always_delete_object_maps_on_delete'] = isset( $posted['always_delete_object_maps_on_delete'] ) ? $posted['always_delete_object_maps_on_delete'] : '0';
 		return $data;
 	}
 
