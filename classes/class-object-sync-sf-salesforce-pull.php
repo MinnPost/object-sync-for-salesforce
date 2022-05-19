@@ -1885,7 +1885,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$results[] = $result;
 
 		// either way, update the object map.
-		if ( 0 !== $wordpress_object ) {
+		if ( 0 !== $wordpress_id ) {
 			$mapping_object['wordpress_id'] = $wordpress_id;
 		}
 		$mapping_object['last_sync'] = current_time( 'mysql' );
