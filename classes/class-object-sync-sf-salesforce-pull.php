@@ -1153,7 +1153,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 							$mapping_objects = $this->mappings->load_object_maps_by_salesforce_id( $result['Id'], $salesforce_mapping );
 							foreach ( $mapping_objects as $mapping_object ) {
 								if ( isset( $mapping_object['id'] ) ) {
-									error_log( 'delete object map ' . $mapping_object['id'] );
 									$this->mappings->delete_object_map( $mapping_object['id'] );
 								}
 							}
