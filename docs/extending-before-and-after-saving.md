@@ -18,20 +18,20 @@ The action hooks that run on around the save on a `pull` event are:
 
 ```php
 add_action( 'object_sync_for_salesforce_pre_pull', 'before_pull', 10, 5 );
-function before_pull( $wordpress_id, $mapping, $object, $wordpress_id_field_name, $params ) {
+function before_pull( $wordpress_id, $salesforce_mapping, $object, $wordpress_id_field_name, $params ) {
     // do things before the plugin saves any data in wordpress
     // $wordpress_id is the object id
-    // $mapping is the field map between the object types
+    // $salesforce_mapping is the fieldmap between the object types
     // $object is the object data
     // $wordpress_id_field_name is the wordpress id field's name
-    // $params is the data mapping between the two systems
+    // $params is the data mapped between the two systems
 }
 ```
 
 #### After fail
 
 ```php
-add_action( 'object_sync_for_salesforce_pull_fail', 'pull_fail', 10, 5 );
+add_action( 'object_sync_for_salesforce_pull_fail', 'pull_fail', 10, 3 );
 function pull_fail( $op, $result, $synced_object ) {
     // do things if the save failed
     // $op is what the plugin tried to do - Create, Update, Upsert, Delete
@@ -93,7 +93,7 @@ function before_push( $salesforce_id, $mapping, $object, $wordpress_id_field_nam
 #### After fail
 
 ```php
-add_action( 'object_sync_for_salesforce_push_fail', 'push_fail', 10, 5 );
+add_action( 'object_sync_for_salesforce_push_fail', 'push_fail', 10, 3 );
 function push_fail( $op, $response, $synced_object ) {
     // do things if the save failed
     // $op is what the plugin tried to do - Create, Update, Upsert, Delete
@@ -114,7 +114,7 @@ function push_fail( $op, $response, $synced_object ) {
 
 ```php
 add_action( 'object_sync_for_salesforce_push_success', 'push_success', 10, 5 );
-function push_success( $op, $response, $synced_object, $object_id, $wordpress_id_field_name ) {
+function push_success( $op, $response, $synced_object, $salesforce_id, $wordpress_id_field_name ) {
     // do things if the save succeeded
     // $op is what the plugin did - Create, Update, Upsert, Delete
     // $response is what was returned by the $salesforce class. sfapi->response
@@ -127,7 +127,7 @@ function push_success( $op, $response, $synced_object, $object_id, $wordpress_id
         'mapping' => $mapping,
     );
     */
-    // $object_id is the salesforce object id
+    // $salesforce_id is the Salesforce object id
     // $wordpress_id_field_name is the name of the ID field in WordPress
 }
 ```
