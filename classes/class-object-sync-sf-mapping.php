@@ -408,7 +408,7 @@ class Object_Sync_Sf_Mapping {
 		} else { // get all of the mappings. ALL THE MAPPINGS.
 
 			// This is the default query for loading fieldmaps.
-			$mappings = $this->wpdb->get_results( "SELECT `id`, `label`, `fieldmap_status`, `wordpress_object`, `salesforce_object`, `salesforce_record_types_allowed`, `salesforce_record_type_default`, `fields`, `pull_trigger_field`, `sync_triggers`, `push_async`, `push_drafts`, `pull_to_drafts`, `weight`, `version` FROM $table ORDER BY `fieldmap_status`", ARRAY_A );
+			$mappings = $this->wpdb->get_results( "SELECT * FROM $table ORDER BY `fieldmap_status`", ARRAY_A );
 
 			// lower than 2.0.0 versions.
 			// @deprecated
@@ -621,11 +621,12 @@ class Object_Sync_Sf_Mapping {
 		if ( isset( $posted['pull_trigger_field'] ) ) {
 			$data['pull_trigger_field'] = $posted['pull_trigger_field'];
 		}
-		$data['fieldmap_status'] = isset( $posted['fieldmap_status'] ) ? $posted['fieldmap_status'] : 'active';
-		$data['push_async']      = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
-		$data['push_drafts']     = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
-		$data['pull_to_drafts']  = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
-		$data['weight']          = isset( $posted['weight'] ) ? $posted['weight'] : '';
+		$data['fieldmap_status']                     = isset( $posted['fieldmap_status'] ) ? $posted['fieldmap_status'] : 'active';
+		$data['push_async']                          = isset( $posted['push_async'] ) ? $posted['push_async'] : '';
+		$data['push_drafts']                         = isset( $posted['push_drafts'] ) ? $posted['push_drafts'] : '';
+		$data['pull_to_drafts']                      = isset( $posted['pull_to_drafts'] ) ? $posted['pull_to_drafts'] : '';
+		$data['weight']                              = isset( $posted['weight'] ) ? $posted['weight'] : '';
+		$data['always_delete_object_maps_on_delete'] = isset( $posted['always_delete_object_maps_on_delete'] ) ? $posted['always_delete_object_maps_on_delete'] : '0';
 		return $data;
 	}
 
@@ -796,6 +797,9 @@ class Object_Sync_Sf_Mapping {
 		$data = $this->setup_object_map_data( $posted );
 		if ( ! isset( $data['object_updated'] ) ) {
 			$data['object_updated'] = current_time( 'mysql' );
+		}
+		if ( isset( $data['action'] ) ) {
+			unset( $data['action'] );
 		}
 		$update = $this->wpdb->update(
 			$this->object_map_table,
@@ -1261,8 +1265,8 @@ class Object_Sync_Sf_Mapping {
 		$items_per_page        = (int) get_option( $this->option_prefix . 'errors_per_page', 50 );
 		$current_error_page    = isset( $_GET['error_page'] ) ? (int) $_GET['error_page'] : 1;
 		$offset                = ( $current_error_page * $items_per_page ) - $items_per_page;
-		$all_errors            = $this->wpdb->get_results( "SELECT * FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%' LIMIT ${offset}, ${items_per_page}", ARRAY_A );
-		$errors_total          = $this->wpdb->get_var( "SELECT COUNT(`id`) FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%'" );
+		$all_errors            = $this->wpdb->get_results( "SELECT * FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%' OR last_sync_status = 0 LIMIT ${offset}, ${items_per_page}", ARRAY_A );
+		$errors_total          = $this->wpdb->get_var( "SELECT COUNT(`id`) FROM ${table} WHERE salesforce_id LIKE 'tmp_sf_%' OR wordpress_id LIKE 'tmp_wp_%' OR last_sync_status = 0" );
 		$errors['total_pages'] = ceil( $errors_total / $items_per_page );
 		$errors['pagination']  = paginate_links(
 			array(

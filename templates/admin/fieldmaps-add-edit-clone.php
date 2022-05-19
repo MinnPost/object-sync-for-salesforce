@@ -569,6 +569,10 @@
 			</p>
 		</div>
 		<div class="checkboxes">
+			<label><input type="checkbox" name="always_delete_object_maps_on_delete" id="always-delete-object-maps-on-delete" value="1" <?php echo isset( $always_delete_object_maps_on_delete ) && '1' === $always_delete_object_maps_on_delete ? ' checked' : ''; ?>><?php echo esc_html__( 'Always Delete Object Maps When Data is Deleted', 'object-sync-for-salesforce' ); ?></label>
+			<p class="description"><?php echo esc_html__( 'If selected, when data in either the WordPress or Salesforce object type is deleted, the plugin will check for object maps connected to the record that was deleted even if the trigger is not checked above. If it finds those object maps, they will be deleted.', 'object-sync-for-salesforce' ); ?></p>
+		</div>
+		<div class="checkboxes">
 			<label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo isset( $push_async ) && '1' === $push_async ? ' checked' : ''; ?>><?php echo esc_html__( 'Process Asynchronously', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description">
 				<?php

@@ -627,9 +627,9 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// this returns the WordPress rows that map to the individual Salesfoce row
 				// we don't need to loop through these because we're just generating an error log for push not allowed.
-				$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
-				if ( ! empty( $mapping_object ) ) {
-					$mapping_object = $mapping_object[0];
+				$mapping_objects = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
+				if ( ! empty( $mapping_objects ) ) {
+					$mapping_object = $mapping_objects[0];
 				}
 
 				// hook to allow other plugins to define or alter the mapping object.
@@ -684,6 +684,16 @@ class Object_Sync_Sf_Salesforce_Push {
 					$this->logging->setup( $result );
 				}
 				$results[] = $result;
+
+				if ( isset( $mapping['always_delete_object_maps_on_delete'] ) && ( '1' === $mapping['always_delete_object_maps_on_delete'] ) ) {
+					if ( $sf_sync_trigger === $this->mappings->sync_wordpress_delete ) {
+						foreach ( $mapping_objects as $mapping_object ) {
+							if ( isset( $mapping_object['id'] ) ) {
+								$this->mappings->delete_object_map( $mapping_object['id'] );
+							}
+						}
+					}
+				}
 				continue;
 			}
 
@@ -878,9 +888,14 @@ class Object_Sync_Sf_Salesforce_Push {
 							esc_attr( $wordpress_id_field_name ),
 							esc_attr( $object[ "$wordpress_id_field_name" ] )
 						);
+
+						// set up error message.
+						$default_message = esc_html__( 'An error occurred pushing this data to Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+						$message         = $this->parse_error_message( $e, $default_message );
+
 						$result = array(
 							'title'   => $title,
-							'message' => $e->getMessage(),
+							'message' => $message,
 							'trigger' => $sf_sync_trigger,
 							'parent'  => $object[ "$wordpress_id_field_name" ],
 							'status'  => $status,
@@ -1183,14 +1198,27 @@ class Object_Sync_Sf_Salesforce_Push {
 					esc_attr( $wordpress_id_field_name ),
 					esc_attr( $object[ "$wordpress_id_field_name" ] )
 				);
+
+				// set up error message.
+				$default_message = esc_html__( 'An error occurred pushing this data to Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+				$message         = $this->parse_error_message( $e, $default_message );
+
 				$result = array(
 					'title'   => $title,
-					'message' => $e->getMessage(),
+					'message' => $message,
 					'trigger' => $sf_sync_trigger,
 					'parent'  => $object[ "$wordpress_id_field_name" ],
 					'status'  => $status,
 				);
 				$this->logging->setup( $result );
+
+				// update the mapping object to reflect the error status.
+				$mapping_object['last_sync_message'] = $message;
+				$mapping_object['last_sync']         = current_time( 'mysql' );
+				$mapping_object_updated              = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+
+				// save the mapping object to the synced object.
+				$synced_object['mapping_object'] = $mapping_object;
 
 				// hook for push fail.
 				do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object );
@@ -1246,6 +1274,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// update that mapping object.
 				$mapping_object['salesforce_id']     = $salesforce_id;
+				$mapping_object['last_sync']         = current_time( 'mysql' );
 				$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
 				$mapping_object_updated              = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
@@ -1292,6 +1321,14 @@ class Object_Sync_Sf_Salesforce_Push {
 					'status'  => $status,
 				);
 				$this->logging->setup( $result );
+
+				// update the mapping object to reflect the error status.
+				$mapping_object['last_sync_message'] = isset( $api_result['data']['message'] ) ? esc_html( $api_result['data']['message'] ) : esc_html__( 'An error occurred pushing this data to Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+				$mapping_object['last_sync']         = current_time( 'mysql' );
+				$mapping_object_updated              = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+
+				// save the mapping object to the synced object.
+				$synced_object['mapping_object'] = $mapping_object;
 
 				// hook for push fail.
 				do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object );
@@ -1394,9 +1431,14 @@ class Object_Sync_Sf_Salesforce_Push {
 					esc_attr( $wordpress_id_field_name ),
 					esc_attr( $object[ "$wordpress_id_field_name" ] )
 				);
+
+				// set up error message.
+				$default_message = esc_html__( 'An error occurred pushing this data to Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+				$message         = $this->parse_error_message( $e, $default_message );
+
 				$result = array(
 					'title'   => $title,
-					'message' => $e->getMessage(),
+					'message' => $message,
 					'trigger' => $sf_sync_trigger,
 					'parent'  => $object[ "$wordpress_id_field_name" ],
 					'status'  => $status,
@@ -1404,7 +1446,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				$this->logging->setup( $result );
 
 				$mapping_object['last_sync_status']  = $this->mappings->status_error;
-				$mapping_object['last_sync_message'] = $e->getMessage();
+				$mapping_object['last_sync_message'] = $message;
 
 				// hook for push fail.
 				do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object );
@@ -1440,6 +1482,24 @@ class Object_Sync_Sf_Salesforce_Push {
 
 		return $result;
 
+	}
+
+	/**
+	 * Format the error message
+	 *
+	 * @param array  $e the exception from the Salesforce class.
+	 * @param string $default_message if there is one.
+	 * @return string $message what is getting stored.
+	 */
+	private function parse_error_message( $e, $default_message = '' ) {
+		$message = $default_message;
+		$errors  = $e->getMessage();
+		// try to retrieve a usable error message to save.
+		if ( is_string( $errors ) ) {
+			$message = $errors;
+		}
+		$message = wp_kses_post( $message );
+		return $message;
 	}
 
 	/**
