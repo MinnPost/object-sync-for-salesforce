@@ -520,7 +520,7 @@
 		<p><button type="button" id="add-field-mapping" class="button button-secondary" data-add-first="<?php echo $add_button_label_first; ?>" data-add-more="<?php echo $add_button_label_more; ?>" data-error-missing-object="<?php echo esc_html__( 'You have to pick a WordPress object and a Salesforce object to add field mapping.', 'object-sync-for-salesforce' ); ?>"><?php echo $add_button_label; ?></button></p>
 		<p class="description"><?php echo esc_html__( 'A checked Prematch (when saving data in either WordPress or Salesforce) or Salesforce Key (only when saving data from WordPress to Salesforce) field will cause the plugin to check for a match on that value before creating new records.', 'object-sync-for-salesforce' ); ?></p>
 	</fieldset>
-	<fieldset class="sync_triggers">
+	<fieldset class="fieldmap_settings sync_triggers">
 		<legend><?php echo esc_html__( 'Action Triggers', 'object-sync-for-salesforce' ); ?></legend>
 		<div class="checkboxes">
 			<?php
@@ -586,6 +586,9 @@
 			<label><input type="checkbox" name="always_delete_object_maps_on_delete" id="always-delete-object-maps-on-delete" value="1" <?php echo isset( $always_delete_object_maps_on_delete ) && '1' === $always_delete_object_maps_on_delete ? ' checked' : ''; ?>><?php echo esc_html__( 'Always Delete Object Maps When Fieldmap Records Are Deleted', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description"><?php echo esc_html__( 'If selected, when a record in either the WordPress or Salesforce object type of this fieldmap is deleted, the plugin will check for object maps connected to the record that was deleted even if the delete action trigger is not checked. If it finds those object maps, they will be deleted.', 'object-sync-for-salesforce' ); ?></p>
 		</div>
+	</fieldset>
+	<fieldset class="fieldmap_settings other_settings">
+		<legend><?php echo esc_html__( 'Fieldmap Settings', 'object-sync-for-salesforce' ); ?></legend>
 		<div class="checkboxes">
 			<label><input type="checkbox" name="push_drafts" id="push-drafts" value="1" <?php echo isset( $push_drafts ) && '1' === $push_drafts ? ' checked' : ''; ?>><?php echo esc_html__( 'Push Drafts', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description"><?php echo esc_html__( 'If selected, WordPress will send drafts of this object type (if it creates drafts for it) to Salesforce.', 'object-sync-for-salesforce' ); ?></p>
