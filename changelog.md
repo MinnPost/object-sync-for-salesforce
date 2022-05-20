@@ -6,6 +6,7 @@ Changelog
 	* Bug fix: Make the Mapping Errors tab more accurate and comprehensive in the object maps it lists. This should reduce the inaccessibility of records when data has been deleted, or when errors have occurred. Thanks to WordPress forum users @twellve_million, @rickymortimer, @wolfage, etc for raising this.
 	* Bug fix: Fix the `pull_merge_last` and `pull_delete_last` option values that are used on merge and delete operations. This prevents a problem, that has existed since 2.1.0, with retrieving these records.
 	* Bug fix: When creating a new fieldmap, set a default status of "active" to prevent a PHP notice.
+	* Maintenance: Update out of date instructions, those meant for in-plugin use as well as documentation and screenshots.
 	* Maintenance: Setting the plugin's Debug Mode enables debug logging, regardless of other log settings.
 	* Maintenance: Start to clean up log code. Because of old code that was never updated, our log method was called 1) incorrectly, and 2) in an overly redundant way.
 	* Maintenance: Fix PHP 8 compatibility.
