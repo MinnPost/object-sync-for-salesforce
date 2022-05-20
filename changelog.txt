@@ -1,7 +1,7 @@
 Changelog
 =========
 
-* 2.2.0 ()
+* 2.2.0 (2022-05-20)
 	* Feature: The requirement to set the REST API version that the plugin uses to send requests to Salesforce has been removed from the plugin interface in favor of storing this value in the plugin (this plugin version uses API version 55.0). For most users this is an improvement; it removes the potential for old API versions to cause problems with new functionality, and removes the potential for users to unintentionally use API versions that are no longer active. **Note**: You can delete the `object_sync_for_salesforce_api_version` field from the `wp_options` table on your own, set it to 55.0 so the plugin can delete it, or wait until version 3.0.0 is released for that value to be deleted.
 	* Bug fix: Make the Mapping Errors tab more accurate and comprehensive in the object maps it lists. This should reduce the inaccessibility of records when data has been deleted, or when errors have occurred. Thanks to WordPress forum users @twellve_million, @rickymortimer, @wolfage, etc for raising this.
 	* Bug fix: Fix the `pull_merge_last` and `pull_delete_last` option values that are used on merge and delete operations. This prevents a problem, that has existed since 2.1.0, with retrieving these records.
