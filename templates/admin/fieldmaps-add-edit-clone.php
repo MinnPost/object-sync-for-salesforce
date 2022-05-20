@@ -562,14 +562,7 @@
 			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_update ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-update" <?php echo esc_attr( $salesforce_update_checked ); ?>><?php echo esc_html__( 'Salesforce Update', 'object-sync-for-salesforce' ); ?></label>
 			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_delete ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-delete" <?php echo esc_attr( $salesforce_delete_checked ); ?>><?php echo esc_html__( 'Salesforce Delete', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description">
-				<?php
-				// translators: placeholders are for the class names: salesforce_push and salesforce_pull.
-				echo sprintf(
-					esc_html__( 'Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. The WordPress Create, WordPress Update, and WordPress Delete actions push data from WordPress to Salesforce. The Salesforce Create, Salesforce Update, and Salesforce Delete actions pull data from Salesforce to WordPress.', 'object-sync-for-salesforce' ),
-					'<code>salesforce_push</code>',
-					'<code>salesforce_pull</code>'
-				);
-				?>
+				<?php echo esc_html__( 'Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. The WordPress Create, WordPress Update, and WordPress Delete actions push data from WordPress to Salesforce. The Salesforce Create, Salesforce Update, and Salesforce Delete actions pull data from Salesforce to WordPress.', 'object-sync-for-salesforce' ); ?>
 			</p>
 			<p class="description">
 				<?php echo '<strong>' . esc_html__( 'If you select both WordPress Create and Salesforce Create trigger on a fieldmap, you should almost always also select Process Asynchronously on that fieldmap.', 'object-sync-for-salesforce' ) . '</strong> '; ?>
