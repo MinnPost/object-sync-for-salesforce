@@ -10,6 +10,7 @@ Changelog
 	* Maintenance: Setting the plugin's Debug Mode enables debug logging, regardless of other log settings.
 	* Maintenance: Start to clean up log code. Because of old code that was never updated, our log method was called 1) incorrectly, and 2) in an overly redundant way.
 	* Maintenance: Fix PHP 8 compatibility.
+	* Maintenance: Test plugin in WordPress 6.0 and update compatibility.
 	* Developers: Add a `object_sync_for_salesforce_modify_salesforce_api_version` filter to allow developers to edit the REST API version for Salesforce API requests. See [the documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/adding-settings.md#change-the-rest-api-version-for-salesforce-requests) for how to use it.
 
 * 2.1.2 (2022-02-04)
