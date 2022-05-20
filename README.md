@@ -71,11 +71,11 @@ If you load Object Sync for Salesforce and then store data for a new meta field 
 
 Related to the mapping of custom fields, but raising its own distinct questions and problems that can make this plugin more complicated, is the issue of mapping between required fields in WordPress or Salesforce.
 
-#### How WordPress handles meta fields
+**How WordPress handles meta fields**
 
 This plugin runs on WordPress' core actions for user, post, comment, attachment, and term objects, which run when those objects are created or deleted. This plugin also runs on WordPress' meta actions for those objects. The way WordPress works is that these actions don't happen together, so metadata is generally not part of the core action's dataset.
 
-#### How this affects required fields
+**How this affects required fields**
 
 The way these actions work means that if a field is required in Salesforce, it needs to be sent as part of the first, core WordPress action associated with the WordPress object. If it is only added as part of the second action, the metadata, it will not be sent and the Salesforce operation will fail.
 
