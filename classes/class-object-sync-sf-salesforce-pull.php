@@ -1050,10 +1050,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$sfapi = $this->salesforce['sfapi'];
 
-		// The Drupal module runs a check_merged_records call right here, but it seems to be an invalid SOQL query.
-		// We are not incorporating that part of this branch at this time
-		// See GitHub issue 197 to track this status. https://github.com/MinnPost/object-sync-for-salesforce/issues/197.
-
 		// Load all unique SF record types that we have mappings for. This results in a double loop.
 		foreach ( $this->mappings->get_fieldmaps( null, $this->mappings->active_fieldmap_conditions ) as $salesforce_mapping ) {
 
@@ -1177,12 +1173,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$this->schedule_name
 					);
 
-				} // end foreach.
+				} // end foreach on deleted records.
 
 				$this->pull_options->set( 'delete_last', $type, $salesforce_mapping['id'], time() );
 
-			} // End foreach() loop.
-		} // End foreach() loop.
+			} // End foreach() loop on relevant mappings.
+		} // End foreach() loop on active mappings.
 	}
 
 	/**
@@ -1770,9 +1766,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// try to upsert or create a WordPress record.
 		try {
 			if ( 'Upsert' === $op ) {
-				// right here we should set the pulling transient
-				// this means we have to create the mapping object here as well, and update it with the correct IDs after successful response
-				// create the mapping object between the rows.
+				// right here we should update the pulling transient.
 				$this->sync_transients->set( 'salesforce_pulling_' . $object['Id'], '', $salesforce_mapping['id'], 1, $seconds );
 				$this->sync_transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $object['Id'] );
 				// now we can upsert the object in wp if we've gotten to this point
