@@ -573,7 +573,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				if ( 1 === $salesforce_pulling ) {
 					// if it is pulling, delete the transient and continue on through the loop.
 					// we need to either do this for every individual mapping object, or only do it when all the mapping objects are done.
-					$transients_to_delete[ $fieldmap_key ]['transients'][] = $mapping_object_id_transient;
+							$transients_to_delete[ $fieldmap_key ]['transients'][] = $mapping_object_id_transient;
 					if ( true === $this->debug ) {
 						// create log entry for failed pull.
 						$status = 'debug';
@@ -627,9 +627,9 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// this returns the WordPress rows that map to the individual Salesfoce row
 				// we don't need to loop through these because we're just generating an error log for push not allowed.
-				$mapping_object = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
-				if ( ! empty( $mapping_object ) ) {
-					$mapping_object = $mapping_object[0];
+				$mapping_objects = $this->mappings->load_all_by_wordpress( $object_type, $object[ $wordpress_id_field_name ] );
+				if ( ! empty( $mapping_objects ) ) {
+					$mapping_object = $mapping_objects[0];
 				}
 
 				// hook to allow other plugins to define or alter the mapping object.
@@ -684,6 +684,16 @@ class Object_Sync_Sf_Salesforce_Push {
 					$this->logging->setup( $result );
 				}
 				$results[] = $result;
+
+				if ( isset( $mapping['always_delete_object_maps_on_delete'] ) && ( '1' === $mapping['always_delete_object_maps_on_delete'] ) ) {
+					if ( $sf_sync_trigger === $this->mappings->sync_wordpress_delete ) {
+						foreach ( $mapping_objects as $mapping_object ) {
+							if ( isset( $mapping_object['id'] ) ) {
+								$this->mappings->delete_object_map( $mapping_object['id'] );
+							}
+						}
+					}
+				}
 				continue;
 			}
 
@@ -695,19 +705,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			}
 
 			if ( isset( $mapping['push_async'] ) && ( '1' === $mapping['push_async'] ) && false === $manual ) {
-				// this item is async and we want to save it to the queue.
-
-				// if we determine that the below code does not perform well, worst case scenario is we could save $data to a custom table, and pass the id to the callback method.
-				/* // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-				$data = array(
-					'object_type'     => $object_type,
-					'object'          => $object,
-					'mapping'         => $mapping['id'],
-					'sf_sync_trigger' => $sf_sync_trigger,
-				);*/
-
-				// add a queue action to push data to Salesforce
-				// this means we don't need the frequency for this method anymore, I think.
+				// because this item is async, add it to the queue so it can be pushed to Salesforce.
 				$this->queue->add(
 					$this->schedulable_classes[ $this->schedule_name ]['callback'],
 					array(
@@ -878,9 +876,14 @@ class Object_Sync_Sf_Salesforce_Push {
 							esc_attr( $wordpress_id_field_name ),
 							esc_attr( $object[ "$wordpress_id_field_name" ] )
 						);
+
+						// set up error message.
+						$default_message = esc_html__( 'An error occurred pushing this data to Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+						$message         = $this->parse_error_message( $e, $default_message );
+
 						$result = array(
 							'title'   => $title,
-							'message' => $e->getMessage(),
+							'message' => $message,
 							'trigger' => $sf_sync_trigger,
 							'parent'  => $object[ "$wordpress_id_field_name" ],
 							'status'  => $status,
@@ -1087,64 +1090,67 @@ class Object_Sync_Sf_Salesforce_Push {
 				$params['RecordTypeId'] = $mapping['salesforce_record_type_default'];
 			}
 
+			// hook to allow other plugins to modify the $salesforce_id string here
+			// use hook to change the object that is being matched to developer's own criteria
+			// ex: match a Salesforce Contact based on a connected email address object
+			// returns a $salesforce_id.
+			// it should keep NULL if there is no match
+			// the function that calls this hook needs to check the mapping to make sure the WordPress object is the right type.
+			$salesforce_id = apply_filters( $this->option_prefix . 'find_sf_object_match', null, $object, $mapping, 'push' );
+
+			// hook to allow other plugins to do something right before Salesforce data is saved
+			// ex: run WordPress methods on an object if it exists, or do something in preparation for it if it doesn't.
+			do_action( $this->option_prefix . 'pre_push', $salesforce_id, $mapping, $object, $wordpress_id_field_name, $params );
+
+			// hook to allow other plugins to change params on update actions only
+			// use hook to map fields between the WordPress and Salesforce objects
+			// returns $params.
+			$params = apply_filters( $this->option_prefix . 'push_update_params_modify', $params, $salesforce_id, $mapping, $object, $mapping['wordpress_object'] );
+
+			if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || null !== $salesforce_id ) {
+
+				// if either prematch criteria exists, make the values queryable.
+
+				if ( isset( $prematch_field_wordpress ) ) {
+					// a prematch has been specified, attempt an upsert().
+					// prematch values with punctuation need to be escaped.
+					$encoded_prematch_value = rawurlencode( $prematch_value );
+					// for at least 'email' fields, periods also need to be escaped:
+					// see https://developer.salesforce.com/forums?id=906F000000099xPIAQ.
+					$encoded_prematch_value = str_replace( '.', '%2E', $encoded_prematch_value );
+				}
+
+				if ( isset( $key_field_wordpress ) ) {
+					// an external key has been specified, attempt an upsert().
+					// external key values with punctuation need to be escaped.
+					$encoded_key_value = rawurlencode( $key_value );
+					// for at least 'email' fields, periods also need to be escaped:
+					// see https://developer.salesforce.com/forums?id=906F000000099xPIAQ.
+					$encoded_key_value = str_replace( '.', '%2E', $encoded_key_value );
+				}
+
+				if ( isset( $prematch_field_wordpress ) ) {
+					$upsert_key   = $prematch_field_salesforce;
+					$upsert_value = $encoded_prematch_value;
+				} elseif ( isset( $key_field_wordpress ) ) {
+					$upsert_key   = $key_field_salesforce;
+					$upsert_value = $encoded_key_value;
+				}
+
+				if ( null !== $salesforce_id ) {
+					$upsert_key   = 'Id';
+					$upsert_value = $salesforce_id;
+				}
+
+				$op = 'Upsert';
+			} else {
+				$op = 'Create';
+			}
+
 			try {
 
-				// hook to allow other plugins to modify the $salesforce_id string here
-				// use hook to change the object that is being matched to developer's own criteria
-				// ex: match a Salesforce Contact based on a connected email address object
-				// returns a $salesforce_id.
-				// it should keep NULL if there is no match
-				// the function that calls this hook needs to check the mapping to make sure the WordPress object is the right type.
-				$salesforce_id = apply_filters( $this->option_prefix . 'find_sf_object_match', null, $object, $mapping, 'push' );
-
-				// hook to allow other plugins to do something right before Salesforce data is saved
-				// ex: run WordPress methods on an object if it exists, or do something in preparation for it if it doesn't.
-				do_action( $this->option_prefix . 'pre_push', $salesforce_id, $mapping, $object, $wordpress_id_field_name, $params );
-
-				// hook to allow other plugins to change params on update actions only
-				// use hook to map fields between the WordPress and Salesforce objects
-				// returns $params.
-				$params = apply_filters( $this->option_prefix . 'push_update_params_modify', $params, $salesforce_id, $mapping, $object, $mapping['wordpress_object'] );
-
-				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || null !== $salesforce_id ) {
-
-					// if either prematch criteria exists, make the values queryable.
-
-					if ( isset( $prematch_field_wordpress ) ) {
-						// a prematch has been specified, attempt an upsert().
-						// prematch values with punctuation need to be escaped.
-						$encoded_prematch_value = rawurlencode( $prematch_value );
-						// for at least 'email' fields, periods also need to be escaped:
-						// see https://developer.salesforce.com/forums?id=906F000000099xPIAQ.
-						$encoded_prematch_value = str_replace( '.', '%2E', $encoded_prematch_value );
-					}
-
-					if ( isset( $key_field_wordpress ) ) {
-						// an external key has been specified, attempt an upsert().
-						// external key values with punctuation need to be escaped.
-						$encoded_key_value = rawurlencode( $key_value );
-						// for at least 'email' fields, periods also need to be escaped:
-						// see https://developer.salesforce.com/forums?id=906F000000099xPIAQ.
-						$encoded_key_value = str_replace( '.', '%2E', $encoded_key_value );
-					}
-
-					if ( isset( $prematch_field_wordpress ) ) {
-						$upsert_key   = $prematch_field_salesforce;
-						$upsert_value = $encoded_prematch_value;
-					} elseif ( isset( $key_field_wordpress ) ) {
-						$upsert_key   = $key_field_salesforce;
-						$upsert_value = $encoded_key_value;
-					}
-
-					if ( null !== $salesforce_id ) {
-						$upsert_key   = 'Id';
-						$upsert_value = $salesforce_id;
-					}
-
-					$op = 'Upsert';
-
+				if ( 'Upsert' === $op ) {
 					$api_result = $sfapi->object_upsert( $mapping['salesforce_object'], $upsert_key, $upsert_value, $params );
-
 					// Handle upsert responses.
 					switch ( $sfapi->response['code'] ) {
 						// On Upsert:update retrieved object.
@@ -1166,7 +1172,6 @@ class Object_Sync_Sf_Salesforce_Push {
 					}
 				} else {
 					// No key or prematch field exists on this field map object, create a new object in Salesforce.
-					$op         = 'Create';
 					$api_result = $sfapi->object_create( $mapping['salesforce_object'], $params );
 				} // End if() statement.
 			} catch ( Object_Sync_Sf_Exception $e ) {
@@ -1183,14 +1188,27 @@ class Object_Sync_Sf_Salesforce_Push {
 					esc_attr( $wordpress_id_field_name ),
 					esc_attr( $object[ "$wordpress_id_field_name" ] )
 				);
+
+				// set up error message.
+				$default_message = esc_html__( 'An error occurred pushing this data to Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+				$message         = $this->parse_error_message( $e, $default_message );
+
 				$result = array(
 					'title'   => $title,
-					'message' => $e->getMessage(),
+					'message' => $message,
 					'trigger' => $sf_sync_trigger,
 					'parent'  => $object[ "$wordpress_id_field_name" ],
 					'status'  => $status,
 				);
 				$this->logging->setup( $result );
+
+				// update the mapping object to reflect the error status.
+				$mapping_object['last_sync_message'] = $message;
+				$mapping_object['last_sync']         = current_time( 'mysql' );
+				$mapping_object_updated              = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+
+				// save the mapping object to the synced object.
+				$synced_object['mapping_object'] = $mapping_object;
 
 				// hook for push fail.
 				do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object );
@@ -1246,6 +1264,7 @@ class Object_Sync_Sf_Salesforce_Push {
 
 				// update that mapping object.
 				$mapping_object['salesforce_id']     = $salesforce_id;
+				$mapping_object['last_sync']         = current_time( 'mysql' );
 				$mapping_object['last_sync_message'] = esc_html__( 'Mapping object updated via function: ', 'object-sync-for-salesforce' ) . __FUNCTION__;
 				$mapping_object_updated              = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
@@ -1292,6 +1311,14 @@ class Object_Sync_Sf_Salesforce_Push {
 					'status'  => $status,
 				);
 				$this->logging->setup( $result );
+
+				// update the mapping object to reflect the error status.
+				$mapping_object['last_sync_message'] = isset( $api_result['data']['message'] ) ? esc_html( $api_result['data']['message'] ) : esc_html__( 'An error occurred pushing this data to Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+				$mapping_object['last_sync']         = current_time( 'mysql' );
+				$mapping_object_updated              = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
+
+				// save the mapping object to the synced object.
+				$synced_object['mapping_object'] = $mapping_object;
 
 				// hook for push fail.
 				do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object );
@@ -1394,9 +1421,14 @@ class Object_Sync_Sf_Salesforce_Push {
 					esc_attr( $wordpress_id_field_name ),
 					esc_attr( $object[ "$wordpress_id_field_name" ] )
 				);
+
+				// set up error message.
+				$default_message = esc_html__( 'An error occurred pushing this data to Salesforce. See the plugin logs.', 'object-sync-for-salesforce' );
+				$message         = $this->parse_error_message( $e, $default_message );
+
 				$result = array(
 					'title'   => $title,
-					'message' => $e->getMessage(),
+					'message' => $message,
 					'trigger' => $sf_sync_trigger,
 					'parent'  => $object[ "$wordpress_id_field_name" ],
 					'status'  => $status,
@@ -1404,7 +1436,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				$this->logging->setup( $result );
 
 				$mapping_object['last_sync_status']  = $this->mappings->status_error;
-				$mapping_object['last_sync_message'] = $e->getMessage();
+				$mapping_object['last_sync_message'] = $message;
 
 				// hook for push fail.
 				do_action( $this->option_prefix . 'push_fail', $op, $sfapi->response, $synced_object );
@@ -1440,6 +1472,24 @@ class Object_Sync_Sf_Salesforce_Push {
 
 		return $result;
 
+	}
+
+	/**
+	 * Format the error message
+	 *
+	 * @param array  $e the exception from the Salesforce class.
+	 * @param string $default_message if there is one.
+	 * @return string $message what is getting stored.
+	 */
+	private function parse_error_message( $e, $default_message = '' ) {
+		$message = $default_message;
+		$errors  = $e->getMessage();
+		// try to retrieve a usable error message to save.
+		if ( is_string( $errors ) ) {
+			$message = $errors;
+		}
+		$message = wp_kses_post( $message );
+		return $message;
 	}
 
 	/**

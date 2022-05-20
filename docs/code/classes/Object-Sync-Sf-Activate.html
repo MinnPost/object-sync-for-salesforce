@@ -2,18 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Object Sync for Salesforce Code Documentation</title>
+            <title>Object Sync for Salesforce Code Documentation</title>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
     <link rel="icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
-            <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+            <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/template.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/themes/prism-okaidia.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
                 <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/js/all.min.js" integrity="sha256-0vuk8LXoyrmCjp1f0O300qo1M75ZQyhH9X3J6d+scmk=" crossorigin="anonymous"></script>
         <script src="js/search.js"></script>
         <script defer src="js/searchIndex.js"></script>
     </head>
@@ -48,13 +53,20 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -four phpdocumentor-sidebar">
-    
-    <section class="phpdocumentor-sidebar__category">
-        <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
-                                <h3 class="phpdocumentor-sidebar__root-namespace"><a href="namespaces/default.html"><abbr title="\">Global</abbr></a></h3>
-                                    </section>
+                    <section class="phpdocumentor-sidebar__category">
+            <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Object.html" class="">Object</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="packages/Object-Sync.html" class="">Sync</a>
+                
+            </li>
+            </ul>
 
-    
+                        </section>
+            
     <section class="phpdocumentor-sidebar__category">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
@@ -80,6 +92,14 @@
     Object_Sync_Sf_Activate
 
     
+            <div class="phpdocumentor-element__package">
+            in package
+            <ul class="phpdocumentor-breadcrumbs">
+                                    <li class="phpdocumentor-breadcrumb"><a href="packages/Object.html">Object</a></li>
+                                    <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync.html">Sync</a></li>
+                                    <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync-Salesforce.html">Salesforce</a></li>
+                            </ul>
+        </div>
     
     
     </h2>
@@ -88,11 +108,11 @@
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">14</span>
-</aside>
+
+    </aside>
 
             <p class="phpdocumentor-summary">Object_Sync_Sf_Activate class.</p>
 
-    <section class="phpdocumentor-description"></section>
 
 
 
@@ -107,80 +127,80 @@
 </h3>
 
 <dl class="phpdocumentor-table-of-contents">
-                <dt class="phpdocumentor-table-of-contents__entry -property -public">
+                    <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Activate.html#property_action_group_suffix">$action_group_suffix</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>Suffix for group name in ActionScheduler</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Activate.html#property_file">$file</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>The main plugin file</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Activate.html#property_option_prefix">$option_prefix</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>The plugin&#039;s prefix when saving options to the database</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Activate.html#property_queue">$queue</a>
     <span>
-                &nbsp;: object            </span>
+                        &nbsp;: object            </span>
 </dt>
 <dd>Object_Sync_Sf_Queue class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Activate.html#property_schedulable_classes">$schedulable_classes</a>
     <span>
-                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Array of what classes in the plugin can be scheduled to occur with `wp_cron` events</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Activate.html#property_slug">$slug</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>The plugin&#039;s slug so we can include it when necessary</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Activate.html#property_user_installed_version">$user_installed_version</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>The version of this plugin&#039;s database setup</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Activate.html#property_version">$version</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>Current version of the plugin</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Activate.html#property_wpdb">$wpdb</a>
     <span>
-                &nbsp;: object            </span>
+                        &nbsp;: object            </span>
 </dt>
 <dd>Global object of `$wpdb`, the WordPress database</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Activate.html#method___construct">__construct()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Constructor for activate class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Activate.html#method_add_roles_capabilities">add_roles_capabilities()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Add roles and capabilities
 This adds the configure_salesforce capability to the admin role</dd>
@@ -188,28 +208,28 @@ This adds the configure_salesforce capability to the admin role</dd>
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Activate.html#method_check_for_action_scheduler">check_for_action_scheduler()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Check whether the user has ActionScheduler tasks when they upgrade</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Activate.html#method_php_requirements">php_requirements()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Check for the minimum required version of php</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Activate.html#method_require_ssl">require_ssl()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Require SSL because otherwise the plugin will not authorize</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Activate.html#method_wordpress_salesforce_tables">wordpress_salesforce_tables()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Create database tables for Salesforce
 This creates tables for fieldmaps (between types of objects) and object maps (between individual instances of objects).</dd>
@@ -217,7 +237,7 @@ This creates tables for fieldmaps (between types of objects) and object maps (be
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Activate.html#method_wordpress_salesforce_update_db_check">wordpress_salesforce_update_db_check()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Check for database version
 When the plugin is loaded in the admin, if the database version does not match the current version, perform these methods</dd>
@@ -225,14 +245,14 @@ When the plugin is loaded in the admin, if the database version does not match t
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Activate.html#method_add_actions">add_actions()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Activation hooks</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Activate.html#method_log_trigger_settings">log_trigger_settings()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Check for log trigger settings based on plugin version
 When the plugin is loaded in the admin, if the previously installed version is below 2.0.0, update the values for the log trigger settings.</dd>
@@ -266,7 +286,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">56</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Suffix for group name in ActionScheduler</p>
 
@@ -276,8 +297,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <span class="phpdocumentor-signature__name">$action_group_suffix</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -298,7 +319,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">28</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">The main plugin file</p>
 
@@ -308,8 +330,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <span class="phpdocumentor-signature__name">$file</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -330,7 +352,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">49</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">The plugin&#039;s prefix when saving options to the database</p>
 
@@ -340,8 +363,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <span class="phpdocumentor-signature__name">$option_prefix</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -362,7 +385,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">70</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Object_Sync_Sf_Queue class</p>
 
@@ -372,8 +396,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <span class="phpdocumentor-signature__name">$queue</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -394,7 +418,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">63</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Array of what classes in the plugin can be scheduled to occur with `wp_cron` events</p>
 
@@ -404,8 +429,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <span class="phpdocumentor-signature__name">$schedulable_classes</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -426,7 +451,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">42</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">The plugin&#039;s slug so we can include it when necessary</p>
 
@@ -436,8 +462,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <span class="phpdocumentor-signature__name">$slug</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -458,7 +484,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">77</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">The version of this plugin&#039;s database setup</p>
 
@@ -468,8 +495,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <span class="phpdocumentor-signature__name">$user_installed_version</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -490,7 +517,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">21</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Current version of the plugin</p>
 
@@ -500,8 +528,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <span class="phpdocumentor-signature__name">$version</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -522,7 +550,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">35</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Global object of `$wpdb`, the WordPress database</p>
 
@@ -532,8 +561,8 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <span class="phpdocumentor-signature__name">$wpdb</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -558,24 +587,23 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">82</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Constructor for activate class</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -591,15 +619,16 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">229</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">230</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Add roles and capabilities
 This adds the configure_salesforce capability to the admin role</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">add_roles_capabilities</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">add_roles_capabilities</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"><p>It also allows other plugins to add the capability to other roles</p>
 </section>
@@ -610,8 +639,7 @@ This adds the configure_salesforce capability to the admin role</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -627,17 +655,17 @@ This adds the configure_salesforce capability to the admin role</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">312</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">313</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Check whether the user has ActionScheduler tasks when they upgrade</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature -deprecated">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">check_for_action_scheduler</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$upgrader_object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$hook_extra</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">check_for_action_scheduler</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$upgrader_object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$hook_extra</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -672,8 +700,7 @@ This adds the configure_salesforce capability to the admin role</p>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                     <span class="phpdocumentor-tag-link"><a href="https://developer.wordpress.org/reference/hooks/upgrader_process_complete/"><abbr title="https://developer.wordpress.org/reference/hooks/upgrader_process_complete/">https://developer.wordpress.org/reference/hooks/upgrader_process_complete/</abbr></a></span>
                                         
-                                                 <section class="phpdocumentor-description"></section>
-
+                                             
                                     </dd>
                                                 <dt class="phpdocumentor-tag-list__entry">
                     <span class="phpdocumentor-tag__name">deprecated</span>
@@ -689,8 +716,7 @@ This adds the configure_salesforce capability to the admin role</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -707,24 +733,23 @@ This adds the configure_salesforce capability to the admin role</p>
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">120</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Check for the minimum required version of php</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">php_requirements</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">php_requirements</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -741,24 +766,23 @@ This adds the configure_salesforce capability to the admin role</p>
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">130</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Require SSL because otherwise the plugin will not authorize</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">require_ssl</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">require_ssl</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -775,14 +799,15 @@ This adds the configure_salesforce capability to the admin role</p>
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">139</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Create database tables for Salesforce
 This creates tables for fieldmaps (between types of objects) and object maps (between individual instances of objects).</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">wordpress_salesforce_tables</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">wordpress_salesforce_tables</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"><p>Important requirement for developers: when you update the SQL for either of these tables, also update it in the documentation file located at /docs/troubleshooting-unable-to-create-database-tables.md and make sure that is included in your commit(s).</p>
 </section>
@@ -793,8 +818,7 @@ This creates tables for fieldmaps (between types of objects) and object maps (be
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -810,26 +834,25 @@ This creates tables for fieldmaps (between types of objects) and object maps (be
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">252</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">253</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Check for database version
 When the plugin is loaded in the admin, if the database version does not match the current version, perform these methods</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">wordpress_salesforce_update_db_check</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">wordpress_salesforce_update_db_check</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -846,24 +869,23 @@ When the plugin is loaded in the admin, if the database version does not match t
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">102</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Activation hooks</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">add_actions</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">add_actions</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -879,29 +901,90 @@ When the plugin is loaded in the admin, if the database version does not match t
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-activate.php"><a href="files/classes-class-object-sync-sf-activate.html"><abbr title="classes/class-object-sync-sf-activate.php">class-object-sync-sf-activate.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">267</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">268</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Check for log trigger settings based on plugin version
 When the plugin is loaded in the admin, if the previously installed version is below 2.0.0, update the values for the log trigger settings.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">log_trigger_settings</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">log_trigger_settings</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
             </section>
+
+        
+    <script type="text/javascript">
+        function loadExternalCodeSnippets(line) {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach((pre) => {
+                var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                pre.setAttribute('data-line', line)
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist, is empty or trying to view from localhost';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        var modals = document.querySelectorAll("[data-modal]");
+
+        modals.forEach(function (trigger) {
+            trigger.addEventListener("click", function (event) {
+                //event.preventDefault();
+                const modal = document.getElementById(trigger.dataset.modal);
+                modal.classList.add("phpdocumentor-modal__open");
+                loadExternalCodeSnippets(trigger.dataset.line)
+                const exits = modal.querySelectorAll("[data-exit-button]");
+                exits.forEach(function (exit) {
+                    exit.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        modal.classList.remove("phpdocumentor-modal__open");
+                    });
+                });
+            });
+        });
+    </script>
 
     </article>
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
@@ -924,5 +1007,9 @@ When the plugin is loaded in the admin, if the previously installed version is b
     <script>
         cssVars({});
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
 </body>
 </html>

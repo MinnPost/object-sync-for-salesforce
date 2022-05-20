@@ -857,42 +857,6 @@ class Object_Sync_Sf_WordPress {
 				break;
 		} // End switch() method.
 
-		if ( isset( $result['errors'] ) && ! empty( $result['errors'] ) ) {
-			$status = 'error';
-			if ( ! isset( $mapping_object['salesforce_id'] ) ) {
-				$title = sprintf(
-					// translators: 1) is log status, 2) is WordPress object type, 3) is WordPress id value.
-					esc_html__( '%1$s: WordPress update for %2$s ID %3$s was unsuccessful with these errors:', 'object-sync-for-salesforce' ),
-					ucfirst( esc_attr( $status ) ),
-					esc_attr( $name ),
-					esc_attr( $id )
-				);
-			} else {
-				$title = sprintf(
-					// translators: 1) is log status, 2) is WordPress object type, 3) is WordPress id value, 4) is Salesforce ID value.
-					esc_html__( '%1$s: WordPress update for %2$s ID %3$s from Salesforce record %4$s was unsuccessful with these errors:', 'object-sync-for-salesforce' ),
-					ucfirst( esc_attr( $status ) ),
-					esc_attr( $name ),
-					esc_attr( $id ),
-					esc_attr( $mapping_object['salesforce_id'] )
-				);
-			}
-			$body  = '<h2>' . esc_html__( 'Errors from WordPress result:', 'object-sync-for-salesforce' ) . '</h2>';
-			$body .= esc_html( print_r( $result['errors'], true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
-			if ( is_array( $params ) && ! empty( $params ) ) {
-				$body .= '<h2>' . esc_html__( 'Parameters sent to WordPress:', 'object-sync-for-salesforce' ) . '</h2>';
-				$body .= esc_html( print_r( $params, true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
-			}
-			$error_log = array(
-				'title'   => $title,
-				'message' => $body,
-				'trigger' => 0,
-				'parent'  => '',
-				'status'  => $status,
-			);
-			$this->logging->setup( $error_log );
-		}
-
 		return $result;
 	}
 

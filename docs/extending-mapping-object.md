@@ -29,7 +29,20 @@ $mapping_object = array(
 
 ### Hook
 
-`object_sync_for_salesforce_push_mapping_object` allows you to change any of the items in the `$mapping_object` array. Make sure to pay attention to the note above, as the items may be overwritten as the plugin progresses.
+`object_sync_for_salesforce_pull_mapping_object` allows you to change any of the items in the `$mapping_object` array. Make sure to pay attention to the note above, as the items may be overwritten as the plugin progresses.
+
+### Code example
+
+```php
+add_filter( 'object_sync_for_salesforce_pull_mapping_object', 'update_pull_mapping_object', 10, 3 );
+function update_pull_mapping_object( $mapping_object, $object, $salesforce_mapping ) {
+    // $mapping_object is the map between two individual records.
+    // $object is the Salesforce object's data
+    // $salesforce_mapping is the fieldmap between the object types
+	$mapping_object['last_sync_message'] = __( 'something else!', 'domain' );
+    return $mapping_object;
+}
+```
 
 ## Salesforce Push
 
@@ -52,4 +65,17 @@ $mapping_object = array(
 
 ### Hook
 
-`object_sync_for_salesforce_pull_mapping_object` allows you to change any of the items in the `$mapping_object` array. Make sure to pay attention to the note above, as the items may be overwritten as the plugin progresses.
+`object_sync_for_salesforce_push_mapping_object` allows you to change any of the items in the `$mapping_object` array. Make sure to pay attention to the note above, as the items may be overwritten as the plugin progresses.
+
+### Code example
+
+```php
+add_filter( 'object_sync_for_salesforce_push_mapping_object', 'update_push_mapping_object', 10, 3 );
+function update_push_mapping_object( $mapping_object, $object, $mapping ) {
+    // $mapping_object is the map between two individual records.
+    // $object is the WordPress object's data
+    // $salesforce_mapping is the fieldmap between the object types
+	$mapping_object['last_sync_message'] = __( 'something else!', 'domain' );
+    return $mapping_object;
+}
+```

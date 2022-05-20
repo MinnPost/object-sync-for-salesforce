@@ -1,211 +1,6 @@
 Search.appendIndex(
     [
                 {
-            "fqsen": "\\Object_Sync_Sf_Queue",
-            "name": "Object_Sync_Sf_Queue",
-            "summary": "Object_Sync_Sf_Queue\u0020class.",
-            "url": "classes/Object-Sync-Sf-Queue.html"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "Constructor\u0020for\u0020queue\u0020class",
-            "url": "classes/Object-Sync-Sf-Queue.html#method___construct"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aadd_actions\u0028\u0029",
-            "name": "add_actions",
-            "summary": "Add\u0020actions",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_add_actions"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aaction_scheduler_batch_size\u0028\u0029",
-            "name": "action_scheduler_batch_size",
-            "summary": "Set\u0020the\u0020batch\u0020size.",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_action_scheduler_batch_size"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aaction_scheduler_concurrent_batches\u0028\u0029",
-            "name": "action_scheduler_concurrent_batches",
-            "summary": "Set\u0020the\u0020number\u0020of\u0020concurrent\u0020batches\u0020that\u0020can\u0020run.",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_action_scheduler_concurrent_batches"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_frequencies\u0028\u0029",
-            "name": "get_frequencies",
-            "summary": "Get\u0020all\u0020the\u0020schedules\u0020with\u0020their\u0020frequencies,\u0020sorted",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_get_frequencies"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_frequency\u0028\u0029",
-            "name": "get_frequency",
-            "summary": "Get\u0020a\u0020single\u0020schedule\u0020item\u0027s\u0020frequency",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_get_frequency"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aadd\u0028\u0029",
-            "name": "add",
-            "summary": "Enqueue\u0020an\u0020action\u0020to\u0020run\u0020one\u0020time,\u0020as\u0020soon\u0020as\u0020possible",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_add"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_single\u0028\u0029",
-            "name": "schedule_single",
-            "summary": "Schedule\u0020an\u0020action\u0020to\u0020run\u0020once\u0020at\u0020some\u0020time\u0020in\u0020the\u0020future",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_single"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_recurring\u0028\u0029",
-            "name": "schedule_recurring",
-            "summary": "Schedule\u0020a\u0020recurring\u0020action",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_recurring"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_cron\u0028\u0029",
-            "name": "schedule_cron",
-            "summary": "Schedule\u0020an\u0020action\u0020that\u0020recurs\u0020on\u0020a\u0020cron\u002Dlike\u0020schedule.",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_cron"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Acancel\u0028\u0029",
-            "name": "cancel",
-            "summary": "Dequeue\u0020all\u0020actions\u0020with\u0020a\u0020matching\u0020hook\u0020\u0028and\u0020optionally\u0020matching\u0020args\u0020and\u0020group\u0029\u0020so\u0020they\u0020are\u0020not\u0020run.",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_cancel"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_next\u0028\u0029",
-            "name": "get_next",
-            "summary": "Get\u0020the\u0020date\u0020and\u0020time\u0020for\u0020the\u0020next\u0020scheduled\u0020occurence\u0020of\u0020an\u0020action\u0020with\u0020a\u0020given\u0020hook\n\u0028an\u0020optionally\u0020that\u0020matches\u0020certain\u0020args\u0020and\u0020group\u0029,\u0020if\u0020any.",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_get_next"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Asearch\u0028\u0029",
-            "name": "search",
-            "summary": "Find\u0020scheduled\u0020actions",
-            "url": "classes/Object-Sync-Sf-Queue.html#method_search"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024version",
-            "name": "version",
-            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
-            "url": "classes/Object-Sync-Sf-Queue.html#property_version"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024file",
-            "name": "file",
-            "summary": "The\u0020main\u0020plugin\u0020file",
-            "url": "classes/Object-Sync-Sf-Queue.html#property_file"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
-            "url": "classes/Object-Sync-Sf-Queue.html#property_wpdb"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024slug",
-            "name": "slug",
-            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
-            "url": "classes/Object-Sync-Sf-Queue.html#property_slug"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024option_prefix",
-            "name": "option_prefix",
-            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
-            "url": "classes/Object-Sync-Sf-Queue.html#property_option_prefix"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024schedulable_classes",
-            "name": "schedulable_classes",
-            "summary": "Array\u0020of\u0020what\u0020classes\u0020in\u0020the\u0020plugin\u0020can\u0020be\u0020scheduled\u0020to\u0020occur\u0020with\u0020\u0060wp_cron\u0060\u0020events",
-            "url": "classes/Object-Sync-Sf-Queue.html#property_schedulable_classes"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest",
-            "name": "Object_Sync_Sf_Rest",
-            "summary": "Object_Sync_Sf_Rest\u0020class.",
-            "url": "classes/Object-Sync-Sf-Rest.html"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "Constructor\u0020for\u0020rest\u0020class",
-            "url": "classes/Object-Sync-Sf-Rest.html#method___construct"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aadd_actions\u0028\u0029",
-            "name": "add_actions",
-            "summary": "Create\u0020the\u0020action\u0020hooks\u0020to\u0020create\u0020the\u0020reset\u0020methods",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_add_actions"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aregister_routes\u0028\u0029",
-            "name": "register_routes",
-            "summary": "Register\u0020REST\u0020API\u0020routes",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_register_routes"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acheck_class\u0028\u0029",
-            "name": "check_class",
-            "summary": "Check\u0020for\u0020a\u0020valid\u0020class\u0020from\u0020the\u0020parameter",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_check_class"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acheck_id\u0028\u0029",
-            "name": "check_id",
-            "summary": "Check\u0020for\u0020a\u0020valid\u0020ID\u0020from\u0020the\u0020parameter.\u0020This\u0020one\u0020is\u0020not\u0020in\u0020use\u0020yet.",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_check_id"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acan_process\u0028\u0029",
-            "name": "can_process",
-            "summary": "Check\u0020to\u0020see\u0020if\u0020the\u0020user\u0020has\u0020permission\u0020to\u0020do\u0020this",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_can_process"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aprocess\u0028\u0029",
-            "name": "process",
-            "summary": "Process\u0020the\u0020REST\u0020API\u0020request",
-            "url": "classes/Object-Sync-Sf-Rest.html#method_process"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024version",
-            "name": "version",
-            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_version"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024file",
-            "name": "file",
-            "summary": "The\u0020main\u0020plugin\u0020file",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_file"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024wpdb",
-            "name": "wpdb",
-            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_wpdb"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024slug",
-            "name": "slug",
-            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_slug"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024option_prefix",
-            "name": "option_prefix",
-            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_option_prefix"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024mappings",
-            "name": "mappings",
-            "summary": "Object_Sync_Sf_Mapping\u0020class",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_mappings"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024wordpress",
-            "name": "wordpress",
-            "summary": "Object_Sync_Sf_WordPress\u0020class",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_wordpress"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024salesforce",
-            "name": "salesforce",
-            "summary": "Object_Sync_Sf_Salesforce\u0020class\nThis\u0020contains\u0020Salesforce\u0020API\u0020methods",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_salesforce"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024push",
-            "name": "push",
-            "summary": "Object_Sync_Sf_Salesforce_Push\u0020class",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_push"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024pull",
-            "name": "pull",
-            "summary": "Object_Sync_Sf_Salesforce_Pull\u0020class",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_pull"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024sfwp_transients",
-            "name": "sfwp_transients",
-            "summary": "Object_Sync_Sf_WordPress_Transient\u0020class",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_sfwp_transients"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024namespace",
-            "name": "namespace",
-            "summary": "The\u0020namespace\u0020for\u0020the\u0020REST\u0020endpoints",
-            "url": "classes/Object-Sync-Sf-Rest.html#property_namespace"
-        },                {
-            "fqsen": "\\object_sync_for_salesforce\u0028\u0029",
-            "name": "object_sync_for_salesforce",
-            "summary": "Retrieve\u0020the\u0020instance\u0020of\u0020the\u0020main\u0020plugin\u0020class",
-            "url": "namespaces/default.html#function_object_sync_for_salesforce"
-        },                {
             "fqsen": "\\Object_Sync_Salesforce",
             "name": "Object_Sync_Salesforce",
             "summary": "Object_Sync_Salesforce\u0020class.",
@@ -240,6 +35,16 @@ Search.appendIndex(
             "name": "composer_loaded",
             "summary": "Tells\u0020us\u0020if\u0020composer\u0020has\u0020been\u0020autoloaded",
             "url": "classes/Object-Sync-Salesforce.html#property_composer_loaded"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Aget_salesforce_api_version\u0028\u0029",
+            "name": "get_salesforce_api_version",
+            "summary": "Set\u0020the\u0020Salesforce\u0020API\u0020version.",
+            "url": "classes/Object-Sync-Salesforce.html#method_get_salesforce_api_version"
+        },                {
+            "fqsen": "\\Object_Sync_Salesforce\u003A\u003Acheck_deprecated_salesforce_api_version\u0028\u0029",
+            "name": "check_deprecated_salesforce_api_version",
+            "summary": "Check\u0020deprecated\u0020methods\u0020for\u0020a\u0020Salesforce\u0020API\u0020version.",
+            "url": "classes/Object-Sync-Salesforce.html#method_check_deprecated_salesforce_api_version"
         },                {
             "fqsen": "\\Object_Sync_Salesforce\u003A\u003Aget_login_credentials\u0028\u0029",
             "name": "get_login_credentials",
@@ -581,10 +386,15 @@ Search.appendIndex(
             "summary": "Fields\u0020for\u0020the\u0020Mapping\u0020Errors\u0020tab\nThis\u0020runs\u0020add_settings_section\u0020once,\u0020as\u0020well\u0020as\u0020add_settings_field\u0020and\u0020register_setting\u0020methods\u0020for\u0020each\u0020option",
             "url": "classes/Object-Sync-Sf-Admin.html#method_fields_errors"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Anotices\u0028\u0029",
-            "name": "notices",
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024notices_data",
+            "name": "notices_data",
+            "summary": "Data\u0020for\u0020admin\u0020notices",
+            "url": "classes/Object-Sync-Sf-Admin.html#property_notices_data"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Adisplay_notices\u0028\u0029",
+            "name": "display_notices",
             "summary": "Create\u0020the\u0020notices,\u0020settings,\u0020and\u0020conditions\u0020by\u0020which\u0020admin\u0020notices\u0020should\u0020appear",
-            "url": "classes/Object-Sync-Sf-Admin.html#method_notices"
+            "url": "classes/Object-Sync-Sf-Admin.html#method_display_notices"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aget_salesforce_object_description\u0028\u0029",
             "name": "get_salesforce_object_description",
@@ -661,11 +471,6 @@ Search.appendIndex(
             "summary": "Display\u0020for\u0020a\u0020dropdown",
             "url": "classes/Object-Sync-Sf-Admin.html#method_display_select"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aversion_options\u0028\u0029",
-            "name": "version_options",
-            "summary": "Dropdown\u0020formatted\u0020list\u0020of\u0020Salesforce\u0020API\u0020versions",
-            "url": "classes/Object-Sync-Sf-Admin.html#method_version_options"
-        },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Adisplay_link\u0028\u0029",
             "name": "display_link",
             "summary": "Default\u0020display\u0020for\u0020\u003Ca\u0020href\u003E\u0020links",
@@ -690,6 +495,11 @@ Search.appendIndex(
             "name": "clear_sfwp_cache",
             "summary": "Ajax\u0020call\u0020to\u0020clear\u0020the\u0020plugin\u0020cache.",
             "url": "classes/Object-Sync-Sf-Admin.html#method_clear_sfwp_cache"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Adelete_salesforce_api_version\u0028\u0029",
+            "name": "delete_salesforce_api_version",
+            "summary": "Ajax\u0020call\u0020to\u0020delete\u0020the\u0020object_sync_for_salesforce_api_version\u0020value\u0020from\u0020wp_options",
+            "url": "classes/Object-Sync-Sf-Admin.html#method_delete_salesforce_api_version"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aclear_cache\u0028\u0029",
             "name": "clear_cache",
@@ -976,6 +786,11 @@ Search.appendIndex(
             "summary": "Initialize.\u0020This\u0020creates\u0020a\u0020schedule\u0020for\u0020pruning\u0020logs,\u0020and\u0020also\u0020the\u0020custom\u0020content\u0020type",
             "url": "classes/Object-Sync-Sf-Logging.html#method_init"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003Aconfigure_debugging\u0028\u0029",
+            "name": "configure_debugging",
+            "summary": "Configure\u0020log\u0020settings\u0020based\u0020on\u0020debug\u0020status.",
+            "url": "classes/Object-Sync-Sf-Logging.html#method_configure_debugging"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003Aset_log_visibility\u0028\u0029",
             "name": "set_log_visibility",
             "summary": "Set\u0020visibility\u0020for\u0020the\u0020post\u0020type",
@@ -1115,6 +930,11 @@ Search.appendIndex(
             "name": "schedule_name",
             "summary": "The\u0020name\u0020of\u0020the\u0020schedule\u0020to\u0020prune\u0020logs",
             "url": "classes/Object-Sync-Sf-Logging.html#property_schedule_name"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A\u0024debug",
+            "name": "debug",
+            "summary": "Whether\u0020the\u0020plugin\u0020is\u0020in\u0020debug\u0020mode",
+            "url": "classes/Object-Sync-Sf-Logging.html#property_debug"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping",
             "name": "Object_Sync_Sf_Mapping",
@@ -1401,6 +1221,286 @@ Search.appendIndex(
             "summary": "Option\u0020value\u0020for\u0020whether\u0020the\u0020plugin\u0020is\u0020in\u0020debug\u0020mode",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_debug"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options",
+            "name": "Object_Sync_Sf_Pull_Options",
+            "summary": "Object_Sync_Sf_Pull_Options\u0020class.",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor\u0020for\u0020option\u0020records\u0020class",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Agenerate_option_key\u0028\u0029",
+            "name": "generate_option_key",
+            "summary": "Generate\u0020an\u0020option\u0020key",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_generate_option_key"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Aset\u0028\u0029",
+            "name": "set",
+            "summary": "Set\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_set"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Alegacy_option_upgrade\u0028\u0029",
+            "name": "legacy_option_upgrade",
+            "summary": "Set\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_legacy_option_upgrade"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Aget\u0028\u0029",
+            "name": "get",
+            "summary": "Get\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_get"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Alegacy_get\u0028\u0029",
+            "name": "legacy_get",
+            "summary": "Get\u0020legacy\u0020named\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_legacy_get"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Adelete\u0028\u0029",
+            "name": "delete",
+            "summary": "Delete\u0020the\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operation",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_delete"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Alegacy_delete\u0028\u0029",
+            "name": "legacy_delete",
+            "summary": "Delete\u0020the\u0020legacy\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operation",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_legacy_delete"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Aadd_upgradeable_key\u0028\u0029",
+            "name": "add_upgradeable_key",
+            "summary": "Add\u0020an\u0020option\u0020key\u0020to\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_add_upgradeable_key"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Aremove_upgradeable_key\u0028\u0029",
+            "name": "remove_upgradeable_key",
+            "summary": "Remove\u0020an\u0020option\u0020key\u0020from\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_remove_upgradeable_key"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Aget_upgradeable_keys\u0028\u0029",
+            "name": "get_upgradeable_keys",
+            "summary": "Get\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_get_upgradeable_keys"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003A\u0024version",
+            "name": "version",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003A\u0024direction",
+            "name": "direction",
+            "summary": "Direction\u0020of\u0020the\u0020operation",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#property_direction"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003A\u0024upgradeable_keys",
+            "name": "upgradeable_keys",
+            "summary": "Option\u0020keys\u0020that\u0020can\u0020be\u0020upgraded",
+            "url": "classes/Object-Sync-Sf-Pull-Options.html#property_upgradeable_keys"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue",
+            "name": "Object_Sync_Sf_Queue",
+            "summary": "Object_Sync_Sf_Queue\u0020class.",
+            "url": "classes/Object-Sync-Sf-Queue.html"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor\u0020for\u0020queue\u0020class",
+            "url": "classes/Object-Sync-Sf-Queue.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aadd_actions\u0028\u0029",
+            "name": "add_actions",
+            "summary": "Add\u0020actions",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_add_actions"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aaction_scheduler_batch_size\u0028\u0029",
+            "name": "action_scheduler_batch_size",
+            "summary": "Set\u0020the\u0020batch\u0020size.",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_action_scheduler_batch_size"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aaction_scheduler_concurrent_batches\u0028\u0029",
+            "name": "action_scheduler_concurrent_batches",
+            "summary": "Set\u0020the\u0020number\u0020of\u0020concurrent\u0020batches\u0020that\u0020can\u0020run.",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_action_scheduler_concurrent_batches"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_frequencies\u0028\u0029",
+            "name": "get_frequencies",
+            "summary": "Get\u0020all\u0020the\u0020schedules\u0020with\u0020their\u0020frequencies,\u0020sorted",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_get_frequencies"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_frequency\u0028\u0029",
+            "name": "get_frequency",
+            "summary": "Get\u0020a\u0020single\u0020schedule\u0020item\u0027s\u0020frequency",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_get_frequency"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aadd\u0028\u0029",
+            "name": "add",
+            "summary": "Enqueue\u0020an\u0020action\u0020to\u0020run\u0020one\u0020time,\u0020as\u0020soon\u0020as\u0020possible",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_add"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_single\u0028\u0029",
+            "name": "schedule_single",
+            "summary": "Schedule\u0020an\u0020action\u0020to\u0020run\u0020once\u0020at\u0020some\u0020time\u0020in\u0020the\u0020future",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_single"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_recurring\u0028\u0029",
+            "name": "schedule_recurring",
+            "summary": "Schedule\u0020a\u0020recurring\u0020action",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_recurring"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aschedule_cron\u0028\u0029",
+            "name": "schedule_cron",
+            "summary": "Schedule\u0020an\u0020action\u0020that\u0020recurs\u0020on\u0020a\u0020cron\u002Dlike\u0020schedule.",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_schedule_cron"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Acancel\u0028\u0029",
+            "name": "cancel",
+            "summary": "Dequeue\u0020all\u0020actions\u0020with\u0020a\u0020matching\u0020hook\u0020\u0028and\u0020optionally\u0020matching\u0020args\u0020and\u0020group\u0029\u0020so\u0020they\u0020are\u0020not\u0020run.",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_cancel"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Aget_next\u0028\u0029",
+            "name": "get_next",
+            "summary": "Get\u0020the\u0020date\u0020and\u0020time\u0020for\u0020the\u0020next\u0020scheduled\u0020occurence\u0020of\u0020an\u0020action\u0020with\u0020a\u0020given\u0020hook\n\u0028an\u0020optionally\u0020that\u0020matches\u0020certain\u0020args\u0020and\u0020group\u0029,\u0020if\u0020any.",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_get_next"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003Asearch\u0028\u0029",
+            "name": "search",
+            "summary": "Find\u0020scheduled\u0020actions",
+            "url": "classes/Object-Sync-Sf-Queue.html#method_search"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024version",
+            "name": "version",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_wpdb"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024slug",
+            "name": "slug",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_slug"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Queue\u003A\u003A\u0024schedulable_classes",
+            "name": "schedulable_classes",
+            "summary": "Array\u0020of\u0020what\u0020classes\u0020in\u0020the\u0020plugin\u0020can\u0020be\u0020scheduled\u0020to\u0020occur\u0020with\u0020\u0060wp_cron\u0060\u0020events",
+            "url": "classes/Object-Sync-Sf-Queue.html#property_schedulable_classes"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest",
+            "name": "Object_Sync_Sf_Rest",
+            "summary": "Object_Sync_Sf_Rest\u0020class.",
+            "url": "classes/Object-Sync-Sf-Rest.html"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor\u0020for\u0020rest\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aadd_actions\u0028\u0029",
+            "name": "add_actions",
+            "summary": "Create\u0020the\u0020action\u0020hooks\u0020to\u0020create\u0020the\u0020reset\u0020methods",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_add_actions"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aregister_routes\u0028\u0029",
+            "name": "register_routes",
+            "summary": "Register\u0020REST\u0020API\u0020routes",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_register_routes"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acheck_class\u0028\u0029",
+            "name": "check_class",
+            "summary": "Check\u0020for\u0020a\u0020valid\u0020class\u0020from\u0020the\u0020parameter",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_check_class"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acheck_id\u0028\u0029",
+            "name": "check_id",
+            "summary": "Check\u0020for\u0020a\u0020valid\u0020ID\u0020from\u0020the\u0020parameter.\u0020This\u0020one\u0020is\u0020not\u0020in\u0020use\u0020yet.",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_check_id"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Acan_process\u0028\u0029",
+            "name": "can_process",
+            "summary": "Check\u0020to\u0020see\u0020if\u0020the\u0020user\u0020has\u0020permission\u0020to\u0020do\u0020this",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_can_process"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003Aprocess\u0028\u0029",
+            "name": "process",
+            "summary": "Process\u0020the\u0020REST\u0020API\u0020request",
+            "url": "classes/Object-Sync-Sf-Rest.html#method_process"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024version",
+            "name": "version",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024file",
+            "name": "file",
+            "summary": "The\u0020main\u0020plugin\u0020file",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_file"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024wpdb",
+            "name": "wpdb",
+            "summary": "Global\u0020object\u0020of\u0020\u0060\u0024wpdb\u0060,\u0020the\u0020WordPress\u0020database",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_wpdb"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024slug",
+            "name": "slug",
+            "summary": "The\u0020plugin\u0027s\u0020slug\u0020so\u0020we\u0020can\u0020include\u0020it\u0020when\u0020necessary",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_slug"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024mappings",
+            "name": "mappings",
+            "summary": "Object_Sync_Sf_Mapping\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_mappings"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024wordpress",
+            "name": "wordpress",
+            "summary": "Object_Sync_Sf_WordPress\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_wordpress"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024salesforce",
+            "name": "salesforce",
+            "summary": "Object_Sync_Sf_Salesforce\u0020class\nThis\u0020contains\u0020Salesforce\u0020API\u0020methods",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_salesforce"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024push",
+            "name": "push",
+            "summary": "Object_Sync_Sf_Salesforce_Push\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_push"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024pull",
+            "name": "pull",
+            "summary": "Object_Sync_Sf_Salesforce_Pull\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_pull"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024sfwp_transients",
+            "name": "sfwp_transients",
+            "summary": "Object_Sync_Sf_WordPress_Transient\u0020class",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_sfwp_transients"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Rest\u003A\u003A\u0024namespace",
+            "name": "namespace",
+            "summary": "The\u0020namespace\u0020for\u0020the\u0020REST\u0020endpoints",
+            "url": "classes/Object-Sync-Sf-Rest.html#property_namespace"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull",
             "name": "Object_Sync_Sf_Salesforce_Pull",
             "summary": "Object_Sync_Sf_Salesforce_Pull\u0020class.",
@@ -1511,6 +1611,11 @@ Search.appendIndex(
             "summary": "Create\u0020records\u0020in\u0020WordPress\u0020from\u0020a\u0020Salesforce\u0020pull",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#method_create_called_from_salesforce"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003Acheck_for_upsert\u0028\u0029",
+            "name": "check_for_upsert",
+            "summary": "Determine\u0020whether\u0020the\u0020current\u0020operation\u0020is\u0020an\u0020upsert\u0020or\u0020a\u0020create.",
+            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#method_check_for_upsert"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003Aupdate_called_from_salesforce\u0028\u0029",
             "name": "update_called_from_salesforce",
             "summary": "Update\u0020records\u0020in\u0020WordPress\u0020from\u0020a\u0020Salesforce\u0020pull",
@@ -1520,6 +1625,11 @@ Search.appendIndex(
             "name": "delete_called_from_salesforce",
             "summary": "Delete\u0020records\u0020in\u0020WordPress\u0020from\u0020a\u0020Salesforce\u0020pull",
             "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#method_delete_called_from_salesforce"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003Aparse_error_message\u0028\u0029",
+            "name": "parse_error_message",
+            "summary": "Format\u0020the\u0020error\u0020message",
+            "url": "classes/Object-Sync-Sf-Salesforce-Pull.html#method_parse_error_message"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Pull\u003A\u003Aclear_current_type_query\u0028\u0029",
             "name": "clear_current_type_query",
@@ -1755,6 +1865,11 @@ Search.appendIndex(
             "name": "salesforce_push_sync_rest",
             "summary": "Sync\u0020WordPress\u0020objects\u0020and\u0020Salesforce\u0020objects\u0020using\u0020the\u0020REST\u0020API.",
             "url": "classes/Object-Sync-Sf-Salesforce-Push.html#method_salesforce_push_sync_rest"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003Aparse_error_message\u0028\u0029",
+            "name": "parse_error_message",
+            "summary": "Format\u0020the\u0020error\u0020message",
+            "url": "classes/Object-Sync-Sf-Salesforce-Push.html#method_parse_error_message"
         },                {
             "fqsen": "\\Object_Sync_Sf_Salesforce_Push\u003A\u003Acreate_object_map\u0028\u0029",
             "name": "create_object_map",
@@ -2251,6 +2366,81 @@ Search.appendIndex(
             "summary": "API\u0020response\u0020from\u0020Salesforce",
             "url": "classes/Object-Sync-Sf-Salesforce.html#property_response"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients",
+            "name": "Object_Sync_Sf_Sync_Transients",
+            "summary": "Object_Sync_Sf_Sync_Transients\u0020class.",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructor\u0020for\u0020transient\u0020records\u0020class",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Agenerate_transient_key\u0028\u0029",
+            "name": "generate_transient_key",
+            "summary": "Generate\u0020a\u0020transient\u0020key",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_generate_transient_key"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aset\u0028\u0029",
+            "name": "set",
+            "summary": "Set\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_set"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Alegacy_transient_upgrade\u0028\u0029",
+            "name": "legacy_transient_upgrade",
+            "summary": "Set\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_legacy_transient_upgrade"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aget\u0028\u0029",
+            "name": "get",
+            "summary": "Get\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_get"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Alegacy_get\u0028\u0029",
+            "name": "legacy_get",
+            "summary": "Get\u0020legacy\u0020named\u0020individual\u0020transiuent\u0020records\u0020for\u0020sync\u0020operations",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_legacy_get"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Adelete\u0028\u0029",
+            "name": "delete",
+            "summary": "Delete\u0020the\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operation",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_delete"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Alegacy_delete\u0028\u0029",
+            "name": "legacy_delete",
+            "summary": "Delete\u0020the\u0020legacy\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operation",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_legacy_delete"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aadd_upgradeable_key\u0028\u0029",
+            "name": "add_upgradeable_key",
+            "summary": "Add\u0020an\u0020transient\u0020key\u0020to\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_add_upgradeable_key"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aremove_upgradeable_key\u0028\u0029",
+            "name": "remove_upgradeable_key",
+            "summary": "Remove\u0020a\u0020transient\u0020key\u0020from\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_remove_upgradeable_key"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aget_upgradeable_keys\u0028\u0029",
+            "name": "get_upgradeable_keys",
+            "summary": "Get\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_get_upgradeable_keys"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A\u0024version",
+            "name": "version",
+            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#property_version"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A\u0024option_prefix",
+            "name": "option_prefix",
+            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#property_option_prefix"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A\u0024upgradeable_keys",
+            "name": "upgradeable_keys",
+            "summary": "Transient\u0020keys\u0020that\u0020can\u0020be\u0020upgraded",
+            "url": "classes/Object-Sync-Sf-Sync-Transients.html#property_upgradeable_keys"
+        },                {
             "fqsen": "\\Object_Sync_Sf_WordPress_Transient",
             "name": "Object_Sync_Sf_WordPress_Transient",
             "summary": "Object_Sync_Sf_WordPress_Transient\u0020class.",
@@ -2536,160 +2726,25 @@ Search.appendIndex(
             "summary": "Whether\u0020the\u0020plugin\u0020is\u0020in\u0020debug\u0020mode",
             "url": "classes/Object-Sync-Sf-WordPress.html#property_debug"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options",
-            "name": "Object_Sync_Sf_Pull_Options",
-            "summary": "Object_Sync_Sf_Pull_Options\u0020class.",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html"
+            "fqsen": "\\OBJECT_SYNC_SF_FILE",
+            "name": "OBJECT_SYNC_SF_FILE",
+            "summary": "The\u0020full\u0020path\u0020to\u0020the\u0020main\u0020file\u0020of\u0020this\u0020plugin",
+            "url": "namespaces/default.html#constant_OBJECT_SYNC_SF_FILE"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "Constructor\u0020for\u0020option\u0020records\u0020class",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#method___construct"
+            "fqsen": "\\OBJECT_SYNC_SF_VERSION",
+            "name": "OBJECT_SYNC_SF_VERSION",
+            "summary": "The\u0020plugin\u0027s\u0020current\u0020version",
+            "url": "namespaces/default.html#constant_OBJECT_SYNC_SF_VERSION"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Agenerate_option_key\u0028\u0029",
-            "name": "generate_option_key",
-            "summary": "Generate\u0020an\u0020option\u0020key",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_generate_option_key"
+            "fqsen": "\\OBJECT_SYNC_SF_DEFAULT_API_VERSION",
+            "name": "OBJECT_SYNC_SF_DEFAULT_API_VERSION",
+            "summary": "The\u0020default\u0020Salesforce\u0020API\u0020version,\u0020unless\u0020it\u0020has\u0020been\u0020overridden\u0020by\u0020pre\u002Dexisting\u0020option\u0020or\u0020by\u0020developers",
+            "url": "namespaces/default.html#constant_OBJECT_SYNC_SF_DEFAULT_API_VERSION"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Aset\u0028\u0029",
-            "name": "set",
-            "summary": "Set\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operations",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_set"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Alegacy_option_upgrade\u0028\u0029",
-            "name": "legacy_option_upgrade",
-            "summary": "Set\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operations",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_legacy_option_upgrade"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Aget\u0028\u0029",
-            "name": "get",
-            "summary": "Get\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operations",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_get"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Alegacy_get\u0028\u0029",
-            "name": "legacy_get",
-            "summary": "Get\u0020legacy\u0020named\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operations",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_legacy_get"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Adelete\u0028\u0029",
-            "name": "delete",
-            "summary": "Delete\u0020the\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operation",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_delete"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Alegacy_delete\u0028\u0029",
-            "name": "legacy_delete",
-            "summary": "Delete\u0020the\u0020legacy\u0020individual\u0020option\u0020records\u0020for\u0020sync\u0020operation",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_legacy_delete"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Aadd_upgradeable_key\u0028\u0029",
-            "name": "add_upgradeable_key",
-            "summary": "Add\u0020an\u0020option\u0020key\u0020to\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_add_upgradeable_key"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Aremove_upgradeable_key\u0028\u0029",
-            "name": "remove_upgradeable_key",
-            "summary": "Remove\u0020an\u0020option\u0020key\u0020from\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_remove_upgradeable_key"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003Aget_upgradeable_keys\u0028\u0029",
-            "name": "get_upgradeable_keys",
-            "summary": "Get\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#method_get_upgradeable_keys"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003A\u0024version",
-            "name": "version",
-            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#property_version"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003A\u0024option_prefix",
-            "name": "option_prefix",
-            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#property_option_prefix"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003A\u0024direction",
-            "name": "direction",
-            "summary": "Direction\u0020of\u0020the\u0020operation",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#property_direction"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Pull_Options\u003A\u003A\u0024upgradeable_keys",
-            "name": "upgradeable_keys",
-            "summary": "Option\u0020keys\u0020that\u0020can\u0020be\u0020upgraded",
-            "url": "classes/Object-Sync-Sf-Pull-Options.html#property_upgradeable_keys"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients",
-            "name": "Object_Sync_Sf_Sync_Transients",
-            "summary": "Object_Sync_Sf_Sync_Transients\u0020class.",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "Constructor\u0020for\u0020transient\u0020records\u0020class",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method___construct"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Agenerate_transient_key\u0028\u0029",
-            "name": "generate_transient_key",
-            "summary": "Generate\u0020a\u0020transient\u0020key",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_generate_transient_key"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aset\u0028\u0029",
-            "name": "set",
-            "summary": "Set\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operations",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_set"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Alegacy_transient_upgrade\u0028\u0029",
-            "name": "legacy_transient_upgrade",
-            "summary": "Set\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operations",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_legacy_transient_upgrade"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aget\u0028\u0029",
-            "name": "get",
-            "summary": "Get\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operations",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_get"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Alegacy_get\u0028\u0029",
-            "name": "legacy_get",
-            "summary": "Get\u0020legacy\u0020named\u0020individual\u0020transiuent\u0020records\u0020for\u0020sync\u0020operations",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_legacy_get"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Adelete\u0028\u0029",
-            "name": "delete",
-            "summary": "Delete\u0020the\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operation",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_delete"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Alegacy_delete\u0028\u0029",
-            "name": "legacy_delete",
-            "summary": "Delete\u0020the\u0020legacy\u0020individual\u0020transient\u0020records\u0020for\u0020sync\u0020operation",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_legacy_delete"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aadd_upgradeable_key\u0028\u0029",
-            "name": "add_upgradeable_key",
-            "summary": "Add\u0020an\u0020transient\u0020key\u0020to\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_add_upgradeable_key"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aremove_upgradeable_key\u0028\u0029",
-            "name": "remove_upgradeable_key",
-            "summary": "Remove\u0020a\u0020transient\u0020key\u0020from\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_remove_upgradeable_key"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003Aget_upgradeable_keys\u0028\u0029",
-            "name": "get_upgradeable_keys",
-            "summary": "Get\u0020the\u0020array\u0020of\u0020upgradeable\u0020keys.",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#method_get_upgradeable_keys"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A\u0024version",
-            "name": "version",
-            "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#property_version"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A\u0024option_prefix",
-            "name": "option_prefix",
-            "summary": "The\u0020plugin\u0027s\u0020prefix\u0020when\u0020saving\u0020options\u0020to\u0020the\u0020database",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#property_option_prefix"
-        },                {
-            "fqsen": "\\Object_Sync_Sf_Sync_Transients\u003A\u003A\u0024upgradeable_keys",
-            "name": "upgradeable_keys",
-            "summary": "Transient\u0020keys\u0020that\u0020can\u0020be\u0020upgraded",
-            "url": "classes/Object-Sync-Sf-Sync-Transients.html#property_upgradeable_keys"
+            "fqsen": "\\object_sync_for_salesforce\u0028\u0029",
+            "name": "object_sync_for_salesforce",
+            "summary": "Retrieve\u0020the\u0020instance\u0020of\u0020the\u0020main\u0020plugin\u0020class",
+            "url": "namespaces/default.html#function_object_sync_for_salesforce"
         },                {
             "fqsen": "\\",
             "name": "\\",

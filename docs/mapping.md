@@ -20,10 +20,12 @@ The settings for a WordPress fieldmap work like this:
 2. WordPress Object: the plugin gets every object it is aware of from your WordPress installation. See [below](#more-on-wordpress-object) for more.
 3. Salesforce Object: the plugin gets every Salesforce object it has access to. **Some objects add a dropdown field with a list of date fields to trigger "pull" actions.** See [below](#more-on-salesforce-object) for more.
 4. Fieldmap: choose which fields from the WordPress object map to fields from the Salesforce object, and how the plugin should treat changes. See [below](#more-on-field-mapping) for more.
-5. Action Triggers: the plugin can sync data when a record is changed in WordPress and/or Salesforce.
-6. Process Asynchronously: whether push data will be sent to Salesforce immediately, or when `wp_cron` runs.
-7. Push Drafts: many WordPress objects create and save drafts while editing is happening. By default, this data is not sent to Salesforce. Checking the box causes it to be synced equally to live items.
-8. Pull to Drafts: by default, WordPress will not check existing drafts of an object type for matches when pulling data from Salesforce. Checking this box will cause it to map Salesforce records to drafts, if they match.
+5. Action Triggers: the plugin can sync data when a record is changed in WordPress and/or Salesforce. **If you select both WordPress Create and Salesforce Create trigger on a fieldmap, you should almost always also select Process Asynchronously on that fieldmap.** If you don't do this, you will likely run into problems with duplicate records because the two methods run closely together without the structure of the queue.
+6. Process Asynchronously: whether push data will be sent to Salesforce immediately, or added to the queue. Usually a pushed record that is added to the queue runs within a few seconds, but it is not instantaneous. Having these tasks run in a queue can benefit site performance.
+7. Always Delete Object Maps When Fieldmap Records Are Deleted: when a record in either the WordPress or Salesforce object type of this fieldmap is deleted, the plugin will check for object maps connected to the record that was deleted even if the delete action trigger is not checked. If it finds those object maps, they will be deleted.
+8. Push Drafts: many WordPress objects create and save drafts while editing is happening. By default, this data is not sent to Salesforce. Checking the box causes it to be synced equally to live items.
+9. Pull to Drafts: by default, WordPress will not check existing drafts of an object type for matches when pulling data from Salesforce. Checking this box will cause it to map Salesforce records to drafts, if they match.
+10. Fieldmap Status: by default, a fieldmap's status is active, meaning that the plugin attempts to use it for sync operations. Users can work with a fieldmap without it being used for these operations by saving it as "Inactive."
 
 Several hooks exist for modifying these options, including whether a combo search/dropdown field library is used. See the [extending mapping options documentation](./extending-mapping-options.md).
 
