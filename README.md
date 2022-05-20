@@ -12,8 +12,8 @@ Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations, harmoney
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 5.2
-Tested up to: 5.9
-Stable tag: 2.1.2
+Tested up to: 6.0
+Stable tag: 2.2.0
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -67,6 +67,29 @@ Object Sync for Salesforce, however, cannot see meta fields before the field has
 
 If you load Object Sync for Salesforce and then store data for a new meta field after this load, make sure you click the "Clear the plugin cache" link on the Fieldmaps tab.
 
+### Mapping required fields
+
+Related to the mapping of custom fields, but raising its own distinct questions and problems that can make this plugin more complicated, is the issue of mapping between required fields in WordPress or Salesforce.
+
+#### How WordPress handles meta fields
+
+This plugin runs on WordPress' core actions for user, post, comment, attachment, and term objects, which run when those objects are created or deleted. This plugin also runs on WordPress' meta actions for those objects. The way WordPress works is that these actions don't happen together, so metadata is generally not part of the core action's dataset.
+
+#### How this affects required fields
+
+The way these actions work means that if a field is required in Salesforce, it needs to be sent as part of the first, core WordPress action associated with the WordPress object. If it is only added as part of the second action, the metadata, it will not be sent and the Salesforce operation will fail.
+
+How this works in detail can vary for different WordPress object types. Some examples:
+
+- WordPress user objects: this plugin runs first on the `user_register` action. The initial action has access to data stored in `wp_user`. It also has access to some fields that are stored in wp_usermeta (`first_name` and `last_name`), but it does not have access to custom user fields.
+- WordPress post objects (this also includes attachments and custom post types): this plugin runs first on the `save_post` action. This means it has access to data stored in `wp_posts` only, not data stored in `wp_postmeta`.
+- WordPress term objects: this plugin runs first on the `create_term` action. This means it only has access to the Term ID, Term Taxonomy ID, and taxonomy data, not other custom fields.
+- WordPress comment objects: this plugin runs first on the `comment_post` action. This means it has access to the comment ID, whether the comment is approved, and the comment data array.
+
+Again, this all applies to the first operation the plugin runs, which is when Salesforce will expect to receive required fields.
+
+If you are storing a required field's value in a meta field in WordPress, you will run into errors if it is not sent as part of the first action.
+
 ### Syncing pre-existing data
 
 This plugin was built to sync data that is created after it was installed. However, there are some techniques that can import pre-existing data. See the [Import & Export](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/import-export.md) section of the documentation for methods you can use for this.
@@ -113,7 +136,7 @@ There is extensive documentation of this plugin, including its developer hooks, 
 ### Getting support using this plugin
 </only:wp -->
 
-We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). If you have these requests, please put them in that forum only. Do not send them by email.
+We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). If you have these requests, please put them in that forum only. Do not send them by email or by social media.
 
 While MinnPost's nonprofit newsroom does welcome [donations](https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY) to support our work, this plugin does not have a paid version.
 

@@ -71,7 +71,7 @@ Note: if you change this value using the hook, the plugin will store it when it 
 ```php
 // example to use another datetime value.
 // the value needs to be a gmdate, formatted for Salesforce: 'Y-m-d\TH:i:s\Z'.
-add_filter( 'object_sync_for_salesforce_change_pull_date_value', 'change_pull_date_value', 10, 5 );
+add_filter( 'object_sync_for_salesforce_change_pull_date_value', 'change_pull_date_value', 10, 4 );
 // can always reduce this number if all the arguments are not necessary
 function change_pull_date_value( $pull_trigger_field_value, $object_type, $soql, $fieldmap_id ) {
 	if ( 'Contact' === $object_type  ) {

@@ -517,10 +517,10 @@
 			$add_button_label = $add_button_label_first;
 		}
 		?>
-		<p><button type="button" id="add-field-mapping" class="button button-secondary" data-add-first="<?php echo $add_button_label_first; ?>" data-add-more="<?php echo $add_button_label_more; ?>" data-error-missing-object="<?php echo esc_html__( 'You have to pick a WordPress object and a Salesforce object to add field mapping.', 'object-sync-for-salesforce' ); ?>"><?php echo $add_button_label; ?></button></p>
+		<p><button type="button" id="add-field-mapping" class="button button-secondary" data-add-first="<?php echo esc_attr( $add_button_label_first ); ?>" data-add-more="<?php echo esc_attr( $add_button_label_more ); ?>" data-error-missing-object="<?php echo esc_html__( 'You have to pick a WordPress object and a Salesforce object to add field mapping.', 'object-sync-for-salesforce' ); ?>"><?php echo esc_attr( $add_button_label ); ?></button></p>
 		<p class="description"><?php echo esc_html__( 'A checked Prematch (when saving data in either WordPress or Salesforce) or Salesforce Key (only when saving data from WordPress to Salesforce) field will cause the plugin to check for a match on that value before creating new records.', 'object-sync-for-salesforce' ); ?></p>
 	</fieldset>
-	<fieldset class="sync_triggers">
+	<fieldset class="fieldmap_settings sync_triggers">
 		<legend><?php echo esc_html__( 'Action Triggers', 'object-sync-for-salesforce' ); ?></legend>
 		<div class="checkboxes">
 			<?php
@@ -562,25 +562,26 @@
 			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_update ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-update" <?php echo esc_attr( $salesforce_update_checked ); ?>><?php echo esc_html__( 'Salesforce Update', 'object-sync-for-salesforce' ); ?></label>
 			<label><input type="checkbox" value="<?php echo esc_html( $this->mappings->sync_sf_delete ); ?>" name="sync_triggers[]" id="sync_triggers-salesforce-delete" <?php echo esc_attr( $salesforce_delete_checked ); ?>><?php echo esc_html__( 'Salesforce Delete', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description">
-				<?php
-				// translators: placeholders are for the class names: salesforce_push and salesforce_pull.
-				echo sprintf( esc_html__( 'Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. The WordPress Create, WordPress Update, and WordPress Delete actions push data from WordPress to Salesforce. The Salesforce Create, Salesforce Update, and Salesforce Delete actions pull data from Salesforce to WordPress.', 'object-sync-for-salesforce' ), '<code>salesforce_push</code>', '<code>salesforce_pull</code>' );
-				?>
+				<?php echo esc_html__( 'Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. The WordPress Create, WordPress Update, and WordPress Delete actions push data from WordPress to Salesforce. The Salesforce Create, Salesforce Update, and Salesforce Delete actions pull data from Salesforce to WordPress.', 'object-sync-for-salesforce' ); ?>
 			</p>
-		</div>
-		<div class="checkboxes">
-			<label><input type="checkbox" name="always_delete_object_maps_on_delete" id="always-delete-object-maps-on-delete" value="1" <?php echo isset( $always_delete_object_maps_on_delete ) && '1' === $always_delete_object_maps_on_delete ? ' checked' : ''; ?>><?php echo esc_html__( 'Always Delete Object Maps When Data is Deleted', 'object-sync-for-salesforce' ); ?></label>
-			<p class="description"><?php echo esc_html__( 'If selected, when data in either the WordPress or Salesforce object type is deleted, the plugin will check for object maps connected to the record that was deleted even if the trigger is not checked above. If it finds those object maps, they will be deleted.', 'object-sync-for-salesforce' ); ?></p>
+			<p class="description">
+				<?php echo '<strong>' . esc_html__( 'If you select both WordPress Create and Salesforce Create trigger on a fieldmap, you should almost always also select Process Asynchronously on that fieldmap.', 'object-sync-for-salesforce' ) . '</strong> '; ?>
+				<?php echo esc_html__( 'If you do not do this, you will likely run into problems with duplicate records because the two methods run closely together without the structure of the queue.', 'object-sync-for-salesforce' ); ?>
+			</p>
 		</div>
 		<div class="checkboxes">
 			<label><input type="checkbox" name="push_async" id="process-async" value="1" <?php echo isset( $push_async ) && '1' === $push_async ? ' checked' : ''; ?>><?php echo esc_html__( 'Process Asynchronously', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description">
-				<?php
-				// translators: placeholder is for WordPress cron method name.
-				echo sprintf( esc_html__( 'If selected, push data will be queued for processing and synchronized when %s is run. This may increase site performance, but changes will not be reflected in real time.', 'object-sync-for-salesforce' ), '<code>wp_cron</code>' );
-				?>
+				<?php echo esc_html__( 'If selected, push data will be added to the queue, rather than being sent to Salesforce immediately. Usually a pushed record that is added to the queue runs within a few seconds, but it is not instantaneous. Having these tasks run in a queue can benefit site performance.', 'object-sync-for-salesforce' ); ?>
 			</p>
 		</div>
+		<div class="checkboxes">
+			<label><input type="checkbox" name="always_delete_object_maps_on_delete" id="always-delete-object-maps-on-delete" value="1" <?php echo isset( $always_delete_object_maps_on_delete ) && '1' === $always_delete_object_maps_on_delete ? ' checked' : ''; ?>><?php echo esc_html__( 'Always Delete Object Maps When Fieldmap Records Are Deleted', 'object-sync-for-salesforce' ); ?></label>
+			<p class="description"><?php echo esc_html__( 'If selected, when a record in either the WordPress or Salesforce object type of this fieldmap is deleted, the plugin will check for object maps connected to the record that was deleted even if the delete action trigger is not checked. If it finds those object maps, they will be deleted.', 'object-sync-for-salesforce' ); ?></p>
+		</div>
+	</fieldset>
+	<fieldset class="fieldmap_settings other_settings">
+		<legend><?php echo esc_html__( 'Fieldmap Settings', 'object-sync-for-salesforce' ); ?></legend>
 		<div class="checkboxes">
 			<label><input type="checkbox" name="push_drafts" id="push-drafts" value="1" <?php echo isset( $push_drafts ) && '1' === $push_drafts ? ' checked' : ''; ?>><?php echo esc_html__( 'Push Drafts', 'object-sync-for-salesforce' ); ?></label>
 			<p class="description"><?php echo esc_html__( 'If selected, WordPress will send drafts of this object type (if it creates drafts for it) to Salesforce.', 'object-sync-for-salesforce' ); ?></p>
