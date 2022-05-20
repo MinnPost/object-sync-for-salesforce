@@ -1050,10 +1050,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		$sfapi = $this->salesforce['sfapi'];
 
-		// The Drupal module runs a check_merged_records call right here, but it seems to be an invalid SOQL query.
-		// We are not incorporating that part of this branch at this time
-		// See GitHub issue 197 to track this status. https://github.com/MinnPost/object-sync-for-salesforce/issues/197.
-
 		// Load all unique SF record types that we have mappings for. This results in a double loop.
 		foreach ( $this->mappings->get_fieldmaps( null, $this->mappings->active_fieldmap_conditions ) as $salesforce_mapping ) {
 
@@ -1177,12 +1173,12 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$this->schedule_name
 					);
 
-				} // end foreach.
+				} // end foreach on deleted records.
 
 				$this->pull_options->set( 'delete_last', $type, $salesforce_mapping['id'], time() );
 
-			} // End foreach() loop.
-		} // End foreach() loop.
+			} // End foreach() loop on relevant mappings.
+		} // End foreach() loop on active mappings.
 	}
 
 	/**
@@ -1545,10 +1541,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 			if ( in_array( $pushing_id, $transients, true ) ) {
 				$this->sync_transients->delete( 'salesforce_pushing_object_id', '', $fieldmap_id );
 			}
-		}
-
-		if ( ! empty( $exception ) ) {
-			throw $exception;
 		}
 
 		return $results;

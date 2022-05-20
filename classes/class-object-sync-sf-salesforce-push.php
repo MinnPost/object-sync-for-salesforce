@@ -573,7 +573,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				if ( 1 === $salesforce_pulling ) {
 					// if it is pulling, delete the transient and continue on through the loop.
 					// we need to either do this for every individual mapping object, or only do it when all the mapping objects are done.
-					$transients_to_delete[ $fieldmap_key ]['transients'][] = $mapping_object_id_transient;
+							$transients_to_delete[ $fieldmap_key ]['transients'][] = $mapping_object_id_transient;
 					if ( true === $this->debug ) {
 						// create log entry for failed pull.
 						$status = 'debug';
@@ -705,19 +705,7 @@ class Object_Sync_Sf_Salesforce_Push {
 			}
 
 			if ( isset( $mapping['push_async'] ) && ( '1' === $mapping['push_async'] ) && false === $manual ) {
-				// this item is async and we want to save it to the queue.
-
-				// if we determine that the below code does not perform well, worst case scenario is we could save $data to a custom table, and pass the id to the callback method.
-				/* // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-				$data = array(
-					'object_type'     => $object_type,
-					'object'          => $object,
-					'mapping'         => $mapping['id'],
-					'sf_sync_trigger' => $sf_sync_trigger,
-				);*/
-
-				// add a queue action to push data to Salesforce
-				// this means we don't need the frequency for this method anymore, I think.
+				// because this item is async, add it to the queue so it can be pushed to Salesforce.
 				$this->queue->add(
 					$this->schedulable_classes[ $this->schedule_name ]['callback'],
 					array(
@@ -1102,64 +1090,67 @@ class Object_Sync_Sf_Salesforce_Push {
 				$params['RecordTypeId'] = $mapping['salesforce_record_type_default'];
 			}
 
+			// hook to allow other plugins to modify the $salesforce_id string here
+			// use hook to change the object that is being matched to developer's own criteria
+			// ex: match a Salesforce Contact based on a connected email address object
+			// returns a $salesforce_id.
+			// it should keep NULL if there is no match
+			// the function that calls this hook needs to check the mapping to make sure the WordPress object is the right type.
+			$salesforce_id = apply_filters( $this->option_prefix . 'find_sf_object_match', null, $object, $mapping, 'push' );
+
+			// hook to allow other plugins to do something right before Salesforce data is saved
+			// ex: run WordPress methods on an object if it exists, or do something in preparation for it if it doesn't.
+			do_action( $this->option_prefix . 'pre_push', $salesforce_id, $mapping, $object, $wordpress_id_field_name, $params );
+
+			// hook to allow other plugins to change params on update actions only
+			// use hook to map fields between the WordPress and Salesforce objects
+			// returns $params.
+			$params = apply_filters( $this->option_prefix . 'push_update_params_modify', $params, $salesforce_id, $mapping, $object, $mapping['wordpress_object'] );
+
+			if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || null !== $salesforce_id ) {
+
+				// if either prematch criteria exists, make the values queryable.
+
+				if ( isset( $prematch_field_wordpress ) ) {
+					// a prematch has been specified, attempt an upsert().
+					// prematch values with punctuation need to be escaped.
+					$encoded_prematch_value = rawurlencode( $prematch_value );
+					// for at least 'email' fields, periods also need to be escaped:
+					// see https://developer.salesforce.com/forums?id=906F000000099xPIAQ.
+					$encoded_prematch_value = str_replace( '.', '%2E', $encoded_prematch_value );
+				}
+
+				if ( isset( $key_field_wordpress ) ) {
+					// an external key has been specified, attempt an upsert().
+					// external key values with punctuation need to be escaped.
+					$encoded_key_value = rawurlencode( $key_value );
+					// for at least 'email' fields, periods also need to be escaped:
+					// see https://developer.salesforce.com/forums?id=906F000000099xPIAQ.
+					$encoded_key_value = str_replace( '.', '%2E', $encoded_key_value );
+				}
+
+				if ( isset( $prematch_field_wordpress ) ) {
+					$upsert_key   = $prematch_field_salesforce;
+					$upsert_value = $encoded_prematch_value;
+				} elseif ( isset( $key_field_wordpress ) ) {
+					$upsert_key   = $key_field_salesforce;
+					$upsert_value = $encoded_key_value;
+				}
+
+				if ( null !== $salesforce_id ) {
+					$upsert_key   = 'Id';
+					$upsert_value = $salesforce_id;
+				}
+
+				$op = 'Upsert';
+			} else {
+				$op = 'Create';
+			}
+
 			try {
 
-				// hook to allow other plugins to modify the $salesforce_id string here
-				// use hook to change the object that is being matched to developer's own criteria
-				// ex: match a Salesforce Contact based on a connected email address object
-				// returns a $salesforce_id.
-				// it should keep NULL if there is no match
-				// the function that calls this hook needs to check the mapping to make sure the WordPress object is the right type.
-				$salesforce_id = apply_filters( $this->option_prefix . 'find_sf_object_match', null, $object, $mapping, 'push' );
-
-				// hook to allow other plugins to do something right before Salesforce data is saved
-				// ex: run WordPress methods on an object if it exists, or do something in preparation for it if it doesn't.
-				do_action( $this->option_prefix . 'pre_push', $salesforce_id, $mapping, $object, $wordpress_id_field_name, $params );
-
-				// hook to allow other plugins to change params on update actions only
-				// use hook to map fields between the WordPress and Salesforce objects
-				// returns $params.
-				$params = apply_filters( $this->option_prefix . 'push_update_params_modify', $params, $salesforce_id, $mapping, $object, $mapping['wordpress_object'] );
-
-				if ( isset( $prematch_field_wordpress ) || isset( $key_field_wordpress ) || null !== $salesforce_id ) {
-
-					// if either prematch criteria exists, make the values queryable.
-
-					if ( isset( $prematch_field_wordpress ) ) {
-						// a prematch has been specified, attempt an upsert().
-						// prematch values with punctuation need to be escaped.
-						$encoded_prematch_value = rawurlencode( $prematch_value );
-						// for at least 'email' fields, periods also need to be escaped:
-						// see https://developer.salesforce.com/forums?id=906F000000099xPIAQ.
-						$encoded_prematch_value = str_replace( '.', '%2E', $encoded_prematch_value );
-					}
-
-					if ( isset( $key_field_wordpress ) ) {
-						// an external key has been specified, attempt an upsert().
-						// external key values with punctuation need to be escaped.
-						$encoded_key_value = rawurlencode( $key_value );
-						// for at least 'email' fields, periods also need to be escaped:
-						// see https://developer.salesforce.com/forums?id=906F000000099xPIAQ.
-						$encoded_key_value = str_replace( '.', '%2E', $encoded_key_value );
-					}
-
-					if ( isset( $prematch_field_wordpress ) ) {
-						$upsert_key   = $prematch_field_salesforce;
-						$upsert_value = $encoded_prematch_value;
-					} elseif ( isset( $key_field_wordpress ) ) {
-						$upsert_key   = $key_field_salesforce;
-						$upsert_value = $encoded_key_value;
-					}
-
-					if ( null !== $salesforce_id ) {
-						$upsert_key   = 'Id';
-						$upsert_value = $salesforce_id;
-					}
-
-					$op = 'Upsert';
-
+				if ( 'Upsert' === $op ) {
 					$api_result = $sfapi->object_upsert( $mapping['salesforce_object'], $upsert_key, $upsert_value, $params );
-
 					// Handle upsert responses.
 					switch ( $sfapi->response['code'] ) {
 						// On Upsert:update retrieved object.
@@ -1181,7 +1172,6 @@ class Object_Sync_Sf_Salesforce_Push {
 					}
 				} else {
 					// No key or prematch field exists on this field map object, create a new object in Salesforce.
-					$op         = 'Create';
 					$api_result = $sfapi->object_create( $mapping['salesforce_object'], $params );
 				} // End if() statement.
 			} catch ( Object_Sync_Sf_Exception $e ) {
