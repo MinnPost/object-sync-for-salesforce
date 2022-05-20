@@ -517,7 +517,7 @@
 			$add_button_label = $add_button_label_first;
 		}
 		?>
-		<p><button type="button" id="add-field-mapping" class="button button-secondary" data-add-first="<?php echo $add_button_label_first; ?>" data-add-more="<?php echo $add_button_label_more; ?>" data-error-missing-object="<?php echo esc_html__( 'You have to pick a WordPress object and a Salesforce object to add field mapping.', 'object-sync-for-salesforce' ); ?>"><?php echo $add_button_label; ?></button></p>
+		<p><button type="button" id="add-field-mapping" class="button button-secondary" data-add-first="<?php echo esc_attr( $add_button_label_first ); ?>" data-add-more="<?php echo esc_attr( $add_button_label_more ); ?>" data-error-missing-object="<?php echo esc_html__( 'You have to pick a WordPress object and a Salesforce object to add field mapping.', 'object-sync-for-salesforce' ); ?>"><?php echo esc_attr( $add_button_label ); ?></button></p>
 		<p class="description"><?php echo esc_html__( 'A checked Prematch (when saving data in either WordPress or Salesforce) or Salesforce Key (only when saving data from WordPress to Salesforce) field will cause the plugin to check for a match on that value before creating new records.', 'object-sync-for-salesforce' ); ?></p>
 	</fieldset>
 	<fieldset class="fieldmap_settings sync_triggers">
