@@ -1547,10 +1547,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 			}
 		}
 
-		if ( ! empty( $exception ) ) {
-			throw $exception;
-		}
-
 		return $results;
 
 	}
