@@ -1946,7 +1946,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// this is where it updates the object mapping rows and log entries in WordPress
 		// this is also where it runs pull_success and pull_fail actions hooks.
 
-		if ( ! isset( $result['errors'] ) ) {
+		if ( ! isset( $result['errors'] ) || empty( $result['errors'] ) ) {
 			// set up the log entry for successful update.
 			$status = 'success';
 			$title  = sprintf(
@@ -2061,7 +2061,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$result['errors'] = $e->getMessage();
 					} // End try() method.
 
-					if ( ! isset( $result['errors'] ) ) {
+					if ( ! isset( $result['errors'] ) || empty( $result['errors'] ) ) {
 						// set up the log entry for successful delete.
 						$status = 'success';
 						$title  = sprintf(
