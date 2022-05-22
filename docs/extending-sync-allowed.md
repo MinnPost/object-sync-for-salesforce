@@ -40,7 +40,7 @@ This example would keep the WordPress user from ever pushing to Salesforce, as W
 add_filter( 'object_sync_for_salesforce_push_object_allowed', 'check_user', 10, 5 );
 // can always reduce this number if all the arguments are not necessary
 function check_user( $push_allowed, $object_type, $object, $sf_sync_trigger, $mapping ) {
-	if ( $object_type === 'user' && $object['ID'] === 1 ) {
+	if ( 'user' === $object_type && 1 === $object['ID'] ) {
 		$push_allowed = false;
 	}
 	return $push_allowed;
@@ -81,7 +81,7 @@ This example would keep the Salesforce Contact from ever pulling in to WordPress
 add_filter( 'object_sync_for_salesforce_pull_object_allowed', 'check_user', 10, 5 );
 // can always reduce this number if all the arguments are not necessary
 function check_user( $pull_allowed, $object_type, $object, $sf_sync_trigger, $salesforce_mapping ) {
-	if ( $object_type === 'Contact' && $object['Id'] === 'abcdef' ) {
+	if ( 'Contact' === $object_type && 'abcdef' === $object['Id'] ) {
 		$pull_allowed = false;
 	}
 	return $pull_allowed;

@@ -102,8 +102,22 @@ $body-color: rgb(68, 68, 68);
 		.select2-selection__rendered {
 			line-height: 28px;
 
+<<<<<<< HEAD
 			@media only screen and (max-width: 782px) {
 				line-height: 38px;
+=======
+		.fieldmap_settings > :nth-child(2) {
+			padding-top: 45px;
+		}
+
+		div {
+			padding: $vertical-space $horizontal-space;
+
+			label {
+				display: inline-block;
+				font-weight: 700;
+				margin-bottom: math.div($vertical-space, 2);
+>>>>>>> master
 			}
 
 			&:hover {
@@ -122,9 +136,19 @@ $body-color: rgb(68, 68, 68);
 				height: 38px;
 			}
 
+<<<<<<< HEAD
 			b {
 				display: none;
 			}
+=======
+			&.fieldmap_status {
+
+				select {
+					display: inline-block;
+				}
+			}
+
+>>>>>>> master
 		}
 
 
@@ -217,6 +241,31 @@ $body-color: rgb(68, 68, 68);
 		}
 	}
 
+	// object map form
+	.object_map {
+
+		.object_map_field {
+
+			label {
+				display: block;
+			}
+		}
+	}
+
+	// object map data
+	.object_map_data {
+
+		li {
+			margin-bottom: 8px;
+		}
+
+		.label {
+			min-width: 150px;
+			display: inline-block;
+			margin-right: 5px;
+			color: #646970;
+		}
+	}
 
 	/**
   	* Select2 elements.

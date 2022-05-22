@@ -1,6 +1,48 @@
 Changelog
 =========
 
+* 2.2.0 (2022-05-20)
+	* Feature: The requirement to set the REST API version that the plugin uses to send requests to Salesforce has been removed from the plugin interface in favor of storing this value in the plugin (this plugin version uses API version 55.0). For most users this is an improvement; it removes the potential for old API versions to cause problems with new functionality, and removes the potential for users to unintentionally use API versions that are no longer active. **Note**: You can delete the `object_sync_for_salesforce_api_version` field from the `wp_options` table on your own, set it to 55.0 so the plugin can delete it, or wait until version 3.0.0 is released for that value to be deleted.
+	* Bug fix: Make the Mapping Errors tab more accurate and comprehensive in the object maps it lists. This should reduce the inaccessibility of records when data has been deleted, or when errors have occurred. Thanks to WordPress forum users @twellve_million, @rickymortimer, @wolfage, etc for raising this.
+	* Bug fix: Fix the `pull_merge_last` and `pull_delete_last` option values that are used on merge and delete operations. This prevents a problem, that has existed since 2.1.0, with retrieving these records.
+	* Bug fix: When creating a new fieldmap, set a default status of "active" to prevent a PHP notice.
+	* Maintenance: Update out of date instructions, those meant for in-plugin use as well as documentation and screenshots.
+	* Maintenance: Setting the plugin's Debug Mode enables debug logging, regardless of other log settings.
+	* Maintenance: Start to clean up log code. Because of old code that was never updated, our log method was called 1) incorrectly, and 2) in an overly redundant way.
+	* Maintenance: Fix PHP 8 compatibility.
+	* Maintenance: Test plugin in WordPress 6.0 and update compatibility.
+	* Developers: Add a `object_sync_for_salesforce_modify_salesforce_api_version` filter to allow developers to edit the REST API version for Salesforce API requests. See [the documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/adding-settings.md#change-the-rest-api-version-for-salesforce-requests) for how to use it.
+
+* 2.1.2 (2022-02-04)
+	* Bug fix: Remove arrow functions that are only supported in PHP 7.4 and cannot be backfilled. Thanks to WordPress users @ofrayechiel and @trohrer for the report.
+	* Bug fix: Resolve a (widely reported) problem in 2.1.x versions, where pushing an update from a Salesforce record can cause the plugin to incorrectly detect the record as pulling, preventing the record from pushing.
+
+* 2.1.1 (2021-12-23)
+	* Bug fix: in 2.1.10, a syntax error for PHP versions older than 7.4 was incorrectly added. This adds a catch for those versions. Thanks to WordPress user @ofrayechiel for reporting this.
+
+* 2.1.0 (2021-12-22)
+	* Feature: Update the fieldmap list screen for better usability and device support.
+	* Feature: Add more links to clear the plugin cache.
+	* Feature: Add the ability for fieldmaps to be active or inactive. Thanks to GitHub user @TornMarketing for the request.
+	* Feature: To prevent confusion, show WordPress ID fields as uneditable by default. They should only be pushed to Salesforce. Thanks to WordPress user @dm2021 for raising this. Fieldmaps that are saved after upgrading will mark these fields according to that default combined with any usage of the new `object_sync_for_salesforce_wordpress_field_is_editable` filter.
+	* Bug fix: Make the stored data about all sync operations fieldmap-specific, preventing problems when multiple fieldmaps are connected to the same Salesforce object. Thanks to WordPress user @fortafy for the report. This should be backward-compatible for all users, but it is a significant change to the way the plugin saves temporary information to track its status, and to the way the plugin loads information about what objects it is syncing at any given time.
+	* Bug fix: When adding a user via the Ultimate Member plugin, prevent an incorrect error message log by adding the user ID value to the passed data.
+	* Maintenance: Update Action Scheduler to version 3.4.0. Note: this raises the minimum supported WordPress version to 5.2.
+	* Maintenance: Install the [Message Agency fork of the Force.com toolkit](https://github.com/messageagency/Forcecom-Toolkit-for-PHP). This is how the plugin (optionally) detects merged records.
+	* Maintenance: Change the default Salesforce REST API version to 53.0.
+	* Maintenance: Update URLs in the documentation that point to plugin PHP files to match their v2.0.0 filenames.
+	* Maintenance: Create a log entry if the plugin tries to sync a record but no parameters are eligible. Thanks to WordPress user @OfficeBureau for the request.
+	* Developers: Add a `object_sync_for_salesforce_pull_query_string_modify` filter to allow developers to edit the whole SOQL string before it is sent to Salesforce. See [the documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/extending-pull.md#soql-string) for how to use it. Thanks to WordPress user @JellyPixel for this request.
+	* Developers: Add a `object_sync_for_salesforce_change_pull_date_value` filter to allow developers to modify the datetime value that the SOQL query uses for pulling records from Salesforce. See [the documentation](https://github.com/MinnPost/object-sync-for-salesforce/blob/master/docs/extending-pull.md#pull-date) for how to use it.
+	* Developers: the `load_all_by_salesforce` method has been deprecated in favor of `load_object_maps_by_salesforce_id`, which can receive new (optional) data. `load_all_by_salesforce` will likely be removed in a future 3.0.0 version.
+
+* 2.0.3 (2021-09-10)
+	* Bug fix: Fix missing Record Type when pulled from Salesforce. Thanks to GitHub user @timnolte for the report.
+
+* 2.0.2 (2021-09-03)
+	* Bug fix: Duplicate mapping of fields was prevented when it shouldn't be. Thanks to GitHub user @timnolte for the report.
+	* Maintenance: Improve the log message when an update to a WordPress record fails.
+
 * 2.0.1 (2021-07-28)
 	* Bug fix: for PHP versions below 7.3, we were calling a nonexistent function. This adds a fallback for those versions to preserve support for them. Thanks to GitHub user @nattyg93 for the report.
 

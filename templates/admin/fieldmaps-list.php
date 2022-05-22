@@ -8,13 +8,12 @@
 ?>
 
 <h3><?php echo esc_html__( 'Fieldmaps', 'object-sync-for-salesforce' ); ?> <a class="page-title-action" href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=add' ) ); ?>"><?php echo esc_html__( 'Add New', 'object-sync-for-salesforce' ); ?></a></h3>
-<table class="widefat striped">
+<table class="wp-list-table widefat striped table-view-list">
 	<thead>
 		<tr>
-			<th><?php echo esc_html__( 'Label', 'object-sync-for-salesforce' ); ?></th>
-			<th><?php echo esc_html__( 'WordPress Object', 'object-sync-for-salesforce' ); ?></th>
-			<th><?php echo esc_html__( 'Salesforce Object', 'object-sync-for-salesforce' ); ?></th>
-			<th colspan="3"><?php echo esc_html__( 'Actions', 'object-sync-for-salesforce' ); ?></th>
+			<th class="manage-column column-title column-primary"><?php echo esc_html__( 'Label', 'object-sync-for-salesforce' ); ?></th>
+			<th class="manage-column"><?php echo esc_html__( 'WordPress Object', 'object-sync-for-salesforce' ); ?></th>
+			<th class="manage-column"><?php echo esc_html__( 'Salesforce Object', 'object-sync-for-salesforce' ); ?></th>
 		</tr>
 	</thead>
 	<tfoot>
@@ -37,18 +36,28 @@
 		<?php if ( count( $fieldmaps ) > 0 ) : ?>
 			<?php foreach ( $fieldmaps as $record ) { ?>
 		<tr>
-			<td><?php echo esc_html( $record['label'] ); ?></td>
-			<td><?php echo esc_html( $record['wordpress_object'] ); ?></td>
-			<td><?php echo esc_html( $record['salesforce_object'] ); ?></td>
-			<td>
-				<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=edit&id=' . $record['id'] ) ); ?>"><?php echo esc_html__( 'Edit', 'object-sync-for-salesforce' ); ?></a>
+			<td class="title column-title has-row-actions column-primary" data-colname="<?php echo esc_html__( 'Label', 'object-sync-for-salesforce' ); ?>">
+				<strong>
+					<?php echo esc_html( $record['label'] ); ?>
+					<?php if ( 'active' !== $record['fieldmap_status'] ) : ?>
+						&mdash; <?php echo esc_html( $record['fieldmap_status'] ); ?>
+					<?php endif; ?>
+				</strong>
+				<div class="row-actions visible">
+					<span class="edit">
+						<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=edit&id=' . $record['id'] ) ); ?>"><?php echo esc_html__( 'Edit', 'object-sync-for-salesforce' ); ?></a> | 
+					</span>
+					<span class="duplicate">
+					<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=clone&id=' . $record['id'] ) ); ?>"><?php echo esc_html__( 'Clone', 'object-sync-for-salesforce' ); ?></a> | 
+					</span>
+					<span class="delete">
+					<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=delete&id=' . $record['id'] ) ); ?>"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
+					</span>
+				</div>
+				<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 			</td>
-			<td>
-				<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=clone&id=' . $record['id'] ) ); ?>"><?php echo esc_html__( 'Clone', 'object-sync-for-salesforce' ); ?></a>
-			</td>
-			<td>
-				<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=fieldmaps&method=delete&id=' . $record['id'] ) ); ?>"><?php echo esc_html__( 'Delete', 'object-sync-for-salesforce' ); ?></a>
-			</td>
+			<td data-colname="<?php echo esc_html__( 'WordPress Object', 'object-sync-for-salesforce' ); ?>"><?php echo esc_html( $record['wordpress_object'] ); ?></td>
+			<td data-colname="<?php echo esc_html__( 'Salesforce Object', 'object-sync-for-salesforce' ); ?>"><?php echo esc_html( $record['salesforce_object'] ); ?></td>
 		</tr>
 			<?php } ?>
 		<?php else : ?>

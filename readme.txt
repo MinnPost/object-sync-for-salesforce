@@ -2,9 +2,9 @@
 Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations, harmoney
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
-Requires at least: 4.6
-Tested up to: 5.8
-Stable tag: 2.0.1
+Requires at least: 5.2
+Tested up to: 6.0
+Stable tag: 2.2.0
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -36,6 +36,29 @@ There's a [helpful spreadsheet](https://docs.google.com/spreadsheets/d/1mSqienVY
 Object Sync for Salesforce, however, cannot see meta fields before the field has at least one value in the database. For example, if you have a "testfield" on your user object, it won’t be in the fieldmap options until there is at least one user that has a value for the field.
 
 If you load Object Sync for Salesforce and then store data for a new meta field after this load, make sure you click the "Clear the plugin cache" link on the Fieldmaps tab.
+
+### Mapping required fields
+
+Related to the mapping of custom fields, but raising its own distinct questions and problems that can make this plugin more complicated, is the issue of mapping between required fields in WordPress or Salesforce.
+
+**How WordPress handles meta fields**
+
+This plugin runs on WordPress' core actions for user, post, comment, attachment, and term objects, which run when those objects are created or deleted. This plugin also runs on WordPress' meta actions for those objects. The way WordPress works is that these actions don't happen together, so metadata is generally not part of the core action's dataset.
+
+**How this affects required fields**
+
+The way these actions work means that if a field is required in Salesforce, it needs to be sent as part of the first, core WordPress action associated with the WordPress object. If it is only added as part of the second action, the metadata, it will not be sent and the Salesforce operation will fail.
+
+How this works in detail can vary for different WordPress object types. Some examples:
+
+- WordPress user objects: this plugin runs first on the `user_register` action. The initial action has access to data stored in `wp_user`. It also has access to some fields that are stored in wp_usermeta (`first_name` and `last_name`), but it does not have access to custom user fields.
+- WordPress post objects (this also includes attachments and custom post types): this plugin runs first on the `save_post` action. This means it has access to data stored in `wp_posts` only, not data stored in `wp_postmeta`.
+- WordPress term objects: this plugin runs first on the `create_term` action. This means it only has access to the Term ID, Term Taxonomy ID, and taxonomy data, not other custom fields.
+- WordPress comment objects: this plugin runs first on the `comment_post` action. This means it has access to the comment ID, whether the comment is approved, and the comment data array.
+
+Again, this all applies to the first operation the plugin runs, which is when Salesforce will expect to receive required fields.
+
+If you are storing a required field's value in a meta field in WordPress, you will run into errors if it is not sent as part of the first action.
 
 ### Syncing pre-existing data
 
@@ -70,7 +93,7 @@ There is extensive documentation of this plugin, including its developer hooks, 
 
 ### Getting support using this plugin
 
-We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). If you have these requests, please put them in that forum only. Do not send them by email.
+We make an effort to answer support requests in the [WordPress plugin forum](https://wordpress.org/support/plugin/object-sync-for-salesforce/). If you have these requests, please put them in that forum only. Do not send them by email or by social media.
 
 While MinnPost's nonprofit newsroom does welcome [donations](https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY) to support our work, this plugin does not have a paid version.
 
@@ -109,3 +132,12 @@ See our [full changelog](https://github.com/MinnPost/object-sync-for-salesforce/
 
 = 2.0.0 =
 2.0.0 includes a major upgrade to Action Scheduler, the underlying queue technology that runs syncing for this plugin, as well as renaming of many plugin files. You may want to make a full site backup before upgrading, and if you have access to a staging environment you may want to run it there before you run it on your production website.
+
+= 2.1.0 =
+2.1.0 includes an upgrade to Action Scheduler (version 3.4.0), the underlying queue technology that runs syncing for this plugin. The noteworthy piece is that this raises the minimum supported version of WordPress to 5.2. If you are running an older version of WordPress than 5.2, you shouldn't upgrade this plugin.
+
+= 2.1.2 =
+Apologies for the buggy release of version 2.1.0 and 2.1.1. I'm hopeful that these issues are resolved in 2.1.2.
+
+= 2.2.0 =
+In version 2.2.0, the Salesforce REST API version is no longer configured in the plugin settings. For backward-compatibility, the plugin will continue to use stored values until version 3.0.0 unless they are the same as the plugin's default value. In 2.2.0, this is version 55.0.

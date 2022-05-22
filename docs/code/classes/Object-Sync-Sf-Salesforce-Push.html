@@ -2,18 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Object Sync for Salesforce Code Documentation</title>
+            <title>Object Sync for Salesforce Code Documentation</title>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
     <link rel="icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
-            <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+            <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/template.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/themes/prism-okaidia.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
                 <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/js/all.min.js" integrity="sha256-0vuk8LXoyrmCjp1f0O300qo1M75ZQyhH9X3J6d+scmk=" crossorigin="anonymous"></script>
         <script src="js/search.js"></script>
         <script defer src="js/searchIndex.js"></script>
     </head>
@@ -48,13 +53,20 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -four phpdocumentor-sidebar">
-    
-    <section class="phpdocumentor-sidebar__category">
-        <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
-                                <h3 class="phpdocumentor-sidebar__root-namespace"><a href="namespaces/default.html"><abbr title="\">Global</abbr></a></h3>
-                                    </section>
+                    <section class="phpdocumentor-sidebar__category">
+            <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Object.html" class="">Object</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="packages/Object-Sync.html" class="">Sync</a>
+                
+            </li>
+            </ul>
 
-    
+                        </section>
+            
     <section class="phpdocumentor-sidebar__category">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
@@ -80,6 +92,14 @@
     Object_Sync_Sf_Salesforce_Push
 
     
+            <div class="phpdocumentor-element__package">
+            in package
+            <ul class="phpdocumentor-breadcrumbs">
+                                    <li class="phpdocumentor-breadcrumb"><a href="packages/Object.html">Object</a></li>
+                                    <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync.html">Sync</a></li>
+                                    <li class="phpdocumentor-breadcrumb"><a href="packages/Object-Sync-Salesforce.html">Salesforce</a></li>
+                            </ul>
+        </div>
     
     
     </h2>
@@ -88,11 +108,11 @@
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">14</span>
-</aside>
+
+    </aside>
 
             <p class="phpdocumentor-summary">Object_Sync_Sf_Salesforce_Push class.</p>
 
-    <section class="phpdocumentor-description"></section>
 
 
 
@@ -107,59 +127,59 @@
 </h3>
 
 <dl class="phpdocumentor-table-of-contents">
-                <dt class="phpdocumentor-table-of-contents__entry -property -public">
+                    <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_debug">$debug</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: bool            </span>
 </dt>
 <dd>Whether the plugin is in debug mode</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_file">$file</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>The main plugin file</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_logging">$logging</a>
     <span>
-                &nbsp;: object            </span>
+                        &nbsp;: object            </span>
 </dt>
 <dd>Object_Sync_Sf_Logging class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_login_credentials">$login_credentials</a>
     <span>
-                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Login credentials for the Salesforce API; comes from wp-config or from the plugin settings</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_mappings">$mappings</a>
     <span>
-                &nbsp;: object            </span>
+                        &nbsp;: object            </span>
 </dt>
 <dd>Object_Sync_Sf_Mapping class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_option_prefix">$option_prefix</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>The plugin&#039;s prefix when saving options to the database</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_queue">$queue</a>
     <span>
-                &nbsp;: object            </span>
+                        &nbsp;: object            </span>
 </dt>
 <dd>Object_Sync_Sf_Queue class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_salesforce">$salesforce</a>
     <span>
-                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Object_Sync_Sf_Salesforce class
 This contains Salesforce API methods</dd>
@@ -167,161 +187,168 @@ This contains Salesforce API methods</dd>
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_schedulable_classes">$schedulable_classes</a>
     <span>
-                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Array of what classes in the plugin can be scheduled to occur with `wp_cron` events</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_schedule_name">$schedule_name</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>The name of the ActionScheduler queue</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_slug">$slug</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>The plugin&#039;s slug so we can include it when necessary</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_sync_transients">$sync_transients</a>
+    <span>
+                        &nbsp;: object            </span>
+</dt>
+<dd>Object_Sync_Sf_Sync_Transients class</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_version">$version</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>Current version of the plugin</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_wordpress">$wordpress</a>
     <span>
-                &nbsp;: object            </span>
+                        &nbsp;: object            </span>
 </dt>
 <dd>Object_Sync_Sf_WordPress class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_wpdb">$wpdb</a>
     <span>
-                &nbsp;: object            </span>
+                        &nbsp;: object            </span>
 </dt>
 <dd>Global object of `$wpdb`, the WordPress database</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method___construct">__construct()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Constructor for push class</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_acf_save">acf_save()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for saving a post with ACF. If it&#039;s a front end save, send the data to post_actions.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_add_actions">add_actions()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Create the action hooks based on what object maps exist from the admin settings.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_add_attachment">add_attachment()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for adding an attachment</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_add_comment">add_comment()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for adding a comment</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_add_term">add_term()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for adding a term</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_add_user">add_user()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for adding a user</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_delete_attachment">delete_attachment()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for deleting an attachment</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_delete_comment">delete_comment()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for deleting a comment</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_delete_term">delete_term()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for deleting a term</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_delete_user">delete_user()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for deleting a user</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_edit_attachment">edit_attachment()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for editing an attachment</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_edit_comment">edit_comment()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for editing a comment</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_edit_term">edit_term()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for editing a term</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_edit_user">edit_user()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for editing a user</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_manual_push">manual_push()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Method for ajax hooks to call for pushing manually</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_post_actions">post_actions()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for posts of any type
 This can handle create, update, and delete actions</dd>
@@ -329,35 +356,35 @@ This can handle create, update, and delete actions</dd>
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_salesforce_push_sync_rest">salesforce_push_sync_rest()</a>
     <span>
-                        &nbsp;: true    </span>
+                                &nbsp;: true    </span>
 </dt>
 <dd>Sync WordPress objects and Salesforce objects using the REST API.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_um_add_user">um_add_user()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Callback method for adding a user via the Ultimate Member plugin</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_create_object_map">create_object_map()</a>
     <span>
-                        &nbsp;: int    </span>
+                                &nbsp;: int    </span>
 </dt>
 <dd>Create an object map between a WordPress object and a Salesforce object</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_is_push_allowed">is_push_allowed()</a>
     <span>
-                        &nbsp;: bool    </span>
+                                &nbsp;: bool    </span>
 </dt>
 <dd>Find out if push is allowed for this record</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_object_delete">object_delete()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Delete an existing object
 This calls the overall push crud method, which controls queuing and sending data to the Salesforce class.</dd>
@@ -365,7 +392,7 @@ This calls the overall push crud method, which controls queuing and sending data
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_object_insert">object_insert()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Insert a new object
 This calls the overall push crud method, which controls queuing and sending data to the Salesforce class.</dd>
@@ -373,15 +400,22 @@ This calls the overall push crud method, which controls queuing and sending data
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_object_update">object_update()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Update an existing object
 This calls the overall push crud method, which controls queuing and sending data to the Salesforce class.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_parse_error_message">parse_error_message()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Format the error message</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_salesforce_push_object_crud">salesforce_push_object_crud()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Push objects to Salesforce.</dd>
 
@@ -413,19 +447,20 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">106</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">113</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Whether the plugin is in debug mode</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">bool</span>
     <span class="phpdocumentor-signature__name">$debug</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -446,7 +481,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">28</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">The main plugin file</p>
 
@@ -456,8 +492,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <span class="phpdocumentor-signature__name">$file</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -478,7 +514,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">77</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Object_Sync_Sf_Logging class</p>
 
@@ -488,8 +525,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <span class="phpdocumentor-signature__name">$logging</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -510,7 +547,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">56</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Login credentials for the Salesforce API; comes from wp-config or from the plugin settings</p>
 
@@ -520,8 +558,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <span class="phpdocumentor-signature__name">$login_credentials</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -542,7 +580,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">84</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Object_Sync_Sf_Mapping class</p>
 
@@ -552,8 +591,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <span class="phpdocumentor-signature__name">$mappings</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -574,7 +613,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">49</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">The plugin&#039;s prefix when saving options to the database</p>
 
@@ -584,8 +624,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <span class="phpdocumentor-signature__name">$option_prefix</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -606,7 +646,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">70</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Object_Sync_Sf_Queue class</p>
 
@@ -616,8 +657,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <span class="phpdocumentor-signature__name">$queue</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -638,7 +679,8 @@ This calls the overall push crud method, which controls queuing and sending data
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">99</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Object_Sync_Sf_Salesforce class
 This contains Salesforce API methods</p>
@@ -649,8 +691,8 @@ This contains Salesforce API methods</p>
     <span class="phpdocumentor-signature__name">$salesforce</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -671,7 +713,8 @@ This contains Salesforce API methods</p>
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">63</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Array of what classes in the plugin can be scheduled to occur with `wp_cron` events</p>
 
@@ -681,8 +724,8 @@ This contains Salesforce API methods</p>
     <span class="phpdocumentor-signature__name">$schedulable_classes</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -702,8 +745,9 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">113</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">120</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">The name of the ActionScheduler queue</p>
 
@@ -713,8 +757,8 @@ This contains Salesforce API methods</p>
     <span class="phpdocumentor-signature__name">$schedule_name</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -735,7 +779,8 @@ This contains Salesforce API methods</p>
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">42</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">The plugin&#039;s slug so we can include it when necessary</p>
 
@@ -745,8 +790,41 @@ This contains Salesforce API methods</p>
     <span class="phpdocumentor-signature__name">$slug</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
+    
+    
+    
 
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_sync_transients">
+        $sync_transients
+        <a href="classes/Object-Sync-Sf-Salesforce-Push.html#property_sync_transients" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">106</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Object_Sync_Sf_Sync_Transients class</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">object</span>
+    <span class="phpdocumentor-signature__name">$sync_transients</span>
+    </code>
+
+    
+    
     
 
 </article>
@@ -767,7 +845,8 @@ This contains Salesforce API methods</p>
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">21</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Current version of the plugin</p>
 
@@ -777,8 +856,8 @@ This contains Salesforce API methods</p>
     <span class="phpdocumentor-signature__name">$version</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -799,7 +878,8 @@ This contains Salesforce API methods</p>
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">91</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Object_Sync_Sf_WordPress class</p>
 
@@ -809,8 +889,8 @@ This contains Salesforce API methods</p>
     <span class="phpdocumentor-signature__name">$wordpress</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -831,7 +911,8 @@ This contains Salesforce API methods</p>
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">35</span>
-</aside>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Global object of `$wpdb`, the WordPress database</p>
 
@@ -841,8 +922,8 @@ This contains Salesforce API methods</p>
     <span class="phpdocumentor-signature__name">$wpdb</span>
     </code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
+    
     
 
 </article>
@@ -866,25 +947,24 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">118</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">125</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Constructor for push class</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -900,17 +980,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">286</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">302</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for saving a post with ACF. If it&#039;s a front end save, send the data to post_actions.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">acf_save</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">acf_save</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -929,8 +1009,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -946,14 +1025,15 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">147</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">156</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Create the action hooks based on what object maps exist from the admin settings.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">add_actions</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">add_actions</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"><p>We do not have any actions for blogroll at this time.</p>
 </section>
@@ -964,8 +1044,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -981,17 +1060,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">364</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">380</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for adding an attachment</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">add_attachment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">add_attachment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1010,8 +1089,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1027,17 +1105,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">434</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">450</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for adding a comment</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">add_comment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$comment_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$comment_approved</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$commentdata</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">array()</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">add_comment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$comment_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$comment_approved</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$commentdata</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">array()</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1074,8 +1152,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1091,17 +1168,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">397</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">413</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for adding a term</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">add_term</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$term_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tt_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$taxonomy</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">add_term</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$term_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tt_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$taxonomy</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1138,8 +1215,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1155,17 +1231,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">244</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">253</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for adding a user</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">add_user</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$user_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">add_user</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$user_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1184,8 +1260,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1201,17 +1276,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">384</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">400</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for deleting an attachment</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">delete_attachment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">delete_attachment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1230,8 +1305,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1247,17 +1321,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">454</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">470</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for deleting a comment</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">delete_comment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$comment_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">delete_comment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$comment_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1276,8 +1350,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1293,17 +1366,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">421</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">437</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for deleting a term</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">delete_term</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$term</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tt_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$taxonomy</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$deleted_term</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">delete_term</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$term</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tt_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$taxonomy</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$deleted_term</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1349,8 +1422,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1366,17 +1438,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">275</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">291</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for deleting a user</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">delete_user</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$user_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">delete_user</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$user_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1395,8 +1467,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1412,17 +1483,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">374</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">390</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for editing an attachment</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">edit_attachment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">edit_attachment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1441,8 +1512,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1458,17 +1528,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">444</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">460</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for editing a comment</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">edit_comment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$comment_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">edit_comment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$comment_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1487,8 +1557,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1504,17 +1573,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">408</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">424</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for editing a term</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">edit_term</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$term_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$taxonomy</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">edit_term</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$term_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$taxonomy</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1542,8 +1611,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1559,17 +1627,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">265</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">281</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for editing a user</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">edit_user</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$user_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$old_user_data</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">edit_user</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$user_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$old_user_data</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1597,8 +1665,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1614,17 +1681,17 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">201</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">210</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Method for ajax hooks to call for pushing manually</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">manual_push</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object_type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wordpress_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$http_method</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">manual_push</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object_type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wordpress_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$http_method</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1661,8 +1728,7 @@ This contains Salesforce API methods</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1678,18 +1744,18 @@ This contains Salesforce API methods</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">303</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">319</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for posts of any type
 This can handle create, update, and delete actions</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">post_actions</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">object&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">post_actions</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><abbr title="\WP_Post">WP_Post</abbr>|array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$post</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1703,10 +1769,10 @@ This can handle create, update, and delete actions</p>
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$post</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\WP_Post">WP_Post</abbr>|array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>the WordPress post object.</p>
+                    <section class="phpdocumentor-description"><p>the WordPress post object. For our purposes, it's never an array.</p>
 </section>
 
             </dd>
@@ -1717,8 +1783,7 @@ This can handle create, update, and delete actions</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1734,17 +1799,17 @@ This can handle create, update, and delete actions</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">722</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">771</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Sync WordPress objects and Salesforce objects using the REST API.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">salesforce_push_sync_rest</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object_type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;|int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$mapping</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sf_sync_trigger</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">true</span></code>
+                    <span class="phpdocumentor-signature__name">salesforce_push_sync_rest</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object_type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;|int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$mapping</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sf_sync_trigger</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">true</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1808,17 +1873,17 @@ This can handle create, update, and delete actions</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">255</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">264</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Callback method for adding a user via the Ultimate Member plugin</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">um_add_user</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$user_id</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$form_data</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">array()</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">um_add_user</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$user_id</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$form_data</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">array()</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1846,8 +1911,7 @@ This can handle create, update, and delete actions</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -1863,17 +1927,17 @@ This can handle create, update, and delete actions</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1434</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">1505</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Create an object map between a WordPress object and a Salesforce object</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">create_object_map</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wordpress_object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$id_field_name</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$salesforce_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$field_mapping</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$pending</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+                    <span class="phpdocumentor-signature__name">create_object_map</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$wordpress_object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$id_field_name</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$salesforce_id</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$field_mapping</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$pending</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -1946,17 +2010,17 @@ This can handle create, update, and delete actions</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1474</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">1545</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Find out if push is allowed for this record</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">is_push_allowed</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object_type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sf_sync_trigger</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$mapping</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$map_sync_triggers</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+                    <span class="phpdocumentor-signature__name">is_push_allowed</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object_type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sf_sync_trigger</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$mapping</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$map_sync_triggers</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -2029,18 +2093,18 @@ This can handle create, update, and delete actions</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">489</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">505</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Delete an existing object
 This calls the overall push crud method, which controls queuing and sending data to the Salesforce class.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">object_delete</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">object_delete</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -2068,8 +2132,7 @@ This calls the overall push crud method, which controls queuing and sending data
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -2085,18 +2148,18 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">467</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">483</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Insert a new object
 This calls the overall push crud method, which controls queuing and sending data to the Salesforce class.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">object_insert</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">object_insert</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -2124,8 +2187,7 @@ This calls the overall push crud method, which controls queuing and sending data
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
                     <article
@@ -2141,18 +2203,18 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">478</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">494</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Update an existing object
 This calls the overall push crud method, which controls queuing and sending data to the Salesforce class.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">object_update</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">object_update</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -2180,7 +2242,62 @@ This calls the overall push crud method, which controls queuing and sending data
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_parse_error_message">
+        parse_error_message()
+        <a href="classes/Object-Sync-Sf-Salesforce-Push.html#method_parse_error_message" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">1484</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Format the error message</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">parse_error_message</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$e</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$default_message</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$e</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>the exception from the Salesforce class.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$default_message</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>if there is one.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>$message what is getting stored.</p>
+</section>
 
     
 </article>
@@ -2197,14 +2314,15 @@ This calls the overall push crud method, which controls queuing and sending data
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="classes/class-object-sync-sf-salesforce-push.php"><a href="files/classes-class-object-sync-sf-salesforce-push.html"><abbr title="classes/class-object-sync-sf-salesforce-push.php">class-object-sync-sf-salesforce-push.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">502</span>
-</aside>
+    <span class="phpdocumentor-element-found-in__line">518</span>
+
+    </aside>
 
         <p class="phpdocumentor-summary">Push objects to Salesforce.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">salesforce_push_object_crud</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object_type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sf_sync_trigger</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$manual</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">salesforce_push_object_crud</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object_type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$object</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sf_sync_trigger</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$manual</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"><p>This method decides whether to do the processing immediately or queue it to the schedule class (or skip it based on another plugin's activity)</p>
 </section>
@@ -2254,11 +2372,72 @@ This calls the overall push crud method, which controls queuing and sending data
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
-            <section class="phpdocumentor-description"></section>
-
+        
     
 </article>
             </section>
+
+        
+    <script type="text/javascript">
+        function loadExternalCodeSnippets(line) {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach((pre) => {
+                var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                pre.setAttribute('data-line', line)
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist, is empty or trying to view from localhost';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        var modals = document.querySelectorAll("[data-modal]");
+
+        modals.forEach(function (trigger) {
+            trigger.addEventListener("click", function (event) {
+                //event.preventDefault();
+                const modal = document.getElementById(trigger.dataset.modal);
+                modal.classList.add("phpdocumentor-modal__open");
+                loadExternalCodeSnippets(trigger.dataset.line)
+                const exits = modal.querySelectorAll("[data-exit-button]");
+                exits.forEach(function (exit) {
+                    exit.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        modal.classList.remove("phpdocumentor-modal__open");
+                    });
+                });
+            });
+        });
+    </script>
 
     </article>
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
@@ -2281,5 +2460,9 @@ This calls the overall push crud method, which controls queuing and sending data
     <script>
         cssVars({});
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
 </body>
 </html>

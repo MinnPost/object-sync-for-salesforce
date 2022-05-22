@@ -110,8 +110,6 @@ class Object_Sync_Sf_Activate {
 		// this should run when the user is in the admin area to make sure the database gets updated.
 		add_action( 'admin_init', array( $this, 'wordpress_salesforce_update_db_check' ), 10 );
 
-		// when users upgrade the plugin, run these hooks.
-		add_action( 'upgrader_process_complete', array( $this, 'check_for_action_scheduler' ), 10, 2 );
 	}
 
 	/**
@@ -145,6 +143,7 @@ class Object_Sync_Sf_Activate {
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			label varchar(64) NOT NULL DEFAULT '',
 			name varchar(64) NOT NULL DEFAULT '',
+			fieldmap_status varchar(10) NOT NULL DEFAULT 'active',
 			wordpress_object varchar(128) NOT NULL DEFAULT '',
 			wordpress_object_default_status varchar(255) NOT NULL DEFAULT '',
 			salesforce_object varchar(255) NOT NULL DEFAULT '',
@@ -156,11 +155,13 @@ class Object_Sync_Sf_Activate {
 			push_async tinyint(1) NOT NULL DEFAULT '0',
 			push_drafts tinyint(1) NOT NULL DEFAULT '0',
 			pull_to_drafts tinyint(1) NOT NULL DEFAULT '0',
+			always_delete_object_maps_on_delete tinyint(1) NOT NULL DEFAULT '0',
 			weight tinyint(1) NOT NULL DEFAULT '0',
 			version varchar(255) NOT NULL DEFAULT '',
 			PRIMARY KEY  (id),
 			UNIQUE KEY name (name),
-			KEY name_sf_type_wordpress_type (wordpress_object,salesforce_object)
+			KEY name_sf_type_wordpress_type (wordpress_object,salesforce_object),
+			KEY fieldmap_status (fieldmap_status)
 		) ENGINE=InnoDB $charset_collate";
 
 		$object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
@@ -306,7 +307,7 @@ class Object_Sync_Sf_Activate {
 	 * @param object $upgrader_object this is the WP_Upgrader object.
 	 * @param array  $hook_extra the array of bulk item update data.
 	 * @see https://developer.wordpress.org/reference/hooks/upgrader_process_complete/
-	 * @deprecated since 2.0.0.
+	 * @deprecated since 2.0.0 and will be removed in version 3.0.0.
 	 */
 	public function check_for_action_scheduler( $upgrader_object, $hook_extra ) {
 

@@ -1,6 +1,6 @@
 # Accessing the Salesforce API object
 
-If you need to use the Salesforce API object outside this plugin, it is easily accessible. Once you have it in your theme/plugin/etc, you can run any call against it that is available in the [`salesforce`](../classes/salesforce.php) class.
+If you need to use the Salesforce API object outside this plugin, it is accessible. Once you have it in your theme/plugin/etc, you can run any call against it that is available in the [`Object_Sync_Sf_Salesforce`](../classes/class-object-sync-sf-salesforce.php) class.
 
 ## Code example
 

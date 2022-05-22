@@ -19,6 +19,10 @@
 		<input type="checkbox" value="1" name="overwrite" id="object-sync-for-salesforce-import-overwrite">
 		<label for="object-sync-for-salesforce-import-overwrite"><?php echo esc_html__( 'Overwrite Existing Data', 'object-sync-for-salesforce' ); ?></label>
 	</p>
+	<p>
+		<input type="checkbox" value="1" name="import_fieldmaps_inactive" id="object-sync-for-salesforce-import-fieldmaps-inactive">
+		<label for="object-sync-for-salesforce-import-fieldmaps-inactive"><?php echo esc_html__( 'Set Imported Fieldmaps to Inactive', 'object-sync-for-salesforce' ); ?></label>
+	</p>
 	<input type="submit" class="button button-primary" value="<?php echo esc_html__( 'Import', 'object-sync-for-salesforce' ); ?>" />
 </form>
 
@@ -40,3 +44,14 @@
 	</p>
 	<input type="submit" class="button button-primary" value="<?php echo esc_html__( 'Export', 'object-sync-for-salesforce' ); ?>" />
 </form>
+
+<p><small>
+	<?php
+	// translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
+	echo sprintf(
+		esc_html__( 'Has your WordPress or Salesforce data structure changed? ', 'object-sync-for-salesforce' ) . '<a href="%1$s" id="clear-sfwp-cache">%2$s</a>' . esc_html__( ' to make sure you can map the most recent data structures.', 'object-sync-for-salesforce' ),
+		esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=clear_cache' ) ),
+		esc_html__( 'Clear the plugin cache', 'object-sync-for-salesforce' )
+	);
+	?>
+</small></p>

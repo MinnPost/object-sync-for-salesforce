@@ -149,7 +149,7 @@ class Object_Sync_Sf_Salesforce {
 	/**
 	 * Whether the plugin is in debug mode
 	 *
-	 * @var string
+	 * @var bool
 	 */
 	public $debug;
 
@@ -193,8 +193,8 @@ class Object_Sync_Sf_Salesforce {
 		$this->success_or_refresh_codes   = $this->success_codes;
 		$this->success_or_refresh_codes[] = $this->refresh_code;
 
-		$this->debug = get_option( $this->option_prefix . 'debug_mode', false );
-		$this->debug = filter_var( $this->debug, FILTER_VALIDATE_BOOLEAN );
+		// use the option value for whether we're in debug mode.
+		$this->debug = filter_var( get_option( $this->option_prefix . 'debug_mode', false ), FILTER_VALIDATE_BOOLEAN );
 
 	}
 
@@ -256,6 +256,8 @@ class Object_Sync_Sf_Salesforce {
 	/**
 	 * Get REST API versions available on this Salesforce organization
 	 * This is not an authenticated call, so it would not be a helpful test
+	 *
+	 * @deprecated since version 2.2.0; will be removed in 3.0.0.
 	 */
 	public function get_api_versions() {
 		$options = array(
@@ -396,12 +398,6 @@ class Object_Sync_Sf_Salesforce {
 		if ( true === $this->debug ) {
 			// create log entry for the api call if debug is true.
 			$status = 'debug';
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				global $wpdb;
-				$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
-			}
 
 			// try to get the SOQL query if there was one.
 			parse_str( $url, $salesforce_url_parts );
@@ -432,21 +428,16 @@ class Object_Sync_Sf_Salesforce {
 				ucfirst( esc_attr( $status ) ),
 				( false === $is_soql_query ) ? esc_html__( 'There is not an SOQL query included in this request.', 'object-sync-for-salesforce' ) : esc_html__( 'There is an SOQL query included in this request.', 'object-sync-for-salesforce' )
 			);
-
-			$body = '';
-
-			$body .= sprintf(
+			$body = sprintf(
 				// translators: placeholder is: 1) the API call's HTTP method.
 				'<p><strong>' . esc_html__( 'HTTP method:', 'object-sync-for-salesforce' ) . '</strong> %1$s</p>',
 				esc_attr( $method )
 			);
-
 			$body .= sprintf(
 				// translators: placeholder is: 1) the API call's URL.
 				'<p><strong>' . esc_html__( 'URL of API call to Salesforce:', 'object-sync-for-salesforce' ) . '</strong> %1$s</p>',
 				esc_url( $url )
 			);
-
 			if ( true === $is_soql_query ) {
 				$query = $salesforce_url_parts[ $query_key ];
 				$soql  = urldecode( $query );
@@ -456,14 +447,12 @@ class Object_Sync_Sf_Salesforce {
 					'<code>' . esc_html( $soql ) . '</code>'
 				);
 			}
-
 			$body .= sprintf(
 				// translators: placeholder is: 1) the API call's result.
 				'<h3>' . esc_html__( 'API result from Salesforce', 'object-sync-for-salesforce' ) . '</h3> <div>%1$s</div>',
 				print_r( $result, true ) // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 			);
-
-			$logging->setup(
+			$this->logging->setup(
 				$title,
 				$body,
 				0,
@@ -555,21 +544,13 @@ class Object_Sync_Sf_Salesforce {
 			if ( '' !== $curl_error ) {
 				// create log entry for failed curl.
 				$status = 'error';
-				if ( isset( $this->logging ) ) {
-					$logging = $this->logging;
-				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					global $wpdb;
-					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
-				}
-
-				$title = sprintf(
+				$title  = sprintf(
 					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
 					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
 					ucfirst( esc_attr( $status ) ),
 					absint( $code )
 				);
-
-				$logging->setup(
+				$this->logging->setup(
 					$title,
 					$curl_error,
 					0,
@@ -579,20 +560,12 @@ class Object_Sync_Sf_Salesforce {
 			} elseif ( isset( $data[0]['errorCode'] ) && '' !== $data[0]['errorCode'] ) { // salesforce uses this structure to return errors
 				// create log entry for failed curl.
 				$status = 'error';
-				if ( isset( $this->logging ) ) {
-					$logging = $this->logging;
-				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					global $wpdb;
-					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
-				}
-
-				$title = sprintf(
+				$title  = sprintf(
 					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
 					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
 					ucfirst( esc_attr( $status ) ),
 					absint( $code )
 				);
-
 				$body = sprintf(
 					// translators: placeholders are: 1) the URL requested, 2) the message returned by the error, 3) the server code returned.
 					'<p>' . esc_html__( 'URL: %1$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Message: %2$s', 'object-sync-for-salesforce' ) . '</p><p>' . esc_html__( 'Code: %3$s', 'object-sync-for-salesforce' ),
@@ -600,8 +573,7 @@ class Object_Sync_Sf_Salesforce {
 					esc_html( $data[0]['message'] ),
 					absint( $code )
 				);
-
-				$logging->setup(
+				$this->logging->setup(
 					$title,
 					$body,
 					0,
@@ -611,21 +583,13 @@ class Object_Sync_Sf_Salesforce {
 			} else {
 				// create log entry for failed curl.
 				$status = 'error';
-				if ( isset( $this->logging ) ) {
-					$logging = $this->logging;
-				} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-					global $wpdb;
-					$logging = new Object_Sync_Sf_Logging( $wpdb, $this->version );
-				}
-
-				$title = sprintf(
+				$title  = sprintf(
 					// translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
 					esc_html__( '%1$s: %2$s: on Salesforce HTTP request', 'object-sync-for-salesforce' ),
 					ucfirst( esc_attr( $status ) ),
 					absint( $code )
 				);
-
-				$logging->setup(
+				$this->logging->setup(
 					$title,
 					print_r( $data, true ), // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 					0,

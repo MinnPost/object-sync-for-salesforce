@@ -134,6 +134,13 @@ class Object_Sync_Sf_Admin {
 	private $admin_settings_url_param;
 
 	/**
+	 * Data for admin notices
+	 *
+	 * @var array
+	 */
+	public $notices_data;
+
+	/**
 	 * Salesforce access token
 	 *
 	 * @var string
@@ -174,6 +181,7 @@ class Object_Sync_Sf_Admin {
 	 * been authenticated with Salesforce.
 	 *
 	 * @var string
+	 * @deprecated as of 2.2.0; will be removed in version 3.0. This property will stay until 3.0.0 because it is a public value and it could be accessed by other code.
 	 */
 	public $default_api_version;
 
@@ -226,15 +234,19 @@ class Object_Sync_Sf_Admin {
 		$this->schedulable_classes = object_sync_for_salesforce()->schedulable_classes;
 		$this->queue               = object_sync_for_salesforce()->queue;
 
+		// set the Salesforce API version.
+		// as of version 2.2.0, this is set by the plugin and is not configurable in the interface.
+		// this class variable will be removed in 3.0.0.
+		$this->default_api_version = $this->login_credentials['rest_api_version'];
+
 		$this->sfwp_transients          = object_sync_for_salesforce()->wordpress->sfwp_transients;
 		$this->admin_settings_url_param = 'object-sync-salesforce-admin';
+		$this->notices_data             = $this->notices_data();
 
 		// default authorize url path.
 		$this->default_authorize_url_path = '/services/oauth2/authorize';
 		// default token url path.
 		$this->default_token_url_path = '/services/oauth2/token';
-		// what Salesforce API version to start the settings with. This is only used in the settings form.
-		$this->default_api_version = defined( 'OBJECT_SYNC_SF_DEFAULT_API_VERSION' ) ? OBJECT_SYNC_SF_DEFAULT_API_VERSION : '52.0';
 		// default pull record limit.
 		$this->default_pull_limit = 25;
 		// default pull throttle for avoiding going over api limits.
@@ -261,7 +273,7 @@ class Object_Sync_Sf_Admin {
 		// Settings API forms and notices.
 		add_action( 'admin_menu', array( $this, 'create_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'salesforce_settings_forms' ) );
-		add_action( 'admin_init', array( $this, 'notices' ) );
+		add_action( 'admin_init', array( $this, 'display_notices' ) );
 		add_action( 'admin_post_post_fieldmap', array( $this, 'prepare_fieldmap_data' ) );
 		add_action( 'admin_post_delete_fieldmap', array( $this, 'delete_fieldmap' ) );
 
@@ -276,6 +288,7 @@ class Object_Sync_Sf_Admin {
 		add_action( 'wp_ajax_pull_from_salesforce', array( $this, 'pull_from_salesforce' ), 10, 2 );
 		add_action( 'wp_ajax_refresh_mapped_data', array( $this, 'refresh_mapped_data' ), 10, 1 );
 		add_action( 'wp_ajax_clear_sfwp_cache', array( $this, 'clear_sfwp_cache' ) );
+		add_action( 'wp_ajax_delete_salesforce_api_version', array( $this, 'delete_salesforce_api_version' ) );
 
 		// we add a Salesforce box on user profiles.
 		add_action( 'edit_user_profile', array( $this, 'show_salesforce_user_fields' ), 10, 1 );
@@ -472,12 +485,6 @@ class Object_Sync_Sf_Admin {
 			$status = 'error';
 		}
 
-		if ( isset( $this->logging ) ) {
-			$logging = $this->logging;
-		} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-			$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-		}
-
 		$body = sprintf( esc_html__( 'These are the scheduled tasks that were updated: ', 'object-sync-for-salesforce' ) . '<ul>' );
 		foreach ( $schedules_updated as $schedule_updated ) {
 			$body .= sprintf(
@@ -505,7 +512,7 @@ class Object_Sync_Sf_Admin {
 			esc_html__( 'Scheduling', 'object-sync-for-salesforce' )
 		);
 
-		$logging->setup(
+		$this->logging->setup(
 			sprintf(
 				// translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of that object.
 				esc_html__( '%1$s ActionScheduler: the ActionScheduler library has completed its migration. See the log entry content for status on each recurring task.', 'object-sync-for-salesforce' ),
@@ -632,6 +639,7 @@ class Object_Sync_Sf_Admin {
 
 						if ( 'add' === $method || ( isset( $map ) && is_array( $map ) && isset( $map['id'] ) ) ) {
 							if ( isset( $map ) && is_array( $map ) && isset( $map['id'] ) ) {
+<<<<<<< HEAD
 								$label                           = $map['label'];
 								$salesforce_object               = $map['salesforce_object'];
 								$salesforce_record_types_allowed = maybe_unserialize( $map['salesforce_record_types_allowed'] );
@@ -645,6 +653,22 @@ class Object_Sync_Sf_Admin {
 								$push_drafts                     = $map['push_drafts'];
 								$pull_to_drafts                  = $map['pull_to_drafts'];
 								$weight                          = $map['weight'];
+=======
+								$label                               = $map['label'];
+								$fieldmap_status                     = $map['fieldmap_status'];
+								$salesforce_object                   = $map['salesforce_object'];
+								$salesforce_record_types_allowed     = maybe_unserialize( $map['salesforce_record_types_allowed'] );
+								$salesforce_record_type_default      = $map['salesforce_record_type_default'];
+								$wordpress_object                    = $map['wordpress_object'];
+								$pull_trigger_field                  = $map['pull_trigger_field'];
+								$fieldmap_fields                     = $map['fields'];
+								$sync_triggers                       = $map['sync_triggers'];
+								$always_delete_object_maps_on_delete = $map['always_delete_object_maps_on_delete'];
+								$push_async                          = $map['push_async'];
+								$push_drafts                         = $map['push_drafts'];
+								$pull_to_drafts                      = $map['pull_to_drafts'];
+								$weight                              = $map['weight'];
+>>>>>>> master
 							}
 							if ( 'add' === $method || 'edit' === $method || 'clone' === $method ) {
 								require_once plugin_dir_path( $this->file ) . '/templates/admin/fieldmaps-add-edit-clone.php';
@@ -695,8 +719,9 @@ class Object_Sync_Sf_Admin {
 						}
 
 						if ( isset( $map_row ) && is_array( $map_row ) ) {
-							$salesforce_id = $map_row['salesforce_id'];
-							$wordpress_id  = $map_row['wordpress_id'];
+							$salesforce_id    = $map_row['salesforce_id'];
+							$wordpress_id     = $map_row['wordpress_id'];
+							$wordpress_object = $map_row['wordpress_object'];
 						}
 
 						if ( 'edit' === $method ) {
@@ -873,19 +898,6 @@ class Object_Sync_Sf_Admin {
 					'default'  => $this->default_token_url_path,
 				),
 			),
-			'api_version'                    => array(
-				'title'    => __( 'Salesforce API Version', 'object-sync-for-salesforce' ),
-				'callback' => $callbacks['text'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'text',
-					'validate' => 'sanitize_validate_text',
-					'desc'     => '',
-					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION',
-					'default'  => $this->default_api_version,
-				),
-			),
 			'object_filters'                 => array(
 				'title'    => __( 'Limit Salesforce Objects', 'object-sync-for-salesforce' ),
 				'callback' => $callbacks['checkboxes'],
@@ -1011,7 +1023,7 @@ class Object_Sync_Sf_Admin {
 			'args'     => array(
 				'type'     => 'checkbox',
 				'validate' => 'sanitize_text_field',
-				'desc'     => __( 'Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment.', 'object-sync-for-salesforce' ),
+				'desc'     => __( 'Debug mode activates logging for plugin events like Salesforce API requests and WordPress data operations. This can create a lot of log entries; it is not recommended to use it long-term in a production environment.', 'object-sync-for-salesforce' ),
 				'constant' => '',
 			),
 		);
@@ -1027,23 +1039,6 @@ class Object_Sync_Sf_Admin {
 				'constant' => '',
 			),
 		);
-
-		// if the user has authenticated with Salesforce, override the text field with a dropdown of available Salesforce API verisons.
-		if ( true === is_object( $this->salesforce['sfapi'] ) && true === $this->salesforce['sfapi']->is_authorized() ) {
-			$salesforce_settings['api_version'] = array(
-				'title'    => __( 'Salesforce API Version', 'object-sync-for-salesforce' ),
-				'callback' => $callbacks['select'],
-				'page'     => $page,
-				'section'  => $section,
-				'args'     => array(
-					'type'     => 'select',
-					'validate' => 'sanitize_text_field',
-					'desc'     => '',
-					'constant' => 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION',
-					'items'    => $this->version_options(),
-				),
-			);
-		}
 
 		foreach ( $salesforce_settings as $key => $attributes ) {
 			$id       = $this->option_prefix . $key;
@@ -1224,7 +1219,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'checkbox',
 					'validate' => 'absint',
-					'desc'     => '',
+					'desc'     => __( 'This determines whether to create plugin log events in standard operation. If Debug Mode is enabled in the plugin settings, logging will occur regardless of this setting.', 'object-sync-for-salesforce' ),
 					'constant' => '',
 				),
 			),
@@ -1236,7 +1231,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'checkboxes',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => __( 'These are the statuses to log', 'object-sync-for-salesforce' ),
+					'desc'     => '',
 					'items'    => array(
 						'error'   => array(
 							'text' => __( 'Error', 'object-sync-for-salesforce' ),
@@ -1251,11 +1246,6 @@ class Object_Sync_Sf_Admin {
 						'notice'  => array(
 							'text' => __( 'Notice', 'object-sync-for-salesforce' ),
 							'id'   => 'notice',
-							'desc' => '',
-						),
-						'debug'   => array(
-							'text' => __( 'Debug', 'object-sync-for-salesforce' ),
-							'id'   => 'debug',
 							'desc' => '',
 						),
 					),
@@ -1345,7 +1335,7 @@ class Object_Sync_Sf_Admin {
 				'args'     => array(
 					'type'     => 'checkboxes',
 					'validate' => 'sanitize_validate_text',
-					'desc'     => __( 'These are the triggers to log', 'object-sync-for-salesforce' ),
+					'desc'     => __( 'These are the triggers to log. When the plugin is in debug mode (see the settings tab), all triggers will be considered to be triggers to log, even if they are not checked here.', 'object-sync-for-salesforce' ),
 					'items'    => array(
 						$this->mappings->sync_wordpress_create => array(
 							'text' => __( 'WordPress Create', 'object-sync-for-salesforce' ),
@@ -1451,17 +1441,11 @@ class Object_Sync_Sf_Admin {
 	}
 
 	/**
-	 * Create the notices, settings, and conditions by which admin notices should appear
+	 * Create and return the data for notices.
+	 *
+	 * @return array $notices is the array of notices.
 	 */
-	public function notices() {
-
-		// before a notice is displayed, we should make sure we are on a page related to this plugin.
-		if ( ! isset( $_GET['page'] ) || $this->admin_settings_url_param !== $_GET['page'] ) {
-			return;
-		}
-
-		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
-
+	public function notices_data() {
 		$notices = array(
 			'permission'              => array(
 				'condition'   => ( false === $this->check_wordpress_admin_permissions() ),
@@ -1485,6 +1469,21 @@ class Object_Sync_Sf_Admin {
 				),
 				'type'        => 'error',
 				'dismissible' => false,
+			),
+			'deprecated_api_version'  => array(
+				'condition'   => ( isset( $this->login_credentials['using_deprecated_option'] ) && true === $this->login_credentials['using_deprecated_option'] ),
+				'message'     => sprintf(
+					// translators: 1) is the version number of the Salesforce REST API, 2) is the option key for where the deprecated version is stored, 3) is the prefixed options table name, 4) is the link to delete the option, 5) is the default API version to use, and 6) is the name of the wp-config value.
+					esc_html__( 'Object Sync for Salesforce is using version %1$s of the Salesforce REST API, which is configured from a previous version. This value is no longer configurable in the plugin settings, and in version 3.0.0, previously saved values will be removed. You can delete the %2$s field from the %3$s table on your own, use %4$s, set it to %5$s so the plugin can delete it, or wait until that release. If the %6$s value is in your wp-config.php file instead, you should delete it from there as well.', 'object-sync-for-salesforce' ),
+					esc_attr( $this->login_credentials['rest_api_version'] ),
+					'<code>' . esc_attr( $this->option_prefix . 'api_version' ) . '</code>',
+					'<code>' . esc_attr( $this->wpdb->prefix . 'options' ) . '</code>',
+					'<a href="#" id="salesforce-delete-rest-api-version">this link that will attempt to delete it</a>',
+					'<code>' . esc_attr( OBJECT_SYNC_SF_DEFAULT_API_VERSION ) . '</code>',
+					'<code>' . esc_attr( 'OBJECT_SYNC_SF_DEFAULT_API_VERSION' ) . '</code>'
+				),
+				'type'        => 'error',
+				'dismissible' => true,
 			),
 			'fieldmap'                => array(
 				'condition'   => isset( $get_data['transient'] ),
@@ -1512,7 +1511,7 @@ class Object_Sync_Sf_Admin {
 			),
 			'data_save_partial'       => array(
 				'condition'   => isset( $get_data['data_saved'] ) && 'partial' === $get_data['data_saved'],
-				'message'     => __( 'This data was partially successfully saved. This means some of the data was unable to save. If you have enabled logging in the plugin settings, there should be a log entry with further details.', 'object-sync-for-salesforce' ),
+				'message'     => __( 'This data was partially successfully saved. This means some of the data was unable to save. If you have enabled logging or debug mode in the plugin settings, there should be a log entry with further details.', 'object-sync-for-salesforce' ),
 				'type'        => 'error',
 				'dismissible' => true,
 			),
@@ -1529,6 +1528,21 @@ class Object_Sync_Sf_Admin {
 				'dismissible' => true,
 			),
 		);
+		return $notices;
+	}
+
+	/**
+	 * Create the notices, settings, and conditions by which admin notices should appear
+	 */
+	public function display_notices() {
+
+		// before a notice is displayed, we should make sure we are on a page related to this plugin.
+		if ( ! isset( $_GET['page'] ) || $this->admin_settings_url_param !== $_GET['page'] ) {
+			return;
+		}
+
+		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
+		$notices  = $this->notices_data();
 
 		foreach ( $notices as $key => $value ) {
 
@@ -2103,6 +2117,16 @@ class Object_Sync_Sf_Admin {
 			}
 		}
 
+		// if the option says to, set all the imported fieldmaps to inactive.
+		$import_fieldmaps_inactive = isset( $_POST['import_fieldmaps_inactive'] ) ? esc_attr( $_POST['import_fieldmaps_inactive'] ) : '';
+		if ( true === filter_var( $import_fieldmaps_inactive, FILTER_VALIDATE_BOOLEAN ) ) {
+			if ( isset( $data['fieldmaps'] ) ) {
+				foreach ( $data['fieldmaps'] as $key => $fieldmap ) {
+					$data['fieldmaps'][ $key ]['fieldmap_status'] = 'inactive';
+				}
+			}
+		}
+
 		$success = true;
 
 		if ( isset( $data['fieldmaps'] ) ) {
@@ -2115,7 +2139,7 @@ class Object_Sync_Sf_Admin {
 					$success = false;
 				}
 				if ( false === $create ) {
-					$error_fieldmaps[] = $object_map;
+					$error_fieldmaps[] = $fieldmap;
 				} else {
 					$successful_fieldmaps[] = $create;
 				}
@@ -2149,13 +2173,7 @@ class Object_Sync_Sf_Admin {
 
 		if ( ! empty( $error_fieldmaps ) && ! empty( $error_object_maps ) ) {
 			$status = 'error';
-			if ( isset( $this->logging ) ) {
-				$logging = $this->logging;
-			} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
-				$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
-			}
-
-			$body = sprintf( esc_html__( 'These are the import items that were not able to save: ', 'object-sync-for-salesforce' ) . '<ul>' );
+			$body   = sprintf( esc_html__( 'These are the import items that were not able to save: ', 'object-sync-for-salesforce' ) . '<ul>' );
 			foreach ( $error_fieldmaps as $fieldmap ) {
 				$body .= sprintf(
 					// translators: placeholders are: 1) the fieldmap row ID, 2) the Salesforce object type, 3) the WordPress object type.
@@ -2176,7 +2194,7 @@ class Object_Sync_Sf_Admin {
 			}
 			$body .= sprintf( '</ul>' );
 
-			$logging->setup(
+			$this->logging->setup(
 				sprintf(
 					// translators: %1$s is the log status.
 					esc_html__( '%1$s on import: some of the rows were unable to save. Read this post for details.', 'object-sync-for-salesforce' ),
@@ -2303,9 +2321,10 @@ class Object_Sync_Sf_Admin {
 	 * @param array $args is the arguments to create the checkboxes.
 	 */
 	public function display_checkboxes( $args ) {
-		$type    = 'checkbox';
-		$name    = $args['name'];
-		$options = get_option( $name, array() );
+		$type       = 'checkbox';
+		$name       = $args['name'];
+		$options    = get_option( $name, array() );
+		$group_desc = $args['desc'];
 		foreach ( $args['items'] as $key => $value ) {
 			$text    = $value['text'];
 			$id      = $value['id'];
@@ -2333,6 +2352,12 @@ class Object_Sync_Sf_Admin {
 					esc_html( $desc )
 				);
 			}
+		}
+		if ( '' !== $group_desc ) {
+			echo sprintf(
+				'<p class="description">%1$s</p>',
+				esc_html( $group_desc )
+			);
 		}
 	}
 
@@ -2385,26 +2410,6 @@ class Object_Sync_Sf_Admin {
 				esc_html__( 'Defined in wp-config.php', 'object-sync-for-salesforce' )
 			);
 		}
-	}
-
-	/**
-	 * Dropdown formatted list of Salesforce API versions
-	 *
-	 * @return array $args is the array of API versions for the dropdown.
-	 */
-	private function version_options() {
-		$args = array();
-		if ( defined( 'OBJECT_SYNC_SF_SALESFORCE_API_VERSION' ) || ! isset( $_GET['page'] ) || sanitize_key( $_GET['page'] ) !== $this->admin_settings_url_param ) {
-			return $args;
-		}
-		$versions = $this->salesforce['sfapi']->get_api_versions();
-		foreach ( $versions['data'] as $key => $value ) {
-			$args[] = array(
-				'value' => $value['version'],
-				'text'  => $value['label'] . ' (' . $value['version'] . ')',
-			);
-		}
-		return $args;
 	}
 
 	/**
@@ -2465,62 +2470,45 @@ class Object_Sync_Sf_Admin {
 	 */
 	private function status( $sfapi ) {
 
-		$versions = $sfapi->get_api_versions();
-
-		// format this array into text so users can see the versions.
-		if ( true === $versions['cached'] ) {
-			$versions_is_cached = esc_html__( 'This list is cached, and', 'object-sync-for-salesforce' );
-		} else {
-			$versions_is_cached = esc_html__( 'This list is not cached, but', 'object-sync-for-salesforce' );
-		}
-
-		if ( true === $versions['from_cache'] ) {
-			$versions_from_cache = esc_html__( 'items were loaded from the cache', 'object-sync-for-salesforce' );
-		} else {
-			$versions_from_cache = esc_html__( 'items were not loaded from the cache', 'object-sync-for-salesforce' );
-		}
-
-		$versions_apicall_summary = sprintf(
-			// translators: 1) $versions_is_cached is the "This list is/is not cached, and/but" line, 2) $versions_from_cache is the "items were/were not loaded from the cache" line.
-			esc_html__( 'Available Salesforce API versions. %1$s %2$s. This is not an authenticated request, so it does not touch the Salesforce token.', 'object-sync-for-salesforce' ),
-			$versions_is_cached,
-			$versions_from_cache
-		);
-
 		$contacts = $sfapi->query( 'SELECT Name, Id from Contact LIMIT 100' );
 
-		// format this array into html so users can see the contacts.
-		if ( true === $contacts['cached'] ) {
-			$contacts_is_cached = esc_html__( 'They are cached, and', 'object-sync-for-salesforce' );
+		if ( 200 !== $contacts['code'] ) {
+			$contacts_apicall_summary = esc_html__( 'The plugin was unable to load a sample of Contacts from Salesforce. This may mean that there are connection issues, or that the authorization has expired.', 'object-sync-for-salesforce' );
 		} else {
-			$contacts_is_cached = esc_html__( 'They are not cached, but', 'object-sync-for-salesforce' );
-		}
 
-		if ( true === $contacts['from_cache'] ) {
-			$contacts_from_cache = esc_html__( 'they were loaded from the cache', 'object-sync-for-salesforce' );
-		} else {
-			$contacts_from_cache = esc_html__( 'they were not loaded from the cache', 'object-sync-for-salesforce' );
-		}
+			// format this array into html so users can see the contacts.
+			if ( true === $contacts['cached'] ) {
+				$contacts_is_cached = esc_html__( 'They are cached, and', 'object-sync-for-salesforce' );
+			} else {
+				$contacts_is_cached = esc_html__( 'They are not cached, but', 'object-sync-for-salesforce' );
+			}
 
-		if ( true === $contacts['is_redo'] ) {
-			$contacts_refreshed_token = esc_html__( 'This request did require refreshing the Salesforce token', 'object-sync-for-salesforce' );
-		} else {
-			$contacts_refreshed_token = esc_html__( 'This request did not require refreshing the Salesforce token', 'object-sync-for-salesforce' );
-		}
+			if ( true === $contacts['from_cache'] ) {
+				$contacts_from_cache = esc_html__( 'they were loaded from the cache', 'object-sync-for-salesforce' );
+			} else {
+				$contacts_from_cache = esc_html__( 'they were not loaded from the cache', 'object-sync-for-salesforce' );
+			}
 
-		// display contact summary if there are any contacts.
-		if ( 0 < absint( $contacts['data']['totalSize'] ) ) {
-			$contacts_apicall_summary = sprintf(
-				// translators: 1) $contacts['data']['totalSize'] is the number of items loaded, 2) $contacts['data']['records'][0]['attributes']['type'] is the name of the Salesforce object, 3) $contacts_is_cached is the "They are/are not cached, and/but" line, 4) $contacts_from_cache is the "they were/were not loaded from the cache" line, 5) is the "this request did/did not require refreshing the Salesforce token" line.
-				esc_html__( 'Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s.', 'object-sync-for-salesforce' ),
-				absint( $contacts['data']['totalSize'] ),
-				esc_html( $contacts['data']['records'][0]['attributes']['type'] ),
-				$contacts_is_cached,
-				$contacts_from_cache,
-				$contacts_refreshed_token
-			);
-		} else {
-			$contacts_apicall_summary = '';
+			if ( true === $contacts['is_redo'] ) {
+				$contacts_refreshed_token = esc_html__( 'This request did require refreshing the Salesforce token', 'object-sync-for-salesforce' );
+			} else {
+				$contacts_refreshed_token = esc_html__( 'This request did not require refreshing the Salesforce token', 'object-sync-for-salesforce' );
+			}
+
+			// display contact summary if there are any contacts.
+			if ( 0 < absint( $contacts['data']['totalSize'] ) ) {
+				$contacts_apicall_summary = sprintf(
+					// translators: 1) $contacts['data']['totalSize'] is the number of items loaded, 2) $contacts['data']['records'][0]['attributes']['type'] is the name of the Salesforce object, 3) $contacts_is_cached is the "They are/are not cached, and/but" line, 4) $contacts_from_cache is the "they were/were not loaded from the cache" line, 5) is the "this request did/did not require refreshing the Salesforce token" line.
+					esc_html__( 'Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s.', 'object-sync-for-salesforce' ),
+					absint( $contacts['data']['totalSize'] ),
+					esc_html( $contacts['data']['records'][0]['attributes']['type'] ),
+					$contacts_is_cached,
+					$contacts_from_cache,
+					$contacts_refreshed_token
+				);
+			} else {
+				$contacts_apicall_summary = '';
+			}
 		}
 
 		require_once plugin_dir_path( $this->file ) . '/templates/admin/status.php';
@@ -2560,6 +2548,34 @@ class Object_Sync_Sf_Admin {
 		$response = array(
 			'message' => $result['message'],
 			'success' => $result['success'],
+		);
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Ajax call to delete the object_sync_for_salesforce_api_version value from wp_options
+	 *
+	 * @deprecated and will be removed in 3.0.0.
+	 */
+	public function delete_salesforce_api_version() {
+		$deprecated_option_key = $this->option_prefix . 'api_version';
+		$result                = delete_option( $deprecated_option_key );
+		if ( true === $result ) {
+			$message = sprintf(
+				// translators: the parameter is the option key where the API version was stored.
+				esc_html__( 'The %1$s value was successfully deleted.', 'object-sync-for-salesforce' ),
+				'<code>' . $deprecated_option_key . '</code>'
+			);
+		} else {
+			$message = sprintf(
+				// translators: the parameter is the option key where the API version was stored.
+				esc_html__( 'There was an error in deleting the %1$s value. This may mean you have stored the value in a wp-config.php file instaed of in the options table. If this is not the case, you may want to reload the page and try again.', 'object-sync-for-salesforce' ),
+				'<code>' . $deprecated_option_key . '</code>'
+			);
+		}
+		$response = array(
+			'message' => $message,
+			'success' => $result,
 		);
 		wp_send_json_success( $response );
 	}

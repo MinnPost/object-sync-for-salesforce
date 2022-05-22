@@ -21,12 +21,15 @@ CREATE TABLE `wp_object_sync_sf_field_map` (
     `sync_triggers` text NOT NULL,
     `push_async` tinyint(1) NOT NULL DEFAULT '0',
     `push_drafts` tinyint(1) NOT NULL DEFAULT '0',
-    `pull_to_drafts` tinyint(1) NOT NULL DEFAULT '0',
     `weight` tinyint(1) NOT NULL DEFAULT '0',
     `version` varchar(255) NOT NULL DEFAULT '',
-    PRIMARY KEY  (`id`),
-    UNIQUE KEY name (`name`),
-    KEY `name_sf_type_wordpress_type` (`wordpress_object`,`salesforce_object`)
+    `pull_to_drafts` tinyint(1) NOT NULL DEFAULT '0',
+    `fieldmap_status` varchar(10) NOT NULL DEFAULT 'active',
+    `always_delete_object_maps_on_delete` tinyint(1) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `name` (`name`),
+    KEY `name_sf_type_wordpress_type` (`wordpress_object`,`salesforce_object`),
+    KEY `fieldmap_status` (`fieldmap_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 ```
 
@@ -44,8 +47,8 @@ CREATE TABLE `wp_object_sync_sf_object_map` (
     `last_sync_action` varchar(128) DEFAULT NULL,
     `last_sync_status` tinyint(1) NOT NULL DEFAULT '0',
     `last_sync_message` varchar(255) DEFAULT NULL,
-    PRIMARY KEY  (`id`),
-    KEY wordpress_object (`wordpress_object`,`wordpress_id`),
-    KEY salesforce_object (`salesforce_id`)
+    PRIMARY KEY (`id`),
+    KEY `wordpress_object` (`wordpress_object`,`wordpress_id`),
+    KEY `salesforce_object` (`salesforce_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 ```

@@ -6,75 +6,87 @@ This page lists all developer hooks available in this plugin, with links to wher
 
 - `object_sync_for_salesforce_roles_configure_salesforce`:
     - description: allow other plugins to give the `configure_salesforce` capability to WordPress roles in addition to the `administrator` role.
-    - code: [classes/activate.php](../classes/activate.php) and [classes/deactivate.php](../classes/deactivate.php)
+    - code: [classes/class-object-sync-sf-activate.php](../classes/class-object-sync-sf-activate.php) and [classes/class-object-sync-sf-deactivate.php](../classes/class-object-sync-sf-deactivate.php)
     - documentation: [extending roles](extending-roles.md)
 - `object_sync_for_salesforce_logging_post_type_args`:
 	- description: allow other plugins to modify the `post_type` arguments used to create the Log post type.
-	- code: [classes/logging.php](../classes/logging.php)
+	- code: [classes/class-object-sync-sf-logging.php](../classes/class-object-sync-sf-logging.php)
 	- documentation: [extending roles](extending-logging.md)
 - `object_sync_for_salesforce_push_object_allowed`:
     - description: prevent a push per-mapping.
-    - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
+    - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extending sync allowed](extending-sync-allowed.md#push)
 - `object_sync_for_salesforce_pull_query_modify`:
-    - description: modify the Salesforce query (SOQL) before it is sent to Salesforce to pull records.
-    - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
-    - documentation: [extending pull](extending-pull.md)
+    - description: modify the Salesforce query (SOQL) **object** before it is sent to Salesforce to pull records.
+    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
+    - documentation: [extending pull](extending-pull.md#soql-object)
+- `object_sync_for_salesforce_pull_query_string_modify`:
+    - description: modify the Salesforce query (SOQL) **string** before it is sent to Salesforce to pull records.
+    - code: [classes/class-object-sync-sf-salesforce-select-query.php](../classes/class-object-sync-sf-salesforce-select-query.php)
+    - documentation: [extending pull](extending-pull.md#soql-string)
+- `object_sync_for_salesforce_change_pull_date_value`:
+    - description: modify the value for the "last pull date" to any datetime value, including a datetime from before the plugin was activated.
+    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
+    - documentation: [extending pull](extending-pull.md#pull-date)
 - `object_sync_for_salesforce_pull_object_allowed`:
     - description: prevent a pull per-mapping.
-    - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
+    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
     - documentation: [extending sync allowed](extending-sync-allowed.md#pull)
 - `object_sync_for_salesforce_pull_params_modify`:
     - description: change what parameters are being sent to WordPress before syncing occurs
-    - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
+    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
     - documentation: [extend parameters](extending-parameters.md#salesforce-pull)
 - `object_sync_for_salesforce_pull_mapping_object`:
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
-    - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
+    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
     - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-pull)
 - `object_sync_for_salesforce_find_wp_object_match`:
-    - description: modify the $wordpress_id string here
-    - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
+    - description: modify the `$wordpress_id` string here
+    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
     - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
 - `object_sync_for_salesforce_push_params_modify`:
     - description: change what parameters are being sent to Salesforce before syncing occurs
-    - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
+    - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extend parameters](extending-parameters.md#salesforce-push)
 - `object_sync_for_salesforce_push_update_params_modify`:
     - description: change what parameters are being sent to Salesforce before syncing occurs, after checking to see if there is already an existing match in Salesforce.
-    - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
+    - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extend parameters](extending-parameters.md#salesforce-push)
 - `object_sync_for_salesforce_push_mapping_object`:
     - description: define or alter the mapping object connecting a Salesforce and WordPress object
-    - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
+    - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extend mapping object](./extending-mapping-object.md#salesforce-push)
 - `object_sync_for_salesforce_find_sf_object_match`:
-    - description: modify the $salesforce_id string here
-    - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
+    - description: modify the `$salesforce_id` string here
+    - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
 - `object_sync_for_salesforce_settings_tabs`:
     - description: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
-    - code: [classes/admin.php](../classes/admin.php)
+    - code: [classes/class-object-sync-sf-admin.php](../classes/class-object-sync-sf-admin.php)
     - documentation: [add a settings tab](./adding-settings.md#add-a-settings-tab)
 - `object_sync_for_salesforce_settings_tab_include_settings`:
     - description: when adding tabs to the Salesforce Settings screen, determine whether or not to include the default settings PHP template, which we use to render the form.
-    - code: [classes/admin.php](../classes/admin.php)
+    - code: [classes/class-object-sync-sf-admin.php](../classes/class-object-sync-sf-admin.php)
     - documentation: [change the template](./adding-settings.md#change-the-template)
 - `object_sync_for_salesforce_settings_tab_content_before`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display before the settings form.
-    - code: [classes/admin.php](../classes/admin.php)
+    - code: [classes/class-object-sync-sf-admin.php](../classes/class-object-sync-sf-admin.php)
     - documentation: [adding settings](./adding-settings.md#add-content-to-a-tab)
 - `object_sync_for_salesforce_settings_tab_content_after`:
     - description: when adding tabs to the Salesforce Settings screen, send additional content to display after the settings form.
-    - code: [classes/admin.php](../classes/admin.php)
+    - code: [classes/class-object-sync-sf-admin.php](../classes/class-object-sync-sf-admin.php)
     - documentation: [adding settings](./adding-settings.md#add-content-to-a-tab)
+- `object_sync_for_salesforce_modify_salesforce_api_version`:
+    - description: allow other plugins to change the Salesforce REST API version for API calls that are sent to Salesforce.
+    - code: [classes/class-object-sync-salesforce.php](../classes/class-object-sync-salesforce.php)
+    - documentation: [adding settings](./adding-settings.md##change-the-rest-api-version-for-salesforce-requests)
 - `object_sync_for_salesforce_modify_schedulable_classes`:
     - description: modify the array of schedulable classes. This is the list of classes that can use the `schedule` class to run a queue of scheduled tasks.
-    - code: [object-sync-for-salesforce.php](../object-sync-for-salesforce.php)
+    - code: [classes/class-object-sync-salesforce.php](../classes/class-object-sync-salesforce.php)
     - documentation: [extending scheduling](./extending-scheduling.md)
 - `object_sync_for_salesforce_select_library`:
 	- description: modify the `select` library used for choosing WordPress and Salesforce fields on fieldmaps. By default, we add the selectWoo library.
-	- code: [object-sync-for-salesforce.php](../object-sync-for-salesforce.php)
+	- code: [classes/class-object-sync-salesforce.php](../classes/class-object-sync-salesforce.php)
 	- documentation: [extending mapping options](./extending-mapping-options.md#administration-interface)
 - `object_sync_for_salesforce_wordpress_draft_statuses`:
     - description: change what statuses are considered to be drafts in WordPress.
@@ -82,94 +94,98 @@ This page lists all developer hooks available in this plugin, with links to wher
     - documentation: [extending wordpress](./extending-wordpress.md#statuses)
 - `object_sync_for_salesforce_add_more_wordpress_types`:
     - description: add additional WordPress content types to the list of what can be mapped to Salesforce objects.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-objects)
 - `object_sync_for_salesforce_remove_wordpress_types`:
     - description: remove WordPress content types from the list of what can be mapped to Salesforce objects. By default, we use this for the `wp_log` type that is included with this plugin.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-objects)
 - `object_sync_for_salesforce_create_custom_wordpress_item`:
     - description: allow plugins to run their own create methods for adding new WordPress objects, if they cannot use built in methods.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
 - `object_sync_for_salesforce_upsert_custom_wordpress_item`:
     - description: allow plugins to run their own upsert methods for checking for existence of, and then adding or updating, new WordPress objects, if they cannot use built in methods.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
 - `object_sync_for_salesforce_update_custom_wordpress_item`:
     - description: allow plugins to run their own update methods for updating existing, mapped WordPress objects, if they cannot use built in methods.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
 - `object_sync_for_salesforce_delete_custom_wordpress_item`:
     - description: allow plugins to run their own delete methods for deleting existing, mapped WordPress objects, if they cannot use built in methods.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#working-with-custom-objects)
 - `object_sync_for_salesforce_set_initial_attachment_data`:
     - description: allow plugins to add filename or parent data when creating attachment objects.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#for-attachments)
 - `object_sync_for_salesforce_wordpress_object_fields`:
     - description: when getting the fields for a WordPress object, allow plugins to add more (and also cache the array).
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
+    - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-fields)
+- `object_sync_for_salesforce_wordpress_field_is_editable`:
+    - description: by default, WordPress fields are editable except for an object's ID field (for example, the ID field for a user) because the ID is autogenerated by WordPress. If necessary, developers can modify this, allowing the plugin to attempt to write data to the ID field.
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#available-wordpress-fields)
 - `object_sync_for_salesforce_wordpress_object_data`:
     - description: when getting the data for a WordPress object, allow plugins to add more, change the formatting, etc.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending mapping options](./extending-mapping-options.md#wordpress-object-data)
 - `object_sync_for_salesforce_modify_upsert_key`:
     - description: allow developers to change the key by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
-    - code: [classes/salesforce.php](../classes/salesforce.php) and [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-salesforce.php](../classes/class-object-sync-sf-salesforce.php) and [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending upsert](./extending-upsert.md#change-the-key-or-value-for-the-upsert-match)
 - `object_sync_for_salesforce_modify_upsert_value`:
     - description: allow developers to change the value by which objects should be matched. This hook is present on the WordPress side (which runs with push operations) or the Salesforce side (which runs with pull operations).
-    - code: [classes/salesforce.php](../classes/salesforce.php) and [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-salesforce.php](../classes/class-object-sync-sf-salesforce.php) and [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending upsert](./extending-upsert.md#change-the-key-or-value-for-the-upsert-match)
 
 ## Actions
 
 - `object_sync_for_salesforce_pre_pull`:
     - description: run an action immediately before WordPress data is saved
-    - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
+    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
 - `object_sync_for_salesforce_pull_fail`:
     - description: what to do if a pull from Salesforce fails
-    - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
+    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
 - `object_sync_for_salesforce_pull_success`:
     - description: what to do if a pull from Salesforce is successful
-    - code: [classes/salesforce_pull.php](../classes/salesforce_pull.php)
+    - code: [classes/class-object-sync-sf-salesforce-pull.php](../classes/class-object-sync-sf-salesforce-pull.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-pull)
 - `object_sync_for_salesforce_pre_push`:
     - description: run an action immediately before Salesforce data is saved
-    - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
+    - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
 - `object_sync_for_salesforce_push_fail`:
     - description: what to do if a push to Salesforce fails
-    - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
+    - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
 - `object_sync_for_salesforce_push_success`:
     - description: what to do if a push to Salesforce is successful
-    - code: [classes/salesforce_push.php](../classes/salesforce_push.php)
+    - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extending before and after saving](./extending-before-and-after-saving.md#salesforce-push)
 - `object_sync_for_salesforce_set_more_user_data`:
     - description: allow plugins to set more data on user objects when users are created or updated. This could be used for permissions, for example.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
 - `object_sync_for_salesforce_set_more_post_data`:
     - description: allow plugins to set more data on post objects when posts are created or updated.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
 - `object_sync_for_salesforce_set_more_comment_data`:
     - description: allow plugins to set more data on comment objects when comments are created or updated.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
 - `object_sync_for_salesforce_set_more_attachment_data`:
     - description: allow plugins to set more data on attachment objects when attachments are created or updated.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
 - `object_sync_for_salesforce_set_more_term_data`:
     - description: allow plugins to set more data on term objects when terms are created or updated.
-    - code: [classes/wordpress.php](../classes/wordpress.php)
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
 
 ## Other developer features
@@ -178,5 +194,5 @@ This page lists all developer hooks available in this plugin, with links to wher
 
 There is not a hook for it, but this plugin does work with the Salesforce Analytics API.
 
-- code: [classes/salesforce.php](../classes/salesforce.php)
+- code: [classes/class-object-sync-sf-salesforce.php](../classes/class-object-sync-sf-salesforce.php)
 - documentation: [using the salesforce analytics api](./using-salesforce-analytics-api.md)
