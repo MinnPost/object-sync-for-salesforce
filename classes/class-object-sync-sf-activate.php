@@ -21,6 +21,13 @@ class Object_Sync_Sf_Activate {
 	public $version;
 
 	/**
+	 * The user's installed version of this plugin's database setup
+	 *
+	 * @var string
+	 */
+	public $user_installed_version;
+
+	/**
 	 * The main plugin file
 	 *
 	 * @var string
@@ -70,28 +77,19 @@ class Object_Sync_Sf_Activate {
 	public $queue;
 
 	/**
-	 * The version of this plugin's database setup
-	 *
-	 * @var string
-	 */
-	public $user_installed_version;
-
-	/**
 	 * Constructor for activate class
 	 */
 	public function __construct() {
-		$this->version             = object_sync_for_salesforce()->version;
-		$this->file                = object_sync_for_salesforce()->file;
-		$this->wpdb                = object_sync_for_salesforce()->wpdb;
-		$this->slug                = object_sync_for_salesforce()->slug;
-		$this->option_prefix       = object_sync_for_salesforce()->option_prefix;
-		$this->action_group_suffix = object_sync_for_salesforce()->action_group_suffix;
+		$this->version                = object_sync_for_salesforce()->version;
+		$this->user_installed_version = object_sync_for_salesforce()->user_installed_version;
+		$this->file                   = object_sync_for_salesforce()->file;
+		$this->wpdb                   = object_sync_for_salesforce()->wpdb;
+		$this->slug                   = object_sync_for_salesforce()->slug;
+		$this->option_prefix          = object_sync_for_salesforce()->option_prefix;
+		$this->action_group_suffix    = object_sync_for_salesforce()->action_group_suffix;
 
 		$this->schedulable_classes = object_sync_for_salesforce()->schedulable_classes;
 		$this->queue               = object_sync_for_salesforce()->queue;
-
-		// database version.
-		$this->user_installed_version = get_option( $this->option_prefix . 'db_version', '' );
 
 		$this->add_actions();
 	}
@@ -147,6 +145,7 @@ class Object_Sync_Sf_Activate {
 			name varchar(64) NOT NULL DEFAULT '',
 			fieldmap_status varchar(10) NOT NULL DEFAULT 'active',
 			wordpress_object varchar(128) NOT NULL DEFAULT '',
+			wordpress_object_default_status varchar(255) NOT NULL DEFAULT '',
 			salesforce_object varchar(255) NOT NULL DEFAULT '',
 			salesforce_record_types_allowed longblob,
 			salesforce_record_type_default varchar(255) NOT NULL DEFAULT '',

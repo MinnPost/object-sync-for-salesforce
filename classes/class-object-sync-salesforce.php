@@ -21,6 +21,13 @@ class Object_Sync_Salesforce {
 	public $version;
 
 	/**
+	 * The user's installed version of this plugin's database setup
+	 *
+	 * @var string
+	 */
+	public $user_installed_version;
+
+	/**
 	 * The main plugin file
 	 *
 	 * @var string
@@ -159,12 +166,13 @@ class Object_Sync_Salesforce {
 
 		global $wpdb;
 
-		$this->version             = $version;
-		$this->file                = $file;
-		$this->wpdb                = $wpdb;
-		$this->slug                = 'object-sync-for-salesforce';
-		$this->option_prefix       = 'object_sync_for_salesforce_';
-		$this->action_group_suffix = '_check_records';
+		$this->version                = $version;
+		$this->file                   = $file;
+		$this->wpdb                   = $wpdb;
+		$this->slug                   = 'object-sync-for-salesforce';
+		$this->option_prefix          = 'object_sync_for_salesforce_';
+		$this->user_installed_version = get_option( $this->option_prefix . 'db_version', $this->version );
+		$this->action_group_suffix    = '_check_records';
 
 		$this->schedulable_classes = array(
 			'salesforce_push' => array(

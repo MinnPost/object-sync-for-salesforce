@@ -4,10 +4,10 @@
  * this appears not to work with data() instead of attr()
  */
  function addFieldMappingRow( button ) {
-	var salesforceObject = $( '#salesforce_object' ).val();
-	var wordpressObject = $( '#wordpress_object' ).val();
+	var salesforceObject = $( '#sfwp-salesforce-object' ).val();
+	var wordpressObject = $( '#sfwp-salesforce-wordpress' ).val();
 	var newKey = new Date().getUTCMilliseconds();
-	var lastRow = $( 'table.fields tbody tr' ).last();
+	var lastRow = $( '.sfwp-a-fieldmap-values' ).last();
 	var oldKey = lastRow.attr( 'data-key' );
 	oldKey = new RegExp( oldKey, 'g' );
 	if ( '' !== wordpressObject && '' !== salesforceObject ) {
@@ -31,29 +31,30 @@
 function fieldmapFields( oldKey, newKey, lastRow ) {
 	var nextRow = '';
 	if ( jQuery.fn.select2 ) {
-		nextRow = lastRow.find( 'select' ).select2( 'destroy' ).end().clone( true ).removeClass( 'fieldmap-template' );
+		nextRow = lastRow.find( 'select' ).select2( 'destroy' ).end().clone( true ).removeClass( 'sfwp-a-fieldmap-values-template' );
 	} else {
-		nextRow = lastRow.find( 'select' ).end().clone( true ).removeClass( 'fieldmap-template' );
+		nextRow = lastRow.find( 'select' ).end().clone( true ).removeClass( 'sfwp-a-fieldmap-values-template' );
 	}
+	console.log('nextRow key is ' + newKey);
 	$( nextRow ).attr( 'data-key', newKey );
 	$( nextRow ).each( function() {
 		$( this ).html( function( i, h ) {
 			return h.replace( oldKey, newKey );
 		} );
 	} );
-	$( 'table.fields tbody' ).append( nextRow );
+	$( '.sfwp-m-fieldmap-fields' ).append( nextRow );
 	if ( jQuery.fn.select2 ) {
-		lastRow.find( 'select' ).select2();
-		nextRow.find( 'select' ).select2();
+		lastRow.find( 'select' ).select2({ width: '100%' });
+		nextRow.find( 'select' ).select2({ width: '100%' });
 	}
 }
 
 // load available options if the WordPress object changes
-$( document ).on( 'change', '.column-wordpress_field select', function() {
+$( document ).on( 'change', '.sfwp-fieldmap-wordpress-field select', function() {
 	disableAlreadyMappedFields( 'wordpress' );
 } );
 // load available options if the Salesforce object changes
-$( document ).on( 'change', '.column-salesforce_field select', function() {
+$( document ).on( 'change', '.sfwp-fieldmap-salesforce-field select', function() {
 	disableAlreadyMappedFields( 'salesforce' );
 } );
 
@@ -63,7 +64,7 @@ $( document ).on( 'change', '.column-salesforce_field select', function() {
  */
 function disableAlreadyMappedFields( system ) {
 	// load the select statements for Salesforce or WordPress.
-	var select = $( '.fieldmap-disable-mapped-fields .column-' + system + '_field select' );
+	var select = $( '.fieldmap-disable-mapped-fields .sfwp-fieldmap-' + system + '-field select' );
 	var allSelected = [];
 	// add each currently selected value to an array, then make it unique.
 	select.each( function( i, fieldChoice ) {
@@ -81,7 +82,7 @@ function disableAlreadyMappedFields( system ) {
 	} );
 	// reinitialize select2 if it's active.
 	if ( jQuery.fn.select2 ) {
-		$( '.column-' + system + '_field select' ).select2();
+		$( '.sfwp-fieldmap-' + system + '-field select' ).select2({ width: '100%' });
 	}
 }
 
@@ -108,11 +109,38 @@ $( document ).on( 'click', '.column-is_key input', function() {
 } );
 
 /**
+ * When clicking a field action, don't use the default
+ */
+$( document ).on( 'click', '.sfwp-a-fieldmap-field-action', function( event ) {
+	event.preventDefault();
+} );
+
+/**
+ * When clicking edit on a field, toggle its expanded status
+ */
+$( document ).on( 'click', '.sfwp-a-fieldmap-field-action-edit', function( event ) {
+	$( this ).closest( '.sfwp-a-fieldmap-values' ).toggleClass( 'sfwp-a-fieldmap-values-expanded' );
+	var expandedRow = $( '.sfwp-a-fieldmap-values-expanded ');
+	if ( jQuery.fn.select2 ) {
+		expandedRow.find( 'select' ).select2({ width: '100%' });
+	}
+} );
+
+/**
+ * When clicking delete on a field, offer to delete it
+ */
+$( document ).on( 'click', '.sfwp-a-fieldmap-field-action-delete', function( event ) {
+	//$( this ).closest( '.sfwp-a-fieldmap-values' ).toggleClass( 'sfwp-a-fieldmap-values-deleted' );
+} );
+
+/**
  * When the plugin loads:
  * Disable fields that are already selected
  * Select2 on select fields
  */
 $( document ).ready( function() {
+	// add the postbox JavaScript from Core.
+	postboxes.add_postbox_toggles(pagenow);
 
 	// disable the option values for fields that have already been mapped.
 	disableAlreadyMappedFields( 'salesforce' );
@@ -120,11 +148,12 @@ $( document ).ready( function() {
 
 	// setup the select2 fields if the library is present
 	if ( jQuery.fn.select2 ) {
-		$( 'select#wordpress_object' ).select2();
-		$( 'select#salesforce_object' ).select2();
-		$( 'select#salesforce_record_type_default' ).select2();
-		$( 'select#pull_trigger_field' ).select2();
-		$( '.column-wordpress_field select' ).select2();
-		$( '.column-salesforce_field select' ).select2();
+		$( 'select#sfwp-wordpress-object' ).select2();
+		$( 'select#sfwp-default-status' ).select2();
+		$( 'select#sfwp-salesforce-object' ).select2();
+		$( 'select#sfwp-salesforce-record-type-default' ).select2();
+		$( 'select#sfwp-pull-trigger-field' ).select2();
+		$( '.sfwp-fieldmap-wordpress-field select' ).select2();
+		$( '.sfwp-fieldmap-salesforce-field select' ).select2();
 	}
 } );

@@ -13,16 +13,35 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:321, classes/class-object-sync-sf-admin.php:541, classes/class-object-sync-sf-admin.php:602
+msgid "Settings"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:481
+=======
 #: classes/class-object-sync-sf-admin.php:333, classes/class-object-sync-sf-admin.php:547, classes/class-object-sync-sf-admin.php:608
 msgid "Settings"
 msgstr ""
 
 #: classes/class-object-sync-sf-admin.php:487
+>>>>>>> master
 msgid "These are the scheduled tasks that were updated: "
 msgstr ""
 
 #. translators: placeholders are: 1) the schedule name.
 #. translators: placeholders are: 1) the schedule name.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:485, classes/class-object-sync-sf-admin.php:495
+msgid "Schedule name: %1$s."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:491
+msgid "These are the scheduled tasks that have the same frequency as they had pre-migration: "
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:501
+=======
 #: classes/class-object-sync-sf-admin.php:491, classes/class-object-sync-sf-admin.php:501
 msgid "Schedule name: %1$s."
 msgstr ""
@@ -32,15 +51,55 @@ msgid "These are the scheduled tasks that have the same frequency as they had pr
 msgstr ""
 
 #: classes/class-object-sync-sf-admin.php:507
+>>>>>>> master
 msgid "If any tasks were not updated, or were not able to keep the same frequency they had before, go to the Scheduling tab to update them."
 msgstr ""
 
 #. translators: %1$s is the schedule settings URL.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:505, classes/class-object-sync-sf-admin.php:544
+=======
 #: classes/class-object-sync-sf-admin.php:511, classes/class-object-sync-sf-admin.php:550
+>>>>>>> master
 msgid "Scheduling"
 msgstr ""
 
 #. translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of that object.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:511
+msgid "%1$s ActionScheduler: the ActionScheduler library has completed its migration. See the log entry content for status on each recurring task."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:525, templates/admin/user-profile-salesforce-change.php:11, templates/admin/user-profile-salesforce-delete.php:12, templates/admin/user-profile-salesforce-map.php:10, templates/admin/user-profile-salesforce.php:14
+msgid "Salesforce"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:542, classes/class-object-sync-sf-admin.php:2551
+msgid "Authorize"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:543, templates/admin/fieldmaps-list.php:10
+msgid "Fieldmaps"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:545
+msgid "Import &amp; Export"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:550
+msgid "Log Settings"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:555, templates/admin/mapping-errors.php:10
+msgid "Mapping Errors"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:571
+msgid "Authorize tab"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:578
+=======
 #: classes/class-object-sync-sf-admin.php:517
 msgid "%1$s ActionScheduler: the ActionScheduler library has completed its migration. See the log entry content for status on each recurring task."
 msgstr ""
@@ -74,10 +133,30 @@ msgid "Authorize tab"
 msgstr ""
 
 #: classes/class-object-sync-sf-admin.php:584
+>>>>>>> master
 msgid "Fieldmaps tab"
 msgstr ""
 
 #. translators: placeholders are for the settings tab link: 1) the url, and 2) the anchor text.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:604
+msgid "Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href=\"%1$s\">%2$s</a> tab to add them."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:598
+msgid "Connect to Salesforce"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:793
+msgid "Consumer Key"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:806
+msgid "Consumer Secret"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:818
+=======
 #: classes/class-object-sync-sf-admin.php:610
 msgid "Salesforce needs to be authorized to connect to this website but the credentials are missing. Use the <a href=\"%1$s\">%2$s</a> tab to add them."
 msgstr ""
@@ -95,19 +174,175 @@ msgid "Consumer Secret"
 msgstr ""
 
 #: classes/class-object-sync-sf-admin.php:826
+>>>>>>> master
 msgid "Callback URL"
 msgstr ""
 
 #. translators: %1$s is the admin URL for the Authorize tab.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:827
+msgid "In most cases, you will want to use %1$s for this value."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:834
+=======
 #: classes/class-object-sync-sf-admin.php:835
 msgid "In most cases, you will want to use %1$s for this value."
 msgstr ""
 
 #: classes/class-object-sync-sf-admin.php:842
+>>>>>>> master
 msgid "Login Base URL"
 msgstr ""
 
 #. translators: 1) production salesforce login, 2) sandbox salesforce login.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:843
+msgid "For most Salesforce setups, you should use %1$s for production and %2$s for sandbox. If you try to use an instance name as the URL, you may encounter Salesforce errors."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:851
+msgid "Authorize URL Path"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:858, classes/class-object-sync-sf-admin.php:871
+msgid "For most Salesforce installs, this should not be changed."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:864
+msgid "Token URL Path"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:877, classes/class-object-sync-sf-admin.php:1034
+msgid "Salesforce API Version"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:890
+msgid "Limit Salesforce Objects"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:897
+msgid "Allows you to limit which Salesforce objects can be mapped"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:900
+msgid "Only Triggerable objects"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:906
+msgid "Only Updateable objects"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:915
+msgid "Salesforce Field Display Value"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:922
+msgid "When choosing Salesforce fields to map, this value determines how the dropdown will identify Salesforce fields."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:926
+msgid "Field Label"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:930
+msgid "API Name"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:937
+msgid "Prevent Duplicate Field Mapping?"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:944
+msgid "If checked, any WordPress or Salesforce field that has already been mapped, or that is selected while creating or editing a fieldmap, cannot be mapped again."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:949
+msgid "Pull Query Record Limit"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:956
+msgid "Limit the number of records that can be pulled from Salesforce in a single query."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:962
+msgid "Pull Throttle (In Seconds)"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:969
+msgid "Number of seconds to wait between repeated salesforce pulls. Prevents the webserver from becoming overloaded in case of too many cron runs, or webhook usage."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:979
+msgid "Enable the Salesforce SOAP API?"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:987
+msgid "Check this to enable the SOAP API and use it instead of the REST API when the plugin supports it. https://developer.salesforce.com/blogs/tech-pubs/2011/10/salesforce-apis-what-they-are-when-to-use-them.html to compare the two. Note: if you need to detect Salesforce merges in this plugin, you will need to enable SOAP."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:992
+msgid "Path to SOAP WSDL File"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1000
+msgid "Optionally add a path to your own WSDL file. If you do not, the plugin will use the default partner.wsdl.xml from the Force.com toolkit."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1007
+msgid "Debug Mode?"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1014
+msgid "Debug mode can, combined with the Log Settings, log things like Salesforce API requests. It can create a lot of entries if enabled; it is not recommended to use it in a production environment."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1019
+msgid "Delete Plugin Data on Uninstall?"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1026
+msgid "If checked, the plugin will delete the tables and other data it creates when you uninstall it. Unchecking this field can be useful if you need to reactivate the plugin for any reason without losing data."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1100
+msgid "Batch Settings"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1104
+msgid "Batch Size"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1112
+msgid "Set how many actions (checking for data changes, syncing a record, etc. all count as individual actions) can be run in a batch. Start with a low number here, like 5, if you are unsure."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1118
+msgid "Concurrent Batches"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1126
+msgid "Set how many batches of actions can be run at once. Start with a low number here, like 3, if you are unsure."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1136
+msgid "Run Schedule Every"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1148, classes/class-object-sync-sf-admin.php:1303
+msgid "Time Unit"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1158, classes/class-object-sync-sf-admin.php:1313
+msgid "Minutes"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1162, classes/class-object-sync-sf-admin.php:1317
+msgid "Hours"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1166, classes/class-object-sync-sf-admin.php:1321
+=======
 #: classes/class-object-sync-sf-admin.php:851
 msgid "For most Salesforce setups, you should use %1$s for production and %2$s for sandbox. If you try to use an instance name as the URL, you may encounter Salesforce errors."
 msgstr ""
@@ -249,16 +484,132 @@ msgid "Hours"
 msgstr ""
 
 #: classes/class-object-sync-sf-admin.php:1144, classes/class-object-sync-sf-admin.php:1294
+>>>>>>> master
 msgid "Days"
 msgstr ""
 
 #. translators: $this->get_schedule_count is an integer showing how many items are in the current queue.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:1175
+=======
 #: classes/class-object-sync-sf-admin.php:1153
+>>>>>>> master
 msgid "%s Item"
 msgid_plural "%s Items"
 msgstr[0] ""
 msgstr[1] ""
 
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:1180
+msgid "Clear this queue"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1220
+msgid "Enable Logging?"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1232
+msgid "Statuses to Log"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1239
+msgid "These are the statuses to log"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1242
+msgid "Error"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1247
+msgid "Success"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1252
+msgid "Notice"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1257
+msgid "Debug"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1265
+msgid "Automatically Delete Old Log Entries?"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1277
+msgid "Age to Delete Log Entries"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1284
+msgid "If automatic deleting is enabled, it will affect logs this old."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1290
+msgid "Check For Old Logs Every"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1310
+msgid "These two fields are how often the site will check for logs to delete."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1328
+msgid "Clear This Many Log Entries"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1335
+msgid "This number is how many log entries the plugin will try to clear at a time. If you do not enter a number, the default is 100."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1341
+msgid "Triggers to Log"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1348
+msgid "These are the triggers to log"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1351, templates/admin/fieldmaps-add-edit-clone.php:698
+msgid "WordPress Create"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1356, templates/admin/fieldmaps-add-edit-clone.php:703
+msgid "WordPress Update"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1361, templates/admin/fieldmaps-add-edit-clone.php:708
+msgid "WordPress Delete"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1366, templates/admin/fieldmaps-add-edit-clone.php:713
+msgid "Salesforce Create"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1371, templates/admin/fieldmaps-add-edit-clone.php:718
+msgid "Salesforce Update"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1376, templates/admin/fieldmaps-add-edit-clone.php:723
+msgid "Salesforce Delete"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1415
+msgid "Mapping Error Settings"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1418
+msgid "Errors per page"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1426
+msgid "Set how many mapping errors to show on a single page."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1468
+msgid "Your account does not have permission to edit the Object Sync for Salesforce plugin's settings."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1474
+=======
 #: classes/class-object-sync-sf-admin.php:1158
 msgid "Clear this queue"
 msgstr ""
@@ -364,10 +715,58 @@ msgid "Your account does not have permission to edit the Object Sync for Salesfo
 msgstr ""
 
 #: classes/class-object-sync-sf-admin.php:1441
+>>>>>>> master
 msgid "At least the admin area of your website must use HTTPS to connect with Salesforce. WordPress reports that your site environment does not, and cannot, use HTTPS. You may need to work with your hosting company to make the switch before you can use this plugin."
 msgstr ""
 
 #. translators: 1) is the site health URL, and 2) is the text for the site health page title.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:1482
+msgid "Your website is not currently using HTTPS, but your environment does support it. Visit your website's <a href=\"%1$s\">%2$s</a> for more information. If you have just migrated to HTTPS, WordPress may take some time to update this detection."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1484
+msgid "Site Health screen"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1491
+msgid "Errors kept this fieldmap from being saved."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1497
+msgid "There is no fieldmap with the supplied ID. Instead, the list of all available fieldmaps is displayed."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1503
+msgid "Errors kept this object map from being saved."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1509
+msgid "This data was successfully saved."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1515
+msgid "This data was partially successfully saved. This means some of the data was unable to save. If you have enabled logging in the plugin settings, there should be a log entry with further details."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1521
+msgid "This data was not successfully saved. Try again."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:1527
+msgid "Errors kept these mapping errors from being deleted."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2072
+msgid "Please upload a valid .json file"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2077
+msgid "Please upload a file to import"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2158
+=======
 #: classes/class-object-sync-sf-admin.php:1449
 msgid "Your website is not currently using HTTPS, but your environment does support it. Visit your website's <a href=\"%1$s\">%2$s</a> for more information. If you have just migrated to HTTPS, WordPress may take some time to update this detection."
 msgstr ""
@@ -418,20 +817,85 @@ msgid "Please upload a file to import"
 msgstr ""
 
 #: classes/class-object-sync-sf-admin.php:2086
+>>>>>>> master
 msgid "These are the import items that were not able to save: "
 msgstr ""
 
 #. translators: placeholders are: 1) the fieldmap row ID, 2) the Salesforce object type, 3) the WordPress object type.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:2162
+=======
 #: classes/class-object-sync-sf-admin.php:2090
+>>>>>>> master
 msgid "Fieldmap id (if it exists): %1$s. Salesforce object type: %2$s. WordPress object type: %3$s"
 msgstr ""
 
 #. translators: placeholders are: 1) the mapping object row ID, 2) the ID of the Salesforce object, 3) the WordPress object type.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:2171
+=======
 #: classes/class-object-sync-sf-admin.php:2099
+>>>>>>> master
 msgid "Mapping object id (if it exists): %1$s. Salesforce Id: %2$s. WordPress object type: %3$s"
 msgstr ""
 
 #. translators: %1$s is the log status.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:2182
+msgid "%1$s on import: some of the rows were unable to save. Read this post for details."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2294, classes/class-object-sync-sf-admin.php:2385
+msgid "Defined in wp-config.php"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2353
+msgid "Select one"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2474
+msgid "This list is not cached, but"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2472
+msgid "This list is cached, and"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2480
+msgid "items were not loaded from the cache"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2478
+msgid "items were loaded from the cache"
+msgstr ""
+
+#. translators: 1) $versions_is_cached is the "This list is/is not cached, and/but" line, 2) $versions_from_cache is the "items were/were not loaded from the cache" line.
+#: classes/class-object-sync-sf-admin.php:2485
+msgid "Available Salesforce API versions. %1$s %2$s. This is not an authenticated request, so it does not touch the Salesforce token."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2496
+msgid "They are not cached, but"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2494
+msgid "They are cached, and"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2502
+msgid "they were not loaded from the cache"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2500
+msgid "they were loaded from the cache"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2508
+msgid "This request did not require refreshing the Salesforce token"
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2506
+=======
 #: classes/class-object-sync-sf-admin.php:2110
 msgid "%1$s on import: some of the rows were unable to save. Read this post for details."
 msgstr ""
@@ -465,10 +929,38 @@ msgid "This request did not require refreshing the Salesforce token"
 msgstr ""
 
 #: classes/class-object-sync-sf-admin.php:2403
+>>>>>>> master
 msgid "This request did require refreshing the Salesforce token"
 msgstr ""
 
 #. translators: 1) $contacts['data']['totalSize'] is the number of items loaded, 2) $contacts['data']['records'][0]['attributes']['type'] is the name of the Salesforce object, 3) $contacts_is_cached is the "They are/are not cached, and/but" line, 4) $contacts_from_cache is the "they were/were not loaded from the cache" line, 5) is the "this request did/did not require refreshing the Salesforce token" line.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-admin.php:2515
+msgid "Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2585
+msgid "The cache was not cleared because it is empty. You can try again later."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2581
+msgid "There was an error clearing the plugin cache. Try refreshing this page."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2579
+msgid "The plugin cache has been cleared."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2798
+msgid "You need to specify the name of the schedule you want to clear."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2796
+msgid "You have cleared the %s schedule."
+msgstr ""
+
+#: classes/class-object-sync-sf-admin.php:2853, classes/class-object-sync-sf-salesforce-pull.php:1977, classes/class-object-sync-sf-salesforce-push.php:1320, classes/class-object-sync-sf-salesforce-push.php:1193
+=======
 #: classes/class-object-sync-sf-admin.php:2412
 msgid "Salesforce successfully returned %1$s %2$s records. %3$s %4$s. %5$s."
 msgstr ""
@@ -507,6 +999,7 @@ msgid "You have cleared the %s schedule."
 msgstr ""
 
 #: classes/class-object-sync-sf-admin.php:2779, classes/class-object-sync-sf-salesforce-pull.php:1823, classes/class-object-sync-sf-salesforce-pull.php:1973, classes/class-object-sync-sf-salesforce-push.php:1384, classes/class-object-sync-sf-salesforce-push.php:1268
+>>>>>>> master
 msgid "Mapping object updated via function: "
 msgstr ""
 
@@ -527,11 +1020,26 @@ msgid "Inactive"
 msgstr ""
 
 #. translators: %1$s is the log status, %2$s is the name of a WordPress object. %3$s is the id of that object.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-mapping.php:653
+=======
 #: classes/class-object-sync-sf-mapping.php:670
+>>>>>>> master
 msgid "%1$s Mapping: error caused by trying to map the WordPress %2$s with ID of %3$s to Salesforce ID starting with \"tmp_sf_\", which is invalid."
 msgstr ""
 
 #. translators: %1$s is the status word "Error". %2$s is the Id of a Salesforce object. %3$s is the ID of a mapping object.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-mapping.php:680
+msgid "%1$s: Mapping: there is already a WordPress object mapped to the Salesforce object %2$s and the mapping object ID is %3$s"
+msgstr ""
+
+#: classes/class-object-sync-sf-mapping.php:1248
+msgid "&laquo;"
+msgstr ""
+
+#: classes/class-object-sync-sf-mapping.php:1249
+=======
 #: classes/class-object-sync-sf-mapping.php:692
 msgid "%1$s: Mapping: there is already a WordPress object mapped to the Salesforce object %2$s and the mapping object ID is %3$s"
 msgstr ""
@@ -541,6 +1049,7 @@ msgid "&laquo;"
 msgstr ""
 
 #: classes/class-object-sync-sf-mapping.php:1277
+>>>>>>> master
 msgid "&raquo;"
 msgstr ""
 
@@ -659,39 +1168,89 @@ msgid "The Salesforce object data that was attempted: %1$s"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-salesforce-pull.php:1621
+msgid "%1$s: There is at least one object map with a WordPress ID of 0."
+msgstr ""
+
+#: classes/class-object-sync-sf-salesforce-pull.php:1634
+=======
 #: classes/class-object-sync-sf-salesforce-pull.php:1673
 msgid "%1$s: There is at least one object map with a WordPress ID of 0."
 msgstr ""
 
 #: classes/class-object-sync-sf-salesforce-pull.php:1685
+>>>>>>> master
 msgid "There are multiple object maps with WordPress ID of 0. Their IDs are: "
 msgstr ""
 
 #. translators: placeholders are: 1) the mapping object row ID, 2) the ID of the Salesforce object, 3) the WordPress object type.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-salesforce-pull.php:1638
+msgid "Mapping object id: %1$s. Salesforce Id: %2$s. WordPress object type: %3$s"
+msgstr ""
+
+#: classes/class-object-sync-sf-salesforce-pull.php:1628
+=======
 #: classes/class-object-sync-sf-salesforce-pull.php:1689
 msgid "Mapping object id: %1$s. Salesforce Id: %2$s. WordPress object type: %3$s"
 msgstr ""
 
 #: classes/class-object-sync-sf-salesforce-pull.php:1679
+>>>>>>> master
 msgid "There is an object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of 0 and the Salesforce object with ID of %3$s"
 msgstr ""
 
 #. translators: placeholders are: 1) log status, 2) mapping object row id, 3) WordPress object tyoe, 4) individual WordPress item ID, 5) individual Salesforce item ID.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-salesforce-pull.php:1677
+=======
 #: classes/class-object-sync-sf-salesforce-pull.php:1719
+>>>>>>> master
 msgid "%1$s: Because object map %2$s already exists, WordPress %3$s %4$s was not mapped to Salesforce Id %5$s"
 msgstr ""
 
 #. translators: placeholders are 1) WordPress object type, 2) field name for the WordPress id, 3) the WordPress id value, 4) the Salesforce object type, 5) the Salesforce object Id that was modified, 6) the mapping object row id.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-salesforce-pull.php:1687
+=======
 #: classes/class-object-sync-sf-salesforce-pull.php:1728
+>>>>>>> master
 msgid "The WordPress %1$s with %2$s of %3$s is already mapped to the Salesforce %4$s with Id of %5$s in the mapping object with id of %6$s. The Salesforce %4$s with Id of %5$s was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing data unintentionally."
 msgstr ""
 
 #. translators: placeholders are: 1) the log status, 2) what operation is happening, and 3) the name of the WordPress object.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-salesforce-pull.php:1776
+=======
 #: classes/class-object-sync-sf-salesforce-pull.php:1832
+>>>>>>> master
 msgid "%1$s: %2$s WordPress %3$s"
 msgstr ""
 
 #. translators: placeholders are: 1) the name of the Salesforce object, and 2) Id of the Salesforce object.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-salesforce-pull.php:1788
+msgid " (Salesforce %1$s with Id of %2$s)"
+msgstr ""
+
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object type, 4) the Salesforce object Id value.
+#: classes/class-object-sync-sf-salesforce-pull.php:1903
+msgid "%1$s syncing: %2$s to WordPress (Salesforce %3$s Id %4$s)"
+msgstr ""
+
+#. translators: placeholders are: 1) the name of the WordPress object type, 2) the WordPress id field name, 3) the WordPress id field value, 4) the array of errors.
+#: classes/class-object-sync-sf-salesforce-pull.php:1912
+msgid "Object: %1$s with %2$s of %3$s"
+msgstr ""
+
+#: classes/class-object-sync-sf-salesforce-pull.php:1912
+msgid "Message: "
+msgstr ""
+
+#. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object type, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value.
+#: classes/class-object-sync-sf-salesforce-pull.php:1856, classes/class-object-sync-sf-salesforce-pull.php:1988
+=======
 #: classes/class-object-sync-sf-salesforce-pull.php:1842
 msgid " (Salesforce %1$s with Id of %2$s)"
 msgstr ""
@@ -701,24 +1260,48 @@ msgid "An error occurred pulling this data from Salesforce. See the plugin logs.
 msgstr ""
 
 #: classes/class-object-sync-sf-salesforce-pull.php:1804, classes/class-object-sync-sf-salesforce-pull.php:1954
+>>>>>>> master
 msgid "%1$s: %2$s WordPress %3$s with %4$s of %5$s (Salesforce %6$s Id of %7$s)"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the WordPress object, 4) the WordPress id field name, 5) the WordPress object id value, 6) the name of the Salesforce object, 7) the Salesforce Id value.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-salesforce-pull.php:2024
+=======
 #: classes/class-object-sync-sf-salesforce-pull.php:1983
+>>>>>>> master
 msgid "%1$s: %2$s WordPress %3$s with %4$s of %5$s (Salesforce %6$s with Id of %7$s)"
 msgstr ""
 
 #. translators: parameter is the name of the WordPress id field name.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-salesforce-pull.php:2200
+msgid "The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress %1$s.) They are:"
+msgstr ""
+
+#: classes/class-object-sync-sf-salesforce-pull.php:2210
+=======
 #: classes/class-object-sync-sf-salesforce-pull.php:2126
 msgid "The WordPress record was not deleted because there are multiple Salesforce IDs that match this WordPress %1$s.) They are:"
 msgstr ""
 
 #: classes/class-object-sync-sf-salesforce-pull.php:2136
+>>>>>>> master
 msgid "The map row between this Salesforce object and the WordPress object, as stored in the WordPress database, will be deleted, and this Salesforce object has been deleted, but WordPress object data will remain untouched."
 msgstr ""
 
 #. translators: placeholders are: 1) the operation that is happening, 2) the name of the WordPress object type, 3) the WordPress id field name, 4) the WordPress object id value, 5) the name of the Salesforce object type, 6) the Salesforce Id.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-salesforce-pull.php:2221
+msgid "%1$s: %2$s on WordPress %3$s with %4$s of %5$s was stopped because there are other WordPress records mapped to Salesforce %6$s of %7$s"
+msgstr ""
+
+#: classes/class-object-sync-sf-salesforce-pull.php:2123, classes/class-object-sync-sf-salesforce-pull.php:2171
+msgid "%1$s: %2$s WordPress %3$s with %4$s of %5$s (%6$s %7$s)"
+msgstr ""
+
+#: classes/class-object-sync-sf-salesforce-pull.php:2300
+=======
 #: classes/class-object-sync-sf-salesforce-pull.php:2141
 msgid "%1$s: %2$s on WordPress %3$s with %4$s of %5$s was stopped because there are other WordPress records mapped to Salesforce %6$s of %7$s"
 msgstr ""
@@ -728,6 +1311,7 @@ msgid "%1$s: %2$s WordPress %3$s with %4$s of %5$s (%6$s %7$s)"
 msgstr ""
 
 #: classes/class-object-sync-sf-salesforce-pull.php:2244
+>>>>>>> master
 msgid "Mapping object created via function: "
 msgstr ""
 
@@ -894,43 +1478,81 @@ msgstr ""
 msgid "Unable to access identity service."
 msgstr ""
 
+<<<<<<< HEAD
+#. translators: 1) is log status, 2) is object type, 3) is id value.
+#: classes/class-object-sync-sf-wordpress.php:886
+msgid "%1$s: WordPress update for %2$s ID %3$s was unsuccessful with these errors:"
+msgstr ""
+
+#. translators: placeholders are: 1) the log status.
+#: classes/class-object-sync-sf-wordpress.php:1202
+=======
 #. translators: placeholders are: 1) the log status.
 #: classes/class-object-sync-sf-wordpress.php:1148
+>>>>>>> master
 msgid "%1$s: Users: Tried to run user_upsert, and ended up without a user id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-wordpress.php:1544
+=======
 #: classes/class-object-sync-sf-wordpress.php:1478
+>>>>>>> master
 msgid "%1$s: Posts: Tried to run post_upsert, and ended up without a post id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-wordpress.php:1879
+=======
 #: classes/class-object-sync-sf-wordpress.php:1785
+>>>>>>> master
 msgid "%1$s: Attachments: Tried to run attachment_upsert, and ended up without an attachment id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-wordpress.php:2223
+=======
 #: classes/class-object-sync-sf-wordpress.php:2104
+>>>>>>> master
 msgid "%1$s: Terms: Tried to run term_upsert, and ended up without a term id"
 msgstr ""
 
 #. translators: %1$s is the log status. %2$s is a number. %3$s is a key. %4$s is the value of that key. %5$s is a var_export'd array of comments.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-wordpress.php:2471
+=======
 #: classes/class-object-sync-sf-wordpress.php:2342
+>>>>>>> master
 msgid "%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-wordpress.php:2557
+=======
 #: classes/class-object-sync-sf-wordpress.php:2422
+>>>>>>> master
 msgid "%1$s: Comments: Tried to run comment_upsert, and ended up without a comment id"
 msgstr ""
 
 #. translators: 1) is the WordPress object type, 2) is the method that should be used to save the value.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-wordpress.php:2673
+=======
 #: classes/class-object-sync-sf-wordpress.php:2532
+>>>>>>> master
 msgid "Tried to add %1$s meta with method %2$s."
 msgstr ""
 
 #. translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save.
+<<<<<<< HEAD
+#: classes/class-object-sync-sf-wordpress.php:2742
+=======
 #: classes/class-object-sync-sf-wordpress.php:2597
+>>>>>>> master
 msgid "Unable to update %1$s meta key %2$s with method %3$s. The stored value is %4$s and the new value should be %5$s."
 msgstr ""
 
@@ -942,6 +1564,65 @@ msgstr ""
 msgid "Disconnect from Salesforce"
 msgstr ""
 
+<<<<<<< HEAD
+#: templates/admin/fieldmaps-add-edit-clone.php:34, templates/admin/fieldmaps-add-edit-clone.php:732
+msgid "Save Fieldmap"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:38
+msgid "Toggle panel: Save Fieldmap"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:46
+msgid "Save or delete your fieldmap."
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:50, templates/admin/fieldmaps-add-edit-clone.php:372, templates/admin/fieldmaps-add-edit-clone.php:507, templates/admin/fieldmaps-list.php:50, templates/admin/mapping-errors.php:109, templates/admin/user-profile-salesforce.php:23
+msgid "Delete"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:54, templates/admin/fieldmaps-add-edit-clone.php:55
+msgid "Save"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:67
+msgid "Fieldmap Label"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:74, templates/admin/fieldmaps-list.php:15
+msgid "WordPress Object"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:79, templates/admin/fieldmaps-add-edit-clone.php:156
+msgid "Select Object Type"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:100
+msgid "Default Status"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:102
+msgid "Select Default Status"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:132
+msgid "Push Drafts to Salesforce"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:135
+msgid "Pull to Drafts in WordPress"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:140
+msgid "Push changes immediately"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:144
+msgid "If you check this box, the plugin will try to save data to Salesforce immediately, rather than placing it into the queue system. Often this is not necessary."
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:151, templates/admin/fieldmaps-list.php:16
+=======
 #: templates/admin/fieldmaps-add-edit-clone.php:21, templates/admin/fieldmaps-list.php:14, templates/admin/fieldmaps-list.php:39, templates/admin/mapping-errors.php:29, templates/admin/mapping-errors.php:42
 msgid "Label"
 msgstr ""
@@ -955,62 +1636,147 @@ msgid "Select Object Type"
 msgstr ""
 
 #: templates/admin/fieldmaps-add-edit-clone.php:51, templates/admin/fieldmaps-list.php:16, templates/admin/fieldmaps-list.php:60
+>>>>>>> master
 msgid "Salesforce Object"
 msgstr ""
 
 #. translators: 1) is the link to troubleshooting object maps in the plugin documentation.
-#: templates/admin/fieldmaps-add-edit-clone.php:93
+#: templates/admin/fieldmaps-add-edit-clone.php:195
 msgid "The plugin is unable to access any Salesforce objects for object mapping."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:93
+#: templates/admin/fieldmaps-add-edit-clone.php:195
 msgid " This is most likely a permissions issue. See %1$s in the plugin documentation for more information and possible solutions."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:111
+#: templates/admin/fieldmaps-add-edit-clone.php:203
 msgid "Allowed Record Types"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:145
+#: templates/admin/fieldmaps-add-edit-clone.php:239
 msgid "Default Record Type"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:146
-msgid "Select record type"
+#: templates/admin/fieldmaps-add-edit-clone.php:255
+msgid "Select Record Type"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:172
-msgid "Date Field to Trigger Pull"
+#: templates/admin/fieldmaps-add-edit-clone.php:284
+msgid "Date Field to Trigger a Pull"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:202
+#: templates/admin/fieldmaps-add-edit-clone.php:296
+msgid "Select Date field"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:315
 msgid "When the plugin checks for data to bring from Salesforce into WordPress, it will use the selected field to determine what relevant changes have occurred in Salesforce."
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:207
-msgid "Fieldmap"
+#: templates/admin/fieldmaps-add-edit-clone.php:322
+msgid "Field Mappings"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:211
+#: templates/admin/fieldmaps-add-edit-clone.php:327, templates/admin/fieldmaps-add-edit-clone.php:378, templates/admin/fieldmaps-add-edit-clone.php:512
 msgid "WordPress Field"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:212
+#: templates/admin/fieldmaps-add-edit-clone.php:331, templates/admin/fieldmaps-add-edit-clone.php:414, templates/admin/fieldmaps-add-edit-clone.php:559
 msgid "Salesforce Field"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:213
-msgid "Prematch"
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:214
-msgid "Salesforce Key"
-msgstr ""
-
-#: templates/admin/fieldmaps-add-edit-clone.php:215
+#: templates/admin/fieldmaps-add-edit-clone.php:335
 msgid "Direction"
 msgstr ""
 
+<<<<<<< HEAD
+#: templates/admin/fieldmaps-add-edit-clone.php:348
+msgid "WordPress to Salesforce"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:346
+msgid "Salesforce to WordPress"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:344
+msgid "Sync"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:369, templates/admin/fieldmaps-add-edit-clone.php:507
+msgid "Expand to Edit"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:382, templates/admin/fieldmaps-add-edit-clone.php:498, templates/admin/fieldmaps-add-edit-clone.php:516
+msgid "Select WordPress Field"
+msgstr ""
+
+#. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
+#. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
+#: templates/admin/fieldmaps-add-edit-clone.php:404, templates/admin/fieldmaps-add-edit-clone.php:549
+msgid "To map a custom meta field (such as post meta, user meta, term meta, etc.), WordPress must have at least one value for that field. If you add a new meta field and want to map it, make sure to add a value for it and "
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:404, templates/admin/fieldmaps-add-edit-clone.php:549
+msgid " to see the field listed here."
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:406, templates/admin/fieldmaps-add-edit-clone.php:551
+msgid "clear the plugin cache"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:418, templates/admin/fieldmaps-add-edit-clone.php:501, templates/admin/fieldmaps-add-edit-clone.php:563
+msgid "Select Salesforce Field"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:458, templates/admin/fieldmaps-add-edit-clone.php:615
+msgid "Salesforce fields containing a * are required fields for this object type."
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:461, templates/admin/fieldmaps-add-edit-clone.php:618
+msgid "Salesforce fields containing a 🔒 are locked fields for this object type. This means you can pull data from them into WordPress, but you cannot push data to them from WordPress."
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:464, templates/admin/fieldmaps-add-edit-clone.php:621
+msgid "Date Format"
+msgstr ""
+
+#. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
+#. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
+#: templates/admin/fieldmaps-add-edit-clone.php:473, templates/admin/fieldmaps-add-edit-clone.php:630
+msgid "The plugin will match this date format before saving the value of this Salesforce field into WordPress. Date fields coming from WordPress are formatted for Salesforce API requirements. Get valid PHP date formats %1$."
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:474, templates/admin/fieldmaps-add-edit-clone.php:631
+msgid "directly from the PHP website"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:483, templates/admin/fieldmaps-add-edit-clone.php:640
+msgid "Close This Field Mapping"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:483, templates/admin/fieldmaps-add-edit-clone.php:640
+msgid "Delete This Field Mapping"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:504
+msgid "Select Direction"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:652
+msgid "Add field mapping"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:650
+msgid "Add another field mapping"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:662
+msgid "Action Triggers"
+msgstr ""
+
+#: templates/admin/fieldmaps-add-edit-clone.php:727
+msgid "Select which actions on WordPress objects and Salesforce objects should trigger a synchronization. These settings are used when the plugin pushes data to, and pulls data from, Salesforce."
+=======
 #: templates/admin/fieldmaps-add-edit-clone.php:216, templates/admin/fieldmaps-list.php:54, templates/admin/mapping-errors.php:128, templates/admin/user-profile-salesforce.php:23
 msgid "Delete"
 msgstr ""
@@ -1146,6 +1912,7 @@ msgstr ""
 #. translators: the placeholder refers to the currently selected method (add, edit, or clone).
 #: templates/admin/fieldmaps-add-edit-clone.php:620
 msgid "%1$s fieldmap"
+>>>>>>> master
 msgstr ""
 
 #: templates/admin/fieldmaps-delete.php:15
@@ -1165,6 +1932,17 @@ msgstr ""
 msgid "Add New"
 msgstr ""
 
+<<<<<<< HEAD
+#: templates/admin/fieldmaps-list.php:14, templates/admin/status.php:28
+msgid "Label"
+msgstr ""
+
+#: templates/admin/fieldmaps-list.php:17, templates/admin/mapping-errors.php:36, templates/admin/mapping-errors.php:50, templates/admin/user-profile-salesforce.php:47
+msgid "Actions"
+msgstr ""
+
+=======
+>>>>>>> master
 #. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
 #. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
 #. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.

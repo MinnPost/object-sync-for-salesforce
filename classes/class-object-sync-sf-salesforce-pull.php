@@ -1665,9 +1665,117 @@ class Object_Sync_Sf_Salesforce_Pull {
 					)
 				);
 
+<<<<<<< HEAD
+				if ( null !== $wordpress_id ) {
+					$upsert_key     = $wordpress_id_field_name;
+					$upsert_value   = $wordpress_id;
+					$upsert_methods = array();
+				}
+
+				// with the flag at the end, upsert returns a $wordpress_id only
+				// we can then check to see if it has a mapping object
+				// we should only do this if the above hook didn't already set the $wordpress_id.
+				if ( null === $wordpress_id ) {
+					// we don't need to check the plugin version here because the default status is empty in the mapping class, if there's no value in the database
+					$wordpress_id = $this->wordpress->object_upsert(
+						$salesforce_mapping['wordpress_object'],
+						$upsert_key,
+						$upsert_value,
+						$upsert_methods,
+						$params,
+						$salesforce_mapping['pull_to_drafts'],
+						true,
+						$salesforce_mapping['wordpress_object_default_status']
+					);
+				}
+
+				// placeholder mapping object.
+				$mapping_object = array();
+
+				// find out if there is a mapping object for this WordPress object already
+				// don't do it if the WordPress id is 0.
+				if ( 0 !== $wordpress_id ) {
+					$mapping_objects = $this->mappings->get_all_object_maps(
+						array(
+							'wordpress_id'     => $wordpress_id,
+							'wordpress_object' => $salesforce_mapping['wordpress_object'],
+						)
+					);
+					if ( isset( $mapping_objects[0] ) && is_array( $mapping_objects[0] ) ) {
+						$mapping_object = $mapping_objects[0];
+					}
+				} else {
+					// if the wp object is 0, check to see if there are any object maps that have an id of 0. if there are any, log them.
+					$mapping_object_debug = $this->mappings->get_all_object_maps(
+						array(
+							'wordpress_id' => $wordpress_id,
+						)
+					);
+
+					if ( ! empty( $mapping_object_debug ) ) {
+						// create log entry to warn about at least one id of 0.
+						$status = 'error';
+						$title  = sprintf(
+							// translators: placeholders are: 1) the log status.
+							esc_html__( '%1$s: There is at least one object map with a WordPress ID of 0.', 'object-sync-for-salesforce' ),
+							ucfirst( esc_attr( $status ) )
+						);
+
+						if ( 1 === count( $mapping_object_debug ) ) {
+							$body = sprintf(
+								// translators: placeholders are: 1) the mapping object row ID, 2) the name of the WordPress object, 3) the ID of the Salesforce object it was trying to map.
+								esc_html__( 'There is an object map with ID of %1$s and it is mapped to the WordPress %2$s with ID of 0 and the Salesforce object with ID of %3$s', 'object-sync-for-salesforce' ),
+								absint( $mapping_object_debug[0]['id'] ),
+								esc_attr( $mapping_object_debug[0]['wordpress_object'] ),
+								esc_attr( $mapping_object_debug[0]['salesforce_id'] )
+							);
+						} else {
+							$body = sprintf( esc_html__( 'There are multiple object maps with WordPress ID of 0. Their IDs are: ', 'object-sync-for-salesforce' ) . '<ul>' );
+							foreach ( $mapping_object_debug as $mapping_object ) {
+								$body .= sprintf(
+									// translators: placeholders are: 1) the mapping object row ID, 2) the ID of the Salesforce object, 3) the WordPress object type.
+									'<li>' . esc_html__( 'Mapping object id: %1$s. Salesforce Id: %2$s. WordPress object type: %3$s', 'object-sync-for-salesforce' ) . '</li>',
+									absint( $mapping_object['id'] ),
+									esc_attr( $mapping_object['salesforce_id'] ),
+									esc_attr( $salesforce_mapping['wordpress_object'] )
+								);
+							}
+							$body .= sprintf( '</ul>' );
+						}
+
+						if ( isset( $this->logging ) ) {
+							$logging = $this->logging;
+						} elseif ( class_exists( 'Object_Sync_Sf_Logging' ) ) {
+							$logging = new Object_Sync_Sf_Logging( $this->wpdb, $this->version );
+						}
+						$parent = 0;
+
+						$result = array(
+							'title'   => $title,
+							'message' => $body,
+							'trigger' => $sf_sync_trigger,
+							'parent'  => $parent,
+							'status'  => $status,
+						);
+
+						$logging->setup( $result );
+
+						$results[] = $result;
+					} // End if() statement.
+				} // End if() statement.
+
+				// there is already a mapping object. don't change the WordPress data to match this new Salesforce record, but log it.
+				if ( isset( $mapping_object['id'] ) ) {
+					// set the transient so that salesforce_push doesn't start doing stuff, then return out of here.
+					set_transient( 'salesforce_pulling_' . $mapping_object['salesforce_id'], 1, $seconds );
+					set_transient( 'salesforce_pulling_object_id', $mapping_object['salesforce_id'] );
+					// create log entry to indicate that nothing happened.
+					$status = 'notice';
+=======
 				if ( ! empty( $mapping_object_debug ) ) {
 					// create log entry to warn about at least one id of 0.
 					$status = 'error';
+>>>>>>> master
 					$title  = sprintf(
 						// translators: placeholders are: 1) the log status.
 						esc_html__( '%1$s: There is at least one object map with a WordPress ID of 0.', 'object-sync-for-salesforce' ),
@@ -1771,6 +1879,39 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$this->sync_transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $object['Id'] );
 				// now we can upsert the object in wp if we've gotten to this point
 				// this command will either create or update the object.
+<<<<<<< HEAD
+				// we don't need to check the plugin version here because the default status is empty in the mapping class, if there's no value in the database.
+				$result = $this->wordpress->object_upsert(
+					$salesforce_mapping['wordpress_object'],
+					$upsert_key,
+					$upsert_value,
+					$upsert_methods,
+					$params,
+					$salesforce_mapping['pull_to_drafts'],
+					false,
+					$salesforce_mapping['wordpress_object_default_status']
+				);
+			} else {
+				// No key or prematch field exists on this field map object, create a new object in WordPress.
+				$op                = 'Create';
+				$mapping_object_id = $this->create_object_map( $object, $this->mappings->generate_temporary_id( 'pull' ), $salesforce_mapping );
+				set_transient( 'salesforce_pulling_' . $mapping_object_id, 1, $seconds );
+				set_transient( 'salesforce_pulling_object_id', $mapping_object_id );
+				$mapping_objects = $this->mappings->get_all_object_maps(
+					array(
+						'id' => $mapping_object_id,
+					)
+				);
+				if ( isset( $mapping_objects[0] ) && is_array( $mapping_objects[0] ) ) {
+					$mapping_object = $mapping_objects[0];
+				}
+				// we don't need to check the plugin version here because the default status is empty in the mapping class, if there's no value in the database.
+				$result = $this->wordpress->object_create(
+					$salesforce_mapping['wordpress_object'],
+					$params,
+					$salesforce_mapping['wordpress_object_default_status']
+				);
+=======
 				$result = $this->wordpress->object_upsert( $salesforce_mapping['wordpress_object'], $upsert_key, $upsert_value, $upsert_methods, $params, $salesforce_mapping['pull_to_drafts'] );
 			} else {
 				// No key or prematch field exists on this field map object, create a new object in WordPress.
@@ -1778,6 +1919,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				$this->sync_transients->set( 'salesforce_pulling_object_id', '', $salesforce_mapping['id'], $mapping_object_id );
 				// now we can create the object in wp if we've gotten to this point.
 				$result = $this->wordpress->object_create( $salesforce_mapping['wordpress_object'], $params );
+>>>>>>> master
 			} // End if() statement.
 		} catch ( Object_Sync_Sf_Exception $e ) {
 			$result['errors'] = $e->getMessage();
