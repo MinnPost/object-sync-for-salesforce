@@ -492,16 +492,20 @@ class Object_Sync_Sf_Salesforce {
 		*/
 
 		// todo: figure out why it breaks when the session is expired.
-		error_log( 'url is ' . $url );
+		error_log( 'url is ' . $url . ' and method is ' . $method . ' and data is ' . print_r( $data, true ) . ' and headers is ' . print_r( $headers, true ) );
 
 		if ( false === $this->curl ) {
 
 			$body = array();
-			if ( 'POST' === $method ) {
+			/*if ( 'POST' === $method ) {
 				$body = $data;
 			} elseif ( 'PATCH' === $method || 'DELETE' === $method ) {
 				$body = $data;
+			}*/
+			if ( ! is_array( $data ) ) {
+				$data = json_decode( $data, true );
 			}
+			$body = $data;
 
 			/* previous attempt:
 				$args = array(
@@ -535,6 +539,9 @@ class Object_Sync_Sf_Salesforce {
 			);
 
 			$response      = wp_remote_request( $url, $args );
+
+			error_log( 'first response is ' . print_r( $response, true ) );
+
 			$json_response = $response['body'];
 			$code          = wp_remote_retrieve_response_code( $response );
 		} else {
@@ -598,7 +605,7 @@ class Object_Sync_Sf_Salesforce {
 		}
 		$data = json_decode( $json_response, true ); // decode it into an array.
 		// todo: figure out why it breaks when the session is expired.
-		error_log( 'data is ' . print_r( $data, true ) );
+		error_log( 'code is ' . $code . ' and data is ' . print_r( $data, true ) );
 
 		// don't use the exception if the status is a success one, or if it just needs a refresh token (salesforce uses 401 for this).
 		if ( ! in_array( $code, $this->success_or_refresh_codes, true ) ) {
