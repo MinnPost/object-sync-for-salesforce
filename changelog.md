@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 2.2.2 (2022-05-23)
+	* Bug fix: Change default version of Salesforce REST API to 54.0. 55.0 seeems to be unavailable for some users; it is not a usable default.
+
 * 2.2.1 (2022-05-22)
 	* Bug fix: Fixes an issue where an error was incorrectly flagged upon a successful sync.
 
