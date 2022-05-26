@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f8852c097a4fc02cf57c0e15f7b3a3d",
+    "content-hash": "3fb19e5a2e3cb4566955c15999bce92d",
     "packages": [
         {
             "name": "messageagency/force.com-toolkit-for-php",
@@ -79,11 +79,11 @@
         },
         {
             "name": "woocommerce/action-scheduler",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/action-scheduler.git",
-                "reference": "3218a33ff14b968f8cb05de9656c2efa1eeb1330"
+                "reference": "9ce261d7055650331d6d433c03bf188e6dd2b259"
             },
             "require-dev": {
                 "phpunit/phpunit": "^7.5",
@@ -118,7 +118,7 @@
             ],
             "description": "Action Scheduler for WordPress and WooCommerce",
             "homepage": "https://actionscheduler.org/",
-            "time": "2021-10-28T17:09:12+00:00"
+            "time": "2022-05-03T09:41:49+00:00"
         }
     ],
     "packages-dev": [
