@@ -804,17 +804,21 @@ class Object_Sync_Sf_Salesforce_Push {
 			// create log entry for missing WordPress ID.
 			$status = 'error';
 			$title  = sprintf(
-				// translators: placeholders are: 1) the log status, 2) what operation is happening, 3) the name of the Salesforce object, 4) the name of the WordPress object type, 5) the WordPress id field name.
-				esc_html__( '%1$s: %2$s Salesforce %3$s. The WordPress %4$s %5$s is missing. It may have been deleted.', 'object-sync-for-salesforce' ),
+				// translators: placeholders are: 1) the log status, 2) the name of the Salesforce object, 3) the name of the WordPress object type, 4) the WordPress id field name.
+				esc_html__( '%1$s: Pushing to Salesforce %2$s. The WordPress %3$s %4$s value is missing from the request. It may have been deleted.', 'object-sync-for-salesforce' ),
 				ucfirst( esc_attr( $status ) ),
-				esc_attr( $op ),
 				esc_attr( $mapping['salesforce_object'] ),
 				esc_attr( $mapping['wordpress_object'] ),
 				esc_attr( $wordpress_id_field_name )
 			);
+			$body = sprintf(
+				// translators: placeholders are 1) the object's data that was attempted.
+				'<p>' . esc_html__( 'The WordPress object data that was attempted: %1$s', 'object-sync-for-salesforce' ) . '</p>',
+				print_r( $object, true ) // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+			);
 			$result = array(
 				'title'   => $title,
-				'message' => print_r( $object, true ), // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+				'message' => $body,
 				'trigger' => $sf_sync_trigger,
 				'parent'  => 0,
 				'status'  => $status,
