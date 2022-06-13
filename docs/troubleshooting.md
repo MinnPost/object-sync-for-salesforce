@@ -76,7 +76,7 @@ When there are no values in the list of Salesforce objects, this means the plugi
 2. Your Salesforce objects might not be accessible to the Salesforce user who has authenticated with WordPress via this plugin.
 3. The Salesforce objects might have other restrictive permissions.
 
-## Object map issues
+## Object map issues and sync issues
 
 If you are successfully authenticated with Salesforce, but you are unable to create or update an object map between two records, there are several ways to troubleshoot.
 
@@ -84,6 +84,26 @@ Remember to check the plugin logs, the [mapping errors tab](./mapping-errors.md)
 
 ### Sync error troubleshooting
 
+There are some steps (in addition to logs) that you can take regardless of which direction is having issues:
+
 - Clear the plugin cache on the Fieldmaps screen.
-- If you are not able to push data to Salesforce, try with asynchronous checked, and again without. This will tell you if your issue is related to the plugin's cron jobs.
-- To inspect your cron jobs, use the [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/) plugin. Make sure the Salesforce push and/or pull jobs are running as you expect them to, and make sure to check the Schedule screen to make sure the jobs are scheduled as they should be.
+- Install the [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/) plugin to inspect your site's cron jobs. Make sure the `action_scheduler_run_queue` job is running.
+- Check the plugin's Scheduling screen to make sure your schedule is configured correctly.
+- Check Action Scheduler's Scheduled Actions screen at wp-admin/tools.php?page=action-scheduler and make sure it is running the plugin's actions as it should.
+
+### Troubleshooting for pushing data to Salesforce
+
+When pushing data from WordPress to Salesforce, the plugin provides two modes: synchronous and asynchronous. Asynchronous tasks rely on the plugin's queue system, which itself (by default) relies on the WordPress cron system.
+
+When you encounter problems pushing data to Salesforce, it can be helpful to try both modes to see if one of them is causing the issues. See the [fieldmap documentation](./mapping.md#createedit-a-fieldmap) for further detail about these modes and how to switch between them.
+
+### Troubleshooting for pulling data from Salesforce
+
+When pulling data from Salesforce to WordPress, the plugin relies exclusively on the plugin's queue system, which itself (by default) relies on the WordPress cron system. This means that if these systems are not working correctly, data will not be pulled into Salesforce.
+
+To start this kind of troubleshooting, a few steps may be helpful:
+
+1. If you haven't already done so, turn on the plugin's Debug Mode.
+2. Watch the Logs screen to make sure that the plugin is creating entries based on your schedule settings. For example, if the plugin is supposed to look for new Contact data changes every five minutes, make sure that this is actually happening.
+3. In Debug Mode, the plugin will create log entries for every query that it sends to the Salesforce API. If they are running at the correct schedule (see above), also make sure that these queries are querying the correct data in Salesforce.
+4. Look for any error logs or useful debug messages from these queries.
