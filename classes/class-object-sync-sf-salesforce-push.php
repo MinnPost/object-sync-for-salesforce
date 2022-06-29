@@ -531,7 +531,7 @@ class Object_Sync_Sf_Salesforce_Push {
 				array(
 					'wordpress_object' => $object_type,
 				)
-			),
+			)
 		);
 
 		$results = array();
