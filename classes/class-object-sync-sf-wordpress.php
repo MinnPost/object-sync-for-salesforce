@@ -1375,7 +1375,7 @@ class Object_Sync_Sf_WordPress {
 					),
 				);
 				$match_query        = new $method( $args );
-				$posts              = $match_query->get_results();
+				$posts              = $match_query->get_posts();
 			} else {
 				$posts = $method( $args );
 			}
