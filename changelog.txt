@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 2.2.3 (2022-07-18)
+	* Bug fix: Fix undefined `WP_Query` method preventing prematch on posts and attachments. Thanks to @MannyAdumbire for the report and the fix.
+	* Maintenance: Update included Action Scheduler library version to 3.4.2.
+
 * 2.2.2 (2022-05-23)
 	* Bug fix: Change default version of Salesforce REST API to 54.0. 55.0 seeems to be unavailable for some users; it is not a usable default.
 
