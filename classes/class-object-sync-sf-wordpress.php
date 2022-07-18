@@ -1053,7 +1053,8 @@ class Object_Sync_Sf_WordPress {
 					),
 				);
 				$match_query = new $method( $args );
-				$users       = $match_query->get_results();
+				// the WP_User_Query object has a get_results method that we use.
+				$users = $match_query->get_results();
 				if ( ! empty( $users ) ) {
 					$user = $users[0];
 				}
@@ -1375,7 +1376,8 @@ class Object_Sync_Sf_WordPress {
 					),
 				);
 				$match_query        = new $method( $args );
-				$posts              = $match_query->get_posts();
+				// the WP_Query object has a get_posts method that we use.
+				$posts = $match_query->get_posts();
 			} else {
 				$posts = $method( $args );
 			}
@@ -1681,7 +1683,8 @@ class Object_Sync_Sf_WordPress {
 					),
 				);
 				$match_query        = new $method( $args );
-				$posts              = $match_query->get_results();
+				// the WP_Query object has a get_posts method that we use.
+				$posts = $match_query->get_posts();
 			} else {
 				$posts = $method( $args );
 			}
@@ -2004,7 +2007,8 @@ class Object_Sync_Sf_WordPress {
 					'meta_value' => $value,
 				);
 				$match_query = new $method( $args );
-				$terms       = $match_query->get_terms();
+				// the WP_Term_Query object has a get_terms method that we use.
+				$terms = $match_query->get_terms();
 				if ( ! empty( $terms ) ) {
 					$term = $terms[0];
 				}
@@ -2297,7 +2301,8 @@ class Object_Sync_Sf_WordPress {
 					),
 				);
 				$match_query = new $method( $args );
-				$comments    = $match_query->get_comments();
+				// the WP_Comment_Query object has a get_comments method that we use.
+				$comments = $match_query->get_comments();
 				if ( ! empty( $comments ) ) {
 					$comment = $users[0];
 				}
