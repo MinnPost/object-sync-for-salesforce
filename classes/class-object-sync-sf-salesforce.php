@@ -394,7 +394,7 @@ class Object_Sync_Sf_Salesforce {
 			$result['is_redo'] = false;
 		}
 
-		// it would be very unfortunate to ever have to do this in a production site.
+		// in debug mode, this will log what we know about a Salesforce API call.
 		if ( true === $this->debug ) {
 			// create log entry for the api call if debug is true.
 			$status = 'debug';
@@ -445,6 +445,13 @@ class Object_Sync_Sf_Salesforce {
 					// translators: placeholder is: 1) the SOQL query that was run.
 					'<h3>' . esc_html__( 'SOQL query that was sent to Salesforce', 'object-sync-for-salesforce' ) . '</h3> <p>%1$s</p>',
 					'<code>' . esc_html( $soql ) . '</code>'
+				);
+			}
+			if ( ! empty( $params ) ) {
+				$body .= sprintf(
+					// translators: placeholder is: 1) the params sent to Salesforce.
+					'<h3>' . esc_html__( 'Parameters sent to the Salesforce API', 'object-sync-for-salesforce' ) . '</h3> <div>%1$s</div>',
+					print_r( $params, true ) // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 				);
 			}
 			$body .= sprintf(
