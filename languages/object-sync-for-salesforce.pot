@@ -816,7 +816,7 @@ msgstr ""
 msgid "Object: %1$s"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce-push.php:1297, classes/class-object-sync-sf-salesforce.php:571
+#: classes/class-object-sync-sf-salesforce-push.php:1297, classes/class-object-sync-sf-salesforce.php:578
 msgid "Message: %2$s"
 msgstr ""
 
@@ -865,33 +865,38 @@ msgstr ""
 msgid "SOQL query that was sent to Salesforce"
 msgstr ""
 
+#. translators: placeholder is: 1) the params sent to Salesforce.
+#: classes/class-object-sync-sf-salesforce.php:453
+msgid "Parameters sent to the Salesforce API"
+msgstr ""
+
 #. translators: placeholder is: 1) the API call's result.
-#: classes/class-object-sync-sf-salesforce.php:452
+#: classes/class-object-sync-sf-salesforce.php:459
 msgid "API result from Salesforce"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
-#: classes/class-object-sync-sf-salesforce.php:588, classes/class-object-sync-sf-salesforce.php:565, classes/class-object-sync-sf-salesforce.php:549
+#: classes/class-object-sync-sf-salesforce.php:595, classes/class-object-sync-sf-salesforce.php:572, classes/class-object-sync-sf-salesforce.php:556
 msgid "%1$s: %2$s: on Salesforce HTTP request"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:571
+#: classes/class-object-sync-sf-salesforce.php:578
 msgid "URL: %1$s"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:571
+#: classes/class-object-sync-sf-salesforce.php:578
 msgid "Code: %3$s"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:708
+#: classes/class-object-sync-sf-salesforce.php:715
 msgid "There is no refresh token."
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:732
+#: classes/class-object-sync-sf-salesforce.php:739
 msgid "Unable to get a Salesforce access token. Salesforce returned the following errorCode: "
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:765
+#: classes/class-object-sync-sf-salesforce.php:772
 msgid "Unable to access identity service."
 msgstr ""
 

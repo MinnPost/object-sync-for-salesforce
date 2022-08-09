@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 2.2.4 (2022-08-09)
+	* Bug fix: Fix the method that creates dates on new events for The Events Calendar. Thanks to WordPress users @adamsmm and @joelmcdwebworks.
+	* Maintenance: When creating a debug message for a Salesforce API call, include any parameters the plugin is sending to Salesforce. Thanks to WordPress forum user @MetricMedia.
+
 * 2.2.3 (2022-07-18)
 	* Bug fix: Fix undefined `WP_Query` method preventing prematch on posts and attachments. Thanks to @MannyAdumbire for the report and the fix.
 	* Maintenance: Update included Action Scheduler library version to 3.4.2.
