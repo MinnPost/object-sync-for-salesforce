@@ -2633,7 +2633,7 @@ class Object_Sync_Sf_WordPress {
 			$dates                                      = array();
 			$date_type                                  = ucfirst( $type );
 			$timestamp                                  = strtotime( $date );
-			$dates[ 'Event' . $date_type . 'Date' ]     = $timestamp;
+			$dates[ 'Event' . $date_type . 'Date' ]     = gmdate( Tribe__Date_Utils::DBDATEFORMAT, $timestamp );
 			$dates[ 'Event' . $date_type . 'Hour' ]     = gmdate( Tribe__Date_Utils::HOURFORMAT, $timestamp );
 			$dates[ 'Event' . $date_type . 'Minute' ]   = gmdate( Tribe__Date_Utils::MINUTEFORMAT, $timestamp );
 			$dates[ 'Event' . $date_type . 'Meridian' ] = gmdate( Tribe__Date_Utils::MERIDIANFORMAT, $timestamp );
