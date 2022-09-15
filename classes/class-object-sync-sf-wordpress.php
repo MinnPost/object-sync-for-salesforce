@@ -226,13 +226,11 @@ class Object_Sync_Sf_WordPress {
 					'session_tokens',
 				),
 			);
-			
 			// Check for Multisite installation. Sitewide User table uses base site prefix across all sites.
 			if ( is_multisite() ) {
 				$object_table_structure['content_table'] = $this->wpdb->base_prefix . 'users';
 				$object_table_structure['meta_table']    = $this->wpdb->base_prefix . 'usermeta';
-				}
-			
+			}
 		} elseif ( 'post' === $object_type ) {
 			$object_table_structure = array(
 				'object_name'     => 'post',
