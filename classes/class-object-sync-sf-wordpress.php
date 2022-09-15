@@ -205,53 +205,34 @@ class Object_Sync_Sf_WordPress {
 				'delete' => 'delete_user_meta',
 			);
 
+			$object_table_structure = array(
+				'object_name'     => 'user',
+				'content_methods' => array(
+					'create' => 'wp_insert_user',
+					'read'   => 'get_user_by',
+					'update' => 'wp_update_user',
+					'delete' => 'wp_delete_user',
+					'match'  => 'get_user_by',
+				),
+				'meta_methods'    => $user_meta_methods,
+				'content_table'   => $this->wpdb->prefix . 'users',
+				'id_field'        => 'ID',
+				'meta_table'      => $this->wpdb->prefix . 'usermeta',
+				'meta_join_field' => 'user_id',
+				'where'           => '',
+				'ignore_keys'     => array( // Keep it simple and avoid security risks.
+					'user_pass',
+					'user_activation_key',
+					'session_tokens',
+				),
+			);
+			
 			// Check for Multisite installation. Sitewide User table uses base site prefix across all sites.
 			if ( is_multisite() ) {
-				$object_table_structure = array(
-					'object_name'     => 'user',
-					'content_methods' => array(
-						'create' => 'wp_insert_user',
-						'read'   => 'get_user_by',
-						'update' => 'wp_update_user',
-						'delete' => 'wp_delete_user',
-						'match'  => 'get_user_by',
-					),
-					'meta_methods'    => $user_meta_methods,
-					'content_table'   => $this->wpdb->base_prefix . 'users',
-					'id_field'        => 'ID',
-					'meta_table'      => $this->wpdb->base_prefix . 'usermeta',
-					'meta_join_field' => 'user_id',
-					'where'           => '',
-					'ignore_keys'     => array( // Keep it simple and avoid security risks.
-						'user_pass',
-						'user_activation_key',
-						'session_tokens',
-					),
-				);
-			// If it's not a Multisite installation then use the original code for the user object. 
-			} else {
-				$object_table_structure = array(
-					'object_name'     => 'user',
-					'content_methods' => array(
-						'create' => 'wp_insert_user',
-						'read'   => 'get_user_by',
-						'update' => 'wp_update_user',
-						'delete' => 'wp_delete_user',
-						'match'  => 'get_user_by',
-					),
-					'meta_methods'    => $user_meta_methods,
-					'content_table'   => $this->wpdb->prefix . 'users',
-					'id_field'        => 'ID',
-					'meta_table'      => $this->wpdb->prefix . 'usermeta',
-					'meta_join_field' => 'user_id',
-					'where'           => '',
-					'ignore_keys'     => array( // Keep it simple and avoid security risks.
-						'user_pass',
-						'user_activation_key',
-						'session_tokens',
-					),
-				);
-			}
+				$object_table_structure['content_table'] = $this->wpdb->base_prefix . 'users';
+				$object_table_structure['meta_table']    = $this->wpdb->base_prefix . 'usermeta';
+				}
+			
 		} elseif ( 'post' === $object_type ) {
 			$object_table_structure = array(
 				'object_name'     => 'post',
