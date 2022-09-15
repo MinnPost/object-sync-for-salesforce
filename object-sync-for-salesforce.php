@@ -43,7 +43,7 @@ define( 'OBJECT_SYNC_SF_VERSION', '2.2.4' );
  * @since 2.0.0
  * @var string
  */
-define( 'OBJECT_SYNC_SF_DEFAULT_API_VERSION', '54.0' );
+define( 'OBJECT_SYNC_SF_DEFAULT_API_VERSION', '55.0' );
 
 // Load the autoloader.
 require_once 'lib/autoloader.php';
