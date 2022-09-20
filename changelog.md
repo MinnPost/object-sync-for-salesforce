@@ -3,6 +3,7 @@ Changelog
 
 * 2.2.5
 	* Maintenance: Update included Action Scheduler library version to 3.5.1.
+	* Maintenance: Update the Salesforce REST API version targeted by this plugin to 55.0 (their Summer '22 release).
 
 * 2.2.4 (2022-08-09)
 	* Bug fix: Fix the method that creates dates on new events for The Events Calendar. Thanks to WordPress users @adamsmm and @joelmcdwebworks.
