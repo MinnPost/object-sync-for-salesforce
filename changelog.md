@@ -2,7 +2,8 @@ Changelog
 =========
 
 * 2.2.5
-	* Maintenance: Update included Action Scheduler library version to 3.5.1.
+	* Bug fix: Add Multisite support for user data in WordPress. Thanks to @peter-tmann for the submission.
+	* Maintenance: Update included Action Scheduler library version to 3.5.2.
 	* Maintenance: Update the Salesforce REST API version targeted by this plugin to 55.0 (their Summer '22 release).
 
 * 2.2.4 (2022-08-09)

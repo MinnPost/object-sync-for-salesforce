@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 2.2.5
+	* Bug fix: Add Multisite support for user data in WordPress. Thanks to @peter-tmann for the submission.
+	* Maintenance: Update included Action Scheduler library version to 3.5.2.
+	* Maintenance: Update the Salesforce REST API version targeted by this plugin to 55.0 (their Summer '22 release).
+
 * 2.2.4 (2022-08-09)
 	* Bug fix: Fix the method that creates dates on new events for The Events Calendar. Thanks to WordPress users @adamsmm and @joelmcdwebworks.
 	* Maintenance: When creating a debug message for a Salesforce API call, include any parameters the plugin is sending to Salesforce. Thanks to WordPress forum user @MetricMedia.
