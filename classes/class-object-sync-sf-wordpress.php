@@ -2647,4 +2647,46 @@ class Object_Sync_Sf_WordPress {
 		return $content;
 	}
 
+	/**
+	 * Generate an edit link for the WordPress record.
+	 *
+	 * @param string $object_type the type of WordPress object.
+	 * @param int    $wordpress_id the ID of the WordPress object.
+	 *
+	 * @return string $edit_link
+	 */
+	public function object_edit_link( $object_type, $wordpress_id ) {
+		$edit_link = '';
+		if ( 'user' === $object_type ) {
+			$edit_link = get_edit_user_link( $wordpress_id );
+		} elseif ( 'post' === $object_type || 'page' === $object_type || 'attachment' === $object_type ) {
+			$edit_link = get_edit_post_link( $wordpress_id );
+		} elseif ( 'category' === $object_type || 'tag' === $object_type || 'post_tag' === $object_type ) {
+			$edit_link = get_edit_term_link( $wordpress_id );
+		} elseif ( 'comment' === $object_type ) {
+			$edit_link = get_edit_comment_link( $wordpress_id );
+		} else { // This is for custom post types.
+			$edit_link = get_edit_post_link( $wordpress_id );
+		} // End if() statement.
+		return $edit_link;
+	}
+
+	/**
+	 * Generate a delete link for the WordPress record.
+	 *
+	 * @param string $object_type the type of WordPress object.
+	 * @param int    $wordpress_id the ID of the WordPress object.
+	 *
+	 * @return string $delete_link
+	 */
+	public function object_delete_link( $object_type, $wordpress_id ) {
+		$delete_link = '';
+		if ( 'post' === $object_type || 'page' === $object_type || 'attachment' === $object_type ) {
+			$delete_link = get_delete_post_link( $wordpress_id );
+		} else { // This is for custom post types.
+			$delete_link = get_delete_post_link( $wordpress_id );
+		} // End if() statement.
+		return $delete_link;
+	}
+
 }
