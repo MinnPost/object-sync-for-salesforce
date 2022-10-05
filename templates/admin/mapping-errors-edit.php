@@ -133,3 +133,32 @@
 		</li>
 	</ul>
 </div>
+
+<div class="object_map_data">
+	<h2><?php echo esc_html__( 'Data Access Links', 'object-sync-for-salesforce' ); ?></h2>
+	<p><?php echo esc_html__( 'This section will change based on what data is available to the plugin. If it is able to detect a valid WordPress or Salesforce ID, it will link to that record. If the record does not exist, there will be no link.', 'object-sync-for-salesforce' ); ?></p>
+	<ul>
+	<?php if ( '' !== esc_url( $this->wordpress->object_edit_link( $map_row['wordpress_object'], $map_row['wordpress_id'] ) ) ) : ?>
+		<li>
+			<span class="dashicons dashicons-edit-large"></span>
+			<a href="<?php echo esc_url( $this->wordpress->object_edit_link( $map_row['wordpress_object'], $map_row['wordpress_id'] ) ); ?>">
+				<?php
+				echo sprintf(
+					// translators: placeholder is the WordPress object type.
+					esc_html__( 'Edit WordPress %1$s', 'object-sync-for-salesforce' ),
+					esc_attr( ucfirst( $map_row['wordpress_object'] ) )
+				);
+				?>
+			</a>
+		</li>
+	<?php endif; ?>
+	<?php if ( substr( $map_row['salesforce_id'], 0, 7 ) !== 'tmp_sf_' ) : ?>
+		<li>
+			<span class="dashicons dashicons-edit-large"></span>
+			<a href="<?php echo esc_url( $this->salesforce['sfapi']->get_instance_url() . '/' . $map_row['salesforce_id'] ); ?>">
+				<?php echo esc_html__( 'Edit Salesforce Object', 'object-sync-for-salesforce' ); ?>
+			</a>
+		</li>
+	<?php endif; ?>
+	</ul>
+</div>
