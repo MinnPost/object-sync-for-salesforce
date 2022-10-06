@@ -438,12 +438,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "50472880736e7496b35a17d588807600ca45a2b5"
+                "reference": "5dafc638b7c15a7f1472d705320924410adf6b64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/50472880736e7496b35a17d588807600ca45a2b5",
-                "reference": "50472880736e7496b35a17d588807600ca45a2b5",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/5dafc638b7c15a7f1472d705320924410adf6b64",
+                "reference": "5dafc638b7c15a7f1472d705320924410adf6b64",
                 "shasum": ""
             },
             "require": {
@@ -507,7 +507,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-10T05:54:34+00:00"
+            "time": "2022-09-19T07:33:28+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -756,12 +756,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a7595ec9cb7912d33bf16503272002dae0831122"
+                "reference": "4f2a753c1567eefbe4800dbfd791bf843faea9c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a7595ec9cb7912d33bf16503272002dae0831122",
-                "reference": "a7595ec9cb7912d33bf16503272002dae0831122",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4f2a753c1567eefbe4800dbfd791bf843faea9c4",
+                "reference": "4f2a753c1567eefbe4800dbfd791bf843faea9c4",
                 "shasum": ""
             },
             "require": {
@@ -850,7 +850,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-09-15T05:19:57+00:00"
+            "time": "2022-10-05T07:49:29+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -1713,12 +1713,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/type.git",
-                "reference": "5724c932ade5bc13e5e4f7c9171378a4638c207a"
+                "reference": "4d34b23933f255b0822758a44272222cac593eb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/5724c932ade5bc13e5e4f7c9171378a4638c207a",
-                "reference": "5724c932ade5bc13e5e4f7c9171378a4638c207a",
+                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/4d34b23933f255b0822758a44272222cac593eb4",
+                "reference": "4d34b23933f255b0822758a44272222cac593eb4",
                 "shasum": ""
             },
             "require": {
@@ -1761,7 +1761,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-13T08:08:10+00:00"
+            "time": "2022-10-01T05:56:17+00:00"
         },
         {
             "name": "sebastian/version",

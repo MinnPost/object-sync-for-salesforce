@@ -2671,6 +2671,16 @@ Search.appendIndex(
             "summary": "Generate\u0020date\u0020formats\u0020for\u0020The\u0020Event\u0020Calendar\u0020plugin",
             "url": "classes/Object-Sync-Sf-WordPress.html#method_append_tec_event_dates"
         },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003Aobject_edit_link\u0028\u0029",
+            "name": "object_edit_link",
+            "summary": "Generate\u0020an\u0020edit\u0020link\u0020for\u0020the\u0020WordPress\u0020record.",
+            "url": "classes/Object-Sync-Sf-WordPress.html#method_object_edit_link"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003Aobject_delete_link\u0028\u0029",
+            "name": "object_delete_link",
+            "summary": "Generate\u0020a\u0020delete\u0020link\u0020for\u0020the\u0020WordPress\u0020record.",
+            "url": "classes/Object-Sync-Sf-WordPress.html#method_object_delete_link"
+        },                {
             "fqsen": "\\Object_Sync_Sf_WordPress\u003A\u003A\u0024version",
             "name": "version",
             "summary": "Current\u0020version\u0020of\u0020the\u0020plugin",

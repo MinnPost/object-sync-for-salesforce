@@ -3,7 +3,7 @@
         'name' => 'minnpost/object-sync-for-salesforce',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'df37b65a6838011ef53cf721e80d62b6c8da00e0',
+        'reference' => 'e4e92a8083e0ba622776107b184cc85330923caa',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -24,7 +24,7 @@
         'minnpost/object-sync-for-salesforce' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'df37b65a6838011ef53cf721e80d62b6c8da00e0',
+            'reference' => 'e4e92a8083e0ba622776107b184cc85330923caa',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
