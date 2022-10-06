@@ -1,7 +1,7 @@
 Changelog
 =========
 
-* 2.2.5
+* 2.2.5 (2022-10-06)
 	* Feature: Add links to edit the WordPress and/or Salesforce record on the Mapping Errors tab.
 	* Bug fix: Add Multisite support for user data in WordPress. Thanks to @peter-tmann for the submission.
 	* Maintenance: Update included Action Scheduler library version to 3.5.2.
