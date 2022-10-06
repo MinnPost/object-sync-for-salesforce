@@ -901,42 +901,42 @@ msgid "Unable to access identity service."
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
-#: classes/class-object-sync-sf-wordpress.php:1149
+#: classes/class-object-sync-sf-wordpress.php:1154
 msgid "%1$s: Users: Tried to run user_upsert, and ended up without a user id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
-#: classes/class-object-sync-sf-wordpress.php:1480
+#: classes/class-object-sync-sf-wordpress.php:1485
 msgid "%1$s: Posts: Tried to run post_upsert, and ended up without a post id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
-#: classes/class-object-sync-sf-wordpress.php:1788
+#: classes/class-object-sync-sf-wordpress.php:1793
 msgid "%1$s: Attachments: Tried to run attachment_upsert, and ended up without an attachment id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
-#: classes/class-object-sync-sf-wordpress.php:2108
+#: classes/class-object-sync-sf-wordpress.php:2113
 msgid "%1$s: Terms: Tried to run term_upsert, and ended up without a term id"
 msgstr ""
 
 #. translators: %1$s is the log status. %2$s is a number. %3$s is a key. %4$s is the value of that key. %5$s is a var_export'd array of comments.
-#: classes/class-object-sync-sf-wordpress.php:2347
+#: classes/class-object-sync-sf-wordpress.php:2352
 msgid "%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
-#: classes/class-object-sync-sf-wordpress.php:2427
+#: classes/class-object-sync-sf-wordpress.php:2432
 msgid "%1$s: Comments: Tried to run comment_upsert, and ended up without a comment id"
 msgstr ""
 
 #. translators: 1) is the WordPress object type, 2) is the method that should be used to save the value.
-#: classes/class-object-sync-sf-wordpress.php:2537
+#: classes/class-object-sync-sf-wordpress.php:2542
 msgid "Tried to add %1$s meta with method %2$s."
 msgstr ""
 
 #. translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save.
-#: classes/class-object-sync-sf-wordpress.php:2602
+#: classes/class-object-sync-sf-wordpress.php:2607
 msgid "Unable to update %1$s meta key %2$s with method %3$s. The stored value is %4$s and the new value should be %5$s."
 msgstr ""
 
@@ -1017,7 +1017,7 @@ msgstr ""
 msgid "Direction"
 msgstr ""
 
-#: templates/admin/fieldmaps-add-edit-clone.php:216, templates/admin/fieldmaps-list.php:54, templates/admin/mapping-errors.php:128, templates/admin/user-profile-salesforce.php:23
+#: templates/admin/fieldmaps-add-edit-clone.php:216, templates/admin/fieldmaps-list.php:54, templates/admin/user-profile-salesforce.php:23
 msgid "Delete"
 msgstr ""
 
@@ -1176,15 +1176,15 @@ msgstr ""
 #. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
 #. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
 #. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
-#: templates/admin/fieldmaps-list.php:26, templates/admin/import-export.php:52, templates/admin/mapping-errors.php:148, templates/admin/settings.php:21, templates/admin/status.php:63
+#: templates/admin/fieldmaps-list.php:26, templates/admin/import-export.php:52, templates/admin/mapping-errors.php:174, templates/admin/settings.php:21, templates/admin/status.php:63
 msgid "Has your WordPress or Salesforce data structure changed? "
 msgstr ""
 
-#: templates/admin/fieldmaps-list.php:26, templates/admin/import-export.php:52, templates/admin/mapping-errors.php:148, templates/admin/settings.php:21, templates/admin/status.php:63
+#: templates/admin/fieldmaps-list.php:26, templates/admin/import-export.php:52, templates/admin/mapping-errors.php:174, templates/admin/settings.php:21, templates/admin/status.php:63
 msgid " to make sure you can map the most recent data structures."
 msgstr ""
 
-#: templates/admin/fieldmaps-list.php:28, templates/admin/import-export.php:54, templates/admin/mapping-errors.php:150, templates/admin/settings.php:23, templates/admin/status.php:65
+#: templates/admin/fieldmaps-list.php:28, templates/admin/import-export.php:54, templates/admin/mapping-errors.php:176, templates/admin/settings.php:23, templates/admin/status.php:65
 msgid "Clear the plugin cache"
 msgstr ""
 
@@ -1197,7 +1197,7 @@ msgstr ""
 msgid "add one"
 msgstr ""
 
-#: templates/admin/fieldmaps-list.php:48, templates/admin/mapping-errors.php:125, templates/admin/user-profile-salesforce.php:22
+#: templates/admin/fieldmaps-list.php:48, templates/admin/user-profile-salesforce.php:22
 msgid "Edit"
 msgstr ""
 
@@ -1305,6 +1305,23 @@ msgstr ""
 msgid "<span class=\"label\">Last Sync Message:</span> %1$s"
 msgstr ""
 
+#: templates/admin/mapping-errors-edit.php:138
+msgid "Data Access Links"
+msgstr ""
+
+#: templates/admin/mapping-errors-edit.php:139
+msgid "This section will change based on what data is available to the plugin. If it is able to detect a valid WordPress or Salesforce ID, it will link to that record. If the record does not exist, there will be no link."
+msgstr ""
+
+#. translators: placeholder is the WordPress object type.
+#: templates/admin/mapping-errors-edit.php:148
+msgid "Edit WordPress %1$s"
+msgstr ""
+
+#: templates/admin/mapping-errors-edit.php:159
+msgid "Edit Salesforce Object"
+msgstr ""
+
 #: templates/admin/mapping-errors.php:26, templates/admin/mapping-errors.php:39
 msgid "Select All"
 msgstr ""
@@ -1356,6 +1373,24 @@ msgstr ""
 #. translators: placeholder is the last sync message.
 #: templates/admin/mapping-errors.php:118
 msgid "Last Sync Message: %1$s"
+msgstr ""
+
+#: templates/admin/mapping-errors.php:125
+msgid "Edit Mapping Object"
+msgstr ""
+
+#. translators: placeholder is the WordPress object type.
+#: templates/admin/mapping-errors.php:133
+msgid "Edit %1$s"
+msgstr ""
+
+#: templates/admin/mapping-errors.php:141
+msgid "Delete Mapping Object"
+msgstr ""
+
+#. translators: placeholder is the WordPress object type.
+#: templates/admin/mapping-errors.php:149
+msgid "Delete %1$s"
 msgstr ""
 
 #: templates/admin/settings.php:12
