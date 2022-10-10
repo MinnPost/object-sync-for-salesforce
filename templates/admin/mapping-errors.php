@@ -139,6 +139,7 @@
 						<?php endif; ?>
 						<span class="delete">
 						<a href="<?php echo esc_url( get_admin_url( null, 'options-general.php?page=object-sync-salesforce-admin&tab=mapping_errors&method=delete&id=' . $mapping_error['id'] ) ); ?>"><?php echo esc_html__( 'Delete Mapping Object', 'object-sync-for-salesforce' ); ?></a>
+						<?php if ( '' !== esc_url( $this->wordpress->object_delete_link( $mapping_error['wordpress_object'], $mapping_error['wordpress_id'] ) ) ) : ?> | <?php endif; ?>
 						</span>
 						<?php if ( '' !== esc_url( $this->wordpress->object_delete_link( $mapping_error['wordpress_object'], $mapping_error['wordpress_id'] ) ) ) : ?>
 							<span class="delete">
@@ -150,7 +151,7 @@
 									esc_attr( ucfirst( $mapping_error['wordpress_object'] ) )
 								);
 								?>
-							</a> | 
+							</a>
 							</span>
 						<?php endif; ?>
 					</div>
