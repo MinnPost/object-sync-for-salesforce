@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 2.2.6 (2022-11-28)
+	* Bug fix: while we wait for an update from the Action Scheduler library, this is a temporary fix to their bug that can cause `PHP Fatal Error: Uncaught TypeError: DateTime::__construct()` errors. Thanks to several forum users for the report and clarity.
+	* Maintenance: this release also includes version 3.5.3 of Action Scheduler, although that release does not fix the above issue.
+	* Maintenance: Test plugin in WordPress 6.1 and update compatibility.
+
 * 2.2.5 (2022-10-06)
 	* Feature: Add links to edit the WordPress and/or Salesforce record on the Mapping Errors tab.
 	* Bug fix: Add Multisite support for user data in WordPress. Thanks to @peter-tmann for the submission.

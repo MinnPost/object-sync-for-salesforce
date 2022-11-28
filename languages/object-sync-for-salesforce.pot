@@ -1176,15 +1176,15 @@ msgstr ""
 #. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
 #. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
 #. translators: the placeholders refer to: 1) the cache clear link, 2) the cache clear link text.
-#: templates/admin/fieldmaps-list.php:26, templates/admin/import-export.php:52, templates/admin/mapping-errors.php:174, templates/admin/settings.php:21, templates/admin/status.php:63
+#: templates/admin/fieldmaps-list.php:26, templates/admin/import-export.php:52, templates/admin/mapping-errors.php:175, templates/admin/settings.php:21, templates/admin/status.php:63
 msgid "Has your WordPress or Salesforce data structure changed? "
 msgstr ""
 
-#: templates/admin/fieldmaps-list.php:26, templates/admin/import-export.php:52, templates/admin/mapping-errors.php:174, templates/admin/settings.php:21, templates/admin/status.php:63
+#: templates/admin/fieldmaps-list.php:26, templates/admin/import-export.php:52, templates/admin/mapping-errors.php:175, templates/admin/settings.php:21, templates/admin/status.php:63
 msgid " to make sure you can map the most recent data structures."
 msgstr ""
 
-#: templates/admin/fieldmaps-list.php:28, templates/admin/import-export.php:54, templates/admin/mapping-errors.php:176, templates/admin/settings.php:23, templates/admin/status.php:65
+#: templates/admin/fieldmaps-list.php:28, templates/admin/import-export.php:54, templates/admin/mapping-errors.php:177, templates/admin/settings.php:23, templates/admin/status.php:65
 msgid "Clear the plugin cache"
 msgstr ""
 
@@ -1389,7 +1389,7 @@ msgid "Delete Mapping Object"
 msgstr ""
 
 #. translators: placeholder is the WordPress object type.
-#: templates/admin/mapping-errors.php:149
+#: templates/admin/mapping-errors.php:150
 msgid "Delete %1$s"
 msgstr ""
 
