@@ -492,11 +492,12 @@ class Object_Sync_Sf_Salesforce {
 		 *
 		 * @since x.x.x
 		 *
-		 * @param string $url     Path to make request from.
-		 * @param array  $data    The request body.
-		 * @param array  $headers Request headers to send as name => value.
-		 * @param string $method  Method to initiate the call, such as GET or POST. Defaults to GET.
-		 * @param array  $options This is the options array from the api_http_request method.
+		 * @param null|array $check   Whether to short-circuit the HTTP request. Default null.
+		 * @param string     $url     Path to make request from.
+		 * @param array      $data    The request body.
+		 * @param array      $headers Request headers to send as name => value.
+		 * @param string     $method  Method to initiate the call, such as GET or POST. Defaults to GET.
+		 * @param array      $options This is the options array from the api_http_request method.
 		 */
 		$check = apply_filters( $this->option_prefix . 'http_request', null, $url, $data, $headers, $method, $options );
 
