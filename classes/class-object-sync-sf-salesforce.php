@@ -484,6 +484,27 @@ class Object_Sync_Sf_Salesforce {
 	protected function http_request( $url, $data, $headers = array(), $method = 'GET', $options = array() ) {
 		// Build the request, including path and headers. Internal use.
 
+		/**
+		 * Short-circuits the return value of an HTTP API call.
+		 *
+		 * This allows other plugins to communicate with the Salesforce API on behalf of
+		 * Object Sync for Salesforce, for example by using the WordPress HTTP API.
+		 *
+		 * @since 2.2.7
+		 *
+		 * @param null|array $check   Whether to short-circuit the HTTP request. Default null.
+		 * @param string     $url     Path to make request from.
+		 * @param array      $data    The request body.
+		 * @param array      $headers Request headers to send as name => value.
+		 * @param string     $method  Method to initiate the call, such as GET or POST. Defaults to GET.
+		 * @param array      $options This is the options array from the api_http_request method.
+		 */
+		$check = apply_filters( $this->option_prefix . 'http_request', null, $url, $data, $headers, $method, $options );
+
+		if ( null !== $check ) {
+			return $check;
+		}
+
 		/*
 		 * Note: curl is used because wp_remote_get, wp_remote_post, wp_remote_request don't work. Salesforce returns various errors.
 		 * todo: There is a GitHub branch attempting with the goal of addressing this: https://github.com/MinnPost/object-sync-for-salesforce/issues/94
