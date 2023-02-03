@@ -490,7 +490,7 @@ class Object_Sync_Sf_Salesforce {
 		 * This allows other plugins to communicate with the Salesforce API on behalf of
 		 * Object Sync for Salesforce, for example by using the WordPress HTTP API.
 		 *
-		 * @since x.x.x
+		 * @since 2.2.7
 		 *
 		 * @param null|array $check   Whether to short-circuit the HTTP request. Default null.
 		 * @param string     $url     Path to make request from.
