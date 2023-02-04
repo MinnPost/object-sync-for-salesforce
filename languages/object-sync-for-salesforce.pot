@@ -1,4 +1,4 @@
-# Copyright (C) 2022 object-sync-for-salesforce
+# Copyright (C) 2023 object-sync-for-salesforce
 # This file is distributed under the same license as the object-sync-for-salesforce package.
 msgid ""
 msgstr ""
@@ -816,7 +816,7 @@ msgstr ""
 msgid "Object: %1$s"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce-push.php:1297, classes/class-object-sync-sf-salesforce.php:578
+#: classes/class-object-sync-sf-salesforce-push.php:1297, classes/class-object-sync-sf-salesforce.php:599
 msgid "Message: %2$s"
 msgstr ""
 
@@ -876,27 +876,27 @@ msgid "API result from Salesforce"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status, 2) the HTTP status code returned by the Salesforce API request.
-#: classes/class-object-sync-sf-salesforce.php:595, classes/class-object-sync-sf-salesforce.php:572, classes/class-object-sync-sf-salesforce.php:556
+#: classes/class-object-sync-sf-salesforce.php:616, classes/class-object-sync-sf-salesforce.php:593, classes/class-object-sync-sf-salesforce.php:577
 msgid "%1$s: %2$s: on Salesforce HTTP request"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:578
+#: classes/class-object-sync-sf-salesforce.php:599
 msgid "URL: %1$s"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:578
+#: classes/class-object-sync-sf-salesforce.php:599
 msgid "Code: %3$s"
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:715
+#: classes/class-object-sync-sf-salesforce.php:736
 msgid "There is no refresh token."
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:739
+#: classes/class-object-sync-sf-salesforce.php:760
 msgid "Unable to get a Salesforce access token. Salesforce returned the following errorCode: "
 msgstr ""
 
-#: classes/class-object-sync-sf-salesforce.php:772
+#: classes/class-object-sync-sf-salesforce.php:793
 msgid "Unable to access identity service."
 msgstr ""
 
