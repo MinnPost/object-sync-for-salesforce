@@ -46,7 +46,7 @@ $check = $result;
 * @param string     $method  Method to initiate the call, such as GET or POST. Defaults to GET.
 * @param array      $options This is the options array from the api_http_request method.
 */
-add_filter( 'object_sync_for_salesforce_http_request', 'http_reqest_intercept', 10, 1 );
+add_filter( 'object_sync_for_salesforce_http_request', 'http_reqest_intercept', 10, 6 );
 function http_reqest_intercept( $check, $url, $data, $headers, $method, $options ) {
    return $check;
 }
