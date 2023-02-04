@@ -60,6 +60,10 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: modify the `$salesforce_id` string here
     - code: [classes/class-object-sync-sf-salesforce-push.php](../classes/class-object-sync-sf-salesforce-push.php)
     - documentation: [extending upsert](./extending-upsert.md#make-a-custom-function-for-matching-items)
+- `object_sync_for_salesforce_http_request`:
+    - description: intercept HTTP requests before the plugin sends them to Salesforce
+    - code: [classes/class-object-sync-sf-salesforce.php](../classes/class-object-sync-sf-salesforce.php)
+    - documentation: [extending api calls](./extending-api-calls.md#intercept-the-http-request)
 - `object_sync_for_salesforce_settings_tabs`:
     - description: add tabs to the Salesforce Settings screen so they can have their own Salesforce-specific sections that fit within this overall plugin.
     - code: [classes/class-object-sync-sf-admin.php](../classes/class-object-sync-sf-admin.php)
