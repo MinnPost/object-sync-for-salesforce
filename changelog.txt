@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* 2.2.7 (2023-02-05)
+	* Plugin status: for the time being, this plugin doesn't have any official maintainers. I'll try to check in if anyone submits pull requests or major issues, and will give updates if/when that status changes.
+	* Feature: Added filter to short-circuit API calls to Salesforce. Thanks to GitHub user @verygoodplugins for the submission.
+	* Maintenance: update included Action Scheduler library version to 3.5.4. This update officially includes the fix we manually added in our prior release.
+
 * 2.2.6 (2022-11-28)
 	* Bug fix: while we wait for an update from the Action Scheduler library, this is a temporary fix to their bug that can cause `PHP Fatal Error: Uncaught TypeError: DateTime::__construct()` errors. Thanks to several forum users for the report and clarity.
 	* Maintenance: this release also includes version 3.5.3 of Action Scheduler, although that release does not fix the above issue.
