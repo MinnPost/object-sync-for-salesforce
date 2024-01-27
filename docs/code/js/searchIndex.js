@@ -936,6 +936,11 @@ Search.appendIndex(
             "summary": "Whether\u0020the\u0020plugin\u0020is\u0020in\u0020debug\u0020mode",
             "url": "classes/Object-Sync-Sf-Logging.html#property_debug"
         },                {
+            "fqsen": "\\Object_Sync_Sf_Logging\u003A\u003A\u0024capability",
+            "name": "capability",
+            "summary": "The\u0020name\u0020of\u0020the\u0020capability\u0020used\u0020when\u0020registering\u0020the\u0020logging\u0020post\u0020type.",
+            "url": "classes/Object-Sync-Sf-Logging.html#property_capability"
+        },                {
             "fqsen": "\\Object_Sync_Sf_Mapping",
             "name": "Object_Sync_Sf_Mapping",
             "summary": "Object_Sync_Sf_Mapping\u0020class.",
@@ -1220,6 +1225,51 @@ Search.appendIndex(
             "name": "debug",
             "summary": "Option\u0020value\u0020for\u0020whether\u0020the\u0020plugin\u0020is\u0020in\u0020debug\u0020mode",
             "url": "classes/Object-Sync-Sf-Mapping.html#property_debug"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_off_v1",
+            "name": "sync_off_v1",
+            "summary": "Deprecated\u0020hex\u0020parameter\u0020which\u0020defines\u0020when\u0020syncing\u0020should\u0020occur\u0020on\u0020each\u0020field\u0020map.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_off_v1"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_wordpress_create_v1",
+            "name": "sync_wordpress_create_v1",
+            "summary": "Deprecated\u0020hex\u0020parameter\u0020which\u0020defines\u0020when\u0020syncing\u0020should\u0020occur\u0020on\u0020each\u0020field\u0020map.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_wordpress_create_v1"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_wordpress_update_v1",
+            "name": "sync_wordpress_update_v1",
+            "summary": "Deprecated\u0020hex\u0020parameter\u0020which\u0020defines\u0020when\u0020syncing\u0020should\u0020occur\u0020on\u0020each\u0020field\u0020map.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_wordpress_update_v1"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_wordpress_delete_v1",
+            "name": "sync_wordpress_delete_v1",
+            "summary": "Deprecated\u0020hex\u0020parameter\u0020which\u0020defines\u0020when\u0020syncing\u0020should\u0020occur\u0020on\u0020each\u0020field\u0020map.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_wordpress_delete_v1"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_sf_create_v1",
+            "name": "sync_sf_create_v1",
+            "summary": "Deprecated\u0020hex\u0020parameter\u0020which\u0020defines\u0020when\u0020syncing\u0020should\u0020occur\u0020on\u0020each\u0020field\u0020map.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_sf_create_v1"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_sf_update_v1",
+            "name": "sync_sf_update_v1",
+            "summary": "Deprecated\u0020hex\u0020parameter\u0020which\u0020defines\u0020when\u0020syncing\u0020should\u0020occur\u0020on\u0020each\u0020field\u0020map.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_sf_update_v1"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024sync_sf_delete_v1",
+            "name": "sync_sf_delete_v1",
+            "summary": "Deprecated\u0020hex\u0020parameter\u0020which\u0020defines\u0020when\u0020syncing\u0020should\u0020occur\u0020on\u0020each\u0020field\u0020map.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_sync_sf_delete_v1"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024wordpress_events_v1",
+            "name": "wordpress_events_v1",
+            "summary": "Deprecated\u0020hex\u0020event\u0020values.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_wordpress_events_v1"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003A\u0024salesforce_events_v1",
+            "name": "salesforce_events_v1",
+            "summary": "Deprecated\u0020hex\u0020event\u0020values.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#property_salesforce_events_v1"
         },                {
             "fqsen": "\\Object_Sync_Sf_Pull_Options",
             "name": "Object_Sync_Sf_Pull_Options",
