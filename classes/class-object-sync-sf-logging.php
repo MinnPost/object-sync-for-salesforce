@@ -77,6 +77,13 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public $debug;
 
 	/**
+	 * The name of the capability used when registering the logging post type.
+	 *
+	 * @var string
+	 */
+	public $capability;
+
+	/**
 	 * Constructor for logging class
 	 */
 	public function __construct() {

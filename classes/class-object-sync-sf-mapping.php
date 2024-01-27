@@ -245,6 +245,69 @@ class Object_Sync_Sf_Mapping {
 	public $debug;
 
 	/**
+	 * Deprecated hex parameter which defines when syncing should occur on each field map.
+	 *
+	 * @var int
+	 */
+	public $sync_off_v1;
+
+	/**
+	 * Deprecated hex parameter which defines when syncing should occur on each field map.
+	 *
+	 * @var int
+	 */
+	public $sync_wordpress_create_v1;
+
+	/**
+	 * Deprecated hex parameter which defines when syncing should occur on each field map.
+	 *
+	 * @var int
+	 */
+	public $sync_wordpress_update_v1;
+
+	/**
+	 * Deprecated hex parameter which defines when syncing should occur on each field map.
+	 *
+	 * @var int
+	 */
+	public $sync_wordpress_delete_v1;
+
+	/**
+	 * Deprecated hex parameter which defines when syncing should occur on each field map.
+	 *
+	 * @var int
+	 */
+	public $sync_sf_create_v1;
+
+	/**
+	 * Deprecated hex parameter which defines when syncing should occur on each field map.
+	 *
+	 * @var int
+	 */
+	public $sync_sf_update_v1;
+
+	/**
+	 * Deprecated hex parameter which defines when syncing should occur on each field map.
+	 *
+	 * @var int
+	 */
+	public $sync_sf_delete_v1;
+
+	/**
+	 * Deprecated hex event values.
+	 *
+	 * @var array
+	 */
+	public $wordpress_events_v1;
+
+	/**
+	 * Deprecated hex event values.
+	 *
+	 * @var array
+	 */
+	public $salesforce_events_v1;
+
+	/**
 	 * Constructor for mapping class
 	 */
 	public function __construct() {
