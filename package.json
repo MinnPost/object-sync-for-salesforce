@@ -41,7 +41,7 @@
     "gulp-wp-pot": "^2.5.0",
     "stylelint": "^13.13.1",
     "npm-check-updates": "^16.6.3",
-    "postcss": "^8.4.21",
+    "postcss": "^8.4.31",
     "sass": "^1.58.0",
     "stylelint-config-wordpress": "^17.0.0"
   },
