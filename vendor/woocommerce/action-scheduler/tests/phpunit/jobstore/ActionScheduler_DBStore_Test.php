@@ -227,6 +227,55 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		$this->assertEqualSets( array_slice( $created_actions[ $unique_group_two ], 3, 3 ), $claim->get_actions() );
 	}
 
+	/**
+	 * The DBStore allows one or more groups to be excluded from a claim.
+	 */
+	public function test_claim_actions_with_group_exclusions() {
+		$created_actions  = array();
+		$store            = new ActionScheduler_DBStore();
+		$groups           = array( 'foo', 'bar', 'baz' );
+		$schedule         = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
+
+		// Create 6 actions (with 2 in each test group).
+		foreach ( $groups as $group_slug ) {
+			$action = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule, $group_slug );
+			$created_actions[ $group_slug ] = array(
+				$store->save_action( $action ),
+				$store->save_action( $action ),
+			);
+		}
+
+		// If we exclude group 'foo' (representing 2 actions) the remaining 4 actions from groups 'bar' and 'baz' should still be claimed.
+		$store->set_claim_filter( 'exclude-groups', 'foo' );
+		$claim = $store->stake_claim();
+		$this->assertEquals(
+			array_merge( $created_actions['bar'], $created_actions['baz'] ),
+			$claim->get_actions(),
+			'A single group can successfully be excluded from claims.'
+		);
+		$store->release_claim( $claim );
+
+		// If we exclude groups 'bar' and 'baz' (representing 4 actions) the remaining 2 actions from group 'foo' should still be claimed.
+		$store->set_claim_filter( 'exclude-groups', array( 'bar', 'baz' ) );
+		$claim = $store->stake_claim();
+		$this->assertEquals(
+			$created_actions['foo'],
+			$claim->get_actions(),
+			'Multiple groups can successfully be excluded from claims.'
+		);
+		$store->release_claim( $claim );
+
+		// If we include group 'foo' (representing 2 actions) after excluding all groups, the inclusion should 'win'.
+		$store->set_claim_filter( 'exclude-groups', array( 'foo', 'bar', 'baz' ) );
+		$claim = $store->stake_claim( 10, null, array(), 'foo' );
+		$this->assertEquals(
+			$created_actions['foo'],
+			$claim->get_actions(),
+			'Including a specific group takes precedence over group exclusions.'
+		);
+		$store->release_claim( $claim );
+	}
+
 	public function test_claim_actions_by_hook_and_group() {
 		$created_actions = $created_actions_by_hook = [];
 		$store           = new ActionScheduler_DBStore();
@@ -304,6 +353,38 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		$this->assertInstanceof( 'ActionScheduler_ActionClaim', $claim );
 		$this->assertCount( 3, $claim->get_actions() );
 		$this->assertEqualSets( array_slice( $created_actions_by_hook[ $unique_hook_two ][ $unique_group_two ], 3, 3 ), $claim->get_actions() );
+	}
+
+	/**
+	 * Confirm that priorities are respected when claiming actions.
+	 *
+	 * @return void
+	 */
+	public function test_claim_actions_respecting_priority() {
+		$store = new ActionScheduler_DBStore();
+
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-2 hours' ) );
+		$routine_action_1 = $store->save_action( new ActionScheduler_Action( 'routine_past_due', array(), $schedule, '' ) );
+
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
+		$action   = new ActionScheduler_Action( 'high_priority_past_due', array(), $schedule, '' );
+		$action->set_priority( 5 );
+		$priority_action = $store->save_action( $action );
+
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-4 hours' ) );
+		$routine_action_2 = $store->save_action( new ActionScheduler_Action( 'routine_past_due', array(), $schedule, '' ) );
+
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '+1 hour' ) );
+		$action   = new ActionScheduler_Action( 'high_priority_future', array(), $schedule, '' );
+		$action->set_priority( 2 );
+		$priority_future_action = $store->save_action( $action );
+
+		$claim = $store->stake_claim();
+		$this->assertEquals(
+			array( $priority_action, $routine_action_2, $routine_action_1 ),
+			$claim->get_actions(),
+			'High priority actions take precedence over older but lower priority actions.'
+		);
 	}
 
 	/**
@@ -557,5 +638,80 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		$action_with_diff_args = new ActionScheduler_Action( $hook, array( 'foo' => 'bazz' ), $schedule );
 		$action_id_duplicate = $store->save_unique_action( $action_with_diff_args );
 		$this->assertEquals( 0, $action_id_duplicate );
+	}
+
+	/**
+	 * When a set of claimed actions are processed, they should be executed in the expected order (by priority,
+	 * then by least number of attempts, then by scheduled date, then finally by action ID).
+	 *
+	 * @return void
+	 */
+	public function test_actions_are_processed_in_correct_order() {
+		global $wpdb;
+
+		$now          = time();
+		$actual_order = array();
+
+		// When `foo` actions are processed, record the sequence number they supply.
+		$watcher = function ( $number ) use ( &$actual_order ) {
+			$actual_order[] = $number;
+		};
+
+		as_schedule_single_action( $now - 10, 'foo', array( 4 ), '', false, 10 );
+		as_schedule_single_action( $now - 20, 'foo', array( 3 ), '', false, 10 );
+		as_schedule_single_action( $now - 5, 'foo', array( 2 ), '', false, 5 );
+		as_schedule_single_action( $now - 20, 'foo', array( 1 ), '', false, 5 );
+		$reattempted = as_schedule_single_action( $now - 40, 'foo', array( 7 ), '', false, 20 );
+		as_schedule_single_action( $now - 40, 'foo', array( 5 ), '', false, 20 );
+		as_schedule_single_action( $now - 40, 'foo', array( 6 ), '', false, 20 );
+
+		// Modify the `attempt` count on one of our test actions, to change expectations about its execution order.
+		$wpdb->update(
+			$wpdb->actionscheduler_actions,
+			array( 'attempts' => 5 ),
+			array( 'action_id' => $reattempted )
+		);
+
+		add_action( 'foo', $watcher );
+		ActionScheduler_Mocker::get_queue_runner( ActionScheduler::store() )->run();
+		remove_action( 'foo', $watcher );
+
+		$this->assertEquals( range( 1, 7 ), $actual_order, 'When a claim is processed, individual actions execute in the expected order.' );
+	}
+
+	/**
+	 * When a set of claimed actions are processed, they should be executed in the expected order (by priority,
+	 * then by least number of attempts, then by scheduled date, then finally by action ID). This should be true
+	 * even if actions are scheduled from within other scheduled actions.
+	 *
+	 * This test is a variation of `test_actions_are_processed_in_correct_order`, see discussion in
+	 * https://github.com/woocommerce/action-scheduler/issues/951 to see why this specific nuance is tested.
+	 *
+	 * @return void
+	 */
+	public function test_child_actions_are_processed_in_correct_order() {
+		$time         = time() - 10;
+		$actual_order = array();
+		$watcher      = function ( $number ) use ( &$actual_order ) {
+			$actual_order[] = $number;
+		};
+		$parent_action = function () use ( $time ) {
+			// We generate 20 test actions because this is optimal for reproducing the conditions in the
+			// linked bug report. With fewer actions, the error condition is less likely to surface.
+			for ( $i = 1; $i <= 20; $i++ ) {
+				as_schedule_single_action( $time, 'foo', array( $i ) );
+			}
+		};
+
+		add_action( 'foo', $watcher );
+		add_action( 'parent', $parent_action );
+
+		as_schedule_single_action( $time, 'parent' );
+		ActionScheduler_Mocker::get_queue_runner( ActionScheduler::store() )->run();
+
+		remove_action( 'foo', $watcher );
+		add_action( 'parent', $parent_action );
+
+		$this->assertEquals( range( 1, 20 ), $actual_order, 'Once claimed, scheduled actions are executed in the exepcted order, including if "child actions" are scheduled from within another action.' );
 	}
 }

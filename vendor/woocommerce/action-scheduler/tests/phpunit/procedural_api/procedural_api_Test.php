@@ -29,6 +29,46 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 		$this->assertEquals( $hook, $action->get_hook() );
 	}
 
+	/**
+	 * Test that we reject attempts to register a recurring action with an invalid interval. This guards against
+	 * 'runaway' recurring actions that are created accidentally and treated as having a zero-second interval.
+	 *
+	 * @return void
+	 */
+	public function test_recurring_actions_reject_invalid_intervals() {
+		$this->assertGreaterThan(
+			0,
+			as_schedule_recurring_action( time(), 1, 'foo' ),
+			'When an integer is provided as the interval, a recurring action is successfully created.'
+		);
+
+		$this->assertGreaterThan(
+			0,
+			as_schedule_recurring_action( time(), '10', 'foo' ),
+			'When an integer-like string is provided as the interval, a recurring action is successfully created.'
+		);
+
+		$this->assertGreaterThan(
+			0,
+			as_schedule_recurring_action( time(), 100.0, 'foo' ),
+			'When an integer-value as a double is provided as the interval, a recurring action is successfully created.'
+		);
+
+		$this->setExpectedIncorrectUsage( 'as_schedule_recurring_action' );
+		$this->assertEquals(
+			0,
+			as_schedule_recurring_action( time(), 'nonsense', 'foo' ),
+			'When a non-numeric string is provided as the interval, a recurring action is not created and a doing-it-wrong notice is emitted.'
+		);
+
+		$this->setExpectedIncorrectUsage( 'as_schedule_recurring_action' );
+		$this->assertEquals(
+			0,
+			as_schedule_recurring_action( time(), 123.456, 'foo' ),
+			'When a non-integer double is provided as the interval, a recurring action is not created and a doing-it-wrong notice is emitted.'
+		);
+	}
+
 	public function test_cron_schedule() {
 		$time      = as_get_datetime_object( '2014-01-01' );
 		$hook      = md5( rand() );
@@ -187,7 +227,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_as_get_datetime_object_default() {
 
-		$utc_now = new ActionScheduler_DateTime( null, new DateTimeZone( 'UTC' ) );
+		$utc_now = new ActionScheduler_DateTime( 'now', new DateTimeZone( 'UTC' ) );
 		$as_now  = as_get_datetime_object();
 
 		// Don't want to use 'U' as timestamps will always be in UTC.
@@ -228,7 +268,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 		// phpcs:ignore
 		date_default_timezone_set( $timezone_au );
 
-		$au_now = new ActionScheduler_DateTime( null );
+		$au_now = new ActionScheduler_DateTime( 'now' );
 		$as_now = as_get_datetime_object();
 
 		// Make sure they're for the same time.
@@ -237,7 +277,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 		// But not in the same timezone, as $as_now should be using UTC.
 		$this->assertNotEquals( $au_now->format( 'Y-m-d H:i:s' ), $as_now->format( 'Y-m-d H:i:s' ) );
 
-		$au_now    = new ActionScheduler_DateTime( null );
+		$au_now    = new ActionScheduler_DateTime( 'now' );
 		$as_au_now = as_get_datetime_object();
 
 		$this->assertEquals( $au_now->getTimestamp(), $as_now->getTimestamp(), '', 2 );
@@ -349,6 +389,59 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 
 		$action_id_duplicate = as_schedule_cron_action( time(), '0 0 * * *', 'hook_1', array( 'a' ), 'dummy', true );
 		$this->assertEquals( 0, $action_id_duplicate );
+	}
+
+	/**
+	 * Test recovering from an incorrect database schema when scheduling a single action.
+	 */
+	public function test_as_recover_from_incorrect_schema() {
+		// custom error reporting so we can test for errors sent to error_log.
+		global $wpdb;
+		$wpdb->suppress_errors( true );
+		$error_capture = tmpfile();
+		$actual_error_log = ini_set( 'error_log', stream_get_meta_data( $error_capture )['uri'] );
+
+		// we need a hybrid store so that dropping the priority column will cause an exception.
+		$this->set_action_scheduler_store( new ActionScheduler_HybridStore() );
+		$this->assertEquals( 'ActionScheduler_HybridStore', get_class( ActionScheduler::store() ) );
+
+		// drop the priority column from the actions table.
+		$wpdb->query( "ALTER TABLE {$wpdb->actionscheduler_actions} DROP COLUMN priority" );
+
+		// try to schedule a single action.
+		$action_id = as_schedule_single_action( time(), 'hook_17', array( 'a', 'b' ), 'dummytest', true );
+
+		// ensure that no exception was thrown and zero was returned.
+		$this->assertEquals( 0, $action_id );
+
+		// try to schedule an async action.
+		$action_id = as_enqueue_async_action( 'hook_18', array( 'a', 'b' ), 'dummytest', true );
+		// ensure that no exception was thrown and zero was returned.
+		$this->assertEquals( 0, $action_id );
+
+		// try to schedule a recurring action.
+		$action_id = as_schedule_recurring_action( time(), MINUTE_IN_SECONDS, 'hook_19', array( 'a', 'b' ), 'dummytest', true );
+		// ensure that no exception was thrown and zero was returned.
+		$this->assertEquals( 0, $action_id );
+
+		// try to schedule a cron action.
+		$action_id = as_schedule_cron_action( time(), '0 0 * * *', 'hook_20', array( 'a', 'b' ), 'dummytest', true );
+		// ensure that no exception was thrown and zero was returned.
+		$this->assertEquals( 0, $action_id );
+
+		// ensure that all four errors were logged to error_log.
+		$logged_errors = stream_get_contents( $error_capture );
+		$this->assertContains( 'Caught exception while enqueuing action "hook_17": Error saving action', $logged_errors );
+		$this->assertContains( 'Caught exception while enqueuing action "hook_18": Error saving action', $logged_errors );
+		$this->assertContains( 'Caught exception while enqueuing action "hook_19": Error saving action', $logged_errors );
+		$this->assertContains( 'Caught exception while enqueuing action "hook_20": Error saving action', $logged_errors );
+		$this->assertContains( "Unknown column 'priority' in 'field list'", $logged_errors );
+
+		// recreate the priority column.
+		$wpdb->query( "ALTER TABLE {$wpdb->actionscheduler_actions} ADD COLUMN priority tinyint(10) UNSIGNED NOT NULL DEFAULT 10" );
+		// restore error logging.
+		$wpdb->suppress_errors( false );
+		ini_set( 'error_log', $actual_error_log );
 	}
 
 	/**

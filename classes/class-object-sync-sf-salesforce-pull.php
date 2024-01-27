@@ -1727,7 +1727,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					// translators: placeholders are 1) WordPress object type, 2) field name for the WordPress id, 3) the WordPress id value, 4) the Salesforce object type, 5) the Salesforce object Id that was modified, 6) the mapping object row id.
 					esc_html__( 'The WordPress %1$s with %2$s of %3$s is already mapped to the Salesforce %4$s with Id of %5$s in the mapping object with id of %6$s. The Salesforce %4$s with Id of %5$s was created or modified in Salesforce, and would otherwise have been mapped to this WordPress record. No WordPress data has been changed to prevent changing data unintentionally.', 'object-sync-for-salesforce' ),
 					esc_attr( $salesforce_mapping['wordpress_object'] ),
-					esc_attr( $structure['id_field'] ),
+					esc_attr( $wordpress_id_field_name ),
 					absint( $wordpress_id ),
 					esc_attr( $salesforce_mapping['salesforce_object'] ),
 					esc_attr( $object['Id'] ),

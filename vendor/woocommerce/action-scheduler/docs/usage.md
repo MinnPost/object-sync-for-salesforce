@@ -15,6 +15,8 @@ There are two ways to install Action Scheduler:
 1. regular WordPress plugin; or
 1. a library within your plugin's codebase.
 
+Note that [Action Scheduler follows an L-2 dependency version policy](https://developer.woocommerce.com/2023/10/24/action-scheduler-to-adopt-l-2-dependency-version-policy/). That is, the library requires at least the "latest minus two" version of WordPress and the PHP minimum version requirement of that WordPress version.
+
 ### Usage as a Plugin
 
 Action Scheduler includes the necessary file headers to be used as a standard WordPress plugin.
@@ -88,7 +90,7 @@ Action Scheduler will register its version on `'plugins_loaded'` with priority `
 
 It is recommended to load it _when the file including it is included_. However, if you need to load it on a hook, then the hook must occur before `'plugins_loaded'`, or you can use `'plugins_loaded'` with negative priority, like `-10`.
 
-Action Scheduler will later initialize itself on `'init'` with priority `1`.  Action Scheduler APIs should not be used until after `'init'` with priority `1`.
+Action Scheduler will later initialize itself on `'init'` with priority `1`.  Action Scheduler APIs should not be used until after `'init'` with priority `1`. As described in [API Function Availability](/api/#api-function-availability), you can also use the `'action_scheduler_init'` action hook for this purpose.
 
 ### Usage in Themes
 
@@ -124,3 +126,29 @@ add_action( 'eg_midnight_log', 'eg_log_action_data' );
 ```
 
 Note that the `as_has_scheduled_action()` function was added in 3.3.0: if you are using an earlier version, you should use `as_next_scheduled_action()` instead. For more details on all available API functions, and the data they accept, refer to the [API Reference](/api/).
+
+### Passing arguments
+
+It is possible to pass arguments to your callbacks. When you initially supply the arguments via a call to `as_schedule_single_action()` or one of its sister functions, they should be in an array. However, your callback function will receive each array item as an individual parameter. Here's an example:
+
+```php
+// You must specify the number of arguments to be accepted (in this case, 2).
+add_action( 'purchase_notification', 'send_purchase_notification', 10, 2 );
+
+// When scheduling the action, provide the arguments as an array.
+as_schedule_single_action( time(), 'purchase_notification', array(
+    'bob@foo.bar',
+    'Learning Action Scheduler (e-book)',
+) );
+
+// Your callback should accept the appropriate number of parameters (again, in this case, 2).
+function send_purchase_notification( $customer_email, $purchased_item ) {
+    wp_mail( 
+        $customer_email,
+        'Thank you!',
+        "You purchased $purchased_item successfully."
+    );
+}
+```
+
+The above is a pretty simple illustration, and you would of course need to make changes if you wish to do anything more complex, such as accept a variable number of arguments. However, it hopefully illustrates the basic principles involved.
