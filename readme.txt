@@ -3,8 +3,8 @@ Contributors: minnpost, inn_nerds, jonathanstegall, benlk, rclations, harmoney
 Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 5.2
-Tested up to: 6.1
-Stable tag: 2.2.7
+Tested up to: 6.4
+Stable tag: 2.2.8
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html

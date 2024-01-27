@@ -1,6 +1,12 @@
 Changelog
 =========
 
+* 2.2.8 (2024-01-26)
+	* Plugin status: as before, this plugin doesn't have any official maintainers. I'll try to check in if anyone submits pull requests or major issues, and will give updates if/when that status changes.
+	* Maintenance: Update included version of Action Scheduler library to 3.7.1. There shouldn't be any major changes in this library, so this just keeps the plugin's dependency up to date.
+	* Maintenance: Fix php 8.2 dynamic properties. Thanks to GitHub user @daveromsey for the submission.
+	* Maintenance: Test plugin in WordPress 6.4 and update compatibility.
+
 * 2.2.7 (2023-02-05)
 	* Plugin status: for the time being, this plugin doesn't have any official maintainers. I'll try to check in if anyone submits pull requests or major issues, and will give updates if/when that status changes.
 	* Feature: Added filter to short-circuit API calls to Salesforce. Thanks to GitHub user @verygoodplugins for the submission.
