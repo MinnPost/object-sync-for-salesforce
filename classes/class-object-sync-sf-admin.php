@@ -536,7 +536,7 @@ class Object_Sync_Sf_Admin {
 	 * Render the admin pages in WordPress. This also allows other plugins to add tabs to this plugin's settings screen
 	 */
 	public function show_admin_page() {
-		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS );
 		echo '<div class="wrap">';
 		echo '<h1>' . esc_html( get_admin_page_title() ) . '</h1>';
 		$allowed = $this->check_wordpress_admin_permissions();
