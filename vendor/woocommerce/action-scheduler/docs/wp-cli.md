@@ -19,6 +19,15 @@ If you choose to utilize WP CLI exclusively, you can disable the normal WP CLI q
 
 These are the commands available to use with Action Scheduler:
 
+* `action-scheduler clean`
+
+  Options:
+  * `--batch-size` - This is the number of actions per status to clean in a single batch. Default is `20`.
+  * `--batches` - This is the number of batches to process. Default 0 means that batches will continue to process until there are no more actions to delete.
+  * `--status` - Process only actions with specific status or statuses. Default is `canceled` and `complete`. Define multiple statuses as a comma separated string (without spaces), e.g. `--status=complete,failed,canceled`
+  * `--before` - Process only actions with scheduled date older than this. Defaults to 31 days. e.g `--before='7 days ago'`, `--before='02-Feb-2020 20:20:20'`
+  * `--pause` - The number of seconds to pause between batches. Default no pause.
+
 * `action-scheduler migrate`
 
     **Note**: This command is only available while the migration to custom tables is in progress.
@@ -30,6 +39,7 @@ These are the commands available to use with Action Scheduler:
     * `--batches` - This is the number of batches to run. Using 0 means that batches will continue running until there are no more actions to run.
     * `--hooks` - Process only actions with specific hook or hooks, like `'woocommerce_scheduled_subscription_payment'`. By default, actions with any hook will be processed. Define multiple hooks as a comma separated string (without spaces), e.g. `--hooks=woocommerce_scheduled_subscription_trial_end,woocommerce_scheduled_subscription_payment,woocommerce_scheduled_subscription_expiration`
     * `--group` - Process only actions in a specific group, like `'woocommerce-memberships'`. By default, actions in any group (or no group) will be processed.
+    * `--exclude-groups` - Ignore actions from the specified group or groups (to specify multiple groups, supply a comma-separated list of slugs). This option is ignored if `--group` is also specified.
     * `--force` - By default, Action Scheduler limits the number of concurrent batches that can be run at once to ensure the server does not get overwhelmed. Using the `--force` flag overrides this behavior to force the WP CLI queue to run.
 
 The best way to get a full list of commands and their available options is to use WP CLI itself. This can be done by running `wp action-scheduler` to list all Action Scheduler commands, or by including the `--help` flag with any of the individual commands. This will provide all relevant parameters and flags for the command.
@@ -74,4 +84,4 @@ If you can batch based on each action's group, then you can improve performance 
 
 For example, if one queue is created to process emails, another to process membership updates, and another to process renewal payments, then the same queries won't be run at the same time, and 3 separate queues will be able to run more efficiently.
 
-The WP CLI runner can achieve this using the `--group` option.
+The WP CLI runner can achieve this using the `--group` option to create queue runners that focus on a specific group and, optionally, the `--exclude-groups` option to create one or more 'catch-all' queue runners that ignore those groups. 
