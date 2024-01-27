@@ -536,7 +536,7 @@ class Object_Sync_Sf_Admin {
 	 * Render the admin pages in WordPress. This also allows other plugins to add tabs to this plugin's settings screen
 	 */
 	public function show_admin_page() {
-		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
+		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS );
 		echo '<div class="wrap">';
 		echo '<h1>' . esc_html( get_admin_page_title() ) . '</h1>';
 		$allowed = $this->check_wordpress_admin_permissions();
@@ -763,7 +763,7 @@ class Object_Sync_Sf_Admin {
 	 * Create default WordPress admin settings form. This runs the Settings page.
 	 */
 	public function salesforce_settings_forms() {
-		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
+		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS );
 		$page     = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'settings';
 		$section  = isset( $get_data['tab'] ) ? sanitize_key( $get_data['tab'] ) : 'settings';
 
@@ -1524,7 +1524,7 @@ class Object_Sync_Sf_Admin {
 			return;
 		}
 
-		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
+		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS );
 		$notices  = $this->notices_data();
 
 		foreach ( $notices as $key => $value ) {
@@ -1565,7 +1565,7 @@ class Object_Sync_Sf_Admin {
 	public function get_salesforce_object_description( $data = array() ) {
 		$ajax = false;
 		if ( empty( $data ) ) {
-			$data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+			$data = filter_input_array( INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS );
 			$ajax = true;
 		}
 
@@ -1630,7 +1630,7 @@ class Object_Sync_Sf_Admin {
 	 */
 	public function get_salesforce_object_fields( $data = array() ) {
 		$ajax      = false;
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$post_data = filter_input_array( INPUT_POST, FILTER_UNSAFE_RAW );
 		if ( empty( $data ) ) {
 			$salesforce_object = isset( $post_data['salesforce_object'] ) ? sanitize_text_field( wp_unslash( $post_data['salesforce_object'] ) ) : '';
 			$ajax              = true;
@@ -1689,7 +1689,7 @@ class Object_Sync_Sf_Admin {
 	 */
 	public function get_wordpress_object_fields( $wordpress_object = '' ) {
 		$ajax      = false;
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$post_data = filter_input_array( INPUT_POST, FILTER_UNSAFE_RAW );
 		if ( empty( $wordpress_object ) ) {
 			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
 			$ajax             = true;
@@ -1716,7 +1716,7 @@ class Object_Sync_Sf_Admin {
 	 * @param bool   $force_return Force the method to return json instead of outputting it.
 	 */
 	public function push_to_salesforce( $wordpress_object = '', $wordpress_id = '', $force_return = false ) {
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$post_data = filter_input_array( INPUT_POST, FILTER_UNSAFE_RAW );
 		if ( empty( $wordpress_object ) && empty( $wordpress_id ) ) {
 			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
 			$wordpress_id     = isset( $post_data['wordpress_id'] ) ? absint( $post_data['wordpress_id'] ) : '';
@@ -1751,7 +1751,7 @@ class Object_Sync_Sf_Admin {
 	 * @param string $wordpress_object is the name of the WordPress object.
 	 */
 	public function pull_from_salesforce( $salesforce_id = '', $wordpress_object = '' ) {
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$post_data = filter_input_array( INPUT_POST, FILTER_UNSAFE_RAW );
 		if ( empty( $wordpress_object ) && empty( $salesforce_id ) ) {
 			$wordpress_object = isset( $post_data['wordpress_object'] ) ? sanitize_text_field( wp_unslash( $post_data['wordpress_object'] ) ) : '';
 			$salesforce_id    = isset( $post_data['salesforce_id'] ) ? sanitize_text_field( wp_unslash( $post_data['salesforce_id'] ) ) : '';
@@ -1772,7 +1772,7 @@ class Object_Sync_Sf_Admin {
 	 * @param int $mapping_id is the ID of the mapping object record.
 	 */
 	public function refresh_mapped_data( $mapping_id = '' ) {
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$post_data = filter_input_array( INPUT_POST, FILTER_UNSAFE_RAW );
 		if ( empty( $mapping_id ) ) {
 			$mapping_id = isset( $post_data['mapping_id'] ) ? absint( $post_data['mapping_id'] ) : '';
 		}
@@ -1805,7 +1805,7 @@ class Object_Sync_Sf_Admin {
 	 */
 	public function prepare_fieldmap_data() {
 		$error     = false;
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS );
 		$cachekey  = wp_json_encode( $post_data );
 		if ( false !== $cachekey ) {
 			$cachekey = md5( $cachekey );
@@ -1863,7 +1863,7 @@ class Object_Sync_Sf_Admin {
 	 * It then calls the Object_Sync_Sf_Mapping class and the delete method
 	 */
 	public function delete_fieldmap() {
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS );
 		if ( $post_data['id'] ) {
 			$result = $this->mappings->delete_fieldmap( $post_data['id'] );
 			if ( true === $result ) {
@@ -1885,7 +1885,7 @@ class Object_Sync_Sf_Admin {
 	 */
 	public function prepare_object_map_data() {
 		$error     = false;
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS );
 		$cachekey  = wp_json_encode( $post_data );
 		if ( false !== $cachekey ) {
 			$cachekey = md5( $cachekey );
@@ -1930,7 +1930,7 @@ class Object_Sync_Sf_Admin {
 	 * It then calls the Object_Sync_Sf_Mapping class and the delete method
 	 */
 	public function delete_object_map() {
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS );
 		if ( isset( $post_data['id'] ) ) {
 			$result = $this->mappings->delete_object_map( $post_data['id'] );
 			if ( true === $result ) {
@@ -1941,7 +1941,7 @@ class Object_Sync_Sf_Admin {
 			wp_safe_redirect( $url );
 			exit();
 		} elseif ( $post_data['delete'] ) {
-			$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+			$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS );
 			$cachekey  = wp_json_encode( $post_data );
 			if ( false !== $cachekey ) {
 				$cachekey = md5( $cachekey );
@@ -2145,7 +2145,7 @@ class Object_Sync_Sf_Admin {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS );
 		$export    = array();
 		if ( in_array( 'fieldmaps', $post_data['export'], true ) ) {
 			$export['fieldmaps'] = $this->mappings->get_fieldmaps();
@@ -2603,7 +2603,7 @@ class Object_Sync_Sf_Admin {
 	 * @param object $user this is the user object from WordPress.
 	 */
 	public function show_salesforce_user_fields( $user ) {
-		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
+		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS );
 		if ( true === $this->check_wordpress_admin_permissions() ) {
 			$mappings = $this->mappings->load_all_by_wordpress( 'user', $user->ID );
 			$fieldmap = $this->mappings->get_fieldmaps(
@@ -2638,7 +2638,7 @@ class Object_Sync_Sf_Admin {
 	 * @param int $user_id the ID of the WordPress user.
 	 */
 	public function save_salesforce_user_fields( $user_id ) {
-		$post_data = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+		$post_data = filter_input_array( INPUT_POST, FILTER_UNSAFE_RAW );
 		if ( isset( $post_data['salesforce_update_mapped_user'] ) && true === filter_var( $post_data['salesforce_update_mapped_user'], FILTER_VALIDATE_BOOLEAN ) ) {
 			$mapping_objects = $this->mappings->get_all_object_maps(
 				array(
@@ -2674,7 +2674,7 @@ class Object_Sync_Sf_Admin {
 	 */
 	private function tabs( $tabs, $tab = '' ) {
 
-		$get_data        = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
+		$get_data        = filter_input_array( INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS );
 		$consumer_key    = $this->login_credentials['consumer_key'];
 		$consumer_secret = $this->login_credentials['consumer_secret'];
 		$callback_url    = $this->login_credentials['callback_url'];
