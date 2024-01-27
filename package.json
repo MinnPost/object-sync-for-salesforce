@@ -18,7 +18,7 @@
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
     "autoprefixer": "^10.4.13",
-    "browser-sync": "^2.27.11",
+    "browser-sync": "^3.0.2",
     "css-mqpacker": "^7.0.0",
     "cssnano": "^5.1.14",
     "eslint-config-wordpress": "^2.0.0",
