@@ -384,7 +384,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public function add_prune_interval( $schedules ) {
 
 		$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
-		$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
+		$schedule_number = absint( get_option( $this->option_prefix . 'logs_how_often_number', '' ) );
 		$frequency       = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
 		$key             = $frequency['key'];
 		$seconds         = $frequency['seconds'];
