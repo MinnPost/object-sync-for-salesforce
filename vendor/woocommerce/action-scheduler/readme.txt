@@ -1,10 +1,10 @@
 === Action Scheduler ===
 Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, jamosova, obliviousharmony, konamiman, sadowski, royho, barryhughes-1
 Tags: scheduler, cron
-Stable tag: 3.7.1
+Stable tag: 3.7.4
 License: GPLv3
 Requires at least: 6.2
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 5.6
 
 Action Scheduler - Job Queue for WordPress
@@ -47,16 +47,30 @@ Collaboration is cool. We'd love to work with you to improve Action Scheduler. [
 
 == Changelog ==
 
-= 3.7.1 - 2023-12-13 =
-* Release/3.7.0.
+= 3.7.4 - 2024-04-05 =
+* Give a clear description of how the $unique parameter works.
+* Merge release/3.7.3 into trunk.
+* Preserve the tab field if set.
+* Tweak - WP 6.5 compatibility.
+
+= 3.7.3 - 2024-03-20 =
+* Do not iterate over all of GET when building form in list table.
+* Fix a few issues reported by PCP (Plugin Check Plugin).
+* Try to save actions as unique even when the store doesn't support it.
 * Tweak - WP 6.4 compatibility.
+* Update "Tested up to" tag to WordPress 6.5.
+* update version in package-lock.json.
+
+= 3.7.2 - 2024-02-14 =
+* No longer user variables in `_n()` translation function.
+
+= 3.7.1 - 2023-12-13 =
 * update semver to 5.7.2 because of a security vulnerability in 5.7.1.
 
 = 3.7.0 - 2023-11-20 =
 * Important: starting with this release, Action Scheduler follows an L-2 version policy (WordPress, and consequently PHP).
 * Add extended indexes for hook_status_scheduled_date_gmt and status_sheduled_date_gmt.
 * Catch and log exceptions thrown when actions can't be created, e.g. under a corrupt database schema.
-* Release/3.6.4.
 * Tweak - WP 6.4 compatibility.
 * Update unit tests for upcoming dependency version policy.
 * make sure hook action_scheduler_failed_execution can access original exception object.
