@@ -333,7 +333,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public function check_log_schedule( $old_value, $new_value, $option ) {
 		$clear_schedule  = false;
 		$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
-		$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
+		$schedule_number = filter_var( get_option( $this->option_prefix . 'logs_how_often_number', '' ), FILTER_VALIDATE_INT );
 		if ( $this->option_prefix . 'logs_how_often_unit' === $option ) {
 			$old_frequency = $this->get_schedule_frequency( $old_value, $schedule_number );
 			$new_frequency = $this->get_schedule_frequency( $new_value, $schedule_number );
@@ -367,7 +367,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 			return;
 		}
 		$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
-		$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
+		$schedule_number = filter_var( get_option( $this->option_prefix . 'logs_how_often_number', '' ), FILTER_VALIDATE_INT );
 		$frequency       = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
 		$key             = $frequency['key'];
 		if ( ! wp_next_scheduled( $this->schedule_name ) ) {
@@ -384,7 +384,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 	public function add_prune_interval( $schedules ) {
 
 		$schedule_unit   = get_option( $this->option_prefix . 'logs_how_often_unit', '' );
-		$schedule_number = get_option( $this->option_prefix . 'logs_how_often_number', '' );
+		$schedule_number = filter_var( get_option( $this->option_prefix . 'logs_how_often_number', '' ), FILTER_VALIDATE_INT );
 		$frequency       = $this->get_schedule_frequency( $schedule_unit, $schedule_number );
 		$key             = $frequency['key'];
 		$seconds         = $frequency['seconds'];
