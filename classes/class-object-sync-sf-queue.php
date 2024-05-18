@@ -118,7 +118,7 @@ class Object_Sync_Sf_Queue {
 		if ( 'asc' === $sort ) {
 			uasort(
 				$this->schedulable_classes,
-				function( $a, $b ) {
+				function ( $a, $b ) {
 					// we want zero values at the top of an ascending sort.
 					if ( 0 === $a['frequency'] ) {
 						return 1;
