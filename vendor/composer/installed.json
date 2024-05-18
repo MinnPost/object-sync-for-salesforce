@@ -78,12 +78,12 @@
         },
         {
             "name": "woocommerce/action-scheduler",
-            "version": "3.7.1",
-            "version_normalized": "3.7.1.0",
+            "version": "3.7.4",
+            "version_normalized": "3.7.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/action-scheduler.git",
-                "reference": "bdaecb016e0358065a8bf76a41fdd60772cacaa5"
+                "reference": "5fb655253dc004bb7a6d840da807f0949aea8bcd"
             },
             "require": {
                 "php": ">=5.6"
@@ -94,7 +94,7 @@
                 "wp-cli/wp-cli": "~2.5.0",
                 "yoast/phpunit-polyfills": "^2.0"
             },
-            "time": "2023-12-13T21:52:55+00:00",
+            "time": "2024-04-05T14:42:07+00:00",
             "type": "wordpress-plugin",
             "extra": {
                 "scripts-description": {
