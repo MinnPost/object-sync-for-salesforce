@@ -1,13 +1,14 @@
 Changelog
 =========
 
-* 2.2.9 (TBD)
-	* Plugin status: as before, this plugin doesn't have any official maintainers. I'll try to check in if anyone submits pull requests or major issues, and will give updates if/when that status changes.
+* 2.2.9 (2024-03-18)
+	* Plugin status: Plugin status: as before, this plugin doesn't have any official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
 	* Bug fix: Prevent error on blank WordPress install caused by a string instead of an integer. Thanks to GitHub user @federicojacobi for the pull request.
 	* Maintenance: Remove all uses of `FILTER_SANITIZE_STRING`, since it's deprecated in newer PHP versions.
 	* Maintenance: Update required versions of WordPress to match those [specified by Action Scheduler](https://github.com/woocommerce/action-scheduler/blob/trunk/readme.txt). This has been in effect since Woocommerce made [this 2023 decision](https://developer.woocommerce.com/2023/10/24/action-scheduler-to-adopt-l-2-dependency-version-policy/), but this plugin was not previously clear about that requirement.
 	* Maintenance: Update installed version of Action Scheduler to 3.7.4.
 	* Maintenance: Test plugin in WordPress 6.5 and update compatibility.
+	* Maintenance: Fix a couple of deprecated warnings that appear in logs in newer php versions
 
 * 2.2.8 (2024-01-26)
 	* Plugin status: as before, this plugin doesn't have any official maintainers. I'll try to check in if anyone submits pull requests or major issues, and will give updates if/when that status changes.
