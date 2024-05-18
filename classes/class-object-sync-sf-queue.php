@@ -171,7 +171,7 @@ class Object_Sync_Sf_Queue {
 				$minutes = 0;
 		}
 
-		$total = ${$unit} * $schedule_number;
+		$total = $$unit * $schedule_number;
 
 		return $total;
 	}
