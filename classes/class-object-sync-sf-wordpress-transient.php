@@ -40,10 +40,14 @@ class Object_Sync_Sf_WordPress_Transient {
 	/**
 	 * Get the transient that lists all the other transients for this plugin.
 	 *
-	 * @return mixed value of transient. False of empty, otherwise array.
+	 * @return array value of transient. Sets an empty array if the transient returns false.
 	 */
 	public function all_keys() {
-		return get_transient( $this->name );
+		$result = get_transient( $this->name );
+		if ( false === $result ) {
+			$result = array();
+		}
+		return $result;
 	}
 
 	/**
