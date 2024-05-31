@@ -312,6 +312,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// Store this request time for the throttle check.
 			$this->pull_options->set( 'last_sync', '', '', time() );
+
 			return true;
 
 		} else {
@@ -347,7 +348,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	private function get_updated_records() {
 		$sfapi = $this->salesforce['sfapi'];
 		foreach ( $this->mappings->get_fieldmaps( null, $this->mappings->active_fieldmap_conditions ) as $salesforce_mapping ) {
-			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping.
+			$map_sync_triggers = (array) $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping.
 			$type              = $salesforce_mapping['salesforce_object']; // this sets the Salesforce object type for the SOQL query.
 
 			$soql = $this->get_pull_query( $type, $salesforce_mapping );
@@ -657,7 +658,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 						$sf_sync_trigger = $this->mappings->sync_sf_update;
 					}
 					// Only queue when the record's trigger is configured for the mapping.
-					if ( isset( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers, true ) ) { // wp or sf crud event.
+					if ( isset( $map_sync_triggers ) && is_array( $map_sync_triggers ) && isset( $sf_sync_trigger ) && in_array( $sf_sync_trigger, $map_sync_triggers, true ) ) { // wp or sf crud event.
 						$data = array(
 							'object_type'     => $type,
 							'object'          => $result,
@@ -776,7 +777,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 			);
 
 			// check if this is a Salesforce create event.
-			if ( in_array( $this->mappings->sync_sf_create, $salesforce_mapping['sync_triggers'], true ) ) {
+			if ( in_array( $this->mappings->sync_sf_create, (array) $salesforce_mapping['sync_triggers'], true ) ) {
 				$soql->fields['CreatedDate'] = 'CreatedDate';
 			}
 
@@ -1053,7 +1054,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// Load all unique SF record types that we have mappings for. This results in a double loop.
 		foreach ( $this->mappings->get_fieldmaps( null, $this->mappings->active_fieldmap_conditions ) as $salesforce_mapping ) {
 
-			$map_sync_triggers = $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping.
+			$map_sync_triggers = (array) $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping.
 			$type              = $salesforce_mapping['salesforce_object']; // this sets the Salesforce object type for the SOQL query.
 
 			$mappings = $this->mappings->get_fieldmaps(
@@ -1533,7 +1534,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		// delete transients that we've already processed for this Salesforce object.
 		foreach ( $transients_to_delete as $key => $value ) {
 			$fieldmap_id = $value['fieldmap']['id'];
-			$transients  = $value['transients'];
+			$transients  = (array) $value['transients'];
 			foreach ( $transients as $transient_end ) {
 				$this->sync_transients->delete( 'salesforce_pushing_' . $transient_end, '', $fieldmap_id );
 			}
@@ -2266,7 +2267,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$pull_allowed = true;
 
 		// if the current fieldmap does not allow create, we need to check if there is an object map for the Salesforce object Id. if not, set pull_allowed to false.
-		if ( ! in_array( $this->mappings->sync_sf_create, $map_sync_triggers, true ) ) {
+		if ( ! in_array( $this->mappings->sync_sf_create, (array) $map_sync_triggers, true ) ) {
 			$object_map = $this->mappings->load_object_maps_by_salesforce_id( $object['Id'], $salesforce_mapping );
 			if ( empty( $object_map ) ) {
 				$pull_allowed = false;

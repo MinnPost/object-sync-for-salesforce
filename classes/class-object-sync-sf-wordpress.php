@@ -537,7 +537,7 @@ class Object_Sync_Sf_WordPress {
 	 * @param array  $ignore_keys Fields to ignore from the database.
 	 * @return array $all_fields The fields for the object.
 	 */
-	private function object_fields( $object_name, $id_field, $content_table, $content_methods, $meta_table, $meta_methods, $where, $ignore_keys ) {
+	private function object_fields( $object_name, $id_field, $content_table, $content_methods, $meta_table, $meta_methods, $where, $ignore_keys = [] ) {
 		// These two queries load all the fields from the specified object unless they have been specified as ignore fields.
 		// They also load the fields that are meta_keys from the specified object's meta table.
 		// Maybe a box for a custom query, since custom fields get done in so many ways.
@@ -575,7 +575,7 @@ class Object_Sync_Sf_WordPress {
 		*/
 
 		foreach ( $data_fields as $key => $value ) {
-			if ( ! in_array( $value, $ignore_keys, true ) ) {
+			if ( ! in_array( $value, (array) $ignore_keys, true ) ) {
 				$editable = true;
 				if ( $value === $id_field ) {
 					$editable = false;
@@ -592,7 +592,7 @@ class Object_Sync_Sf_WordPress {
 		}
 
 		foreach ( $meta_fields as $key => $value ) {
-			if ( ! in_array( $value->meta_key, $ignore_keys, true ) ) {
+			if ( ! in_array( $value->meta_key, (array) $ignore_keys, true ) ) {
 				$editable = true;
 				if ( $value === $id_field ) {
 					$editable = false;

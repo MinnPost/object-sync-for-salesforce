@@ -746,7 +746,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		// delete transients that we've already processed for this WordPress object.
 		foreach ( $transients_to_delete as $key => $value ) {
 			$fieldmap_id = $value['fieldmap']['id'];
-			$transients  = $value['transients'];
+			$transients  = (array) $value['transients'];
 			foreach ( $transients as $transient_end ) {
 				$this->sync_transients->delete( 'salesforce_pulling_' . $transient_end, '', $fieldmap_id );
 			}
@@ -1552,7 +1552,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		$push_allowed = true;
 
 		// if the current fieldmap does not allow the wp create trigger, we need to check if there is an object map for the WordPress object ID. if not, set push_allowed to false.
-		if ( ! in_array( $this->mappings->sync_wordpress_create, $map_sync_triggers, true ) ) {
+		if ( ! in_array( $this->mappings->sync_wordpress_create, (array) $map_sync_triggers, true ) ) {
 			$structure               = $this->wordpress->get_wordpress_table_structure( $object_type );
 			$wordpress_id_field_name = $structure['id_field'];
 			$object_map              = array();
@@ -1567,7 +1567,7 @@ class Object_Sync_Sf_Salesforce_Push {
 		}
 
 		// check if this is a Salesforce sync trigger.
-		if ( ! in_array( $sf_sync_trigger, $map_sync_triggers, true ) ) {
+		if ( ! in_array( $sf_sync_trigger, (array) $map_sync_triggers, true ) ) {
 			$push_allowed = false;
 		}
 

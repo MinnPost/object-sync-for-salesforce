@@ -95,6 +95,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 
 		$this->enabled         = filter_var( get_option( $this->option_prefix . 'enable_logging', false ), FILTER_VALIDATE_BOOLEAN );
 		$this->statuses_to_log = maybe_unserialize( get_option( $this->option_prefix . 'statuses_to_log', array() ) );
+		$this->statuses_to_log = empty( $this->statuses_to_log ) ? [] : $this->statuses_to_log;
 
 		$this->schedule_name = 'wp_logging_prune_routine';
 
@@ -516,8 +517,8 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 		}
 
 		if ( true === $this->enabled && in_array( $status, $this->statuses_to_log, true ) ) {
-			$triggers_to_log = maybe_unserialize( get_option( $this->option_prefix . 'triggers_to_log', array() ) );
-			if ( in_array( $trigger, $triggers_to_log, true ) || 0 === $trigger ) {
+			$triggers_to_log = (array) maybe_unserialize( get_option( $this->option_prefix . 'triggers_to_log', array() ) );
+			if ( 0 === $trigger || in_array( $trigger, $triggers_to_log, true ) ) {
 				$this->add( $title, $message, $parent );
 			} elseif ( is_array( $trigger ) && array_intersect( $trigger, $triggers_to_log ) ) {
 				$this->add( $title, $message, $parent );
