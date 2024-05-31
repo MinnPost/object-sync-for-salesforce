@@ -997,9 +997,10 @@ class Object_Sync_Sf_WordPress {
 				do_action( $this->option_prefix . 'set_more_user_data', $user_id, $params, 'create' );
 
 				// Send notification of new user.
-				// todo: Figure out what permissions ought to get notifications for this and make sure it works the right way.
-				wp_new_user_notification( $user_id, null, 'both' );
-
+				// todo: Figure out what permissions ought to get notifications for this and make sure it works the right way. In the meantime, allow developers to prevent the notification from being sent.
+				if ( apply_filters( $this->option_prefix . 'send_new_user_notification', true, $user_id, $params ) ) {
+					wp_new_user_notification( $user_id, null, 'both' );
+				}
 			}
 		} else {
 			$user_id = username_exists( $username );
