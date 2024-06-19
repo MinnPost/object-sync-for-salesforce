@@ -15,8 +15,8 @@
   },
   "homepage": "https://github.com/MinnPost/object-sync-for-salesforce#readme",
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
     "autoprefixer": "^10.4.19",
     "browser-sync": "^3.0.2",
     "css-mqpacker": "^7.0.0",
@@ -40,9 +40,9 @@
     "gulp-uglify": "^3.0.2",
     "gulp-wp-pot": "^2.5.0",
     "stylelint": "^13.13.1",
-    "postcss": "^8.4.33",
+    "postcss": "^8.4.38",
     "npm-check-updates": "^16.14.20",
-    "sass": "^1.77.2",
+    "sass": "^1.77.6",
     "stylelint-config-wordpress": "^17.0.0"
   },
   "browserslist": [
