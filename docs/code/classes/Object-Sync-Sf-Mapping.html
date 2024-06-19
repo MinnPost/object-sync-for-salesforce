@@ -144,14 +144,14 @@
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Mapping.html#property_array_types_from_salesforce">$array_types_from_salesforce</a>
     <span>
-                        &nbsp;: string            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Data in Salesforce that is stored as an array</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Mapping.html#property_date_types_from_salesforce">$date_types_from_salesforce</a>
     <span>
-                        &nbsp;: string            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Data in Salesforce that is stored as a date</dd>
 
@@ -165,7 +165,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Mapping.html#property_direction_salesforce">$direction_salesforce</a>
     <span>
-                        &nbsp;: string            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Salesforce directions, including sync</dd>
 
@@ -186,7 +186,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Mapping.html#property_direction_wordpress">$direction_wordpress</a>
     <span>
-                        &nbsp;: string            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>WordPress directions, including sync</dd>
 
@@ -221,7 +221,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Mapping.html#property_int_types_from_salesforce">$int_types_from_salesforce</a>
     <span>
-                        &nbsp;: string            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Data in Salesforce that is stored as an integer</dd>
 
@@ -263,7 +263,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Mapping.html#property_salesforce_events">$salesforce_events</a>
     <span>
-                        &nbsp;: string            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Which events are run by Salesforce</dd>
 
@@ -403,7 +403,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/Object-Sync-Sf-Mapping.html#property_wordpress_events">$wordpress_events</a>
     <span>
-                        &nbsp;: string            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Which events are run by WordPress</dd>
 
@@ -685,7 +685,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$array_types_from_salesforce</span>
     </code>
 
@@ -718,7 +718,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$date_types_from_salesforce</span>
     </code>
 
@@ -784,7 +784,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$direction_salesforce</span>
     </code>
 
@@ -883,7 +883,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$direction_wordpress</span>
     </code>
 
@@ -1048,7 +1048,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$int_types_from_salesforce</span>
     </code>
 
@@ -1246,7 +1246,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$salesforce_events</span>
     </code>
 
@@ -1906,7 +1906,7 @@ Sets up the database entry for mapping the object types between Salesforce and W
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$wordpress_events</span>
     </code>
 
