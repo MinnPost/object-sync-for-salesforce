@@ -198,21 +198,21 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Data in Salesforce that is stored as an array
 	 *
-	 * @var string[]
+	 * @var array
 	 */
 	public $array_types_from_salesforce;
 
 	/**
 	 * Data in Salesforce that is stored as a date
 	 *
-	 * @var string[]
+	 * @var array
 	 */
 	public $date_types_from_salesforce;
 
 	/**
 	 * Data in Salesforce that is stored as an integer
 	 *
-	 * @var string[]
+	 * @var array
 	 */
 	public $int_types_from_salesforce;
 
