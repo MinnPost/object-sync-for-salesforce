@@ -135,14 +135,14 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * Which events are run by WordPress
 	 *
-	 * @var string[]
+	 * @var array
 	 */
 	public $wordpress_events;
 
 	/**
 	 * Which events are run by Salesforce
 	 *
-	 * @var string[]
+	 * @var array
 	 */
 	public $salesforce_events;
 
@@ -170,14 +170,14 @@ class Object_Sync_Sf_Mapping {
 	/**
 	 * WordPress directions, including sync
 	 *
-	 * @var string[]
+	 * @var array
 	 */
 	public $direction_wordpress;
 
 	/**
 	 * Salesforce directions, including sync
 	 *
-	 * @var string[]
+	 * @var array
 	 */
 	public $direction_salesforce;
 
