@@ -95,7 +95,7 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 
 		$this->enabled         = filter_var( get_option( $this->option_prefix . 'enable_logging', false ), FILTER_VALIDATE_BOOLEAN );
 		$this->statuses_to_log = maybe_unserialize( get_option( $this->option_prefix . 'statuses_to_log', array() ) );
-		$this->statuses_to_log = empty( $this->statuses_to_log ) ? [] : $this->statuses_to_log;
+		$this->statuses_to_log = empty( $this->statuses_to_log ) ? array() : $this->statuses_to_log;
 
 		$this->schedule_name = 'wp_logging_prune_routine';
 
