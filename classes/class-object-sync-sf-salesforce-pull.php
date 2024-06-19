@@ -312,7 +312,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 			// Store this request time for the throttle check.
 			$this->pull_options->set( 'last_sync', '', '', time() );
-
 			return true;
 
 		} else {
