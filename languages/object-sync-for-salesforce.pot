@@ -510,11 +510,11 @@ msgstr ""
 msgid "Mapping object updated via function: "
 msgstr ""
 
-#: classes/class-object-sync-sf-logging.php:223
+#: classes/class-object-sync-sf-logging.php:224
 msgid "Type"
 msgstr ""
 
-#: classes/class-object-sync-sf-logging.php:309
+#: classes/class-object-sync-sf-logging.php:310
 msgid "All log types "
 msgstr ""
 
@@ -901,42 +901,42 @@ msgid "Unable to access identity service."
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
-#: classes/class-object-sync-sf-wordpress.php:1154
+#: classes/class-object-sync-sf-wordpress.php:1155
 msgid "%1$s: Users: Tried to run user_upsert, and ended up without a user id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
-#: classes/class-object-sync-sf-wordpress.php:1485
+#: classes/class-object-sync-sf-wordpress.php:1486
 msgid "%1$s: Posts: Tried to run post_upsert, and ended up without a post id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
-#: classes/class-object-sync-sf-wordpress.php:1793
+#: classes/class-object-sync-sf-wordpress.php:1794
 msgid "%1$s: Attachments: Tried to run attachment_upsert, and ended up without an attachment id"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
-#: classes/class-object-sync-sf-wordpress.php:2113
+#: classes/class-object-sync-sf-wordpress.php:2114
 msgid "%1$s: Terms: Tried to run term_upsert, and ended up without a term id"
 msgstr ""
 
 #. translators: %1$s is the log status. %2$s is a number. %3$s is a key. %4$s is the value of that key. %5$s is a var_export'd array of comments.
-#: classes/class-object-sync-sf-wordpress.php:2352
+#: classes/class-object-sync-sf-wordpress.php:2353
 msgid "%1$s: Comments: there are %2$s comment matches for the Salesforce key %3$s with the value of %4$s. Here they are: %5$s"
 msgstr ""
 
 #. translators: placeholders are: 1) the log status.
-#: classes/class-object-sync-sf-wordpress.php:2432
+#: classes/class-object-sync-sf-wordpress.php:2433
 msgid "%1$s: Comments: Tried to run comment_upsert, and ended up without a comment id"
 msgstr ""
 
 #. translators: 1) is the WordPress object type, 2) is the method that should be used to save the value.
-#: classes/class-object-sync-sf-wordpress.php:2542
+#: classes/class-object-sync-sf-wordpress.php:2543
 msgid "Tried to add %1$s meta with method %2$s."
 msgstr ""
 
 #. translators: 1) is the WordPress object type, 2) is the key of the meta field, 3) is the method that should be used to update the value, 4) is the already stored value, 5) is the new value the plugin tried to save.
-#: classes/class-object-sync-sf-wordpress.php:2607
+#: classes/class-object-sync-sf-wordpress.php:2608
 msgid "Unable to update %1$s meta key %2$s with method %3$s. The stored value is %4$s and the new value should be %5$s."
 msgstr ""
 
