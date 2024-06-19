@@ -171,6 +171,10 @@ This page lists all developer hooks available in this plugin, with links to wher
     - description: allow plugins to set more data on user objects when users are created or updated. This could be used for permissions, for example.
     - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
     - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
+- `object_sync_for_salesforce_send_new_user_notification`:
+    - description: allow plugins to prevent WordPress from sending notifications to users when it creates new user records.
+    - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)
+    - documentation: [extending wordpress](./extending-wordpress.md#doing-more-with-default-objects)
 - `object_sync_for_salesforce_set_more_post_data`:
     - description: allow plugins to set more data on post objects when posts are created or updated.
     - code: [classes/class-object-sync-sf-wordpress.php](../classes/class-object-sync-sf-wordpress.php)

@@ -58,6 +58,18 @@ function save_more_my_post( $comment_id, $params, $action ) {
 }
 ```
 
+There is an additional hook that allows plugins to prevent WordPress from sending notifications to users when it creates new user records. This can be useful for WordPress installations that otherwise benefit from these notifications, especially when running imports.
+
+```php
+add_action( 'object_sync_for_salesforce_send_new_user_notification', 'turn_off_new_user_notification', 10, 3 );
+function turn_off_new_user_notification( $send_new_user_notification, $user_id, $params ) {
+    if ( 0 === $user_id ) {
+        $send_new_user_notification = false;
+    }
+    return $send_new_user_notification;
+}
+```
+
 ## Working with custom objects
 
 By default, the plugin supports create, read, update, delete methods for these objects:
