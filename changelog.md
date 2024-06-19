@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 2.2.10 (2024-06-19)
+	* Plugin status: Plugin status: as before, this plugin doesn't have any official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
+	* Maintenance: Add a new filter to prevent new user notifications. Also prevents some possible errors that can happen when plugin options haven't been set. Thanks to @federicojacobi for the pull request.
+
 * 2.2.9 (2024-03-18)
 	* Plugin status: Plugin status: as before, this plugin doesn't have any official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
 	* Bug fix: Prevent error on blank WordPress install caused by a string instead of an integer. Thanks to GitHub user @federicojacobi for the pull request.
