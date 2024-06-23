@@ -13,7 +13,7 @@ Donate link: https://www.minnpost.com/support/?campaign=7010G0000012fXGQAY
 Tags: salesforce, sync, crm
 Requires at least: 6.3
 Tested up to: 6.5
-Requires PHP: 5.6.20
+Requires PHP: 7.0
 Stable tag: 2.2.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -39,8 +39,7 @@ To get started, install Object Sync for Salesforce from the [WordPress plugin re
 
 ### Requirements
 
-1. A PHP installation of at least version 5.6.20.
-2. A WordPress installation of at least version 6.3.
+1. The minimum system requirements for the [Action Scheduler](https://actionscheduler.org/) library. Currently this library requires a PHP installation of at least version 7.0 and a WordPress installation of at least version 6.3.
 3. SSL support.
 4. A Salesforce account. Developers can register for a free Developer Edition account at [https://developer.salesforce.com/signup](https://developer.salesforce.com/signup)
 5. A remote application/connected Salesforce app for authorization.

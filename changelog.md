@@ -1,9 +1,11 @@
 Changelog
 =========
 
-* 2.2.10 (2024-06-19)
+* 2.2.10 (2024-06-23)
 	* Plugin status: Plugin status: as before, this plugin doesn't have any official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
 	* Maintenance: Add a new filter to prevent new user notifications. Also prevents some possible errors that can happen when plugin options haven't been set. Thanks to @federicojacobi for the pull request.
+	* Maintenance: Update supported WordPress version to 6.3 and PHP version to 7.0 to match the updated system requirements for Action Scheduler (see version 3.8 of that library). Action Scheduler does not currently force 7.0 in its composer library, so this plugin will follow that convention.
+	* Maintenance: Update installed version of Action Scheduler to 3.8.1.
 
 * 2.2.9 (2024-03-18)
 	* Plugin status: Plugin status: as before, this plugin doesn't have any official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
