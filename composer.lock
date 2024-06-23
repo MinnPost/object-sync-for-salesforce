@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0769d94d6d3edf16909deae650cb666e",
+    "content-hash": "6ecb38083efaa7063540e81cb37f5e71",
     "packages": [
         {
             "name": "messageagency/force.com-toolkit-for-php",
@@ -79,11 +79,11 @@
         },
         {
             "name": "woocommerce/action-scheduler",
-            "version": "3.7.4",
+            "version": "3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/action-scheduler.git",
-                "reference": "5fb655253dc004bb7a6d840da807f0949aea8bcd"
+                "reference": "e331b534d7de10402d7545a0de50177b874c0779"
             },
             "require": {
                 "php": ">=5.6"
@@ -126,7 +126,7 @@
             ],
             "description": "Action Scheduler for WordPress and WooCommerce",
             "homepage": "https://actionscheduler.org/",
-            "time": "2024-04-05T14:42:07+00:00"
+            "time": "2024-06-20T19:53:06+00:00"
         }
     ],
     "packages-dev": [
@@ -206,12 +206,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "2f5294676c802a62b0549f6bc8983f14294ce369"
+                "reference": "3a6b9a42cd8f8771bd4295d13e1423fa7f3d942c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/2f5294676c802a62b0549f6bc8983f14294ce369",
-                "reference": "2f5294676c802a62b0549f6bc8983f14294ce369",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3a6b9a42cd8f8771bd4295d13e1423fa7f3d942c",
+                "reference": "3a6b9a42cd8f8771bd4295d13e1423fa7f3d942c",
                 "shasum": ""
             },
             "require": {
@@ -251,7 +251,7 @@
             ],
             "support": {
                 "issues": "https://github.com/myclabs/DeepCopy/issues",
-                "source": "https://github.com/myclabs/DeepCopy/tree/1.x"
+                "source": "https://github.com/myclabs/DeepCopy/tree/1.12.0"
             },
             "funding": [
                 {
@@ -259,7 +259,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-10T11:10:03+00:00"
+            "time": "2024-06-12T14:39:25+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -267,12 +267,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "c5ee33df86c06b3278c670f64273b1ba768a0744"
+                "reference": "3ef0811e45ba7e91fb0f066af5af7d52c3b24469"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/c5ee33df86c06b3278c670f64273b1ba768a0744",
-                "reference": "c5ee33df86c06b3278c670f64273b1ba768a0744",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/3ef0811e45ba7e91fb0f066af5af7d52c3b24469",
+                "reference": "3ef0811e45ba7e91fb0f066af5af7d52c3b24469",
                 "shasum": ""
             },
             "require": {
@@ -318,7 +318,7 @@
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
                 "source": "https://github.com/nikic/PHP-Parser/tree/master"
             },
-            "time": "2024-04-19T12:04:10+00:00"
+            "time": "2024-06-12T18:31:58+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -764,12 +764,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "0826901219afd2970f0ec8b7a5bce8f0e3000efc"
+                "reference": "07da7f5d51ff0bc9b0ea757be084a57e174b1312"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/0826901219afd2970f0ec8b7a5bce8f0e3000efc",
-                "reference": "0826901219afd2970f0ec8b7a5bce8f0e3000efc",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/07da7f5d51ff0bc9b0ea757be084a57e174b1312",
+                "reference": "07da7f5d51ff0bc9b0ea757be084a57e174b1312",
                 "shasum": ""
             },
             "require": {
@@ -859,7 +859,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-16T09:07:01+00:00"
+            "time": "2024-06-17T05:30:09+00:00"
         },
         {
             "name": "sebastian/cli-parser",
