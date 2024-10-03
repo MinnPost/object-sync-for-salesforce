@@ -350,7 +350,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$map_sync_triggers = (array) $salesforce_mapping['sync_triggers']; // this sets which Salesforce triggers are allowed for the mapping.
 			$type              = $salesforce_mapping['salesforce_object']; // this sets the Salesforce object type for the SOQL query.
 
-			$soql = $this->get_pull_query( $type, $salesforce_mapping );
+			// Setting true as third parameter so we do not change the offset.
+			$soql = $this->get_pull_query( $type, $salesforce_mapping, true );
 
 			// get_pull_query returns null if it has no matching fields.
 			if ( null === $soql ) {
@@ -727,7 +728,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 * @see Object_Sync_Sf_Mapping::get_mapped_fields
 	 * @see Object_Sync_Sf_Mapping::get_mapped_record_types
 	 */
-	private function get_pull_query( $type, $salesforce_mapping = array() ) {
+	private function get_pull_query( $type, $salesforce_mapping = array(), $force_current_offset = false ) {
 		// we need to determine what to do with saved queries. this is what we currently do but it doesn't work.
 		// check if we have a stored next query to run for this type. if so, unserialize it so we have an object.
 		$pull_query_running = $this->pull_options->get( 'current_query', $type, $salesforce_mapping['id'], '' );
@@ -817,8 +818,11 @@ class Object_Sync_Sf_Salesforce_Pull {
 			$soql->conditions[ $key ]['value'] = $pull_trigger_field_value;
 		}
 
-		// Get the value for the SOQL offset. If max has already been reached, it is zero.
-		$soql->offset = $this->get_pull_offset( $type, $soql, $reset_offset );
+		// We don't want to change the offset on the first call of get_updated_records function. Otherwise the offset may be added two times and we would lose records...
+		if ( ! $force_current_offset ) {
+			// Get the value for the SOQL offset. If max has already been reached, it is zero.
+			$soql->offset = $this->get_pull_offset( $type, $soql, $reset_offset );
+		}
 
 		// add a filter here to modify the query
 		// Hook to allow other plugins to modify the SOQL query before it is sent to Salesforce.
