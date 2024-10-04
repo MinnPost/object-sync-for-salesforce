@@ -536,9 +536,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 					} // end if
 				} // end foreach
 
-				// we're done with the foreach. store the LastModifiedDate of the last item processed, or the current time if it isn't there.
+				// we're done with the foreach. save  the LastModifiedDate of the last item processed, we will store it if the query has results with an additional offset.
 				$last_date_for_query = isset( $result['LastModifiedDate'] ) ? $result['LastModifiedDate'] : '';
-				$this->increment_current_type_datetime( $type, $last_date_for_query, $salesforce_mapping['id'] );
 
 				if ( true === $this->batch_soql_queries ) {
 					// if applicable, process the next batch of records.
@@ -552,6 +551,8 @@ class Object_Sync_Sf_Salesforce_Pull {
 					end( $response['records'] );
 					$last_record_key = key( $response['records'] );
 					if ( true === $does_next_offset_have_results ) {
+						// store the LastModifiedDate of the last item processed, or the current time if it isn't there.
+						$this->increment_current_type_datetime( $type, $last_date_for_query, $salesforce_mapping['id'] );
 						// increment SOQL query to run.
 						$soql = $this->get_pull_query( $type, $salesforce_mapping );
 					} elseif ( $last_record_key === $key ) {
