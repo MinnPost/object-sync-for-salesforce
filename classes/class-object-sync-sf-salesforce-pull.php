@@ -725,6 +725,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 *
 	 * @param string $type e.g. "Contact", "Account", etc.
 	 * @param array  $salesforce_mapping the fieldmap that maps the two object types.
+	 * @param bool $force_current_offset if true, the will not be recalculated and will use the offset of the current query saved on the db, if present.
 	 * @return Object_Sync_Sf_Salesforce_Select_Query or null if no mappings or no mapped fields were found.
 	 * @see Object_Sync_Sf_Mapping::get_mapped_fields
 	 * @see Object_Sync_Sf_Mapping::get_mapped_record_types
