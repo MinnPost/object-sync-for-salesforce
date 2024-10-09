@@ -1,6 +1,13 @@
 Changelog
 =========
 
+* 2.2.11 (2024-10-08)
+	* Plugin status: Plugin status: as before, this plugin doesn't currently have official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
+	* Bug fix: Fix offset calculation to avoid losing offset record updates. Thanks to @HyprCoder for the fix.
+	* Maintenance: Update supported WordPress version to 6.4 to match system requirements for Action Scheduler.
+	* Maintenance: Update installed version of Action Scheduler to 3.8.2.
+	* Maintenance: Test plugin in WordPress 6.6 and update compatibility.
+
 * 2.2.10 (2024-06-23)
 	* Plugin status: Plugin status: as before, this plugin doesn't have any official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
 	* Maintenance: Add a new filter to prevent new user notifications. Also prevents some possible errors that can happen when plugin options haven't been set. Thanks to @federicojacobi for the pull request.
