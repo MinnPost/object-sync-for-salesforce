@@ -1834,7 +1834,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 				esc_attr( $op ),
 				esc_attr( $salesforce_mapping['wordpress_object'] )
 			);
-			if ( null !== $salesforce_id ) {
+			if ( isset( $salesforce_id ) && null !== $salesforce_id ) {
 				$title .= ' ' . $salesforce_id;
 			}
 			$title .= sprintf(
