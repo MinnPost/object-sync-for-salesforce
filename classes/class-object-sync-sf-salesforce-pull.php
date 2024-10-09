@@ -196,7 +196,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		// use the option value for whether we're in debug mode.
 		$this->debug = filter_var( get_option( $this->option_prefix . 'debug_mode', false ), FILTER_VALIDATE_BOOLEAN );
-
 	}
 
 	/**
@@ -295,7 +294,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		);
 
 		return $result;
-
 	}
 
 	/**
@@ -725,7 +723,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 	 *
 	 * @param string $type e.g. "Contact", "Account", etc.
 	 * @param array  $salesforce_mapping the fieldmap that maps the two object types.
-	 * @param bool $force_current_offset if true, the will not be recalculated and will use the offset of the current query saved on the db, if present.
+	 * @param bool   $force_current_offset if true, the will offset not be recalculated and will use the offset of the current query saved on the db, if present.
 	 * @return Object_Sync_Sf_Salesforce_Select_Query or null if no mappings or no mapped fields were found.
 	 * @see Object_Sync_Sf_Mapping::get_mapped_fields
 	 * @see Object_Sync_Sf_Mapping::get_mapped_record_types
@@ -821,7 +819,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 		}
 
 		// We don't want to change the offset on the first call of get_updated_records function. Otherwise the offset may be added two times and we would lose records...
-		if ( ! $force_current_offset ) {
+		if ( false === $force_current_offset ) {
 			// Get the value for the SOQL offset. If max has already been reached, it is zero.
 			$soql->offset = $this->get_pull_offset( $type, $soql, $reset_offset );
 		}
@@ -913,7 +911,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		*/
 
 		return $pull_trigger_field_value;
-
 	}
 
 	/**
@@ -998,7 +995,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 				}
 			} // End foreach on mappings
 		} // end foreach on types
-
 	}
 
 	/**
@@ -1098,7 +1094,7 @@ class Object_Sync_Sf_Salesforce_Pull {
 					foreach ( $merged as $key ) {
 						$deleted['data']['deletedRecords'] = array_filter(
 							$deleted['data']['deletedRecords'],
-							function( $x ) use ( $key ) {
+							function ( $x ) use ( $key ) {
 								if ( ! isset( $x['Id'] ) && isset( $x['id'] ) ) {
 									$x['Id'] = $x['id'];
 								}
@@ -1219,7 +1215,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		);
 
 		return $result;
-
 	}
 
 	/**
@@ -1550,7 +1545,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		}
 
 		return $results;
-
 	}
 
 	/**
@@ -2026,7 +2020,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		$mapping_object                     = $this->mappings->update_object_map( $mapping_object, $mapping_object['id'] );
 
 		return $results;
-
 	}
 
 	/**
@@ -2170,7 +2163,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		} // End if() statement.
 
 		return $results;
-
 	}
 
 	/**
@@ -2253,7 +2245,6 @@ class Object_Sync_Sf_Salesforce_Pull {
 		);
 
 		return $mapping_object;
-
 	}
 
 	/**
@@ -2297,5 +2288,4 @@ class Object_Sync_Sf_Salesforce_Pull {
 
 		return $pull_allowed;
 	}
-
 }
