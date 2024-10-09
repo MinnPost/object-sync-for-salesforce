@@ -30,10 +30,10 @@
         }
     ],
     "require": {
-        "php": ">=5.6.20",
+        "php": ">=7.0",
         "pippinsplugins/wp-logging": "dev-master",
         "messageagency/force.com-toolkit-for-php": "^1.0.2",
-        "woocommerce/action-scheduler": "^3.8.1"
+        "woocommerce/action-scheduler": "^3.8.2"
     },
     "require-dev": {
         "php": ">=8.0",
