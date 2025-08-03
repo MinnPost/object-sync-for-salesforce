@@ -323,8 +323,8 @@ class Object_Sync_Sf_Mapping {
 		$this->object_map_table = $this->wpdb->prefix . 'object_sync_sf_object_map';
 
 		$this->fieldmap_statuses          = array(
-			'active'   => esc_html__( 'Active', 'object-sync-for-salesforce' ),
-			'inactive' => esc_html__( 'Inactive', 'object-sync-for-salesforce' ),
+			'active'   => 'Active',
+			'inactive' => 'Inactive',
 			'any'      => '',
 		);
 		$this->active_fieldmap_conditions = array(
@@ -390,6 +390,27 @@ class Object_Sync_Sf_Mapping {
 		// use the option value for whether we're in debug mode.
 		$this->debug = filter_var( get_option( $this->option_prefix . 'debug_mode', false ), FILTER_VALIDATE_BOOLEAN );
 
+		// action hooks.
+		$this->add_actions();
+	}
+
+	/**
+	 * Run init actions.
+	 */
+	public function add_actions() {
+		// public actions.
+		add_action( 'init', array( $this, 'init' ) );
+	}
+
+	/**
+	 * Initialize. things that have to run after init.
+	 */
+	public function init() {
+		$this->fieldmap_statuses = array(
+			'active'   => esc_html__( 'Active', 'object-sync-for-salesforce' ),
+			'inactive' => esc_html__( 'Inactive', 'object-sync-for-salesforce' ),
+			'any'      => '',
+		);
 	}
 
 	/**
@@ -1362,5 +1383,4 @@ class Object_Sync_Sf_Mapping {
 		}
 		return $error;
 	}
-
 }
