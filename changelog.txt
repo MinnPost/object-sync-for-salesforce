@@ -2,8 +2,10 @@ Changelog
 =========
 
 * 2.2.12 (2025-)
-	* Plugin status: Plugin status: as before, this plugin doesn't currently have official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
+	* Plugin status: Plugin status: as before, this plugin doesn't currently have official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge/address them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
 	* Bug fix: Fix warning triggered in WordPress 6.7 and newer due to translation functions being called too early in the plugin lifecycle. Thanks to GitHub user @alessandrocarrera for the report and @richaber for additional context.
+	* Bug fix: Check for createable attribute on Salesforce fields so that the mapping enables operations where there are createable fields but not updateable ones. Thanks to GitHub user @jose-dvm for the report.
+	* Bug fix: Prevent errors that can occur when saving log settings and schedule settings on initial plugin setup.
 	* Maintenance: Update supported PHP version to 7.2 and supported WordPress version to 6.5 to match system requirements for Action Scheduler.
 	* Maintenance: Update installed version of Action Scheduler to 3.9.3.
 	* Maintenance: Test plugin in WordPress 6.8 and update compatibility.
