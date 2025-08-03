@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* 2.2.12 (2025-)
+	* Plugin status: Plugin status: as before, this plugin doesn't currently have official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
+	* Bug fix: Fix warning triggered in WordPress 6.7 and newer due to translation functions being called too early in the plugin lifecycle. Thanks to GitHub user @alessandrocarrera for the report and @richaber for additional context.
+
 * 2.2.11 (2024-10-08)
 	* Plugin status: Plugin status: as before, this plugin doesn't currently have official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
 	* Bug fix: Fix offset calculation to avoid losing offset record updates. Thanks to @HyprCoder for the fix.
