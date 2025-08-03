@@ -386,10 +386,10 @@ Search.appendIndex(
             "summary": "Fields\u0020for\u0020the\u0020Mapping\u0020Errors\u0020tab\nThis\u0020runs\u0020add_settings_section\u0020once,\u0020as\u0020well\u0020as\u0020add_settings_field\u0020and\u0020register_setting\u0020methods\u0020for\u0020each\u0020option",
             "url": "classes/Object-Sync-Sf-Admin.html#method_fields_errors"
         },                {
-            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003A\u0024notices_data",
-            "name": "notices_data",
-            "summary": "Data\u0020for\u0020admin\u0020notices",
-            "url": "classes/Object-Sync-Sf-Admin.html#property_notices_data"
+            "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Aget_notices_data\u0028\u0029",
+            "name": "get_notices_data",
+            "summary": "Create\u0020and\u0020return\u0020the\u0020data\u0020for\u0020notices.",
+            "url": "classes/Object-Sync-Sf-Admin.html#method_get_notices_data"
         },                {
             "fqsen": "\\Object_Sync_Sf_Admin\u003A\u003Adisplay_notices\u0028\u0029",
             "name": "display_notices",
@@ -950,6 +950,16 @@ Search.appendIndex(
             "name": "__construct",
             "summary": "Constructor\u0020for\u0020mapping\u0020class",
             "url": "classes/Object-Sync-Sf-Mapping.html#method___construct"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Aadd_actions\u0028\u0029",
+            "name": "add_actions",
+            "summary": "Run\u0020init\u0020actions.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#method_add_actions"
+        },                {
+            "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Ainit\u0028\u0029",
+            "name": "init",
+            "summary": "Initialize.\u0020things\u0020that\u0020have\u0020to\u0020run\u0020after\u0020init.",
+            "url": "classes/Object-Sync-Sf-Mapping.html#method_init"
         },                {
             "fqsen": "\\Object_Sync_Sf_Mapping\u003A\u003Acreate_fieldmap\u0028\u0029",
             "name": "create_fieldmap",
