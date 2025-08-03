@@ -353,6 +353,11 @@ class Object_Sync_Sf_Logging extends WP_Logging {
 				$clear_schedule = true;
 			}
 		}
+
+		if ( false === wp_get_scheduled_event( $this->schedule_name ) ) {
+			$clear_schedule = false;
+		}
+
 		if ( true === $clear_schedule ) {
 			wp_clear_scheduled_hook( $this->schedule_name );
 			$this->save_log_schedule();
