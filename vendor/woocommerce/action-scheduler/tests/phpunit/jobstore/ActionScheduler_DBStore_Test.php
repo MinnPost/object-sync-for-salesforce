@@ -8,13 +8,36 @@ use Action_Scheduler\Tests\DataStores\AbstractStoreTest;
  */
 class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 
-	public function setUp() {
+	/**
+	 * Saved instance of wpdb to restore in cases where we replace the global instance with a mock.
+	 *
+	 * @see $this->test_db_supports_skip_locked()
+	 *
+	 * @var \wpdb
+	 */
+	private $original_wpdb;
+
+	public function setUp(): void {
 		global $wpdb;
 
 		// Delete all actions before each test.
 		$wpdb->query( "DELETE FROM {$wpdb->actionscheduler_actions}" );
 
 		parent::setUp();
+	}
+
+	/**
+	 * Restore the original wpdb global instance for tests that have replaced it.
+	 *
+	 * @return void
+	 */
+	public function tearDown(): void {
+		global $wpdb;
+		if ( null !== $this->original_wpdb ) {
+			$wpdb                = $this->original_wpdb;
+			$this->original_wpdb = null;
+		}
+		parent::tearDown();
 	}
 
 	/**
@@ -29,7 +52,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	public function test_create_action() {
 		$time      = as_get_datetime_object();
 		$schedule  = new ActionScheduler_SimpleSchedule( $time );
-		$action    = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], $schedule );
+		$action    = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule );
 		$store     = new ActionScheduler_DBStore();
 		$action_id = $store->save_action( $action );
 
@@ -38,7 +61,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 
 	public function test_create_action_with_scheduled_date() {
 		$time        = as_get_datetime_object( strtotime( '-1 week' ) );
-		$action      = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], new ActionScheduler_SimpleSchedule( $time ) );
+		$action      = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), new ActionScheduler_SimpleSchedule( $time ) );
 		$store       = new ActionScheduler_DBStore();
 		$action_id   = $store->save_action( $action, $time );
 		$action_date = $store->get_date( $action_id );
@@ -49,7 +72,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	public function test_retrieve_action() {
 		$time      = as_get_datetime_object();
 		$schedule  = new ActionScheduler_SimpleSchedule( $time );
-		$action    = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], $schedule, 'my_group' );
+		$action    = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule, 'my_group' );
 		$store     = new ActionScheduler_DBStore();
 		$action_id = $store->save_action( $action );
 
@@ -63,7 +86,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	public function test_cancel_action() {
 		$time      = as_get_datetime_object();
 		$schedule  = new ActionScheduler_SimpleSchedule( $time );
-		$action    = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], $schedule, 'my_group' );
+		$action    = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule, 'my_group' );
 		$store     = new ActionScheduler_DBStore();
 		$action_id = $store->save_action( $action );
 		$store->cancel_action( $action_id );
@@ -74,13 +97,13 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 
 	public function test_cancel_actions_by_hook() {
 		$store   = new ActionScheduler_DBStore();
-		$actions = [];
+		$actions = array();
 		$hook    = 'by_hook_test';
 		for ( $day = 1; $day <= 3; $day++ ) {
 			$delta     = sprintf( '+%d day', $day );
 			$time      = as_get_datetime_object( $delta );
 			$schedule  = new ActionScheduler_SimpleSchedule( $time );
-			$action    = new ActionScheduler_Action( $hook, [], $schedule, 'my_group' );
+			$action    = new ActionScheduler_Action( $hook, array(), $schedule, 'my_group' );
 			$actions[] = $store->save_action( $action );
 		}
 		$store->cancel_actions_by_hook( $hook );
@@ -93,13 +116,13 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 
 	public function test_cancel_actions_by_group() {
 		$store   = new ActionScheduler_DBStore();
-		$actions = [];
+		$actions = array();
 		$group   = 'by_group_test';
 		for ( $day = 1; $day <= 3; $day++ ) {
 			$delta     = sprintf( '+%d day', $day );
 			$time      = as_get_datetime_object( $delta );
 			$schedule  = new ActionScheduler_SimpleSchedule( $time );
-			$action    = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], $schedule, $group );
+			$action    = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule, $group );
 			$actions[] = $store->save_action( $action );
 		}
 		$store->cancel_actions_by_group( $group );
@@ -111,12 +134,12 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	}
 
 	public function test_claim_actions() {
-		$created_actions = [];
+		$created_actions = array();
 		$store           = new ActionScheduler_DBStore();
 		for ( $i = 3; $i > - 3; $i -- ) {
 			$time     = as_get_datetime_object( $i . ' hours' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ $i ], $schedule, 'my_group' );
+			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( $i ), $schedule, 'my_group' );
 
 			$created_actions[] = $store->save_action( $action );
 		}
@@ -154,7 +177,9 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	}
 
 	public function test_claim_actions_by_hooks() {
-		$created_actions = $created_actions_by_hook = [];
+		$created_actions_by_hook = array();
+		$created_actions         = array();
+
 		$store           = new ActionScheduler_DBStore();
 		$unique_hook_one = 'my_unique_hook_one';
 		$unique_hook_two = 'my_unique_hook_two';
@@ -165,12 +190,13 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 
 		for ( $i = 3; $i > - 3; $i -- ) {
 			foreach ( $unique_hooks as $unique_hook ) {
-				$time     = as_get_datetime_object( $i . ' hours' );
-				$schedule = new ActionScheduler_SimpleSchedule( $time );
-				$action   = new ActionScheduler_Action( $unique_hook, [ $i ], $schedule, 'my_group' );
+				$time      = as_get_datetime_object( $i . ' hours' );
+				$schedule  = new ActionScheduler_SimpleSchedule( $time );
+				$action    = new ActionScheduler_Action( $unique_hook, array( $i ), $schedule, 'my_group' );
+				$action_id = $store->save_action( $action );
 
-				$action_id         = $store->save_action( $action );
-				$created_actions[] = $created_actions_by_hook[ $unique_hook ][] = $action_id;
+				$created_actions[]                         = $action_id;
+				$created_actions_by_hook[ $unique_hook ][] = $action_id;
 			}
 		}
 
@@ -195,7 +221,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	}
 
 	public function test_claim_actions_by_group() {
-		$created_actions  = [];
+		$created_actions  = array();
 		$store            = new ActionScheduler_DBStore();
 		$unique_group_one = 'my_unique_group_one';
 		$unique_group_two = 'my_unique_group_two';
@@ -208,7 +234,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 			foreach ( $unique_groups as $unique_group ) {
 				$time     = as_get_datetime_object( $i . ' hours' );
 				$schedule = new ActionScheduler_SimpleSchedule( $time );
-				$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ $i ], $schedule, $unique_group );
+				$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( $i ), $schedule, $unique_group );
 
 				$created_actions[ $unique_group ][] = $store->save_action( $action );
 			}
@@ -231,14 +257,15 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	 * The DBStore allows one or more groups to be excluded from a claim.
 	 */
 	public function test_claim_actions_with_group_exclusions() {
-		$created_actions  = array();
-		$store            = new ActionScheduler_DBStore();
-		$groups           = array( 'foo', 'bar', 'baz' );
-		$schedule         = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
+		$created_actions = array();
+		$store           = new ActionScheduler_DBStore();
+		$groups          = array( 'foo', 'bar', 'baz' );
+		$schedule        = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
 
 		// Create 6 actions (with 2 in each test group).
 		foreach ( $groups as $group_slug ) {
 			$action = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule, $group_slug );
+
 			$created_actions[ $group_slug ] = array(
 				$store->save_action( $action ),
 				$store->save_action( $action ),
@@ -277,8 +304,9 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	}
 
 	public function test_claim_actions_by_hook_and_group() {
-		$created_actions = $created_actions_by_hook = [];
-		$store           = new ActionScheduler_DBStore();
+		$created_actions_by_hook = array();
+		$created_actions         = array();
+		$store                   = new ActionScheduler_DBStore();
 
 		$unique_hook_one = 'my_other_unique_hook_one';
 		$unique_hook_two = 'my_other_unique_hook_two';
@@ -297,12 +325,12 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		for ( $i = 3; $i > - 3; $i -- ) {
 			foreach ( $unique_hooks as $unique_hook ) {
 				foreach ( $unique_groups as $unique_group ) {
-					$time     = as_get_datetime_object( $i . ' hours' );
-					$schedule = new ActionScheduler_SimpleSchedule( $time );
-					$action   = new ActionScheduler_Action( $unique_hook, [ $i ], $schedule, $unique_group );
-
+					$time      = as_get_datetime_object( $i . ' hours' );
+					$schedule  = new ActionScheduler_SimpleSchedule( $time );
+					$action    = new ActionScheduler_Action( $unique_hook, array( $i ), $schedule, $unique_group );
 					$action_id = $store->save_action( $action );
-					$created_actions[ $unique_group ][] = $action_id;
+
+					$created_actions[ $unique_group ][]                         = $action_id;
 					$created_actions_by_hook[ $unique_hook ][ $unique_group ][] = $action_id;
 				}
 			}
@@ -363,7 +391,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	public function test_claim_actions_respecting_priority() {
 		$store = new ActionScheduler_DBStore();
 
-		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-2 hours' ) );
+		$schedule         = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-2 hours' ) );
 		$routine_action_1 = $store->save_action( new ActionScheduler_Action( 'routine_past_due', array(), $schedule, '' ) );
 
 		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
@@ -371,7 +399,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		$action->set_priority( 5 );
 		$priority_action = $store->save_action( $action );
 
-		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-4 hours' ) );
+		$schedule         = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-4 hours' ) );
 		$routine_action_2 = $store->save_action( new ActionScheduler_Action( 'routine_past_due', array(), $schedule, '' ) );
 
 		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '+1 hour' ) );
@@ -426,7 +454,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		};
 
 		add_filter( 'query', $simulate_unexpected_db_behavior );
-		$claim = $store->stake_claim( 10, null, array(), $group );
+		$claim           = $store->stake_claim( 10, null, array(), $group );
 		$claimed_actions = $claim->get_actions();
 		$this->assertCount( 2, $claimed_actions );
 
@@ -436,12 +464,12 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	}
 
 	public function test_duplicate_claim() {
-		$created_actions = [];
+		$created_actions = array();
 		$store           = new ActionScheduler_DBStore();
 		for ( $i = 0; $i > - 3; $i -- ) {
 			$time     = as_get_datetime_object( $i . ' hours' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ $i ], $schedule, 'my_group' );
+			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( $i ), $schedule, 'my_group' );
 
 			$created_actions[] = $store->save_action( $action );
 		}
@@ -453,12 +481,12 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	}
 
 	public function test_release_claim() {
-		$created_actions = [];
+		$created_actions = array();
 		$store           = new ActionScheduler_DBStore();
 		for ( $i = 0; $i > - 3; $i -- ) {
 			$time     = as_get_datetime_object( $i . ' hours' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ $i ], $schedule, 'my_group' );
+			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( $i ), $schedule, 'my_group' );
 
 			$created_actions[] = $store->save_action( $action );
 		}
@@ -476,23 +504,23 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	}
 
 	public function test_search() {
-		$created_actions = [];
+		$created_actions = array();
 		$store           = new ActionScheduler_DBStore();
 		for ( $i = - 3; $i <= 3; $i ++ ) {
 			$time     = as_get_datetime_object( $i . ' hours' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ $i ], $schedule, 'my_group' );
+			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( $i ), $schedule, 'my_group' );
 
 			$created_actions[] = $store->save_action( $action );
 		}
 
 		$next_no_args = $store->find_action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK );
-		$this->assertEquals( $created_actions[ 0 ], $next_no_args );
+		$this->assertEquals( $created_actions[0], $next_no_args );
 
-		$next_with_args = $store->find_action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ 'args' => [ 1 ] ] );
-		$this->assertEquals( $created_actions[ 4 ], $next_with_args );
+		$next_with_args = $store->find_action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( 'args' => array( 1 ) ) );
+		$this->assertEquals( $created_actions[4], $next_with_args );
 
-		$non_existent = $store->find_action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ 'args' => [ 17 ] ] );
+		$non_existent = $store->find_action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( 'args' => array( 17 ) ) );
 		$this->assertNull( $non_existent );
 	}
 
@@ -500,19 +528,19 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		$store    = new ActionScheduler_DBStore();
 		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( 'tomorrow' ) );
 
-		$abc = $store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ 1 ], $schedule, 'abc' ) );
-		$def = $store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ 1 ], $schedule, 'def' ) );
-		$ghi = $store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ 1 ], $schedule, 'ghi' ) );
+		$abc = $store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( 1 ), $schedule, 'abc' ) );
+		$def = $store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( 1 ), $schedule, 'def' ) );
+		$ghi = $store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( 1 ), $schedule, 'ghi' ) );
 
-		$this->assertEquals( $abc, $store->find_action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ 'group' => 'abc' ] ) );
-		$this->assertEquals( $def, $store->find_action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ 'group' => 'def' ] ) );
-		$this->assertEquals( $ghi, $store->find_action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [ 'group' => 'ghi' ] ) );
+		$this->assertEquals( $abc, $store->find_action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( 'group' => 'abc' ) ) );
+		$this->assertEquals( $def, $store->find_action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( 'group' => 'def' ) ) );
+		$this->assertEquals( $ghi, $store->find_action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( 'group' => 'ghi' ) ) );
 	}
 
 	public function test_get_run_date() {
 		$time      = as_get_datetime_object( '-10 minutes' );
 		$schedule  = new ActionScheduler_IntervalSchedule( $time, HOUR_IN_SECONDS );
-		$action    = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], $schedule );
+		$action    = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule );
 		$store     = new ActionScheduler_DBStore();
 		$action_id = $store->save_action( $action );
 
@@ -536,7 +564,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	 */
 	public function test_create_action_unique() {
 		$time     = as_get_datetime_object();
-		$hook     = md5( rand() );
+		$hook     = md5( wp_rand() );
 		$schedule = new ActionScheduler_SimpleSchedule( $time );
 		$store    = new ActionScheduler_DBStore();
 		$action   = new ActionScheduler_Action( $hook, array(), $schedule );
@@ -546,7 +574,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		$action_from_db = $store->fetch_action( $action_id );
 		$this->assertTrue( is_a( $action_from_db, ActionScheduler_Action::class ) );
 
-		$action = new ActionScheduler_Action( $hook, array(), $schedule );
+		$action              = new ActionScheduler_Action( $hook, array(), $schedule );
 		$action_id_duplicate = $store->save_unique_action( $action );
 		$this->assertEquals( 0, $action_id_duplicate );
 	}
@@ -556,23 +584,23 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	 */
 	public function test_create_action_unique_with_different_groups() {
 		$time     = as_get_datetime_object();
-		$hook     = md5( rand() );
+		$hook     = md5( wp_rand() );
 		$schedule = new ActionScheduler_SimpleSchedule( $time );
 		$store    = new ActionScheduler_DBStore();
 		$action   = new ActionScheduler_Action( $hook, array(), $schedule, 'group1' );
 
-		$action_id = $store->save_action( $action );
+		$action_id      = $store->save_action( $action );
 		$action_from_db = $store->fetch_action( $action_id );
 		$this->assertNotEquals( 0, $action_id );
 		$this->assertTrue( is_a( $action_from_db, ActionScheduler_Action::class ) );
 
-		$action2 = new ActionScheduler_Action( $hook, array(), $schedule, 'group2' );
+		$action2          = new ActionScheduler_Action( $hook, array(), $schedule, 'group2' );
 		$action_id_group2 = $store->save_unique_action( $action2 );
 		$this->assertNotEquals( 0, $action_id_group2 );
 		$action_2_from_db = $store->fetch_action( $action_id_group2 );
 		$this->assertTrue( is_a( $action_2_from_db, ActionScheduler_Action::class ) );
 
-		$action3 = new ActionScheduler_Action( $hook, array(), $schedule, 'group2' );
+		$action3                 = new ActionScheduler_Action( $hook, array(), $schedule, 'group2' );
 		$action_id_group2_double = $store->save_unique_action( $action3 );
 		$this->assertEquals( 0, $action_id_group2_double );
 	}
@@ -582,7 +610,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	 */
 	public function test_create_action_unique_and_then_non_unique() {
 		$time     = as_get_datetime_object();
-		$hook     = md5( rand() );
+		$hook     = md5( wp_rand() );
 		$schedule = new ActionScheduler_SimpleSchedule( $time );
 		$store    = new ActionScheduler_DBStore();
 		$action   = new ActionScheduler_Action( $hook, array(), $schedule );
@@ -593,7 +621,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		$this->assertTrue( is_a( $action_from_db, ActionScheduler_Action::class ) );
 
 		// Non unique action is scheduled even if the previous one was unique.
-		$action = new ActionScheduler_Action( $hook, array(), $schedule );
+		$action              = new ActionScheduler_Action( $hook, array(), $schedule );
 		$action_id_duplicate = $store->save_action( $action );
 		$this->assertNotEquals( 0, $action_id_duplicate );
 		$action_from_db_duplicate = $store->fetch_action( $action_id_duplicate );
@@ -605,7 +633,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	 */
 	public function test_create_action_unique_with_empty_array() {
 		$time     = as_get_datetime_object();
-		$hook     = md5( rand() );
+		$hook     = md5( wp_rand() );
 		$schedule = new ActionScheduler_SimpleSchedule( $time );
 		$store    = new ActionScheduler_DBStore();
 		$action   = new ActionScheduler_Action( $hook, array( 'foo' => 'bar' ), $schedule );
@@ -616,7 +644,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		$this->assertTrue( is_a( $action_from_db, ActionScheduler_Action::class ) );
 
 		$action_with_empty_args = new ActionScheduler_Action( $hook, array(), $schedule );
-		$action_id_duplicate = $store->save_unique_action( $action_with_empty_args );
+		$action_id_duplicate    = $store->save_unique_action( $action_with_empty_args );
 		$this->assertEquals( 0, $action_id_duplicate );
 	}
 
@@ -625,7 +653,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	 */
 	public function test_create_action_unique_with_different_args_still_fail() {
 		$time     = as_get_datetime_object();
-		$hook     = md5( rand() );
+		$hook     = md5( wp_rand() );
 		$schedule = new ActionScheduler_SimpleSchedule( $time );
 		$store    = new ActionScheduler_DBStore();
 		$action   = new ActionScheduler_Action( $hook, array( 'foo' => 'bar' ), $schedule );
@@ -636,7 +664,7 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		$this->assertTrue( is_a( $action_from_db, ActionScheduler_Action::class ) );
 
 		$action_with_diff_args = new ActionScheduler_Action( $hook, array( 'foo' => 'bazz' ), $schedule );
-		$action_id_duplicate = $store->save_unique_action( $action_with_diff_args );
+		$action_id_duplicate   = $store->save_unique_action( $action_with_diff_args );
 		$this->assertEquals( 0, $action_id_duplicate );
 	}
 
@@ -690,9 +718,9 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	 * @return void
 	 */
 	public function test_child_actions_are_processed_in_correct_order() {
-		$time         = time() - 10;
-		$actual_order = array();
-		$watcher      = function ( $number ) use ( &$actual_order ) {
+		$time          = time() - 10;
+		$actual_order  = array();
+		$watcher       = function ( $number ) use ( &$actual_order ) {
 			$actual_order[] = $number;
 		};
 		$parent_action = function () use ( $time ) {
@@ -713,5 +741,74 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		add_action( 'parent', $parent_action );
 
 		$this->assertEquals( range( 1, 20 ), $actual_order, 'Once claimed, scheduled actions are executed in the expected order, including if "child actions" are scheduled from within another action.' );
+	}
+
+	/**
+	 * @param bool   $expected_result
+	 * @param string $db_server_info
+	 *
+	 * @return void
+	 *
+	 * @dataProvider db_supports_skip_locked_provider
+	 */
+	public function test_db_supports_skip_locked( bool $expected_result, string $db_server_info ) {
+		global $wpdb;
+
+		// Stash the original since we're overwriting it with a partial mock. Self::tear_down() will restore this.
+		$this->original_wpdb = $wpdb;
+
+		$wpdb = $this->getMockBuilder( get_class( $wpdb ) )
+		             ->setMethods( [ 'db_server_info' ] )
+		             ->disableOriginalConstructor()
+		             ->getMock();
+
+		$wpdb->method( 'db_server_info' )->willReturn( $db_server_info );
+
+		$reflection = new \ReflectionClass( ActionScheduler_DBStore::class );
+		$method     = $reflection->getMethod( 'db_supports_skip_locked' );
+		$method->setAccessible( true );
+		$db_store = new ActionScheduler_DBStore();
+		$this->assertSame( $expected_result, $method->invoke( $db_store ) );
+	}
+
+	/**
+	 * Data Provider for ::test_db_supports_skip_locked().
+	 *
+	 * @return array[]
+	 */
+	public static function db_supports_skip_locked_provider(): array {
+		// PHP <= 8.0.15 didn't strip the 5.5.5- prefix for MariaDB.
+		$maria_db_prefix = PHP_VERSION_ID < 80016 ? '5.5.5-' : '';
+
+		return array(
+			'MySQL 5.6.1 does not support skip locked'    => array(
+				false,
+				'5.6.1'
+			),
+			'MySQL 8.0.0 does not support skip locked'    => array(
+				false,
+				'8.0.0'
+			),
+			'MySQL 8.0.1 does support skip locked'        => array(
+				true,
+				'8.0.1'
+			),
+			'MySQL 8.4.4 does support skip locked'        => array(
+				true,
+				'8.4.4'
+			),
+			'MariaDB 10.5.0 does not support skip locked' => array(
+				false,
+				$maria_db_prefix . '10.5.0-MariaDB'
+			),
+			'MariaDB 10.6.0 does support skip locked'     => array(
+				true,
+				$maria_db_prefix . '10.6.0-MariaDB'
+			),
+			'MariaDB 11.5.0 does support skip locked'     => array(
+				true,
+				$maria_db_prefix . '11.5.0-MariaDB'
+			),
+		);
 	}
 }
