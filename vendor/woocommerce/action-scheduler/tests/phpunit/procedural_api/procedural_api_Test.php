@@ -8,7 +8,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 	// phpcs:disable Squiz.Commenting.FunctionComment.Missing, Squiz.Commenting.FunctionComment.MissingParamTag
 	public function test_schedule_action() {
 		$time      = time();
-		$hook      = md5( rand() );
+		$hook      = md5( wp_rand() );
 		$action_id = as_schedule_single_action( $time, $hook );
 
 		$store  = ActionScheduler::store();
@@ -19,7 +19,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_recurring_action() {
 		$time      = time();
-		$hook      = md5( rand() );
+		$hook      = md5( wp_rand() );
 		$action_id = as_schedule_recurring_action( $time, HOUR_IN_SECONDS, $hook );
 
 		$store  = ActionScheduler::store();
@@ -71,7 +71,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_cron_schedule() {
 		$time      = as_get_datetime_object( '2014-01-01' );
-		$hook      = md5( rand() );
+		$hook      = md5( wp_rand() );
 		$action_id = as_schedule_cron_action( $time->getTimestamp(), '0 0 10 10 *', $hook );
 
 		$store         = ActionScheduler::store();
@@ -86,7 +86,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_get_next() {
 		$time = as_get_datetime_object( 'tomorrow' );
-		$hook = md5( rand() );
+		$hook = md5( wp_rand() );
 		as_schedule_recurring_action( $time->getTimestamp(), HOUR_IN_SECONDS, $hook );
 
 		$next = as_next_scheduled_action( $hook );
@@ -95,7 +95,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_get_next_async() {
-		$hook      = md5( rand() );
+		$hook      = md5( wp_rand() );
 		$action_id = as_enqueue_async_action( $hook );
 
 		$next = as_next_scheduled_action( $hook );
@@ -122,8 +122,8 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 
 	public function provider_time_hook_args_group() {
 		$time  = time() + 60 * 2;
-		$hook  = md5( rand() );
-		$args  = array( rand(), rand() );
+		$hook  = md5( wp_rand() );
+		$args  = array( wp_rand(), wp_rand() );
 		$group = 'test_group';
 
 		return array(
@@ -294,7 +294,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 		$now = as_get_datetime_object();
 		$this->assertInstanceOf( 'ActionScheduler_DateTime', $now );
 
-		$datetime   = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+		$datetime    = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
 		$as_datetime = as_get_datetime_object( $datetime );
 		$this->assertEquals( $datetime->format( $f ), $as_datetime->format( $f ) );
 	}
@@ -412,8 +412,8 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 		// custom error reporting so we can test for errors sent to error_log.
 		global $wpdb;
 		$wpdb->suppress_errors( true );
-		$error_capture = tmpfile();
-		$actual_error_log = ini_set( 'error_log', stream_get_meta_data( $error_capture )['uri'] );
+		$error_capture    = tmpfile();
+		$actual_error_log = ini_set( 'error_log', stream_get_meta_data( $error_capture )['uri'] ); // phpcs:ignore WordPress.PHP.IniSet.Risky
 
 		// we need a hybrid store so that dropping the priority column will cause an exception.
 		$this->set_action_scheduler_store( new ActionScheduler_HybridStore() );
@@ -449,13 +449,27 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 		$this->assertContains( 'Caught exception while enqueuing action "hook_18": Error saving action', $logged_errors );
 		$this->assertContains( 'Caught exception while enqueuing action "hook_19": Error saving action', $logged_errors );
 		$this->assertContains( 'Caught exception while enqueuing action "hook_20": Error saving action', $logged_errors );
-		$this->assertContains( "Unknown column 'priority' in 'field list'", $logged_errors );
+		$this->assertContains( "Unknown column 'priority' in ", $logged_errors );
 
 		// recreate the priority column.
 		$wpdb->query( "ALTER TABLE {$wpdb->actionscheduler_actions} ADD COLUMN priority tinyint(10) UNSIGNED NOT NULL DEFAULT 10" );
 		// restore error logging.
 		$wpdb->suppress_errors( false );
-		ini_set( 'error_log', $actual_error_log );
+		ini_set( 'error_log', $actual_error_log ); // phpcs:ignore WordPress.PHP.IniSet.Risky
+	}
+
+	/**
+	 * Test that as_supports returns true for supported features.
+	 */
+	public function test_as_supports_for_supported_feature() {
+		$this->assertTrue( as_supports( 'ensure_recurring_actions_hook' ) );
+	}
+
+	/**
+	 * Test that as_supports returns false for unsupported features.
+	 */
+	public function test_as_supports_for_unsupported_feature() {
+		$this->assertFalse( as_supports( 'non_existent_feature' ) );
 	}
 
 	/**
@@ -464,7 +478,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 	 * @param ActionScheduler_Store $store Store instance to set.
 	 */
 	private function set_action_scheduler_store( $store ) {
-		$store_factory_setter = function() use ( $store ) {
+		$store_factory_setter        = function() use ( $store ) {
 			self::$store = $store;
 		};
 		$binded_store_factory_setter = Closure::bind( $store_factory_setter, null, ActionScheduler_Store::class );
