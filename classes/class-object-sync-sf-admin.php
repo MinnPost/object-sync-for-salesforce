@@ -134,13 +134,6 @@ class Object_Sync_Sf_Admin {
 	private $admin_settings_url_param;
 
 	/**
-	 * Data for admin notices
-	 *
-	 * @var array
-	 */
-	public $notices_data;
-
-	/**
 	 * Salesforce access token
 	 *
 	 * @var string
@@ -241,7 +234,6 @@ class Object_Sync_Sf_Admin {
 
 		$this->sfwp_transients          = object_sync_for_salesforce()->wordpress->sfwp_transients;
 		$this->admin_settings_url_param = 'object-sync-salesforce-admin';
-		$this->notices_data             = $this->notices_data();
 
 		// default authorize url path.
 		$this->default_authorize_url_path = '/services/oauth2/authorize';
@@ -1428,7 +1420,7 @@ class Object_Sync_Sf_Admin {
 	 *
 	 * @return array $notices is the array of notices.
 	 */
-	public function notices_data() {
+	public function get_notices_data() {
 		$notices = array(
 			'permission'              => array(
 				'condition'   => ( false === $this->check_wordpress_admin_permissions() ),
@@ -1525,7 +1517,7 @@ class Object_Sync_Sf_Admin {
 		}
 
 		$get_data = filter_input_array( INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS );
-		$notices  = $this->notices_data();
+		$notices  = $this->get_notices_data();
 
 		foreach ( $notices as $key => $value ) {
 
