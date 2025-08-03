@@ -1111,18 +1111,29 @@ class Object_Sync_Sf_Mapping {
 					unset( $params[ $salesforce_field ] );
 				}
 
-				// I think it's good to over-mention that updateable is really how the Salesforce api spells it.
-				// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise.
-				// This happens after dealing with the field types because key and prematch should still be available to the plugin, even if the values are not updateable in Salesforce.
-				if ( 1 !== (int) $fieldmap['salesforce_field']['updateable'] ) {
-					unset( $params[ $salesforce_field ] );
+				// we need to check if the user has permission to modify the fields in Salesforce in the way we're trying to modify them.
+				if ( true === $is_new ) {
+					// I think it's good to over-mention that createable is really how the Salesforce api spells it.
+					// Skip fields that aren't createable when mapping params because Salesforce will error otherwise.
+					// This happens after dealing with the field types because key and prematch should still be available to the plugin, even if the values are not createable in Salesforce.
+					if ( 1 !== (int) $fieldmap['salesforce_field']['createable'] ) {
+						unset( $params[ $salesforce_field ] );
+					}
+				} elseif ( false === $is_new ) {
+					// if we're updating an existing record in Salesforce, check for updateable fields.
+					// I think it's good to over-mention that updateable is really how the Salesforce api spells it.
+					// Skip fields that aren't updateable when mapping params because Salesforce will error otherwise.
+					// This happens after dealing with the field types because key and prematch should still be available to the plugin, even if the values are not updateable in Salesforce.
+					if ( 1 !== (int) $fieldmap['salesforce_field']['updateable'] ) {
+						unset( $params[ $salesforce_field ] );
+					}
 				}
 
 				// This case means the following:
 				// this field is expected by the fieldmap
 				// Salesforce's api reports that this field is required
 				// we do not have a WordPress value for this field, or it's empty
-				// it also means the field has not been unset by prematch, updateable, key, or directional flags prior to this check.
+				// it also means the field has not been unset by prematch, createable/updateable, key, or directional flags prior to this check.
 				// When this happens, we should flag that we're missing a required Salesforce field.
 				if ( in_array( $salesforce_field, $params, true ) && false === filter_var( $fieldmap['salesforce_field']['nillable'], FILTER_VALIDATE_BOOLEAN ) && ( ! isset( $object[ $wordpress_field ] ) || '' === $object[ $wordpress_field ] ) ) {
 					$has_missing_required_salesforce_field = true;
