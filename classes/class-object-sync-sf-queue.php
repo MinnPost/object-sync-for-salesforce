@@ -132,7 +132,7 @@ class Object_Sync_Sf_Queue {
 		} else {
 			uasort(
 				$this->schedulable_classes,
-				function( $a, $b ) {
+				function ( $a, $b ) {
 					return $b['frequency'] - $a['frequency'];
 				}
 			);
@@ -150,8 +150,17 @@ class Object_Sync_Sf_Queue {
 	 * @return int How often it runs in that unit of time
 	 */
 	public function get_frequency( $name, $unit ) {
-		$schedule_number = filter_var( get_option( $this->option_prefix . $name . '_schedule_number', '' ), FILTER_VALIDATE_INT );
+		$schedule_number = get_option( $this->option_prefix . $name . '_schedule_number', '' );
 		$schedule_unit   = get_option( $this->option_prefix . $name . '_schedule_unit', '' );
+
+		// make sure we have something saved in the options so it doesn't fail.
+		if ( '' === $schedule_number ) {
+			$schedule_number = 0;
+		}
+
+		if ( '' === $schedule_unit ) {
+			$schedule_unit = 'minutes';
+		}
 
 		switch ( $schedule_unit ) {
 			case 'minutes':
@@ -171,7 +180,8 @@ class Object_Sync_Sf_Queue {
 				$minutes = 0;
 		}
 
-		$total = $$unit * $schedule_number;
+		$schedule_number = filter_var( $schedule_number, FILTER_SANITIZE_NUMBER_INT );
+		$total           = $$unit * $schedule_number;
 
 		return $total;
 	}
