@@ -629,7 +629,8 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 	}
 
 	/**
-	 * Test asserting that action when an action is created with empty args, it matches with actions created with args for uniqueness.
+	 * Test that a unique action with non-empty args does not block a unique action with empty args on the same hook/group,
+	 * since they have different args and are legitimately distinct actions.
 	 */
 	public function test_create_action_unique_with_empty_array() {
 		$time     = as_get_datetime_object();
@@ -644,14 +645,15 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		$this->assertTrue( is_a( $action_from_db, ActionScheduler_Action::class ) );
 
 		$action_with_empty_args = new ActionScheduler_Action( $hook, array(), $schedule );
-		$action_id_duplicate    = $store->save_unique_action( $action_with_empty_args );
-		$this->assertEquals( 0, $action_id_duplicate );
+		$action_id_empty_args   = $store->save_unique_action( $action_with_empty_args );
+		$this->assertNotEquals( 0, $action_id_empty_args );
 	}
 
 	/**
-	 * Uniqueness does not check for args, so actions with different args can't be scheduled when unique is true.
+	 * Test that unique actions with different args on the same hook/group are both schedulable.
+	 * Uniqueness checks hook + group + args, so different args should not block each other.
 	 */
-	public function test_create_action_unique_with_different_args_still_fail() {
+	public function test_create_action_unique_with_different_args() {
 		$time     = as_get_datetime_object();
 		$hook     = md5( wp_rand() );
 		$schedule = new ActionScheduler_SimpleSchedule( $time );
@@ -664,8 +666,8 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 		$this->assertTrue( is_a( $action_from_db, ActionScheduler_Action::class ) );
 
 		$action_with_diff_args = new ActionScheduler_Action( $hook, array( 'foo' => 'bazz' ), $schedule );
-		$action_id_duplicate   = $store->save_unique_action( $action_with_diff_args );
-		$this->assertEquals( 0, $action_id_duplicate );
+		$action_id_diff_args   = $store->save_unique_action( $action_with_diff_args );
+		$this->assertNotEquals( 0, $action_id_diff_args );
 	}
 
 	/**
@@ -810,5 +812,144 @@ class ActionScheduler_DBStore_Test extends AbstractStoreTest {
 				$maria_db_prefix . '11.5.0-MariaDB'
 			),
 		);
+	}
+
+	/**
+	 * @testdox get_claim_count() returns 0 when no claims exist.
+	 */
+	public function test_get_claim_count_returns_zero_when_no_claims() {
+		$store = new ActionScheduler_DBStore();
+		$this->assertSame( 0, $store->get_claim_count() );
+	}
+
+	/**
+	 * @testdox get_claim_count() returns the correct count with pending claimed actions.
+	 */
+	public function test_get_claim_count_with_pending_actions() {
+		$store    = new ActionScheduler_DBStore();
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
+
+		for ( $i = 0; $i < 3; $i++ ) {
+			$store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( $i ), $schedule ) );
+		}
+
+		$claim = $store->stake_claim();
+		$this->assertSame( 1, $store->get_claim_count() );
+		$store->release_claim( $claim );
+	}
+
+	/**
+	 * @testdox get_claim_count() returns the correct count with multiple claims.
+	 */
+	public function test_get_claim_count_with_multiple_claims() {
+		$store    = new ActionScheduler_DBStore();
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
+
+		for ( $i = 0; $i < 10; $i++ ) {
+			$store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( $i ), $schedule ) );
+		}
+
+		$claim1 = $store->stake_claim( 3 );
+		$claim2 = $store->stake_claim( 3 );
+		$this->assertSame( 2, $store->get_claim_count() );
+
+		$store->release_claim( $claim1 );
+		$store->release_claim( $claim2 );
+	}
+
+	/**
+	 * @testdox get_claim_count() excludes released claims.
+	 */
+	public function test_get_claim_count_excludes_released_claims() {
+		$store    = new ActionScheduler_DBStore();
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
+
+		for ( $i = 0; $i < 3; $i++ ) {
+			$store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( $i ), $schedule ) );
+		}
+
+		$claim = $store->stake_claim();
+		$this->assertSame( 1, $store->get_claim_count() );
+
+		$store->release_claim( $claim );
+		$this->assertSame( 0, $store->get_claim_count() );
+	}
+
+	/**
+	 * @testdox get_claim_count() excludes claims whose actions are all completed.
+	 */
+	public function test_get_claim_count_excludes_completed_actions() {
+		$store    = new ActionScheduler_DBStore();
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
+
+		for ( $i = 0; $i < 3; $i++ ) {
+			$store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( $i ), $schedule ) );
+		}
+
+		$claim = $store->stake_claim();
+		$this->assertSame( 1, $store->get_claim_count() );
+
+		foreach ( $claim->get_actions() as $action_id ) {
+			$store->mark_complete( $action_id );
+		}
+		$this->assertSame( 0, $store->get_claim_count() );
+		$store->release_claim( $claim );
+	}
+
+	/**
+	 * @testdox get_claim_count() includes claims with in-progress actions.
+	 */
+	public function test_get_claim_count_includes_in_progress_actions() {
+		$store    = new ActionScheduler_DBStore();
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
+
+		for ( $i = 0; $i < 3; $i++ ) {
+			$store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( $i ), $schedule ) );
+		}
+
+		$claim      = $store->stake_claim();
+		$action_ids = $claim->get_actions();
+
+		// Mark first action as in-progress, complete the rest.
+		$store->log_execution( $action_ids[0] );
+		for ( $i = 1; $i < count( $action_ids ); $i++ ) {
+			$store->mark_complete( $action_ids[ $i ] );
+		}
+
+		$this->assertSame( 1, $store->get_claim_count() );
+		$store->release_claim( $claim );
+	}
+
+	/**
+	 * @testdox get_claim_count() returns an integer.
+	 */
+	public function test_get_claim_count_returns_integer() {
+		$store = new ActionScheduler_DBStore();
+		$this->assertIsInt( $store->get_claim_count() );
+	}
+
+	/**
+	 * @testdox get_group_ids() resolves a pre-cached slug, a cold slug, and an empty slug; populates the object cache for all three groups.
+	 */
+	public function test_get_group_ids_resolves_mixed_cached_and_uncached_slugs() {
+		$store    = new class() extends ActionScheduler_DBStore {
+			// phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
+			public function get_group_ids( $slugs, $create_if_not_exists = true ) {
+				return parent::get_group_ids( $slugs, $create_if_not_exists );
+			}
+		};
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object() );
+
+		// Saving an action warms the object cache for 'cached_group'.
+		$store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule, 'cached_group' ) );
+		$ids = $store->get_group_ids( array( 'cached_group', 'uncached_group', '' ) );
+
+		$this->assertCount( 3, $ids );
+		$this->assertGreaterThan( 0, $ids[0] );
+		$this->assertGreaterThan( 0, $ids[1] );
+		$this->assertGreaterThan( 0, $ids[2] );
+		$this->assertSame( (int) wp_cache_get( 'cached_group', ActionScheduler_DBStore::GROUP_IDS_CACHE_GROUP ), $ids[0] );
+		$this->assertSame( (int) wp_cache_get( 'uncached_group', ActionScheduler_DBStore::GROUP_IDS_CACHE_GROUP ), $ids[1] );
+		$this->assertSame( (int) wp_cache_get( ActionScheduler_DBStore::GROUP_IDS_DEFAULT_CACHE_KEY, ActionScheduler_DBStore::GROUP_IDS_CACHE_GROUP ), $ids[2] );
 	}
 }

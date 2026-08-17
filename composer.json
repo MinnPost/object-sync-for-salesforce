@@ -33,7 +33,7 @@
         "php": ">=7.2",
         "pippinsplugins/wp-logging": "dev-master",
         "messageagency/force.com-toolkit-for-php": "^1.0.2",
-        "woocommerce/action-scheduler": "^3.9.3"
+        "woocommerce/action-scheduler": "^4.1.0"
     },
     "require-dev": {
         "php": ">=8.0",
