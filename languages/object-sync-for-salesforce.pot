@@ -1,4 +1,4 @@
-# Copyright (C) 2025 object-sync-for-salesforce
+# Copyright (C) 2026 object-sync-for-salesforce
 # This file is distributed under the same license as the object-sync-for-salesforce package.
 msgid ""
 msgstr ""
@@ -550,6 +550,10 @@ msgstr ""
 
 #: classes/class-object-sync-sf-rest.php:208, classes/class-object-sync-sf-rest.php:216, classes/class-object-sync-sf-rest.php:231
 msgid "You do not have permissions to view this data."
+msgstr ""
+
+#: classes/class-object-sync-sf-rest.php:274
+msgid "Invalid WordPress object type."
 msgstr ""
 
 #. translators: placeholders are: 1) the log status, 2) the server error code, and 3) the name of the Salesforce object.

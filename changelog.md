@@ -1,7 +1,7 @@
 Changelog
 =========
 
-* 2.2.14 (2026-08-)
+* 2.2.14 (2026-08-17)
 	* Plugin status: Plugin status: as before, this plugin doesn't currently have official maintainers. I try to check in occasionally if anyone submits pull requests or major issues and merge/address them if I can do so rather quickly. Updates will be given within the plugin if/when that status changes.
 	* Bug fix: Fix unauthenticated SQL injection on the push REST endpoint. Thanks to GitHub user @paulsheldrake for the report and the fix.
 	* Maintenance: Update supported WordPress version to 6.8 to match system requirements for Action Scheduler.
