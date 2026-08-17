@@ -192,7 +192,7 @@ class Object_Sync_Sf_WordPress {
 				'id_field'        => 'ID',
 				'meta_table'      => $this->wpdb->prefix . 'postmeta',
 				'meta_join_field' => 'post_id',
-				'where'           => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
+				'where'           => $this->wpdb->prepare( 'AND ' . $this->wpdb->prefix . 'posts.post_type = %s', $object_type ),
 				'ignore_keys'     => array(),
 			);
 		} elseif ( 'user' === $object_type ) {
@@ -252,7 +252,7 @@ class Object_Sync_Sf_WordPress {
 				'id_field'        => 'ID',
 				'meta_table'      => $this->wpdb->prefix . 'postmeta',
 				'meta_join_field' => 'post_id',
-				'where'           => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
+				'where'           => $this->wpdb->prepare( 'AND ' . $this->wpdb->prefix . 'posts.post_type = %s', $object_type ),
 				'ignore_keys'     => array(),
 			);
 		} elseif ( 'category' === $object_type || 'tag' === $object_type || 'post_tag' === $object_type ) {
@@ -325,7 +325,7 @@ class Object_Sync_Sf_WordPress {
 				'id_field'        => 'ID',
 				'meta_table'      => $this->wpdb->prefix . 'postmeta',
 				'meta_join_field' => 'post_id',
-				'where'           => 'AND ' . $this->wpdb->prefix . 'posts.post_type = "' . $object_type . '"',
+				'where'           => $this->wpdb->prepare( 'AND ' . $this->wpdb->prefix . 'posts.post_type = %s', $object_type ),
 				'ignore_keys'     => array(),
 			);
 		} // End if() statement.

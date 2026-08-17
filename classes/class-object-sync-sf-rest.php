@@ -267,6 +267,12 @@ class Object_Sync_Sf_Rest {
 				break;
 			case 'push':
 				if ( ( 'POST' === $http_method || 'PUT' === $http_method || 'DELETE' === $http_method ) && isset( $body_params['wordpress_object_type'] ) && isset( $body_params['wordpress_id'] ) ) {
+					// Reject object types that are not registered WordPress objects. This endpoint is
+					// reachable by unauthenticated callers, so the untrusted object type must never be
+					// allowed to reach the database layer where it is used to build queries.
+					if ( ! in_array( $body_params['wordpress_object_type'], $this->wordpress->get_object_types(), true ) ) {
+						return new WP_Error( 'rest_invalid_object_type', esc_html__( 'Invalid WordPress object type.', 'object-sync-for-salesforce' ), array( 'status' => 400 ) );
+					}
 					$result = $this->push->manual_push( $body_params['wordpress_object_type'], $body_params['wordpress_id'], $http_method );
 				}
 				break;
